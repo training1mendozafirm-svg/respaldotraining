@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Módulo 6: Compliance Policy Manual | TMLF Training</title>
+<style>
+/* ============================================================
+   MENDOZA LAW FIRM – MENDOZA LEARNING CENTER
+   Módulo 1: VAWA – Declaración Legal del Cliente
+   Paleta institucional: #9094df | #e5e2f6 | #333333
+   ============================================================ */
+
+:root {
+  --color-primary: #9094df;
+  --color-primary-dark: #7176c8;
+  --color-secondary: #e5e2f6;
+  --color-secondary-dark: #d0ccf0;
+  --text-dark: #333333;
+  --text-white: #ffffff;
+  --color-success: #4caf50;
+  --color-error: #e53935;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fffbeb;
+  --border-radius: 8px;
+  --shadow: 0 2px 8px rgba(144, 148, 223, 0.18);
+  --shadow-lg: 0 4px 20px rgba(144, 148, 223, 0.28);
+  --font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: #f4f3fb;
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── LAYOUT PRINCIPAL ─── */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  background: #fff;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── HEADER ─── */
+.module-header {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.module-header .module-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  opacity: 0.95;
+  letter-spacing: 0.01em;
+}
+
+
+
+.logo-placeholder {
+  width: 120px;
+  height: 38px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 0 8px;
+}
+
+/* ─── BARRA DE PROGRESO ─── */
+.progress-bar-container {
+  background: var(--color-secondary);
+  height: 6px;
+  width: 100%;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  font-size: 0.72rem;
+  color: #888;
+  text-align: right;
+  padding: 3px 28px 0;
+  background: var(--color-secondary);
+}
+
+/* ─── CONTENIDO DE PANTALLA ─── */
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  padding: 36px 40px 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── PORTADA ─── */
+.cover-screen {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+  background: linear-gradient(160deg, #f7f6ff 0%, #edeafb 100%);
+  padding: 60px 48px;
+}
+
+.cover-badge {
+  background: var(--color-primary);
+  color: var(--text-white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.cover-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  line-height: 1.25;
+  max-width: 700px;
+}
+
+.cover-subtitle {
+  font-size: 1rem;
+  color: #666;
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.cover-objective-box {
+  background: var(--color-secondary);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 20px 24px;
+  max-width: 640px;
+  text-align: left;
+}
+
+.cover-objective-box .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary-dark);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cover-objective-box p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-dark);
+}
+
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.cover-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── TÍTULOS DE SECCIÓN ─── */
+.section-title {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 20px;
+  border-radius: var(--border-radius);
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.screen-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ─── CONTENIDO TEÓRICO ─── */
+.content-block {
+  margin-bottom: 20px;
+  line-height: 1.7;
+  font-size: 0.93rem;
+}
+
+.content-block p {
+  margin-bottom: 10px;
+}
+
+.bullet-list {
+  list-style: none;
+  padding-left: 4px;
+  margin: 12px 0;
+}
+
+.bullet-list li {
+  padding: 5px 0 5px 26px;
+  position: relative;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.bullet-list li::before {
+  content: "▸";
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  position: absolute;
+  left: 6px;
+  top: 6px;
+}
+
+/* ─── RECUADROS DESTACADOS ─── */
+.info-box {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.info-box .box-title {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.warning-box {
+  background: var(--color-warning-bg);
+  border: 1.5px solid var(--color-warning);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.warning-box .box-title {
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+/* ─── TABLAS ─── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+
+.data-table th {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #e8e6f8;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.data-table tr:nth-child(even) td {
+  background: var(--color-secondary);
+}
+
+.data-table tr:hover td {
+  background: #ededfa;
+}
+
+/* ─── EJEMPLOS COMPARATIVOS ─── */
+.example-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.example-card {
+  border-radius: var(--border-radius);
+  padding: 14px 16px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.example-card.correct {
+  background: #f0faf0;
+  border: 1.5px solid var(--color-success);
+}
+
+.example-card.incorrect {
+  background: #fdf4f4;
+  border: 1.5px solid var(--color-error);
+}
+
+.example-card .card-label {
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.example-card.correct .card-label { color: #2e7d32; }
+.example-card.incorrect .card-label { color: #c62828; }
+
+.example-card .card-explain {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 0.82rem;
+  opacity: 0.8;
+}
+
+/* ─── EJERCICIOS INTERACTIVOS ─── */
+.exercise-section {
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.exercise-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+.exercise-header .ex-badge {
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.exercise-header h3 {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.question-block {
+  margin-bottom: 24px;
+}
+
+.question-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  color: var(--text-dark);
+}
+
+.question-number {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  margin-right: 6px;
+}
+
+/* Fragmentos de texto (citas) */
+.fragment-quote {
+  background: var(--color-secondary);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  padding: 14px 18px;
+  margin: 10px 0 16px;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  font-style: italic;
+  color: #444;
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.checkbox-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.checkbox-item.selected {
+  border-color: var(--color-primary);
+  background: #f0effe;
+}
+
+.checkbox-item.correct-answer {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.checkbox-item.wrong-answer {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Radio buttons */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.radio-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.radio-item input[type="radio"] {
+  margin-top: 2px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.radio-item.selected-correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.radio-item.selected-wrong {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Campos de texto */
+.text-input-area {
+  width: 100%;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 12px 14px;
+  font-family: var(--font-family);
+  font-size: 0.91rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.15s;
+  min-height: 80px;
+  color: var(--text-dark);
+}
+
+.text-input-area:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(144,148,223,0.12);
+}
+
+.text-input-area.correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.text-input-area.incorrect {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+textarea.text-translation {
+  min-height: 140px;
+}
+
+/* Dropdown/select */
+.inline-select {
+  padding: 3px 8px;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  accent-color: var(--color-primary);
+  background: #fff;
+  cursor: pointer;
+  color: var(--text-dark);
+  font-family: var(--font-family);
+}
+
+.fill-blank-text {
+  font-size: 0.92rem;
+  line-height: 2;
+  background: var(--color-secondary);
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+  margin: 10px 0;
+}
+
+/* Retroalimentación */
+.feedback-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px 18px;
+  border-radius: var(--border-radius);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.feedback-box.correct {
+  background: #f0faf0;
+  border: 1px solid #a5d6a7;
+  color: #2e7d32;
+}
+
+.feedback-box.incorrect {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  color: #c62828;
+}
+
+.feedback-box.info {
+  background: var(--color-secondary);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.feedback-box.visible {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.correct-answer-reveal {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(76,175,80,0.1);
+  border-radius: 4px;
+  font-style: italic;
+}
+
+/* Botón de verificar */
+.btn-check {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  margin-top: 12px;
+}
+
+.btn-check:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-check:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── PANTALLA DE RESUMEN EJECUTIVO ─── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.summary-card {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 18px;
+}
+
+.summary-card .card-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.summary-card .card-concept {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.summary-card .card-detail {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ─── PANTALLA DE RESULTADOS ─── */
+.results-screen {
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.score-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto;
+}
+
+.score-circle .score-num {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-circle .score-label {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.results-breakdown {
+  width: 100%;
+  max-width: 600px;
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.results-breakdown .rb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: 0.88rem;
+  border-bottom: 1px solid #e8e6f8;
+}
+
+.results-breakdown .rb-row:last-child { border-bottom: none; }
+.results-breakdown .rb-row .rb-label { color: #555; }
+.results-breakdown .rb-row .rb-score { font-weight: 700; color: var(--color-primary-dark); }
+
+.incorrect-list {
+  width: 100%;
+  max-width: 640px;
+  text-align: left;
+}
+
+.incorrect-item {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  font-size: 0.87rem;
+}
+
+.incorrect-item .ii-label {
+  font-weight: 600;
+  color: #c62828;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.incorrect-item .ii-yours {
+  color: #c62828;
+  margin-bottom: 4px;
+}
+
+.incorrect-item .ii-correct {
+  color: #2e7d32;
+  font-style: italic;
+}
+
+/* ─── NAVEGACIÓN ─── */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  border-top: 1px solid #e8e6f8;
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 220px;
+  right: 0;
+  z-index: 90;
+  box-shadow: 0 -2px 8px rgba(0,0,0,.06);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary-dark);
+  border: 1.5px solid var(--color-primary);
+}
+
+.btn-secondary:hover { background: var(--color-secondary); }
+
+.btn-large {
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+.btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-success {
+  background: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover { background: #388e3c; }
+
+.page-indicator {
+  font-size: 0.82rem;
+  color: #888;
+}
+
+/* ─── DRAG AND DROP ─── */
+.drag-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.drag-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px;
+  background: var(--color-secondary);
+  border-radius: var(--border-radius);
+  min-height: 60px;
+}
+
+.drag-option {
+  background: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: grab;
+  user-select: none;
+  transition: all 0.15s;
+  border: 2px solid transparent;
+}
+
+.drag-option:active { cursor: grabbing; transform: scale(1.05); }
+
+.drag-target {
+  background: #fff;
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  min-height: 52px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s;
+}
+
+.drag-target.drag-over {
+  background: var(--color-secondary);
+  border-color: var(--color-primary-dark);
+}
+
+.drag-target .target-label {
+  font-size: 0.8rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.drag-target .dropped-item {
+  background: var(--color-primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+  .screen { padding: 24px 18px 16px; }
+  .cover-screen { padding: 36px 20px; }
+  .cover-title { font-size: 1.5rem; }
+  .example-grid, .summary-grid { grid-template-columns: 1fr; }
+  .module-header { padding: 12px 18px; }
+  .nav-bar { padding: 12px 18px; }
+  .btn { padding: 10px 16px; font-size: 0.85rem; }
+}
+
+/* ─── UTILIDADES ─── */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
+.bold { font-weight: 700; }
+.highlight { background: var(--color-secondary); padding: 2px 6px; border-radius: 3px; }
+.emoji { font-style: normal; }
+
+.note-tag {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 4px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.section-divider {
+  border: none;
+  border-top: 2px solid var(--color-secondary);
+  margin: 24px 0;
+}
+
+/* Estilos score badge */
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-primary);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+.logo-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+</style>
+<style>
+/* ── SIDEBAR LAYOUT ─── */
+#outer-layout{display:flex;align-items:flex-start;max-width:1100px;margin:0 auto;}
+#sidebar{width:220px;min-width:220px;background:#f7f6fd;border-right:2px solid #e5e2f6;padding:16px 0 40px 0;position:sticky;top:70px;height:calc(100vh - 70px);overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;font-family:"Segoe UI",system-ui,sans-serif;}
+#sidebar-title{font-size:.72rem;font-weight:700;letter-spacing:.12em;color:#9094df;text-transform:uppercase;padding:0 14px 12px 14px;border-bottom:1px solid #e5e2f6;margin-bottom:8px;}
+.sidebar-group{margin-bottom:4px;}
+.sidebar-group-label{font-size:.65rem;font-weight:700;color:#b0adcc;text-transform:uppercase;letter-spacing:.1em;padding:10px 14px 4px 14px;}
+.sidebar-item{display:flex;align-items:center;gap:9px;margin:2px 8px;padding:8px 10px;font-size:.82rem;color:#5a5a7a;cursor:pointer;border-radius:8px;border:1px solid transparent;transition:background .15s,border-color .15s,color .15s;line-height:1.3;text-align:left;background:transparent;}
+.sidebar-item:hover{background:#ebe9f8;color:#4a4d9e;border-color:#d4d0f0;}
+.sidebar-item.active{background:#9094df;color:#fff;border-color:#7a7ec8;font-weight:600;box-shadow:0 2px 6px rgba(144,148,223,.35);}
+.sidebar-item.active .si-dot{background:rgba(255,255,255,.8);}
+.sidebar-item.completed{color:#48bb78;background:#f0fff4;border-color:#c6f6d5;}
+.sidebar-item.completed .si-dot{background:#48bb78;}
+.si-dot{width:7px;height:7px;border-radius:50%;background:#ccc8e8;flex-shrink:0;transition:background .2s;}
+#main-content{flex:1;min-width:0;padding-bottom:72px;}
+@media(max-width:680px){#sidebar{display:none;}}
+/* ── ADVANCE WARNING ─── */
+#advance_warning{display:none;background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:8px 14px;font-size:.85rem;color:#856404;margin-bottom:6px;}
+/* ── RISK CARDS ─── */
+.risk-card{background:#fff;border:1.5px solid #e5e2f6;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+.risk-card.alta{border-left:4px solid #e53935;}
+.risk-card.media{border-left:4px solid #f59e0b;}
+.risk-card .risk-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.risk-card .risk-icon{font-size:1.2rem;}
+.risk-card .risk-title{font-weight:700;font-size:.92rem;color:var(--color-primary-dark);}
+.risk-tag{font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:10px;}
+.risk-tag.alta{background:#fde8e8;color:#c62828;}
+.risk-tag.media{background:#fff8e1;color:#92400e;}
+.risk-card p{font-size:.87rem;color:#555;line-height:1.6;margin:0;}
+/* ── PROTOCOL FORM ─── */
+.protocol-form{background:#f8f7fd;border:1.5px solid #e5e2f6;border-radius:10px;padding:18px 22px;margin:16px 0;}
+.form-field{margin-bottom:14px;}
+.form-label{display:block;font-size:.82rem;font-weight:700;color:var(--color-primary-dark);margin-bottom:4px;}
+.form-input-sim{background:#fff;border:1.5px solid #ccc8e8;border-radius:6px;padding:10px 14px;font-size:.86rem;color:#555;min-height:36px;line-height:1.5;}
+/* ── SUMMARY TABLE ─── */
+.summary-risk-table{width:100%;border-collapse:collapse;font-size:.87rem;margin:12px 0;}
+.summary-risk-table th{background:var(--color-primary);color:#fff;padding:10px 14px;text-align:left;}
+.summary-risk-table td{padding:10px 14px;border-bottom:1px solid #e8e6f8;vertical-align:middle;}
+.summary-risk-table tr:nth-child(even) td{background:#f8f7fe;}
+.tag-alta{display:inline-block;padding:2px 9px;border-radius:10px;font-size:.75rem;font-weight:700;background:#fde8e8;color:#c62828;}
+.tag-media{display:inline-block;padding:2px 9px;border-radius:10px;font-size:.75rem;font-weight:700;background:#fff8e1;color:#92400e;}
+/* ── SCENARIO BOX ─── */
+.scenario-box{background:#fff8e1;border:1.5px solid #f59e0b;border-radius:10px;padding:16px 20px;margin:14px 0;font-size:.92rem;line-height:1.7;color:#333;}
+.sc-label{font-size:.75rem;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+/* ── QUESTION ELEMENTS ─── */
+.question-block{margin-top:20px;}
+.question-label{font-size:.8rem;font-weight:700;color:#7176c8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.question-text{font-size:.93rem;color:#333;margin-bottom:10px;line-height:1.5;}
+.radio-group{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.radio-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid #e5e2f6;border-radius:8px;cursor:pointer;font-size:.9rem;transition:background .15s;}
+.radio-item:hover{background:#ebe9f8;}
+.radio-item.selected-correct{background:#f0fff4;border-color:#48bb78;color:#276749;}
+.radio-item.selected-wrong{background:#fff5f5;border-color:#ef9a9a;color:#c53030;}
+.text-input-area{width:100%;padding:12px 14px;border:1.5px solid #ccc8e8;border-radius:8px;font-size:.88rem;font-family:"Segoe UI",system-ui,sans-serif;resize:vertical;min-height:120px;margin-bottom:8px;}
+.text-input-area:focus{outline:none;border-color:var(--color-primary);}
+.text-input-area.correct{border-color:var(--color-success);background:#f0fff4;}
+.text-input-area.incorrect{border-color:var(--color-error);background:#fff5f5;}
+.feedback-box{display:none;padding:12px 16px;border-radius:8px;font-size:.88rem;margin-top:8px;}
+.feedback-box.visible{display:block;}
+.feedback-box.correct{background:#f0fff4;border:1px solid #48bb78;color:#276749;}
+.feedback-box.incorrect{background:#fff5f5;border:1px solid #ef9a9a;color:#c53030;}
+.feedback-box.info{background:#fffbeb;border:1px solid #f59e0b;color:#92400e;}
+.correct-answer-reveal{margin-top:8px;padding:8px 12px;background:rgba(255,255,255,.7);border-radius:6px;font-size:.83rem;line-height:1.6;}
+.score-badge{display:inline-flex;align-items:center;gap:4px;background:var(--color-primary);color:white;padding:3px 10px;border-radius:12px;font-size:.8rem;font-weight:700;}
+.ex-badge{display:inline-block;background:var(--color-secondary);color:var(--color-primary-dark);padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700;margin-bottom:6px;}
+.exercise-header h3{font-size:1rem;color:var(--color-primary-dark);display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.frag-progress{display:flex;gap:6px;margin-bottom:16px;}
+.fp-dot{width:28px;height:6px;border-radius:3px;background:#e5e2f6;}
+.fp-dot.active{background:var(--color-primary);}
+.fp-dot.done{background:#48bb78;}
+/* ── DROPDOWN TABLE ─── */
+.dropdown-table{width:100%;border-collapse:collapse;font-size:.87rem;margin:14px 0;}
+.dropdown-table th{background:var(--color-primary);color:#fff;padding:10px 14px;text-align:left;}
+.dropdown-table td{padding:10px 14px;border-bottom:1px solid #e8e6f8;vertical-align:middle;}
+.dropdown-table tr:nth-child(even) td{background:#f8f7fe;}
+.dropdown-table select{padding:6px 10px;border:1.5px solid #ccc8e8;border-radius:6px;font-size:.85rem;background:#fff;cursor:pointer;min-width:100px;}
+</style>
+</head>
+<body>
+<header class="module-header">
+  <span class="module-title">Módulo 6: Compliance Policy Manual – Identificación de Riesgos</span>
+  <div class="logo-area">
+    <img src="data:image/png;base64,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" alt="Training TMLF" class="logo-img">
+    <div class="logo-label">TRAINING</div>
+  </div>
+</header>
+<div class="progress-bar-container"><div class="progress-bar-fill" id="progress_fill" style="width:6%"></div></div>
+<div class="progress-label" id="progress_label">6% completado</div>
+
+<div id="outer-layout">
+<div id="sidebar">
+  <div id="sidebar-title">Índice del módulo</div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Inicio</div>
+    <div class="sidebar-item" data-target="0" onclick="goToScreenFromSidebar(0)"><span class="si-dot"></span>Portada</div>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Teoría</div>
+    <div class="sidebar-item" data-target="1" onclick="goToScreenFromSidebar(1)"><span class="si-dot"></span>Introducción</div>
+    <div class="sidebar-item" data-target="2" onclick="goToScreenFromSidebar(2)"><span class="si-dot"></span>Los 5 Riesgos</div>
+    <div class="sidebar-item" data-target="3" onclick="goToScreenFromSidebar(3)"><span class="si-dot"></span>Riesgo 1 – Alteración</div>
+    <div class="sidebar-item" data-target="4" onclick="goToScreenFromSidebar(4)"><span class="si-dot"></span>Riesgos 2, 3 y 4</div>
+    <div class="sidebar-item" data-target="5" onclick="goToScreenFromSidebar(5)"><span class="si-dot"></span>Riesgo 5 y Protocolo</div>
+    <div class="sidebar-item" data-target="6" onclick="goToScreenFromSidebar(6)"><span class="si-dot"></span>Resumen</div>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Ejercicio práctico</div>
+    <div class="sidebar-item" data-target="7" onclick="goToScreenFromSidebar(7)"><span class="si-dot"></span>Instrucciones</div>
+    <div class="sidebar-item" data-target="8" onclick="goToScreenFromSidebar(8)"><span class="si-dot"></span>Escenario 1</div>
+    <div class="sidebar-item" data-target="9" onclick="goToScreenFromSidebar(9)"><span class="si-dot"></span>Escenario 2</div>
+    <div class="sidebar-item" data-target="10" onclick="goToScreenFromSidebar(10)"><span class="si-dot"></span>Escenario 3</div>
+    <div class="sidebar-item" data-target="11" onclick="goToScreenFromSidebar(11)"><span class="si-dot"></span>Escenario 4</div>
+    <div class="sidebar-item" data-target="12" onclick="goToScreenFromSidebar(12)"><span class="si-dot"></span>Escenario 5</div>
+    <div class="sidebar-item" data-target="13" onclick="goToScreenFromSidebar(13)"><span class="si-dot"></span>Escenario 6</div>
+    <div class="sidebar-item" data-target="14" onclick="goToScreenFromSidebar(14)"><span class="si-dot"></span>Tabla de los 5 Riesgos</div>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Cierre</div>
+    <div class="sidebar-item" data-target="15" onclick="goToScreenFromSidebar(15)"><span class="si-dot"></span>Resultados</div>
+  </div>
+</div>
+<div id="main-content">
+
+<!-- SCREEN 0: PORTADA -->
+<div class="screen cover-screen active" id="screen_0">
+  <span class="cover-badge">TMLF Training · Serie Capacitación Legal</span>
+  <h1 class="cover-title">Módulo 6: Compliance Policy Manual<br>Identificación de Riesgos</h1>
+  <p class="cover-subtitle">Identifica los cinco principales riesgos de compliance en tu labor de traducción y aplica el protocolo de reporte de la firma.</p>
+  <div style="background:#fde8e8;border:1.5px solid #ef9a9a;border-radius:12px;padding:20px 24px;margin:10px 0 16px 0;max-width:620px;text-align:left;">
+    <div style="font-weight:700;font-size:.95rem;color:#c62828;margin-bottom:8px;">⚠️ Advertencia inicial</div>
+    <p style="font-size:.87rem;color:#555;line-height:1.6;">Este módulo no trata sobre calidad de traducción. Trata sobre <strong>responsabilidad legal</strong>. Como traductor, eres un actor del proceso legal. Tus acciones u omisiones pueden tener consecuencias para el cliente, para la firma y para ti mismo.</p>
+  </div>
+  <div class="cover-objective-box">
+    <div class="label">🎯 Objetivo del módulo</div>
+    <p>Al finalizar, serás capaz de identificar los cinco principales riesgos de compliance en tu labor de traducción y aplicarás el protocolo de reporte establecido por la firma para documentarlos correctamente.</p>
+  </div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:12px;padding:22px 28px;margin:0 0 20px 0;max-width:620px;text-align:left;">
+    <div style="font-weight:700;font-size:.95rem;color:var(--color-primary-dark);margin-bottom:14px;">📌 Antes de comenzar</div>
+    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">①</span><span><strong>Lee cada escenario completo</strong> antes de responder. Los detalles importan para clasificar el riesgo correctamente.</span></li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">②</span><span><strong>Responde las cuatro partes</strong> de cada escenario antes de avanzar al siguiente.</span></li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">③</span><span><strong>En los reportes</strong>, incluye siempre: tipo de riesgo, descripción de lo que detectaste y acción tomada.</span></li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">④</span><span><strong>Intentos limitados a 1.</strong> Calificación mínima para aprobar: 85%.</span></li>
+    </ul>
+  </div>
+  <div class="cover-meta">
+    <span class="meta-item">⏱️ Duración estimada: 50-60 minutos</span>
+    <span class="meta-item">📋 Versión 1.0 · TMLF Training</span>
+  </div>
+  <button class="btn btn-primary btn-large" id="btn_start">Comenzar módulo →</button>
+</div>
+
+<!-- SCREEN 1: INTRODUCCIÓN -->
+<div class="screen" id="screen_1">
+  <span class="screen-label">Introducción</span>
+  <div class="section-title">🛡️ ¿Qué es el Riesgo Compliance en Traducción?</div>
+  <div class="content-block">
+    <p>En nuestra firma, Compliance es el área encargada de la <strong>prevención de riesgos</strong>. El equipo está formado por especialistas que revisan casos complejos, monitores que supervisan procesos con frecuencia, y habilitadores que crean estrategias para minimizar riesgos.</p>
+  </div>
+  <div class="info-box">
+    <div class="box-title">👤 ¿Y el traductor?</div>
+    <p>El traductor no solo traduce. Es un <strong>actor del proceso legal</strong> y un agente de compliance en primera línea. Tú tocas los documentos, lees cada palabra y puedes detectar problemas antes de que lleguen al abogado.</p>
+  </div>
+  <div style="background:var(--color-secondary);border-radius:10px;padding:18px 20px;margin:16px 0;">
+    <div style="font-weight:700;font-size:.88rem;color:var(--color-primary-dark);margin-bottom:14px;">📊 El traductor en el ecosistema compliance</div>
+    <div style="position:relative;width:100%;max-width:420px;height:240px;margin:0 auto 12px auto;">
+      <svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+        <ellipse cx="210" cy="120" rx="195" ry="105" fill="none" stroke="#9094df" stroke-width="2" stroke-dasharray="6,4"/>
+        <ellipse cx="210" cy="120" rx="58" ry="34" fill="#e53935" stroke="#c62828" stroke-width="2"/>
+        <text x="210" y="116" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">TRADUCTOR</text>
+        <text x="210" y="130" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.85)">filtro</text>
+        <ellipse cx="210" cy="22" rx="52" ry="18" fill="#9094df" stroke="#7a7ec8" stroke-width="1.5"/>
+        <text x="210" y="27" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">CLIENTE</text>
+        <ellipse cx="370" cy="100" rx="44" ry="18" fill="#9094df" stroke="#7a7ec8" stroke-width="1.5"/>
+        <text x="370" y="105" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">MONITOR</text>
+        <ellipse cx="330" cy="205" rx="54" ry="18" fill="#9094df" stroke="#7a7ec8" stroke-width="1.5"/>
+        <text x="330" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">ESPECIALISTA</text>
+        <ellipse cx="90" cy="205" rx="52" ry="18" fill="#9094df" stroke="#7a7ec8" stroke-width="1.5"/>
+        <text x="90" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">ABOGADO</text>
+        <ellipse cx="50" cy="100" rx="44" ry="18" fill="#9094df" stroke="#7a7ec8" stroke-width="1.5"/>
+        <text x="50" y="105" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">COMPLIANCE</text>
+        <line x1="210" y1="86" x2="210" y2="40" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="265" y1="108" x2="327" y2="100" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="250" y1="146" x2="285" y2="188" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="170" y1="146" x2="130" y2="188" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="155" y1="108" x2="93" y2="100" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,3"/>
+      </svg>
+    </div>
+    <p style="font-size:.83rem;color:#555;text-align:center;">Tú eres el que mejor conoce el contenido del documento. Si no reportas un riesgo, este puede viajar hasta USCIS sin que nadie lo haya evaluado.</p>
+  </div>
+  <div class="info-box" style="border-left-color:var(--color-warning);background:#fffbeb;">
+    <div class="box-title" style="color:#92400e;">🎯 El principio de este módulo</div>
+    <p style="font-size:.88rem;line-height:1.6;"><strong>Si ves algo, dilo.</strong> No importa si resulta ser un falso positivo. Preferimos diez alertas innecesarias que un caso perdido por una alerta omitida.</p>
+  </div>
+</div>
+
+<!-- SCREEN 2: LOS 5 RIESGOS -->
+<div class="screen" id="screen_2">
+  <span class="screen-label">Los 5 Riesgos</span>
+  <div class="section-title">⚠️ Los Cinco Riesgos Principales</div>
+  <div class="content-block">
+    <p>Cada uno de estos riesgos tiene consecuencias para el cliente, la firma y el traductor. Conócelos, identifícalos y repórtalos siempre.</p>
+  </div>
+  <div class="risk-card alta">
+    <div class="risk-header"><span class="risk-icon">🔴</span><span class="risk-title">Riesgo 1 – Alteración del Contenido</span><span class="risk-tag alta">Gravedad Alta</span></div>
+    <p>Modificar, suavizar u <em>omitir</em> información de un documento legal sin instrucción expresa del abogado, aunque sea con buena intención.</p>
+  </div>
+  <div class="risk-card alta">
+    <div class="risk-header"><span class="risk-icon">🔒</span><span class="risk-title">Riesgo 2 – Confidencialidad</span><span class="risk-tag alta">Gravedad Alta</span></div>
+    <p>Compartir documentos fuera de canales autorizados, discutir casos fuera del equipo, o almacenar documentos en dispositivos personales.</p>
+  </div>
+  <div class="risk-card media">
+    <div class="risk-header"><span class="risk-icon">📄</span><span class="risk-title">Riesgo 3 – Certificación Faltante</span><span class="risk-tag media">Gravedad Media</span></div>
+    <p>Entregar una traducción sin la declaración certificada firmada. USCIS puede rechazar el paquete o emitir una RFE.</p>
+  </div>
+  <div class="risk-card alta">
+    <div class="risk-header"><span class="risk-icon">👁️</span><span class="risk-title">Riesgo 4 – Omisión de Señales de Alerta</span><span class="risk-tag alta">Gravedad Alta</span></div>
+    <p>Identificar un riesgo (GMC, abuso bilateral, inconsistencia) y no reportarlo. El abogado no siempre lee con el mismo nivel de detalle que tú.</p>
+  </div>
+  <div class="risk-card media">
+    <div class="risk-header"><span class="risk-icon">⏰</span><span class="risk-title">Riesgo 5 – Plazos</span><span class="risk-tag media">Gravedad Media</span></div>
+    <p>No comunicar a tiempo la imposibilidad de cumplir un plazo. El traductor es el último paso antes del Case Review; un retraso no comunicado afecta al cliente.</p>
+  </div>
+</div>
+
+<!-- SCREEN 3: RIESGO 1 – ALTERACIÓN -->
+<div class="screen" id="screen_3">
+  <span class="screen-label">Riesgo 1 – Alteración</span>
+  <div class="section-title">🔴 Riesgo 1 – Alteración del Contenido</div>
+  <div class="content-block">
+    <p>Este es el riesgo más grave y, paradójicamente, el que a veces se comete con "buena intención". Incluye modificar, suavizar, añadir o <strong>eliminar</strong> cualquier parte del documento sin instrucción del abogado.</p>
+  </div>
+  <div class="info-box" style="border-left-color:var(--color-warning);background:#fffbeb;">
+    <div class="box-title" style="color:#92400e;">¿Por qué la gente lo hace?</div>
+    <ul style="margin-top:8px;padding-left:18px;font-size:.87rem;line-height:1.9;color:#555;">
+      <li>Corrige lo que cree que es un error del cliente</li>
+      <li>Suaviza una frase que le parece muy fuerte o perjudicial</li>
+      <li>Añade una explicación que el cliente omitió</li>
+      <li>Elimina una inconsistencia porque "va a confundir al oficial"</li>
+    </ul>
+  </div>
+  <div style="background:#fde8e8;border:1.5px solid #ef9a9a;border-radius:10px;padding:16px 20px;margin:16px 0;">
+    <div style="font-weight:700;color:#c62828;margin-bottom:10px;font-size:.92rem;">⚠️ Ejemplo real — La diferencia importa</div>
+    <p style="font-size:.84rem;color:#555;margin-bottom:12px;">Una sola frase añadida convierte una declaración honesta en una mentira que puede hundir el caso:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:#fff;border:1.5px solid #ef9a9a;border-radius:8px;padding:12px 14px;">
+        <div style="font-weight:700;color:#c62828;font-size:.78rem;margin-bottom:8px;">❌ ALTERACIÓN — absolutamente prohibido</div>
+        <p style="font-size:.84rem;color:#444;margin-bottom:4px;">Cliente escribe:</p>
+        <p style="font-size:.84rem;color:#555;font-style:italic;margin-bottom:10px;">"Yo tuve miedo."</p>
+        <p style="font-size:.84rem;color:#444;margin-bottom:4px;">Traductor añade lo que el cliente NO dijo:</p>
+        <p style="font-size:.84rem;color:#c62828;font-style:italic;">"I was so scared I was crying in fear and I kept thinking of my father who was far away."</p>
+        <p style="font-size:.78rem;color:#c62828;margin-top:8px;font-weight:600;">→ Si USCIS interroga al cliente y este no recuerda haberlo dicho, pierde credibilidad. Posible denegación por inconsistencia.</p>
+      </div>
+      <div style="background:#fff;border:1.5px solid #48bb78;border-radius:8px;padding:12px 14px;">
+        <div style="font-weight:700;color:#276749;font-size:.78rem;margin-bottom:8px;">✅ LO CORRECTO</div>
+        <p style="font-size:.84rem;color:#444;margin-bottom:4px;">Traducción fiel — ni más, ni menos:</p>
+        <p style="font-size:.84rem;color:#276749;font-style:italic;margin-bottom:10px;">"I was scared."</p>
+        <p style="font-size:.84rem;color:#444;margin-bottom:4px;">Si falta detalle, el canal correcto es:</p>
+        <p style="font-size:.84rem;color:#276749;font-style:italic;">"I was scared." + nota al supervisor: "Cliente describe el miedo muy brevemente. ¿Ampliamos en la siguiente sesión?"</p>
+        <p style="font-size:.78rem;color:#276749;margin-top:8px;font-weight:600;">→ Fidelidad total. El canal para ampliar es el abogado, no la traducción.</p>
+      </div>
+    </div>
+  </div>
+  <div style="background:#fde8e8;border-left:4px solid #c62828;border-radius:0 10px 10px 0;padding:16px 20px;margin:16px 0;">
+    <div style="font-weight:700;font-size:.9rem;color:#c62828;margin-bottom:8px;">📌 Recuerda: eres un filtro de calidad</div>
+    <p style="font-size:.88rem;line-height:1.7;color:#444;">El equipo legal confía en que lo que llega a sus manos ya pasó tu revisión. <strong>Tú lees cada palabra. El abogado no siempre tiene ese nivel de detalle.</strong> Si ves algo que no suena bien — una exageración, una omisión, algo que podría no ser del todo cierto — no lo corrijas solo: repórtalo. Esa es exactamente tu función como primer filtro del caso.</p>
+  </div>
+</div>
+
+<!-- SCREEN 4: RIESGOS 2, 3 Y 4 -->
+<div class="screen" id="screen_4">
+  <span class="screen-label">Riesgos 2, 3 y 4</span>
+  <div class="section-title">🔒 Riesgo 2 – Confidencialidad</div>
+  <ul style="list-style:none;padding:0;margin:0 0 20px 0;display:flex;flex-direction:column;gap:8px;">
+    <li style="display:flex;gap:10px;font-size:.88rem;padding:10px 14px;background:#fde8e8;border-radius:8px;"><span style="flex-shrink:0;font-weight:700;color:#c62828;">❌</span><span>No compartas documentos con nadie fuera del equipo autorizado</span></li>
+    <li style="display:flex;gap:10px;font-size:.88rem;padding:10px 14px;background:#fde8e8;border-radius:8px;"><span style="flex-shrink:0;font-weight:700;color:#c62828;">❌</span><span>No discutas casos fuera de los canales oficiales, ni con familiares ni en redes sociales</span></li>
+    <li style="display:flex;gap:10px;font-size:.88rem;padding:10px 14px;background:#fde8e8;border-radius:8px;"><span style="flex-shrink:0;font-weight:700;color:#c62828;">❌</span><span>No almacenes documentos en dispositivos personales: celular, laptop personal, USB</span></li>
+    <li style="display:flex;gap:10px;font-size:.88rem;padding:10px 14px;background:#fde8e8;border-radius:8px;"><span style="flex-shrink:0;font-weight:700;color:#c62828;">❌</span><span>Si trabajas desde casa, asegúrate de que nadie más pueda ver tu pantalla</span></li>
+  </ul>
+  <div class="section-title" style="font-size:1rem;margin-top:4px;">📄 Riesgo 3 – Certificación Faltante</div>
+  <p style="font-size:.88rem;color:#555;margin:8px 0 12px;">Antes de enviar al ensamblaje, verifica siempre:</p>
+  <ul style="list-style:none;padding:0;margin:0 0 20px 0;display:flex;flex-direction:column;gap:6px;">
+    <li style="display:flex;gap:10px;font-size:.88rem;padding:8px 14px;background:#f0fff4;border-radius:8px;"><span style="flex-shrink:0;color:#276749;">✅</span><span>La declaración certificada está adjunta al documento traducido</span></li>
+    <li style="display:flex;gap:10px;font-size:.88rem;padding:8px 14px;background:#f0fff4;border-radius:8px;"><span style="flex-shrink:0;color:#276749;">✅</span><span>Está firmada y fechada correctamente</span></li>
+    <li style="display:flex;gap:10px;font-size:.88rem;padding:8px 14px;background:#f0fff4;border-radius:8px;"><span style="flex-shrink:0;color:#276749;">✅</span><span>Corresponde al documento correcto del caso</span></li>
+  </ul>
+  <div class="section-title" style="font-size:1rem;margin-top:4px;">👁️ Riesgo 4 – Omisión de Señales de Alerta</div>
+  <p style="font-size:.88rem;color:#555;margin:8px 0 12px;">La gente no reporta porque piensa "el abogado ya lo vio", "no quiero meter al cliente en problemas" o "no estoy seguro de que sea real".</p>
+  <div class="info-box" style="border-left-color:var(--color-primary);">
+    <div class="box-title">🔔 El protocolo es claro</div>
+    <p style="font-size:.88rem;line-height:1.6;">Si ves algo, <strong>dilo</strong>. No importa si resulta ser un falso positivo. <strong>Preferimos diez alertas innecesarias que un caso perdido por una alerta omitida.</strong></p>
+  </div>
+</div>
+
+<!-- SCREEN 5: RIESGO 5 + PROTOCOLO -->
+<div class="screen" id="screen_5">
+  <span class="screen-label">Riesgo 5 y Protocolo</span>
+  <div class="section-title">⏰ Riesgo 5 – Plazos</div>
+  <div class="content-block">
+    <p>El traductor es el <strong>último paso antes del Case Review</strong>. Si entregas tarde o con errores, el CR se retrasa y eso afecta directamente al cliente.</p>
+  </div>
+  <div class="info-box" style="border-left-color:var(--color-warning);background:#fffbeb;">
+    <div class="box-title" style="color:#92400e;">💡 Responsabilidad profesional</div>
+    <p style="font-size:.88rem;">Si sabes que no vas a cumplir un plazo, <strong>avisa inmediatamente</strong>. Un aviso temprano permite reasignar recursos. No esperes a que el abogado pregunte.</p>
+  </div>
+  <div class="section-title" style="margin-top:24px;">📋 El Protocolo de Reporte</div>
+  <div class="content-block">
+    <p>Cuando identifiques cualquier riesgo, documéntalo en el sistema interno de la firma. Este es el formato estándar:</p>
+  </div>
+  <div class="protocol-form">
+    <div class="form-field"><label class="form-label">1. Fecha de identificación</label><div class="form-input-sim">dd/mm/aaaa</div></div>
+    <div class="form-field"><label class="form-label">2. Número de caso</label><div class="form-input-sim">Ej: VAWA-2025-0123 · VT-2025-0456 · VU-2025-0789</div></div>
+    <div class="form-field">
+      <label class="form-label">3. Tipo de riesgo</label>
+      <div class="form-input-sim" style="display:flex;flex-wrap:wrap;gap:6px;">
+        <span style="background:var(--color-secondary);border-radius:6px;padding:3px 10px;font-size:.82rem;">🔴 Alteración de contenido</span>
+        <span style="background:var(--color-secondary);border-radius:6px;padding:3px 10px;font-size:.82rem;">🔒 Confidencialidad</span>
+        <span style="background:var(--color-secondary);border-radius:6px;padding:3px 10px;font-size:.82rem;">📄 Certificación faltante</span>
+        <span style="background:var(--color-secondary);border-radius:6px;padding:3px 10px;font-size:.82rem;">⚠️ GMC / Alerta de carácter</span>
+        <span style="background:var(--color-secondary);border-radius:6px;padding:3px 10px;font-size:.82rem;">⚠️ Abuso bilateral</span>
+        <span style="background:var(--color-secondary);border-radius:6px;padding:3px 10px;font-size:.82rem;">⏰ Plazo / Riesgo de entrega</span>
+      </div>
+    </div>
+    <div class="form-field"><label class="form-label">4. Descripción del riesgo</label><div class="form-input-sim" style="min-height:44px;">Explicar qué identificaste, citar la frase o situación específica</div></div>
+    <div class="form-field"><label class="form-label">5. Acción tomada</label><div class="form-input-sim">¿Reportaste al supervisor? ¿Dejaste nota? ¿Enviaste correo?</div></div>
+    <div class="form-field" style="margin-bottom:0;"><label class="form-label">6. Documento / Ubicación</label><div class="form-input-sim">Ej: DCL del cliente, página 3, párrafo 2</div></div>
+  </div>
+  <div class="info-box" style="margin-top:14px;">
+    <div class="box-title">📌 Importante</div>
+    <p style="font-size:.87rem;">Este reporte no es un "acusatorio". Es una <strong>herramienta de protección</strong> para el cliente, para la firma y para ti.</p>
+  </div>
+</div>
+
+<!-- SCREEN 6: RESUMEN -->
+<div class="screen" id="screen_6">
+  <span class="screen-label">Resumen</span>
+  <div class="section-title">📋 Resumen del Módulo 6</div>
+  <div class="content-block"><p>Traducir en una firma legal no es solo cuestión de idiomas. Es cuestión de <strong>responsabilidad</strong>.</p></div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:12px;padding:20px 24px;margin:16px 0;">
+    <div style="font-weight:700;font-size:.95rem;color:var(--color-primary-dark);margin-bottom:14px;">🔑 Ideas fuerza</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">1</span><span><strong>Los 5 riesgos:</strong> Alteración, confidencialidad, certificación, omisión de alertas, plazos.</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">2</span><span><strong>La regla de oro:</strong> Traduce fielmente, no modifiques sin instrucción. Omitir también es alterar.</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">3</span><span><strong>El protocolo:</strong> Si ves algo, repórtalo. Fecha, caso, tipo de riesgo, descripción y acción tomada.</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">4</span><span><strong>Protección triple:</strong> Reportar protege al cliente, a la firma y a ti.</span></div>
+    </div>
+  </div>
+  <table class="summary-risk-table">
+    <thead><tr><th>Riesgo</th><th>Frase clave</th><th>Gravedad</th></tr></thead>
+    <tbody>
+      <tr><td>🔴 Alteración del contenido</td><td>"No modifiques sin orden"</td><td><span class="tag-alta">Alta</span></td></tr>
+      <tr><td>🔒 Confidencialidad</td><td>"Cero filtraciones"</td><td><span class="tag-alta">Alta</span></td></tr>
+      <tr><td>📄 Certificación faltante</td><td>"Siempre firmada"</td><td><span class="tag-media">Media</span></td></tr>
+      <tr><td>👁️ Omisión de alertas</td><td>"Si ves algo, dilo"</td><td><span class="tag-alta">Alta</span></td></tr>
+      <tr><td>⏰ Plazos</td><td>"Avisa si no cumples"</td><td><span class="tag-media">Media</span></td></tr>
+    </tbody>
+  </table>
+  <div class="info-box" style="text-align:center;margin-top:14px;">
+    <div class="box-title">🚀 A continuación: Ejercicio práctico</div>
+    <p>Analizarás 6 escenarios reales, clasificarás el riesgo por tipo y gravedad, y redactarás un reporte simulado.</p>
+  </div>
+</div>
+
+<!-- SCREEN 7: INSTRUCCIONES -->
+<div class="screen" id="screen_7">
+  <span class="screen-label">Ejercicio práctico</span>
+  <div class="section-title">📝 Identificación y Reporte de Riesgos de Compliance</div>
+  <div class="content-block"><p>A continuación se te presentarán <strong>6 escenarios</strong> basados en situaciones reales. Para cada uno deberás completar cuatro partes:</p></div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:12px;padding:20px 24px;margin:16px 0;display:flex;flex-direction:column;gap:10px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;padding:10px 12px;background:var(--color-secondary);border-radius:8px;"><span style="background:var(--color-primary);color:#fff;border-radius:4px;padding:2px 8px;font-weight:700;font-size:.82rem;flex-shrink:0;">Parte 1</span><span>¿El escenario representa un <strong>riesgo de compliance</strong>?</span></div>
+    <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;padding:10px 12px;background:var(--color-secondary);border-radius:8px;"><span style="background:var(--color-primary);color:#fff;border-radius:4px;padding:2px 8px;font-weight:700;font-size:.82rem;flex-shrink:0;">Parte 2</span><span>¿Qué <strong>tipo</strong> de riesgo es?</span></div>
+    <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;padding:10px 12px;background:var(--color-secondary);border-radius:8px;"><span style="background:var(--color-primary);color:#fff;border-radius:4px;padding:2px 8px;font-weight:700;font-size:.82rem;flex-shrink:0;">Parte 3</span><span>¿Cuál es la <strong>gravedad</strong>?</span></div>
+    <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;padding:10px 12px;background:var(--color-secondary);border-radius:8px;"><span style="background:var(--color-primary);color:#fff;border-radius:4px;padding:2px 8px;font-weight:700;font-size:.82rem;flex-shrink:0;">Parte 3</span><span>Elegir la <strong>acción correcta</strong> que debe tomar el traductor</span></div>
+  </div>
+  <div class="info-box" style="border-left-color:var(--color-warning);background:#fffbeb;">
+    <div class="box-title" style="color:#92400e;">📌 Para el reporte</div>
+    <p style="font-size:.87rem;line-height:1.6;">No necesitas el formato exacto de la referencia. Lo importante es incluir el <strong>tipo de riesgo</strong>, la <strong>descripción específica</strong> de lo que detectaste y la <strong>acción correcta</strong>.</p>
+  </div>
+</div>
+
+<!-- SCREEN 8: ESCENARIO 1 -->
+<div class="screen" id="screen_8">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Escenario 1 de 6 <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div></div>
+  <div class="scenario-box"><div class="sc-label">📋 Situación</div>Estás en la oficina traduciendo una DCL de VAWA. En su declaración, la cliente escribe: <strong>«Un día, cuando él me estaba golpeando, yo también le pegué para defenderme.»</strong> Mientras traduces, piensas: <em>«Esta frase puede perjudicar su caso. Mejor la traduzco como &ldquo;I defended myself when he attacked me&rdquo; para que no suene tan mal.»</em></div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgo de compliance?</div>
+    <p class="question-text">¿Este escenario representa un riesgo de compliance?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e1_1" value="si"> Sí, representa un riesgo de compliance</label>
+      <label class="radio-item"><input type="radio" name="e1_1" value="no"> No, no representa un riesgo de compliance</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e1_1" onclick="checkRadio('e1_1','fb_e1_1')">Verificar</button>
+    <div class="feedback-box" id="fb_e1_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Tipo de riesgo</div>
+    <p class="question-text">¿Qué tipo de riesgo está presente?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e1_2" value="alteracion"> Alteración del contenido</label>
+      <label class="radio-item"><input type="radio" name="e1_2" value="confidencialidad"> Confidencialidad</label>
+      <label class="radio-item"><input type="radio" name="e1_2" value="certificacion"> Certificación faltante</label>
+      <label class="radio-item"><input type="radio" name="e1_2" value="omision"> Omisión de señales de alerta</label>
+      <label class="radio-item"><input type="radio" name="e1_2" value="plazos"> Plazos</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e1_2" onclick="checkRadio('e1_2','fb_e1_2')">Verificar</button>
+    <div class="feedback-box" id="fb_e1_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta que debe tomar el traductor?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e1_3" value="a1" style="margin-top:3px;flex-shrink:0;"> Traducir fielmente la frase tal como está y reportar al supervisor con una nota de alerta GMC/abuso bilateral</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e1_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Omitir la frase para no perjudicar el caso</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e1_3" value="a3" style="margin-top:3px;flex-shrink:0;"> Usar la versión suavizada porque el contexto de defensa propia lo justifica</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e1_3" value="a4" style="margin-top:3px;flex-shrink:0;"> Preguntar a la cliente qué quiso decir antes de traducir</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e1_3" onclick="checkRadio('e1_3','fb_e1_3')">Verificar</button>
+    <div class="feedback-box" id="fb_e1_3"></div>
+  </div>
+</div>
+
+<!-- SCREEN 9: ESCENARIO 2 -->
+<div class="screen" id="screen_9">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Escenario 2 de 6 <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div></div>
+  <div class="scenario-box"><div class="sc-label">📋 Situación</div>Estás trabajando en tu estación en la oficina. Recibes una llamada urgente y sales rápidamente sin bloquear tu computadora. La pantalla queda visible con una DCL de Visa T abierta — nombres, fechas, descripción del abuso. Cuando regresas 15 minutos después, notas que un compañero de otro departamento estaba sentado cerca y podría haber visto el documento.</div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgo de compliance?</div>
+    <p class="question-text">¿Este escenario representa un riesgo de compliance?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e2_1" value="si"> Sí, representa un riesgo de compliance</label>
+      <label class="radio-item"><input type="radio" name="e2_1" value="no"> No, no representa un riesgo de compliance</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e2_1" onclick="checkRadio('e2_1','fb_e2_1')">Verificar</button>
+    <div class="feedback-box" id="fb_e2_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Tipo de riesgo</div>
+    <p class="question-text">¿Qué tipo de riesgo está presente?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e2_2" value="confidencialidad"> Confidencialidad</label>
+      <label class="radio-item"><input type="radio" name="e2_2" value="alteracion"> Alteración del contenido</label>
+      <label class="radio-item"><input type="radio" name="e2_2" value="certificacion"> Certificación faltante</label>
+      <label class="radio-item"><input type="radio" name="e2_2" value="omision"> Omisión de señales de alerta</label>
+      <label class="radio-item"><input type="radio" name="e2_2" value="plazos"> Plazos</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e2_2" onclick="checkRadio('e2_2','fb_e2_2')">Verificar</button>
+    <div class="feedback-box" id="fb_e2_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta que debe tomar el traductor?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e2_3" value="a1" style="margin-top:3px;flex-shrink:0;"> No hacer nada porque no hay certeza de que el compañero haya leído el documento</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e2_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Bloquear la pantalla de inmediato y reportar el incidente al supervisor para que quede documentado</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e2_3" value="a3" style="margin-top:3px;flex-shrink:0;"> Hablar directamente con el compañero y pedirle que no comente lo que vio</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e2_3" value="a4" style="margin-top:3px;flex-shrink:0;"> Cerrar el documento y continuar trabajando sin reportar</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e2_3" onclick="checkRadio('e2_3','fb_e2_3')">Verificar</button>
+    <div class="feedback-box" id="fb_e2_3"></div>
+  </div>
+</div>
+
+<!-- SCREEN 10: ESCENARIO 3 -->
+<div class="screen" id="screen_10">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Escenario 3 de 6 <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div></div>
+  <div class="scenario-box"><div class="sc-label">📋 Situación</div>Terminaste de traducir el acta de matrimonio para un caso de VAWA. El coordinador va a armar el paquete para USCIS esta tarde. Revisando tus archivos, te das cuenta de que la traducción está completa y correcta, pero no adjuntaste la declaración de traducción certificada firmada.</div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgo de compliance?</div>
+    <p class="question-text">¿Este escenario representa un riesgo de compliance?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e3_1" value="si"> Sí, representa un riesgo de compliance</label>
+      <label class="radio-item"><input type="radio" name="e3_1" value="no"> No, no representa un riesgo de compliance</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e3_1" onclick="checkRadio('e3_1','fb_e3_1')">Verificar</button>
+    <div class="feedback-box" id="fb_e3_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Tipo de riesgo</div>
+    <p class="question-text">¿Qué tipo de riesgo está presente?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e3_2" value="certificacion"> Certificación faltante</label>
+      <label class="radio-item"><input type="radio" name="e3_2" value="confidencialidad"> Confidencialidad</label>
+      <label class="radio-item"><input type="radio" name="e3_2" value="alteracion"> Alteración del contenido</label>
+      <label class="radio-item"><input type="radio" name="e3_2" value="omision"> Omisión de señales de alerta</label>
+      <label class="radio-item"><input type="radio" name="e3_2" value="plazos"> Plazos</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e3_2" onclick="checkRadio('e3_2','fb_e3_2')">Verificar</button>
+    <div class="feedback-box" id="fb_e3_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta que debe tomar el traductor?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e3_3" value="a1" style="margin-top:3px;flex-shrink:0;"> Enviar el documento como está porque la traducción en sí es correcta</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e3_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Pedirle al coordinador que lo envíe y adjuntar la certificación después</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e3_3" value="a3" style="margin-top:3px;flex-shrink:0;"> Adjuntar de inmediato la declaración certificada firmada y notificar al coordinador antes de que el paquete salga</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e3_3" value="a4" style="margin-top:3px;flex-shrink:0;"> Volver a traducir el documento completo para asegurarse de que todo esté en orden</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e3_3" onclick="checkRadio('e3_3','fb_e3_3')">Verificar</button>
+    <div class="feedback-box" id="fb_e3_3"></div>
+  </div>
+</div>
+
+<!-- SCREEN 11: ESCENARIO 4 -->
+<div class="screen" id="screen_11">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Escenario 4 de 6 <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div></div>
+  <div class="scenario-box"><div class="sc-label">📋 Situación</div>Estás traduciendo una DCL de Visa U. El cliente describe que fue víctima de un asalto y que cooperó con la policía. En el mismo párrafo escribe: <strong>«En ese momento, yo también le grité al policía porque estaba enojado.»</strong> Piensas: <em>«Esto no es tan grave. Además, seguramente el abogado ya leyó la versión en español.»</em> Decides no reportarlo.</div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgo de compliance?</div>
+    <p class="question-text">¿Este escenario representa un riesgo de compliance?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e4_1" value="si"> Sí, representa un riesgo de compliance</label>
+      <label class="radio-item"><input type="radio" name="e4_1" value="no"> No, no representa un riesgo de compliance</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e4_1" onclick="checkRadio('e4_1','fb_e4_1')">Verificar</button>
+    <div class="feedback-box" id="fb_e4_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Tipo de riesgo</div>
+    <p class="question-text">¿Qué tipo de riesgo está presente?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e4_2" value="omision"> Omisión de señales de alerta</label>
+      <label class="radio-item"><input type="radio" name="e4_2" value="alteracion"> Alteración del contenido</label>
+      <label class="radio-item"><input type="radio" name="e4_2" value="confidencialidad"> Confidencialidad</label>
+      <label class="radio-item"><input type="radio" name="e4_2" value="certificacion"> Certificación faltante</label>
+      <label class="radio-item"><input type="radio" name="e4_2" value="plazos"> Plazos</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e4_2" onclick="checkRadio('e4_2','fb_e4_2')">Verificar</button>
+    <div class="feedback-box" id="fb_e4_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta que debe tomar el traductor?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e4_3" value="a1" style="margin-top:3px;flex-shrink:0;"> No hacer nada porque el abogado seguramente ya lo leyó en español</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e4_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Omitir la frase en la traducción para proteger el elemento de cooperación con autoridades</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e4_3" value="a3" style="margin-top:3px;flex-shrink:0;"> Cambiar la frase a algo menos confrontacional</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e4_3" value="a4" style="margin-top:3px;flex-shrink:0;"> Traducir fielmente y reportar al supervisor con una nota de alerta GMC antes de continuar</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e4_3" onclick="checkRadio('e4_3','fb_e4_3')">Verificar</button>
+    <div class="feedback-box" id="fb_e4_3"></div>
+  </div>
+</div>
+
+<!-- SCREEN 12: ESCENARIO 5 -->
+<div class="screen" id="screen_12">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Escenario 5 de 6 <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div></div>
+  <div class="scenario-box"><div class="sc-label">📋 Situación</div>Hoy recibes una DCL urgente de VAWA. El abogado necesita la traducción mañana a las 9 AM porque esa tarde hay una audiencia de divorcio en la que el juez revisará la narrativa. El documento tiene 30 páginas con terminología legal compleja. Con tu carga actual de trabajo no podrás terminarlo con la calidad necesaria. Piensas: <em>«Si digo que no puedo, se van a enojar. Mejor intento y entrego lo que pueda.»</em></div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgo de compliance?</div>
+    <p class="question-text">¿Este escenario representa un riesgo de compliance?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e5_1" value="si"> Sí, representa un riesgo de compliance</label>
+      <label class="radio-item"><input type="radio" name="e5_1" value="no"> No, no representa un riesgo de compliance</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e5_1" onclick="checkRadio('e5_1','fb_e5_1')">Verificar</button>
+    <div class="feedback-box" id="fb_e5_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Tipo de riesgo</div>
+    <p class="question-text">¿Qué tipo de riesgo está presente?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e5_2" value="plazos"> Plazos</label>
+      <label class="radio-item"><input type="radio" name="e5_2" value="alteracion"> Alteración del contenido</label>
+      <label class="radio-item"><input type="radio" name="e5_2" value="confidencialidad"> Confidencialidad</label>
+      <label class="radio-item"><input type="radio" name="e5_2" value="certificacion"> Certificación faltante</label>
+      <label class="radio-item"><input type="radio" name="e5_2" value="omision"> Omisión de señales de alerta</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e5_2" onclick="checkRadio('e5_2','fb_e5_2')">Verificar</button>
+    <div class="feedback-box" id="fb_e5_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta que debe tomar el traductor?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e5_3" value="a1" style="margin-top:3px;flex-shrink:0;"> Trabajar toda la noche e intentar entregar aunque la calidad no sea óptima</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e5_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Entregar lo que puedas y marcar las partes incompletas</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e5_3" value="a3" style="margin-top:3px;flex-shrink:0;"> No decir nada hasta la mañana siguiente</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e5_3" value="a4" style="margin-top:3px;flex-shrink:0;"> Aceptar el encargo sin decir nada y hacer lo mejor posible</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e5_3" value="a5" style="margin-top:3px;flex-shrink:0;"> Reportar de inmediato al supervisor con el número de caso y el plazo, para que se pueda reasignar o reprioritizar a tiempo</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e5_3" onclick="checkRadio('e5_3','fb_e5_3')">Verificar</button>
+    <div class="feedback-box" id="fb_e5_3"></div>
+  </div>
+</div>
+
+<!-- SCREEN 13: ESCENARIO 6 -->
+<div class="screen" id="screen_13">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Escenario 6 de 6 <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div></div>
+  <div class="scenario-box"><div class="sc-label">📋 Situación</div>Estás traduciendo una DCL de VAWA. La cliente escribe: <strong>«Mi esposo me pegaba y yo a veces le pegaba de vuelta.»</strong> El abogado no te ha dado ninguna instrucción sobre esta frase. Piensas: <em>«Si incluyo esto, va a perjudicar su caso. Voy a omitir esta parte para protegerla.»</em></div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgo de compliance?</div>
+    <p class="question-text">¿Este escenario representa un riesgo de compliance?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e6_1" value="si"> Sí, representa un riesgo de compliance</label>
+      <label class="radio-item"><input type="radio" name="e6_1" value="no"> No, no representa un riesgo de compliance</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e6_1" onclick="checkRadio('e6_1','fb_e6_1')">Verificar</button>
+    <div class="feedback-box" id="fb_e6_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Tipo de riesgo</div>
+    <p class="question-text">¿Qué tipo de riesgo está presente?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="e6_2" value="alteracion"> Alteración del contenido</label>
+      <label class="radio-item"><input type="radio" name="e6_2" value="confidencialidad"> Confidencialidad</label>
+      <label class="radio-item"><input type="radio" name="e6_2" value="certificacion"> Certificación faltante</label>
+      <label class="radio-item"><input type="radio" name="e6_2" value="omision"> Omisión de señales de alerta</label>
+      <label class="radio-item"><input type="radio" name="e6_2" value="plazos"> Plazos</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e6_2" onclick="checkRadio('e6_2','fb_e6_2')">Verificar</button>
+    <div class="feedback-box" id="fb_e6_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta que debe tomar el traductor?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e6_3" value="a1" style="margin-top:3px;flex-shrink:0;"> Omitir la frase porque el contexto de defensa propia lo justifica</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e6_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Parafrasear la frase de forma que suene menos comprometedora</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e6_3" value="a3" style="margin-top:3px;flex-shrink:0;"> Consultar con la cliente si realmente quiso decir eso</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="e6_3" value="a6" style="margin-top:3px;flex-shrink:0;"> Traducir fielmente y reportar al supervisor con nota de alerta GMC/abuso bilateral, sin modificar nada</label>
+    </div>
+    <button class="btn btn-primary" id="btn_e6_3" onclick="checkRadio('e6_3','fb_e6_3')">Verificar</button>
+    <div class="feedback-box" id="fb_e6_3"></div>
+  </div>
+</div>
+
+
+<!-- SCREEN 14: TABLA DE LOS 5 RIESGOS -->
+<div class="screen" id="screen_14">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Tabla de los Cinco Riesgos <span class="score-badge">Calificado</span></h3>
+  </div>
+  <p class="question-text">Completa la tabla seleccionando la <strong>descripción</strong> y la <strong>acción correcta</strong> para cada riesgo.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;font-size:.84rem;">
+    <div style="background:#f8f7fd;border-radius:8px;padding:14px;">
+      <div style="font-weight:700;color:var(--color-primary-dark);margin-bottom:8px;">Opciones — Descripción</div>
+      <div style="display:flex;flex-direction:column;gap:6px;color:#555;">
+        <div><strong>A:</strong> Modificar una DCL sin instrucción del abogado, aunque sea con buena intención</div>
+        <div><strong>B:</strong> Compartir documentos fuera de canales autorizados o guardarlos en dispositivos personales</div>
+        <div><strong>C:</strong> Entregar una traducción sin la declaración jurada firmada que la acredita</div>
+        <div><strong>D:</strong> Identificar un riesgo (GMC, inconsistencia, etc.) y no reportarlo</div>
+        <div><strong>E:</strong> No comunicar a tiempo la imposibilidad de cumplir con un plazo</div>
+      </div>
+    </div>
+    <div style="background:#f8f7fd;border-radius:8px;padding:14px;">
+      <div style="font-weight:700;color:var(--color-primary-dark);margin-bottom:8px;">Opciones — Acción correcta</div>
+      <div style="display:flex;flex-direction:column;gap:6px;color:#555;">
+        <div><strong>1:</strong> Traducir fielmente, no modificar sin instrucción, reportar al supervisor</div>
+        <div><strong>2:</strong> Usar solo canales seguros y equipo corporativo; nunca dispositivos personales</div>
+        <div><strong>3:</strong> Verificar que la certificación esté firmada y adjunta antes del ensamblaje</div>
+        <div><strong>4:</strong> Traducir fielmente y reportar de inmediato con nota de alerta</div>
+        <div><strong>5:</strong> Avisar inmediatamente al supervisor si no se podrá cumplir con el plazo</div>
+      </div>
+    </div>
+  </div>
+  <table class="dropdown-table">
+    <thead><tr><th>Riesgo</th><th>Descripción</th><th>Acción correcta</th></tr></thead>
+    <tbody>
+      <tr><td>🔴 Alteración del contenido</td><td><select id="dd_desc_alteracion"><option value="">— Seleccionar —</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select></td><td><select id="dd_accion_alteracion"><option value="">— Seleccionar —</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td></tr>
+      <tr><td>🔒 Confidencialidad</td><td><select id="dd_desc_confidencialidad"><option value="">— Seleccionar —</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select></td><td><select id="dd_accion_confidencialidad"><option value="">— Seleccionar —</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td></tr>
+      <tr><td>📄 Certificación faltante</td><td><select id="dd_desc_certificacion"><option value="">— Seleccionar —</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select></td><td><select id="dd_accion_certificacion"><option value="">— Seleccionar —</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td></tr>
+      <tr><td>👁️ Omisión de alertas</td><td><select id="dd_desc_omision"><option value="">— Seleccionar —</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select></td><td><select id="dd_accion_omision"><option value="">— Seleccionar —</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td></tr>
+      <tr><td>⏰ Plazos</td><td><select id="dd_desc_plazos"><option value="">— Seleccionar —</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select></td><td><select id="dd_accion_plazos"><option value="">— Seleccionar —</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td></tr>
+    </tbody>
+  </table>
+  <button class="btn btn-primary" id="btn_check_tabla" onclick="checkTabla()">Verificar tabla</button>
+  <div class="feedback-box" id="fb_tabla"></div>
+</div>
+
+<!-- SCREEN 15: RESULTADOS -->
+<div class="screen results-screen" id="screen_results">
+  <span class="cover-badge">Módulo 6 completado</span>
+  <div class="score-circle">
+    <span class="score-num" id="score_circle_num">--%</span>
+    <span class="score-label" id="score_label">Calculando...</span>
+  </div>
+  <div style="font-size:.88rem;color:#666;max-width:520px;text-align:center;">Calificación mínima para aprobar: <strong>85%</strong> (24/28 preguntas correctas)</div>
+  <div class="results-breakdown" id="results_breakdown"></div>
+  <div style="width:100%;max-width:600px;background:#fafafa;border:1px solid #e0ddf5;border-radius:10px;padding:20px;margin-top:8px;text-align:left;">
+    <div style="font-weight:700;font-size:.92rem;color:var(--color-primary-dark);margin-bottom:10px;">💡 Áreas a reforzar</div>
+    <div id="results_tips" style="font-size:.87rem;color:#555;line-height:1.6;"></div>
+  </div>
+  <div class="info-box" style="max-width:580px;text-align:left;">
+    <div class="box-title">📌 Recuerda siempre</div>
+    <p style="font-size:.87rem;line-height:1.6;"><strong>🔴 Alteración · 🔒 Confidencialidad · 📄 Certificación · 👁️ Alertas · ⏰ Plazos</strong><br>Si ves algo, dilo. Traduce fielmente. Reporta siempre.</p>
+  </div>
+  <button class="btn btn-success" id="btn_complete">Finalizar y registrar calificación ✅</button>
+</div>
+
+</div><!-- end #main-content -->
+</div><!-- end #outer-layout -->
+
+<div class="nav-bar">
+  <button class="btn btn-secondary" id="btn_prev">← Anterior</button>
+  <div style="text-align:center;">
+    <div id="advance_warning">⚠️ Responde y verifica todas las partes antes de continuar.</div>
+    <span class="page-indicator" id="page_indicator">Pantalla 1 de 16</span>
+  </div>
+  <button class="btn btn-primary" id="btn_next">Siguiente →</button>
+</div>
+
+<script>
+/**
+ * scorm.js – Comunicación SCORM 1.2 con Moodle
+ * Mendoza Learning Center – Módulo 1 VAWA
+ */
+
+var SCORM = (function () {
+  var API = null;
+  var initialized = false;
+  var finished = false;
+
+  // ─── Buscar la API SCORM ───
+  function findAPI(win) {
+    var attempts = 0;
+    while (win.API == null && win.parent != null && win.parent != win) {
+      attempts++;
+      if (attempts > 7) return null;
+      win = win.parent;
+    }
+    return win.API;
+  }
+
+  function getAPI() {
+    var win = window;
+    var api = findAPI(win);
+    if (api == null && win.opener != null) {
+      api = findAPI(win.opener);
+    }
+    return api;
+  }
+
+  // ─── Inicializar ───
+  function initialize() {
+    API = getAPI();
+    if (API == null) {
+      console.warn("[SCORM] API no encontrada – modo standalone");
+      initialized = true; // Continuar en modo local
+      return true;
+    }
+    var result = API.LMSInitialize("");
+    if (result === "true" || result === true) {
+      initialized = true;
+      setValue("cmi.core.lesson_status", "incomplete");
+      return true;
+    }
+    console.error("[SCORM] Error al inicializar:", API.LMSGetLastError());
+    return false;
+  }
+
+  // ─── Leer valor ───
+  function getValue(element) {
+    if (!initialized || API == null) return "";
+    return API.LMSGetValue(element);
+  }
+
+  // ─── Escribir valor ───
+  function setValue(element, value) {
+    if (!initialized) return false;
+    if (API == null) return true; // standalone, ignorar
+    var result = API.LMSSetValue(element, value);
+    if (result === "false" || result === false) {
+      console.error("[SCORM] Error al setear " + element + ":", API.LMSGetLastError());
+      return false;
+    }
+    return true;
+  }
+
+  // ─── Commit ───
+  function commit() {
+    if (!initialized || API == null) return;
+    API.LMSCommit("");
+  }
+
+  // ─── Finalizar ───
+  function finish() {
+    if (!initialized || finished) return;
+    finished = true;
+    if (API != null) {
+      API.LMSFinish("");
+    }
+  }
+
+  // ─── Reportar calificación del módulo ───
+  function setScore(raw, min, max) {
+    min = min || 0;
+    max = max || 100;
+    setValue("cmi.core.score.raw", raw);
+    setValue("cmi.core.score.min", min);
+    setValue("cmi.core.score.max", max);
+    commit();
+  }
+
+  // ─── Reportar estado de completado ───
+  function setCompleted(passed) {
+    setValue("cmi.core.lesson_status", passed ? "passed" : "failed");
+    commit();
+  }
+
+  // ─── Reportar interacción individual ───
+  var interactionIndex = 0;
+  function recordInteraction(id, type, response, correct, result, latency) {
+    var prefix = "cmi.interactions." + interactionIndex + ".";
+    setValue(prefix + "id", id);
+    setValue(prefix + "type", type || "fill-in");
+    setValue(prefix + "student_response", response || "");
+    setValue(prefix + "correct_responses.0.pattern", correct || "");
+    setValue(prefix + "result", result || "neutral");
+    if (latency) setValue(prefix + "latency", latency);
+    interactionIndex++;
+    commit();
+  }
+
+  // ─── Marcar progreso (location) ───
+  function setLocation(screenIndex) {
+    setValue("cmi.core.lesson_location", String(screenIndex));
+    commit();
+  }
+
+  return {
+    initialize: initialize,
+    getValue: getValue,
+    setValue: setValue,
+    commit: commit,
+    finish: finish,
+    setScore: setScore,
+    setCompleted: setCompleted,
+    recordInteraction: recordInteraction,
+    setLocation: setLocation
+  };
+})();
+
+// ─── Inicializar automáticamente ───
+window.addEventListener("load", function () {
+  SCORM.initialize();
+});
+
+window.addEventListener("beforeunload", function () {
+  SCORM.finish();
+});
+
+</script>
+<script>
+/**
+ * interactions.js – Módulo 6: Compliance Policy Manual
+ * v3 – Sin reporte de texto, 3 preguntas por escenario (radio x3),
+ *       acción correcta como parte 3, feedback correcto según calificación.
+ */
+var AppState={currentScreen:0,totalScreens:0,scores:{},answered:{},startTime:Date.now()};
+function lockQuestion(id){AppState.answered[id]=true;}
+function isLocked(id){return !!AppState.answered[id];}
+
+// ═══════════════════════════════════════════════════════════
+//  RADIO CONFIG – todo feedback aquí
+// ═══════════════════════════════════════════════════════════
+var RADIO_CONFIG={
+  // Escenario 1 – Alteración
+  "e1_1":{correct:"si",
+    msgOk:"✅ <strong>¡Correcto!</strong> El traductor está considerando cambiar la frase del cliente sin instrucción del abogado.",
+    msgFail:"❌ <strong>Revisa.</strong> Sí es un riesgo: el traductor está pensando en modificar la declaración del cliente para que «suene mejor»."
+  },
+  "e1_2":{correct:"alteracion",
+    msgOk:"✅ <strong>¡Correcto!</strong> Es alteración del contenido. Cambiar «yo también le pegué» por «I defended myself» modifica el significado legal del documento.",
+    msgFail:"❌ <strong>Revisa.</strong> Es alteración del contenido: reemplazar lo que el cliente dijo por una versión «mejorada» sin orden del abogado altera el documento legal."
+  },
+  "e1_3":{correct:"a1",
+    msgOk:"✅ <strong>¡Correcto!</strong> Traducir fielmente y reportar al supervisor con nota GMC es el protocolo exacto para este caso.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es traducir tal como está («I also hit him to defend myself») y reportar al supervisor con una nota indicando la posible implicación de abuso bilateral/GMC."
+  },
+  // Escenario 2 – Confidencialidad
+  "e2_1":{correct:"si",
+    msgOk:"✅ <strong>¡Correcto!</strong> Dejar un documento confidencial abierto en la pantalla en un espacio compartido de la oficina es una brecha de confidencialidad.",
+    msgFail:"❌ <strong>Revisa.</strong> Sí es un riesgo: cualquier persona que pase por la estación de trabajo puede ver información confidencial del caso."
+  },
+  "e2_2":{correct:"confidencialidad",
+    msgOk:"✅ <strong>¡Correcto!</strong> Es un riesgo de confidencialidad: el documento quedó expuesto a personas no autorizadas en un espacio compartido.",
+    msgFail:"❌ <strong>Revisa.</strong> El riesgo es de confidencialidad: la información del cliente quedó visible para personas fuera del equipo autorizado."
+  },
+  "e2_3":{correct:"a2",
+    msgOk:"✅ <strong>¡Correcto!</strong> Bloquear la pantalla al alejarse y reportar el incidente al supervisor son las acciones correctas.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es bloquear la pantalla al alejarse de la estación de trabajo y reportar el incidente al supervisor para que quede documentado."
+  },
+  // Escenario 3 – Certificación
+  "e3_1":{correct:"si",
+    msgOk:"✅ <strong>¡Correcto!</strong> Sin la certificación adjunta, USCIS puede rechazar el documento o emitir una RFE.",
+    msgFail:"❌ <strong>Revisa.</strong> Sí es un riesgo: una traducción sin declaración certificada firmada puede causar rechazo del paquete por parte de USCIS."
+  },
+  "e3_2":{correct:"certificacion",
+    msgOk:"✅ <strong>¡Correcto!</strong> Es certificación faltante. La traducción existe pero sin la declaración firmada que la acredita.",
+    msgFail:"❌ <strong>Revisa.</strong> El riesgo es certificación faltante: el documento traducido no tiene la declaración jurada adjunta."
+  },
+  "e3_3":{correct:"a3",
+    msgOk:"✅ <strong>¡Correcto!</strong> Adjuntar la certificación firmada antes de que salga el paquete, y notificar al coordinador para confirmar, es la acción correcta.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es adjuntar de inmediato la declaración certificada firmada y notificar al coordinador del caso antes de que el paquete sea enviado."
+  },
+  // Escenario 4 – Omisión
+  "e4_1":{correct:"si",
+    msgOk:"✅ <strong>¡Correcto!</strong> Detectar algo que puede afectar el caso y no reportarlo es una omisión de alerta.",
+    msgFail:"❌ <strong>Revisa.</strong> Sí es un riesgo: asumir que el abogado ya lo vio y no reportarlo es precisamente el error que puede costar un caso."
+  },
+  "e4_2":{correct:"omision",
+    msgOk:"✅ <strong>¡Correcto!</strong> Es omisión de señales de alerta: el traductor identificó un riesgo GMC pero decidió no reportarlo.",
+    msgFail:"❌ <strong>Revisa.</strong> El riesgo es omisión de señales de alerta: ver algo que puede afectar el caso y no reportarlo."
+  },
+  "e4_3":{correct:"a4",
+    msgOk:"✅ <strong>¡Correcto!</strong> Traducir fielmente y reportar al supervisor con nota GMC es el protocolo correcto — aunque parezca menor.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es traducir fielmente («I also yelled at the officer because I was angry») y reportar al supervisor con una nota de alerta GMC."
+  },
+  // Escenario 5 – Plazos
+  "e5_1":{correct:"si",
+    msgOk:"✅ <strong>¡Correcto!</strong> No comunicar que no se cumplirá un plazo crítico es un riesgo de compliance que puede afectar directamente al cliente.",
+    msgFail:"❌ <strong>Revisa.</strong> Sí es un riesgo: ignorar un plazo sin avisar al supervisor puede resultar en que el paquete llegue sin la traducción y el cliente pierda su audiencia."
+  },
+  "e5_2":{correct:"plazos",
+    msgOk:"✅ <strong>¡Correcto!</strong> Es riesgo de plazos: el traductor recibió un plazo crítico y no comunicó a tiempo que no podría cumplirlo.",
+    msgFail:"❌ <strong>Revisa.</strong> El riesgo es de plazos: no avisar que no se puede cumplir un deadline afecta al cliente y a todo el equipo."
+  },
+  "e5_3":{correct:"a5",
+    msgOk:"✅ <strong>¡Correcto!</strong> Reportar de inmediato al supervisor con la situación específica permite reasignar o reprioritizar antes de que sea demasiado tarde.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es reportar de inmediato al supervisor: «Tengo la DCL del caso VAWA-2025-0234 (divorcio). El plazo es mañana a las 9 AM y no podré cumplirlo con calidad. Favor reasignar o reprioritizar.»"
+  },
+  // Escenario 6 – Alteración por omisión
+  "e6_1":{correct:"si",
+    msgOk:"✅ <strong>¡Correcto!</strong> Omitir una frase es una forma de alteración de documento legal, tan grave como añadir o cambiar palabras.",
+    msgFail:"❌ <strong>Revisa.</strong> Sí es un riesgo: omitir información de una declaración jurada sin instrucción del abogado es una alteración del documento."
+  },
+  "e6_2":{correct:"alteracion",
+    msgOk:"✅ <strong>¡Correcto!</strong> Es alteración del contenido por omisión. Eliminar una frase sin orden del abogado modifica el documento legal.",
+    msgFail:"❌ <strong>Revisa.</strong> El riesgo es alteración por omisión: eliminar contenido sin instrucción expresa es tan grave como añadirlo o modificarlo."
+  },
+  "e6_3":{correct:"a6",
+    msgOk:"✅ <strong>¡Correcto!</strong> Traducir fielmente y reportar con nota GMC/abuso bilateral es el protocolo correcto. El abogado decidirá cómo manejarlo estratégicamente.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es traducir tal como está y reportar al supervisor: «Cliente admite haber respondido con violencia. Favor revisar implicaciones VAWA/GMC antes de continuar.»"
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+//  RADIO handler
+// ═══════════════════════════════════════════════════════════
+function checkRadio(qId,feedbackId){
+  if(isLocked(qId))return;
+  var cfg=RADIO_CONFIG[qId];
+  if(!cfg){console.error("No RADIO_CONFIG for "+qId);return;}
+  var radios=document.querySelectorAll('input[name="'+qId+'"]');
+  var sel=null;
+  radios.forEach(function(r){if(r.checked)sel=r.value;});
+  if(!sel){alert("Selecciona una opción antes de verificar.");return;}
+  var isCorrect=(sel===cfg.correct);
+  radios.forEach(function(r){
+    r.disabled=true;
+    var item=r.closest(".radio-item");
+    if(item){
+      if(r.value===cfg.correct)item.classList.add("selected-correct");
+      else if(r.value===sel&&!isCorrect)item.classList.add("selected-wrong");
+    }
+  });
+  var fb=document.getElementById(feedbackId);
+  if(fb){fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");fb.innerHTML=isCorrect?cfg.msgOk:cfg.msgFail;}
+  AppState.scores[qId]=isCorrect;
+  lockQuestion(qId);
+  var btn=document.getElementById("btn_"+qId); if(btn)btn.disabled=true;
+  SCORM.recordInteraction(qId,"choice",sel,cfg.correct,isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TABLA FINAL – dropdowns
+// ═══════════════════════════════════════════════════════════
+var TABLA_CORRECTA={
+  "desc_alteracion":"A","desc_confidencialidad":"B","desc_certificacion":"C",
+  "desc_omision":"D","desc_plazos":"E",
+  "accion_alteracion":"1","accion_confidencialidad":"2","accion_certificacion":"3",
+  "accion_omision":"4","accion_plazos":"5"
+};
+
+function checkTabla(){
+  if(isLocked("tabla_final"))return;
+  var total=0,correct=0;
+  Object.keys(TABLA_CORRECTA).forEach(function(key){
+    var sel=document.getElementById("dd_"+key); if(!sel)return;
+    total++;
+    var ok=(sel.value===TABLA_CORRECTA[key]);
+    if(ok)correct++;
+    sel.style.borderColor=ok?"var(--color-success)":"var(--color-error)";
+    sel.style.background=ok?"#f0fff4":"#fff5f5";
+    sel.disabled=true;
+  });
+  var isCorrect=(correct===total);
+  var fb=document.getElementById("fb_tabla");
+  if(fb){
+    fb.className="feedback-box visible "+(isCorrect?"correct":(correct>=7?"info":"incorrect"));
+    fb.innerHTML=isCorrect?
+      "✅ <strong>¡Perfecto!</strong> Tabla completa y correcta. Dominas los cinco riesgos de compliance.":
+      "⚠️ <strong>"+correct+"/"+total+" correctas.</strong> Las celdas en rojo necesitan revisión.";
+  }
+  AppState.scores["tabla_final"]=correct;
+  AppState.scores["tabla_total"]=total;
+  lockQuestion("tabla_final");
+  var btn=document.getElementById("btn_check_tabla"); if(btn)btn.disabled=true;
+  SCORM.recordInteraction("tabla_final","matching",correct+"/"+total,total+"/"+total,isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VALIDACIÓN ANTES DE AVANZAR
+//  3 preguntas por escenario (sin reporte), tabla en screen 14
+// ═══════════════════════════════════════════════════════════
+var SCREEN_REQS={
+  8: ["e1_1","e1_2","e1_3"],
+  9: ["e2_1","e2_2","e2_3"],
+  10:["e3_1","e3_2","e3_3"],
+  11:["e4_1","e4_2","e4_3"],
+  12:["e5_1","e5_2","e5_3"],
+  13:["e6_1","e6_2","e6_3"],
+  14:["tabla_final"]
+};
+
+function canAdvance(idx){
+  var reqs=SCREEN_REQS[idx]; if(!reqs)return true;
+  for(var i=0;i<reqs.length;i++){if(!AppState.answered[reqs[i]])return false;}
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PUNTUACIÓN FINAL
+// ═══════════════════════════════════════════════════════════
+function calcScore(){
+  var autoQ=["e1_1","e1_2","e1_3",
+             "e2_1","e2_2","e2_3",
+             "e3_1","e3_2","e3_3",
+             "e4_1","e4_2","e4_3",
+             "e5_1","e5_2","e5_3",
+             "e6_1","e6_2","e6_3"];
+  var c=0; autoQ.forEach(function(id){if(AppState.scores[id]===true)c++;});
+  var tablaC=AppState.scores["tabla_final"]||0;
+  var tablaT=AppState.scores["tabla_total"]||10;
+  return{auto:{correct:c,total:autoQ.length},tabla:{correct:tablaC,total:tablaT}};
+}
+
+function renderResults(){
+  var s=calcScore();
+  var total=s.auto.correct+s.tabla.correct;
+  var max=s.auto.total+s.tabla.total;
+  var pct=Math.round((total/max)*100); var passed=(pct>=85);
+  var sc=document.getElementById("score_circle_num"); if(sc)sc.textContent=pct+"%";
+  var sl=document.getElementById("score_label"); if(sl)sl.textContent=passed?"¡Aprobado!":"Necesitas repasar";
+
+  var escenarios=[
+    {label:"Escenario 1 – Alteración",          qs:["e1_1","e1_2","e1_3"]},
+    {label:"Escenario 2 – Confidencialidad",     qs:["e2_1","e2_2","e2_3"]},
+    {label:"Escenario 3 – Certificación",        qs:["e3_1","e3_2","e3_3"]},
+    {label:"Escenario 4 – Omisión de alerta",    qs:["e4_1","e4_2","e4_3"]},
+    {label:"Escenario 5 – Plazos",               qs:["e5_1","e5_2","e5_3"]},
+    {label:"Escenario 6 – Alteración por omisión",qs:["e6_1","e6_2","e6_3"]}
+  ];
+  var html="";
+  escenarios.forEach(function(e){
+    var fc=0; e.qs.forEach(function(q){if(AppState.scores[q]===true)fc++;});
+    var icon=fc===3?"✅":fc===2?"⚠️":"❌";
+    html+='<div class="rb-row"><span class="rb-label">'+icon+' '+e.label+'</span><span class="rb-score">'+fc+' / 3</span></div>';
+  });
+  html+='<div class="rb-row"><span class="rb-label">📋 Tabla de los cinco riesgos</span><span class="rb-score">'+s.tabla.correct+' / '+s.tabla.total+'</span></div>';
+  html+='<div class="rb-row" style="font-weight:700;background:var(--color-secondary)"><span class="rb-label">TOTAL</span><span class="rb-score">'+total+' / '+max+' ('+pct+'%)</span></div>';
+  var rb=document.getElementById("results_breakdown"); if(rb)rb.innerHTML=html;
+
+  // Tips — solo mostrar excelente si realmente aprobó
+  var tipsEl=document.getElementById("results_tips");
+  if(tipsEl){
+    var tips=[];
+    var altFail=(AppState.scores["e1_2"]!==true||AppState.scores["e6_2"]!==true||AppState.scores["e1_3"]!==true||AppState.scores["e6_3"]!==true);
+    var confFail=(AppState.scores["e2_2"]!==true||AppState.scores["e2_3"]!==true);
+    var certFail=(AppState.scores["e3_2"]!==true||AppState.scores["e3_3"]!==true);
+    var omitFail=(AppState.scores["e4_2"]!==true||AppState.scores["e4_3"]!==true);
+    var plazoFail=(AppState.scores["e5_2"]!==true||AppState.scores["e5_3"]!==true);
+    if(altFail)tips.push("<li><strong>Alteración del contenido:</strong> Modificar, suavizar u omitir información sin instrucción del abogado es una alteración de documento legal. Traduce fielmente y reporta siempre, aunque creas que perjudica al cliente.</li>");
+    if(confFail)tips.push("<li><strong>Confidencialidad:</strong> Los documentos son estrictamente confidenciales. Bloquea tu pantalla al alejarte de tu estación de trabajo y nunca dejes documentos visibles en espacios compartidos.</li>");
+    if(certFail)tips.push("<li><strong>Certificación:</strong> Toda traducción que va a USCIS debe incluir la declaración certificada firmada. Verifica siempre antes de enviar al ensamblaje del paquete.</li>");
+    if(omitFail)tips.push("<li><strong>Omisión de alertas:</strong> Si ves algo que puede afectar el caso, repórtalo aunque parezca menor. El abogado no siempre lee con el mismo nivel de detalle que tú.</li>");
+    if(plazoFail)tips.push("<li><strong>Plazos:</strong> Si no puedes cumplir un plazo, avisa de inmediato con el número de caso y el motivo. Un aviso temprano permite reasignar; no avisar puede costarle al cliente su audiencia.</li>");
+    if(!tips.length && passed){
+      tips.push("<li>¡Excelente trabajo! Identificaste correctamente todos los riesgos de compliance y las acciones adecuadas.</li>");
+    } else if(!tips.length && !passed){
+      tips.push("<li>Revisa los escenarios donde no obtuviste el puntaje completo y repasa las secciones de teoría correspondientes antes de volver a intentarlo.</li>");
+    }
+    tipsEl.innerHTML="<ul style='padding-left:20px;line-height:1.9;'>"+tips.join("")+"</ul>";
+  }
+  SCORM.setScore(pct,0,100); SCORM.setCompleted(passed);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SIDEBAR / NAVEGACIÓN
+// ═══════════════════════════════════════════════════════════
+function updateSidebar(idx){
+  document.querySelectorAll('.sidebar-item').forEach(function(item){
+    var t=parseInt(item.getAttribute('data-target'));
+    item.classList.remove('active','completed');
+    if(t===idx)item.classList.add('active');
+    else if(t<idx)item.classList.add('completed');
+  });
+}
+function goToScreenFromSidebar(index){
+  if(index>AppState.currentScreen){
+    for(var s=AppState.currentScreen;s<index;s++){if(!canAdvance(s)){showAdvanceWarning();return;}}
+  }
+  goToScreen(index);
+}
+function showAdvanceWarning(){
+  var w=document.getElementById("advance_warning");
+  if(w){w.style.display="block";setTimeout(function(){w.style.display="none";},4000);}
+}
+function initNavigation(){
+  var screens=document.querySelectorAll(".screen"); AppState.totalScreens=screens.length;
+  updateNavButtons(); updateProgressBar(); updateSidebar(0);
+  var btnNext=document.getElementById("btn_next");
+  var btnPrev=document.getElementById("btn_prev");
+  if(btnNext)btnNext.addEventListener("click",function(){
+    if(AppState.currentScreen<AppState.totalScreens-1){
+      if(!canAdvance(AppState.currentScreen)){showAdvanceWarning();return;}
+      goToScreen(AppState.currentScreen+1);
+    }
+  });
+  if(btnPrev)btnPrev.addEventListener("click",function(){if(AppState.currentScreen>0)goToScreen(AppState.currentScreen-1);});
+}
+function goToScreen(index){
+  var screens=document.querySelectorAll(".screen");
+  screens[AppState.currentScreen].classList.remove("active");
+  AppState.currentScreen=index; screens[index].classList.add("active");
+  window.scrollTo(0,0);
+  updateNavButtons(); updateProgressBar(); updateSidebar(index); SCORM.setLocation(index);
+  if(screens[index].id==="screen_results")renderResults();
+}
+function updateNavButtons(){
+  var btnPrev=document.getElementById("btn_prev");
+  var btnNext=document.getElementById("btn_next");
+  var indicator=document.getElementById("page_indicator");
+  var screens=document.querySelectorAll(".screen");
+  if(btnPrev)btnPrev.disabled=(AppState.currentScreen===0);
+  if(btnNext){
+    btnNext.disabled=(AppState.currentScreen===AppState.totalScreens-1);
+    btnNext.style.display=(screens[AppState.currentScreen]&&screens[AppState.currentScreen].id==="screen_results")?"none":"";
+  }
+  if(indicator)indicator.textContent="Pantalla "+(AppState.currentScreen+1)+" de "+AppState.totalScreens;
+}
+function updateProgressBar(){
+  var fill=document.getElementById("progress_fill");
+  var label=document.getElementById("progress_label");
+  var pct=Math.round(((AppState.currentScreen+1)/AppState.totalScreens)*100);
+  if(fill)fill.style.width=pct+"%"; if(label)label.textContent=pct+"% completado";
+}
+document.addEventListener("DOMContentLoaded",function(){
+  initNavigation();
+  var btnStart=document.getElementById("btn_start");
+  if(btnStart)btnStart.addEventListener("click",function(){goToScreen(1);});
+  var btnComplete=document.getElementById("btn_complete");
+  if(btnComplete)btnComplete.addEventListener("click",function(){
+    renderResults(); SCORM.finish();
+    btnComplete.textContent="✅ Módulo completado"; btnComplete.disabled=true;
+  });
+});
+
+</script>
+</body>
+</html>
