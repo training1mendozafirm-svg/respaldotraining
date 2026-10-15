@@ -1,0 +1,2621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1: VAWA – Declaración Legal del Cliente | Mendoza Learning Center</title>
+  <style>
+/* ============================================================
+   MENDOZA LAW FIRM – MENDOZA LEARNING CENTER
+   Módulo 1: VAWA – Declaración Legal del Cliente
+   Paleta institucional: #9094df | #e5e2f6 | #333333
+   ============================================================ */
+
+:root {
+  --color-primary: #9094df;
+  --color-primary-dark: #7176c8;
+  --color-secondary: #e5e2f6;
+  --color-secondary-dark: #d0ccf0;
+  --text-dark: #333333;
+  --text-white: #ffffff;
+  --color-success: #4caf50;
+  --color-error: #e53935;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fffbeb;
+  --border-radius: 8px;
+  --shadow: 0 2px 8px rgba(144, 148, 223, 0.18);
+  --shadow-lg: 0 4px 20px rgba(144, 148, 223, 0.28);
+  --font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: #f4f3fb;
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── LAYOUT PRINCIPAL ─── */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  background: #fff;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── HEADER ─── */
+.module-header {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.module-header .module-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  opacity: 0.95;
+  letter-spacing: 0.01em;
+}
+
+
+
+.logo-placeholder {
+  width: 120px;
+  height: 38px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 0 8px;
+}
+
+/* ─── BARRA DE PROGRESO ─── */
+.progress-bar-container {
+  background: var(--color-secondary);
+  height: 6px;
+  width: 100%;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  font-size: 0.72rem;
+  color: #888;
+  text-align: right;
+  padding: 3px 28px 0;
+  background: var(--color-secondary);
+}
+
+/* ─── CONTENIDO DE PANTALLA ─── */
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  padding: 36px 40px 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── PORTADA ─── */
+.cover-screen {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+  background: linear-gradient(160deg, #f7f6ff 0%, #edeafb 100%);
+  padding: 60px 48px;
+}
+
+.cover-badge {
+  background: var(--color-primary);
+  color: var(--text-white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.cover-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  line-height: 1.25;
+  max-width: 700px;
+}
+
+.cover-subtitle {
+  font-size: 1rem;
+  color: #666;
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.cover-objective-box {
+  background: var(--color-secondary);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 20px 24px;
+  max-width: 640px;
+  text-align: left;
+}
+
+.cover-objective-box .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary-dark);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cover-objective-box p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-dark);
+}
+
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.cover-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── TÍTULOS DE SECCIÓN ─── */
+.section-title {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 20px;
+  border-radius: var(--border-radius);
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.screen-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ─── CONTENIDO TEÓRICO ─── */
+.content-block {
+  margin-bottom: 20px;
+  line-height: 1.7;
+  font-size: 0.93rem;
+}
+
+.content-block p {
+  margin-bottom: 10px;
+}
+
+.bullet-list {
+  list-style: none;
+  padding-left: 4px;
+  margin: 12px 0;
+}
+
+.bullet-list li {
+  padding: 5px 0 5px 26px;
+  position: relative;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.bullet-list li::before {
+  content: "▸";
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  position: absolute;
+  left: 6px;
+  top: 6px;
+}
+
+/* ─── RECUADROS DESTACADOS ─── */
+.info-box {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.info-box .box-title {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.warning-box {
+  background: var(--color-warning-bg);
+  border: 1.5px solid var(--color-warning);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.warning-box .box-title {
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+/* ─── TABLAS ─── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+
+.data-table th {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #e8e6f8;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.data-table tr:nth-child(even) td {
+  background: var(--color-secondary);
+}
+
+.data-table tr:hover td {
+  background: #ededfa;
+}
+
+/* ─── EJEMPLOS COMPARATIVOS ─── */
+.example-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.example-card {
+  border-radius: var(--border-radius);
+  padding: 14px 16px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.example-card.correct {
+  background: #f0faf0;
+  border: 1.5px solid var(--color-success);
+}
+
+.example-card.incorrect {
+  background: #fdf4f4;
+  border: 1.5px solid var(--color-error);
+}
+
+.example-card .card-label {
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.example-card.correct .card-label { color: #2e7d32; }
+.example-card.incorrect .card-label { color: #c62828; }
+
+.example-card .card-explain {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 0.82rem;
+  opacity: 0.8;
+}
+
+/* ─── EJERCICIOS INTERACTIVOS ─── */
+.exercise-section {
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.exercise-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+.exercise-header .ex-badge {
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.exercise-header h3 {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.question-block {
+  margin-bottom: 24px;
+}
+
+.question-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  color: var(--text-dark);
+}
+
+.question-number {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  margin-right: 6px;
+}
+
+/* Fragmentos de texto (citas) */
+.fragment-quote {
+  background: var(--color-secondary);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  padding: 14px 18px;
+  margin: 10px 0 16px;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  font-style: italic;
+  color: #444;
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.checkbox-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.checkbox-item.selected {
+  border-color: var(--color-primary);
+  background: #f0effe;
+}
+
+.checkbox-item.correct-answer {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.checkbox-item.wrong-answer {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Radio buttons */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.radio-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.radio-item input[type="radio"] {
+  margin-top: 2px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.radio-item.selected-correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.radio-item.selected-wrong {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Campos de texto */
+.text-input-area {
+  width: 100%;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 12px 14px;
+  font-family: var(--font-family);
+  font-size: 0.91rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.15s;
+  min-height: 80px;
+  color: var(--text-dark);
+}
+
+.text-input-area:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(144,148,223,0.12);
+}
+
+.text-input-area.correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.text-input-area.incorrect {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+textarea.text-translation {
+  min-height: 140px;
+}
+
+/* Dropdown/select */
+.inline-select {
+  padding: 3px 8px;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  accent-color: var(--color-primary);
+  background: #fff;
+  cursor: pointer;
+  color: var(--text-dark);
+  font-family: var(--font-family);
+}
+
+.fill-blank-text {
+  font-size: 0.92rem;
+  line-height: 2;
+  background: var(--color-secondary);
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+  margin: 10px 0;
+}
+
+/* Retroalimentación */
+.feedback-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px 18px;
+  border-radius: var(--border-radius);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.feedback-box.correct {
+  background: #f0faf0;
+  border: 1px solid #a5d6a7;
+  color: #2e7d32;
+}
+
+.feedback-box.incorrect {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  color: #c62828;
+}
+
+.feedback-box.info {
+  background: var(--color-secondary);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.feedback-box.visible {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.correct-answer-reveal {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(76,175,80,0.1);
+  border-radius: 4px;
+  font-style: italic;
+}
+
+/* Botón de verificar */
+.btn-check {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  margin-top: 12px;
+}
+
+.btn-check:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-check:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── PANTALLA DE RESUMEN EJECUTIVO ─── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.summary-card {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 18px;
+}
+
+.summary-card .card-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.summary-card .card-concept {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.summary-card .card-detail {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ─── PANTALLA DE RESULTADOS ─── */
+.results-screen {
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.score-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto;
+}
+
+.score-circle .score-num {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-circle .score-label {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.results-breakdown {
+  width: 100%;
+  max-width: 600px;
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.results-breakdown .rb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: 0.88rem;
+  border-bottom: 1px solid #e8e6f8;
+}
+
+.results-breakdown .rb-row:last-child { border-bottom: none; }
+.results-breakdown .rb-row .rb-label { color: #555; }
+.results-breakdown .rb-row .rb-score { font-weight: 700; color: var(--color-primary-dark); }
+
+.incorrect-list {
+  width: 100%;
+  max-width: 640px;
+  text-align: left;
+}
+
+.incorrect-item {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  font-size: 0.87rem;
+}
+
+.incorrect-item .ii-label {
+  font-weight: 600;
+  color: #c62828;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.incorrect-item .ii-yours {
+  color: #c62828;
+  margin-bottom: 4px;
+}
+
+.incorrect-item .ii-correct {
+  color: #2e7d32;
+  font-style: italic;
+}
+
+/* ─── NAVEGACIÓN ─── */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  border-top: 1px solid #e8e6f8;
+  background: #fff;
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary-dark);
+  border: 1.5px solid var(--color-primary);
+}
+
+.btn-secondary:hover { background: var(--color-secondary); }
+
+.btn-large {
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+.btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-success {
+  background: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover { background: #388e3c; }
+
+.page-indicator {
+  font-size: 0.82rem;
+  color: #888;
+}
+
+/* ─── DRAG AND DROP ─── */
+.drag-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.drag-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px;
+  background: var(--color-secondary);
+  border-radius: var(--border-radius);
+  min-height: 60px;
+}
+
+.drag-option {
+  background: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: grab;
+  user-select: none;
+  transition: all 0.15s;
+  border: 2px solid transparent;
+}
+
+.drag-option:active { cursor: grabbing; transform: scale(1.05); }
+
+.drag-target {
+  background: #fff;
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  min-height: 52px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s;
+}
+
+.drag-target.drag-over {
+  background: var(--color-secondary);
+  border-color: var(--color-primary-dark);
+}
+
+.drag-target .target-label {
+  font-size: 0.8rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.drag-target .dropped-item {
+  background: var(--color-primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+  .screen { padding: 24px 18px 16px; }
+  .cover-screen { padding: 36px 20px; }
+  .cover-title { font-size: 1.5rem; }
+  .example-grid, .summary-grid { grid-template-columns: 1fr; }
+  .module-header { padding: 12px 18px; }
+  .nav-bar { padding: 12px 18px; }
+  .btn { padding: 10px 16px; font-size: 0.85rem; }
+}
+
+/* ─── UTILIDADES ─── */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
+.bold { font-weight: 700; }
+.highlight { background: var(--color-secondary); padding: 2px 6px; border-radius: 3px; }
+.emoji { font-style: normal; }
+
+.note-tag {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 4px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.section-divider {
+  border: none;
+  border-top: 2px solid var(--color-secondary);
+  margin: 24px 0;
+}
+
+/* Estilos score badge */
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-primary);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+.logo-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+</style>
+  <style>
+.clickable-word { cursor: pointer; padding: 2px 4px; border-radius: 3px; transition: background 0.15s; }
+    .clickable-word:hover { background: rgba(144,148,223,0.15); }
+    #advance_warning { display:none; background:#fff3cd; border:1px solid #ffc107; border-radius:8px; padding:12px 18px; margin:8px 0; font-size:0.88rem; color:#856404; }
+
+/* ── SIDEBAR LAYOUT ─────────────────────────────────────── */
+#outer-layout {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+#sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: #f7f6fd;
+  border-right: 2px solid #e5e2f6;
+  padding: 16px 0 40px 0;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+#sidebar-title {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: #9094df;
+  text-transform: uppercase;
+  padding: 0 14px 12px 14px;
+  border-bottom: 1px solid #e5e2f6;
+  margin-bottom: 8px;
+}
+.sidebar-group {
+  margin-bottom: 4px;
+}
+.sidebar-group-label {
+  font-size: .65rem;
+  font-weight: 700;
+  color: #b0adcc;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  padding: 10px 14px 4px 14px;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 2px 8px;
+  padding: 8px 10px;
+  font-size: .82rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: #5a5a7a;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: background .15s, border-color .15s, color .15s;
+  line-height: 1.3;
+  text-align: left;
+  background: transparent;
+}
+.sidebar-item:hover {
+  background: #ebe9f8;
+  color: #4a4d9e;
+  border-color: #d4d0f0;
+}
+.sidebar-item.active {
+  background: #9094df;
+  color: #ffffff;
+  border-color: #7a7ec8;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(144,148,223,.35);
+}
+.sidebar-item.active .si-dot {
+  background: rgba(255,255,255,.8);
+}
+.sidebar-item.completed {
+  color: #48bb78;
+  background: #f0fff4;
+  border-color: #c6f6d5;
+}
+.sidebar-item.completed .si-dot {
+  background: #48bb78;
+}
+.sidebar-item.locked {
+  opacity: .4;
+  cursor: default;
+  pointer-events: none;
+}
+.si-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ccc8e8;
+  flex-shrink: 0;
+  transition: background .2s;
+}
+#main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 0 0 80px 0;
+}
+.module-header { position: sticky; top: 0; z-index: 100; }
+@media (max-width: 680px) {
+  #sidebar { display: none; }
+}
+}
+  #main-content { padding: 0; }
+}
+/* Nav bar stays inside main content */
+.nav-bar { max-width: none !important; }
+
+  </style>
+</head>
+<body>
+<!-- HEADER -->
+<header class="module-header">
+  <span class="module-title">Módulo 1: VAWA – Declaración Legal del Cliente (DCL)</span>
+  <div class="logo-area">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD0AAAAsCAYAAADW6LDXAAANHklEQVR4nN1ae1RU57Xf+zvzgoKDghoIgTDig6rR8Kg1VexEc8PVxNWbwJQ8VuxKcy83uWltSCxGbzNM0iSmJgavbdQsbdaKNiWjubk+4q2QMIhGyMBowFjAgLxUIIAoIwMzc863+8ecAwPyEolN+/trZs732L9vv76z9wCMEUQkjHXsrYTZbGaMsYlbDABg7969P9q1a9fdAACMMSCiCdrhpoE2m02lfMnNzf3Jzp07A29qRSJSAQCcOnXqN5cvX/aWlJQ8BwCC3zO8qQ1uAlarVVC0m5OTM6+urq6wpaWlOy0tLUCWb3yyKaTLysrWkoz6+vri3NzcHwIAICJYrdZbavJEhH5uprHb7Rs6OzuvERFdvXq1HgAmhnRpaWkmEXEi6iEicjqd3rNnz742e/bsYHmcMO5NbkyevgP++OOPlzY2NjpkXXAiEjs7Oy9ERkbeMGlU/Fie6E+aiMgrSZJIRBIRUXNzc1V+fv4qZby/f00k/LW7atWqyeXl5f/jdDq5LJOHiEQiomFI45gOwGolf78dQJr60UtE5PV6qbq6+o8bNmwIl+cw/4O7WfgfZF5e3kMtLS3n5f1FWcOkKGEwabPZzBCH54sAAE+ueyM45d8eiwQAQGRw5Mg57SDSYldX17XGxsZav808REQdHR0XT548uWYoYccDs9nMlCzxyiuv3FFVVfWBJEkDDryrq8vb1NRUpZD3J71zZ5laWWtNRtad/jz7NgAAeG7972O37ipss2z6c6b/AD/SdOnSpc6oqKjwyspKS1dXl9dfCCKihoaGQ9u3b/8+gC+9jSPQoWJhAAAnT57MaGtra/czZS7L8aXVav1BSUnJfyh7+5MGAHjsyXWzt79fXLD5D0d3AwxURJ8pur2d3qCgyVPmLkx+6+0dBSd+8es37wEAwH4bIcaY6q677vLGxcWZ8/Pz77l48WIRAGjl556oqKgH0tPT7aWlpVmcc8FkMkk0xvRmtVoFRCREFHfv3r2goaEhf/HixTvCwsJCAcANAGqn09lbXl5ujoiIWGwymex6vT5YmU9EGBkZCWvWrNG9vPnDrGXLf1p6p2G+Uaf9nmvwXn3s1aoglERR7HZdE+6MnXePSs0OAUCoWq2W/BamtrY2gYgERCwFgB+fOnXqlwaDIVuv14cAgCckJOR7iYmJm5qamh764osvMhHxc0QEzrmAiNJgAeRAw+RnWofD8eKMGTOy9Hq9TiarBQBtfX19wfHjxzOfeOKJcvkgWWVlZd96nEhVUlLS8y8P/uLpu+KNm645r3qvXbsice69LsYM+AGRIQIILpdTUmsCJAAASZJowATGCBElOVVBfHz81r179ybV1dX9LwBo5GHuyMjIH9x///1FX3755dtJSUmT/Ob0aV0+PEJE6cCBA/deunSpOD4+3qzX67UA4AUAbUdHx2W73f50TEzMcoWww+FAROQDqfi+Mk1AkOj1SKIkiohsSPcaMtIioIAEowUjjohks9lUzz77bI3BYHi4qKjo8fb29gvg044YFBRECxYs+NWhQ4dKCwoKViGihIgkE0ZElB599NHJZ86c+f199933WXh4+N3g0y4CgLq2tvbDbdu2JSxatGgHETEiYogoJiQkkKyQAVL7lAKATCUADJ+qhiRNRHDt2uUro5AGAACj0SjK0VZYtmzZn7Zs2RJfVVW12+PxqMB3bXVPmzZtVnJy8uHa2tr33n333UgiYtnZ2VhYWGjaunWrY968ef8VEBAgAoAEANr29vbzhYWFabGxsekWi6XeZrOpEJEP1q4g+CnSxxGvdrR2dzs7RQGFGyCNQIAE7e3N/w0AIIpcfd2YQbBYLFwx39dff70tLi7uqYKCgpTm5uaz4NM6CYIgGgyGnyUnJ/8fIvIFCxasXLZs2YdhYWEx4DNllcvlEiorK7c988wzSUajcT8RCWazmRmNRnE0GRhDMS0tTffWa0/v/qb1QoVao9Vyzocce70JEwACwmR9aDcAAOd87Fc6H3ElMB0FgKKzZ8++GB0dnRkQEKBjjEk6nU4vDw8FnyN6iUjb0tJyqqysLHP16tXHAPr8/brA54+B5g3Q09ODAOBWqzXekeYNe3vycs+4XiaUwGS1WgUics+dO/elvLy8dYwxAQAEzrkIACDfqhgAaJqbm2siIiIWr169+hgRqRR/H8/+MPjqiddTHJY0Q0bDPRsLTCaT5HA4BCISPB7PN30yyHmfc658REmSnIjokbUrKsFunBh17rdaEHA6nYSIEmNsxLjAGBOICAVBGK92B4DIjzdd79c3RJoxxjUazdDRYRQ5lA/DBBeCMWhoXLgR8x5qular7Z02bVrvxEn098EIpH1xzK/mRj09PYEXLly4uTrUEBgutUwIbta8JxIDiU6sZQ/IsTdp3v80GIH0hATS7yT+oTU94O59A/iOkJ7gYuoItTGA7wzpiQhkY19jDKS/nXOZsP5THyaU9K3Are0Q3TDpgICACZFwgi4kfbLgEPl4OAyqkY06niRJkm51D2sIKF0Pv/dmBICIMU0e/XhY38sA6XQ66ujoEEwmkwQAE9jDGrs/EpGgUqm8iCi5XK7pfk84wKXr1h2K4KikVYxpwHeMnpCQkEmffvrpZ0eOHFmpvPd+Wz2swVDqcIgoGY1GfUVFxduzZ8/+NedcAgAJEXRut3tMShiWNJdfSltaWhp6enoAAHQAIE2fPn3uihUrPqmurt79wgsv3GY0GsUb6WENeNftw8iy2mw2lVKH++STTx7es2ePY/78+b8KCgpSMcYQAIRvvmm96HQ6ubzJiOsNEJT8XmtF0XcPXbly5QdHjx41NjU1nQZfTY3UarV31qxZT2ZlZZ06duzYzxCRWywWLmt9RAYjNdUGQy77olxxjaqqqvogJSVl/2233TYDfKVi5nQ6oaKiYsvGjS/dW1xc3Asw0Fn4EKoY1jSVSFVWVqZKTEwsBIDFDofjhdjY2I2TJk0KAAB3WFhYeHJy8nu1tbU/zcvLe95oNP6VMQa5ubmK348XqJSOAACKioqeiYuLe1lu8XjA11TQNjY22ouLizPT09M/l+cxGFTwHt2nCUFRlCAIkGa1CufPn+fy3x3cCQkJr3700UeLampqCqC/h+U2GAwpjzzyiL2srOxFzrla6WGdO3du+NrzgMtJf/qS9yJEFHfu3BlfV1f32dKlS//gT/jKlSvX7Hb7+ujo6CXp6emf+/fLrFYSYJQa25CaRkS4fLVd2pf571Ka9SuNyTTXC2BSTv8MACw/ceLEf86ZM+e3oaGhoQDg0ev1gQkJCa/V19c/ZLfbf4mIxUTEJk+ePIb0hkpPS9Guzm63Z82cOXNDSEiIBvp7Wpq6uroj+fn5z2dkZFQpVoWIonxYEhHBlu2f+vEa3P7x07RKJSAiEAFwzjk3xMx/87n1O1JMpnkeACSz2SwgotLNwCVLluzYtWtXfE1NzZ8550qEd0dHRyempKScOH369FuJiYnBJpNJ0mq1IwY5ImBKxzI3N9dYX19fkpSUlB0SEqKC/p5Wy/Hjx580GAyrMjIyqmw2m4pzDmlpadxKJJhMJikqKirkd1sP5kyZGj7f7e71MsYkt8cVPHi/PmE8XS6vKHo0QYHBgtfjliaHhcfdnfTj/38j5+B7i+69d7rFYlHq1KCkqvXr1zfOnDnz0fz8/NSWlpZaWRtScHAwLVy4MPPAgQNlhw8fNn799dfdI5HmnPdOmTJlUnl5+bYHHnigIDo6eoGsXSaKorqqqur9LVu2xCcnJ7+nZApfcLOpEJFMiNJzG955OCv7A8eMOQlrEZkKAVGnCxLcLtd1hX8E6G/M9/KIf42eMW/z9HBDXHf3VeIEPDhoktDa2nCxsebsi5tefmoPAECa1SrsM5kks9nMsrOzERGlFStW6HNyciwxMTFrAwMDAWT/6+npgYaGhr/GxsbOUalUrL6+vjomJmbOvn37Hk9NTd0DAFJ7e3tHb29vV2RkZCz4qhcIAKy5uflcRUXF8ykpKYcBfKnL1+IhRBSIiENKymORyx98YlN4RMxjKo0Genu6PYGBek13dxe0Xqp9p+ncmZfCwtydFks2Afh83S/QEMo/Br721sGNU2+PygwKCtH19nSLOl2gioigtbnu0JnTtnV/3PHbap8vkGye/S2Y/fv3Jy9atOjNyMjIJPBFKCZrkzPGhiItQn9sEQFA5XQ6PefPn89JTU19taampku+cnK5CYDgy0rspVf/lHF71CxL6NTbp7pcXRIRoVYXyNpbmhzVVY512zavtQ1lWX6+hiT/G8C14fnVG+2f/2V5W2vjVxq1Ruh1uySv6JaiYr7/4A+X/qR44yvv/zw+Pl6tWIjSwyIiVWpqatEdd9yx1OFwvOFyubyccy5J0mhvFyTfrFhra+tXBw8eTFm4cGFWbW1tl3KgiEjg2wMef2pjzO+2/eXg3IU/emdSSOhUp7NTBEAELnlrqkrffPbnS5Zs27zWNty94W/+dTc74hV6rQAAAABJRU5ErkJggg==" alt="Training TMLF" class="logo-img">
+    <div class="logo-label">TRAINING</div>
+  </div>
+</header>
+<div class="progress-bar-container"><div class="progress-bar-fill" id="progress_fill" style="width:5%"></div></div>
+<div class="progress-label" id="progress_label">5% completado</div>
+<div id="outer-layout">
+<div id="sidebar">
+  <div id="sidebar-title">Índice del módulo</div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Teoría</div>
+    <div class="sidebar-item" data-target="0" onclick="goToScreenFromSidebar(0)">
+      <span class="si-dot"></span>Portada
+    </div>
+    <div class="sidebar-item" data-target="1" onclick="goToScreenFromSidebar(1)">
+      <span class="si-dot"></span>¿Qué es VAWA?
+    </div>
+    <div class="sidebar-item" data-target="2" onclick="goToScreenFromSidebar(2)">
+      <span class="si-dot"></span>Elem. 1 – Relación
+    </div>
+    <div class="sidebar-item" data-target="3" onclick="goToScreenFromSidebar(3)">
+      <span class="si-dot"></span>Elem. 2 – Violencia
+    </div>
+    <div class="sidebar-item" data-target="4" onclick="goToScreenFromSidebar(4)">
+      <span class="si-dot"></span>Elem. 3 – Matrimonio
+    </div>
+    <div class="sidebar-item" data-target="5" onclick="goToScreenFromSidebar(5)">
+      <span class="si-dot"></span>Elem. 4 – Residencia
+    </div>
+    <div class="sidebar-item" data-target="6" onclick="goToScreenFromSidebar(6)">
+      <span class="si-dot"></span>Elem. 5 – Carácter
+    </div>
+    <div class="sidebar-item" data-target="7" onclick="goToScreenFromSidebar(7)">
+      <span class="si-dot"></span>Resumen ejecutivo
+    </div>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Ejercicio práctico</div>
+    <div class="sidebar-item" data-target="8" onclick="goToScreenFromSidebar(8)">
+      <span class="si-dot"></span>Instrucciones
+    </div>
+    <div class="sidebar-item" data-target="9" onclick="goToScreenFromSidebar(9)">
+      <span class="si-dot"></span>Fragmento 1
+    </div>
+    <div class="sidebar-item" data-target="10" onclick="goToScreenFromSidebar(10)">
+      <span class="si-dot"></span>Fragmento 2
+    </div>
+    <div class="sidebar-item" data-target="11" onclick="goToScreenFromSidebar(11)">
+      <span class="si-dot"></span>Fragmento 3
+    </div>
+    <div class="sidebar-item" data-target="12" onclick="goToScreenFromSidebar(12)">
+      <span class="si-dot"></span>Fragmento 4
+    </div>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Cierre</div>
+    <div class="sidebar-item" data-target="13" onclick="goToScreenFromSidebar(13)">
+      <span class="si-dot"></span>Resultados
+    </div>
+  </div>
+</div>
+<div id="main-content">
+
+
+<!-- ══ PANTALLA 0: PORTADA ══ -->
+<div class="screen cover-screen active" id="screen_0">
+  <span class="cover-badge">TMLF Training · Serie Capacitación Legal</span>
+  <h1 class="cover-title">Módulo 1: VAWA<br>Declaración Legal del Cliente</h1>
+  <p class="cover-subtitle">Aprende a identificar y traducir los cinco elementos narrativos clave en una Declaración Legal de VAWA con precisión legal y narrativa.</p>
+  <div class="cover-objective-box">
+    <div class="label">🎯 Objetivo del módulo</div>
+    <p>Al finalizar este módulo, serás capaz de identificar los cinco elementos narrativos clave en una Declaración Legal de VAWA y aplicar los principios de traducción específicos para cada uno, evitando errores comunes que afectan la credibilidad del caso.</p>
+  </div>
+  <div class="cover-meta">
+    <span class="meta-item">⏱️ Duración estimada: 45-60 minutos</span>
+    <span class="meta-item">📋 Versión 1.1 · TMLF Training</span>
+  </div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary,#9094df);border-radius:12px;padding:22px 28px;margin:22px 0 20px 0;max-width:620px;text-align:left;">
+    <div style="font-weight:700;font-size:.97rem;color:var(--color-primary-dark,#4a4d9e);margin-bottom:14px;">📌 Antes de comenzar</div>
+    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;">
+        <span style="flex-shrink:0;color:#9094df;font-weight:700;">①</span>
+        <span><strong>Lee con atención cada pantalla</strong> antes de avanzar. El contenido es acumulativo y cada elemento se construye sobre el anterior.</span>
+      </li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;">
+        <span style="flex-shrink:0;color:#9094df;font-weight:700;">②</span>
+        <span><strong>Contesta con cuidado.</strong> Cada pregunta del ejercicio práctico <strong>solo puede responderse una vez</strong>. Una vez verificada, no se puede modificar.</span>
+      </li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;">
+        <span style="flex-shrink:0;color:#9094df;font-weight:700;">③</span>
+        <span><strong>Intentos limitados a 1.</strong> Este módulo está diseñado para completarse en una sola sesión. Tu calificación queda registrada al finalizar.</span>
+      </li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;">
+        <span style="flex-shrink:0;color:#9094df;font-weight:700;">④</span>
+        <span><strong>¿Problema técnico?</strong> Si encuentras un error que te impide continuar, toma una captura de pantalla del error y comunícate con el equipo de Training antes de cerrar el módulo.</span>
+      </li>
+    </ul>
+  </div>
+  <button class="btn btn-primary btn-large" id="btn_start">Comenzar módulo →</button>
+</div>
+
+<!-- ══ PANTALLA 1: INTRODUCCIÓN ══ -->
+<div class="screen" id="screen_1">
+  <span class="screen-label">Introducción</span>
+  <div class="section-title">📖 ¿Qué es VAWA y por qué importa tu traducción?</div>
+  <div class="content-block">
+    <p>Bienvenido al Módulo 1. En este primer bloque vamos a sentar las bases de lo que será tu día a día traduciendo uno de los documentos más sensibles y decisivos en un caso de visa humanitaria: la <strong>Declaración Legal del Cliente (DCL)</strong> en el contexto de VAWA.</p>
+  </div>
+  <div class="info-box">
+    <div class="box-title">⚖️ ¿Qué es VAWA?</div>
+    <p>La <em>Violence Against Women Act</em> (VAWA) es una ley estadounidense que permite a víctimas de abuso —cónyuge, hijo/a o padre/madre de un ciudadano o residente permanente— solicitar su estatus migratorio de forma independiente, <strong>sin que el abusador sea notificado</strong>.</p>
+  </div>
+  <div class="info-box">
+    <div class="box-title">🌉 ¿Cuál es tu rol como traductor?</div>
+    <p>No eres solo un "cambiador de palabras". Eres el puente que permite que la voz de una víctima sea escuchada con claridad y precisión por un oficial de inmigración. Una traducción pobre puede hacer que un testimonio verídico parezca inventado, o que un abuso grave suene como un malentendido.</p>
+  </div>
+  <div style="background:var(--color-secondary);border-radius:10px;padding:20px;margin-top:16px;">
+    <div style="font-weight:700;color:var(--color-primary-dark);margin-bottom:12px;font-size:0.9rem;">Los 5 elementos clave de una DCL VAWA</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:#fff;border-radius:6px;padding:10px 14px;border-left:3px solid var(--color-primary);">
+        <div style="font-weight:700;font-size:0.88rem;">1. Relación con el abusador</div>
+        <div style="font-size:0.8rem;color:#666;margin-top:3px;">El vínculo familiar que determina la elegibilidad</div>
+      </div>
+      <div style="background:#fff;border-radius:6px;padding:10px 14px;border-left:3px solid var(--color-primary);">
+        <div style="font-weight:700;font-size:0.88rem;">2. Violencia Física / Extrema Crueldad</div>
+        <div style="font-size:0.8rem;color:#666;margin-top:3px;">Actos de violencia física y psicológica descritos con precisión</div>
+      </div>
+      <div style="background:#fff;border-radius:6px;padding:10px 14px;border-left:3px solid var(--color-primary);">
+        <div style="font-weight:700;font-size:0.88rem;">3. Matrimonio de Buena Fe</div>
+        <div style="font-size:0.8rem;color:#666;margin-top:3px;">Prueba de que el matrimonio fue genuino</div>
+      </div>
+      <div style="background:#fff;border-radius:6px;padding:10px 14px;border-left:3px solid var(--color-primary);">
+        <div style="font-weight:700;font-size:0.88rem;">4. Residencia Conjunta</div>
+        <div style="font-size:0.8rem;color:#666;margin-top:3px;">Fechas y domicilios compartidos con precisión</div>
+      </div>
+      <div style="background:#fff;border-radius:6px;padding:10px 14px;border-left:3px solid var(--color-primary);grid-column:span 2;max-width:50%;">
+        <div style="font-weight:700;font-size:0.88rem;">5. Buen Carácter Moral</div>
+        <div style="font-size:0.8rem;color:#666;margin-top:3px;">Detección de posibles banderas rojas en el relato</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 2: ELEMENTO 1 – RELACIÓN ══ -->
+<div class="screen" id="screen_2">
+  <span class="screen-label">Elemento 1 de 5</span>
+  <div class="section-title">🔗 Elemento 1 – La Relación con el Abusador</div>
+  <div class="content-block">
+    <p>El primer elemento que debe quedar cristalino es el <strong>vínculo familiar</strong> entre el cliente y el abusador. Este vínculo determina la elegibilidad bajo VAWA — es un requisito de ley.</p>
+  </div>
+  <table class="data-table">
+    <thead><tr><th>Español</th><th>Inglés</th><th>Nota</th></tr></thead>
+    <tbody>
+      <tr><td>Mi esposo / Mi pareja</td><td><strong>My husband</strong></td><td>Usa "husband" si están casados. Si es unión de hecho, consulta al equipo legal.</td></tr>
+      <tr><td>Mi hijo / Mi hija</td><td><strong>My son / My daughter</strong></td><td>Mantener el género exacto.</td></tr>
+      <tr><td>El abusador / Mi agresor</td><td><strong>The abuser</strong></td><td><span class="note-tag">Término de la firma</span> No alternar con "perpetrator" u "offender". Consistencia en todo el documento.</td></tr>
+      <tr><td>Mi esposa</td><td><strong>My wife</strong></td><td>Primera mención: siempre el vínculo personal antes de usar "the abuser".</td></tr>
+    </tbody>
+  </table>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Ejercicio</span><h3>Arrastra la traducción correcta</h3></div>
+    <p class="question-text">Selecciona la traducción correcta de la siguiente frase arrastrándola al recuadro:</p>
+    <div class="fragment-quote">"Mi esposo, Juan, comenzó a insultarme."</div>
+    <div class="drag-area">
+      <div style="font-size:0.82rem;color:#888;margin-bottom:4px;">Opciones – arrastra la correcta:</div>
+      <div class="drag-options" id="drag_bank">
+        <span class="drag-option" id="opt_a" data-value="opcion_a" draggable="true">A: "My husband, Juan, began to insult me."</span>
+        <span class="drag-option" id="opt_b" data-value="opcion_b" draggable="true">B: "My husband, Juan, began to batter and assault me."</span>
+        <span class="drag-option" id="opt_c" data-value="opcion_c" draggable="true">C: "The abuser, Juan, began to insult me."</span>
+      </div>
+      <div class="drag-target" id="target_correct"><span class="target-label">Suelta aquí la opción correcta →</span></div>
+    </div>
+    <button class="btn-check" id="btn_check_drag" onclick="checkDragDrop()">Verificar respuesta</button>
+    <div class="feedback-box" id="fb_drag"></div>
+    <div class="info-box" style="margin-top:16px;">
+      <div class="box-title">💡 ¿Por qué importa?</div>
+      <ul class="bullet-list">
+        <li>La opción B cambia el significado: "batter and assault" no traduce "insultarme". "Batter" es violencia física, no verbal.</li>
+        <li>La opción C, aunque técnicamente posible, cambia la narrativa personal. En la <strong>primera mención</strong>, siempre se establece el vínculo ("my husband") antes de usar "the abuser".</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 3: ELEMENTO 2 – VIOLENCIA FÍSICA / EXTREMA CRUELDAD ══ -->
+<div class="screen" id="screen_3">
+  <span class="screen-label">Elemento 2 de 5</span>
+  <div class="section-title">💥 Elemento 2 – Violencia Física (Battery) y Extrema Crueldad</div>
+  <div class="info-box">
+    <div class="box-title">📌 Dos conceptos, un mismo elemento</div>
+    <p><strong>Battery</strong> (violencia física): actos de contacto físico violento — golpes, empujones, patadas, estrangulación, heridas con objetos.</p>
+    <p style="margin-top:8px;"><strong>Extreme cruelty</strong> (extrema crueldad): abuso psicológico, emocional o patrimonial que no necesariamente implica contacto físico — amenazas, control económico, destrucción de bienes, rastreo, humillaciones.</p>
+    <p style="margin-top:8px;">Política de la firma: <strong>no suavizar, no exagerar, traducir con precisión.</strong></p>
+  </div>
+  <table class="data-table">
+    <thead><tr><th>Español</th><th>Inglés</th><th>Contexto</th></tr></thead>
+    <tbody>
+      <tr><td>Golpear (puño)</td><td><strong>to punch</strong></td><td>"He punched me in the face."</td></tr>
+      <tr><td>Abofetear / cachetada</td><td><strong>to slap</strong></td><td>"He slapped me."</td></tr>
+      <tr><td>Patear</td><td><strong>to kick</strong></td><td>"He kicked me."</td></tr>
+      <tr><td>Empujar</td><td><strong>to push / to shove</strong></td><td>"Shove" = empujón más fuerte y agresivo.</td></tr>
+      <tr><td>Estrangular</td><td><strong>to choke / to strangle</strong></td><td>"He choked me." — muy grave, debe constar así.</td></tr>
+      <tr><td>Aventar / lanzar objeto</td><td><strong>to throw at</strong></td><td>"She threw the phone at me."</td></tr>
+      <tr><td>Amenazar</td><td><strong>to threaten</strong></td><td>"She threatened to kill..."</td></tr>
+      <tr><td>Rastrear</td><td><strong>to track</strong></td><td>"She tracked me with a GPS."</td></tr>
+    </tbody>
+  </table>
+  <div class="example-grid">
+    <div class="example-card correct"><div class="card-label">✅ Correcto</div><p>"He pushed me against the wall."</p><div class="card-explain">Preciso. 'Push' traduce exactamente 'empujar'.</div></div>
+    <div class="example-card incorrect"><div class="card-label">❌ Suaviza</div><p>"He touched me against the wall."</p><div class="card-explain">"Touch" no es equivalente de "empujar".</div></div>
+    <div class="example-card incorrect"><div class="card-label">❌ Exagera</div><p>"He punched me against the wall."</p><div class="card-explain">"Punch" implica puñetazo, no empujón.</div></div>
+    <div class="example-card correct"><div class="card-label">✅ Correcto</div><p>"She threatened to kill our dog."</p><div class="card-explain">Extrema crueldad — amenaza emocional que debe traducirse con toda su crudeza.</div></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Ejercicio</span><h3>Selecciona la traducción correcta</h3></div>
+    <p class="question-text">Lee la frase y selecciona la traducción que corresponde con precisión:</p>
+    <div class="fragment-quote">"El jueves pasado estábamos en la casa cuando me empujó fuerte y me hizo caerme al piso."</div>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="radio_p3" value="opcion_a"> A) "Last Thursday we were at home when he pushed me hard and made me fall to the floor."</label>
+      <label class="radio-item"><input type="radio" name="radio_p3" value="opcion_b"> B) "Last Thursday we were at home when he shoved me and knocked me down."</label>
+      <label class="radio-item"><input type="radio" name="radio_p3" value="opcion_c"> C) "Last Thursday we were at home when he touched me and I fell."</label>
+    </div>
+    <button class="btn-check" id="btn_check_radio" onclick="checkRadioExercise('radio_p3','opcion_a','fb_radio_p3')">Verificar respuesta</button>
+    <div class="feedback-box" id="fb_radio_p3"></div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 4: ELEMENTO 3 – MATRIMONIO DE BUENA FE ══ -->
+<div class="screen" id="screen_4">
+  <span class="screen-label">Elemento 3 de 5</span>
+  <div class="section-title">💍 Elemento 3 – Matrimonio de Buena Fe (Good Faith Marriage)</div>
+  <div class="content-block">
+    <p>Para VAWA, es crucial demostrar que el matrimonio no fue una farsa para obtener papeles. El cliente debe probar que la relación fue genuina a través de <strong>detalles de la vida cotidiana</strong>.</p>
+  </div>
+  <div class="info-box">
+    <div class="box-title">📝 En la narrativa, identifica y preserva:</div>
+    <ul class="bullet-list">
+      <li><strong>Cronología:</strong> "Nos conocimos en..." / "Comenzamos a vivir juntos en..."</li>
+      <li><strong>Eventos compartidos:</strong> "Nos casamos en una ceremonia con su familia."</li>
+      <li><strong>Planes a futuro:</strong> "Planeábamos comprar una casa."</li>
+      <li><strong>Testimonios:</strong> "Nuestros amigos nos veían como una pareja normal."</li>
+    </ul>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Ejercicio</span><h3>Completa los espacios en blanco</h3></div>
+    <p class="question-text">Elige la preposición o conector correcto en cada espacio:</p>
+    <div class="fill-blank-text">
+      <p style="font-style:italic;color:#666;font-size:0.85rem;margin-bottom:10px;">Texto en español: "Nos conocimos en 2015. Después de salir por dos años, decidimos casarnos en una pequeña ceremonia donde su familia estaba presente."</p>
+      <hr style="border:none;border-top:1px dashed #ccc;margin:8px 0;">
+      <p>We met <select class="inline-select" id="blank_1"><option value="">---</option><option value="in">in</option><option value="during">during</option><option value="by">by</option></select> 2015. After dating for two years, we decided to get married <select class="inline-select" id="blank_2"><option value="">---</option><option value="with">with</option><option value="in">in</option><option value="on">on</option></select> a small ceremony <select class="inline-select" id="blank_3"><option value="">---</option><option value="where">where</option><option value="when">when</option><option value="which">which</option></select> his family was present.</p>
+    </div>
+    <button class="btn-check" id="btn_check_blanks" onclick="checkFillBlanks()">Verificar respuestas</button>
+    <div class="feedback-box" id="fb_fillblanks"></div>
+    <div class="info-box" style="margin-top:16px;">
+      <div class="box-title">💡 Reglas clave</div>
+      <ul class="bullet-list">
+        <li><strong>in + año/mes:</strong> "in 2015", "in November"</li>
+        <li><strong>on + fecha específica:</strong> "on November 23, 2011"</li>
+        <li><strong>in + contexto/lugar:</strong> "in a ceremony", "in a restaurant"</li>
+        <li><strong>where</strong> para oraciones relativas de lugar</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 5: ELEMENTO 4 – RESIDENCIA CONJUNTA ══ -->
+<div class="screen" id="screen_5">
+  <span class="screen-label">Elemento 4 de 5</span>
+  <div class="section-title">🏠 Elemento 4 – Residencia Conjunta</div>
+  <div class="content-block">
+    <p>El cliente debe demostrar que vivió con el abusador. Los oficiales de USCIS buscan <strong>consistencia en direcciones y fechas</strong>. Tu precisión aquí es clave para la credibilidad del caso.</p>
+  </div>
+  <table class="data-table">
+    <thead><tr><th>Error común</th><th>Traducción precisa</th></tr></thead>
+    <tbody>
+      <tr><td style="color:#c62828;">"We lived together <u>since</u> 2018." <em>(implica continuidad)</em></td><td>"We lived together <strong>from</strong> 2018 <strong>to</strong> 2022."</td></tr>
+      <tr><td style="color:#c62828;">"I lived <u>on</u> Guadalajara."</td><td>"I lived <strong>in</strong> Guadalajara."</td></tr>
+      <tr><td style="color:#c62828;">"I moved to the house of my mother."</td><td>"I moved to <strong>my mother's house</strong>."</td></tr>
+    </tbody>
+  </table>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Ejercicio</span><h3>Identifica el error – Haz clic en la palabra incorrecta</h3></div>
+    <p class="question-text">La siguiente oración tiene un error de preposición. Haz clic en la palabra que está mal:</p>
+    <div class="fragment-quote" style="font-size:1rem;line-height:2.2;">
+      "We lived together
+      <span class="clickable-word" data-word="since">since</span>
+      2015 until he started the abuse in 2018."
+    </div>
+    <p style="font-size:0.82rem;color:#888;margin-top:8px;">💡 Haz clic en cualquier palabra de la oración para seleccionarla.</p>
+    <div id="correction_options" style="display:none;margin-top:14px;">
+      <p style="font-weight:600;font-size:0.9rem;">¿Cuál es la corrección correcta?</p>
+      <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+        <button class="correction-btn btn btn-secondary" onclick="checkClickError('from','from')">from</button>
+        <button class="correction-btn btn btn-secondary" onclick="checkClickError('for','from')">for</button>
+        <button class="correction-btn btn btn-secondary" onclick="checkClickError('during','from')">during</button>
+      </div>
+    </div>
+    <div class="feedback-box" id="fb_clickerror"></div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 6: ELEMENTO 5 – BUEN CARÁCTER MORAL ══ -->
+<div class="screen" id="screen_6">
+  <span class="screen-label">Elemento 5 de 5</span>
+  <div class="section-title">⚠️ Elemento 5 – Buen Carácter Moral (Good Moral Character)</div>
+  <div class="content-block">
+    <p>El cliente debe demostrar "buen carácter moral" (<em>Good Moral Character</em>). Esto significa que en su declaración <strong>no debe haber nada que lo incrimine</strong> o que sugiera lo contrario.</p>
+  </div>
+  <div class="info-box">
+    <div class="box-title">🚩 Posibles banderas rojas en la declaración:</div>
+    <ul class="bullet-list">
+      <li>Consumo de drogas (aunque sea en el pasado)</li>
+      <li>Arrestos o problemas con la ley</li>
+      <li>Mentiras o fraudes (ej: haber usado documentos falsos)</li>
+    </ul>
+  </div>
+  <div class="warning-box">
+    <div class="box-title">🛑 TU TRABAJO ES DE ALERTA, NO DE CENSURA</div>
+    <ol style="padding-left:20px;line-height:1.9;font-size:0.91rem;">
+      <li><strong>Identifica</strong> cualquier frase problemática.</li>
+      <li><strong>Traduce con precisión</strong> lo que dice el cliente. No lo "arregles" ni lo omitas.</li>
+      <li><strong>Reporta</strong> al equipo legal. Ellos deciden cómo manejar esa información.</li>
+    </ol>
+  </div>
+  <div class="example-grid">
+    <div class="example-card incorrect"><div class="card-label">❌ No hagas esto</div><p>Omitir o cambiar frases problemáticas para "proteger" al cliente.</p><div class="card-explain">Puede invalidar la declaración y constituir obstrucción legal.</div></div>
+    <div class="example-card correct"><div class="card-label">✅ Haz esto</div><p>Traduce fielmente y notifica al equipo de Training: "Hay una mención de [X] en el párrafo 3."</p><div class="card-explain">El abogado tiene herramientas para manejar estos temas. Tú los detectas.</div></div>
+  </div>
+  <div class="warning-box" style="margin-top:16px;">
+    <div class="box-title">⚠️ Próximo módulo</div>
+    <p>Este módulo solo introduce el concepto de GMC. En el <strong>Módulo 5</strong> profundizaremos en cómo manejar confesiones, arrestos y temas de sustancias. Por ahora: <strong>detecta y traduce fielmente, no edites</strong>.</p>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 7: RESUMEN EJECUTIVO ══ -->
+<div class="screen" id="screen_7">
+  <span class="screen-label">Resumen del módulo</span>
+  <div class="section-title">🎯 Resumen Ejecutivo – Los 5 Elementos Clave</div>
+  <p style="margin-bottom:20px;font-size:0.93rem;">Repaso antes de la evaluación:</p>
+  <div class="summary-grid">
+    <div class="summary-card"><div class="card-num">01</div><div class="card-concept">Relación con el abusador</div><div class="card-detail">Traduce "mi esposo/a", "mi padre/madre" con precisión. Deja que la narrativa personal fluya antes de usar "the abuser".</div></div>
+    <div class="summary-card"><div class="card-num">02</div><div class="card-concept">Violencia Física y Extrema Crueldad</div><div class="card-detail"><strong>Battery:</strong> el verbo importa — "to punch", "to push", "to choke". <strong>Extreme cruelty:</strong> amenazas, control económico, destrucción de bienes. Nada se suaviza.</div></div>
+    <div class="summary-card"><div class="card-num">03</div><div class="card-concept">Matrimonio de Buena Fe</div><div class="card-detail">Preserva la cronología y los detalles de vida cotidiana. Cada detalle construye la narrativa de un matrimonio genuino.</div></div>
+    <div class="summary-card"><div class="card-num">04</div><div class="card-concept">Residencia Conjunta</div><div class="card-detail">Preposiciones de lugar y tiempo con precisión. "From...to" para períodos cerrados. Nunca "since" para convivencias pasadas.</div></div>
+  </div>
+  <div class="summary-card" style="margin-top:14px;"><div class="card-num">05</div><div class="card-concept">Buen Carácter Moral</div><div class="card-detail">Mantente alerta. Traduce con precisión y reporta al equipo de Training. Tu rol es detectar, no corregir ni ocultar.</div></div>
+  <div class="info-box" style="margin-top:24px;"><div class="box-title">📋 ¿Qué sigue?</div><p>A continuación está el <strong>Ejercicio Práctico del Módulo 1</strong>: fragmentos reales de una DCL VAWA para identificar elementos y traducir frases clave. <strong>Deberás responder todas las preguntas de cada pantalla antes de poder avanzar.</strong></p></div>
+</div>
+
+<!-- ══ PANTALLA 8: INSTRUCCIONES DEL EJERCICIO ══ -->
+<div class="screen" id="screen_8">
+  <span class="screen-label">Ejercicio Práctico</span>
+  <div class="section-title">📝 Ejercicio: Identificación y Traducción de Elementos VAWA</div>
+  <div class="info-box"><div class="box-title">🎯 Objetivo</div><p>Identificar los elementos de elegibilidad VAWA en fragmentos reales y demostrar precisión en la traducción de frases críticas.</p></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:20px 0;">
+    <div style="background:var(--color-secondary);border-radius:8px;padding:16px;text-align:center;"><div style="font-size:1.8rem;margin-bottom:8px;">☑️</div><div style="font-weight:700;font-size:0.88rem;margin-bottom:4px;">Parte 1</div><div style="font-size:0.82rem;color:#666;">Identificar elementos presentes</div></div>
+    <div style="background:var(--color-secondary);border-radius:8px;padding:16px;text-align:center;"><div style="font-size:1.8rem;margin-bottom:8px;">✍️</div><div style="font-weight:700;font-size:0.88rem;margin-bottom:4px;">Parte 2</div><div style="font-size:0.82rem;color:#666;">Traducir el fragmento completo</div></div>
+    <div style="background:var(--color-secondary);border-radius:8px;padding:16px;text-align:center;"><div style="font-size:1.8rem;margin-bottom:8px;">🎯</div><div style="font-weight:700;font-size:0.88rem;margin-bottom:4px;">Parte 3</div><div style="font-size:0.82rem;color:#666;">Frases clave con calificación automática</div></div>
+  </div>
+  <div class="warning-box">
+    <div class="box-title">📌 Antes de comenzar</div>
+    <ul class="bullet-list">
+      <li>Debes responder <strong>todas</strong> las preguntas de cada pantalla antes de avanzar.</li>
+      <li>Cada pregunta solo puede responderse <strong>una vez</strong>. Una vez verificada, no se puede modificar.</li>
+      <li>Las traducciones libres (Parte 2) son revisadas por el equipo de Training.</li>
+      <li>Las frases clave (Parte 3) se califican automáticamente. Se aceptan sinónimos y variantes de redacción, pero no cambios de significado ni errores de preposición.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 9: FRAGMENTO 1 ══ -->
+<div class="screen" id="screen_9">
+  <span class="screen-label">Fragmento 1 de 4</span>
+  <div class="section-title">📄 Fragmento 1 – Contexto Inicial</div>
+  <div id="advance_warning">⚠️ Debes responder y verificar <strong>todas</strong> las preguntas de esta pantalla antes de continuar.</div>
+  <div class="fragment-quote">Mi esposa se llama María del Rosario Martinez Espinoza, nació el 23 de noviembre de 1975 en Michoacán y es residente legal de los Estados Unidos. Su nombre también aparece como Maria del Rosario Bernal, Maria d Martinez Espinoza y Maria del Rosario Martinez Espinoza. Nos conocimos en el trabajo, en un restaurante. Yo era cocinero y ella, gerente general. Nos fuimos conociendo y con el tiempo empezamos una relación. Al principio todo era muy bonito, trabajábamos juntos y convivíamos durante el día, salíamos a comer y a pasear. Ella era muy detallista conmigo y nos llevábamos muy bien. Cuando empezamos a hablar de vivir juntos o casarnos, los dos queríamos comprar una casa y construir un patrimonio juntos. Me enamoré de ella por cómo se portaba conmigo, pero también porque trataba bien a mis hijos y eso me hacía sentir seguro. Nos casamos en California el 23 de noviembre de 2011, pero ya casados, las cosas cambiaron.</div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 1</span><h3>Identificación de elementos <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">1.1</span> ¿Qué elementos de elegibilidad de VAWA están presentes? <em>(Selecciona todos los que correspondan)</em></p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="q1_1" value="relacion"> Relación con el abusador</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q1_1" value="violencia"> Violencia física / extrema crueldad</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q1_1" value="matrimonio"> Matrimonio de buena fe</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q1_1" value="residencia"> Residencia conjunta</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q1_1" value="gmc"> Buen carácter moral</label>
+    </div>
+    <button class="btn-check" id="btn_cb_q1_1" onclick="checkCheckboxExercise('q1_1','fb_q1_1')">Verificar identificación</button>
+    <div class="feedback-box" id="fb_q1_1"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 2</span><h3>Traducción completa <span style="font-size:0.75rem;color:#888;font-weight:400;">(revisión manual)</span></h3></div>
+    <p class="question-text"><span class="question-number">1.2</span> Traduce el Fragmento 1 completo al inglés:</p>
+    <textarea class="text-input-area text-translation" id="q1_2_input" placeholder="Escribe aquí tu traducción completa..."></textarea>
+    <button class="btn-check" id="btn_save_q1_2" onclick="saveTranslation('q1_2')">Guardar traducción</button>
+    <div class="feedback-box" id="q1_2_fb"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 3</span><h3>Frases Clave <span class="score-badge">Calificado automáticamente</span></h3></div>
+
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">1.3</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"Mi esposa se llama María del Rosario Martinez Espinoza, nació el 23 de noviembre de 1975 en Michoacán y es residente legal de los Estados Unidos."</div>
+      <textarea class="text-input-area" id="q1_3_input" rows="3" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q1_3" onclick="checkPhrase('q1_3','fb_q1_3')">Verificar</button>
+      <div class="feedback-box" id="fb_q1_3"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">1.4</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"Nos conocimos en el trabajo, en un restaurante. Yo era cocinero y ella, gerente general."</div>
+      <textarea class="text-input-area" id="q1_4_input" rows="3" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q1_4" onclick="checkPhrase('q1_4','fb_q1_4')">Verificar</button>
+      <div class="feedback-box" id="fb_q1_4"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">1.5</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"Me enamoré de ella por cómo se portaba conmigo, pero también porque trataba bien a mis hijos y eso me hacía sentir seguro."</div>
+      <textarea class="text-input-area" id="q1_5_input" rows="3" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q1_5" onclick="checkPhrase('q1_5','fb_q1_5')">Verificar</button>
+      <div class="feedback-box" id="fb_q1_5"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">1.6</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"Nos casamos en California el 23 de noviembre de 2011, pero ya casados, las cosas cambiaron."</div>
+      <textarea class="text-input-area" id="q1_6_input" rows="2" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q1_6" onclick="checkPhrase('q1_6','fb_q1_6')">Verificar</button>
+      <div class="feedback-box" id="fb_q1_6"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 10: FRAGMENTO 2 ══ -->
+<div class="screen" id="screen_10">
+  <span class="screen-label">Fragmento 2 de 4</span>
+  <div class="section-title">📄 Fragmento 2 – Inicio de la Violencia</div>
+  <div id="advance_warning" style="display:none;">⚠️ Debes responder y verificar <strong>todas</strong> las preguntas antes de continuar.</div>
+  <div class="fragment-quote">Los primeros años de nuestro matrimonio fueron buenos. Trabajábamos juntos, y la relación era igual que cuando éramos novios. Las cosas empezaron a cambiar cuando llevábamos unos tres o cuatro años de casados. Apenas llevo cuatro años en Ohio porque todos los años anteriores viví en California. Allá la vida era más difícil, yo siempre tuve dos trabajos, y los días que descansaba eran para estar con mis hijos. Pero a ella le molestaba eso y fue entonces que comenzó a ser agresiva. Las cosas fueron cambiando hasta que los problemas se hicieron más grandes, y comenzó a golpearme y a insultarme para que yo hiciera todo lo que ella exigía. Llegó al extremo de lastimarme con un cuchillo y amenazar con matar a nuestra perrita por estar enojada. Cuando ella se enoja, es capaz de destruir muchas cosas, es muy celosa y a la fecha, ha llegado a quitarme mi dinero, rastrearme con un gps y dañar cosas de la casa sin hacerse responsable por los gastos que genera. Me siento mal porque me gustaría hacer algo para detenerla pero no puedo porque sé que es capaz de hacerme más daño o lastimar a mi hija menor que vive con nosotros.</div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 1</span><h3>Identificación de elementos <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">2.1</span> ¿Qué elementos están presentes?</p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="q2_1" value="relacion"> Relación con el abusador</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q2_1" value="violencia_fisica"> Violencia física / extrema crueldad</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q2_1" value="matrimonio"> Matrimonio de buena fe</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q2_1" value="residencia"> Residencia conjunta</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q2_1" value="gmc"> Buen carácter moral</label>
+    </div>
+    <button class="btn-check" id="btn_cb_q2_1" onclick="checkCheckboxExercise('q2_1','fb_q2_1')">Verificar identificación</button>
+    <div class="feedback-box" id="fb_q2_1"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 2</span><h3>Traducción completa</h3></div>
+    <p class="question-text"><span class="question-number">2.2</span> Traduce el Fragmento 2 completo al inglés:</p>
+    <textarea class="text-input-area text-translation" id="q2_2_input" placeholder="Tu traducción..."></textarea>
+    <button class="btn-check" id="btn_save_q2_2" onclick="saveTranslation('q2_2')">Guardar traducción</button>
+    <div class="feedback-box" id="q2_2_fb"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 3</span><h3>Frases Clave <span class="score-badge">Calificado automáticamente</span></h3></div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">2.3</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"Las cosas empezaron a cambiar cuando llevábamos unos tres o cuatro años de casados."</div>
+      <textarea class="text-input-area" id="q2_3_input" rows="2" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q2_3" onclick="checkPhrase('q2_3','fb_q2_3')">Verificar</button>
+      <div class="feedback-box" id="fb_q2_3"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">2.4</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"comenzó a golpearme y a insultarme para que yo hiciera todo lo que ella exigía."</div>
+      <textarea class="text-input-area" id="q2_4_input" rows="2" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q2_4" onclick="checkPhrase('q2_4','fb_q2_4')">Verificar</button>
+      <div class="feedback-box" id="fb_q2_4"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">2.5</span> <strong>⚠️ Frase crítica</strong> – Traduce con precisión total:</p>
+      <div class="fragment-quote">"Llegó al extremo de lastimarme con un cuchillo y amenazar con matar a nuestra perrita por estar enojada."</div>
+      <div class="warning-box" style="margin-bottom:8px;padding:10px 14px;">
+        <div class="box-title">⚠️ Atención</div>
+        <p style="font-size:0.86rem;">No suavices esta frase. El hecho físico con el cuchillo ocurrió — no lo traduzcas como una amenaza.</p>
+      </div>
+      <textarea class="text-input-area" id="q2_5_input" rows="3" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q2_5" onclick="checkPhrase('q2_5','fb_q2_5')">Verificar</button>
+      <div class="feedback-box" id="fb_q2_5"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">2.6</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"ha llegado a quitarme mi dinero, rastrearme con un gps y dañar cosas de la casa sin hacerse responsable por los gastos que genera."</div>
+      <textarea class="text-input-area" id="q2_6_input" rows="3" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q2_6" onclick="checkPhrase('q2_6','fb_q2_6')">Verificar</button>
+      <div class="feedback-box" id="fb_q2_6"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">2.7</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"Me siento mal porque me gustaría hacer algo para detenerla pero no puedo porque sé que es capaz de hacerme más daño o lastimar a mi hija menor que vive con nosotros."</div>
+      <textarea class="text-input-area" id="q2_7_input" rows="3" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q2_7" onclick="checkPhrase('q2_7','fb_q2_7')">Verificar</button>
+      <div class="feedback-box" id="fb_q2_7"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 11: FRAGMENTO 3 ══ -->
+<div class="screen" id="screen_11">
+  <span class="screen-label">Fragmento 3 de 4</span>
+  <div class="section-title">📄 Fragmento 3 – Violencia Psicológica y Patrimonial</div>
+  <div id="advance_warning" style="display:none;">⚠️ Debes responder y verificar <strong>todas</strong> las preguntas antes de continuar.</div>
+  <div class="fragment-quote" style="font-style:normal;font-size:0.9rem;text-transform:uppercase;color:#444;">MI ESPOSA HA DESTRUIDO VARIAS COSAS DE LA CASA, INCLUYENDO LA TELEVISIÓN Y UNA PUERTA, CELÁNDOME Y ACUSÁNDOME DE SERLE INFIEL, Y SIN HACERSE RESPONSABLE DE LOS GASTOS PARA REPARAR LO QUE ROMPE. ME HA AMENAZADO CON HACERLO NUEVAMENTE, LO QUE ME HACE PENSAR QUE PUEDE DAÑAR MIS COSAS Y HACERME GASTAR PARA REPARARLAS SOLO PORQUE SIENTE CELOS.</div>
+  <div class="info-box"><div class="box-title">📌 Nota de formato</div><p>Este fragmento está en mayúsculas en el original. En la traducción, usa capitalización normal.</p></div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 1</span><h3>Identificación de elementos <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">3.1</span> ¿Qué elementos están presentes?</p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="q3_1" value="relacion"> Relación con el abusador</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q3_1" value="violencia_fisica"> Violencia física / extrema crueldad</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q3_1" value="matrimonio"> Matrimonio de buena fe</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q3_1" value="residencia"> Residencia conjunta</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q3_1" value="gmc"> Buen carácter moral</label>
+    </div>
+    <button class="btn-check" id="btn_cb_q3_1" onclick="checkCheckboxExercise('q3_1','fb_q3_1')">Verificar identificación</button>
+    <div class="feedback-box" id="fb_q3_1"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 2</span><h3>Traducción completa</h3></div>
+    <p class="question-text"><span class="question-number">3.2</span> Traduce el Fragmento 3 al inglés (sin mayúsculas):</p>
+    <textarea class="text-input-area text-translation" id="q3_2_input" placeholder="Traduce usando capitalización normal..."></textarea>
+    <button class="btn-check" id="btn_save_q3_2" onclick="saveTranslation('q3_2')">Guardar traducción</button>
+    <div class="feedback-box" id="q3_2_fb"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 3</span><h3>Frases Clave <span class="score-badge">Calificado automáticamente</span></h3></div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">3.3</span> Traduce al inglés (sin mayúsculas):</p>
+      <div class="fragment-quote" style="text-transform:uppercase;font-style:normal;font-size:0.85rem;">"MI ESPOSA HA DESTRUIDO VARIAS COSAS DE LA CASA, INCLUYENDO LA TELEVISIÓN Y UNA PUERTA, CELÁNDOME Y ACUSÁNDOME DE SERLE INFIEL"</div>
+      <textarea class="text-input-area" id="q3_3_input" rows="3" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q3_3" onclick="checkPhrase('q3_3','fb_q3_3')">Verificar</button>
+      <div class="feedback-box" id="fb_q3_3"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">3.4</span> Traduce al inglés:</p>
+      <div class="fragment-quote" style="text-transform:uppercase;font-style:normal;font-size:0.85rem;">"ME HA AMENAZADO CON HACERLO NUEVAMENTE, LO QUE ME HACE PENSAR QUE PUEDE DAÑAR MIS COSAS Y HACERME GASTAR PARA REPARARLAS SOLO PORQUE SIENTE CELOS."</div>
+      <textarea class="text-input-area" id="q3_4_input" rows="3" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q3_4" onclick="checkPhrase('q3_4','fb_q3_4')">Verificar</button>
+      <div class="feedback-box" id="fb_q3_4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 12: FRAGMENTO 4 ══ -->
+<div class="screen" id="screen_12">
+  <span class="screen-label">Fragmento 4 de 4</span>
+  <div class="section-title">📄 Fragmento 4 – Violencia Física Grave con Arma</div>
+  <div id="advance_warning" style="display:none;">⚠️ Debes responder y verificar <strong>todas</strong> las preguntas antes de continuar.</div>
+  <div class="fragment-quote">Mi esposa es una persona muy celosa que ha llegado a lastimarme estando enojada. Ella es capaz de tomar cualquier objeto para hacerme daño, y las veces que he intentado hablar al respecto con ella, me da a entender que seguirá haciéndolo. Hace un tiempo, yo estaba en casa viendo la tele y usando mi teléfono cuando ella bajó, me vio y me acusó de estar escribiéndome con alguien. Me dijo "¿Con quién chingados estabas texteando?" y yo le dije que con nadie, pero insistió y exigió que le diera mi teléfono para revisarlo. En ese momento, lo agarró y me lo aventó, pegándome en el estómago. Ella subió y yo la seguí para que no se molestara más, pero empezó a decir que se iría de la casa. Yo le decía que se esperara, pero ella quería salir a fuerzas. Entonces, agarró unas tijeras grandes con mucho filo, como para cortar ropa y me dijo "Déjame salir que ya me voy". Me puso las tijeras en el estómago y las presionó tan fuerte contra mi cuerpo, que me dejó una marca y me salió sangre. Sentí que me dolía y que podría clavármelas aún más, así que le pedí que las quitara pero no lo hizo y solo me dijo "No me importa, llama a la policía, que me lleve". Solo me las quitó del cuerpo cuando vio que estaba sangrando. En ese momento se alejó, pero ya no me habló para nada ni se disculpó por lo que me hizo. Ya me había aventado cosas en alguna ocasión, pero hasta la fecha no me había amenazado de esa manera y con algo tan peligroso como unas tijeras afiladas. Después de unos días, cuando le recordé lo que me hizo con las tijeras, ella me amenazó diciendo: "Siguele, sigue texteando con esas y así te va a ir". No parecía arrepentida y después de su amenaza, sentí que podría volver a atacarme por sus celos.</div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 1</span><h3>Identificación de elementos <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">4.1</span> ¿Qué elementos están presentes?</p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="q4_1" value="relacion"> Relación con el abusador</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q4_1" value="violencia_fisica"> Violencia física / extrema crueldad</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q4_1" value="matrimonio"> Matrimonio de buena fe</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q4_1" value="residencia"> Residencia conjunta</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="q4_1" value="gmc"> Buen carácter moral</label>
+    </div>
+    <button class="btn-check" id="btn_cb_q4_1" onclick="checkCheckboxExercise('q4_1','fb_q4_1')">Verificar identificación</button>
+    <div class="feedback-box" id="fb_q4_1"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 2</span><h3>Traducción completa</h3></div>
+    <p class="question-text"><span class="question-number">4.2</span> Traduce el Fragmento 4 completo al inglés:</p>
+    <textarea class="text-input-area text-translation" id="q4_2_input" placeholder="Tu traducción..."></textarea>
+    <button class="btn-check" id="btn_save_q4_2" onclick="saveTranslation('q4_2')">Guardar traducción</button>
+    <div class="feedback-box" id="q4_2_fb"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 3</span><h3>Frases Clave <span class="score-badge">Calificado automáticamente</span></h3></div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">4.3</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"Ella es capaz de tomar cualquier objeto para hacerme daño"</div>
+      <textarea class="text-input-area" id="q4_3_input" rows="2" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q4_3" onclick="checkPhrase('q4_3','fb_q4_3')">Verificar</button>
+      <div class="feedback-box" id="fb_q4_3"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">4.4</span> Traduce esta frase de lenguaje coloquial/agresivo — <strong>mantén la intensidad</strong>:</p>
+      <div class="fragment-quote">"¿Con quién chingados estabas texteando?"</div>
+      <div class="warning-box" style="padding:10px 14px;margin-bottom:8px;"><div class="box-title">⚠️ Nota</div><p style="font-size:0.86rem;">El lenguaje fuerte forma parte del registro de la declaración y debe preservarse.</p></div>
+      <textarea class="text-input-area" id="q4_4_input" rows="2" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q4_4" onclick="checkPhrase('q4_4','fb_q4_4')">Verificar</button>
+      <div class="feedback-box" id="fb_q4_4"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">4.5</span> Traduce con máxima precisión:</p>
+      <div class="fragment-quote">"Me puso las tijeras en el estómago y las presionó tan fuerte contra mi cuerpo, que me dejó una marca y me salió sangre."</div>
+      <textarea class="text-input-area" id="q4_5_input" rows="3" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q4_5" onclick="checkPhrase('q4_5','fb_q4_5')">Verificar</button>
+      <div class="feedback-box" id="fb_q4_5"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">4.6</span> Traduce esta amenaza — preserva el tono implícito:</p>
+      <div class="fragment-quote">"Siguele, sigue texteando con esas y así te va a ir"</div>
+      <textarea class="text-input-area" id="q4_6_input" rows="2" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q4_6" onclick="checkPhrase('q4_6','fb_q4_6')">Verificar</button>
+      <div class="feedback-box" id="fb_q4_6"></div>
+    </div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">4.7</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"sentí que podría volver a atacarme por sus celos"</div>
+      <textarea class="text-input-area" id="q4_7_input" rows="2" placeholder="Tu traducción..."></textarea>
+      <button class="btn-check" id="btn_check_q4_7" onclick="checkPhrase('q4_7','fb_q4_7')">Verificar</button>
+      <div class="feedback-box" id="fb_q4_7"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 13: RESULTADOS ══ -->
+<div class="screen results-screen" id="screen_results">
+  <span class="screen-label">Resultados del módulo</span>
+  <div class="section-title" style="width:100%;text-align:center;">🏆 Resultados – Módulo 1 VAWA</div>
+  <div class="score-circle">
+    <div class="score-num" id="score_circle_num">--</div>
+    <div class="score-label" id="score_label">Calculando...</div>
+  </div>
+  <p style="font-size:0.92rem;color:#666;max-width:500px;text-align:center;line-height:1.6;">Las traducciones libres serán revisadas por el equipo de Training.</p>
+  <div class="results-breakdown" id="results_breakdown"></div>
+  <div class="incorrect-list" id="incorrect_list" style="margin-top:8px;">
+    <p style="font-weight:700;font-size:0.9rem;margin-bottom:10px;color:var(--color-primary-dark);">Frases clave para repasar:</p>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px;">
+    <button class="btn btn-success btn-large" id="btn_complete">✅ Marcar módulo como completado</button>
+    <button class="btn btn-secondary" id="btn_restart">🔄 Volver al inicio</button>
+  </div>
+  <div class="info-box" style="max-width:600px;margin-top:16px;text-align:left;">
+    <div class="box-title">📚 ¿Qué sigue?</div>
+    <p>Regresa a Moodle para acceder al <strong>Módulo 2</strong>. Tu calificación ha sido registrada automáticamente.</p>
+  </div>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /outer-layout -->
+</div><!-- /app -->
+
+<nav class="nav-bar" id="nav_bar" style="max-width:960px;margin:0 auto;">
+  <button class="btn btn-secondary" id="btn_prev" disabled>← Anterior</button>
+  <span class="page-indicator" id="page_indicator">Pantalla 1 de 14</span>
+  <button class="btn btn-primary" id="btn_next">Siguiente →</button>
+</nav>
+<script>
+/**
+ * scorm.js – Comunicación SCORM 1.2 con Moodle
+ * Mendoza Learning Center – Módulo 1 VAWA
+ */
+
+var SCORM = (function () {
+  var API = null;
+  var initialized = false;
+  var finished = false;
+
+  // ─── Buscar la API SCORM ───
+  function findAPI(win) {
+    var attempts = 0;
+    while (win.API == null && win.parent != null && win.parent != win) {
+      attempts++;
+      if (attempts > 7) return null;
+      win = win.parent;
+    }
+    return win.API;
+  }
+
+  function getAPI() {
+    var win = window;
+    var api = findAPI(win);
+    if (api == null && win.opener != null) {
+      api = findAPI(win.opener);
+    }
+    return api;
+  }
+
+  // ─── Inicializar ───
+  function initialize() {
+    API = getAPI();
+    if (API == null) {
+      console.warn("[SCORM] API no encontrada – modo standalone");
+      initialized = true; // Continuar en modo local
+      return true;
+    }
+    var result = API.LMSInitialize("");
+    if (result === "true" || result === true) {
+      initialized = true;
+      setValue("cmi.core.lesson_status", "incomplete");
+      return true;
+    }
+    console.error("[SCORM] Error al inicializar:", API.LMSGetLastError());
+    return false;
+  }
+
+  // ─── Leer valor ───
+  function getValue(element) {
+    if (!initialized || API == null) return "";
+    return API.LMSGetValue(element);
+  }
+
+  // ─── Escribir valor ───
+  function setValue(element, value) {
+    if (!initialized) return false;
+    if (API == null) return true; // standalone, ignorar
+    var result = API.LMSSetValue(element, value);
+    if (result === "false" || result === false) {
+      console.error("[SCORM] Error al setear " + element + ":", API.LMSGetLastError());
+      return false;
+    }
+    return true;
+  }
+
+  // ─── Commit ───
+  function commit() {
+    if (!initialized || API == null) return;
+    API.LMSCommit("");
+  }
+
+  // ─── Finalizar ───
+  function finish() {
+    if (!initialized || finished) return;
+    finished = true;
+    if (API != null) {
+      API.LMSFinish("");
+    }
+  }
+
+  // ─── Reportar calificación del módulo ───
+  function setScore(raw, min, max) {
+    min = min || 0;
+    max = max || 100;
+    setValue("cmi.core.score.raw", raw);
+    setValue("cmi.core.score.min", min);
+    setValue("cmi.core.score.max", max);
+    commit();
+  }
+
+  // ─── Reportar estado de completado ───
+  function setCompleted(passed) {
+    setValue("cmi.core.lesson_status", passed ? "passed" : "failed");
+    commit();
+  }
+
+  // ─── Reportar interacción individual ───
+  var interactionIndex = 0;
+  function recordInteraction(id, type, response, correct, result, latency) {
+    var prefix = "cmi.interactions." + interactionIndex + ".";
+    setValue(prefix + "id", id);
+    setValue(prefix + "type", type || "fill-in");
+    setValue(prefix + "student_response", response || "");
+    setValue(prefix + "correct_responses.0.pattern", correct || "");
+    setValue(prefix + "result", result || "neutral");
+    if (latency) setValue(prefix + "latency", latency);
+    interactionIndex++;
+    commit();
+  }
+
+  // ─── Marcar progreso (location) ───
+  function setLocation(screenIndex) {
+    setValue("cmi.core.lesson_location", String(screenIndex));
+    commit();
+  }
+
+  return {
+    initialize: initialize,
+    getValue: getValue,
+    setValue: setValue,
+    commit: commit,
+    finish: finish,
+    setScore: setScore,
+    setCompleted: setCompleted,
+    recordInteraction: recordInteraction,
+    setLocation: setLocation
+  };
+})();
+
+// ─── Inicializar automáticamente ───
+window.addEventListener("load", function () {
+  SCORM.initialize();
+});
+
+window.addEventListener("beforeunload", function () {
+  SCORM.finish();
+});
+
+</script>
+<script>
+/**
+ * interactions.js – Lógica de calificación y navegación
+ * Mendoza Learning Center – Módulo 1 VAWA  v2.0
+ * Cambios: sinónimos expandidos, preposiciones estrictas, lock de respuestas,
+ *          validación de completado antes de avanzar, nuevo ejercicio P3
+ */
+
+// ═══════════════════════════════════════════════════════════
+//  ESTADO GLOBAL
+// ═══════════════════════════════════════════════════════════
+var AppState = {
+  currentScreen: 0,
+  totalScreens: 0,
+  scores: {},
+  answers: {},
+  answered: {},   // { questionId: true } – lock tras primera respuesta
+  startTime: Date.now()
+};
+
+// ─── Marcar pregunta como contestada (lock) ───
+function lockQuestion(questionId) {
+  AppState.answered[questionId] = true;
+}
+function isLocked(questionId) {
+  return !!AppState.answered[questionId];
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RESPUESTAS CORRECTAS – CHECKBOXES
+// ═══════════════════════════════════════════════════════════
+var CORRECT_CHECKBOXES = {
+  "q1_1": ["relacion", "matrimonio"],
+  "q2_1": ["violencia_fisica"],
+  "q3_1": ["violencia_fisica"],
+  "q4_1": ["violencia_fisica"]
+};
+
+// ═══════════════════════════════════════════════════════════
+//  RESPUESTAS CORRECTAS – FRASES CLAVE
+//  Cada entrada es un array de variantes aceptadas.
+//  La comparación es ESTRICTA en preposiciones (in/on/at/from/to/with/against).
+// ═══════════════════════════════════════════════════════════
+var CORRECT_PHRASES = {
+  "q1_3": [
+    "my wife's name is maría del rosario martinez espinoza she was born on november 23 1975 in michoacán and is a legal resident of the united states",
+    "my wife is named maría del rosario martinez espinoza she was born on november 23 1975 in michoacán and is a legal resident of the united states",
+    "my wife's name is maria del rosario martinez espinoza she was born on november 23 1975 in michoacan and is a legal resident of the united states",
+    "my wife's name is maría del rosario martinez espinoza she was born on november 23 1975 in michoacán and is a lawful resident of the united states",
+    "my wife's name is maría del rosario martinez espinoza born on november 23 1975 in michoacán legal resident of the united states"
+  ],
+  "q1_4": [
+    "we met at work at a restaurant i was a cook and she was the general manager",
+    "we met at work in a restaurant i was a cook and she was the general manager",
+    "we met at work at a restaurant i was the cook and she was the general manager"
+  ],
+  "q1_5": [
+    "i fell in love with her because of how she treated me but also because she treated my children well and that made me feel safe",
+    "i fell in love with her because of how she treated me but also because she treated my children well and that made me feel secure",
+    "i fell in love with her because of how she treated me but also because she treated my kids well and that made me feel safe",
+    "i fell in love with her because of how she treated me but also because she treated my kids well and that made me feel secure",
+    "i fell in love with her for how she treated me but also because she treated my children well and that made me feel safe"
+  ],
+  "q1_6": [
+    "we got married in california on november 23 2011 but once married things changed",
+    "we got married in california on november 23 2011 but after we got married things changed",
+    "we married in california on november 23 2011 but once married things changed"
+  ],
+  "q2_3": [
+    "things started to change when we had been married for about three or four years",
+    "things began to change when we had been married for about three or four years",
+    "things started to change when we had been married for around three or four years",
+    "things started changing when we had been married for about three or four years"
+  ],
+  "q2_4": [
+    "she began to hit me and insult me so that i would do everything she demanded",
+    "she started to hit me and insult me so that i would do everything she demanded",
+    "she began hitting me and insulting me so that i would do everything she demanded",
+    "she began to beat me and insult me so that i would do everything she demanded",
+    "she started hitting me and insulting me so that i would do everything she demanded"
+  ],
+  "q2_5": [
+    "she went as far as hurting me with a knife and threatening to kill our dog because she was angry",
+    "she went so far as to hurt me with a knife and threaten to kill our dog because she was angry",
+    "she went as far as harming me with a knife and threatening to kill our dog because she was angry",
+    "she even hurt me with a knife and threatened to kill our dog because she was angry"
+  ],
+  "q2_6": [
+    "she has taken my money tracked me with a gps and damaged things in the house without taking responsibility for the expenses she causes",
+    "she has taken my money tracked me with a gps and damaged things in the house without taking responsibility for the expenses she generates",
+    "she has taken my money tracked me using a gps and damaged things in the house without taking responsibility for the costs she causes"
+  ],
+  "q2_7": [
+    "i feel bad because i would like to do something to stop her but i can't because i know she is capable of hurting me more or hurting my youngest daughter who lives with us",
+    "i feel bad because i would like to do something to stop her but i cannot because i know she is capable of hurting me more or hurting my youngest daughter who lives with us",
+    "i feel bad because i would like to do something to stop her but i can't because i know she can hurt me more or hurt my youngest daughter who lives with us"
+  ],
+  "q3_3": [
+    "my wife has destroyed many things in the house including the television and a door being jealous of me and accusing me of cheating",
+    "my wife has destroyed several things in the house including the television and a door being jealous of me and accusing me of cheating",
+    "my wife has destroyed many things in the house including the tv and a door being jealous of me and accusing me of cheating",
+    "my wife has destroyed many things in the house including the television and a door out of jealousy and accusing me of cheating",
+    "my wife has destroyed many things in the house including the television and a door being jealous and accusing me of cheating"
+  ],
+  "q3_4": [
+    "she has threatened to do it again which makes me think she can damage my things and make me spend money to repair them just because she feels jealous",
+    "she has threatened to do it again which makes me think she could damage my things and make me spend money to repair them just because she is jealous",
+    "she threatened to do it again which makes me think she can damage my things and make me spend money fixing them just because she is jealous"
+  ],
+  "q4_3": [
+    "she is capable of taking any object to hurt me",
+    "she is capable of picking up any object to hurt me",
+    "she is capable of grabbing any object to hurt me",
+    "she is capable of taking any object to harm me",
+    "she can grab any object to hurt me",
+    "she can take any object to harm me"
+  ],
+  "q4_4": [
+    "who the fuck were you texting",
+    "who the fuck were you texting?"
+  ],
+  "q4_5": [
+    "she put the scissors against my stomach and pressed them so hard against my body that it left a mark and i bled",
+    "she placed the scissors against my stomach and pressed them so hard against my body that it left a mark and i bled",
+    "she pushed the scissors against my stomach and pressed them so hard against my body that it left a mark and i bled"
+  ],
+  "q4_6": [
+    "keep it up keep texting with those and see what happens to you",
+    "go ahead keep texting with them and that's how it's going to be for you",
+    "keep texting and see what happens to you",
+    "go ahead and keep texting that's how it will go for you",
+    "keep it up keep texting with them and see what happens to you"
+  ],
+  "q4_7": [
+    "i felt that she could attack me again because of her jealousy",
+    "i felt she could attack me again because of her jealousy",
+    "i felt that she could hurt me again because of her jealousy",
+    "i felt that she might attack me again because of her jealousy"
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════
+//  PREPOSICIONES – lista para verificación estricta
+// ═══════════════════════════════════════════════════════════
+var PREPOSITIONS = ["in","on","at","from","to","with","against","for","of","by","into","onto","upon","within","without","between","among","through","during","since","until","till","before","after","above","below","over","under","near","beside","behind","around","across","along","toward","towards","about","off","out","up","down"];
+
+function normalizeText(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[áàä]/g,"a").replace(/[éèë]/g,"e").replace(/[íìï]/g,"i")
+    .replace(/[óòö]/g,"o").replace(/[úùü]/g,"u").replace(/ñ/g,"n")
+    .replace(/[.,;:!?¿¡"'"']/g,"")
+    .replace(/\s+/g," ");
+}
+
+function getWords(text) {
+  return normalizeText(text).split(" ").filter(function(w){ return w.length > 0; });
+}
+
+function checkPhraseAnswer(questionId, userAnswer) {
+  var variants = CORRECT_PHRASES[questionId];
+  if (!variants) return false;
+  var normalUser = normalizeText(userAnswer);
+  if (normalUser.length < 5) return false;
+
+  for (var i = 0; i < variants.length; i++) {
+    var normalCorrect = normalizeText(variants[i]);
+    if (normalUser === normalCorrect) return true;
+    if (flexibleMatch(normalUser, normalCorrect, questionId)) return true;
+  }
+  return false;
+}
+
+function flexibleMatch(userText, correctText, questionId) {
+  var userWords = getWords(userText);
+  var correctWords = getWords(correctText);
+
+  // Verificación ESTRICTA de preposiciones: si la respuesta correcta tiene una preposición,
+  // el usuario también debe tenerla en la misma posición relativa
+  for (var i = 0; i < correctWords.length; i++) {
+    if (PREPOSITIONS.indexOf(correctWords[i]) !== -1) {
+      // Es preposición crítica – debe aparecer en el texto del usuario
+      if (userWords.indexOf(correctWords[i]) === -1) return false;
+    }
+  }
+
+  // Verificar palabras sustantivas (>3 chars, no preposiciones ni artículos cortos)
+  var substantiveCorrect = correctWords.filter(function(w){
+    return w.length > 3 && ["that","this","with","from","they","them","have","been","were","will","would","could","should"].indexOf(w) === -1;
+  });
+  if (substantiveCorrect.length === 0) return false;
+
+  var matchCount = 0;
+  for (var j = 0; j < substantiveCorrect.length; j++) {
+    if (userText.indexOf(substantiveCorrect[j]) !== -1) matchCount++;
+  }
+  return (matchCount / substantiveCorrect.length) >= 0.78;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CHECKBOXES
+// ═══════════════════════════════════════════════════════════
+function checkCheckboxGroup(groupId) {
+  var correctSet = CORRECT_CHECKBOXES[groupId];
+  if (!correctSet) return false;
+  var checkboxes = document.querySelectorAll('[data-group="' + groupId + '"]');
+  var selected = [];
+  checkboxes.forEach(function(cb){ if(cb.checked) selected.push(cb.value); });
+  if (selected.length !== correctSet.length) return false;
+  var ss = selected.slice().sort();
+  var sc = correctSet.slice().sort();
+  for (var i=0; i<sc.length; i++) { if(ss[i]!==sc[i]) return false; }
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  DRAG AND DROP (Pantalla 2 – nuevo ejercicio)
+// ═══════════════════════════════════════════════════════════
+function initDragDrop() {
+  var options = document.querySelectorAll(".drag-option");
+  var targets = document.querySelectorAll(".drag-target");
+
+  options.forEach(function(opt){
+    opt.setAttribute("draggable","true");
+    opt.addEventListener("dragstart",function(e){
+      e.dataTransfer.setData("text/plain", opt.dataset.value);
+      e.dataTransfer.setData("text/id", opt.id);
+    });
+  });
+
+  targets.forEach(function(target){
+    target.addEventListener("dragover",function(e){ e.preventDefault(); target.classList.add("drag-over"); });
+    target.addEventListener("dragleave",function(){ target.classList.remove("drag-over"); });
+    target.addEventListener("drop",function(e){
+      e.preventDefault();
+      target.classList.remove("drag-over");
+      if (isLocked("drag_p2")) return;
+
+      var value = e.dataTransfer.getData("text/plain");
+      var oldId = e.dataTransfer.getData("text/id");
+      var existingDropped = target.querySelector(".dropped-item");
+      if (existingDropped) {
+        var bank = document.querySelector(".drag-options");
+        var restored = document.createElement("span");
+        restored.className="drag-option"; restored.setAttribute("draggable","true");
+        restored.dataset.value=existingDropped.dataset.value;
+        restored.id=existingDropped.dataset.origId||("opt_"+Date.now());
+        restored.textContent=existingDropped.textContent;
+        bank.appendChild(restored); initSingleDrag(restored);
+        existingDropped.remove();
+      }
+      var dropped = document.createElement("span");
+      dropped.className="dropped-item";
+      dropped.dataset.value=value; dropped.dataset.origId=oldId;
+      // Mostrar texto limpio
+      var labels = {
+        "opcion_a": 'A: "My husband, Juan, began to insult me."',
+        "opcion_b": 'B: "My husband, Juan, began to batter and assault me."',
+        "opcion_c": 'C: "The abuser, Juan, began to insult me."'
+      };
+      dropped.textContent = labels[value] || value;
+      target.appendChild(dropped);
+      var origOpt = document.getElementById(oldId);
+      if (origOpt) origOpt.remove();
+    });
+  });
+}
+
+function initSingleDrag(el){
+  el.addEventListener("dragstart",function(e){
+    e.dataTransfer.setData("text/plain",el.dataset.value);
+    e.dataTransfer.setData("text/id",el.id);
+  });
+}
+
+function checkDragDrop(){
+  if (isLocked("drag_p2")) return;
+  var targetCorrect = document.getElementById("target_correct");
+  if (!targetCorrect) return;
+  var dropped = targetCorrect.querySelector(".dropped-item");
+  if (!dropped) { alert("Arrastra una opción al recuadro antes de verificar."); return; }
+  var isCorrect = dropped.dataset.value === "opcion_a";
+  var fb = document.getElementById("fb_drag");
+  if (fb) {
+    fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");
+    fb.innerHTML = isCorrect
+      ? "✅ <strong>¡Correcto!</strong> 'My husband' establece el vínculo personal correcto en la primera mención. 'The abuser' se reserva para referencias posteriores."
+      : (dropped.dataset.value === "opcion_b"
+        ? "❌ <strong>Incorrecto.</strong> 'Batter and assault' cambia el significado. La traducción precisa de 'insultarme' es 'insult me', no 'batter'."
+        : "❌ <strong>Incorrecto.</strong> En la primera mención, 'my husband' es el término correcto para establecer el vínculo. 'The abuser' se usa en referencias posteriores.");
+  }
+  AppState.scores["drag_p2"] = isCorrect;
+  lockQuestion("drag_p2");
+  // Deshabilitar drag
+  document.querySelectorAll(".drag-option").forEach(function(o){ o.setAttribute("draggable","false"); o.style.opacity="0.6"; o.style.cursor="default"; });
+  document.getElementById("btn_check_drag").disabled = true;
+  SCORM.recordInteraction("drag_p2","matching",dropped.dataset.value,"opcion_a",isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RADIO (Pantalla 3 – nuevo ejercicio con frase diferente)
+// ═══════════════════════════════════════════════════════════
+function checkRadioExercise(groupName, correctValue, feedbackId){
+  if (isLocked(groupName)) return;
+  var radios = document.querySelectorAll('input[name="'+groupName+'"]');
+  var selected = null;
+  radios.forEach(function(r){ if(r.checked) selected=r.value; });
+  if (!selected) { alert("Selecciona una opción antes de verificar."); return; }
+
+  var isCorrect = selected === correctValue;
+  var fb = document.getElementById(feedbackId);
+
+  radios.forEach(function(r){
+    var item = r.closest(".radio-item");
+    if (r.value===correctValue) item.classList.add("selected-correct");
+    else if (r.value===selected && !isCorrect) item.classList.add("selected-wrong");
+    r.disabled=true;
+  });
+
+  if (fb) {
+    var msgMap = {
+      "opcion_a": { radio_p3: "✅ <strong>¡Correcto!</strong> 'He pushed me hard and made me fall to the floor' traduce con precisión 'me empujó fuerte y me hizo caerme al piso'. 'Push' = empujar, 'fall' = caer." },
+      "opcion_b": { radio_p3: "❌ <strong>Incorrecto.</strong> 'Shoved' sobreestima un poco y 'knocked me down' cambia el matiz. Además falta la referencia a la casa." },
+      "opcion_c": { radio_p3: "❌ <strong>Incorrecto.</strong> 'Touched me' suaviza inaceptablemente el acto. 'Empujar' es 'to push'." }
+    };
+    fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");
+    fb.innerHTML = (msgMap[selected]&&msgMap[selected][groupName]) || (isCorrect?"✅ Correcto.":"❌ Incorrecto.");
+  }
+
+  AppState.scores[groupName] = isCorrect;
+  lockQuestion(groupName);
+  document.getElementById("btn_check_radio").disabled = true;
+  SCORM.recordInteraction(groupName,"choice",selected,correctValue,isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  FILL IN THE BLANKS (Pantalla 4)
+// ═══════════════════════════════════════════════════════════
+function checkFillBlanks(){
+  if (isLocked("fill_blanks_p4")) return;
+  var answers = { "blank_1":"in", "blank_2":"in", "blank_3":"where" };
+  var allCorrect = true;
+  Object.keys(answers).forEach(function(id){
+    var sel = document.getElementById(id);
+    if (!sel) return;
+    var ok = sel.value.toLowerCase()===answers[id];
+    if (!ok) allCorrect=false;
+    sel.style.borderColor=ok?"var(--color-success)":"var(--color-error)";
+    sel.disabled=true;
+  });
+  var fb = document.getElementById("fb_fillblanks");
+  if (fb) {
+    fb.className="feedback-box visible "+(allCorrect?"correct":"info");
+    fb.innerHTML=allCorrect
+      ?"✅ <strong>¡Perfecto!</strong> 'In 2015' para años, 'in a ceremony' para el contexto, y 'where' para la oración relativa de lugar."
+      :"⚠️ <strong>Revisa:</strong> Fechas/años → <em>in</em> (in 2015). Contexto/lugar → <em>in</em> (in a ceremony). Oración relativa de lugar → <em>where</em>.";
+  }
+  AppState.scores["fill_blanks_p4"]=allCorrect;
+  lockQuestion("fill_blanks_p4");
+  document.getElementById("btn_check_blanks").disabled=true;
+  SCORM.recordInteraction("fill_blanks_p4","fill-in",JSON.stringify(Object.keys(answers).map(function(id){ return document.getElementById(id)?document.getElementById(id).value:""; })),"in|in|where",allCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CLICK-TO-IDENTIFY ERROR (Pantalla 5) – sin subrayado
+// ═══════════════════════════════════════════════════════════
+var clickErrorState = { selected: null, step: 1 };
+
+function initClickError(){
+  var spans = document.querySelectorAll(".clickable-word");
+  spans.forEach(function(span){
+    span.addEventListener("click",function(){
+      if (isLocked("click_error_p5") || clickErrorState.step!==1) return;
+      spans.forEach(function(s){ s.style.background=""; s.style.outline=""; });
+      span.style.background="rgba(144,148,223,0.25)";
+      span.style.borderRadius="3px";
+      clickErrorState.selected=span.dataset.word;
+      var corrOptions=document.getElementById("correction_options");
+      if (corrOptions) corrOptions.style.display="block";
+    });
+  });
+}
+
+function checkClickError(chosenValue, correctValue){
+  if (isLocked("click_error_p5")) return;
+  var wordCorrect = clickErrorState.selected==="since";
+  var correctionCorrect = chosenValue===correctValue;
+  var isCorrect = wordCorrect && correctionCorrect;
+  var fb=document.getElementById("fb_clickerror");
+  if (fb) {
+    fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");
+    if (isCorrect) fb.innerHTML="✅ <strong>¡Correcto!</strong> 'Since' implica continuidad hasta el presente. Como la convivencia ya terminó, 'from 2015 until...' marca el período como cerrado.";
+    else if (!wordCorrect) fb.innerHTML="❌ El error está en otra palabra. Intenta de nuevo — busca la preposición que indica el inicio de un período.";
+    else fb.innerHTML="❌ Identificaste bien la palabra, pero la corrección es <strong>'from'</strong>: 'We lived together <em>from</em> 2015 until...'";
+  }
+  document.querySelectorAll(".correction-btn").forEach(function(btn){ btn.disabled=true; });
+  lockQuestion("click_error_p5");
+  clickErrorState.step=2;
+  AppState.scores["click_error_p5"]=isCorrect;
+  SCORM.recordInteraction("click_error_p5","matching",(clickErrorState.selected||"none")+"|"+chosenValue,"since|from",isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CHECKBOXES – Fragmentos 1-4
+// ═══════════════════════════════════════════════════════════
+function checkCheckboxExercise(groupId, feedbackId){
+  if (isLocked(groupId)) return;
+  var isCorrect=checkCheckboxGroup(groupId);
+  var correctSet=CORRECT_CHECKBOXES[groupId]||[];
+  var checkboxes=document.querySelectorAll('[data-group="'+groupId+'"]');
+  checkboxes.forEach(function(cb){
+    var item=cb.closest(".checkbox-item"); if(!item) return;
+    if(correctSet.indexOf(cb.value)!==-1) item.classList.add("correct-answer");
+    if(cb.checked&&correctSet.indexOf(cb.value)===-1) item.classList.add("wrong-answer");
+    cb.disabled=true;
+  });
+  var feedbacks={
+    "q1_1":{
+      correct:"✅ <strong>¡Correcto!</strong> Este fragmento establece la relación ('mi esposa') y demuestra el matrimonio de buena fe (historia de la relación, planes de comprar casa, trato con los hijos).",
+      incorrect:"❌ <strong>Revisa:</strong> Las respuestas correctas son <em>Relación con el abusador</em> y <em>Matrimonio de buena fe</em>. El fragmento describe solo la etapa inicial positiva, sin violencia ni direcciones."
+    },
+    "q2_1":{
+      correct:"✅ <strong>¡Correcto!</strong> El fragmento incluye violencia física múltiple: golpes, herida con cuchillo, amenazas, rastreo GPS y control económico (extrema crueldad).",
+      incorrect:"❌ <strong>Revisa:</strong> La respuesta correcta es <em>Violencia física / extrema crueldad</em>. Hay múltiples formas: 'golpearme', 'lastimarme con un cuchillo', más amenazas y control patrimonial."
+    },
+    "q3_1":{
+      correct:"✅ <strong>¡Correcto!</strong> Destruir objetos, hacer acusaciones falsas y amenazar con repetirlo constituye <em>extrema crueldad</em> — violencia psicológica y patrimonial.",
+      incorrect:"❌ <strong>Revisa:</strong> La respuesta correcta es <em>Violencia física / extrema crueldad</em>. La destrucción de bienes y las amenazas califican como extrema crueldad aunque no haya contacto físico directo."
+    },
+    "q4_1":{
+      correct:"✅ <strong>¡Correcto!</strong> Violencia física grave: aventar el teléfono, las tijeras en el estómago con sangrado, y amenazas posteriores.",
+      incorrect:"❌ <strong>Revisa:</strong> La respuesta correcta es <em>Violencia física / extrema crueldad</em>. 'Me lo aventó pegándome en el estómago' y 'me puso las tijeras... me salió sangre' son actos de violencia física grave."
+    }
+  };
+  var fb=document.getElementById(feedbackId);
+  if (fb) {
+    var msg=feedbacks[groupId]||{correct:"Correcto.",incorrect:"Incorrecto."};
+    fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");
+    fb.innerHTML=isCorrect?msg.correct:msg.incorrect;
+  }
+  AppState.scores[groupId]=isCorrect;
+  lockQuestion(groupId);
+  // Deshabilitar botón de esta pregunta
+  var btn=document.getElementById("btn_cb_"+groupId);
+  if(btn) btn.disabled=true;
+  var selected=[];
+  document.querySelectorAll('[data-group="'+groupId+'"]:checked').forEach(function(cb){ selected.push(cb.value); });
+  SCORM.recordInteraction(groupId,"choice",selected.join("|"),correctSet.join("|"),isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TRADUCCIÓN LIBRE
+// ═══════════════════════════════════════════════════════════
+function saveTranslation(questionId){
+  if (isLocked(questionId+"_saved")) return;
+  var ta=document.getElementById(questionId+"_input");
+  if(!ta||!ta.value.trim()){ alert("Escribe tu traducción antes de guardar."); return; }
+  AppState.answers[questionId]=ta.value;
+  lockQuestion(questionId+"_saved");
+  ta.readOnly=true;
+  var fb=document.getElementById(questionId+"_fb");
+  if(fb){ fb.className="feedback-box visible info"; fb.innerHTML="📝 Tu traducción ha sido registrada. Será revisada por el equipo de Training."; }
+  var btn=document.getElementById("btn_save_"+questionId);
+  if(btn) btn.disabled=true;
+  SCORM.recordInteraction(questionId,"fill-in",ta.value,"","neutral");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  FRASES CLAVE – CALIFICACIÓN AUTOMÁTICA
+// ═══════════════════════════════════════════════════════════
+function checkPhrase(questionId, feedbackId){
+  if (isLocked(questionId)) return;
+  var input=document.getElementById(questionId+"_input");
+  if(!input) return;
+  var userAnswer=input.value.trim();
+  if(userAnswer.length<5){ alert("Escribe tu traducción antes de verificar."); return; }
+  var isCorrect=checkPhraseAnswer(questionId,userAnswer);
+  var correctVariant=(CORRECT_PHRASES[questionId]||[""])[0];
+  input.className="text-input-area "+(isCorrect?"correct":"incorrect");
+  input.readOnly=true;
+  var fb=document.getElementById(feedbackId);
+  if(fb){
+    fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");
+    fb.innerHTML=isCorrect
+      ?"✅ <strong>¡Correcto!</strong> Tu traducción captura los elementos clave de la frase."
+      :"❌ <strong>Revisa tu traducción.</strong><div class='correct-answer-reveal'>Respuesta esperada: <em>"+correctVariant+"</em></div>";
+  }
+  AppState.scores[questionId]=isCorrect;
+  lockQuestion(questionId);
+  var btn=document.getElementById("btn_check_"+questionId);
+  if(btn) btn.disabled=true;
+  SCORM.recordInteraction(questionId,"fill-in",userAnswer,correctVariant,isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VALIDACIÓN DE PANTALLA ANTES DE AVANZAR
+//  Devuelve null si ok, o mensaje de error si falta algo
+// ═══════════════════════════════════════════════════════════
+var SCREEN_REQUIREMENTS = {
+  // screenIndex: array de questionIds que deben estar locked/contestados
+  9:  ["q1_1", "q1_2_saved", "q1_3", "q1_4", "q1_5", "q1_6"],
+  10: ["q2_1", "q2_2_saved", "q2_3", "q2_4", "q2_5", "q2_6", "q2_7"],
+  11: ["q3_1", "q3_2_saved", "q3_3", "q3_4"],
+  12: ["q4_1", "q4_2_saved", "q4_3", "q4_4", "q4_5", "q4_6", "q4_7"]
+};
+
+function canAdvance(screenIndex) {
+  var reqs = SCREEN_REQUIREMENTS[screenIndex];
+  if (!reqs) return true;
+  for (var i=0; i<reqs.length; i++) {
+    if (!AppState.answered[reqs[i]]) return false;
+  }
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PUNTUACIÓN FINAL
+// ═══════════════════════════════════════════════════════════
+function calculateFinalScore(){
+  var phraseQs=["q1_3","q1_4","q1_5","q1_6","q2_3","q2_4","q2_5","q2_6","q2_7","q3_3","q3_4","q4_3","q4_4","q4_5","q4_6","q4_7"];
+  var cbQs=["q1_1","q2_1","q3_1","q4_1"];
+  var miniQs=["drag_p2","radio_p3","fill_blanks_p4","click_error_p5"];
+  var pC=0; phraseQs.forEach(function(id){ if(AppState.scores[id]===true) pC++; });
+  var cC=0; cbQs.forEach(function(id){ if(AppState.scores[id]===true) cC++; });
+  var mC=0; miniQs.forEach(function(id){ if(AppState.scores[id]===true) mC++; });
+  return {
+    phrases:{correct:pC,total:phraseQs.length},
+    checkboxes:{correct:cC,total:cbQs.length},
+    mini:{correct:mC,total:miniQs.length},
+    phraseDetails:phraseQs.map(function(id){
+      var inp=document.getElementById(id+"_input");
+      return { id:id, correct:AppState.scores[id]===true,
+        userAnswer:inp?inp.value:"",
+        expectedAnswer:(CORRECT_PHRASES[id]||[""])[0] };
+    })
+  };
+}
+
+function renderResultsScreen(){
+  var score=calculateFinalScore();
+  var total=score.phrases.correct+score.checkboxes.correct+score.mini.correct;
+  var max=score.phrases.total+score.checkboxes.total+score.mini.total;
+  var pct=Math.round((total/max)*100);
+  var passed=pct>=70;
+  var sc=document.getElementById("score_circle_num"); if(sc) sc.textContent=pct+"%";
+  var sl=document.getElementById("score_label"); if(sl) sl.textContent=passed?"¡Aprobado!":"Necesitas repasar";
+  var rb=document.getElementById("results_breakdown");
+  if(rb) rb.innerHTML=
+    '<div class="rb-row"><span class="rb-label">Ejercicios de práctica</span><span class="rb-score">'+score.mini.correct+" / "+score.mini.total+'</span></div>'+
+    '<div class="rb-row"><span class="rb-label">Identificación de elementos</span><span class="rb-score">'+score.checkboxes.correct+" / "+score.checkboxes.total+'</span></div>'+
+    '<div class="rb-row"><span class="rb-label">Traducción de frases clave</span><span class="rb-score">'+score.phrases.correct+" / "+score.phrases.total+'</span></div>'+
+    '<div class="rb-row" style="font-weight:700;background:var(--color-secondary)"><span class="rb-label">TOTAL</span><span class="rb-score">'+total+" / "+max+" ("+pct+"%)</span></div>";
+  var il=document.getElementById("incorrect_list");
+  if(il){
+    var bad=score.phraseDetails.filter(function(d){ return !d.correct&&d.userAnswer; });
+    if(!bad.length){ il.innerHTML='<p style="color:var(--color-success);font-weight:600">✅ ¡Todas las frases clave fueron correctas!</p>'; }
+    else {
+      var labels={"q1_3":"Frag. 1 – 1.3","q1_4":"Frag. 1 – 1.4","q1_5":"Frag. 1 – 1.5","q1_6":"Frag. 1 – 1.6","q2_3":"Frag. 2 – 2.3","q2_4":"Frag. 2 – 2.4","q2_5":"Frag. 2 – 2.5","q2_6":"Frag. 2 – 2.6","q2_7":"Frag. 2 – 2.7","q3_3":"Frag. 3 – 3.3","q3_4":"Frag. 3 – 3.4","q4_3":"Frag. 4 – 4.3","q4_4":"Frag. 4 – 4.4","q4_5":"Frag. 4 – 4.5","q4_6":"Frag. 4 – 4.6","q4_7":"Frag. 4 – 4.7"};
+      var html=""; bad.forEach(function(item){
+        html+='<div class="incorrect-item"><div class="ii-label">'+(labels[item.id]||item.id)+'</div><div class="ii-yours">Tu respuesta: '+(item.userAnswer||"<em>sin respuesta</em>")+'</div><div class="ii-correct">Esperado: '+item.expectedAnswer+'</div></div>';
+      });
+      il.innerHTML=html;
+    }
+  }
+  SCORM.setScore(pct,0,100);
+  SCORM.setCompleted(passed);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  NAVEGACIÓN
+// ═══════════════════════════════════════════════════════════
+function initNavigation(){
+  var screens=document.querySelectorAll(".screen");
+  AppState.totalScreens=screens.length;
+  updateNavButtons(); updateProgressBar(); updateSidebar(0);
+  var btnNext=document.getElementById("btn_next");
+  var btnPrev=document.getElementById("btn_prev");
+  if(btnNext) btnNext.addEventListener("click",function(){
+    if(AppState.currentScreen<AppState.totalScreens-1){
+      if(!canAdvance(AppState.currentScreen)){
+        showAdvanceWarning(); return;
+      }
+      goToScreen(AppState.currentScreen+1);
+    }
+  });
+  if(btnPrev) btnPrev.addEventListener("click",function(){
+    if(AppState.currentScreen>0) goToScreen(AppState.currentScreen-1);
+  });
+}
+
+function showAdvanceWarning(){
+  var warn=document.getElementById("advance_warning");
+  if(warn){ warn.style.display="block"; setTimeout(function(){ warn.style.display="none"; },4000); }
+}
+
+function goToScreen(index){
+  var screens=document.querySelectorAll(".screen");
+  screens[AppState.currentScreen].classList.remove("active");
+  AppState.currentScreen=index;
+  screens[index].classList.add("active");
+  window.scrollTo(0,0);
+  updateNavButtons(); updateProgressBar(); updateSidebar(index);
+  SCORM.setLocation(index);
+  if(screens[index].id==="screen_results") renderResultsScreen();
+  if(screens[index].id==="screen_2") setTimeout(initDragDrop,100);
+  if(screens[index].id==="screen_5") setTimeout(initClickError,100);
+}
+
+function updateNavButtons(){
+  var btnPrev=document.getElementById("btn_prev");
+  var btnNext=document.getElementById("btn_next");
+  var indicator=document.getElementById("page_indicator");
+  var screens=document.querySelectorAll(".screen");
+  if(btnPrev) btnPrev.disabled=(AppState.currentScreen===0);
+  if(btnNext){
+    btnNext.disabled=(AppState.currentScreen===AppState.totalScreens-1);
+    btnNext.style.display=(screens[AppState.currentScreen]&&screens[AppState.currentScreen].id==="screen_results")?"none":"";
+  }
+  if(indicator) indicator.textContent="Pantalla "+(AppState.currentScreen+1)+" de "+AppState.totalScreens;
+}
+
+function updateProgressBar(){
+  var fill=document.getElementById("progress_fill");
+  var label=document.getElementById("progress_label");
+  var pct=Math.round(((AppState.currentScreen+1)/AppState.totalScreens)*100);
+  if(fill) fill.style.width=pct+"%";
+  if(label) label.textContent=pct+"% completado";
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+  initNavigation();
+  var btnStart=document.getElementById("btn_start");
+  if(btnStart) btnStart.addEventListener("click",function(){ goToScreen(1); });
+  var btnComplete=document.getElementById("btn_complete");
+  if(btnComplete) btnComplete.addEventListener("click",function(){
+    renderResultsScreen(); SCORM.finish();
+    btnComplete.textContent="✅ Módulo completado"; btnComplete.disabled=true;
+  });
+  var btnRestart=document.getElementById("btn_restart");
+  if(btnRestart) btnRestart.addEventListener("click",function(){ goToScreen(0); });
+});
+
+// ═══════════════════════════════════════════════════════════
+//  SIDEBAR – actualiza estado activo/completado
+// ═══════════════════════════════════════════════════════════
+function updateSidebar(currentIndex) {
+  var items = document.querySelectorAll('.sidebar-item');
+  items.forEach(function(item) {
+    var target = parseInt(item.getAttribute('data-target'));
+    item.classList.remove('active', 'completed');
+    if (target === currentIndex) {
+      item.classList.add('active');
+    } else if (target < currentIndex) {
+      item.classList.add('completed');
+    }
+  });
+  // Results screen (index 13 = screen_results)
+  var screens = document.querySelectorAll('.screen');
+  var resultsIdx = -1;
+  screens.forEach(function(s, i){ if(s.id === 'screen_results') resultsIdx = i; });
+  if (currentIndex === resultsIdx) {
+    var lastItem = document.querySelector('.sidebar-item[data-target="13"]');
+    if (lastItem) { lastItem.classList.remove('completed'); lastItem.classList.add('active'); }
+  }
+}
+
+function goToScreenFromSidebar(index) {
+  // Allow free navigation through theory screens (0-8)
+  // For exercise screens (9-13), enforce sequential completion
+  var exerciseStart = 9;
+  if (index >= exerciseStart && index > AppState.currentScreen) {
+    // Check if we can advance to this screen
+    for (var s = AppState.currentScreen; s < index; s++) {
+      if (!canAdvance(s)) {
+        showAdvanceWarning();
+        return;
+      }
+    }
+  }
+  goToScreen(index);
+}
+
+</script>
+</div><!-- /main-content -->
+</div><!-- /outer-layout -->
+</body>
+</html>
