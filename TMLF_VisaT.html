@@ -1,0 +1,1194 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ejercicio: Criterios de Elegibilidad – Visa T | TMLF Academy</title>
+<script>
+/**
+ * SCORM 1.2 API Bridge
+ * TMLF Academy — Ejercicio Visa T
+ * 
+ * Funciones expuestas al HTML:
+ *   SCORM.init()           — llamar al cargar la página
+ *   SCORM.finish()         — llamar al cerrar / unload
+ *   SCORM.setScore(raw, min, max)  — puntaje numérico
+ *   SCORM.setStatus(status)        — 'passed'|'failed'|'completed'|'incomplete'
+ *   SCORM.setInteraction(id, type, studentResponse, correctResponse, result, latency)
+ *   SCORM.setSuspendData(data)     — string JSON con estado del ejercicio
+ *   SCORM.getSuspendData()         — devuelve string guardado
+ *   SCORM.commit()                 — forzar guardado en LMS
+ */
+
+var SCORM = (function () {
+
+  var _API = null;
+  var _initialized = false;
+  var _finished = false;
+  var _interactionIndex = 0;
+
+  /* ── Búsqueda del objeto API en ventanas padre ── */
+  function _findAPI(win) {
+    var attempts = 0;
+    while (win.API == null && win.parent != null && win.parent != win) {
+      attempts++;
+      if (attempts > 10) return null;
+      win = win.parent;
+    }
+    return win.API || null;
+  }
+
+  function _getAPI() {
+    var api = _findAPI(window);
+    if (api == null && window.opener != null) {
+      api = _findAPI(window.opener);
+    }
+    return api;
+  }
+
+  /* ── LMSGetValue / LMSSetValue wrappers ── */
+  function _get(element) {
+    if (!_API || !_initialized) return '';
+    return _API.LMSGetValue(element) || '';
+  }
+
+  function _set(element, value) {
+    if (!_API || !_initialized) return false;
+    var result = _API.LMSSetValue(element, value);
+    return result === 'true' || result === true;
+  }
+
+  /* ── API pública ── */
+  return {
+
+    init: function () {
+      if (_initialized) return true;
+      _API = _getAPI();
+      if (!_API) {
+        console.warn('[SCORM] API no encontrada — modo standalone');
+        return false;
+      }
+      var result = _API.LMSInitialize('');
+      _initialized = (result === 'true' || result === true);
+      if (_initialized) {
+        _set('cmi.core.lesson_status', 'incomplete');
+        console.info('[SCORM] Inicializado OK');
+      }
+      return _initialized;
+    },
+
+    finish: function () {
+      if (!_API || !_initialized || _finished) return;
+      _API.LMSCommit('');
+      _API.LMSFinish('');
+      _finished = true;
+      console.info('[SCORM] Finalizado OK');
+    },
+
+    commit: function () {
+      if (!_API || !_initialized) return;
+      _API.LMSCommit('');
+    },
+
+    /* Puntaje: raw = 0-100, min = 0, max = 100 */
+    setScore: function (raw, min, max) {
+      min = min !== undefined ? min : 0;
+      max = max !== undefined ? max : 100;
+      _set('cmi.core.score.raw', raw);
+      _set('cmi.core.score.min', min);
+      _set('cmi.core.score.max', max);
+    },
+
+    /* status: 'passed' | 'failed' | 'completed' | 'incomplete' | 'browsed' */
+    setStatus: function (status) {
+      _set('cmi.core.lesson_status', status);
+    },
+
+    /* Tiempo de sesión formato HH:MM:SS */
+    setSessionTime: function (seconds) {
+      var h = Math.floor(seconds / 3600);
+      var m = Math.floor((seconds % 3600) / 60);
+      var s = Math.floor(seconds % 60);
+      var pad = function(n){ return n < 10 ? '0'+n : ''+n; };
+      _set('cmi.core.session_time', pad(h)+':'+pad(m)+':'+pad(s));
+    },
+
+    /**
+     * Registra una interacción (respuesta de pregunta)
+     * @param {string} id               — identificador único, e.g. "q01"
+     * @param {string} type             — 'choice' | 'true-false' | 'fill-in' | 'essay'
+     * @param {string} studentResponse  — lo que respondió el alumno
+     * @param {string} correctResponse  — la respuesta correcta
+     * @param {string} result           — 'correct' | 'wrong' | 'neutral'
+     * @param {string} latency          — tiempo en HH:MM:SS (opcional)
+     */
+    setInteraction: function (id, type, studentResponse, correctResponse, result, latency) {
+      var i = _interactionIndex;
+      _set('cmi.interactions.' + i + '.id', id);
+      _set('cmi.interactions.' + i + '.type', type);
+      _set('cmi.interactions.' + i + '.student_response', studentResponse);
+      _set('cmi.interactions.' + i + '.correct_responses.0.pattern', correctResponse);
+      _set('cmi.interactions.' + i + '.result', result);
+      if (latency) {
+        _set('cmi.interactions.' + i + '.latency', latency);
+      }
+      _interactionIndex++;
+      SCORM.commit();
+    },
+
+    /* Guardar estado del ejercicio (JSON string) */
+    setSuspendData: function (data) {
+      _set('cmi.suspend_data', data);
+      SCORM.commit();
+    },
+
+    getSuspendData: function () {
+      return _get('cmi.suspend_data');
+    },
+
+    getStudentName: function () {
+      return _get('cmi.core.student_name');
+    },
+
+    getStudentId: function () {
+      return _get('cmi.core.student_id');
+    },
+
+    isAvailable: function () {
+      return _API !== null && _initialized;
+    }
+  };
+
+})();
+
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1923;--slate:#5a6a7a;--steel:#6b8fa8;--ice:#8db8d8;--gold:#c9a84c;--gold-bg:rgba(201,168,76,.09);
+  --white:#fff;--bg:#eef1f5;--shadow:0 8px 28px rgba(15,25,35,.11);--radius:16px;
+  --nav-h:56px;--sidebar-w:272px;
+  --green:#1e6641;--green-bg:rgba(30,102,65,.08);--red:#8b2c2c;--red-bg:rgba(180,50,50,.08);
+  --amber:#7a5200;--amber-bg:rgba(180,130,0,.09);--accent:#1a3a5c;--accent2:#2e5c8a;
+  --sidebar-bg:#0d1e2e;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+
+/* NAV */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav-h);background:rgba(10,18,28,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);display:flex;align-items:center;padding:0 18px;gap:10px}
+.topnav .brand{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--white);white-space:nowrap;letter-spacing:.3px;display:flex;align-items:center;gap:10px}
+.topnav .brand .seal{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.08));border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.topnav .brand span{color:var(--gold)}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topnav-pill{padding:5px 14px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.3);color:#6ba3f7}
+.scorm-badge{padding:4px 12px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;background:rgba(30,102,65,.18);border:1px solid rgba(30,102,65,.35);color:#4ade80;display:flex;align-items:center;gap:5px}
+.scorm-badge .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.sidebar-toggle{display:none;background:none;border:none;color:var(--white);font-size:20px;cursor:pointer;padding:4px 8px}
+@media(max-width:900px){.sidebar-toggle{display:block}}
+
+/* SHELL */
+.app-shell{display:flex;min-height:100vh;padding-top:var(--nav-h)}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);position:fixed;top:var(--nav-h);bottom:0;left:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;border-right:1px solid rgba(201,168,76,.07);z-index:200;transition:transform .3s ease}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:3px}
+.sidebar-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sidebar-header .sh-label{font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px}
+.sidebar-header .sh-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.88);font-weight:600}
+.sb-student{padding:10px 16px 12px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sb-student .ss-label{font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:3px}
+.sb-student .ss-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
+.sb-group{padding:8px 0}
+.sb-group-label{padding:6px 16px 3px;font-size:8.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.sb-divider{margin:4px 14px 6px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.18),transparent)}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:all .18s;position:relative;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.045)}
+.sb-item.active{background:rgba(141,184,216,.09)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.sb-num{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);transition:all .18s}
+.sb-item.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item:hover .sb-num{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+.sb-num.done{background:rgba(30,102,65,.3);color:#4ade80}
+.sb-text{flex:1;min-width:0}
+.sb-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);line-height:1.3;transition:color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item.active .sb-name{color:rgba(255,255,255,.92)}
+.sb-item:hover .sb-name{color:rgba(255,255,255,.82)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.sb-spec-banner{margin:6px 12px 2px;padding:7px 11px;border-radius:9px;background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.03));border:1px solid rgba(201,168,76,.16);display:flex;align-items:center;gap:7px}
+.sb-spec-banner .sbb-text{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(201,168,76,.75)}
+/* Progreso sidebar */
+.sb-progress-wrap{padding:10px 16px 14px;border-top:1px solid rgba(255,255,255,.05)}
+.sb-progress-label{display:flex;justify-content:space-between;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:5px}
+.sb-progress-label span:last-child{color:var(--gold)}
+.sb-progress-bar{height:4px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden}
+.sb-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),#e6b84a);border-radius:999px;transition:width .5s ease;width:0%}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.45)}
+}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);flex:1;padding:26px 26px 60px;max-width:100%}
+@media(max-width:900px){.main{margin-left:0;padding:18px 14px 50px}}
+
+/* PANELS */
+.panel{display:none;animation:fadeUp .35s ease}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:.85}}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#0b1f35 0%,#0e2540 45%,#1a3a5c 100%);color:var(--white);border-radius:20px;padding:42px 38px 36px;box-shadow:0 16px 40px rgba(10,20,35,.22);position:relative;overflow:hidden;margin-bottom:22px}
+.header::before{content:'';position:absolute;top:-60px;right:-40px;width:270px;height:270px;border:1.5px solid rgba(201,168,76,.1);border-radius:50%;animation:pulse 5s ease-in-out infinite}
+.header::after{content:'';position:absolute;bottom:-70px;right:90px;width:180px;height:180px;border:1.5px solid rgba(37,99,235,.08);border-radius:50%;animation:pulse 6s ease-in-out infinite .8s}
+.header-seal{position:absolute;top:26px;right:34px;width:62px;height:62px;border:1.5px solid rgba(201,168,76,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;opacity:.5;animation:pulse 4s ease-in-out infinite}
+.header-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.35);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:12px}
+.header-badge .dot{width:5px;height:5px;background:#6ba3f7;border-radius:50%}
+h1{font-family:'Cormorant Garamond',serif;font-size:36px;letter-spacing:.4px;position:relative;z-index:1;font-weight:700;line-height:1.15}
+.subtitle{font-size:14.5px;color:rgba(255,255,255,.88);max-width:58ch;position:relative;z-index:1;margin-top:10px;line-height:1.65}
+.header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.header-meta-item{display:flex;align-items:center;gap:6px;padding:5px 13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:11.5px}
+.header-meta-item span:first-child{opacity:.58}
+.header-meta-item strong{font-weight:700}
+
+/* BLOCKS */
+.block{background:var(--white);border-radius:14px;border:1px solid rgba(15,25,35,.07);box-shadow:0 2px 10px rgba(15,25,35,.05);margin-bottom:16px;overflow:hidden}
+.btitle{display:flex;align-items:center;gap:10px;padding:16px 20px 14px;border-bottom:1px solid rgba(15,25,35,.06)}
+.bicon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.btitle h2{font-size:15px;font-weight:700;color:var(--ink)}
+.btitle .btag{margin-left:auto;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:var(--gold-bg);color:var(--amber);border:1px solid rgba(201,168,76,.25)}
+.bbody{padding:18px 20px}
+.block.b-concepto{border-color:rgba(15,25,35,.09);background:#ffffff}
+.block.b-concepto .btitle{background:#f4f6f9;border-bottom-color:rgba(15,25,35,.07)}
+.block.b-caso{border-color:rgba(30,102,65,.18);background:#f0fbf5}
+.block.b-caso .btitle{background:rgba(30,102,65,.07);border-bottom-color:rgba(30,102,65,.12)}
+.block.b-caso .btitle h2{color:#1e5c3a}
+.block.b-caso .btag{background:rgba(30,102,65,.1);color:#1a5234;border-color:rgba(30,102,65,.25)}
+.block.b-flujo{border-color:rgba(109,40,217,.16);background:#faf5ff}
+.block.b-flujo .btitle{background:rgba(109,40,217,.06);border-bottom-color:rgba(109,40,217,.12)}
+.block.b-flujo .btitle h2{color:#5b21b6}
+.block.b-eval{border-color:rgba(201,168,76,.35);background:linear-gradient(135deg,#fffdf0 0%,#fff8e1 100%)}
+.block.b-eval .btitle{background:rgba(201,168,76,.13);border-bottom-color:rgba(201,168,76,.22)}
+.block.b-eval .btitle h2{color:#7a5200}
+.block.b-eval .btag{background:rgba(201,168,76,.18);color:#7a5200;border-color:rgba(201,168,76,.35)}
+
+/* ALERTS */
+.alert{padding:11px 16px;border-radius:10px;font-size:13px;line-height:1.55;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px}
+.alert-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.alert.info{background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.2);color:#1e3a6e}
+.alert.success{background:var(--green-bg);border:1px solid rgba(30,102,65,.25);color:var(--green)}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{padding:4px 12px;border-radius:999px;font-size:11.5px;font-weight:600;background:rgba(15,25,35,.06);color:var(--slate);border:1px solid transparent}
+.chip.gold{background:var(--gold-bg);color:var(--amber);border-color:rgba(201,168,76,.25)}
+.chip.green{background:var(--green-bg);color:var(--green);border-color:rgba(30,102,65,.2)}
+.chip.blue{background:rgba(37,99,235,.08);color:#1e4dab;border-color:rgba(37,99,235,.18)}
+
+/* INFO TABLE */
+.info-table{width:100%;border-collapse:collapse;font-size:13px}
+.info-table th{background:rgba(15,25,35,.04);font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:var(--slate);padding:9px 14px;text-align:left;border-bottom:1px solid rgba(15,25,35,.08)}
+.info-table td{padding:10px 14px;border-bottom:1px solid rgba(15,25,35,.05);vertical-align:top;line-height:1.5}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:hover td{background:rgba(15,25,35,.02)}
+
+/* GRID */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:700px){.two-col{grid-template-columns:1fr}}
+
+/* BTN */
+.btn{padding:9px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn-primary{background:var(--accent);color:var(--white)}
+.btn-primary:hover{background:var(--accent2)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:#b8962a}
+.btn-ghost{background:rgba(15,25,35,.06);color:var(--slate);border:1px solid rgba(15,25,35,.1)}
+
+/* MOD NAV */
+.mod-nav-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 0;margin-top:8px;border-top:1px solid rgba(15,25,35,.07)}
+.mod-nav-btn{display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;border:1.5px solid rgba(15,25,35,.1);background:var(--white);color:var(--slate);transition:all .2s;font-family:'DM Sans',sans-serif}
+.mod-nav-btn:hover{border-color:var(--gold);color:var(--amber)}
+.mod-nav-next{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.mod-nav-next:hover{background:var(--accent2);border-color:var(--accent2)}
+
+/* QUIZ PROGRESS */
+.quiz-progress{height:5px;background:rgba(15,25,35,.08);border-radius:999px;margin-bottom:20px;overflow:hidden}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),#e6b84a);border-radius:999px;transition:width .5s ease}
+.quiz-counter{font-size:11px;font-weight:700;color:var(--slate);letter-spacing:.3px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.quiz-counter #progress-text{color:var(--gold);font-weight:700}
+
+/* QUIZ CARD */
+.quiz-card{background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:14px;padding:22px 24px;margin-bottom:14px}
+.quiz-q-text{font-size:15px;font-weight:600;color:var(--ink);line-height:1.6;margin-bottom:6px}
+.quiz-case-text{font-size:13px;color:var(--slate);font-style:italic;line-height:1.6;padding:10px 14px;background:rgba(15,25,35,.03);border-radius:8px;border-left:3px solid rgba(201,168,76,.4);margin-bottom:14px}
+.scenario-num{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--slate);margin-bottom:8px}
+
+/* OPTIONS */
+.opt-btn{display:block;width:100%;text-align:left;padding:11px 16px;margin-bottom:7px;border-radius:10px;border:1.5px solid rgba(15,25,35,.1);background:var(--white);font-size:13.5px;cursor:pointer;transition:all .18s;color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.45}
+.opt-btn:hover{border-color:rgba(37,99,235,.35);background:rgba(37,99,235,.04);color:var(--accent)}
+.opt-btn.correct{border-color:rgba(30,102,65,.5);background:var(--green-bg);color:var(--green);pointer-events:none}
+.opt-btn.wrong{border-color:rgba(139,44,44,.4);background:var(--red-bg);color:var(--red);pointer-events:none}
+.opt-btn.neutral-disabled{opacity:.45;pointer-events:none}
+.opt-btn:disabled{pointer-events:none}
+
+/* FEEDBACK */
+.feedback-box{display:none;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.55;margin-top:8px;animation:fadeUp .3s ease}
+.feedback-box.shown{display:block}
+.feedback-box.correct{background:var(--green-bg);border:1px solid rgba(30,102,65,.25);color:#1a3c24}
+.feedback-box.incorrect{background:var(--red-bg);border:1px solid rgba(139,44,44,.22);color:#3c1a1a}
+.fb-label{font-weight:800;font-size:10px;letter-spacing:.7px;text-transform:uppercase;margin-bottom:6px}
+.fb-legal{font-size:11.5px;opacity:.75;margin-top:8px;font-style:italic}
+
+/* SCORE */
+.quiz-result{background:var(--white);border-radius:16px;padding:30px;text-align:center;border:1px solid rgba(15,25,35,.08);margin-top:16px;display:none;animation:fadeUp .4s ease}
+.quiz-result.shown{display:block}
+.quiz-score-ring{width:110px;height:110px;border-radius:50%;margin:0 auto 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid}
+.quiz-score-ring.pass{border-color:var(--green);background:var(--green-bg)}
+.quiz-score-ring.fail{border-color:var(--red);background:var(--red-bg)}
+.quiz-score-ring .score-num{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:800;line-height:1}
+.quiz-score-ring.pass .score-num{color:var(--green)}
+.quiz-score-ring.fail .score-num{color:var(--red)}
+.quiz-score-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.quiz-score-ring.pass .quiz-score-label{color:var(--green)}
+.quiz-score-ring.fail .quiz-score-label{color:var(--red)}
+.scorm-saved-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(30,102,65,.1);border:1px solid rgba(30,102,65,.25);color:var(--green);margin-top:12px}
+
+/* FRAGMENT CARDS */
+.frag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin-bottom:16px}
+.frag-card{background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(15,25,35,.04)}
+.frag-card-head{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(15,25,35,.06)}
+.frag-type-tag{font-size:9.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(26,58,92,.1);color:var(--accent);border:1px solid rgba(26,58,92,.15)}
+.frag-type-tag.dcl{background:rgba(109,40,217,.08);color:#5b21b6;border-color:rgba(109,40,217,.2)}
+.frag-type-tag.cvl{background:rgba(30,102,65,.08);color:var(--green);border-color:rgba(30,102,65,.2)}
+.frag-source-tag{font-size:10px;color:var(--slate);font-style:italic}
+.frag-card-body{padding:14px}
+.frag-quote{font-style:italic;font-size:13px;color:var(--ink);border-left:3px solid var(--gold);padding-left:10px;margin-bottom:12px;line-height:1.6}
+.frag-analysis{font-size:12.5px;color:var(--accent);background:rgba(26,58,92,.05);border-radius:8px;padding:10px 12px;line-height:1.55}
+.frag-analysis strong{color:var(--accent2)}
+.frag-legal{font-size:10.5px;color:var(--gold);font-weight:700;margin-top:8px;display:block}
+
+/* ELEM BOX */
+.elem-box{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:14px 18px;margin-bottom:16px}
+.elem-title{font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.elem-box ul{padding-left:18px}
+.elem-box li{font-size:13px;color:var(--ink);line-height:1.6;margin-bottom:6px}
+.elem-box li strong{color:var(--accent)}
+
+/* SECTION HIGHLIGHT */
+.hi-section-label{display:flex;align-items:center;gap:7px;margin:22px 0 14px}
+.hi-section-label .hsl-bar{flex:1;height:1.5px;background:rgba(15,25,35,.08)}
+.hi-section-label .hsl-text{font-size:9.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;padding:3px 10px;border-radius:999px}
+.hsl-gold .hsl-text{color:var(--amber);background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25)}
+
+/* CASE BOX */
+.case-box{background:linear-gradient(135deg,#f8f9fb,#f2f4f8);border:1px solid rgba(15,25,35,.1);border-radius:14px;padding:20px 22px;margin-bottom:16px;position:relative}
+.case-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold);border-radius:14px 0 0 14px}
+.case-label{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.case-narrative{font-size:14px;color:var(--ink);line-height:1.7;font-style:italic}
+
+/* OPEN ANALYSIS */
+.tension-box{background:rgba(139,44,44,.04);border:1px solid rgba(139,44,44,.2);border-radius:10px;padding:14px 16px;margin-bottom:14px;font-size:13px;color:#4a1a1a;line-height:1.6}
+.tension-label{font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--red);margin-bottom:6px;display:block}
+.guiding-title{font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;margin-top:14px}
+.guiding-list{padding-left:18px;margin-bottom:14px}
+.guiding-list li{font-size:13px;color:var(--ink);line-height:1.65;margin-bottom:6px}
+.oq-textarea{width:100%;min-height:130px;border:1.5px solid rgba(15,25,35,.12);border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--ink);line-height:1.65;resize:vertical;background:#fafbfc;transition:border-color .2s}
+.oq-textarea:focus{outline:none;border-color:var(--accent);background:var(--white)}
+.oq-textarea-label{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);margin-bottom:6px;display:block;margin-top:14px}
+.save-btn{background:var(--accent);color:#fff;border:none;padding:8px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;transition:background .18s;font-family:'DM Sans',sans-serif;margin-top:10px}
+.save-btn:hover{background:var(--accent2)}
+.save-confirm{display:none;font-size:12px;color:var(--green);font-weight:600;margin-top:6px}
+
+p{font-size:14px;color:var(--ink);line-height:1.7;margin-bottom:10px}
+ul,ol{padding-left:20px;margin-bottom:10px}
+li{font-size:13.5px;color:var(--ink);line-height:1.65;margin-bottom:4px}
+strong{font-weight:700}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <div class="seal">⚖</div>
+    <span>TMLF</span> Academy
+  </div>
+  <div class="topnav-right">
+    <div class="topnav-pill">Ejercicio Práctico · Visa T</div>
+    <div class="scorm-badge"><span class="dot"></span><span id="scorm-status-label">Conectando…</span></div>
+  </div>
+</nav>
+
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sh-label">Ejercicio Práctico · 45 min</div>
+    <div class="sh-title">Criterios de Elegibilidad Visa T</div>
+  </div>
+  <div class="sb-student">
+    <div class="ss-label">Estudiante</div>
+    <div class="ss-name" id="student-name-display">—</div>
+  </div>
+  <div class="sb-group">
+    <div class="sb-group-label">Lectura y análisis</div>
+    <div class="sb-item active" id="nav-p1" onclick="nav('p1')">
+      <div class="sb-num" id="sbn-p1">I</div>
+      <div class="sb-text">
+        <div class="sb-name">Fragmentos del Caso</div>
+        <div class="sb-sub">Caso 36979723 · 5 criterios</div>
+      </div>
+    </div>
+    <div class="sb-divider"></div>
+    <div class="sb-group-label">Ejercicio</div>
+    <div class="sb-item" id="nav-p2" onclick="nav('p2')">
+      <div class="sb-num" id="sbn-p2">II</div>
+      <div class="sb-text">
+        <div class="sb-name">Opción Múltiple</div>
+        <div class="sb-sub">10 reactivos con feedback legal</div>
+      </div>
+    </div>
+    <div class="sb-item" id="nav-p3" onclick="nav('p3')">
+      <div class="sb-num" id="sbn-p3">III</div>
+      <div class="sb-text">
+        <div class="sb-name">Análisis Abierto</div>
+        <div class="sb-sub">3 tensiones jurídicas · Sr. Grozev</div>
+      </div>
+    </div>
+    <div class="sb-divider"></div>
+    <div class="sb-group-label">Referencia</div>
+    <div class="sb-item" id="nav-ref" onclick="nav('ref')">
+      <div class="sb-num" id="sbn-ref">⚖</div>
+      <div class="sb-text">
+        <div class="sb-name">Referencia USCIS</div>
+        <div class="sb-sub">Criterios · Indicadores · EMP</div>
+      </div>
+    </div>
+  </div>
+  <div class="sb-progress-wrap">
+    <div class="sb-progress-label"><span>Reactivos respondidos</span><span id="sb-progress-label">0 / 10</span></div>
+    <div class="sb-progress-bar"><div class="sb-progress-fill" id="sb-progress-fill"></div></div>
+  </div>
+</aside>
+
+<main class="main">
+
+<!-- ═══════════ PARTE I ═══════════ -->
+<div class="panel active" id="panel-p1">
+  <div class="header">
+    <div class="header-seal">📋</div>
+    <div class="header-badge"><span class="dot"></span>Parte I</div>
+    <h1>Fragmentos del Caso</h1>
+    <p class="subtitle">Caso 36979723 — Sr. Landiz. Fragmentos organizados por criterio de elegibilidad de la Visa T. Lee cada tarjeta antes de pasar al ejercicio.</p>
+    <div class="header-meta">
+      <div class="header-meta-item"><span>⚖</span><strong>INA § 101(a)(15)(T)</strong></div>
+      <div class="header-meta-item"><span>📖</span><strong>22 U.S.C. § 7102</strong></div>
+      <div class="header-meta-item"><span>📋</span><strong>8 C.F.R. § 214.11</strong></div>
+      <div class="header-meta-item"><span>⏱</span><strong>45 min total</strong></div>
+    </div>
+  </div>
+
+  <div class="block b-concepto">
+    <div class="btitle"><div class="bicon" style="background:rgba(26,58,92,.1)">📌</div><h2>Instrucciones — Caso 36979723</h2><span class="btag">Lectura</span></div>
+    <div class="bbody">
+      <p>A continuación encontrarás los fragmentos del testimonio del Sr. Landiz organizados por <strong>criterio de elegibilidad de la Visa T</strong> según USCIS. Para cada criterio se presenta: (1) el fragmento de la entrevista, (2) la declaración complementaria (DCL), y (3) el análisis legal (CVL) que explica <em>por qué sí se cumple</em> el criterio conforme a la ley.</p>
+      <p>Lee cada tarjeta antes de pasar al ejercicio de opción múltiple.</p>
+      <div class="chips">
+        <span class="chip green">1. Víctima de tráfico grave</span>
+        <span class="chip green">2. Medios y Fines (coerción)</span>
+        <span class="chip green">3. Cooperación con LEA</span>
+        <span class="chip green">4. Presencia física en EE.UU.</span>
+        <span class="chip green">5. Dificultad extrema</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hi-section-label hsl-gold"><div class="hsl-bar"></div><span class="hsl-text">Criterio 1 — Víctima de Tráfico Grave · TVPA § 103 / 22 U.S.C. § 7102</span><div class="hsl-bar"></div></div>
+  <div class="frag-grid">
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag">Entrevista</span><span class="frag-source-tag">Testimonio directo</span></div><div class="frag-card-body"><div class="frag-quote">«En eso se me acercó un muchacho, él trabajaba en una tienda Elektra… me dijo ¿QUIERES CRUZAR? SI QUIERES CRUZAR TE CRUZO BARATO, NO VAN A TARDAR MUCHO Y EL VIAJE ES SEGURO, CONMIGO NO LOS VAN A AGARRAR.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> El captador presenta una oferta fraudulenta de cruce "seguro y barato", ocultando deliberadamente las condiciones de explotación que seguirían. Es reclutamiento mediante engaño.</div><span class="frag-legal">TVPA § 103 — 22 U.S.C. § 7102(11)</span></div></div>
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag dcl">DCL</span><span class="frag-source-tag">Declaración complementaria</span></div><div class="frag-card-body"><div class="frag-quote">«Me preguntó si planeaba ir a los Estados Unidos y yo le dije que sí. Él me dijo, "Si quieres cruzar, te cruzo barato, no vas a tardar mucho y el viaje es seguro, conmigo no te van a agarrar."»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> Confirma que el captador explotó la vulnerabilidad del Sr. Landiz (recién deportado, sin recursos) para presentar una oferta que omitía las condiciones de trabajo forzado.</div><span class="frag-legal">TVPA § 103 — Indicadores de tráfico: omisión de información crítica</span></div></div>
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag cvl">CVL</span><span class="frag-source-tag">Análisis legal</span></div><div class="frag-card-body"><div class="frag-quote">«Traffickers exploited Mr. Landiz's extreme vulnerability after his deportation to violent Tamaulipas... recruiting him for trafficking purposes.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> Establece que los traficantes realizaron reclutamiento fraudulento aprovechando la situación de extrema vulnerabilidad, cumpliendo la definición de "severe form of trafficking" bajo el TVPA.</div><span class="frag-legal">22 U.S.C. § 7102(11) — Reclutamiento + abuso de vulnerabilidad</span></div></div>
+  </div>
+  <div class="elem-box"><div class="elem-title">📋 Elementos esperados — Criterio 1</div><ul><li><strong>Reclutamiento:</strong> El captador se acerca activamente al solicitante y le hace una propuesta.</li><li><strong>Engaño / fraude:</strong> La oferta oculta deliberadamente las condiciones de explotación; se presentan promesas falsas de seguridad.</li><li><strong>Abuso de vulnerabilidad:</strong> El traficante aprovecha la situación de extrema vulnerabilidad del solicitante —recién deportado, sin recursos, en zona de violencia—.</li><li><strong>Finalidad de explotación laboral o sexual:</strong> El engaño tiene como propósito obtener trabajo o servicios bajo condiciones de tráfico (22 U.S.C. § 7102(11)).</li></ul></div>
+
+  <div class="hi-section-label hsl-gold"><div class="hsl-bar"></div><span class="hsl-text">Criterio 2 — Medios y Fines: Coerción y Trabajo Forzado · 22 U.S.C. § 7102 / 8 C.F.R. § 214.201</span><div class="hsl-bar"></div></div>
+  <div class="frag-grid">
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag">Entrevista</span><span class="frag-source-tag">Testimonio directo</span></div><div class="frag-card-body"><div class="frag-quote">«Me dijeron SIÉNTATE, TE VAS A PONER A LIMPIAR A LOS ANIMALES Y DESDE AQUÍ TE VAMOS A ESTAR VIENDO Y SI DECIDES ESCAPAR TE VAMOS A DAR UN BALAZO EN EL PIE, en ese momento no podía moverme solo agache la cabeza, tenía miedo.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> Amenaza explícita de violencia física como medio de coerción para imponer trabajo forzado. El miedo paralizó al sujeto, evidenciando la efectividad del control.</div><span class="frag-legal">22 U.S.C. § 7102(11) — Coerción; 8 C.F.R. § 214.201 — Involuntary servitude</span></div></div>
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag dcl">DCL</span><span class="frag-source-tag">Declaración complementaria</span></div><div class="frag-card-body"><div class="frag-quote">«Me dijeron, "Te vas a poner a limpiar a los animales y desde aquí te vamos a estar viendo, si decides escapar, te vamos a dar un balazo en el pie." En ese momento sentí miedo y sólo agaché la cabeza.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> La DCL confirma el patrón sistemático: vigilancia constante + amenaza de daño físico = peonaje bajo la definición legal. El cumplimiento fue inducido exclusivamente por el miedo.</div><span class="frag-legal">22 U.S.C. § 7102(11) — Peonaje; patrón organizado de explotación</span></div></div>
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag cvl">CVL</span><span class="frag-source-tag">Análisis legal</span></div><div class="frag-card-body"><div class="frag-quote">«Coercion as the traffickers used threats of shooting, throwing him to crocodiles, or causing him bodily harm to compel obedience to their demands as a condition for basic survival.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> El análisis encuadra la conducta como servitud involuntaria con elementos de peonaje: la supervivencia básica estaba condicionada al cumplimiento de órdenes bajo amenaza de muerte.</div><span class="frag-legal">22 U.S.C. § 7102(11) + USCIS Guidance — "plan, scheme, or pattern"</span></div></div>
+  </div>
+  <div class="elem-box"><div class="elem-title">📋 Elementos esperados — Criterio 2</div><ul><li><strong>Amenaza de violencia física como medio de coerción:</strong> Los traficantes usan amenazas explícitas de muerte o daño corporal para imponer trabajo.</li><li><strong>Vigilancia y control:</strong> El solicitante es observado constantemente, eliminando cualquier posibilidad real de escape.</li><li><strong>Trabajo forzado como fin:</strong> El resultado del miedo es la realización de trabajo sin compensación ni posibilidad de negarse.</li><li><strong>Servitud involuntaria / peonaje:</strong> La supervivencia básica está condicionada al cumplimiento de órdenes, configurando involuntary servitude bajo 8 C.F.R. § 214.201.</li><li><strong>Patrón organizado:</strong> El esquema combina confinamiento + amenazas + trabajo forzado como «plan, scheme, or pattern» bajo 22 U.S.C. § 7102(11).</li></ul></div>
+
+  <div class="hi-section-label hsl-gold"><div class="hsl-bar"></div><span class="hsl-text">Criterio 3 — Cooperación con Autoridades · 8 C.F.R. § 214.202(c)(1)</span><div class="hsl-bar"></div></div>
+  <div class="frag-grid">
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag">Entrevista</span><span class="frag-source-tag">Testimonio directo</span></div><div class="frag-card-body"><div class="frag-quote">«Yo les conté todo a los policías cuando me encontraron. Les dije dónde estaba la casa, cómo eran los que me tenían... Yo quiero ayudar en lo que pueda porque no quiero que le hagan lo mismo a alguien más.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> El solicitante coopera activamente proporcionando información concreta sobre la red. La disposición genuina a asistir satisface el estándar de cooperación razonable.</div><span class="frag-legal">8 C.F.R. § 214.202(c)(1) — Cooperación razonable con LEA</span></div></div>
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag dcl">DCL</span><span class="frag-source-tag">Declaración complementaria</span></div><div class="frag-card-body"><div class="frag-quote">«Yo no había reportado nada ante las autoridades antes debido al miedo que le tenía a esa gente y también por el miedo que tenía a ser deportado... Pero sí estoy dispuesto a seguir cooperando con cualquier información respecto a mi caso.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> El retraso en reportar se explica por miedo legítimo (no mala fe). La voluntad de cooperar activa cumple el estándar: el silencio previo debido a trauma no desclasifica al solicitante.</div><span class="frag-legal">8 C.F.R. § 214.202(c)(1) — Cooperación razonable bajo circunstancias</span></div></div>
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag cvl">CVL</span><span class="frag-source-tag">Análisis legal</span></div><div class="frag-card-body"><div class="frag-quote">«Mr. Landiz has come forward with detailed testimony regarding the trafficking network... His prior silence was not due to unwillingness, but the result of legitimate fear and trauma, which fulfills the standard outlined in § 214.202(c)(1).»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> USCIS reconoce que el trauma puede retrasar la cooperación. El miedo fue la causa del silencio, no falta de intención, y la cooperación actual es genuina y continúa.</div><span class="frag-legal">§ 214.202(c)(1) — Silence due to fear = reasonable non-compliance</span></div></div>
+  </div>
+  <div class="elem-box"><div class="elem-title">📋 Elementos esperados — Criterio 3</div><ul><li><strong>Retraso justificado:</strong> El solicitante no reportó por miedo concreto y documentado —a los traficantes y a la deportación— no por mala fe.</li><li><strong>Cooperación activa actual:</strong> Está dispuesto a cooperar y lo demuestra proporcionando información concreta sobre la red.</li><li><strong>Testimonio detallado:</strong> La información aportada es específica y útil para la investigación.</li><li><strong>Causalidad trauma–silencio:</strong> El análisis legal conecta el silencio previo con el trauma sufrido, descartando intención de entorpecer la investigación.</li></ul></div>
+
+  <div class="hi-section-label hsl-gold"><div class="hsl-bar"></div><span class="hsl-text">Criterio 4 — Presencia Física en EE.UU. a Causa del Tráfico · INA § 101(a)(15)(T)</span><div class="hsl-bar"></div></div>
+  <div class="frag-grid">
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag">Entrevista</span><span class="frag-source-tag">Testimonio directo</span></div><div class="frag-card-body"><div class="frag-quote">«Cuando entré al hospital me sentí con vida y libertad, pero como había mucha gente comencé a sentir mucho miedo a que migración me agarrara... Me tuve que salir del hospital pero no tenía donde llegar y me quedaba en la calle, a dormir en los botes de basura.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> La presencia en territorio estadounidense es directa consecuencia del tráfico: fue traído y retenido en EE.UU. contra su voluntad. Al quedar libre, permaneció porque carecía de medios para salir.</div><span class="frag-legal">INA § 101(a)(15)(T) — Physical presence on account of trafficking</span></div></div>
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag dcl">DCL</span><span class="frag-source-tag">Declaración complementaria</span></div><div class="frag-card-body"><div class="frag-quote">«Ya en Houston, nos dejaron en una casa que era como un rancho... Nos metieron a la casa, nos encerraron en un cuarto. No podíamos salir. No tenía forma de comunicarme con nadie.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> El traslado y confinamiento en Houston son el acto de tráfico en sí. La retención establece directamente el nexo causal entre el tráfico y la presencia física en EE.UU.</div><span class="frag-legal">INA § 101(a)(15)(T)(i)(II) — Presence on account of act of trafficking</span></div></div>
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag cvl">CVL</span><span class="frag-source-tag">Análisis legal</span></div><div class="frag-card-body"><div class="frag-quote">«Since his trafficking victimization, Mr. Landiz has suffered deep emotional and psychological harm... Upon his discharge, Mr. Landiz found himself destitute and isolated on the streets.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> La presencia física continúa siendo consecuencia directa del tráfico: la lesión en la rodilla, la falta de recursos y el trauma impidieron su salida del país.</div><span class="frag-legal">INA § 101(a)(15)(T)(i)(II) — Presence on account of trafficking</span></div></div>
+  </div>
+  <div class="elem-box"><div class="elem-title">📋 Elementos esperados — Criterio 4</div><ul><li><strong>Traslado a EE.UU. por los traficantes:</strong> El solicitante llegó al territorio porque los traficantes lo llevaron, no por decisión propia autónoma.</li><li><strong>Retención en EE.UU. contra la voluntad:</strong> El confinamiento en Houston demuestra que la presencia física es consecuencia directa del acto de tráfico.</li><li><strong>Nexo causal post-tráfico:</strong> Después de escapar, el solicitante permanece en EE.UU. por consecuencias directas —lesiones físicas, destitución, trauma— que le impiden salir.</li><li><strong>Irrelevancia de la forma de entrada:</strong> La ley no requiere entrada legal; lo determinante es que la presencia sea «on account of trafficking».</li></ul></div>
+
+  <div class="hi-section-label hsl-gold"><div class="hsl-bar"></div><span class="hsl-text">Criterio 5 — Dificultad Extrema ante la Deportación · 8 C.F.R. § 214.11(i)(2)(viii)</span><div class="hsl-bar"></div></div>
+  <div class="frag-grid">
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag">Entrevista</span><span class="frag-source-tag">Testimonio directo</span></div><div class="frag-card-body"><div class="frag-quote">«Hace tres meses llegaron a mi restaurante y pidieron 200,000 pesos y secuestraron a mi hermana y la manager, dijeron que si no daba el dinero quemarían el restaurante y matarían a mi hermana.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> Documenta que el regreso a México equivale a exposición directa a violencia cartelera. El CJNG ya ha ejecutado secuestros y amenazas de muerte contra su familia, haciendo el riesgo concreto y verificable.</div><span class="frag-legal">8 C.F.R. § 214.11(i)(2)(viii) — Extreme hardship: targeted violence</span></div></div>
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag dcl">DCL</span><span class="frag-source-tag">Declaración complementaria</span></div><div class="frag-card-body"><div class="frag-quote">«Yo no puedo regresar a México porque los del cártel Jalisco Nueva Generación me tienen vigilado a mí y a toda mi familia... Me da miedo que me deporten y que esa gente piense que mis ingresos de aquí son muchos y quizá me matarían.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> El CJNG ejerce vigilancia activa sobre él y su familia. La deportación lo convertiría en blanco renovado al revelarse como "dueño real" de los negocios.</div><span class="frag-legal">8 C.F.R. § 214.11(i)(2)(viii) — Extreme hardship post-deportation</span></div></div>
+    <div class="frag-card"><div class="frag-card-head"><span class="frag-type-tag cvl">CVL</span><span class="frag-source-tag">Análisis legal</span></div><div class="frag-card-body"><div class="frag-quote">«Mr. Landiz faces a direct and credible threat of harm from the Jalisco Nueva Generación Cartel (CJNG), one of the most violent and dominant criminal groups in Mexico.»</div><div class="frag-analysis"><strong>¿Por qué cumple?</strong> El análisis eleva la amenaza de nivel especulativo a concreto-documentado: historial de extorsiones, secuestros ejecutados, colusión policial confirman que el daño extremo es prácticamente inevitable.</div><span class="frag-legal">8 C.F.R. § 214.11(i)(2)(viii) + INA § 214 — No speculative harm</span></div></div>
+  </div>
+  <div class="elem-box"><div class="elem-title">📋 Elementos esperados — Criterio 5</div><ul><li><strong>Amenaza personalizada, no general:</strong> El riesgo no es la inseguridad genérica de México, sino una amenaza dirigida específicamente al solicitante y su familia por actores identificados.</li><li><strong>Historial concreto de violencia:</strong> Los hechos pasados —secuestro de la hermana, extorsiones múltiples— elevan el riesgo de especulativo a documentado y verificable.</li><li><strong>Incapacidad de protección estatal:</strong> La colusión policial o la impunidad del cártel hacen que las instituciones del país de origen no puedan ofrecer protección real.</li><li><strong>Nexo con el tráfico sufrido:</strong> El análisis vincula la vulnerabilidad post-tráfico con el incremento del riesgo ante una deportación.</li><li><strong>Daño extremo prácticamente inevitable:</strong> La combinación de vigilancia activa, historial de violencia y ausencia de protección configura dificultad extrema bajo 8 C.F.R. § 214.11(i)(2)(viii).</li></ul></div>
+
+  <div class="mod-nav-bar">
+    <div></div>
+    <button class="mod-nav-btn mod-nav-next" onclick="nav('p2')">Continuar a Parte II — Ejercicio ›</button>
+  </div>
+</div><!-- /panel-p1 -->
+
+
+<!-- ═══════════ PARTE II ═══════════ -->
+<div class="panel" id="panel-p2">
+  <div class="header">
+    <div class="header-seal">✏️</div>
+    <div class="header-badge"><span class="dot"></span>Parte II</div>
+    <h1>Ejercicio de Opción Múltiple</h1>
+    <p class="subtitle">10 reactivos sobre criterios de elegibilidad de la Visa T. Lee el fragmento y selecciona la opción que mejor justifique tu respuesta conforme a la ley. Retroalimentación inmediata con base legal. <strong>Tus respuestas se registran automáticamente.</strong></p>
+    <div class="header-meta">
+      <div class="header-meta-item"><span>📝</span><strong>10 reactivos</strong></div>
+      <div class="header-meta-item"><span>🎯</span><strong>Aprobación: 80%</strong></div>
+      <div class="header-meta-item"><span>💾</span><strong>Registro automático en Moodle</strong></div>
+    </div>
+  </div>
+
+  <div class="quiz-counter">
+    <span>Progreso del ejercicio</span>
+    <span id="progress-text">0 / 10 respondidas</span>
+  </div>
+  <div class="quiz-progress"><div class="quiz-progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+  <!-- Q1 -->
+  <div class="quiz-card" id="qcard-1">
+    <div class="scenario-num">Reactivo 1 de 10 · Víctima de Tráfico Grave</div>
+    <div class="quiz-q-text">Lee el siguiente fragmento y determina si cumple o no el criterio de <em>víctima de tráfico grave</em>:</div>
+    <div class="quiz-case-text">«En eso se me acercó un muchacho, él trabajaba en una tienda Elektra… me dijo ¿QUIERES CRUZAR? SI QUIERES CRUZAR TE CRUZO BARATO, NO VAN A TARDAR MUCHO Y EL VIAJE ES SEGURO, CONMIGO NO LOS VAN A AGARRAR.» — «Si quieres cruzar, te cruzo barato, no vas a tardar mucho y el viaje es seguro, conmigo no te van a agarrar.»</div>
+    <button class="opt-btn" onclick="answer(1,'A')">A. No cumple. El solicitante aceptó la oferta voluntariamente, lo que constituye consentimiento explícito con las condiciones pactadas con el traficante.</button>
+    <button class="opt-btn" onclick="answer(1,'B')">B. Sí cumple. El reclutamiento con engaño y omisión de información crítica sobre las condiciones de explotación satisface la definición de tráfico grave bajo 22 U.S.C. § 7102(11).</button>
+    <button class="opt-btn" onclick="answer(1,'C')">C. No cumple. El engaño en la oferta de cruce configura un fraude civil, no tráfico de personas, ya que no hubo fuerza física directa durante el reclutamiento.</button>
+    <button class="opt-btn" onclick="answer(1,'D')">D. Sí cumple, pero únicamente si el solicitante no realizó ningún pago previo al traficante ni tuvo ningún acuerdo económico por el servicio de cruce.</button>
+    <div class="feedback-box" id="fb-1"></div>
+  </div>
+
+  <div class="quiz-card" id="qcard-2">
+    <div class="scenario-num">Reactivo 2 de 10 · Víctima de Tráfico Grave</div>
+    <div class="quiz-q-text">Lee el siguiente fragmento y determina si el hecho descrito descalifica o no al solicitante del criterio de <em>víctima de tráfico grave</em>:</div>
+    <div class="quiz-case-text">«De Tamaulipas a Roseville son 800 dólares y de Roseville a Houston 2,500 dólares.»</div>
+    <button class="opt-btn" onclick="answer(2,'A')">A. Sí descalifica. Quien paga por el servicio de cruce es cliente del traficante, no víctima, porque existió un acuerdo económico libre y voluntario entre ambas partes.</button>
+    <button class="opt-btn" onclick="answer(2,'B')">B. No descalifica. El tráfico se define por los medios usados y el fin de explotación; el pago inicial no impide la elegibilidad y puede constituir debt bondage.</button>
+    <button class="opt-btn" onclick="answer(2,'C')">C. Sí descalifica. USCIS exige que la víctima no haya tenido ningún tipo de acuerdo económico previo con el traficante para que proceda la solicitud de Visa T.</button>
+    <button class="opt-btn" onclick="answer(2,'D')">D. No descalifica, pero únicamente si el monto pagado fue inferior a $500 dólares, umbral interno de USCIS para distinguir entre cliente y víctima de tráfico.</button>
+    <div class="feedback-box" id="fb-2"></div>
+  </div>
+
+  <div class="quiz-card" id="qcard-3">
+    <div class="scenario-num">Reactivo 3 de 10 · Medios y Fines (Coerción)</div>
+    <div class="quiz-q-text">Lee el siguiente fragmento y determina si cumple o no el criterio de <em>medios y fines (coerción)</em> de la Visa T:</div>
+    <div class="quiz-case-text">«SIÉNTATE, TE VAS A PONER A LIMPIAR A LOS ANIMALES Y DESDE AQUÍ TE VAMOS A ESTAR VIENDO Y SI DECIDES ESCAPAR TE VAMOS A DAR UN BALAZO EN EL PIE, en ese momento no podía moverme solo agache la cabeza, tenía miedo.»</div>
+    <button class="opt-btn" onclick="answer(3,'A')">A. No cumple. El solicitante realizó el trabajo sin resistencia visible, lo que se interpretaría como consentimiento tácito con las condiciones de trabajo impuestas.</button>
+    <button class="opt-btn" onclick="answer(3,'B')">B. No cumple. Las amenazas verbales sin un acto físico consumado no alcanzan el umbral legal de coerción exigido para configurar tráfico laboral bajo el TVPA.</button>
+    <button class="opt-btn" onclick="answer(3,'C')">C. Sí cumple. Las amenazas de violencia para obtener trabajo son coerción bajo 22 U.S.C. § 7102(11); vigilancia constante + amenaza de muerte + trabajo forzado configura servitud involuntaria.</button>
+    <button class="opt-btn" onclick="answer(3,'D')">D. Solo cumple si el solicitante cuenta con lesiones físicas documentadas médicamente como consecuencia directa y verificable de las amenazas que recibió de los traficantes.</button>
+    <div class="feedback-box" id="fb-3"></div>
+  </div>
+
+  <div class="quiz-card" id="qcard-4">
+    <div class="scenario-num">Reactivo 4 de 10 · Cooperación con LEA</div>
+    <div class="quiz-q-text">Lee el siguiente fragmento y determina si el retraso descrito afecta o no el cumplimiento del criterio de <em>cooperación con autoridades (LEA)</em>:</div>
+    <div class="quiz-case-text">«Yo no había reportado nada ante las autoridades antes debido al miedo que le tenía a esa gente y también por el miedo que tenía a ser deportado… Pero sí estoy dispuesto a seguir cooperando con las autoridades con cualquier información respecto a mi caso.»</div>
+    <button class="opt-btn" onclick="answer(4,'A')">A. Sí afecta negativamente. USCIS exige que la víctima reporte el tráfico dentro del primer año del incidente para que su cooperación sea formalmente considerada.</button>
+    <button class="opt-btn" onclick="answer(4,'B')">B. No afecta negativamente. Bajo 8 C.F.R. § 214.202(c)(1), el retraso por miedo y trauma no descalifica; lo determinante es la cooperación activa al presentar la solicitud.</button>
+    <button class="opt-btn" onclick="answer(4,'C')">C. Sí afecta negativamente. Al no reportar, el solicitante permitió que los traficantes continuaran operando, conducta que puede interpretarse como complicidad pasiva.</button>
+    <button class="opt-btn" onclick="answer(4,'D')">D. No afecta negativamente, pero USCIS solo acepta el retraso si fue menor a dos años desde los hechos, conforme a sus pautas internas de adjudicación vigentes.</button>
+    <div class="feedback-box" id="fb-4"></div>
+  </div>
+
+  <div class="quiz-card" id="qcard-5">
+    <div class="scenario-num">Reactivo 5 de 10 · Cooperación con LEA</div>
+    <div class="quiz-q-text">Lee el siguiente fragmento y determina si la cooperación descrita es suficiente para el criterio de <em>cooperación con LEA</em> de la Visa T:</div>
+    <div class="quiz-case-text">«Mr. Landiz has come forward with detailed testimony regarding the trafficking network… His prior silence was not due to unwillingness, but the result of legitimate fear and trauma, which fulfills the standard outlined in § 214.202(c)(1).»</div>
+    <button class="opt-btn" onclick="answer(5,'A')">A. No es suficiente. USCIS requiere cooperación total y sin ninguna reserva; la cooperación condicionada por el miedo equivale a una negativa parcial a colaborar.</button>
+    <button class="opt-btn" onclick="answer(5,'B')">B. Sí es suficiente. USCIS reconoce que las víctimas cooperan con limitaciones por trauma y miedo; el estándar legal es la cooperación razonable, no la ausencia total de temor.</button>
+    <button class="opt-btn" onclick="answer(5,'C')">C. Solo sería suficiente si una agencia de LEA certifica formalmente que la cooperación fue completa, sin condiciones y sin ninguna reserva personal del solicitante.</button>
+    <button class="opt-btn" onclick="answer(5,'D')">D. No es suficiente. El miedo a represalias indica que el solicitante sigue bajo control efectivo de los traficantes, lo que invalida su capacidad real de cooperar.</button>
+    <div class="feedback-box" id="fb-5"></div>
+  </div>
+
+  <div class="quiz-card" id="qcard-6">
+    <div class="scenario-num">Reactivo 6 de 10 · Presencia Física en EE.UU.</div>
+    <div class="quiz-q-text">Lee el siguiente fragmento y determina si cumple o no el criterio de <em>presencia física en EE.UU. a causa del tráfico</em>:</div>
+    <div class="quiz-case-text">«Ya en Houston, nos dejaron en una casa que era como un rancho… Nos metieron a la casa, nos encerraron en un cuarto. No podíamos salir. No sabía para qué nos tenían encerrados ni qué nos iban a hacer. No tenía forma de comunicarme con nadie.»</div>
+    <button class="opt-btn" onclick="answer(6,'A')">A. No cumple. El solicitante ingresó de manera irregular, lo que invalida el criterio de presencia física porque la entrada no fue reconocida legalmente por USCIS.</button>
+    <button class="opt-btn" onclick="answer(6,'B')">B. Sí cumple. INA § 101(a)(15)(T) no requiere entrada legal; el traslado y retención en Houston establece el nexo causal entre el acto de tráfico y la presencia en EE.UU.</button>
+    <button class="opt-btn" onclick="answer(6,'C')">C. Solo cumple si el solicitante cruzó por un puerto de entrada oficial reconocido por USCIS, independientemente de si fue retenido con posterioridad.</button>
+    <button class="opt-btn" onclick="answer(6,'D')">D. No cumple. El criterio de presencia física únicamente aplica a víctimas retenidas en la zona fronteriza, no en ciudades del interior del país como Houston.</button>
+    <div class="feedback-box" id="fb-6"></div>
+  </div>
+
+  <div class="quiz-card" id="qcard-7">
+    <div class="scenario-num">Reactivo 7 de 10 · Presencia Física en EE.UU.</div>
+    <div class="quiz-q-text">Lee el siguiente fragmento y determina si la situación descrita satisface o no el criterio de <em>presencia física en EE.UU. a causa del tráfico</em>:</div>
+    <div class="quiz-case-text">«Cuando entré al hospital me sentí con vida y libertad, pero como había mucha gente comencé a sentir mucho miedo a que migración me agarrara… Me tuve que salir del hospital pero no tenía donde llegar y me quedaba en la calle, a dormir en los botes de basura.» — «Since his trafficking victimization, Mr. Landiz has suffered deep emotional and psychological harm…»</div>
+    <button class="opt-btn" onclick="answer(7,'A')">A. No satisface. La situación de tráfico había terminado al escapar, y la permanencia posterior fue una decisión personal y libre del propio solicitante.</button>
+    <button class="opt-btn" onclick="answer(7,'B')">B. Sí satisface. USCIS reconoce que las consecuencias directas del tráfico —lesiones, destitución, trauma— que impiden la salida continúan siendo presencia a causa del tráfico.</button>
+    <button class="opt-btn" onclick="answer(7,'C')">C. No satisface. La Visa T únicamente cubre el período en que la víctima estaba bajo control activo y directo de los traficantes, no la situación posterior.</button>
+    <button class="opt-btn" onclick="answer(7,'D')">D. Solo satisface si el solicitante intentó regresar a México y los traficantes lo impidieron físicamente, documentando el intento de salida frustrado.</button>
+    <div class="feedback-box" id="fb-7"></div>
+  </div>
+
+  <div class="quiz-card" id="qcard-8">
+    <div class="scenario-num">Reactivo 8 de 10 · Dificultad Extrema</div>
+    <div class="quiz-q-text">Lee el siguiente fragmento y determina si el riesgo descrito constituye o no <em>dificultad extrema ante la deportación</em> bajo la Visa T:</div>
+    <div class="quiz-case-text">«Hace tres meses llegaron a mi restaurante y pidieron 200,000 pesos y secuestraron a mi hermana y la manager, dijeron que si no daba el dinero quemarían el restaurante y matarían a mi hermana.» — «Yo no puedo regresar a México porque los del cártel Jalisco Nueva Generación me tienen vigilado a mí y a toda mi familia…»</div>
+    <button class="opt-btn" onclick="answer(8,'A')">A. No constituye dificultad extrema. La violencia del cártel es un riesgo generalizado en México, no una amenaza personalizada suficientemente específica para este solicitante.</button>
+    <button class="opt-btn" onclick="answer(8,'B')">B. Sí constituye dificultad extrema. 8 C.F.R. § 214.11(i)(2)(viii) reconoce la amenaza de violencia dirigida y documentada; secuestros y extorsiones previos convierten el riesgo en concreto.</button>
+    <button class="opt-btn" onclick="answer(8,'C')">C. No constituye dificultad extrema. El criterio solo aplica a riesgos provenientes directamente de los traficantes originales del caso, no de terceros como organizaciones criminales.</button>
+    <button class="opt-btn" onclick="answer(8,'D')">D. Solo constituye dificultad extrema si el solicitante tiene una orden de protección vigente emitida por las autoridades competentes del país de origen.</button>
+    <div class="feedback-box" id="fb-8"></div>
+  </div>
+
+  <div class="quiz-card" id="qcard-9">
+    <div class="scenario-num">Reactivo 9 de 10 · Estado del Proceso Penal</div>
+    <div class="quiz-q-text">Lee el siguiente fragmento y determina si el estado del proceso penal descrito afecta o no la elegibilidad para la Visa T:</div>
+    <div class="quiz-case-text">«Mr. Landiz has come forward with detailed testimony regarding the trafficking network… His prior silence was not due to unwillingness, but the result of legitimate fear and trauma.» — «Mr. Landiz faces a direct and credible threat of harm from the Jalisco Nueva Generación Cartel (CJNG).»</div>
+    <button class="opt-btn" onclick="answer(9,'A')">A. Sí afecta. La Visa T solo aplica mientras la investigación penal esté activa y la víctima sea necesaria como testigo en el proceso judicial correspondiente.</button>
+    <button class="opt-btn" onclick="answer(9,'B')">B. No afecta. La elegibilidad para la Visa T no depende del proceso penal; USCIS evalúa si la persona fue víctima de tráfico y si coopera razonablemente, con independencia del caso.</button>
+    <button class="opt-btn" onclick="answer(9,'C')">C. Sí afecta. Si el traficante fue condenado, la víctima ya accede a otras formas de alivio legal y la Visa T resulta improcedente porque el caso está resuelto.</button>
+    <button class="opt-btn" onclick="answer(9,'D')">D. Solo no afecta si el solicitante testificó personalmente en el juicio penal contra el traficante, acreditando así su cooperación formal con el proceso.</button>
+    <div class="feedback-box" id="fb-9"></div>
+  </div>
+
+  <div class="quiz-card" id="qcard-10">
+    <div class="scenario-num">Reactivo 10 de 10 · Tráfico Sexual</div>
+    <div class="quiz-q-text">Lee el siguiente fragmento y determina si la situación descrita puede o no encuadrarse como <em>tráfico sexual</em> para efectos de la Visa T:</div>
+    <div class="quiz-case-text">«Él decía que para eso tenía mujer, que la mujer debía cumplir… me hacía cumplirle como mujer, como él se drogaba y tomaba pues a mí me daba miedo que me hiciera otra cosa.»</div>
+    <button class="opt-btn" onclick="answer(10,'A')">A. No puede encuadrarse. La violencia doméstica entre parejas es un delito distinto al tráfico de personas y tiene su propio marco de protección jurídica bajo la ley VAWA.</button>
+    <button class="opt-btn" onclick="answer(10,'B')">B. No puede encuadrarse. Para configurar tráfico sexual se requiere que una tercera persona lucre económicamente con la explotación, lo que no ocurre en relaciones de pareja.</button>
+    <button class="opt-btn" onclick="answer(10,'C')">C. Sí puede encuadrarse. Cuando la coerción —amenazas, miedo fundado— se usa para obtener actos sexuales, se configura tráfico sexual bajo 22 U.S.C. § 7102(11), sin importar la relación.</button>
+    <button class="opt-btn" onclick="answer(10,'D')">D. Solo puede encuadrarse si la víctima tiene evidencia médica que documente las agresiones físicas sufridas como consecuencia directa de las amenazas y coerción recibidas.</button>
+    <div class="feedback-box" id="fb-10"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div class="quiz-result" id="score-panel">
+    <div class="quiz-score-ring pass" id="score-ring">
+      <div class="score-num" id="score-display">0/10</div>
+      <div class="quiz-score-label">Resultado</div>
+    </div>
+    <p id="score-msg" style="font-size:14px;color:var(--slate);margin:12px auto 0;max-width:42ch;line-height:1.6"></p>
+    <div class="scorm-saved-badge" id="scorm-saved-badge" style="display:none">✓ Resultado guardado en Moodle</div>
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-gold" onclick="resetQuiz()">Reintentar ejercicio</button>
+      <button class="btn btn-primary" onclick="nav('p3')">Continuar a Análisis Abierto</button>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn" onclick="nav('p1')">‹ Parte I</button>
+    <button class="mod-nav-btn mod-nav-next" onclick="nav('p3')">Parte III — Análisis Abierto ›</button>
+  </div>
+</div><!-- /panel-p2 -->
+
+
+<!-- ═══════════ PARTE III ═══════════ -->
+<div class="panel" id="panel-p3">
+  <div class="header">
+    <div class="header-seal">🔬</div>
+    <div class="header-badge"><span class="dot"></span>Parte III</div>
+    <h1>Análisis Legal Abierto</h1>
+    <p class="subtitle">Caso Mr. Grozev — Tráfico laboral con coerción física y verbal. Lee los fragmentos y responde las preguntas de análisis. <strong>Tus respuestas se guardan automáticamente en Moodle.</strong></p>
+    <div class="header-meta">
+      <div class="header-meta-item"><span>🔍</span><strong>3 tensiones jurídicas</strong></div>
+      <div class="header-meta-item"><span>💾</span><strong>Guardado automático</strong></div>
+    </div>
+  </div>
+
+  <div class="block b-concepto">
+    <div class="btitle"><div class="bicon" style="background:rgba(201,168,76,.1)">📁</div><h2>Fragmentos del Caso — Mr. Grozev</h2><span class="btag">Tráfico laboral</span></div>
+    <div class="bbody">
+      <div class="case-box">
+        <div class="case-label">📄 Fragmento — Testimonio (Punto 5)</div>
+        <div class="case-narrative">El primer día que estuvimos ahí nos dijeron que en ese lugar íbamos a poder descansar y bañarnos. También nos dijeron que iba a venir otra persona a preguntarnos a qué ciudad íbamos. Yo les pregunté si ya nos iban a dar nuestras identificaciones porque nos las habían quitado. Ellos me contestaron que no sabían nada de eso y que nos habían informado mal, pues ellos no tenían nuestras identificaciones. Nunca los volvimos a ver. Como a las cinco de la tarde, llegó un señor y empezó a preguntarnos a cada uno a dónde íbamos. Cuando me tocó, le dije que iba para Fresno y mi amigo le dijo que iba a Portville, que queda cerca de Fresno. Otros compañeros mencionaron que su destino era Oregón. El señor nos dijo a mi amigo y a mí que nos quedaríamos ahí, pues a los que iban hacia Oregón se los iban a llevar a otro lado. Ya que se llevaron a las otras personas, a mí me pidieron el número de teléfono de mi tío para contactarlo y que me recogiera. Yo se los dí, pero no me dijeron nada más. Fue hasta después que me enteré de que a mi tío le subieron la tarifa para soltarme. En esa casa, necesitaba pedir permiso para todo, para levantarme, para ir al baño, hasta para moverme un poco tenía que preguntar. Tenía miedo todo el tiempo. No sabía para qué nos tenían encerrados ni qué nos iban a hacer. No tenía forma de comunicarme con nadie.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block b-flujo">
+    <div class="btitle"><div class="bicon" style="background:rgba(109,40,217,.1)">1</div><h2>Control y restricción del movimiento: ¿cuándo configura privación de libertad como medio de tráfico?</h2><span class="btag" style="background:rgba(109,40,217,.09);color:#5b21b6;border-color:rgba(109,40,217,.22)">Medios de control</span></div>
+    <div class="bbody">
+      <p style="font-size:11px;color:var(--slate);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">22 U.S.C. § 7102(11) y 8 C.F.R. § 214.201</p>
+      <div class="tension-box"><span class="tension-label">⚠ Tensión jurídica</span>El testimonio describe que los captores quitaron las identificaciones, impedían moverse sin permiso, y controlaban hasta el acceso al baño. No se describe violencia física, pero sí un control total del movimiento e información. <strong>¿La restricción del movimiento y la supresión de la comunicación, sin violencia física explícita, son suficientes para configurar el criterio de medios de tráfico bajo el TVPA?</strong></div>
+      <div class="guiding-title">Preguntas de andamiaje:</div>
+      <ul class="guiding-list">
+        <li>Según 22 U.S.C. § 7102(11), ¿qué tipos de "medios" pueden configurar tráfico? ¿La ley requiere fuerza física o basta la restricción y el control del movimiento?</li>
+        <li>El testimonio señala «necesitaba pedir permiso para todo, para levantarme, para ir al baño». ¿Esta restricción total del movimiento encuadra como coerción, privación de libertad, o como otro tipo de medio de control bajo el TVPA?</li>
+        <li>La confiscación de identificaciones aparece en el testimonio. ¿Qué función legal tiene este elemento? ¿Cómo se articula con el criterio de medios en una solicitud de Visa T?</li>
+        <li>¿Cómo documentarías en una solicitud real que el control psicológico y la restricción física del movimiento —sin golpes— constituyeron medios de tráfico efectivos?</li>
+      </ul>
+      <span class="oq-textarea-label">Tu análisis:</span>
+      <textarea class="oq-textarea" id="open-q1" placeholder="Desarrolla tu análisis aquí. Puedes citar los fragmentos directamente, identificar los elementos legales relevantes y argumentar tu posición…" oninput="autoSaveOpenAnswer()"></textarea>
+      <br><button class="save-btn" onclick="saveOpenAnswer('open-q1','confirm-q1')">Guardar en Moodle</button>
+      <div class="save-confirm" id="confirm-q1">✓ Guardado en Moodle.</div>
+    </div>
+  </div>
+
+  <div class="block b-flujo">
+    <div class="btitle"><div class="bicon" style="background:rgba(109,40,217,.1)">2</div><h2>El cobro de "tarifa para soltar": ¿deuda fraudulenta o extorsión que configura tráfico?</h2><span class="btag" style="background:rgba(109,40,217,.09);color:#5b21b6;border-color:rgba(109,40,217,.22)">Debt bondage</span></div>
+    <div class="bbody">
+      <p style="font-size:11px;color:var(--slate);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">22 U.S.C. § 7102(4) — Coerción económica como medio de tráfico</p>
+      <div class="tension-box"><span class="tension-label">⚠ Tensión jurídica</span>El testimonio revela que a su tío «le subieron la tarifa para soltarlo», exigiendo un pago para liberar al solicitante. Este ignoraba el cobro mientras estaba retenido. <strong>¿Este esquema de "tarifa para soltar" configura debt bondage, extorsión, o ambos?</strong> ¿Cómo se distingue legalmente del pago inicial que el solicitante hizo voluntariamente por el cruce?</div>
+      <div class="guiding-title">Preguntas de andamiaje:</div>
+      <ul class="guiding-list">
+        <li>Bajo 22 U.S.C. § 7102(4), ¿qué es el debt bondage y cómo se diferencia de la extorsión ordinaria? ¿El esquema de "tarifa para soltar" encuadraría en alguna de estas figuras?</li>
+        <li>El solicitante no sabía que se estaba cobrando una tarifa a su tío. ¿Cambia el análisis legal el hecho de que el control económico se ejerciera sobre un tercero (el tío) y no directamente sobre la víctima?</li>
+        <li>¿Cómo distinguirías este esquema del pago inicial que el solicitante hizo voluntariamente al traficante por el cruce? ¿En qué momento se transforma una transacción en un instrumento de tráfico?</li>
+        <li>Como abogado, ¿qué evidencia solicitarías para documentar que la "tarifa para soltar" fue un instrumento deliberado del esquema de tráfico y no un acuerdo independiente entre el tío y los captores?</li>
+      </ul>
+      <span class="oq-textarea-label">Tu análisis:</span>
+      <textarea class="oq-textarea" id="open-q2" placeholder="Desarrolla tu análisis aquí…" oninput="autoSaveOpenAnswer()"></textarea>
+      <br><button class="save-btn" onclick="saveOpenAnswer('open-q2','confirm-q2')">Guardar en Moodle</button>
+      <div class="save-confirm" id="confirm-q2">✓ Guardado en Moodle.</div>
+    </div>
+  </div>
+
+  <div class="block b-flujo">
+    <div class="btitle"><div class="bicon" style="background:rgba(109,40,217,.1)">3</div><h2>La confiscación de documentos y el aislamiento comunicacional: ¿medios de tráfico o control ordinario?</h2><span class="btag" style="background:rgba(109,40,217,.09);color:#5b21b6;border-color:rgba(109,40,217,.22)">Document servitude</span></div>
+    <div class="bbody">
+      <p style="font-size:11px;color:var(--slate);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">22 U.S.C. § 7102(11) — Confiscación de documentos y aislamiento</p>
+      <div class="tension-box"><span class="tension-label">⚠ Tensión jurídica</span>El testimonio describe dos elementos de control: (1) confiscación de identificaciones desde el inicio, y (2) aislamiento comunicacional total («no tenía forma de comunicarme con nadie»). Ninguno implica violencia física. <strong>¿La confiscación de documentos y el aislamiento comunicacional son, por sí solos, suficientes para configurar medios de tráfico bajo el TVPA, o son solo precauciones de los captores?</strong></div>
+      <div class="guiding-title">Preguntas de andamiaje:</div>
+      <ul class="guiding-list">
+        <li>22 U.S.C. § 7102(11) menciona la confiscación de documentos como forma de control. ¿El testimonio describe circunstancias suficientes para argumentar document servitude? ¿Qué elementos adicionales necesitarías probar?</li>
+        <li>El aislamiento comunicacional («no tenía forma de comunicarme con nadie») impidió que el solicitante buscara ayuda. ¿Cómo articularías este hecho como elemento de coerción o control en una solicitud de Visa T?</li>
+        <li>¿Qué diferencia habría en el análisis si el solicitante hubiera podido comunicarse con su tío durante el cautiverio? ¿Cambia el aislamiento la naturaleza de los hechos o solo su gravedad?</li>
+        <li>A partir de este testimonio, ¿cómo construirías el argumento de que la combinación de confiscación de documentos + aislamiento + control del movimiento + tarifa para soltar constituye un "scheme, plan, or pattern" bajo 22 U.S.C. § 7102(11)?</li>
+      </ul>
+      <span class="oq-textarea-label">Tu análisis:</span>
+      <textarea class="oq-textarea" id="open-q3" placeholder="Desarrolla tu análisis aquí…" oninput="autoSaveOpenAnswer()"></textarea>
+      <br><button class="save-btn" onclick="saveOpenAnswer('open-q3','confirm-q3')">Guardar en Moodle</button>
+      <div class="save-confirm" id="confirm-q3">✓ Guardado en Moodle.</div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn" onclick="nav('p2')">‹ Parte II</button>
+    <button class="mod-nav-btn mod-nav-next" onclick="nav('ref')">Ver Referencia USCIS ›</button>
+  </div>
+</div><!-- /panel-p3 -->
+
+
+<!-- ═══════════ REFERENCIA ═══════════ -->
+<div class="panel" id="panel-ref">
+  <div class="header">
+    <div class="header-seal">📚</div>
+    <div class="header-badge"><span class="dot"></span>Referencia</div>
+    <h1>Referencia Rápida USCIS — Visa T</h1>
+    <p class="subtitle">Base legal, criterios de elegibilidad, factores de dificultad extrema e indicadores de tráfico según el TVPA y las regulaciones de USCIS.</p>
+    <div class="header-meta">
+      <div class="header-meta-item"><span>⚖</span><strong>INA § 101(a)(15)(T)</strong></div>
+      <div class="header-meta-item"><span>📖</span><strong>22 U.S.C. § 7102</strong></div>
+      <div class="header-meta-item"><span>📋</span><strong>8 C.F.R. § 214.11</strong></div>
+    </div>
+  </div>
+
+  <div class="block b-eval">
+    <div class="btitle"><div class="bicon" style="background:rgba(201,168,76,.15)">📋</div><h2>Los 4 Criterios de Elegibilidad (USCIS)</h2><span class="btag">Core criteria</span></div>
+    <div class="bbody">
+      <table class="info-table">
+        <thead><tr><th>#</th><th>Criterio</th><th>Definición Legal</th><th>Base Normativa</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:800;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:18px">1</td><td><strong>Víctima de tráfico grave</strong></td><td>Ser víctima de "labor trafficking" o "sex trafficking" (inducción a actos sexuales mediante coerción o cuando la víctima es menor de 18 años)</td><td>22 U.S.C. § 7102(11); TVPA § 103</td></tr>
+          <tr><td style="font-weight:800;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:18px">2</td><td><strong>Presencia física en EE.UU.</strong></td><td>Estar físicamente presente en EE.UU. <em>a causa</em> del tráfico</td><td>INA § 101(a)(15)(T)(i)(II)</td></tr>
+          <tr><td style="font-weight:800;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:18px">3</td><td><strong>Cooperación con LEA</strong></td><td>Haber cumplido con cualquier solicitud razonable de asistencia en la investigación o procesamiento del tráfico (excepto menores de 18 años)</td><td>8 C.F.R. § 214.202(c)(1); INA § 101(a)(15)(T)(i)(III)</td></tr>
+          <tr><td style="font-weight:800;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:18px">4</td><td><strong>Dificultad extrema ante deportación</strong></td><td>Sufriría dificultad extrema que involucra sufrimiento inusual y severo si fuera removido de EE.UU.</td><td>8 C.F.R. § 214.11(i)(2); INA § 101(a)(15)(T)(i)(IV)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block b-concepto">
+    <div class="btitle"><div class="bicon" style="background:rgba(139,44,44,.1)">⚠️</div><h2>Factores de "Dificultad Extrema" — 8 C.F.R. § 214.11(i)(2)</h2><span class="btag">EMP factors</span></div>
+    <div class="bbody">
+      <table class="info-table">
+        <thead><tr><th>Factor</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td>(i)</td><td>Edad y estado físico/mental del solicitante</td></tr>
+          <tr><td>(ii)</td><td>Lazos familiares dentro y fuera de EE.UU.</td></tr>
+          <tr><td>(iii)</td><td>Condiciones del país de origen</td></tr>
+          <tr><td>(iv)</td><td>Vínculos comunitarios en EE.UU.</td></tr>
+          <tr><td>(v)</td><td>Habilidad de reintegrarse al país de origen</td></tr>
+          <tr><td>(vi)</td><td>Circunstancias especiales del caso</td></tr>
+          <tr><td>(vii)</td><td>Daño resultante del tráfico</td></tr>
+          <tr><td style="color:var(--red);font-weight:700">(viii)</td><td><strong>Amenaza de represalias de traficantes o asociados</strong></td></tr>
+          <tr><td>(ix)</td><td>Daño a investigaciones en curso</td></tr>
+          <tr><td>(x)</td><td>Cualquier otra circunstancia relevante</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block b-caso">
+    <div class="btitle"><div class="bicon" style="background:rgba(30,102,65,.1)">🔍</div><h2>Indicadores de Tráfico (USCIS / TVPA)</h2><span class="btag" style="background:rgba(30,102,65,.1);color:#1a5234;border-color:rgba(30,102,65,.25)">Trafficking indicators</span></div>
+    <div class="bbody">
+      <table class="info-table">
+        <thead><tr><th>Tipo</th><th>Indicadores Clave</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reclutamiento</strong></td><td>Promesas falsas de empleo, seguridad o servicios; aprovechamiento de vulnerabilidad (deportación, pobreza, aislamiento)</td></tr>
+          <tr><td><strong>Medios de control</strong></td><td>Coerción, amenazas, fuerza, fraude, abuso de posición de poder o vulnerabilidad; confiscación de documentos</td></tr>
+          <tr><td><strong>Fines de explotación</strong></td><td>Trabajo forzado, servidumbre por deudas, peonaje, prostitución forzada, servidumbre doméstica</td></tr>
+          <tr><td><strong>Consentimiento</strong></td><td>Irrelevante si se usaron medios prohibidos (coerción, engaño, fuerza)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn" onclick="nav('p3')">‹ Parte III</button>
+    <button class="mod-nav-btn mod-nav-next" onclick="nav('p1')">Ir al inicio ›</button>
+  </div>
+</div><!-- /panel-ref -->
+
+</main>
+</div><!-- /app-shell -->
+
+<script>
+/* ═══════════════════════════════════════════════════
+   SCORM + APP STATE
+═══════════════════════════════════════════════════ */
+
+var _startTime = Date.now();
+var answeredCount = 0, correctCount = 0;
+var totalQ = 10;
+var quizDone = false;
+var autoSaveTimer = null;
+
+/* Inicializar SCORM al cargar */
+window.addEventListener('load', function () {
+  var ok = SCORM.init();
+  var label = document.getElementById('scorm-status-label');
+  if (ok) {
+    label.textContent = 'Conectado a Moodle';
+    /* Mostrar nombre del estudiante */
+    var name = SCORM.getStudentName();
+    if (name) document.getElementById('student-name-display').textContent = name;
+    /* Restaurar estado previo */
+    restoreState();
+  } else {
+    label.textContent = 'Modo standalone';
+    document.getElementById('student-name-display').textContent = 'Modo local';
+  }
+});
+
+/* Guardar y finalizar al cerrar */
+window.addEventListener('beforeunload', function () {
+  if (!quizDone) {
+    SCORM.setStatus('incomplete');
+  }
+  var elapsed = Math.floor((Date.now() - _startTime) / 1000);
+  SCORM.setSessionTime(elapsed);
+  persistState();
+  SCORM.finish();
+});
+
+/* ── Navegación ── */
+var navMap = { p1: 0, p2: 1, p3: 2, ref: 3 };
+function nav(id) {
+  document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+  document.querySelectorAll('.sb-item').forEach(function (b) { b.classList.remove('active'); });
+  document.getElementById('panel-' + id).classList.add('active');
+  var idx = navMap[id];
+  var items = document.querySelectorAll('.sb-item');
+  if (items[idx]) items[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  var sidebar = document.getElementById('sidebar');
+  if (sidebar.classList.contains('open')) sidebar.classList.remove('open');
+  persistState();
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+/* ── Respuestas correctas ── */
+var ANSWERS = { 1:'B',2:'B',3:'C',4:'B',5:'B',6:'B',7:'B',8:'B',9:'B',10:'C' };
+
+var FEEDBACK = {
+  1:{correct:{label:'✓ Correcto',text:'El reclutamiento mediante engaño es uno de los "medios" que define el tráfico grave bajo el TVPA. Los traficantes ocultaron deliberadamente las condiciones de explotación aprovechando la vulnerabilidad del Sr. Landiz recién deportado. El consentimiento obtenido mediante fraude es legalmente inválido: no importa que haya aceptado voluntariamente una oferta que ocultaba la explotación.',legal:'Base legal: 22 U.S.C. § 7102(11); USCIS Policy Manual Vol. 3, Part G'},incorrect:{label:'✗ Incorrecto',text:'La aceptación voluntaria de una oferta fraudulenta no equivale a consentimiento informado. El TVPA establece que cuando se usan medios como el engaño para reclutar a una persona con fines de explotación, el consentimiento es irrelevante. Tampoco importa si el solicitante pagó o no.',legal:'Base legal: 22 U.S.C. § 7102(11); USCIS Policy Manual Vol. 3, Part G — consentimiento bajo fraude es inválido'}},
+  2:{correct:{label:'✓ Correcto',text:'El pago de una tarifa inicial al traficante no descalifica a la víctima de la Visa T. USCIS evalúa los medios (engaño, coerción) y los fines (explotación), no si existió una transacción económica previa. Cuando ese pago se convierte en una deuda usada para retener a la víctima, configura "debt bondage".',legal:'Base legal: 22 U.S.C. § 7102(4) — "debt bondage"; USCIS T Visa Policy Memo'},incorrect:{label:'✗ Incorrecto',text:'Pagar al traficante no descalifica a la víctima. El TVPA no requiere gratuidad en el reclutamiento. Si el pago fue la base de una deuda que luego se utilizó como instrumento de control, eso mismo configura "debt bondage". USCIS evalúa siempre los medios usados y la finalidad de explotación.',legal:'Base legal: 22 U.S.C. § 7102(4) — definición de debt bondage; TVPA — medios y fines como elementos centrales'}},
+  3:{correct:{label:'✓ Correcto',text:'Las amenazas de disparar a alguien si intenta escapar, combinadas con vigilancia constante y trabajo impuesto sin remuneración, son el ejemplo clásico de coerción como medio de tráfico. El patrón organizado cumple el estándar de "plan, scheme, or pattern" de 22 U.S.C. § 7102(11). El cumplimiento motivado exclusivamente por el miedo es la definición misma de servitud involuntaria.',legal:'Base legal: 22 U.S.C. § 7102(11); 8 C.F.R. § 214.201 — "involuntary servitude"; USCIS Guidance on labor trafficking indicators'},incorrect:{label:'✗ Incorrecto',text:'El cumplimiento del trabajo bajo amenaza de muerte no es consentimiento; es evidencia de que la coerción funcionó. Las amenazas verbales creíbles de violencia son legalmente suficientes para constituir coerción bajo el TVPA; no se requiere que la amenaza se haya ejecutado.',legal:'Base legal: 22 U.S.C. § 7102(11); 8 C.F.R. § 214.201 — coerción no requiere acto físico consumado para ser legalmente suficiente'}},
+  4:{correct:{label:'✓ Correcto',text:'USCIS y el TVPA reconocen que las víctimas de tráfico frecuentemente no reportan por miedo a los traficantes, miedo a la deportación o trauma psicológico. El estándar de cooperación evalúa si la víctima coopera "razonablemente" dadas las circunstancias, no si reportó de manera inmediata.',legal:'Base legal: 8 C.F.R. § 214.202(c)(1); TVPA reauthorizations — no existe plazo legal de reporte'},incorrect:{label:'✗ Incorrecto',text:'La Visa T no tiene plazo de reporte. USCIS evalúa si la persona coopera razonablemente dadas las circunstancias al momento de la solicitud. No existe ningún límite de uno ni de dos años en la regulación.',legal:'Base legal: 8 C.F.R. § 214.202(c)(1); TVPA reauthorizations — no hay plazo de reporte establecido en ninguna norma'}},
+  5:{correct:{label:'✓ Correcto',text:'USCIS reconoce que las víctimas de tráfico son especialmente vulnerables y que el miedo a represalias es una consecuencia normal y documentada del trauma sufrido. El estándar de cooperación no es "cooperación perfecta o total", sino "cooperación razonable" (reasonable compliance).',legal:'Base legal: 8 C.F.R. § 214.202(c)(1); USCIS Policy Manual Vol. 3, Part G — "reasonable request"'},incorrect:{label:'✗ Incorrecto',text:'USCIS no requiere cooperación "total y sin reservas". El estándar legal es la cooperación "razonable" dadas las circunstancias. Las víctimas de tráfico regularmente presentan miedos legítimos que condicionan su cooperación, y la ley lo contempla expresamente.',legal:'Base legal: 8 C.F.R. § 214.202(c)(1) — reasonable compliance standard; USCIS Policy Manual — trauma como circunstancia atenuante reconocida'}},
+  6:{correct:{label:'✓ Correcto',text:'La Visa T no discrimina entre entrada legal o irregular al territorio estadounidense. Lo determinante bajo INA § 101(a)(15)(T) es que la persona esté en EE.UU. "a causa del" acto de tráfico. Ser trasladado y retenido en Houston satisface este requisito directamente.',legal:'Base legal: INA § 101(a)(15)(T)(i)(II); 8 C.F.R. § 214.11(a)(1) — "on account of trafficking" sin requisito de entrada legal'},incorrect:{label:'✗ Incorrecto',text:'La forma de ingreso al país es completamente irrelevante para la Visa T. La ley no exige que el cruce haya sido por puerto oficial. Tampoco existe ninguna restricción geográfica que limite el criterio a la zona fronteriza.',legal:'Base legal: INA § 101(a)(15)(T); 8 C.F.R. § 214.11(a)(1) — presencia física sin requisito de entrada legal ni restricción geográfica alguna'}},
+  7:{correct:{label:'✓ Correcto',text:'USCIS interpreta "presencia a causa del tráfico" de forma amplia e incluye las consecuencias directas del tráfico que impiden la salida del país. Las lesiones físicas, la destitución económica y el trauma psicológico son consecuencias directas del tráfico, no decisiones personales. USCIS no requiere que la víctima siga bajo control activo del traficante al momento de solicitar.',legal:'Base legal: INA § 101(a)(15)(T)(i)(II); USCIS Policy Manual — "continuing presence on account of trafficking"'},incorrect:{label:'✗ Incorrecto',text:'La Visa T cubre no solo el período de control activo del traficante, sino también la presencia resultante de las consecuencias directas del tráfico. USCIS no requiere que la víctima siga bajo control del traficante al momento de solicitar.',legal:'Base legal: INA § 101(a)(15)(T)(i)(II); USCIS T Visa guidance — consecuencias del tráfico como nexo causal de la presencia física continua'}},
+  8:{correct:{label:'✓ Correcto',text:'La amenaza del CJNG no es especulativa: hay secuestros ejecutados, extorsiones múltiples documentadas y vigilancia activa sobre el solicitante y su familia. 8 C.F.R. § 214.11(i)(2)(viii) reconoce la "amenaza de represalias de traficantes o socios". El historial concreto eleva el riesgo de especulativo a probado y verificable.',legal:'Base legal: 8 C.F.R. § 214.11(i)(2)(viii); INA § 214 — extreme hardship factors; riesgo personalizado con historial concreto'},incorrect:{label:'✗ Incorrecto',text:'El riesgo del CJNG en este caso no es "general": es una amenaza personalizada con historial documentado y concreto. 8 C.F.R. § 214.11(i)(2)(viii) incluye como factor de dificultad extrema las amenazas de represalias que pueden provenir de traficantes o de sus socios, lo que puede incluir organizaciones criminales vinculadas.',legal:'Base legal: 8 C.F.R. § 214.11(i)(2)(viii); USCIS extreme hardship analysis — amenaza personalizada con historial concreto'}},
+  9:{correct:{label:'✓ Correcto',text:'La Visa T no requiere que el caso penal esté activo ni que la víctima sea necesaria como testigo en un proceso vigente. USCIS evalúa cuatro criterios de elegibilidad. El estado del proceso penal puede ser evidencia útil del tráfico, pero no es un requisito de elegibilidad.',legal:'Base legal: INA § 101(a)(15)(T); 8 C.F.R. § 214.11; USCIS Policy Manual Vol. 3, Part G — estado del caso penal no es criterio de elegibilidad'},incorrect:{label:'✗ Incorrecto',text:'La Visa T no está condicionada a la existencia de una investigación o proceso penal abierto. Los cuatro criterios de elegibilidad no incluyen el estado del caso penal. El cierre de un caso por condena del traficante no elimina la elegibilidad.',legal:'Base legal: 8 C.F.R. § 214.11; INA § 101(a)(15)(T) — elegibilidad independiente del estado procesal penal'}},
+  10:{correct:{label:'✓ Correcto',text:'El tráfico sexual no requiere que haya un tercero lucrando con la explotación. Cuando la coerción —amenazas de violencia física, miedo real y fundado— se usa para obtener actos sexuales de una persona adulta, se configura tráfico sexual con independencia de si hay relación íntima entre víctima y agresor. La coerción es el elemento definitorio.',legal:'Base legal: 22 U.S.C. § 7102(10)(11); 8 C.F.R. § 214.201 — coercion includes threats; TVPA § 102 — relación íntima no excluye configuración de tráfico sexual'},incorrect:{label:'✗ Incorrecto',text:'Aunque VAWA puede aplicar también, el uso de coerción para obtener actos sexuales configura tráfico sexual bajo el TVPA. La relación íntima entre víctima y agresor no excluye la aplicación de 22 U.S.C. § 7102. Tampoco se requiere que un tercero lucre con la explotación. Ambas protecciones —VAWA y Visa T— pueden coexistir.',label2:'Base legal: 22 U.S.C. § 7102(10)(11); USCIS: relación íntima no excluye tráfico sexual; VAWA y Visa T pueden coexistir'}}
+};
+
+/* ── Función principal de respuesta ── */
+function answer(qNum, selected) {
+  var card = document.getElementById('qcard-' + qNum);
+  if (card.dataset.answered) return;
+  card.dataset.answered = '1';
+
+  var correct = ANSWERS[qNum];
+  var isCorrect = selected === correct;
+  var letters = ['A', 'B', 'C', 'D'];
+  var buttons = card.querySelectorAll('.opt-btn');
+
+  buttons.forEach(function (btn, i) {
+    btn.disabled = true;
+    var letter = letters[i];
+    if (letter === correct) btn.classList.add('correct');
+    else if (letter === selected && !isCorrect) btn.classList.add('wrong');
+    else btn.classList.add('neutral-disabled');
+  });
+
+  var data = isCorrect ? FEEDBACK[qNum].correct : FEEDBACK[qNum].incorrect;
+  var fb = document.getElementById('fb-' + qNum);
+  fb.className = 'feedback-box shown ' + (isCorrect ? 'correct' : 'incorrect');
+  fb.innerHTML = '<div class="fb-label">' + data.label + '</div>' + data.text + '<div class="fb-legal">' + data.legal + '</div>';
+
+  if (isCorrect) correctCount++;
+  answeredCount++;
+
+  /* Actualizar UI de progreso */
+  var pct = (answeredCount / totalQ) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = answeredCount + ' / ' + totalQ + ' respondidas';
+  document.getElementById('sb-progress-fill').style.width = pct + '%';
+  document.getElementById('sb-progress-label').textContent = answeredCount + ' / ' + totalQ;
+
+  /* Registrar interacción en SCORM */
+  var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+  var elapsed = Math.floor((Date.now() - _startTime) / 1000);
+  var latency = pad(Math.floor(elapsed / 3600)) + ':' + pad(Math.floor((elapsed % 3600) / 60)) + ':' + pad(elapsed % 60);
+  SCORM.setInteraction(
+    'q' + pad(qNum),
+    'choice',
+    selected,
+    correct,
+    isCorrect ? 'correct' : 'wrong',
+    latency
+  );
+
+  /* Guardar estado */
+  persistState();
+
+  if (answeredCount === totalQ) {
+    setTimeout(showScore, 500);
+  }
+}
+
+/* ── Mostrar resultado y registrar en SCORM ── */
+function showScore() {
+  quizDone = true;
+  var panel = document.getElementById('score-panel');
+  panel.classList.add('shown');
+
+  var scoreRaw = Math.round((correctCount / totalQ) * 100);
+  document.getElementById('score-display').textContent = correctCount + '/' + totalQ;
+
+  var ring = document.getElementById('score-ring');
+  var passed = scoreRaw >= 80;
+  ring.className = 'quiz-score-ring ' + (passed ? 'pass' : 'fail');
+
+  var msgs = {
+    10: '¡Excelente! Dominas los criterios de elegibilidad de la Visa T.',
+    8: 'Muy bien. Tienes una comprensión sólida. Revisa los fragmentos de los puntos que fallaste.',
+    6: 'Buen inicio. Te recomendamos releer la Parte I y la referencia de USCIS antes de reintentar.',
+    0: 'Sigue practicando. Revisa la sección de Referencia USCIS y los fragmentos del caso.'
+  };
+  var msgKey = correctCount === 10 ? 10 : correctCount >= 8 ? 8 : correctCount >= 6 ? 6 : 0;
+  document.getElementById('score-msg').textContent = msgs[msgKey];
+
+  /* SCORM: registrar puntaje y estado */
+  SCORM.setScore(scoreRaw, 0, 100);
+  SCORM.setStatus(passed ? 'passed' : 'failed');
+  var elapsed = Math.floor((Date.now() - _startTime) / 1000);
+  SCORM.setSessionTime(elapsed);
+  persistState();
+  SCORM.commit();
+
+  /* Mostrar badge de guardado */
+  if (SCORM.isAvailable()) {
+    var badge = document.getElementById('scorm-saved-badge');
+    badge.style.display = 'inline-flex';
+  }
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/* ── Reset ── */
+function resetQuiz() {
+  correctCount = 0;
+  answeredCount = 0;
+  quizDone = false;
+  _startTime = Date.now();
+
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('progress-text').textContent = '0 / 10 respondidas';
+  document.getElementById('sb-progress-fill').style.width = '0%';
+  document.getElementById('sb-progress-label').textContent = '0 / 10';
+
+  for (var i = 1; i <= totalQ; i++) {
+    var card = document.getElementById('qcard-' + i);
+    delete card.dataset.answered;
+    card.querySelectorAll('.opt-btn').forEach(function (b) {
+      b.disabled = false;
+      b.className = 'opt-btn';
+    });
+    var fb = document.getElementById('fb-' + i);
+    fb.className = 'feedback-box';
+    fb.innerHTML = '';
+  }
+
+  document.getElementById('score-panel').classList.remove('shown');
+  document.getElementById('scorm-saved-badge').style.display = 'none';
+  SCORM.setStatus('incomplete');
+  persistState();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── Análisis abierto: guardar en suspend_data ── */
+function saveOpenAnswer(taId, confId) {
+  var ta = document.getElementById(taId);
+  var conf = document.getElementById(confId);
+  if (!ta.value.trim()) {
+    conf.textContent = '⚠ Escribe tu análisis antes de guardar.';
+    conf.style.color = 'var(--red)';
+    conf.style.display = 'block';
+    return;
+  }
+  persistState();
+  conf.textContent = SCORM.isAvailable() ? '✓ Guardado en Moodle.' : '✓ Guardado en sesión.';
+  conf.style.color = 'var(--green)';
+  conf.style.display = 'block';
+  setTimeout(function () { conf.style.display = 'none'; }, 3000);
+}
+
+/* Auto-guardado con debounce cada 5s mientras escribe */
+function autoSaveOpenAnswer() {
+  if (autoSaveTimer) clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(function () { persistState(); }, 5000);
+}
+
+/* ── Persistencia en SCORM suspend_data ── */
+function persistState() {
+  try {
+    var state = {
+      answered: answeredCount,
+      correct: correctCount,
+      done: quizDone,
+      answers: {},
+      openQ: {
+        q1: document.getElementById('open-q1') ? document.getElementById('open-q1').value : '',
+        q2: document.getElementById('open-q2') ? document.getElementById('open-q2').value : '',
+        q3: document.getElementById('open-q3') ? document.getElementById('open-q3').value : ''
+      }
+    };
+    /* Guardar qué respondió en cada pregunta */
+    for (var i = 1; i <= totalQ; i++) {
+      var card = document.getElementById('qcard-' + i);
+      if (card && card.dataset.answered) {
+        var correctBtn = card.querySelector('.opt-btn.correct');
+        var wrongBtn = card.querySelector('.opt-btn.wrong');
+        var letters = ['A', 'B', 'C', 'D'];
+        var btns = card.querySelectorAll('.opt-btn');
+        var selected = '';
+        btns.forEach(function (b, idx) {
+          if (b.classList.contains('wrong')) selected = letters[idx];
+          if (b.classList.contains('correct') && ANSWERS[i] !== letters[idx]) { /* skip */ }
+        });
+        /* Si no encontró wrong, el alumno acertó */
+        if (!selected) selected = ANSWERS[i];
+        state.answers[i] = selected;
+      }
+    }
+    SCORM.setSuspendData(JSON.stringify(state));
+  } catch (e) {
+    console.warn('[SCORM] persistState error:', e);
+  }
+}
+
+/* ── Restaurar estado previo (si el alumno regresa al SCO) ── */
+function restoreState() {
+  try {
+    var raw = SCORM.getSuspendData();
+    if (!raw) return;
+    var state = JSON.parse(raw);
+
+    /* Restaurar respuestas de opción múltiple */
+    if (state.answers) {
+      Object.keys(state.answers).forEach(function (qNum) {
+        var selected = state.answers[qNum];
+        if (selected) {
+          /* Simular respuesta sin volver a registrar interacción SCORM */
+          var card = document.getElementById('qcard-' + qNum);
+          if (!card || card.dataset.answered) return;
+          card.dataset.answered = '1';
+          var correct = ANSWERS[qNum];
+          var isCorrect = selected === correct;
+          var letters = ['A', 'B', 'C', 'D'];
+          var buttons = card.querySelectorAll('.opt-btn');
+          buttons.forEach(function (btn, i) {
+            btn.disabled = true;
+            var letter = letters[i];
+            if (letter === correct) btn.classList.add('correct');
+            else if (letter === selected && !isCorrect) btn.classList.add('wrong');
+            else btn.classList.add('neutral-disabled');
+          });
+          var data = isCorrect ? FEEDBACK[qNum].correct : FEEDBACK[qNum].incorrect;
+          var fb = document.getElementById('fb-' + qNum);
+          fb.className = 'feedback-box shown ' + (isCorrect ? 'correct' : 'incorrect');
+          fb.innerHTML = '<div class="fb-label">' + data.label + '</div>' + data.text + '<div class="fb-legal">' + data.legal + '</div>';
+          if (isCorrect) correctCount++;
+          answeredCount++;
+        }
+      });
+    }
+
+    /* Restaurar respuestas abiertas */
+    if (state.openQ) {
+      if (state.openQ.q1 && document.getElementById('open-q1')) document.getElementById('open-q1').value = state.openQ.q1;
+      if (state.openQ.q2 && document.getElementById('open-q2')) document.getElementById('open-q2').value = state.openQ.q2;
+      if (state.openQ.q3 && document.getElementById('open-q3')) document.getElementById('open-q3').value = state.openQ.q3;
+    }
+
+    /* Actualizar barra de progreso */
+    if (answeredCount > 0) {
+      var pct = (answeredCount / totalQ) * 100;
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = answeredCount + ' / ' + totalQ + ' respondidas';
+      document.getElementById('sb-progress-fill').style.width = pct + '%';
+      document.getElementById('sb-progress-label').textContent = answeredCount + ' / ' + totalQ;
+    }
+
+    /* Si ya había terminado, mostrar score */
+    if (state.done) {
+      quizDone = true;
+      setTimeout(showScore, 300);
+    }
+
+  } catch (e) {
+    console.warn('[SCORM] restoreState error:', e);
+  }
+}
+</script>
+</body>
+</html>
