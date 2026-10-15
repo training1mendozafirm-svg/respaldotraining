@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taller VAWA · Criterios de Elegibilidad · Mendoza Learning Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--navy:#1c2130;--navy2:#252d42;--navy3:#2e3850;--gold:#c5a028;--gold2:#e0b830;--gold3:#f5e9c0;--gold4:#fdf6e3;--page:#faf6ef;--page2:#f3ede0;--card:#fff;--ink:#1a1712;--ink2:#312e28;--ink3:#5c5648;--red:#8a1818;--red2:#c93030;--red3:#fde6e6;--blue:#2a4a8a;--blue3:#e6ecf8;--amber:#8a5a00;--exc-c:#1a5e36;--exc-bg:#e5f4ec;--border:#e4ddd0;--border2:#d0c8b8;--sh:0 2px 12px rgba(0,0,0,.08);--r:10px;--rs:6px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"DM Sans",system-ui,sans-serif;background:var(--page);color:var(--ink);font-size:14px;line-height:1.65;height:100vh;overflow:hidden}
+#app{display:flex;flex-direction:column;height:100vh}
+.topbar{background:var(--navy);padding:.8rem 1.8rem;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--gold)}
+.topbar h2{font-family:"Cormorant Garamond",serif;font-size:1.25rem;color:#f2ead8}
+.topbar h2 em{color:var(--gold2);font-style:italic}
+.topbar-meta{font-size:11px;color:rgba(242,234,216,.5);margin-top:2px;letter-spacing:.04em}
+.user-badge{font-size:11.5px;color:rgba(242,234,216,.6);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:.25rem .9rem}
+.progress-bar-wrap{height:3px;background:var(--border);flex-shrink:0}
+.progress-bar-fill{height:100%;background:var(--gold);transition:width .4s}
+/* SCREENS */
+.screen{display:none;flex:1;overflow:hidden}
+.screen.active{display:flex}
+/* COVER */
+#screen-cover{flex-direction:column;align-items:center;justify-content:center;background:var(--navy);position:relative;overflow:hidden}
+#screen-cover::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(197,160,40,.12) 0%,transparent 60%)}
+.cover-inner{text-align:center;z-index:1;padding:2rem}
+.cover-logo{font-family:"Cormorant Garamond",serif;font-size:3rem;color:#f2ead8;margin-bottom:.5rem;line-height:1.1}
+.cover-logo em{color:var(--gold2);font-style:italic}
+.cover-sub{font-size:13px;color:rgba(242,234,216,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2.5rem}
+.cover-card{background:rgba(255,255,255,.06);border:1px solid rgba(197,160,40,.3);border-radius:var(--r);padding:2rem 2.5rem;max-width:440px;margin:0 auto}
+.cover-card label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:rgba(242,234,216,.7);margin-bottom:.6rem}
+.cover-card input{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(197,160,40,.4);border-radius:var(--rs);padding:.75rem 1rem;color:#f2ead8;font-size:15px;font-family:"DM Sans",sans-serif;outline:none}
+.cover-card input::placeholder{color:rgba(242,234,216,.35)}
+.cover-card input:focus{border-color:var(--gold2)}
+.btn-cover{margin-top:1.2rem;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:var(--r);padding:.8rem;font-weight:700;font-size:14px;cursor:pointer;letter-spacing:.05em}
+.cover-hint{font-size:11px;color:rgba(242,234,216,.4);margin-top:.9rem}
+/* INTRO */
+#screen-intro{flex-direction:column;overflow-y:auto;padding:2rem;background:var(--page)}
+.intro-inner{max-width:860px;margin:0 auto;width:100%}
+.intro-header{background:var(--navy2);border-radius:var(--r);padding:1.5rem 2rem;margin-bottom:1.5rem;color:#f2ead8}
+.intro-header h2{font-family:"Cormorant Garamond",serif;font-size:1.8rem;margin-bottom:.3rem}
+.intro-header p{font-size:12.5px;color:rgba(242,234,216,.7)}
+.intro-block{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem 1.6rem;margin-bottom:1.2rem;box-shadow:var(--sh)}
+.intro-block h3{font-family:"Cormorant Garamond",serif;font-size:1.2rem;border-left:3px solid var(--gold);padding-left:.8rem;margin-bottom:.8rem}
+.intro-block p,.intro-block li{font-size:13px;color:var(--ink2);line-height:1.7}
+.intro-block ul{padding-left:1.4rem;margin-top:.4rem}
+.intro-block li{margin-bottom:.3rem}
+.criterios-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.8rem}
+.crit-card{background:var(--page2);border:1px solid var(--border);border-radius:var(--rs);padding:.8rem 1rem}
+.crit-card .num{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:.3rem}
+.crit-card p{font-size:12.5px;color:var(--ink2);line-height:1.5}
+.btn-start{display:block;margin:1.5rem auto 0;background:linear-gradient(135deg,var(--navy),var(--navy3));color:#f2ead8;border:none;border-radius:var(--r);padding:.75rem 2.5rem;font-weight:600;font-size:14px;cursor:pointer}
+/* MAIN LAYOUT */
+#screen-main{flex-direction:column}
+.book-layout{display:flex;flex:1;overflow:hidden;min-height:0}
+.page-left{width:44%;flex-shrink:0;overflow-y:auto;background:var(--page2);border-right:1px solid var(--border2)}
+.page-left-inner{padding:1.5rem 1.6rem}
+.decl-box{background:var(--card);border-radius:var(--r);padding:1rem 1.3rem;border:1px solid var(--border);box-shadow:var(--sh)}
+.decl-box h3{font-family:"Cormorant Garamond",serif;font-size:1.2rem;margin-bottom:.3rem;border-left:3px solid var(--gold);padding-left:.8rem}
+.decl-subtitle{font-size:11px;color:var(--ink3);margin-bottom:.8rem;padding-left:.8rem}
+.texto-decl{font-family:"Cormorant Garamond",serif;font-size:13px;line-height:1.85;color:var(--ink2);white-space:pre-wrap}
+.page-right{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--page)}
+.criteria-tabs{display:flex;overflow-x:auto;background:var(--card);border-bottom:2px solid var(--border2);flex-shrink:0;padding:0 .5rem}
+.criteria-tabs button{padding:.7rem 1rem;border:none;background:none;cursor:pointer;font-size:12px;font-weight:500;color:var(--ink3);border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:.4rem}
+.criteria-tabs button.on{color:var(--gold);border-bottom-color:var(--gold);font-weight:600;background:var(--gold4)}
+.criteria-tabs button .tab-check{display:none;color:var(--exc-c);font-size:11px}
+.criteria-tabs button.done .tab-check{display:inline}
+.criteria-tabs button.results-tab{color:var(--navy2);font-weight:600}
+.criteria-tabs button.results-tab.on{color:var(--navy);border-bottom-color:var(--navy)}
+.analysis-body{flex:1;overflow-y:auto;padding:1.5rem}
+.sec-head{background:var(--navy2);border-radius:var(--r);padding:1rem 1.3rem;margin-bottom:1.2rem;color:#f2ead8}
+.sec-head h3{font-family:"Cormorant Garamond",serif;font-size:1.3rem;font-weight:600}
+.sec-head p{font-size:12px;color:rgba(242,234,216,.7);margin-top:.2rem}
+.teoria-box{background:var(--blue3);border:1px solid #b8c8e8;border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1.2rem}
+.teoria-box h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);margin-bottom:.4rem}
+.teoria-box p{font-size:12.5px;color:#2a3a5a;line-height:1.6}
+.qblock{background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:1rem;overflow:hidden}
+.qlabel{background:var(--page);border-bottom:1px solid var(--border);padding:.55rem 1rem;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3)}
+.qbody{padding:1rem 1.1rem}
+.qtext{font-size:13.5px;font-weight:500;margin-bottom:.8rem;color:var(--ink2)}
+.radio-grid,.check-grid{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.9rem}
+.ropt,.chkopt{display:flex;align-items:flex-start;gap:.65rem;padding:.65rem .8rem;border:1.5px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .18s;background:var(--page);user-select:none}
+.ropt:hover,.chkopt:hover{border-color:var(--gold);background:var(--gold4)}
+.ropt input,.chkopt input{margin-top:3px;flex-shrink:0;accent-color:var(--gold)}
+.ropt label,.chkopt label{font-size:13px;color:var(--ink2);cursor:pointer;line-height:1.45;pointer-events:none}
+.ropt.selected{border-color:var(--gold);background:var(--gold4)}
+.ropt.selected label{color:var(--amber);font-weight:500}
+.ropt.correct,.chkopt.correct{border-color:var(--exc-c)!important;background:var(--exc-bg)!important}
+.ropt.correct label,.chkopt.correct label{color:var(--exc-c)!important;font-weight:600}
+.ropt.incorrect,.chkopt.incorrect{border-color:var(--red2)!important;background:var(--red3)!important}
+.ropt.incorrect label,.chkopt.incorrect label{color:var(--red)!important}
+.fb{display:none;border-radius:var(--rs);padding:.7rem .95rem;font-size:12.5px;line-height:1.6;margin-top:.5rem}
+.fb.ok{background:var(--exc-bg);border:1px solid #90d0aa;color:var(--exc-c);display:block}
+.fb.bad{background:var(--red3);border:1px solid #e09090;color:var(--red);display:block}
+.open-section-head{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);background:var(--blue3);border-left:3px solid var(--blue);padding:.45rem .8rem;margin:1.2rem 0 .8rem}
+.jcontext{background:var(--page2);border:1px solid var(--border);border-radius:var(--rs);padding:.65rem .9rem;font-family:"Cormorant Garamond",serif;font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:.6rem;font-style:italic}
+textarea.jta{width:100%;min-height:110px;border:1.5px solid var(--border);border-radius:var(--rs);padding:.7rem .9rem;font-family:"DM Sans",sans-serif;font-size:13px;background:var(--page);resize:vertical}
+textarea.jta:focus{outline:none;border-color:var(--gold)}
+.charct{font-size:10.5px;text-align:right;margin-top:.25rem}
+.charct.ok{color:var(--exc-c)}
+.charct.bad{color:var(--red2)}
+.submit-bar{border-top:2px solid var(--border);background:var(--card);padding:.8rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap;flex-shrink:0}
+.score-note{font-size:12.5px;color:var(--ink3);flex:1;min-width:0}
+.btn-group{display:flex;gap:.5rem}
+.btn-check{background:linear-gradient(135deg,var(--navy),var(--navy3));color:#f2ead8;border:none;border-radius:var(--r);padding:.6rem 1.5rem;font-weight:600;cursor:pointer;font-size:13px}
+.btn-next{background:var(--gold);color:var(--navy);border:none;border-radius:var(--r);padding:.6rem 1.2rem;font-weight:600;cursor:pointer;font-size:13px;display:none}
+.btn-next.vis{display:block}
+/* RESULTS */
+.results-wrap{padding:1.5rem;overflow-y:auto;flex:1}
+.results-header{background:var(--navy2);border-radius:var(--r);padding:1.2rem 1.5rem;color:#f2ead8;margin-bottom:1.2rem;text-align:center}
+.results-header h2{font-family:"Cormorant Garamond",serif;font-size:1.8rem}
+.results-header .score-big{font-size:3rem;font-weight:700;color:var(--gold2);margin:.5rem 0;font-family:"Cormorant Garamond",serif}
+.results-header p{font-size:12px;color:rgba(242,234,216,.7)}
+.btn-pdf{margin-top:1rem;display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:30px;padding:.65rem 1.6rem;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 4px 14px rgba(197,160,40,.35)}
+.btn-pdf:hover{filter:brightness(1.05)}
+.btn-pdf:disabled{opacity:.6;cursor:wait}
+.btn-admin{margin-top:1rem;display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:#f2ead8;border:1.5px solid rgba(197,160,40,.6);border-radius:30px;padding:.6rem 1.5rem;font-weight:600;font-size:12.5px;cursor:pointer}
+.btn-admin:hover{background:rgba(197,160,40,.12)}
+/* PANEL DE ADMINISTRADOR */
+.admin-overlay{position:fixed;inset:0;background:var(--page);z-index:10000;display:none;flex-direction:column;overflow:hidden}
+.admin-overlay.active{display:flex}
+.admin-topbar{background:var(--navy);padding:1rem 1.6rem;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--gold);flex-shrink:0}
+.admin-topbar h2{font-family:"Cormorant Garamond",serif;font-size:1.3rem;color:#f2ead8}
+.admin-topbar h2 em{color:var(--gold2);font-style:italic}
+.admin-topbar-actions{display:flex;gap:.6rem;align-items:center}
+.admin-topbar-actions button{border:none;border-radius:20px;padding:.5rem 1.1rem;font-size:12px;font-weight:600;cursor:pointer}
+.admin-btn-pdf{background:var(--gold);color:var(--navy)}
+.admin-btn-danger{background:transparent;color:#ffb3b3;border:1.5px solid rgba(255,120,120,.5)!important}
+.admin-btn-close{background:transparent;color:#f2ead8;border:1.5px solid rgba(255,255,255,.3)!important}
+.admin-body{flex:1;overflow-y:auto;padding:1.5rem 2rem;background:var(--page)}
+.admin-summary-table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:1.6rem}
+.admin-summary-table th{background:var(--navy2);color:#f2ead8;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:.6rem .8rem;text-align:left}
+.admin-summary-table td{padding:.55rem .8rem;font-size:12.5px;border-bottom:1px solid var(--border);color:var(--ink2)}
+.admin-summary-table tr:last-child td{border-bottom:none}
+.admin-participant{background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:1rem;box-shadow:var(--sh);overflow:hidden}
+.admin-participant summary{cursor:pointer;padding:.9rem 1.2rem;font-family:"Cormorant Garamond",serif;font-size:1.15rem;color:var(--navy2);list-style:none;display:flex;justify-content:space-between;align-items:center;background:var(--page2)}
+.admin-participant summary::-webkit-details-marker{display:none}
+.admin-participant summary .meta{font-family:"DM Sans",sans-serif;font-size:11.5px;color:var(--ink3);font-weight:400}
+.admin-participant-body{padding:1rem 1.2rem}
+.admin-crit-head{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--navy2);background:var(--blue3);border-left:3px solid var(--blue);padding:.4rem .7rem;margin:1rem 0 .6rem}
+.admin-preg{margin-bottom:.8rem}
+.admin-preg-text{font-size:12.5px;font-weight:600;color:var(--ink2);margin-bottom:.3rem}
+.admin-attempt{font-size:11.5px;padding:.3rem .6rem;border-radius:6px;margin-bottom:.25rem;border:1px solid var(--border)}
+.admin-attempt.ok{background:var(--exc-bg);border-color:#90d0aa;color:var(--exc-c)}
+.admin-attempt.bad{background:var(--red3);border-color:#e09090;color:var(--red)}
+.admin-empty{text-align:center;padding:3rem 1rem;color:var(--ink3);font-size:13px}
+.admin-pass-hint{font-size:11px;color:rgba(242,234,216,.55);margin-top:.4rem}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem}
+.res-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;box-shadow:var(--sh)}
+.res-card h4{font-family:"Cormorant Garamond",serif;font-size:1.1rem;margin-bottom:.7rem;border-left:3px solid var(--gold);padding-left:.6rem}
+.res-card.refuerza h4{border-left-color:var(--red2)}
+.res-card.fortaleza h4{border-left-color:var(--exc-c)}
+.res-item{display:flex;align-items:center;gap:.5rem;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:12.5px}
+.res-item:last-child{border-bottom:none}
+.res-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-red{background:var(--red2)}
+.dot-green{background:var(--exc-c)}
+.progress-circle-wrap{display:flex;justify-content:center;margin:.5rem 0}
+.bar-wrap{background:var(--border);border-radius:4px;height:8px;margin-top:.3rem;width:100%}
+.bar-fill{height:100%;border-radius:4px;background:var(--gold);transition:width .6s}
+.bar-fill.low{background:var(--red2)}
+.bar-fill.high{background:var(--exc-c)}
+@media(max-width:780px){.book-layout{flex-direction:column}.page-left{width:100%;max-height:40vh}.results-grid{grid-template-columns:1fr}.criterios-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <div>
+      <h2>VAWA &middot; <em>Taller de Criterios de Elegibilidad</em></h2>
+      <div class="topbar-meta">Mendoza Learning Center &middot; The Mendoza Law Firm</div>
+    </div>
+    <div class="user-badge" id="user-badge">👤 —</div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+
+  <!-- COVER -->
+  <div class="screen active" id="screen-cover" style="flex-direction:column;align-items:center;justify-content:center">
+    <div class="cover-inner">
+      <div class="cover-logo">Taller VAWA<br><em>Criterios de Elegibilidad</em></div>
+      <div class="cover-sub">Mendoza Learning Center &middot; TMLF</div>
+      <div class="cover-card">
+        <label>Escribe tu nombre completo para comenzar</label>
+        <input type="text" id="cover-name" placeholder="Nombre y apellido..." autocomplete="off" onkeydown="if(event.key==='Enter')startTaller()">
+        <button class="btn-cover" onclick="startTaller()">Comenzar taller →</button>
+        <div class="cover-hint">Este taller incluye 7 criterios de elegibilidad VAWA &middot; Preguntas, análisis y reescritura</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="screen" id="screen-intro" style="flex-direction:column;overflow-y:auto">
+    <div class="intro-inner" style="padding:2rem;max-width:860px;margin:0 auto;width:100%">
+      <div class="intro-header">
+        <h2>Instrucciones del simulador</h2>
+        <p>Lee con atención antes de comenzar el análisis de la declaración</p>
+      </div>
+      <div class="intro-block">
+        <h3>¿Qué encontrarás en este taller?</h3>
+        <p>Analizarás la declaración jurada de <strong>Sandra Limón Reina</strong>, peticionaria en un caso hipotético VAWA (I-360 + AOS). Tu tarea es identificar si cada criterio de elegibilidad se cumple, detectar las fortalezas y los vacíos evidenciales, y practicar cómo fortalecer los fragmentos incompletos de la declaración.</p>
+      </div>
+      <div class="intro-block">
+        <h3>Dinámica del ejercicio</h3>
+        <ul>
+          <li>Cada pestaña corresponde a un <strong>criterio de elegibilidad VAWA</strong>.</li>
+          <li>En cada criterio encontrarás: marco teórico, preguntas de opción múltiple, selección múltiple, y ejercicios de reescritura.</li>
+          <li>Haz clic en <strong>"Verificar respuestas"</strong> al terminar cada criterio para recibir retroalimentación.</li>
+          <li>El botón <strong>"Siguiente criterio"</strong> se activa solo cuando todas las respuestas son correctas y las reescrituras están completas.</li>
+          <li>Al finalizar todos los criterios, revisa tu pestaña de <strong>Resultados</strong>.</li>
+        </ul>
+      </div>
+      <div class="intro-block">
+        <h3>Criterios de elegibilidad VAWA que se analizarán</h3>
+        <p style="margin-bottom:.6rem;font-size:12.5px;color:var(--ink3)">Basados en la política actualizada de USCIS &mdash; diciembre 2025</p>
+        <div class="criterios-grid">
+          <div class="crit-card"><div class="num">① Criterio 1</div><p><strong>Relación familiar calificada</strong> con el abusador (cónyuge, hijo/a, padre/madre de USC o LPR)</p></div>
+          <div class="crit-card"><div class="num">② Criterio 2</div><p><strong>Ciudadanía o estatus migratorio</strong> del abusador: debe ser USC o LPR</p></div>
+          <div class="crit-card"><div class="num">③ Criterio 3</div><p><strong>Matrimonio de buena fe</strong> (solo para cónyuges): intención genuina, no solo migratoria</p></div>
+          <div class="crit-card"><div class="num">④ Criterio 4</div><p><strong>Batería o crueldad extrema</strong>: abuso físico o psicológico significativo con patrón y consecuencias</p></div>
+          <div class="crit-card"><div class="num">⑤ Criterio 5</div><p><strong>Buen carácter moral</strong>: historial de los últimos 3 años; documentación proactiva obligatoria (dic. 2025)</p></div>
+          <div class="crit-card"><div class="num">⑥ Criterio 6</div><p><strong>Residencia compartida</strong> con el abusador durante la relación calificada (obligatorio desde dic. 2025)</p></div>
+          <div class="crit-card"><div class="num">⑦ Criterio 7</div><p><strong>Residencia actual en los Estados Unidos</strong> al momento de presentar la autopetición</p></div>
+        </div>
+      </div>
+      <button class="btn-start" onclick="startMain()">Ir al análisis del caso →</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="screen" id="screen-main" style="flex-direction:column">
+    <div class="book-layout">
+      <div class="page-left"><div class="page-left-inner" id="left-panel"></div></div>
+      <div class="page-right">
+        <div class="criteria-tabs" id="tab-bar"></div>
+        <div class="analysis-body" id="right-panel"></div>
+        <div class="submit-bar">
+          <span class="score-note" id="score-note">Selecciona un criterio para comenzar</span>
+          <div class="btn-group">
+            <button class="btn-next" id="btn-next" onclick="goNext()">Siguiente →</button>
+            <button class="btn-check" id="btn-check" onclick="checkCurrentTab()">Verificar respuestas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PANEL DE ADMINISTRADOR ===================== -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-topbar">
+    <h2>🔐 Panel de <em>Administrador</em> &middot; Registro de respuestas</h2>
+    <div class="admin-topbar-actions">
+      <button class="admin-btn-pdf" onclick="generarReportePDF()" id="btn-pdf-admin">📄 Descargar PDF</button>
+      <button class="admin-btn-danger" onclick="borrarRegistroIntentos()">🗑️ Borrar registro</button>
+      <button class="admin-btn-close" onclick="cerrarPanelAdmin()">✕ Cerrar</button>
+    </div>
+  </div>
+  <div class="admin-body" id="adminBody"></div>
+</div>
+
+<script>
+// ---------------------------------------------------------------
+// DECLARACION
+// ---------------------------------------------------------------
+const DECL = `DECLARACIÓN DE SANDRA LIMÓN REINA EN APOYO A SUS SOLICITUDES I-360 Y AOS
+
+Yo, Sandra Limón Reina, por la presente juro y afirmo que la siguiente declaración es verdadera y correcta según mi conocimiento, habilidad y capacidad.
+
+Me llamo Sandra Limón Reina, nací en Oaxaca, México, el 6 de mayo de 1977. Tengo 48 años.
+
+Mi vida en Oaxaca era muy difícil. Mis papás trabajaban en el campo porque no había otro trabajo en el pueblo. Desde que tenía nueve años, tuve que ir a trabajar a la pisca de café, a llenar los cajetes, limpiar la milpa y limpiar el frijol. Teníamos que trabajar todos para ayudar a la familia, desde las 7:00 a.m. hasta las 6:00 p.m. A pesar de eso, batallábamos para tener suficiente comida, sólo había tortillas con sal y salsa, y muy rara vez frijoles. Del río agarrábamos agua y cortábamos hierbas del campo para comerlas con las tortillas. Por eso, mis papás me propusieron que me viniera a los Estados Unidos con mis hermanos, que ya estaban aquí. En mi pueblo, la única vida que me esperaba era casarme a los 15 ó 16 años para que mis padres no tuvieran que seguir manteniéndome, y ellos no querían eso, querían que tuviera otras oportunidades y una vida mejor. Entendí que era lo mejor para mí, así que en noviembre de 1992, a los 14 años, llegué a Estados Unidos. Al principio, vivía con mis hermanos y entré a una escuela en la ciudad de Stanton. Mi vida mejoró aquí porque trabajaba menos que en México y podía comprarme mis cosas y comer lo que yo quería.
+
+Conocí a Miguel Ángel Pérez del Muro cuando yo tenía 15 años porque mis hermanos eran músicos y cuando iba a verlos ensayar, él también iba. Después, mi familia y yo nos mudamos a otro lugar y entonces pasaba todos los días por su casa para ir a la escuela, así que nos empezamos a ver más seguido y a salir juntos. Al principio, Miguel era muy romántico. Me escribía muchas cartas, me grababa casetes de música, me regalaba tarjetitas que decían "te quiero" o "te extraño", me regalaba peluches, me llevaba al parque y cosas así. Duramos dos años de novios, sin embargo, a los 17 años, salí embarazada. Le dije a Miguel, y él y su tío hablaron con mis hermanos y dijeron que teníamos que casarnos.
+
+Durante nuestro matrimonio, Miguel intentó arreglar sus papeles por medio de su patrón. Un día, lo acompañé a llevar unos papeles con mi hija, quien tiene síndrome de Down y que tenía 5 ó 6 años en ese momento. El abogado nos dijo que por medio de ella podíamos tener nuestros papeles, debido a su condición, y me explicó los requisitos. Miguel los tenía todos, pero yo no, así que cuando nuestros casos fueron con el juez, éste lo aprobó a él, pero a mí no, por lo que él se hizo ciudadano, pero a mí me dieron la deportación voluntaria. Aunque el abogado apeló, me la negaron, pero Miguel metió una petición pidiéndome a mí y me llegó una cita de migración a la que fui sola porque no pude pagarle al abogado. En Migración, expliqué que mis hijos estaban aquí, chiquitos, y que mi hija requería cuidados especiales por lo que yo no podía dejarlos solos aquí. Me dieron una carta para darme protección durante el tiempo que me regularizaba, pero cambiamos de dirección y, aunque notifiqué a migración que me cambiaba de casa, ya no supe si me enviaron algún otro documento.
+
+En el 2007 o 2008, mi esposo me fue infiel. Desde ese momento quise separarme de él, pero él me insistió en que teníamos que salvar nuestro matrimonio, y mis hijos estaban chiquitos. Yo no tenía otro lugar a donde irme con mis hijos, así que decidí darle otra oportunidad y tuve que dejar uno de mis trabajos para pasar más tiempo con él. Después de la infidelidad, Miguel empezó a obligarme a hacer cosas sexuales que yo no quería, y si no las hacía, se enojaba y me forzaba. Incluso, llegó a decirme que si yo no le complacía, buscaría a otra mujer que sí lo hiciera. Desde entonces, me violó analmente, obligándome con su fuerza porque él es mucho más fuerte y pesado que yo. Hace poco, decidí separarme de él y fue cuando empezó a agredirme en el trabajo, empujándome para que yo me cayera, pisándome y hasta quemándome con aceite caliente. Tuve que cambiar de trabajo porque tuve miedo de que fuera a lastimarme más, y eso afectó muchísimo mi economía porque ganaba el doble de lo que gano ahora. A pesar de eso, él no me apoyó con el dinero para mis hijos, y llegué a dejar de pagar algunos biles porque no me alcanzaba. Además, Miguel no quería darme el dinero que me correspondía de las ganancias del negocio, lo que me afectó más todavía en mi economía.
+
+Si fuera deportada, no tendría dónde llegar en Oaxaca, ya que mis padres y el hermano que me trajo aquí ya fallecieron, no tengo casa ni familia cercana que me apoye allá. Mi hija con síndrome de Down depende de mí y necesita cuidados especiales que no podría tener en México. Además, en mi pueblo la pobreza sigue siendo la misma de la que huí. No podría encontrar un trabajo que me pagara lo suficiente para mantenerme a mí y a mis tres hijos. Esta solicitud es mi única esperanza para construir una vida segura y estable para mí y mis hijos.
+
+<strong>MIGUEL ME OBLIGÓ A TENER SEXO ANAL, HACIÉNDOME SANGRAR Y LASTIMÁNDOME. ME FORZABA A TENER SEXO AGARRÁNDOME LAS MANOS INCLUSO DURANTE LAS CUARENTENAS DE MIS PARTOS Y ME OBLIGÓ A HACER COSAS SEXUALES QUE NO QUERÍA HACER</strong>
+
+Miguel empezó a exigirme cosas en la cama que nunca habíamos hecho, cosas que a mí no me gustaban, como el sexo oral y anal. Me hacía sentir culpable y amenazaba con engañarme nuevamente, algo que me afectaba porque me hacía sentir muy triste y sin valor. Una noche, estábamos en la cama, y él exigía que le hiciera sexo oral, trató de convencerme, pero yo no quise. En eso, me dijo: "Oh, no quieres hacer eso, pues me voy a buscar otra", me jaló hacia él y me dijo que era normal que se lo hiciera, pero pude zafarme e irme al baño para evitarlo. A la noche siguiente, me desperté en la madrugada porque Miguel estaba intentando penetrarme por detrás. Reaccioné y le pregunté qué hacía, pero sólo me exigió que no me moviera. Como me estaba lastimando, me levanté para que no me hiciera más daño y de nuevo me metí al baño. Miré que sangraba y me dolía mucho. Le dije que me había hecho sangrar, pero no le dio importancia. Me metí a bañar y me fui a trabajar, pero el dolor me duró dos días y me costaba trabajo hacer mis necesidades. Él llegó a trabajar más tarde ese día, y cuando le dije nuevamente que tenía dolor, me contestó que era normal y sólo me dijo que no me enojara por eso. Me sentía frustrada, pero como me dijo que no lo volvería a hacer, yo confié y por eso seguí durmiendo con él. Sin embargo, una semana después, Miguel intentó nuevamente penetrarme por detrás mientras yo dormía. En esa ocasión, me desperté porque Miguel estaba tratando de quitarme la ropa interior para penetrarme. Le pregunté por qué estaba quitándome la ropa, pero me mintió diciendo que no hacía nada. Después de eso, no pude dormir porque no confiaba, tenía miedo de que fuera a hacerme algo si me dormía. Él intentaba penetrarme como a las tres de la madrugada para asegurarse de que yo no me daría cuenta porque estaba dormida. A partir de entonces, pensé que ya no podía confiar en él porque ya me prometió que no lo iba a volver a intentar y no lo había cumplido.
+
+Miguel también exigía tener relaciones conmigo sin importar que estuviera en mi ciclo menstrual, sintiéndome mal y con dolores; me decía que como yo era su esposa, tenía que acceder a hacer lo que exigía. En una ocasión que yo estaba en mi periodo, Miguel empezó a tocarme y le dije que estaba sangrando y tenía mucho dolor, por lo que no quería tener relaciones. En ese momento, me agarró las manos para forzarme, pero le dije que si yo no quería, eso era una violación, a lo que me contestó: "Pero por qué chingados va a ser violación si tú eres mi mujer, eso no es violación". Me tenía agarradas las manos y se puso encima de mí, pero no me resistí porque él era mucho más fuerte que yo, no podía protegerme y me cansé de forcejear. Le pedí que parara porque me estaba lastimando, pero él me ignoraba y lo único que él buscaba era satisfacerse. Me sentí terrible, y a partir de entonces perdí el interés en las relaciones sexuales. Cuando Miguel terminaba de abusarme, yo iba al baño adolorida y lloraba de frustración porque no podía hacer nada para evitar que esto pasara. Me ardía al orinar y me dejaba rozada y con dolor durante varios días. Me sentía usada sexualmente por mi marido, lo que me hacía sentir muy mal. Además, Miguel también me obligó a tener relaciones con él durante el tiempo de la cuarentena, luego de tener a cada uno de mis hijos. Una tarde, a los 15 días de haber tenido a mi primer bebé, Miguel empezó a tratar de quitarme la ropa. Yo estaba muy cansada porque me pasaba casi todo el día en el hospital con mi niña, y tenía además la herida de la cesárea, pero él se aprovechó de que no tenía fuerzas y terminó penetrándome por detrás. Cuando terminó, él se quedó acostado, durmiendo, y yo tuve que pedirle a su hermano que me llevara al hospital con mi hija. Me sentía muy mal, no solo por todo lo que estaba pasando, sino también por el dolor físico, porque apenas podía aún caminar derecha. Durante mis cuarentenas, Miguel solía abusarme en la madrugada, cuando yo estaba profundamente dormida. El miedo de que me violara mientras dormía y sus insistencias en que yo hiciera lo que él decía me provocaron mucha inseguridad. Me daba miedo su comportamiento y hace apenas unos años tomé la decisión de separarme de él.
+
+<strong>MIGUEL ME EMPUJABA Y PEGABA EN EL TRABAJO Y ME QUEMÓ LOS BRAZOS CON ACEITE HIRVIENDO. ME HIZO SENTIR TANTO MIEDO QUE TUVE QUE DEJAR EL TRABAJO, ALGO QUE ME HA AFECTADO ECONÓMICAMENTE. AHORA SOLO GANO LA MITAD DE DINERO, PERO MIGUEL NO ME PAGA LO QUE ME CORRESPONDE DEL NEGOCIO POR SER SOCIA, POR LO QUE HE BATALLADO ECONÓMICAMENTE.</strong>
+
+Miguel y yo trabajamos juntos en un restaurante de mi hermano. Él me ofreció ser parte del negocio, y me dijo que las ganancias que tuviéramos serían iguales. Para ese momento, yo no quería poner el negocio a mi nombre por mi situación migratoria, así que Miguel prestó su nombre para ponerlo. Sin embargo, Miguel aprovechaba el lugar de trabajo para golpearme y empujarme, haciéndolo pasar como accidentes, aunque todo el tiempo buscaba cómo hacerme daño. Una vez, yo estaba cocinando papas en una freidora, entonces él llegó a meter algo en la canasta y lo lanzó desde arriba para que me salpicara el aceite, lo que me provocó quemaduras en el brazo. Le dije que tuviera cuidado porque me había quemado, pero él sólo me dijo que yo exageraba. Tuve que usar un producto para las quemaduras y al día siguiente me salieron ampollas en el brazo. Sé que lo hizo intencional porque lo volvió a hacer en otra ocasión y esta vez me salpicó el aceite hirviendo en la cara y en la ropa. Le reclamé y me dijo que estaba exagerando y que sólo estaba haciendo su trabajo. Me hacía sentir mal que él buscara hacer las cosas con la intención de lastimarme y que se justificara diciendo que sólo estaba haciendo su trabajo, sobre todo cuando era muy obvio que buscaba hacerme daño. Después de eso, Miguel empezó a empujarme muchas veces, tratando de hacerme caer o de hacerme daño. En una ocasión, yo estaba tratando de subir unos platos grandes hacia arriba, en una repisa, cuando él se puso a mi lado y sentí un codazo en mis costillas. Mintió diciendo que se iba a caer y por eso me había golpeado, por accidente, pero no era así, y a mí me dolió el costado el resto del día. Además, si no hubiera reaccionado rápido, los platos se me hubieran caído en la cabeza y me hubiera lastimado. Sin embargo, después empezó a hacerlo más seguido. En una ocasión me dio un pisotón tan fuerte que durante todo ese día casi no pude caminar y tuve que tomar Tylenol porque el dolor me duró dos días. Otra vez me empujó con todo su cuerpo cuando yo estaba en una zona del restaurante, pero alcancé a agarrarme y no me caí. Yo sentía que en cualquier momento Miguel me haría daño y que tenía que estar al pendiente para no estar cerca de él. En otra ocasión, me empujó hacia el grill caliente con mucha fuerza, pero alcancé a meter las manos debajo del grill y no me quemé. Si no hubiera hecho eso, me habría caído de frente o peor, me habría quemado con el grill. Miguel quiso hacerme daño y hasta mis hermanos se dieron cuenta. El resto del día tuve que trabajar lo más alejada que se pudiera de él, porque no sabía qué me haría. Trabajaba con miedo y con frustración porque no podía hacer nada. Toda esta situación me tenía devastada emocionalmente, hasta el punto de que a veces tenía que meterme en el baño a llorar y desahogarme.
+
+La situación que hizo que yo tuviera que dejar mi trabajo fue un día que Miguel me empujó con su cuerpo con toda su fuerza, por lo que choqué contra la máquina de hielo golpeándome en la cadera, algo que me dolió bastante. Seguí trabajando pero todo el día sentía mucha tensión. Me aguanté para no llorar y cuando llegué a mi casa me pude desahogar. Las agresiones de Miguel, sin importarle quién estaba presente, me afectaron demasiado en el trabajo, hasta el punto en que ya no quería estar ahí. Yo aguantaba porque mi hermano me decía que no lo dejara, que yo era su mano derecha y que me necesitaba, pero al final tuve que decirle que no podía más y que no me importaba quedarme sin ingresos, tenía que irme y alejarme de Miguel. Sin embargo, Miguel empezó a aprovecharse de que tuve que poner mi parte del negocio a su nombre y no me da las ganancias, incluso pagó una demanda suya con dinero del restaurante. Un día, yo estaba ordenando papeles en la oficina y encontré unas cartas y un cheque por 5,000 dólares a nombre de una ex trabajadora del restaurante. Confronté a Miguel y me dijo que él había sido denunciado por esta persona pero que ella perdió el caso. Yo no le creí porque el cheque estaba a nombre de ella y venía de la cuenta del restaurante, así que, al insistirle, me contó la verdad, que tuvo que darle 5,000 dólares porque ella le ganó el juicio por acoso sexual. Ese dinero salió del restaurante y no me dijo nada, y como es una cantidad grande, también salió de mi parte del negocio, por lo que mucho de esa cantidad era dinero mío.
+
+Cuando me salí del trabajo, mi hermano me consiguió otro en un restaurante de un conocido pero ya no ganaba lo mismo que en mi empleo anterior. Este cambio afectó muchísimo mi economía porque en ese empleo mi sueldo era de 600 dólares a la semana, prácticamente la mitad de lo que ganaba en mi trabajo anterior. Además, estuve dos semanas sin empleo y me atrasé con los pagos de algunos biles. Tuve que pagar la electricidad y el gas con recargos, y en la renta, también tuve que pagar un extra de 80 dólares porque me atrasé. Tuve que vender mi camioneta para poder ponerme al corriente con mis pagos automáticos, como mi seguro de vida, que es un ahorro que llevo pagando varios años y que no quería perder. Por haber vendido mi camioneta, batallaba para llevar a mi hija con síndrome de Down a sus citas. Pero desde que nos separamos, Miguel se negó a darme mi parte de las ganancias del negocio. Mi hija más pequeña era menor de edad en ese tiempo, pero Miguel no me daba nada de dinero ni siquiera para mis hijos y yo tenía que batallar económicamente para que no les faltara nada. Cuando le dije que yo tenía una parte del negocio y que él tenía que darme dinero de las ganancias, me respondió: "Dónde dice a ver, enséñame un papel donde diga que yo tengo que darte dinero". Tuve que contratar a un abogado con el que acordó que me diera 500 dólares semanales, aunque él ganaba entre 2,500 y 3,000 dólares a la semana. Desde entonces, ha sido muy difícil enfrentar sola todos los gastos de mis tres hijos. Me siento cansada de todo esto y además mis hijos también han sido afectados porque él casi no los ve, ha dejado de frecuentarlos y ellos se entristecen por eso. Sobre todo mi hija menor pregunta mucho por su padre y yo siento que no es justo que Miguel no le dé a ella y a sus hermanos la atención que merecen.`;
+
+// ---------------------------------------------------------------
+// FEEDBACK TEORICO POR CRITERIO (para reescritura "por qué no se cumple")
+// ---------------------------------------------------------------
+const feedbackTeorico = [
+  // c1
+  `<strong>¿Por qué SÍ se cumple este criterio en la declaración de Sandra?</strong><br>
+  Este criterio exige una relación calificante (cónyuge, hijo/a o padre/madre) con un abusador USC o LPR. En la declaración de Sandra:<br>
+  • Existió un matrimonio civil legal con Miguel Ángel Pérez del Muro, motivado por el embarazo de Sandra a los 17 años y la insistencia familiar — no por un beneficio migratorio.<br>
+  • La relación calificante (cónyuge) está presente, ya sea que se considere vigente o pasada, pues Sandra indica que "hace poco" decidió separarse.<br>
+  • Antes del matrimonio existió una relación de dos años de noviazgo, lo que respalda que el vínculo conyugal se originó en una relación real y no en un arreglo instrumental.<br>
+  <strong>Qué falta reforzar:</strong> la fecha y el lugar exactos del matrimonio, el acta de matrimonio, y aclarar el estatus civil actual (separada, en trámite de divorcio, o divorciada).`,
+  // c2
+  `<strong>¿Por qué SÍ se cumple este criterio en la declaración de Sandra?</strong><br>
+  El abusador debe ser USC o LPR. En la declaración:<br>
+  • Sandra declara expresamente que Miguel "se hizo ciudadano" tras la aprobación de su proceso migratorio (relacionado con la condición de su hija con síndrome de Down), mientras que el de ella fue denegado.<br>
+  • Esto satisface el criterio de estatus calificante del abusador (USC).<br>
+  <strong>Qué falta reforzar:</strong> obtener copia del certificado de naturalización de Miguel con fecha específica, así como dar seguimiento a la petición I-130 que él presentó a favor de Sandra (verificar con USCIS su estatus actual, ya que ella cambió de domicilio y no confirma si recibió notificaciones posteriores).`,
+  // c3
+  `<strong>¿Por qué SÍ se cumple este criterio en la declaración de Sandra?</strong><br>
+  La buena fe matrimonial exige que el matrimonio se haya contraído con intención genuina, no por conveniencia migratoria. En la declaración de Sandra:<br>
+  • Existió una relación de noviazgo de dos años con gestos genuinos y sostenidos: cartas, casetes grabados, tarjetas, peluches, salidas al parque.<br>
+  • El matrimonio se precipitó por un embarazo y la presión familiar/comunitaria, no por ningún interés migratorio — a diferencia de un matrimonio contraído específicamente para obtener beneficios de inmigración.<br>
+  • Después del matrimonio, la pareja formó una vida en común real: tuvieron tres hijos y trabajaron juntos durante años en el mismo negocio familiar.<br>
+  <strong>Qué falta reforzar:</strong> evidencia documental del noviazgo (si se conservó alguna carta o fotografía), acta de matrimonio, y evidencia de vida doméstica compartida (fotos familiares, documentos con ambos nombres).`,
+  // c4
+  `<strong>¿Por qué SÍ se cumple sólidamente este criterio en la declaración de Sandra?</strong><br>
+  El estándar de batería o crueldad extrema exige patrón, contexto e impacto documentado. La declaración de Sandra presenta múltiples categorías de abuso, cada una con especificidad:<br>
+  • <em>Abuso sexual/violación marital:</em> penetración anal forzada en reiteradas ocasiones causando sangrado y dolor, incluso durante el periodo menstrual y durante las cuarentenas posparto de sus tres hijos, con la frase explícita de Miguel negando que existiera violación dentro del matrimonio.<br>
+  • <em>Abuso físico en el trabajo:</em> quemaduras con aceite hirviendo (brazo y luego cara/ropa), codazos, pisotones, empujones hacia una máquina de hielo y hacia un grill caliente, presentados por Miguel como "accidentes".<br>
+  • <em>Impacto documentado:</em> dolor físico prolongado, necesidad de medicamento (Tylenol), miedo constante, llanto y angustia emocional, y la necesidad de cambiar de empleo por seguridad, con una pérdida económica del 50% de su salario.<br>
+  Este patrón sostenido, con fechas aproximadas y consecuencias físicas/psicológicas claras, cumple con creces el estándar de batería y crueldad extrema exigido por USCIS.`,
+  // c5
+  `<strong>¿Qué falta para acreditar plenamente el buen carácter moral de Sandra?</strong><br>
+  La declaración de Sandra no contiene ninguna admisión de fraude migratorio ni conducta moralmente cuestionable — a diferencia de otros casos donde el peticionario admite un matrimonio por conveniencia. Sin embargo:<br>
+  • Bajo la actualización de diciembre 2025, la carga de la prueba recae completamente en la peticionaria: no basta con la ausencia de señales negativas, se debe documentar afirmativamente el buen carácter.<br>
+  • La declaración no incluye información sobre historial laboral estable, crianza responsable de sus tres hijos (incluida su hija con síndrome de Down), participación comunitaria, cumplimiento de obligaciones fiscales, o ausencia de antecedentes penales.<br>
+  • También debe explicarse con transparencia el desenlace de su proceso migratorio anterior (la orden de deportación voluntaria) para evitar dudas sobre su historial ante USCIS.<br>
+  <strong>Qué debe demostrarse:</strong> historial laboral, crianza de los hijos, cartas de referencia comunitaria, cumplimiento tributario, y una explicación clara y transparente de la deportación voluntaria previa.`,
+  // c6
+  `<strong>¿Por qué probablemente SÍ se cumple este criterio en la declaración de Sandra?</strong><br>
+  La residencia compartida es ahora un requisito obligatorio (actualización dic. 2025). En la declaración de Sandra:<br>
+  • Tuvieron tres hijos juntos, y ella describe convivencia sostenida durante los periodos de cuarentena posparto de cada uno de ellos, lo que sugiere años de vida doméstica compartida.<br>
+  • Trabajaron juntos por años en el mismo restaurante familiar, otro indicio de vida compartida sostenida.<br>
+  • La separación reciente ("hace poco decidí separarme de él") indica que la convivencia se mantuvo hasta un momento cercano al presente, no que fue breve o intermitente.<br>
+  <strong>Qué falta reforzar:</strong> la declaración no incluye direcciones específicas ni fechas exactas de cuándo y dónde vivieron juntos. Es indispensable documentar esto con precisión (contratos de renta, facturas de servicios, correspondencia oficial) para cumplir con el mayor rigor exigido desde diciembre 2025.`,
+  // c7
+  `<strong>¿Por qué NO se acredita plenamente este criterio en la declaración de Sandra?</strong><br>
+  La declaración no confirma explícitamente la residencia actual de Sandra en Estados Unidos:<br>
+  • Se menciona que llegó a la ciudad de Stanton en 1992 y que trabajó y vivió en varios lugares con Miguel, pero no se indica en qué estado o ciudad reside actualmente.<br>
+  • No se incluyen comprobantes de domicilio vigentes ni una declaración expresa de permanencia actual en el país.<br>
+  • Los hechos recientes que describe (separación reciente, cambio de empleo, gastos actuales) sugieren fuertemente que sigue viviendo en EEUU, pero esto debe declararse de manera explícita y respaldarse documentalmente.<br>
+  <strong>Qué debe demostrarse:</strong> residencia actual en territorio estadounidense (estado y ciudad específicos), y comprobantes de domicilio recientes (contrato de renta, recibos de servicios, correspondencia oficial).`
+];
+
+// ---------------------------------------------------------------
+// TALLERES
+// ---------------------------------------------------------------
+const talleres = [
+  {id:"c1",label:"① Relación familiar",
+   teoria:"La persona peticionaria debe tener una relación calificada con el abusador: cónyuge, hijo/a o padre/madre de un ciudadano (USC) o residente permanente (LPR). Para cónyuges, el matrimonio debe ser legal y de buena fe. La relación puede ser actual o pasada. Sin esta relación calificada, la petición no puede avanzar.",
+   preguntas:[
+    {type:"mc",id:"c1_mc1",text:"¿Cuál de los siguientes vínculos NO califica como 'relación familiar calificante' bajo VAWA?",
+     opts:["Cónyuge de un ciudadano estadounidense (USC)","Hijo/a abusado/a de un residente permanente (LPR)","Padre/madre abusado/a de un hijo ciudadano estadounidense","Pareja en unión libre sin matrimonio legal formal"],correct:3,
+     fb_ok:"Correcto. VAWA requiere matrimonio legal o relación filial específica. La unión libre sin matrimonio formal no califica.",
+     fb_bad:"Incorrecto. Las parejas en unión libre sin matrimonio formal no califican para VAWA. Se requiere matrimonio legal o vínculo filial reconocido."},
+    {type:"mc",id:"c1_mc2",text:"Sandra indica que se casó con Miguel porque salió embarazada a los 17 años y su familia (hermanos, Miguel y su tío) insistió en que debían casarse. ¿Este hecho compromete la relación familiar calificante?",
+     opts:["No necesariamente: el matrimonio sigue siendo legalmente válido y la relación calificante se basa en el vínculo conyugal legal, no en las circunstancias sociales o familiares que motivaron la boda.","Sí, cualquier matrimonio arreglado o presionado por la familia invalida automáticamente la relación calificante.","Solo califica si hubo un compromiso formal (anillo, pedida de mano) antes del embarazo.","No, porque VAWA no reconoce matrimonios que se originan a partir de un embarazo."],correct:0,
+     fb_ok:"Correcto. Que la boda haya sido impulsada por un embarazo y la presión familiar no invalida el matrimonio legal ni la relación calificante; lo relevante es que exista un vínculo conyugal legal y genuino.",
+     fb_bad:"Incorrecto. Un matrimonio motivado por un embarazo y presión familiar sigue siendo legalmente válido. Lo que compromete la relación calificante es la falta de un vínculo legal o la ausencia de buena fe migratoria, no las circunstancias sociales de la boda."},
+    {type:"mc",id:"c1_mc3",text:"En relaciones de padrastro/madrastra, ¿qué debe demostrarse adicionalmente bajo la actualización de diciembre 2025?",
+     opts:["Que convivieron más de 5 años bajo el mismo techo","Que la relación con el abusador continúa vigente tras el fallecimiento del progenitor biológico","Que el padrastro/madrastra es ciudadano o LPR desde antes del matrimonio","Que el hijo/a era menor de edad cuando inició la relación abusiva"],correct:1,
+     fb_ok:"Correcto. La actualización de dic. 2025 aclara que en relaciones de padrastro/madrastra se debe demostrar que la relación con el abusador sobreviviente continúa vigente.",
+     fb_bad:"Incorrecto. La nueva política exige demostrar la continuidad del vínculo con el abusador sobreviviente tras el fallecimiento del progenitor biológico."},
+    {type:"mc",id:"c1_mc4",text:"Sandra explica que 'hace poco' decidió separarse de Miguel, pero la declaración no indica si ya existe una sentencia de divorcio. ¿Afecta esto la elegibilidad del criterio de relación familiar?",
+     opts:["No necesariamente: la relación calificante puede ser actual o pasada, siempre que haya existido un matrimonio legal válido con el abusador.","Sí, sin el divorcio finalizado Sandra no puede presentar la autopetición VAWA.","Solo puede presentar la petición si ya está legalmente divorciada de Miguel.","Debe demostrar que el proceso de divorcio se inició antes de cualquier incidente de abuso."],correct:0,
+     fb_ok:"Correcto. La relación calificante puede ser actual o pasada; no es necesario un divorcio finalizado para presentar la autopetición VAWA.",
+     fb_bad:"Incorrecto. VAWA permite que la relación sea actual o pasada. No se requiere que el divorcio esté finalizado para presentar la petición."},
+    {type:"check",id:"c1_ch1",text:"¿Cuáles elementos son esenciales en una declaración VAWA para acreditar la relación familiar calificante? (Selecciona todas las correctas)",
+     opts:["Fecha y lugar exactos del matrimonio o establecimiento de la relación","Nombre completo del abusador y acta de matrimonio o documento de parentesco","Declaración explícita de que el matrimonio fue de buena fe (genuino)","Estatus migratorio del abusador (USC o LPR)"],correct:[0,1,2,3],
+     fb_ok:"Correcto. Los cuatro elementos son esenciales: fecha/lugar, identificación del abusador, buena fe del matrimonio, y estatus calificante del abusador.",
+     fb_bad:"Respuesta incompleta. Todos son necesarios: fecha/lugar, documentos de parentesco, buena fe, y estatus migratorio calificante del abusador."},
+    {type:"mc",id:"c1_mcRW",text:"La declaración de Sandra no incluye la fecha ni el lugar exactos en que se casó con Miguel, ni menciona si conserva su acta de matrimonio. ¿Cuál de las siguientes adiciones fortalecería mejor este criterio?",
+     opts:["\"Miguel y yo nos casamos en una ceremonia civil poco después de saber que yo estaba embarazada; conservo nuestra acta de matrimonio, la cual acredita que somos legalmente esposos.\"","\"No recuerdo bien cuándo ni dónde nos casamos con Miguel.\"","\"Miguel y yo tuvimos una relación, pero nunca formalizamos nuestro matrimonio con papeles.\"","\"Miguel y yo decidimos no casarnos legalmente para evitar complicaciones migratorias.\""],correct:0,
+     fb_ok:"Correcto. Esta adición aporta la evidencia documental (acta de matrimonio) necesaria para acreditar sólidamente la relación familiar calificante.",
+     fb_bad:"Incorrecto. Esa opción no aporta evidencia documental del matrimonio, o directamente niega la existencia de un vínculo conyugal legal, lo cual debilita este criterio."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras por qué el criterio de Relación Familiar Calificante SÍ se cumple en la declaración de Sandra, y qué documento adicional se necesitaría para fortalecerlo (por ejemplo, fecha/lugar del matrimonio o acta de matrimonio).",
+   fbWhy:0},
+
+  {id:"c2",label:"② Estatus del abusador",
+   teoria:"El abusador debe ser ciudadano estadounidense (USC) o residente permanente legal (LPR). La persona peticionaria debe demostrar cómo tuvo conocimiento de ese estatus, con referencia a documentos específicos (pasaporte, green card, certificado de naturalización). Sin este estatus calificante, no hay elegibilidad VAWA.",
+   preguntas:[
+    {type:"mc",id:"c2_mc1",text:"¿Qué estatus debe tener el abusador para que una cónyuge sea elegible bajo VAWA?",
+     opts:["Ciudadano estadounidense (USC) o residente permanente legal (LPR)","Cualquier persona con permiso de trabajo vigente en EEUU","Cualquier persona que viva en EEUU, independientemente de su estatus","Exclusivamente ciudadano estadounidense; los LPR no califican"],correct:0,
+     fb_ok:"Correcto. VAWA requiere que el abusador sea ciudadano estadounidense o residente permanente legal (LPR).",
+     fb_bad:"Incorrecto. El abusador debe ser ciudadano o residente permanente legal. No basta vivir en EEUU ni tener permiso de trabajo."},
+    {type:"mc",id:"c2_mc2",text:"Sandra declara que, a diferencia de ella, el proceso migratorio de Miguel fue aprobado por el juez y que 'él se hizo ciudadano'. ¿Qué implica esto para el criterio de estatus del abusador?",
+     opts:["Satisface el criterio: Miguel es ciudadano estadounidense (USC), lo cual califica bajo VAWA.","No satisface el criterio porque la declaración no detalla la fecha exacta de su naturalización.","Es irrelevante para el caso mientras Sandra no tenga estatus migratorio regular.","Solo aplicaría si Miguel fuera residente permanente, no ciudadano naturalizado."],correct:0,
+     fb_ok:"Correcto. Que Miguel se haya hecho ciudadano estadounidense satisface el criterio de estatus calificante del abusador bajo VAWA.",
+     fb_bad:"Incorrecto. El hecho de que Miguel sea ciudadano estadounidense (USC) sí satisface este criterio, independientemente de la fecha exacta o del estatus migratorio actual de Sandra."},
+    {type:"mc",id:"c2_mc3",text:"Miguel presentó una petición migratoria a favor de Sandra, pero ella acudió sola a su cita de migración porque no pudo pagar un abogado, y no está segura de si recibió alguna notificación posterior tras cambiar de domicilio. ¿Qué acción es prioritaria al preparar este caso?",
+     opts:["Verificar con USCIS el estatus actual de esa petición y obtener el número de recibo o el A-number de Sandra.","Ignorar la petición anterior, ya que no tiene ninguna relevancia para una autopetición VAWA.","Asumir que la petición fue aprobada automáticamente al no haber respuesta de USCIS.","No es necesario dar seguimiento; VAWA no depende de peticiones migratorias previas."],correct:0,
+     fb_ok:"Correcto. Es indispensable verificar con USCIS el estatus de cualquier petición previa y obtener el A-number de la clienta, ya que puede afectar la estrategia del caso VAWA.",
+     fb_bad:"Incorrecto. Nunca se debe asumir el resultado de una petición migratoria sin verificarlo. Se debe dar seguimiento activo con USCIS."},
+    {type:"mc",id:"c2_mc4",text:"¿Qué documento sirve como evidencia primaria del estatus de ciudadano estadounidense del abusador?",
+     opts:["Una carta de un conocido que confirma que el abusador es americano","Certificado de naturalización, pasaporte estadounidense o acta de nacimiento en EEUU","Un permiso de trabajo (EAD) con fecha de vencimiento","Una identificación estatal (driver license) del abusador"],correct:1,
+     fb_ok:"Correcto. El certificado de naturalización, pasaporte estadounidense y acta de nacimiento en EEUU son evidencias primarias del estatus de ciudadano.",
+     fb_bad:"Incorrecto. Las evidencias primarias son el certificado de naturalización, pasaporte estadounidense o acta de nacimiento en EEUU."},
+    {type:"check",id:"c2_ch1",text:"Selecciona las acciones que DEBE realizar un abogado al evaluar el estatus migratorio del abusador en un caso VAWA:",
+     opts:["Revisar acta de nacimiento, pasaporte o certificado de naturalización del abusador","Verificar el número de extranjero (A-number) en el sistema USCIS","Aceptar la declaración verbal del cliente sin solicitar documentación","Solicitar copia de la green card o certificado de ciudadanía"],correct:[0,1,3],
+     fb_ok:"Correcto. La documentación del estatus del abusador es indispensable. No se puede aceptar solo la palabra del cliente.",
+     fb_bad:"Incorrecto. Se requiere evidencia documental. Aceptar solo la palabra del cliente sin verificación es una práctica inadecuada."},
+    {type:"mc",id:"c2_mcRW",text:"La declaración de Sandra dice únicamente que Miguel 'se hizo ciudadano' tras la aprobación de su caso, sin dar fecha ni mencionar documentos. ¿Cuál de las siguientes reescrituras acredita mejor el estatus calificante del abusador?",
+     opts:["\"Miguel obtuvo su certificado de naturalización poco después de que el juez aprobara su proceso; cuento con una copia de dicho certificado obtenida durante el trámite relacionado con nuestra hija.\"","\"Miguel me dijo que ya tenía papeles, pero nunca vi ningún documento que lo confirmara.\"","\"Nunca hablamos del estatus migratorio de Miguel después de que su caso fue aprobado.\"","\"Miguel mencionó que alguna vez tuvo residencia permanente, pero no sé si la sigue teniendo.\""],correct:0,
+     fb_ok:"Correcto. Esta reescritura acredita, con referencia a un documento específico, que el abusador es ciudadano estadounidense, cumpliendo el criterio de estatus calificante.",
+     fb_bad:"Incorrecto. Esa opción no aporta evidencia documental del estatus del abusador o genera incertidumbre sobre su estatus actual."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras por qué el criterio de Estatus del Abusador SÍ se cumple en la declaración de Sandra, y qué documentación específica falta para acreditarlo plenamente ante USCIS.",
+   fbWhy:1},
+
+  {id:"c3",label:"③ Matrimonio de buena fe",
+   teoria:"Para cónyuges, USCIS debe estar convencido de que el matrimonio fue genuino (no solo para obtener beneficios migratorios). Se demuestra con vida conyugal real: documentos financieros conjuntos, fotografías, arrendamientos, declaraciones de testigos. La actualización de diciembre 2025 refuerza la exigencia de evidencia primaria.",
+   preguntas:[
+    {type:"mc",id:"c3_mc1",text:"¿Cuál de estos elementos es más determinante para demostrar buena fe matrimonial en VAWA?",
+     opts:["Que la pareja haya vivido junta durante varios años sin interrupción","Que hayan compartido vida en común genuina: proyecto de vida, finanzas, familia, planes futuros","Que el peticionario no tenga antecedentes penales de ningún tipo","Que haya al menos un hijo o hija en común"],correct:1,
+     fb_ok:"Correcto. La buena fe se acredita con vida conyugal real: proyecto compartido, convivencia genuina, finanzas conjuntas.",
+     fb_bad:"Incorrecto. La buena fe exige evidencia de vida conyugal genuina: convivencia, proyectos comunes, afecto, decisión conjunta de casarse."},
+    {type:"mc",id:"c3_mc2",text:"¿Qué elementos de la relación entre Sandra y Miguel ANTES del matrimonio respaldan la buena fe matrimonial?",
+     opts:["Dos años de noviazgo con gestos genuinos y sostenidos: cartas, casetes de música grabados, tarjetas, peluches y salidas al parque.","Ningún elemento; se casaron únicamente porque Sandra salió embarazada.","Que los hermanos de Sandra hablaron con Miguel y su tío antes de la boda.","Que Miguel tenía un trabajo estable en el restaurante familiar."],correct:0,
+     fb_ok:"Correcto. Los dos años de noviazgo con gestos afectivos sostenidos y consistentes son evidencia sólida de una relación genuina previa al matrimonio.",
+     fb_bad:"Incorrecto. Aunque el embarazo precipitó la boda, la evidencia de un noviazgo genuino de dos años (cartas, regalos, tiempo compartido) es lo que realmente respalda la buena fe matrimonial."},
+    {type:"mc",id:"c3_mc3",text:"El matrimonio de Sandra y Miguel fue impulsado por el embarazo de Sandra a los 17 años y la insistencia de ambas familias, en lugar de ser una decisión completamente libre y planeada de la pareja. ¿Elimina esto automáticamente la buena fe matrimonial?",
+     opts:["No necesariamente: USCIS evalúa si existió una relación genuina e intención real de formar una vida en común, no si hubo presiones familiares o culturales para casarse, siempre que el motivo no haya sido obtener un beneficio migratorio.","Sí, cualquier matrimonio motivado por un embarazo se considera automáticamente de mala fe.","Sí, porque Sandra era menor de edad cuando comenzó la relación.","No aplica este análisis; la buena fe solo depende de la duración total del matrimonio."],correct:0,
+     fb_ok:"Correcto. La presión familiar o social para casarse por un embarazo no equivale a mala fe migratoria. Lo determinante es si existió una relación genuina, no el motivo migratorio.",
+     fb_bad:"Incorrecto. La presión familiar por un embarazo no elimina la buena fe matrimonial. Lo que USCIS analiza es si el matrimonio tuvo un propósito migratorio fraudulento, no las circunstancias sociales que lo motivaron."},
+    {type:"mc",id:"c3_mc4",text:"¿USCIS puede reconocer buena fe si el matrimonio posteriormente se volvió abusivo?",
+     opts:["Sí, si el matrimonio se volvió abusivo significa que nunca fue genuino.","No, USCIS evalúa el carácter genuino del matrimonio incluso si después se volvió abusivo.","Solo si hay una orden de protección emitida durante el matrimonio.","Depende de la duración del matrimonio antes del inicio del abuso."],correct:1,
+     fb_ok:"Correcto. USCIS evalúa si el matrimonio fue genuino al contraerse, independientemente de que posteriormente se haya vuelto abusivo.",
+     fb_bad:"Incorrecto. USCIS puede reconocer buena fe incluso en matrimonios que se volvieron abusivos. Evalúa la intención original al contraerse."},
+    {type:"check",id:"c3_ch1",text:"¿Cuáles son evidencias típicas de buena fe matrimonial que podrían corroborar la declaración de Sandra? (Selecciona todas las correctas)",
+     opts:["Cartas, tarjetas o recuerdos conservados del noviazgo previo al matrimonio","Declaraciones de testigos (hermanos, familiares) sobre la relación y el noviazgo","Documentos financieros conjuntos o evidencia de la vida doméstica compartida (renta, cuentas, facturas)","Un solo testimonio del cliente sin ninguna corroboración adicional"],correct:[0,1,2],
+     fb_ok:"Correcto. Cartas del noviazgo, testigos familiares y documentos financieros conjuntos son evidencias sólidas de buena fe. El testimonio del cliente por sí solo no es suficiente.",
+     fb_bad:"Evidencia insuficiente. Se requieren múltiples fuentes de corroboración: recuerdos del noviazgo, testigos y documentos financieros o domésticos conjuntos."},
+    {type:"mc",id:"c3_mcRW",text:"La declaración de Sandra no incluye evidencia documental que corrobore los dos años de noviazgo ni las circunstancias específicas del matrimonio. ¿Cuál de las siguientes adiciones fortalecería mejor la evidencia de buena fe matrimonial?",
+     opts:["\"Conservo algunas de las cartas y tarjetas que Miguel me escribió durante nuestro noviazgo, así como fotografías de nuestra boda civil y de los primeros años en que vivimos juntos y formamos una familia.\"","\"No conservo nada de esa época; no recuerdo bien los detalles de nuestro noviazgo ni de la boda.\"","\"Miguel y yo nunca tuvimos una relación real; solo nos casamos porque nuestras familias nos obligaron.\"","\"No es relevante mencionar cómo era nuestra relación antes de casarnos.\""],correct:0,
+     fb_ok:"Correcto. Esta adición aporta evidencia primaria concreta (cartas, fotografías) que corrobora una relación genuina antes y durante el matrimonio.",
+     fb_bad:"Incorrecto. Esa opción no aporta evidencia corroborante, o directamente niega que haya existido una relación genuina, debilitando este criterio."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras por qué el criterio de Matrimonio de Buena Fe SÍ se cumple en la declaración de Sandra, a diferencia de un matrimonio motivado únicamente por conveniencia migratoria. Menciona al menos 2 elementos concretos de la declaración.",
+   fbWhy:2},
+
+  {id:"c4",label:"④ Batería / Crueldad extrema",
+   teoria:"Debe demostrarse batería (violencia física) o crueldad extrema (abuso psicológico, sexual, control coercitivo, aislamiento, amenazas). USCIS evalúa el contexto completo: no solo que ocurrió un acto dañino, sino por qué y cómo afectó a la víctima. La actualización de diciembre 2025 enfatiza especificidad, fechas, patrón y consecuencias del abuso.",
+   preguntas:[
+    {type:"mc",id:"c4_mc1",text:"¿Qué estándar de abuso requiere VAWA para acreditar este criterio?",
+     opts:["Cualquier desacuerdo verbal o conflicto en la relación de pareja","Batería o crueldad extrema (física, sexual o psicológica significativa, con patrón y consecuencias)","Exclusivamente violencia física con lesiones graves documentadas médicamente","Abuso económico exclusivo, sin necesidad de otros tipos de abuso"],correct:1,
+     fb_ok:"Correcto. VAWA requiere batería o crueldad extrema, que puede ser física, sexual o psicológica significativa, con patrón y consecuencias documentadas.",
+     fb_bad:"Incorrecto. El estándar es batería o crueldad extrema, no cualquier conflicto menor ni exclusivamente violencia física."},
+    {type:"mc",id:"c4_mc2",text:"Según la declaración de Sandra, ¿el abuso descrito alcanza el nivel de batería o crueldad extrema bajo VAWA?",
+     opts:["No, se trata solo de accidentes de trabajo sin intención de dañarla.","Sí: existe un patrón sostenido de violencia física intencional (quemaduras con aceite, empujones, pisotones) y abuso sexual reiterado (violación marital, incluso durante el puerperio), con consecuencias físicas y psicológicas documentadas.","Solo cuenta el abuso sexual; los incidentes ocurridos en el restaurante no son relevantes para VAWA.","No, porque Sandra nunca llamó a la policía ni buscó atención médica de emergencia."],correct:1,
+     fb_ok:"Correcto. El patrón sostenido de violencia física y sexual, con consecuencias documentadas, satisface con creces el estándar de batería y crueldad extrema.",
+     fb_bad:"Incorrecto. El abuso descrito por Sandra —físico, sexual y económico, con patrón y consecuencias— sí alcanza y supera el estándar exigido por VAWA."},
+    {type:"mc",id:"c4_mc3",text:"¿Qué tipo de abuso descrito por Sandra constituye una de las formas más graves de crueldad extrema/batería reconocidas por USCIS?",
+     opts:["Los desacuerdos sobre el reparto de las ganancias del negocio familiar.","La violación marital reiterada, incluyendo durante el periodo menstrual y durante las cuarentenas posparto de sus tres hijos.","Que Miguel trabajara en el mismo restaurante que ella.","Que sus hermanos estuvieran al tanto de la situación en el trabajo."],correct:1,
+     fb_ok:"Correcto. La violación marital reiterada —incluyendo durante la menstruación y el puerperio— es una de las formas más graves de abuso reconocidas por USCIS bajo el estándar de crueldad extrema.",
+     fb_bad:"Incorrecto. La violación marital reiterada, en particular durante el puerperio y la menstruación, constituye una de las formas más graves de abuso documentadas en esta declaración."},
+    {type:"mc",id:"c4_mc4",text:"¿Se puede acreditar crueldad extrema con una combinación de abuso sexual, físico y económico, aun cuando ningún incidente individual haya requerido atención médica de emergencia?",
+     opts:["No, siempre se requiere al menos un incidente con atención médica de emergencia documentada.","Sí, la combinación de un patrón sostenido de abuso sexual, físico y económico —bien documentado con fechas aproximadas y consecuencias— puede acreditar crueldad extrema aunque no haya habido hospitalización.","Solo si hay una evaluación psicológica formal de un profesional con licencia.","Únicamente si hubo amenazas explícitas de muerte."],correct:1,
+     fb_ok:"Correcto. USCIS reconoce que un patrón combinado y bien documentado de abuso sexual, físico y económico puede acreditar crueldad extrema, incluso sin hospitalización.",
+     fb_bad:"Incorrecto. No se requiere hospitalización ni evaluación psicológica formal; basta un patrón bien documentado de abuso con fechas, contexto y consecuencias."},
+    {type:"check",id:"c4_ch1",text:"Selecciona los elementos que SÍ están presentes en la declaración de Sandra y que acreditan batería o crueldad extrema:",
+     opts:["Descripción específica de actos de violencia física y sexual, con contexto y secuencia temporal aproximada","Patrón sostenido de abuso en más de un ámbito (el hogar y el trabajo)","Consecuencias físicas y psicológicas documentadas (dolor, quemaduras, miedo, cambio forzado de empleo)","Ausencia total de cualquier patrón o contexto de abuso"],correct:[0,1,2],
+     fb_ok:"Correcto. La declaración de Sandra sí presenta actos específicos, un patrón sostenido en distintos ámbitos, y consecuencias físicas y psicológicas claras.",
+     fb_bad:"Incorrecto. La declaración de Sandra sí incluye actos específicos, patrón sostenido y consecuencias documentadas; no hay ausencia de contexto."},
+    {type:"mc",id:"c4_mcRW",text:"¿Cuál de los siguientes fragmentos, inspirado en la declaración de Sandra, documenta de manera más completa el estándar de batería o crueldad extrema exigido por VAWA (patrón, contexto y consecuencias)?",
+     opts:["\"En al menos dos ocasiones Miguel me quemó con aceite caliente —una vez en el brazo, causándome ampollas, y otra en la cara y la ropa—, además de empujarme repetidamente en el trabajo hacia la máquina de hielo y el grill caliente, y agredirme sexualmente en casa durante años, incluyendo violaciones durante mis cuarentenas posparto; el miedo constante me obligó a cambiar de empleo y afectó gravemente mi salud emocional.\"","\"Miguel me quemó una vez con aceite en el brazo. No fue nada grave y seguí trabajando normalmente.\"","\"Miguel y yo tuvimos algunos problemas en el trabajo, como cualquier pareja que trabaja junta.\"","\"No recuerdo bien los detalles de lo que pasó en el restaurante ni en casa.\""],correct:0,
+     fb_ok:"Correcto. Este fragmento incluye patrón (varios incidentes en el tiempo), contexto (hogar y trabajo) y consecuencias documentadas (lesiones físicas, impacto económico y emocional), cumpliendo el estándar exigido.",
+     fb_bad:"Incorrecto. Esa opción minimiza el abuso, omite el patrón y las consecuencias, o no aporta ningún detalle específico, debilitando gravemente este criterio."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras por qué el criterio de Batería o Crueldad Extrema SÍ se cumple sólidamente en la declaración de Sandra. Identifica al menos 2 categorías distintas de abuso (físico, sexual, económico o psicológico) y su impacto documentado.",
+   fbWhy:3},
+
+  {id:"c5",label:"⑤ Buen carácter moral",
+   teoria:"La persona peticionaria debe poseer buen carácter moral (últimos 3 años). La actualización de diciembre 2025 eliminó el lenguaje protector anterior: ahora la carga de la prueba recae completamente en el peticionario. Las declaraciones sin detalle y especificidad pueden recibir poco peso.",
+   preguntas:[
+    {type:"mc",id:"c5_mc1",text:"Bajo la política actualizada de diciembre 2025, ¿qué cambió respecto al requisito de buen carácter moral en VAWA?",
+     opts:["Se eliminó el requisito; el buen carácter ya no es necesario.","Se eliminó el lenguaje protector: ahora la carga de la prueba recae completamente en el peticionario.","USCIS puede presumir buen carácter si hay evidencia de abuso grave.","Solo se evalúa si el peticionario tiene antecedentes penales previos."],correct:1,
+     fb_ok:"Correcto. La actualización de 2025 eliminó el lenguaje que protegía al peticionario de negación por falta de evidencia de buen carácter. La documentación proactiva es ahora crítica.",
+     fb_bad:"Incorrecto. La nueva política eliminó protecciones previas y exige documentación proactiva del buen carácter moral."},
+    {type:"mc",id:"c5_mc2",text:"¿La declaración de Sandra contiene alguna afirmación que comprometa directamente su buen carácter moral?",
+     opts:["Sí, por haber trabajado en Estados Unidos sin autorización migratoria durante años.","No hay ninguna admisión de fraude o conducta moralmente cuestionable; sin embargo, la declaración tampoco aporta evidencia afirmativa de buen carácter (empleo, comunidad, ausencia de antecedentes).","Sí, por haberse casado estando embarazada a los 17 años.","Sí, por no haber llamado a la policía durante los incidentes descritos."],correct:1,
+     fb_ok:"Correcto. A diferencia de otros casos, la declaración de Sandra no contiene ninguna admisión que comprometa su buen carácter moral; el reto es que tampoco incluye evidencia afirmativa que lo acredite proactivamente.",
+     fb_bad:"Incorrecto. Ninguno de esos hechos (trabajar sin autorización, casarse joven, no llamar a la policía) constituye por sí mismo una falta de buen carácter moral bajo el estándar VAWA."},
+    {type:"mc",id:"c5_mc3",text:"¿Con qué período histórico evalúa USCIS el buen carácter moral en una autopetición VAWA?",
+     opts:["Los últimos 10 años de historial del peticionario","Generalmente los últimos 3 años","Solo el período durante el cual duró el matrimonio o relación abusiva","Desde que el peticionario llegó a los Estados Unidos"],correct:1,
+     fb_ok:"Correcto. USCIS evalúa generalmente el buen carácter moral de los últimos 3 años.",
+     fb_bad:"Incorrecto. El buen carácter moral se evalúa generalmente en los últimos 3 años."},
+    {type:"mc",id:"c5_mc4",text:"La declaración de Sandra no menciona si existe algún antecedente migratorio adicional (más allá de la orden de deportación voluntaria) o penal. ¿Qué debe hacerse al preparar el caso?",
+     opts:["Investigar y confirmar afirmativamente que no existen antecedentes penales, y de existir alguno, declararlo y contextualizarlo con transparencia.","Asumir que no tiene ningún antecedente porque la declaración no lo menciona.","No es necesario revisarlo, ya que el abuso documentado es suficientemente grave.","Solo se revisa si USCIS lo solicita mediante una Solicitud de Evidencia (RFE)."],correct:0,
+     fb_ok:"Correcto. Se debe investigar proactivamente el historial de la clienta y, de existir cualquier antecedente, declararlo con transparencia y contexto.",
+     fb_bad:"Incorrecto. Nunca se debe asumir la ausencia de antecedentes ni esperar a que USCIS lo solicite; se debe verificar e informar proactivamente."},
+    {type:"check",id:"c5_ch1",text:"¿Qué información debería añadirse a la declaración de Sandra para documentar afirmativamente su buen carácter moral? (Selecciona todas las correctas)",
+     opts:["Historial laboral estable y responsabilidades de crianza de sus tres hijos (incluida su hija con síndrome de Down)","Explicación transparente del desenlace de su orden de deportación voluntaria anterior","Evidencia de participación comunitaria, cumplimiento de impuestos o cartas de referencia","Omitir por completo la orden de deportación voluntaria anterior para simplificar el caso"],correct:[0,1,2],
+     fb_ok:"Correcto. Historial laboral, transparencia sobre el proceso migratorio previo, y evidencia comunitaria/fiscal son elementos clave para documentar el buen carácter moral.",
+     fb_bad:"Incorrecto. Omitir información migratoria previa daña la credibilidad. La transparencia es fundamental bajo la política actualizada."},
+    {type:"mc",id:"c5_mcRW",text:"La declaración de Sandra no incluye ninguna evidencia afirmativa de buen carácter moral. ¿Cuál de las siguientes adiciones fortalecería mejor este criterio?",
+     opts:["\"He trabajado de manera constante durante más de 20 años para mantener a mis tres hijos, incluida mi hija con síndrome de Down, que requiere cuidados especiales; no tengo antecedentes penales y cuento con cartas de mi comunidad y de mi iglesia que dan fe de mi carácter.\"","\"No tengo mucho que decir sobre mi historial; solo he trabajado en lo que he podido conseguir.\"","\"Prefiero no hablar de mi situación migratoria anterior ni de mi historial laboral.\"","\"Mi carácter moral no debería ser un tema relevante dado todo el abuso que sufrí.\""],correct:0,
+     fb_ok:"Correcto. Esta adición aporta evidencia afirmativa y específica (empleo, crianza, ausencia de antecedentes, referencias comunitarias) tal como exige la política de diciembre 2025.",
+     fb_bad:"Incorrecto. Esa opción no aporta evidencia afirmativa concreta, o evita abordar directamente el requisito de buen carácter moral."}
+   ],
+   rewriteWhyPrompt:"Explica qué elementos de buen carácter moral deben añadirse afirmativamente a la declaración de Sandra bajo la política de diciembre 2025, aunque no exista ninguna admisión negativa en su declaración actual.",
+   fbWhy:4},
+
+  {id:"c6",label:"⑥ Residencia compartida",
+   teoria:"La persona peticionaria debe demostrar que residió con el abusador durante la relación calificada. La actualización de diciembre 2025 convirtió esto en un requisito obligatorio con mayor rigor. Deben documentarse direcciones, períodos de convivencia y vida doméstica compartida.",
+   preguntas:[
+    {type:"mc",id:"c6_mc1",text:"Bajo la actualización de política de diciembre 2025, ¿qué cambió respecto al requisito de residencia compartida?",
+     opts:["Se eliminó el requisito; ya no es necesario haber vivido con el abusador.","Pasó de ser flexible a ser un requisito obligatorio evaluado con mayor rigor.","Solo aplica si la peticionaria tiene hijos en común con el abusador.","No hubo cambios significativos en este requisito específico."],correct:1,
+     fb_ok:"Correcto. Esta es una de las modificaciones más significativas de dic. 2025: la coresidencia es ahora obligatoria y se evalúa con mayor escrutinio.",
+     fb_bad:"Incorrecto. La actualización de dic. 2025 convirtió la residencia compartida en un requisito obligatorio con mayor rigor."},
+    {type:"mc",id:"c6_mc2",text:"¿Qué evidencia en la declaración de Sandra sugiere que sí hubo residencia compartida sostenida con Miguel?",
+     opts:["Tuvieron tres hijos juntos, y ella describe convivencia durante las cuarentenas posparto de cada uno de ellos; además, trabajaron juntos por años en el mismo restaurante familiar.","La declaración indica expresamente que nunca vivieron bajo el mismo techo.","Solo vivieron juntos durante un fin de semana antes de separarse definitivamente.","No existe ninguna mención de vida en común en toda la declaración."],correct:0,
+     fb_ok:"Correcto. Tener tres hijos, describir las cuarentenas posparto en el hogar y trabajar juntos por años son fuertes indicios de residencia compartida sostenida.",
+     fb_bad:"Incorrecto. La declaración sí sugiere convivencia sostenida, a través de la crianza de sus tres hijos, las cuarentenas posparto descritas y los años trabajando juntos."},
+    {type:"mc",id:"c6_mc3",text:"¿Es necesario seguir viviendo con el abusador al momento de presentar la autopetición VAWA?",
+     opts:["Sí, se debe seguir conviviendo con el abusador para mantener la elegibilidad.","No, el requisito de coresidencia aplica durante la relación calificada, no al momento de presentar la petición.","Solo si no hay hijos en común; si los hay, no se requiere convivencia actual.","Depende del estado donde se presente la petición."],correct:1,
+     fb_ok:"Correcto. No es necesario seguir viviendo con el abusador al presentar la petición. El requisito aplica durante la relación calificada.",
+     fb_bad:"Incorrecto. La coresidencia debe demostrarse durante la relación calificada, no al momento de presentar la petición."},
+    {type:"mc",id:"c6_mc4",text:"¿Qué tipo de evidencia documental ayudaría a acreditar la residencia compartida de Sandra y Miguel a lo largo del matrimonio?",
+     opts:["Exclusivamente fotos de los dos juntos en el hogar","Contratos de arrendamiento a nombre de ambos, facturas de servicios, correspondencia oficial al mismo domicilio a lo largo de los años","Solo el testimonio verbal de los cónyuges sin documentos adicionales","Registros de redes sociales donde se mencione la misma ciudad"],correct:1,
+     fb_ok:"Correcto. Los contratos de arrendamiento conjuntos, facturas y correspondencia oficial son evidencia documental sólida de coresidencia sostenida en el tiempo.",
+     fb_bad:"Incorrecto. Se necesitan documentos concretos: contratos, facturas o correspondencia que acrediten convivencia en el mismo domicilio."},
+    {type:"check",id:"c6_ch1",text:"¿Qué elementos debería incluir la declaración de Sandra para documentar con precisión la residencia compartida? (Selecciona todas las correctas)",
+     opts:["Direcciones específicas donde vivieron juntos, con fechas aproximadas de inicio y fin","Facturas de servicios, contratos de arrendamiento o correspondencia a nombre de ambos","Testimonios de familiares (hermanos) sobre la convivencia y la vida en el restaurante familiar","Explicación de cualquier período de separación, incluyendo la separación reciente"],correct:[0,1,2,3],
+     fb_ok:"Correcto. Todos estos elementos son necesarios para acreditar sólidamente la residencia compartida a lo largo de los años de matrimonio.",
+     fb_bad:"Faltan elementos. Se necesita documentar direcciones, períodos, evidencias corroborativas y explicar cualquier separación, incluyendo la más reciente."},
+    {type:"mc",id:"c6_mcRW",text:"La declaración de Sandra no menciona direcciones específicas ni fechas exactas de cuándo y dónde vivió junto con Miguel. ¿Cuál de las siguientes adiciones fortalecería mejor este criterio?",
+     opts:["\"Miguel y yo vivimos juntos de manera continua desde nuestra boda hasta hace algunos años, primero en un apartamento en Stanton y después en una casa que rentamos juntos; ahí nacieron y crecieron nuestros tres hijos.\"","\"Vivimos juntos varios años en distintos lugares, pero no recuerdo bien las direcciones ni las fechas.\"","\"Vivíamos en la misma ciudad, aunque no siempre en la misma casa ni de forma continua.\"","\"Miguel y yo nunca compartimos una misma dirección durante el matrimonio.\""],correct:0,
+     fb_ok:"Correcto. Esta adición documenta una convivencia continua y sostenida, con direcciones y vida doméstica compartida, tal como exige la actualización de diciembre 2025.",
+     fb_bad:"Incorrecto. Esa opción no aporta información concreta sobre direcciones y fechas, o directamente contradice que haya existido residencia compartida."}
+   ],
+   rewriteWhyPrompt:"Explica por qué el criterio de Residencia Compartida probablemente SÍ se cumple en la declaración de Sandra, y qué información específica falta para documentarlo con el rigor que exige la actualización de diciembre 2025.",
+   fbWhy:5},
+
+  {id:"c7",label:"⑦ Residencia en EEUU",
+   teoria:"La persona peticionaria debe residir en los Estados Unidos al momento de presentar la autopetición. No se requiere estatus migratorio regular para presentar. La declaración debe confirmar la residencia actual con estado, ciudad y circunstancias de permanencia.",
+   preguntas:[
+    {type:"mc",id:"c7_mc1",text:"¿Se requiere tener estatus migratorio regular para presentar una autopetición VAWA?",
+     opts:["Sí, se debe tener visa válida o residencia permanente al momento de presentar.","No, no se requiere estatus migratorio regular para presentar la autopetición.","Solo si el abusador es ciudadano; si es LPR, sí se requiere estatus regular.","Depende del estado de residencia; cada estado tiene reglas distintas."],correct:1,
+     fb_ok:"Correcto. No se requiere estatus migratorio regular para presentar una autopetición VAWA. Solo se debe demostrar residencia actual en EEUU.",
+     fb_bad:"Incorrecto. VAWA no requiere estatus migratorio regular para la autopetición. La víctima puede estar sin documentos y aún ser elegible."},
+    {type:"mc",id:"c7_mc2",text:"¿Qué debe incluir la declaración de Sandra para acreditar su residencia actual en los Estados Unidos?",
+     opts:["Un comprobante de ciudadanía o residencia permanente","Estado y ciudad de residencia actual, con descripción de las circunstancias de su permanencia reciente","Solo la firma del abogado confirma la residencia; no se requiere declaración del cliente","Un contrato de trabajo activo o verificación de empleo en EEUU"],correct:1,
+     fb_ok:"Correcto. La declaración debe mencionar el estado y ciudad de residencia actual y describir las circunstancias de su permanencia reciente en el país.",
+     fb_bad:"Incorrecto. La declaración debe incluir residencia actual (estado, ciudad) y circunstancias de permanencia, no solo un comprobante de estatus migratorio."},
+    {type:"mc",id:"c7_mc3",text:"¿Existe alguna excepción para presentar la autopetición VAWA desde fuera de los Estados Unidos?",
+     opts:["No, es absolutamente imposible presentar la petición desde fuera de EEUU.","Sí, existen excepciones limitadas para víctimas en el extranjero en circunstancias específicas.","Sí, cualquier persona fuera de EEUU puede presentar la petición con una carta de un familiar.","No aplica; VAWA solo protege a personas con residencia permanente."],correct:1,
+     fb_ok:"Correcto. Existen excepciones limitadas que permiten presentar la autopetición desde fuera de EEUU en circunstancias específicas.",
+     fb_bad:"Incorrecto. Aunque la regla general es residencia en EEUU, existen excepciones limitadas para víctimas en circunstancias específicas fuera del país."},
+    {type:"mc",id:"c7_mc4",text:"¿Qué problema tiene la declaración de Sandra respecto al criterio de residencia actual en EEUU?",
+     opts:["Declara expresamente que ya no vive en los Estados Unidos.","No menciona explícitamente su estado y ciudad de residencia actual ni acredita su permanencia presente, aunque describe hechos recientes (separación, cambio de empleo) que sugieren que sigue viviendo en el país.","Admite que entró al país de manera irregular, lo que la descalifica.","Declara que vive en dos estados diferentes, lo que genera inconsistencia."],correct:1,
+     fb_ok:"Correcto. La declaración no incluye información explícita sobre su residencia actual, aunque los hechos recientes narrados sugieren fuertemente que sigue en EEUU.",
+     fb_bad:"Incorrecto. El problema es que la declaración omite mencionar la residencia actual con estado, ciudad y evidencia de permanencia vigente."},
+    {type:"check",id:"c7_ch1",text:"¿Cuáles de las siguientes evidencias pueden documentar la residencia actual de Sandra en EEUU para su autopetición VAWA? (Selecciona todas las correctas)",
+     opts:["Contrato de arrendamiento actual o recibos de servicios públicos","Correspondencia oficial reciente (cartas del banco, hospital, escuela de sus hijos)","Declaración del propio peticionario en la declaración jurada","Certificado de nacimiento del peticionario (aunque sea de otro país)"],correct:[0,1,2],
+     fb_ok:"Correcto. Contratos, correspondencia oficial y la declaración jurada son evidencias válidas. El certificado de nacimiento no acredita residencia actual.",
+     fb_bad:"Incorrecto. El certificado de nacimiento no es evidencia de residencia actual en EEUU. Se necesitan documentos que acrediten presencia actual."},
+    {type:"mc",id:"c7_mcRW",text:"La declaración de Sandra no menciona su residencia actual en Estados Unidos. ¿Cuál de los siguientes párrafos cumpliría correctamente con el criterio de residencia actual?",
+     opts:["\"Actualmente resido en Stanton, California, donde he vivido de manera continua desde hace varios años. Cuento con recibos de servicios y correspondencia oficial a mi nombre que acreditan mi domicilio actual.\"","\"Actualmente resido en algún lugar de Estados Unidos, aunque no recuerdo la dirección exacta.\"","\"Viví en Stanton hasta hace algunos años, pero no he actualizado mi domicilio desde entonces.\"","\"Actualmente resido en Oaxaca, mientras resuelvo mi situación migratoria.\""],correct:0,
+     fb_ok:"Correcto. Esta reescritura acredita estado, ciudad, continuidad de la residencia y comprobantes disponibles, cumpliendo el criterio de residencia actual.",
+     fb_bad:"Incorrecto. Esa opción no acredita claramente el criterio: falta precisión, describe residencia pasada, o ubica a Sandra fuera de Estados Unidos."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras qué elemento específico falta en la declaración de Sandra para acreditar el criterio de Residencia Actual en los Estados Unidos.",
+   fbWhy:6}
+];
+
+// ---------------------------------------------------------------
+// ESTADO
+// ---------------------------------------------------------------
+let userName = "";
+let currentTab = 0;
+let showingResults = false;
+const tabDone = new Array(talleres.length).fill(false);
+const respMC = {}, respCheck = {};
+const respRW = {};   // textarea content: {tabIdx: {rw2: "..."}}
+const fbState = {};  // feedback after Verificar: {qid: {cls, html}} + rw keys
+// tracking per pregunta para resultados
+const pregScores = {}; // id -> true/false
+
+// ---------------------------------------------------------------
+// REGISTRO PERSISTENTE DE INTENTOS (para el reporte PDF)
+// Cada vez que se presiona "Verificar respuestas", se guarda un
+// registro NUEVO por pregunta (no se sobreescribe), agrupado por
+// el nombre de participante capturado en la portada.
+// ---------------------------------------------------------------
+const ATTEMPT_LOG_KEY = 'tmlf_vawa_taller_attempts_v1';
+let attemptLog = [];
+try{
+  const _raw = localStorage.getItem(ATTEMPT_LOG_KEY);
+  attemptLog = _raw ? JSON.parse(_raw) : [];
+}catch(e){ attemptLog = []; }
+
+function saveAttemptLog(){
+  try{ localStorage.setItem(ATTEMPT_LOG_KEY, JSON.stringify(attemptLog)); }catch(e){ /* almacenamiento no disponible */ }
+}
+
+function nextIntentoNumero(participante, preguntaId){
+  return attemptLog.filter(a => a.participante === participante && a.preguntaId === preguntaId).length + 1;
+}
+
+function registrarIntento(entry){
+  entry.participante = entry.participante || 'Participante sin nombre';
+  entry.intento = nextIntentoNumero(entry.participante, entry.preguntaId);
+  entry.timestamp = new Date().toISOString();
+  attemptLog.push(entry);
+  saveAttemptLog();
+  enviarIntentoASCORM(entry);
+}
+
+// ---------------------------------------------------------------
+// INTEGRACIÓN SCORM/MOODLE
+// El registro local (localStorage) solo existe en el navegador/equipo
+// donde se contestó. Para que TODAS las respuestas de TODOS los
+// participantes que hacen el taller dentro de Moodle queden también
+// centralizadas del lado de la plataforma, cada intento se envía
+// además como "cmi.interactions" a través de la API SCORM 1.2/2004
+// que Moodle expone al reproducir el paquete SCORM. Esos datos son
+// visibles para el administrador/profesor desde los informes SCORM
+// de Moodle (Actividad SCORM → Informes), independientemente del
+// navegador de cada estudiante.
+// ---------------------------------------------------------------
+let scormAPI = null;
+let scormInteractionIndex = 0;
+
+function buscarAPISCORM(ventana){
+  let win = ventana, intentos = 0;
+  while(win && intentos < 10){
+    if(win.API) return {api: win.API, version: '1.2'};
+    if(win.API_1484_11) return {api: win.API_1484_11, version: '2004'};
+    if(win.parent && win.parent !== win) win = win.parent; else break;
+    intentos++;
+  }
+  return null;
+}
+
+function initSCORM(){
+  try{
+    let found = buscarAPISCORM(window);
+    if(!found && window.opener) found = buscarAPISCORM(window.opener);
+    if(found){
+      scormAPI = found;
+      if(found.version==='1.2' && found.api.LMSInitialize) found.api.LMSInitialize('');
+      if(found.version==='2004' && found.api.Initialize) found.api.Initialize('');
+    }
+  }catch(e){ scormAPI = null; }
+}
+
+function enviarIntentoASCORM(entry){
+  if(!scormAPI) return;
+  try{
+    const n = scormInteractionIndex++;
+    const api = scormAPI.api;
+    const tipoInteraccion = entry.preguntaTipo.startsWith('Análisis') ? 'fill-in' : 'choice';
+    if(scormAPI.version==='1.2'){
+      api.LMSSetValue(`cmi.interactions.${n}.id`, entry.participante + '__' + entry.preguntaId + '__intento' + entry.intento);
+      api.LMSSetValue(`cmi.interactions.${n}.type`, tipoInteraccion);
+      api.LMSSetValue(`cmi.interactions.${n}.student_response`, (entry.respuesta||'').slice(0,255));
+      api.LMSSetValue(`cmi.interactions.${n}.result`, entry.correcta ? 'correct' : 'wrong');
+      api.LMSSetValue(`cmi.interactions.${n}.time`, new Date().toTimeString().slice(0,8));
+      api.LMSCommit('');
+    } else if(scormAPI.version==='2004'){
+      api.SetValue(`cmi.interactions.${n}.id`, entry.participante + '__' + entry.preguntaId + '__intento' + entry.intento);
+      api.SetValue(`cmi.interactions.${n}.type`, tipoInteraccion);
+      api.SetValue(`cmi.interactions.${n}.learner_response`, (entry.respuesta||'').slice(0,255));
+      api.SetValue(`cmi.interactions.${n}.result`, entry.correcta ? 'correct' : 'incorrect');
+      api.Commit('');
+    }
+  }catch(e){ /* el LMS no soporta cmi.interactions o la API no está disponible */ }
+}
+
+function finalizarSCORM(){
+  if(!scormAPI) return;
+  try{
+    if(scormAPI.version==='1.2' && scormAPI.api.LMSFinish) scormAPI.api.LMSFinish('');
+    if(scormAPI.version==='2004' && scormAPI.api.Terminate) scormAPI.api.Terminate('');
+  }catch(e){ /* ignorar */ }
+}
+
+try{
+  window.addEventListener('load', initSCORM);
+  window.addEventListener('beforeunload', finalizarSCORM);
+}catch(e){ /* entorno sin window (no debería ocurrir en navegador) */ }
+
+function borrarRegistroIntentos(){
+  if(!confirm('¿Borrar el registro de TODOS los intentos de TODOS los participantes guardados en este navegador? Esta acción no se puede deshacer.')) return;
+  attemptLog = [];
+  saveAttemptLog();
+  alert('Registro de intentos borrado.');
+  if(document.getElementById('adminOverlay')?.classList.contains('active')) renderAdminBody();
+}
+
+// Total de preguntas evaluables (mc/check) definidas en el taller
+const TOTAL_PREGUNTAS_EVALUABLES = talleres.reduce((a,t)=>a+t.preguntas.length,0);
+const TOTAL_CRITERIOS = talleres.length;
+
+function agruparPorParticipante(){
+  const porParticipante = {};
+  attemptLog.forEach(a=>{
+    const key = a.participante || 'Participante sin nombre';
+    if(!porParticipante[key]) porParticipante[key] = [];
+    porParticipante[key].push(a);
+  });
+  const nombresParticipantes = Object.keys(porParticipante).sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+  return { porParticipante, nombresParticipantes };
+}
+
+// Resumen por participante: la última respuesta de cada pregunta define el resultado final
+function resumenParticipante(nombre, porParticipante){
+  const intentos = porParticipante[nombre];
+  const porPregunta = {};
+  intentos.forEach(a=>{
+    if(!porPregunta[a.preguntaId] || a.intento > porPregunta[a.preguntaId].intento) porPregunta[a.preguntaId] = a;
+  });
+  const finales = Object.values(porPregunta);
+  const finalesEval = finales.filter(f=>!f.preguntaId.startsWith('rw2_'));
+  const finalesAnalisis = finales.filter(f=>f.preguntaId.startsWith('rw2_'));
+  const correctasFinales = finalesEval.filter(f=>f.correcta===true).length;
+  const analisisCompletos = finalesAnalisis.filter(f=>f.correcta===true).length;
+  const pct = finalesEval.length>0 ? Math.round(correctasFinales/finalesEval.length*100) : 0;
+  const ultimaFecha = intentos.reduce((max,a)=> (!max || a.timestamp>max) ? a.timestamp : max, null);
+  return {
+    totalIntentos: intentos.length,
+    preguntasContestadas: finalesEval.length,
+    correctasFinales, pct,
+    analisisContestados: finalesAnalisis.length,
+    analisisCompletos,
+    ultimaFecha
+  };
+}
+
+// ---------------------------------------------------------------
+// PANEL DE ADMINISTRADOR (protegido por contraseña)
+// ---------------------------------------------------------------
+const ADMIN_PASSWORD = 'contraseña';
+
+function solicitarAccesoAdmin(){
+  const pass = prompt('Ingresa la contraseña de administrador para ver el registro de respuestas:');
+  if(pass === null) return; // cancelado
+  if(pass !== ADMIN_PASSWORD){
+    alert('Contraseña incorrecta. No tienes acceso al panel de administrador.');
+    return;
+  }
+  mostrarPanelAdmin();
+}
+
+function mostrarPanelAdmin(){
+  renderAdminBody();
+  document.getElementById('adminOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarPanelAdmin(){
+  document.getElementById('adminOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function escapeHtml(str){
+  return (str||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderAdminBody(){
+  const body = document.getElementById('adminBody');
+  if(!attemptLog || attemptLog.length===0){
+    body.innerHTML = `<div class="admin-empty">Todavía no hay ningún intento registrado en este navegador.<br>Los intentos se registran automáticamente cada vez que un participante presiona "Verificar respuestas".</div>`;
+    return;
+  }
+
+  const { porParticipante, nombresParticipantes } = agruparPorParticipante();
+
+  let html = `<table class="admin-summary-table">
+    <thead><tr>
+      <th>Participante</th><th>Preguntas contestadas</th><th>% aciertos (final)</th><th>Intentos totales</th><th>Análisis críticos</th><th>Último intento</th>
+    </tr></thead><tbody>`;
+  nombresParticipantes.forEach(nombre=>{
+    const r = resumenParticipante(nombre, porParticipante);
+    const color = r.pct>=80?'var(--exc-c)':(r.pct>=50?'var(--amber)':'var(--red)');
+    html += `<tr>
+      <td><strong>${escapeHtml(nombre)}</strong></td>
+      <td>${r.preguntasContestadas}/${TOTAL_PREGUNTAS_EVALUABLES}</td>
+      <td style="color:${color};font-weight:600">${r.pct}%</td>
+      <td>${r.totalIntentos}</td>
+      <td>${r.analisisCompletos}/${TOTAL_CRITERIOS}</td>
+      <td style="font-size:11px;color:var(--ink3)">${formatFechaHora(r.ultimaFecha)}</td>
+    </tr>`;
+  });
+  html += `</tbody></table>`;
+
+  nombresParticipantes.forEach((nombre, idx)=>{
+    const r = resumenParticipante(nombre, porParticipante);
+    const intentosParticipante = porParticipante[nombre];
+    html += `<details class="admin-participant" ${idx===0?'open':''}>
+      <summary>${escapeHtml(nombre)} <span class="meta">${r.preguntasContestadas}/${TOTAL_PREGUNTAS_EVALUABLES} preguntas &middot; ${r.pct}% aciertos &middot; ${r.totalIntentos} intentos &middot; último: ${formatFechaHora(r.ultimaFecha)}</span></summary>
+      <div class="admin-participant-body">`;
+
+    talleres.forEach(t=>{
+      const intentosCriterio = intentosParticipante.filter(a=>a.criterioId===t.id);
+      if(intentosCriterio.length===0) return;
+      html += `<div class="admin-crit-head">${t.label}</div>`;
+
+      const ordenPreguntaIds = [...t.preguntas.map(p=>p.id), `rw2_${t.id}`];
+      ordenPreguntaIds.forEach(pid=>{
+        const intentosPregunta = intentosCriterio.filter(a=>a.preguntaId===pid).sort((a,b)=>a.intento-b.intento);
+        if(intentosPregunta.length===0) return;
+        const primero = intentosPregunta[0];
+        html += `<div class="admin-preg">
+          <div class="admin-preg-text">[${escapeHtml(primero.preguntaTipo)}] ${escapeHtml(primero.preguntaTexto)}</div>`;
+        intentosPregunta.forEach(a=>{
+          const esAnalisis = a.preguntaTipo.startsWith('Análisis');
+          const etiqueta = esAnalisis ? (a.correcta?'✓ cumple mínimo':'✗ no cumple mínimo') : (a.correcta?'✓ correcta':'✗ incorrecta');
+          const respuestaTexto = esAnalisis ? (a.respuesta ? a.respuesta : '(sin texto)') : a.respuesta;
+          html += `<div class="admin-attempt ${a.correcta?'ok':'bad'}"><strong>Intento ${a.intento}</strong> &middot; ${formatFechaHora(a.timestamp)} &mdash; ${escapeHtml(respuestaTexto)} &middot; ${etiqueta}</div>`;
+        });
+        html += `</div>`;
+      });
+    });
+
+    html += `</div></details>`;
+  });
+
+  body.innerHTML = html;
+}
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+}
+
+function startTaller(){
+  const n = document.getElementById('cover-name').value.trim();
+  if(!n){document.getElementById('cover-name').style.borderColor='#e0b830';return;}
+  userName = n;
+  document.getElementById('user-badge').textContent = '👤 ' + n;
+  showScreen('intro');
+}
+
+function startMain(){
+  showScreen('main');
+  renderLeft();
+  renderTabs();
+  renderTabContent(0);
+}
+
+// ---------------------------------------------------------------
+// LEFT PANEL
+// ---------------------------------------------------------------
+function renderLeft(){
+  document.getElementById('left-panel').innerHTML = `
+    <div class="decl-box">
+      <h3>Declaración jurada</h3>
+      <div class="decl-subtitle">Sandra Limón Reina &middot; I-360 y AOS</div>
+      <div class="texto-decl">${DECL.replace(/\n/g,'<br>')}</div>
+    </div>`;
+}
+
+// ---------------------------------------------------------------
+// TABS
+// ---------------------------------------------------------------
+function renderTabs(){
+  const done = tabDone.filter(Boolean).length;
+  const pct = (done / talleres.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('tab-bar').innerHTML =
+    talleres.map((t,i)=>
+      `<button class="${i===currentTab&&!showingResults?'on':''} ${tabDone[i]?'done':''}" onclick="loadTab(${i})">${t.label} <span class="tab-check">✓</span></button>`
+    ).join('') +
+    `<button class="results-tab ${showingResults?'on':''}" onclick="loadResults()">📊 Resultados</button>`;
+}
+
+// ---------------------------------------------------------------
+// CONTENT
+// ---------------------------------------------------------------
+function renderTabContent(idx){
+  showingResults = false;
+  const t = talleres[idx];
+  let html = `<div class="sec-head"><h3>${t.label}</h3><p>Analiza si la declaración cumple este criterio de elegibilidad VAWA</p></div>`;
+  html += `<div class="teoria-box"><h4>📖 Marco teórico – Actualización USCIS dic. 2025</h4><p>${t.teoria}</p></div>`;
+
+  t.preguntas.forEach(p=>{
+    if(p.type==='mc'){
+      const saved = respMC[p.id]!==undefined ? respMC[p.id] : null;
+      html += `<div class="qblock" id="qb-${p.id}"><div class="qlabel">Opción múltiple</div><div class="qbody"><div class="qtext">${p.text}</div><div class="radio-grid" id="rg-${p.id}">`;
+      p.opts.forEach((opt,oi)=>{
+        const sel = saved===oi;
+        html += `<label class="ropt ${sel?'selected':''}" id="ro-${p.id}-${oi}" onclick="selectMC('${p.id}',${oi})"><input type="radio" name="${p.id}" ${sel?'checked':''}><span>${opt}</span></label>`;
+      });
+      html += `</div><div class="fb" id="fb-${p.id}"></div></div></div>`;
+    } else if(p.type==='check'){
+      const savedArr = respCheck[p.id]||[];
+      html += `<div class="qblock" id="qb-${p.id}"><div class="qlabel">Selección múltiple (varias correctas)</div><div class="qbody"><div class="qtext">${p.text}</div><div class="check-grid" id="cg-${p.id}">`;
+      p.opts.forEach((opt,oi)=>{
+        const chk = savedArr.includes(oi);
+        html += `<label class="chkopt" id="ch-${p.id}-${oi}" onclick="toggleCheck('${p.id}',${oi})"><input type="checkbox" ${chk?'checked':''}><span>${opt}</span></label>`;
+      });
+      html += `</div><div class="fb" id="fb-${p.id}"></div></div></div>`;
+    }
+  });
+
+  // Análisis crítico: por qué no se cumple
+  html += `<div class="open-section-head">🔍 Análisis crítico – ¿Por qué no se cumple este criterio?</div>
+  <div class="qblock"><div class="qlabel">Explica por qué el criterio NO se cumple en la declaración</div><div class="qbody">
+  <div class="jcontext">${t.rewriteWhyPrompt}</div>
+  <textarea class="jta" id="rw2-${idx}" placeholder="Mínimo 100 caracteres..."></textarea>
+  <div class="charct bad" id="rw2c-${idx}">0 / mínimo 100</div>
+  <div class="fb" id="fb-rw2-${idx}"></div>
+  </div></div>`;
+
+  document.getElementById('right-panel').innerHTML = html;
+  document.getElementById('score-note').innerHTML = `<strong>${t.label}</strong> &middot; Responde las preguntas y completa los ejercicios de escritura`;
+  document.getElementById('btn-next').classList.remove('vis');
+  document.getElementById('btn-check').style.display = '';
+
+  const ta2 = document.getElementById(`rw2-${idx}`);
+  if(ta2) ta2.addEventListener('input',()=>countChars(ta2,`rw2c-${idx}`,100));
+
+  // Restore textarea content
+  if(respRW[idx]){
+    if(ta2 && respRW[idx].rw2 !== undefined){ ta2.value = respRW[idx].rw2; countChars(ta2,`rw2c-${idx}`,100); }
+  }
+  // Restore feedback state after Verificar
+  t.preguntas.forEach(p => {
+    const fbDiv = document.getElementById(`fb-${p.id}`);
+    if(fbState[p.id] && fbDiv){ fbDiv.className = fbState[p.id].cls; fbDiv.innerHTML = fbState[p.id].html; }
+    if(p.type==='mc' && respMC[p.id] !== undefined && fbState[p.id]){
+      const sel = respMC[p.id];
+      document.getElementById(`ro-${p.id}-${sel}`)?.classList.add(sel===p.correct?'correct':'incorrect');
+      if(sel !== p.correct) document.getElementById(`ro-${p.id}-${p.correct}`)?.classList.add('correct');
+    }
+    if(p.type==='check' && fbState[p.id]){
+      const selArr = respCheck[p.id]||[];
+      selArr.forEach(oi => document.getElementById(`ch-${p.id}-${oi}`)?.classList.add(fbState[p.id].cls==='fb ok'?'correct':'incorrect'));
+      if(fbState[p.id].cls!=='fb ok') p.correct.forEach(oi => document.getElementById(`ch-${p.id}-${oi}`)?.classList.add('correct'));
+    }
+  });
+  const rw2fb = document.getElementById(`fb-rw2-${idx}`);
+  if(fbState[`rw2_${idx}`] && rw2fb){ rw2fb.className=fbState[`rw2_${idx}`].cls; rw2fb.innerHTML=fbState[`rw2_${idx}`].html; }
+  if(tabDone[idx]){
+    document.getElementById('score-note').innerHTML='✅ Este criterio ya fue completado.';
+    document.getElementById('btn-next').classList.add('vis');
+    if(idx === talleres.length-1) document.getElementById('btn-next').classList.remove('vis');
+  }
+}
+
+// ---------------------------------------------------------------
+// INTERACCIONES
+// ---------------------------------------------------------------
+function selectMC(qid,optIdx){
+  respMC[qid]=optIdx;
+  for(let i=0;i<6;i++){const el=document.getElementById(`ro-${qid}-${i}`);if(el)el.classList.remove('selected','correct','incorrect');}
+  document.getElementById(`ro-${qid}-${optIdx}`)?.classList.add('selected');
+  const fb=document.getElementById(`fb-${qid}`);if(fb){fb.className='fb';fb.innerHTML='';}
+}
+
+function toggleCheck(qid,optIdx){
+  let arr=respCheck[qid]||[];
+  if(arr.includes(optIdx))arr=arr.filter(v=>v!==optIdx);else arr.push(optIdx);
+  respCheck[qid]=arr;
+  const inp=document.getElementById(`ch-${qid}-${optIdx}`)?.querySelector('input');
+  if(inp)inp.checked=arr.includes(optIdx);
+  const fb=document.getElementById(`fb-${qid}`);if(fb){fb.className='fb';fb.innerHTML='';}
+}
+
+// ---------------------------------------------------------------
+// VERIFICAR
+// ---------------------------------------------------------------
+function checkCurrentTab(){
+  const t=talleres[currentTab];
+  let allOk=true;
+  const participanteActual = userName || 'Participante sin nombre';
+
+  t.preguntas.forEach(p=>{
+    const fbDiv=document.getElementById(`fb-${p.id}`);
+    if(p.type==='mc'){
+      const sel=respMC[p.id];
+      document.querySelectorAll(`#rg-${p.id} .ropt`).forEach(r=>r.classList.remove('correct','incorrect'));
+      if(sel===undefined){
+        if(fbDiv){fbDiv.className='fb bad';fbDiv.innerHTML='❌ No respondiste esta pregunta.';}
+        allOk=false;
+        registrarIntento({participante:participanteActual,criterioId:t.id,criterioLabel:t.label,preguntaId:p.id,preguntaTipo:'Opción múltiple',preguntaTexto:p.text,respuesta:'Sin responder',correcta:false});
+        return;
+      }
+      if(sel===p.correct){
+        if(fbDiv){fbDiv.className='fb ok';fbDiv.innerHTML='✓ '+p.fb_ok;}
+        document.getElementById(`ro-${p.id}-${sel}`)?.classList.add('correct');
+        pregScores[p.id]=true;
+        fbState[p.id]={cls:'fb ok',html:'✓ '+p.fb_ok};
+      }else{
+        if(fbDiv){fbDiv.className='fb bad';fbDiv.innerHTML='✗ '+p.fb_bad;}
+        document.getElementById(`ro-${p.id}-${sel}`)?.classList.add('incorrect');
+        document.getElementById(`ro-${p.id}-${p.correct}`)?.classList.add('correct');
+        pregScores[p.id]=false;allOk=false;
+        fbState[p.id]={cls:'fb bad',html:'✗ '+p.fb_bad};
+      }
+      registrarIntento({participante:participanteActual,criterioId:t.id,criterioLabel:t.label,preguntaId:p.id,preguntaTipo:'Opción múltiple',preguntaTexto:p.text,respuesta:p.opts[sel],correcta:(sel===p.correct)});
+    } else if(p.type==='check'){
+      const sel=respCheck[p.id]||[];const cor=p.correct;
+      const ok=sel.length===cor.length&&cor.every(v=>sel.includes(v));
+      document.querySelectorAll(`#cg-${p.id} .chkopt`).forEach(c=>c.classList.remove('correct','incorrect'));
+      if(ok){
+        if(fbDiv){fbDiv.className='fb ok';fbDiv.innerHTML='✓ '+p.fb_ok;}
+        sel.forEach(oi=>document.getElementById(`ch-${p.id}-${oi}`)?.classList.add('correct'));
+        pregScores[p.id]=true;
+        fbState[p.id]={cls:'fb ok',html:'✓ '+p.fb_ok};
+      }else{
+        if(fbDiv){fbDiv.className='fb bad';fbDiv.innerHTML='✗ '+p.fb_bad;}
+        sel.forEach(oi=>document.getElementById(`ch-${p.id}-${oi}`)?.classList.add('incorrect'));
+        cor.forEach(oi=>document.getElementById(`ch-${p.id}-${oi}`)?.classList.add('correct'));
+        pregScores[p.id]=false;allOk=false;
+        fbState[p.id]={cls:'fb bad',html:'✗ '+p.fb_bad};
+      }
+      registrarIntento({participante:participanteActual,criterioId:t.id,criterioLabel:t.label,preguntaId:p.id,preguntaTipo:'Selección múltiple',preguntaTexto:p.text,respuesta:sel.length?sel.map(oi=>p.opts[oi]).join('; '):'Sin responder',correcta:ok});
+    }
+  });
+
+  // Save textarea content
+  if(!respRW[currentTab]) respRW[currentTab]={};
+  const _ta2=document.getElementById(`rw2-${currentTab}`);
+  if(_ta2) respRW[currentTab].rw2=_ta2.value;
+
+  // rw2
+  const ta2=document.getElementById(`rw2-${currentTab}`);
+  const len2=ta2?ta2.value.trim().length:0;
+  const fb2=document.getElementById(`fb-rw2-${currentTab}`);
+  const fbTeo=feedbackTeorico[talleres[currentTab].fbWhy];
+  if(len2>=100){
+    if(fb2){fb2.className='fb ok';fb2.innerHTML='✓ Análisis completado.<br><br>'+fbTeo;}
+  }else{if(fb2){fb2.className='fb bad';fb2.innerHTML='✗ El análisis debe tener al menos 100 caracteres.';}allOk=false;}
+  if(fb2) fbState[`rw2_${currentTab}`]={cls:fb2.className,html:fb2.innerHTML};
+  registrarIntento({participante:participanteActual,criterioId:t.id,criterioLabel:t.label,preguntaId:`rw2_${t.id}`,preguntaTipo:'Análisis crítico (texto abierto)',preguntaTexto:t.rewriteWhyPrompt,respuesta:(ta2?ta2.value.trim():''),correcta:(len2>=100)});
+
+  if(allOk){
+    tabDone[currentTab]=true;
+    document.getElementById('score-note').innerHTML='✅ ¡Correcto! Has completado este criterio. Puedes avanzar al siguiente.';
+    if(currentTab<talleres.length-1) document.getElementById('btn-next').classList.add('vis');
+    else{
+      document.getElementById('btn-next').style.display='none';
+      document.getElementById('score-note').innerHTML='🎉 ¡Has completado todos los criterios! Revisa tus resultados.';
+    }
+  } else {
+    document.getElementById('score-note').innerHTML='❌ Algunas respuestas son incorrectas o incompletas. Revisa los feedbacks en rojo.';
+    document.getElementById('btn-next').classList.remove('vis');
+  }
+  renderTabs();
+}
+
+function goNext(){if(currentTab<talleres.length-1)loadTab(currentTab+1);}
+
+function countChars(ta,spanId,min){
+  if(!ta)return;const len=ta.value.length;
+  const span=document.getElementById(spanId);if(!span)return;
+  if(len>=min){span.textContent=`${len} caracteres ✓`;span.className='charct ok';}
+  else{span.textContent=`${len} / mínimo ${min}`;span.className='charct bad';}
+}
+
+function loadTab(idx){
+  currentTab=idx;showingResults=false;
+  renderTabs();renderTabContent(idx);
+}
+
+// ---------------------------------------------------------------
+// RESULTADOS
+// ---------------------------------------------------------------
+function loadResults(){
+  showingResults=true;
+  renderTabs();
+  document.getElementById('btn-check').style.display='none';
+  document.getElementById('btn-next').classList.remove('vis');
+
+  // calcular por criterio
+  const critStats = talleres.map(t=>{
+    let total=0,correct=0;
+    t.preguntas.forEach(p=>{
+      total++;
+      if(pregScores[p.id]===true) correct++;
+    });
+    return {label:t.label,total,correct,pct:total>0?Math.round(correct/total*100):0};
+  });
+
+  const totalPregs = critStats.reduce((a,c)=>a+c.total,0);
+  const totalCorrect = critStats.reduce((a,c)=>a+c.correct,0);
+  const globalPct = totalPregs>0?Math.round(totalCorrect/totalPregs*100):0;
+
+  const sorted = [...critStats].sort((a,b)=>a.pct-b.pct);
+  const refuerza = sorted.slice(0,3);
+  const fortaleza = sorted.slice(-3).reverse();
+
+  let scoreColor = globalPct>=80?'#1a5e36':globalPct>=60?'#8a5a00':'#8a1818';
+
+  const html = `<div class="results-wrap">
+    <div class="results-header">
+      <h2>Resultados del Taller</h2>
+      <div class="score-big" style="color:${scoreColor}">${globalPct}%</div>
+      <p>${totalCorrect} de ${totalPregs} preguntas correctas &middot; ${tabDone.filter(Boolean).length} de ${talleres.length} criterios completados</p>
+      <p style="margin-top:.3rem;font-size:11px">Participante: ${userName}</p>
+      <button class="btn-admin" onclick="solicitarAccesoAdmin()">🔐 Acceso de administrador</button>
+      <p class="admin-pass-hint">Solo el personal autorizado de TMLF puede ver el registro de respuestas de todos los participantes.</p>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;margin-bottom:1.2rem;box-shadow:var(--sh)">
+      <h4 style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;border-left:3px solid var(--gold);padding-left:.6rem;margin-bottom:.8rem">Desempeño por criterio</h4>
+      ${critStats.map(c=>{
+        const barClass=c.pct>=80?'high':c.pct>=50?'':'low';
+        return `<div style="margin-bottom:.8rem">
+          <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:.3rem"><span>${c.label}</span><strong>${c.pct}% (${c.correct}/${c.total})</strong></div>
+          <div class="bar-wrap"><div class="bar-fill ${barClass}" style="width:${c.pct}%"></div></div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="results-grid">
+      <div class="res-card refuerza">
+        <h4>🔴 Temas a reforzar</h4>
+        ${refuerza.map(c=>{
+          const taller = talleres.find(t=>t.label===c.label);
+          const wrongPregs = taller ? taller.preguntas.filter(p=>pregScores[p.id]===false) : [];
+          const wrongDetail = wrongPregs.map(p=>`
+            <div style="margin-top:10px;background:#fff8f8;border:1px solid #f0c0c0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:12px;font-weight:600;color:#6b2020;margin-bottom:4px;">❌ ${p.text}</div>
+              <div style="font-size:12px;color:#5c3030;line-height:1.5;"><strong>Lo que debes saber:</strong> ${p.fb_bad}</div>
+            </div>`).join('');
+          return `<div class="res-item" style="flex-direction:column;align-items:flex-start;">
+            <div style="display:flex;align-items:center;gap:.5rem;width:100%"><div class="dot dot-red"></div><div><div style="font-weight:600">${c.label}</div><div style="font-size:11.5px;color:var(--ink3)">${c.pct}% de aciertos (${c.correct}/${c.total})</div></div></div>
+            ${wrongDetail}
+          </div>`;
+        }).join('')}
+        <p style="font-size:11.5px;color:var(--ink3);margin-top:10px;">Revisa los criterios marcados y el marco teórico correspondiente.</p>
+      </div>
+      <div class="res-card fortaleza">
+        <h4>🟢 Mayores fortalezas</h4>
+        ${fortaleza.map(c=>`<div class="res-item"><div class="dot dot-green"></div><div><div style="font-weight:600">${c.label}</div><div style="font-size:11.5px;color:var(--ink3)">${c.pct}% de aciertos (${c.correct}/${c.total})</div></div></div>`).join('')}
+        <p style="font-size:11.5px;color:var(--ink3);margin-top:.7rem">¡Buen dominio en estos criterios! Sigue reforzando los conceptos con práctica adicional.</p>
+      </div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;box-shadow:var(--sh);font-size:12.5px;color:var(--ink2);text-align:center">
+      ${globalPct>=80
+        ? '✅ <strong>Excelente desempeño.</strong> Tienes un sólido dominio de los criterios de elegibilidad VAWA.'
+        : globalPct>=60
+          ? '⚠️ <strong>Desempeño aceptable.</strong> Revisa los criterios marcados en rojo para reforzar tu comprensión.'
+          : '❌ <strong>Se requiere refuerzo.</strong> Repasa el material teórico y vuelve a intentar los criterios con menor puntaje.'}
+    </div>
+  </div>`;
+
+  document.getElementById('right-panel').innerHTML = html;
+  document.getElementById('score-note').innerHTML = `Taller completado &middot; ${userName} &middot; ${globalPct}% de aciertos globales`;
+}
+
+// ---------------------------------------------------------------
+// REPORTE PDF — registro de TODOS los intentos, agrupado por participante
+// ---------------------------------------------------------------
+function formatFechaHora(iso){
+  try{ return new Date(iso).toLocaleString('es-MX',{dateStyle:'short',timeStyle:'short'}); }
+  catch(e){ return iso || '—'; }
+}
+
+function generarReportePDF(){
+  const btn = document.getElementById('btn-pdf-admin');
+  if(btn){ btn.disabled = true; btn.textContent = '⏳ Generando...'; }
+
+  try{
+    if(!attemptLog || attemptLog.length===0){
+      alert('Todavía no hay ningún intento registrado. Responde y verifica al menos un criterio antes de generar el reporte.');
+      return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const marginL = 48, marginR = 48;
+    const usableW = pageW - marginL - marginR;
+    let y = 56;
+
+    const NAVY = [28,33,48], GOLD = [197,160,40], INK = [26,23,18], INK2 = [49,46,40], GREEN = [26,94,54], RED = [138,24,24], SLATE = [92,86,72];
+
+    function checkPageBreak(neededHeight){
+      if(y + neededHeight > pageH - 50){
+        doc.addPage();
+        y = 56;
+      }
+    }
+
+    function addWrappedText(text, x, width, size, color, style, lineGap){
+      doc.setFont('helvetica', style || 'normal');
+      doc.setFontSize(size);
+      doc.setTextColor(color[0], color[1], color[2]);
+      const lines = doc.splitTextToSize(text, width);
+      lines.forEach(line=>{
+        checkPageBreak(size + (lineGap||4));
+        doc.text(line, x, y);
+        y += size + (lineGap||4);
+      });
+      return lines.length;
+    }
+
+    function pageHeader(titulo, subtitulo){
+      doc.setFillColor(NAVY[0],NAVY[1],NAVY[2]);
+      doc.rect(0,0,pageW,90,'F');
+      doc.setTextColor(245,233,196);
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(17);
+      doc.text(titulo, marginL, 40);
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(10.5);
+      doc.text(subtitulo, marginL, 58);
+      y = 118;
+    }
+
+    // Total de preguntas evaluables (mc/check) definidas en el taller
+    // (TOTAL_PREGUNTAS_EVALUABLES y TOTAL_CRITERIOS ya están definidos globalmente)
+
+    // ----- Agrupar TODOS los intentos por participante -----
+    const { porParticipante, nombresParticipantes } = agruparPorParticipante();
+
+    function resumenDe(nombre){ return resumenParticipante(nombre, porParticipante); }
+
+    // ===================== PORTADA / RESUMEN GENERAL =====================
+    pageHeader('Reporte de Intentos · Taller VAWA', 'Criterios de Elegibilidad · Mendoza Learning Center · Registro completo por participante');
+    doc.setFontSize(9.5); doc.setTextColor(200,190,220);
+    const fechaGen = new Date().toLocaleString('es-MX', { dateStyle:'long', timeStyle:'short' });
+    doc.text(`Generado: ${fechaGen}    ·    Participantes registrados: ${nombresParticipantes.length}    ·    Intentos totales: ${attemptLog.length}`, marginL, 76);
+    y = 118;
+
+    doc.setFont('helvetica','bold'); doc.setFontSize(12.5); doc.setTextColor(INK[0],INK[1],INK[2]);
+    doc.text('Resumen general por participante', marginL, y); y += 18;
+
+    // Encabezado de tabla resumen
+    const colX = [marginL, marginL+190, marginL+290, marginL+380, marginL+470];
+    checkPageBreak(20);
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(INK2[0],INK2[1],INK2[2]);
+    doc.text('Participante', colX[0], y);
+    doc.text('Preguntas contestadas', colX[1], y);
+    doc.text('% aciertos (final)', colX[2], y);
+    doc.text('Intentos totales', colX[3], y);
+    doc.text('Último intento', colX[4], y);
+    y += 6;
+    doc.setDrawColor(GOLD[0],GOLD[1],GOLD[2]); doc.setLineWidth(1);
+    doc.line(marginL, y, pageW-marginR, y);
+    y += 14;
+
+    nombresParticipantes.forEach(nombre=>{
+      const r = resumenDe(nombre);
+      checkPageBreak(16);
+      doc.setFont('helvetica','normal'); doc.setFontSize(9);
+      doc.setTextColor(INK[0],INK[1],INK[2]);
+      doc.text(nombre.length>26 ? nombre.slice(0,25)+'…' : nombre, colX[0], y);
+      doc.text(`${r.preguntasContestadas}/${TOTAL_PREGUNTAS_EVALUABLES}`, colX[1], y);
+      const color = r.pct>=80?GREEN:(r.pct>=50?[138,90,0]:RED);
+      doc.setTextColor(color[0],color[1],color[2]);
+      doc.text(`${r.pct}%`, colX[2], y);
+      doc.setTextColor(INK[0],INK[1],INK[2]);
+      doc.text(`${r.totalIntentos}`, colX[3], y);
+      doc.setFontSize(7.8);
+      doc.text(formatFechaHora(r.ultimaFecha), colX[4], y);
+      doc.setFontSize(9);
+      y += 15;
+    });
+
+    // ===================== DETALLE POR PARTICIPANTE =====================
+    nombresParticipantes.forEach(nombre=>{
+      doc.addPage();
+      y = 56;
+      const r = resumenDe(nombre);
+
+      doc.setFillColor(NAVY[0],NAVY[1],NAVY[2]);
+      doc.rect(0,0,pageW,70,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(14.5); doc.setTextColor(245,233,196);
+      doc.text(nombre, marginL, 34);
+      doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(200,190,220);
+      doc.text(`${r.preguntasContestadas}/${TOTAL_PREGUNTAS_EVALUABLES} preguntas contestadas · ${r.pct}% de aciertos (según el último intento de cada pregunta) · ${r.totalIntentos} intentos registrados en total · Análisis críticos completados: ${r.analisisCompletos}/${TOTAL_CRITERIOS}`, marginL, 52, {maxWidth: usableW});
+      y = 96;
+
+      const intentosParticipante = porParticipante[nombre];
+
+      talleres.forEach(t=>{
+        const intentosCriterio = intentosParticipante.filter(a=>a.criterioId===t.id);
+        if(intentosCriterio.length===0) return;
+
+        checkPageBreak(40);
+        doc.setFillColor(46,56,80);
+        doc.roundedRect(marginL, y-14, usableW, 22, 3, 3, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(11.5); doc.setTextColor(245,233,196);
+        doc.text(t.label.replace(/^[①②③④⑤⑥⑦]\s*/,''), marginL+8, y+2);
+        y += 26;
+
+        // Agrupar por preguntaId, en el orden natural: preguntas del criterio + análisis crítico al final
+        const ordenPreguntaIds = [...t.preguntas.map(p=>p.id), `rw2_${t.id}`];
+        ordenPreguntaIds.forEach(pid=>{
+          const intentosPregunta = intentosCriterio.filter(a=>a.preguntaId===pid).sort((a,b)=>a.intento-b.intento);
+          if(intentosPregunta.length===0) return;
+
+          const primero = intentosPregunta[0];
+          checkPageBreak(30);
+          addWrappedText(`[${primero.preguntaTipo}] ${primero.preguntaTexto}`, marginL, usableW, 9.8, INK, 'bold', 4);
+
+          intentosPregunta.forEach(a=>{
+            const esAnalisis = a.preguntaTipo.startsWith('Análisis');
+            const etiqueta = esAnalisis ? (a.correcta ? '✓ cumple mínimo' : '✗ no cumple mínimo') : (a.correcta ? '✓ correcta' : '✗ incorrecta');
+            const color = a.correcta ? GREEN : RED;
+            checkPageBreak(28);
+            doc.setFont('helvetica','bold'); doc.setFontSize(8.6); doc.setTextColor(SLATE[0],SLATE[1],SLATE[2]);
+            doc.text(`Intento ${a.intento} · ${formatFechaHora(a.timestamp)}`, marginL+10, y);
+            y += 11;
+            const respuestaTexto = esAnalisis
+              ? (a.respuesta ? a.respuesta : '(sin texto)')
+              : a.respuesta;
+            addWrappedText(`${respuestaTexto}  —  ${etiqueta}`, marginL+16, usableW-16, 9, color, 'normal', 3);
+            y += 2;
+          });
+          y += 4;
+        });
+
+        y += 8;
+        checkPageBreak(2);
+        doc.setDrawColor(224,216,192); doc.setLineWidth(0.7);
+        doc.line(marginL, y, pageW-marginR, y);
+        y += 16;
+      });
+    });
+
+    // ----- Pie de página con numeración -----
+    const totalPages = doc.internal.getNumberOfPages();
+    for(let i=1;i<=totalPages;i++){
+      doc.setPage(i);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(150,145,135);
+      doc.text(`TMLF Learning Center · Taller VAWA — Página ${i} de ${totalPages}`, marginL, pageH-24);
+    }
+
+    const nombreArchivo = `Reporte_Taller_VAWA_Todos_los_Participantes.pdf`;
+    doc.save(nombreArchivo);
+  }catch(err){
+    console.error('Error al generar el PDF:', err);
+    alert('Ocurrió un error al generar el reporte PDF. Por favor intenta de nuevo.');
+  }finally{
+    if(btn){ btn.disabled = false; btn.textContent = '📄 Descargar PDF'; }
+  }
+}
+</script>
+</body>
+</html>
