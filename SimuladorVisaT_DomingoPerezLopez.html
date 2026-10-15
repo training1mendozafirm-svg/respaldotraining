@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador Caso Visa T · Domingo Perez Lopez | Esquema EMP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f1f35;
+  --blue-mid: #1a3a5c;
+  --blue-accent: #2563a8;
+  --teal: #0d9488;
+  --amber: #d97706;
+  --rose: #be123c;
+  --green: #059669;
+  --cream: #faf8f3;
+  --text: #1a1a2e;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --card: #ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--cream);
+  background-image:radial-gradient(circle at 10% 20%,rgba(37,99,168,.06) 0%,transparent 50%),radial-gradient(circle at 90% 80%,rgba(13,148,136,.05) 0%,transparent 50%);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  padding:2rem 1rem;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
+.shell{width:100%;max-width:1300px;}
+
+/* SCREENS */
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* HEADER */
+.app-header{
+  background:var(--navy);
+  border-radius:24px 24px 0 0;
+  padding:2rem 2.5rem 1.6rem;
+  position:relative;overflow:hidden;
+}
+.app-header::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(37,99,168,.18);}
+.app-header::after{content:'';position:absolute;bottom:-30px;left:40%;width:120px;height:120px;border-radius:50%;background:rgba(13,148,136,.12);}
+.app-header .label{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem;}
+.app-header h1{font-family:'DM Serif Display',serif;font-size:2rem;color:#fff;line-height:1.2;position:relative;z-index:1;}
+.app-header .subtitle{color:rgba(255,255,255,.55);font-size:.85rem;margin-top:.4rem;position:relative;z-index:1;}
+.user-badge{position:absolute;top:1.1rem;right:1.5rem;z-index:2;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);font-size:.75rem;font-weight:600;padding:.3rem .9rem;border-radius:99px;letter-spacing:.03em;}
+
+/* BODY CARD */
+.card-body{background:var(--card);border-radius:0 0 24px 24px;box-shadow:0 8px 40px rgba(15,31,53,.1);overflow:hidden;}
+
+/* PROGRESS */
+.progress-strip{background:var(--blue-mid);padding:.9rem 2.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.prog-label{font-size:.78rem;color:rgba(255,255,255,.65);font-weight:500;white-space:nowrap;}
+.prog-track{flex:1;min-width:120px;height:4px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),#34d399);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1);}
+.prog-chip{background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);font-size:.72rem;padding:.2rem .7rem;border-radius:99px;font-weight:600;letter-spacing:.03em;white-space:nowrap;}
+
+/* NAV */
+.nav-zone{padding:1.2rem 2.5rem 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;border-top:1px solid var(--border);}
+.btn{font-family:'DM Sans',sans-serif;font-weight:600;font-size:.88rem;padding:.7rem 1.6rem;border-radius:99px;border:none;cursor:pointer;transition:all .15s ease;letter-spacing:.02em;}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.btn-ghost:hover:not(:disabled){border-color:var(--blue-accent);color:var(--blue-accent);}
+.btn-ghost:disabled{opacity:.35;cursor:default;}
+.btn-primary{background:var(--navy);color:#fff;box-shadow:0 2px 8px rgba(15,31,53,.25);}
+.btn-primary:hover{background:var(--blue-mid);transform:translateY(-1px);}
+.btn-teal{background:var(--teal);color:#fff;box-shadow:0 2px 8px rgba(13,148,136,.3);}
+.btn-teal:hover{background:#0f766e;transform:translateY(-1px);}
+
+/* INPUT / WELCOME */
+.welcome-zone{padding:3rem 2.5rem;}
+.welcome-zone h2{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--navy);margin-bottom:.5rem;}
+.welcome-zone p{color:var(--muted);font-size:.95rem;line-height:1.6;margin-bottom:1.5rem;}
+.name-input{width:100%;padding:.9rem 1.2rem;font-size:1rem;font-family:'DM Sans',sans-serif;border:1.5px solid var(--border);border-radius:14px;outline:none;transition:border-color .15s;color:var(--text);}
+.name-input:focus{border-color:var(--blue-accent);}
+.name-label{font-size:.78rem;font-weight:600;color:var(--navy);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;display:block;}
+
+/* INSTRUCTIONS */
+.instructions-zone{padding:2rem 2.5rem;}
+.instr-section{margin-bottom:1.5rem;}
+.instr-section h3{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--navy);margin-bottom:.6rem;}
+.instr-section p,.instr-section li{font-size:.92rem;color:var(--text);line-height:1.7;}
+.instr-section ul{padding-left:1.3rem;}
+.instr-section li{margin-bottom:.3rem;}
+.instr-chip{display:inline-block;background:#eff6ff;color:var(--blue-accent);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .7rem;border-radius:99px;margin-right:.4rem;margin-bottom:.4rem;}
+.instr-chip.teal{background:#f0fdfa;color:var(--teal);}
+.instr-chip.amber{background:#fffbeb;color:var(--amber);}
+
+/* TABS (Ejercicio 1 / Ejercicio 2) */
+.tabs-bar{display:flex;border-bottom:2px solid var(--border);background:#f8fafd;}
+.tab-btn{padding:1rem 1.5rem;font-size:.88rem;font-weight:600;color:var(--muted);border:none;background:transparent;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;font-family:'DM Sans',sans-serif;}
+.tab-btn.active{color:var(--blue-accent);border-bottom-color:var(--blue-accent);}
+.tab-btn:hover:not(.active){color:var(--navy);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* ======================= BOOK LAYOUT (declaración fija + ejercicios) ======================= */
+.book-layout{display:flex;align-items:stretch;border-top:1px solid var(--border);}
+.page-left{width:40%;flex-shrink:0;background:#f8fafd;border-right:1px solid var(--border);max-height:78vh;overflow-y:auto;}
+.page-left-inner{padding:1.6rem 1.7rem 2rem;}
+.decl-box{background:var(--card);border-radius:16px;padding:1.3rem 1.5rem;border:1px solid var(--border);box-shadow:0 2px 10px rgba(15,31,53,.05);}
+.decl-box h3{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy);margin-bottom:.2rem;}
+.decl-subtitle{font-size:.75rem;color:var(--muted);margin-bottom:1rem;letter-spacing:.02em;}
+.decl-sticky-tag{position:sticky;top:0;background:linear-gradient(180deg,#f8fafd 85%,rgba(248,250,253,0));padding-bottom:.6rem;margin-bottom:.4rem;z-index:2;}
+.texto-decl{font-size:.86rem;line-height:1.85;color:var(--text);white-space:pre-line;}
+.texto-decl strong{color:var(--navy);display:inline-block;margin-top:.9rem;margin-bottom:.2rem;font-size:.82rem;letter-spacing:.03em;text-transform:uppercase;}
+.page-right{flex:1;min-width:0;max-height:78vh;overflow-y:auto;background:#fff;}
+
+/* FRAGMENT / CITA CLAVE */
+.section-tag{display:inline-flex;align-items:center;gap:.4rem;background:#eff6ff;color:var(--blue-accent);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .8rem;border-radius:99px;margin-bottom:.9rem;}
+.section-tag.teal{background:#f0fdfa;color:var(--teal);}
+.fragment-zone{padding:1.8rem 2rem 1rem;border-bottom:1px solid var(--border);}
+.fragment-title{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:.7rem;line-height:1.3;}
+.fragment-ref{font-size:.78rem;color:var(--muted);margin-bottom:.9rem;}
+.fragment-ref strong{color:var(--navy);}
+.fragment-quote{background:#f8fafd;border:1px solid #dbeafe;border-left:4px solid var(--blue-accent);border-radius:12px;padding:1rem 1.3rem;font-size:.88rem;line-height:1.7;color:var(--text);position:relative;font-style:italic;}
+
+/* QUESTIONS (EJ 1) */
+.questions-zone{padding:1.6rem 2rem 1rem;}
+.q-block{margin-bottom:1.8rem;}
+.q-number{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+.q-text{font-size:.96rem;font-weight:600;color:var(--navy);line-height:1.45;margin-bottom:1rem;}
+.options-list{display:flex;flex-direction:column;gap:.55rem;}
+.opt-label{display:flex;align-items:flex-start;gap:.85rem;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:all .15s ease;font-size:.88rem;color:var(--text);line-height:1.4;}
+.opt-label:hover{border-color:var(--blue-accent);background:#f0f7ff;}
+.opt-label input[type="radio"]{margin-top:.15rem;accent-color:var(--blue-accent);flex-shrink:0;}
+.opt-label.sel-ok{border-color:var(--teal);background:#f0fdf9;color:#064e3b;}
+.opt-label.sel-bad{border-color:var(--rose);background:#fff1f2;color:#881337;}
+.feedback-box{margin-top:.8rem;padding:.9rem 1.1rem;border-radius:12px;font-size:.86rem;line-height:1.5;display:none;}
+.feedback-box.show{display:block;animation:fadeUp .25s ease;}
+.feedback-box.ok{background:#ecfdf5;border-left:3px solid var(--teal);color:#065f46;}
+.feedback-box.fail{background:#fff1f2;border-left:3px solid var(--rose);color:#881337;}
+.q-divider{height:1px;background:var(--border);margin:1.4rem 0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ========================= EJERCICIO 2 ========================= */
+.ex2-subtabs{display:flex;gap:.5rem;padding:1rem 2rem .5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.ex2-container{padding:1.5rem 2rem 2rem;}
+
+/* CAST PAGE */
+.cast-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-bottom:2rem;}
+.cast-col-title{font-family:'DM Serif Display',serif;font-size:1.05rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid;}
+.cast-col-ends .cast-col-title{color:var(--blue-accent);border-color:var(--blue-accent);}
+.cast-col-means .cast-col-title{color:#c026d3;border-color:#c026d3;}
+.cast-col-process .cast-col-title{color:var(--teal);border-color:var(--teal);}
+
+.cast-question{font-size:.8rem;color:var(--muted);margin-bottom:.6rem;font-weight:500;}
+.cast-options{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem;}
+.cast-option{display:flex;align-items:center;gap:.5rem;padding:.5rem .7rem;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:.8rem;color:var(--text);transition:all .15s;}
+.cast-option:hover{border-color:var(--blue-accent);background:#f0f7ff;}
+.cast-option input[type="checkbox"]{accent-color:var(--blue-accent);flex-shrink:0;}
+
+/* Legal theory fill */
+.legal-theory-box{background:#f8fafd;border:1px solid var(--border);border-radius:16px;padding:1.4rem;margin-top:1.4rem;}
+.legal-theory-box h3{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.9rem;}
+.theory-sentence{font-size:.86rem;color:var(--text);line-height:2.2;flex-wrap:wrap;display:flex;align-items:baseline;gap:.4rem;}
+.theory-select{padding:.3rem .6rem;border:1.5px solid var(--blue-accent);border-radius:8px;font-size:.8rem;font-family:'DM Sans',sans-serif;color:var(--navy);background:#eff6ff;cursor:pointer;min-width:130px;}
+
+/* DRAG & DROP */
+.dnd-page{margin-bottom:2rem;}
+.dnd-section-title{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--navy);margin-bottom:1.1rem;padding-bottom:.6rem;border-bottom:2px solid var(--blue-accent);}
+.dnd-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-bottom:1.5rem;}
+.dnd-grid.single{grid-template-columns:1fr;}
+.dnd-card{background:#f8fafd;border:1.5px solid #dbeafe;border-radius:14px;padding:1.1rem 1.3rem;}
+.dnd-card-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-accent);margin-bottom:.5rem;}
+.dnd-card-label.means{color:#c026d3;}
+.dnd-card-label.process{color:var(--teal);}
+.dnd-question{font-size:.83rem;color:var(--navy);font-weight:600;margin-bottom:.7rem;line-height:1.4;}
+.drop-zone{min-height:60px;background:#fff;border:2px dashed #bfdbfe;border-radius:10px;padding:.6rem;display:flex;flex-wrap:wrap;gap:.4rem;align-content:flex-start;transition:all .15s;}
+.drop-zone.drag-over{border-color:var(--blue-accent);background:#eff6ff;}
+.drop-zone.has-answer{border-color:var(--teal);border-style:solid;}
+.drag-bank{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0;padding:1rem;background:#fff;border:1px solid var(--border);border-radius:12px;}
+.drag-chip{padding:.45rem .9rem;background:#e0f2fe;color:#075985;font-size:.78rem;font-weight:600;border-radius:99px;cursor:grab;border:1.5px solid #bae6fd;transition:all .15s;user-select:none;}
+.drag-chip:hover{background:#bae6fd;transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,.1);}
+.drag-chip.dragging{opacity:.5;cursor:grabbing;}
+.drag-chip.placed{background:#d1fae5;color:#065f46;border-color:#6ee7b7;}
+.drop-chip{padding:.3rem .7rem;background:#d1fae5;color:#065f46;border-radius:99px;font-size:.76rem;font-weight:600;cursor:pointer;border:1px solid #6ee7b7;display:flex;align-items:center;gap:.3rem;}
+.drop-chip::after{content:'×';font-size:1rem;opacity:.6;}
+.dnd-feedback{margin-top:.8rem;padding:.8rem 1rem;border-radius:10px;font-size:.82rem;display:none;}
+.dnd-feedback.show{display:block;}
+.dnd-feedback.ok{background:#ecfdf5;border-left:3px solid var(--teal);color:#065f46;}
+.dnd-feedback.fail{background:#fff1f2;border-left:3px solid var(--rose);color:#881337;}
+.verify-btn{background:var(--blue-accent);color:#fff;border:none;padding:.55rem 1.2rem;border-radius:99px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:.8rem;transition:all .15s;}
+.verify-btn:hover{background:#1d4ed8;}
+
+/* FOLLOW-UP QUESTIONS */
+.followup-title{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--navy);margin-bottom:.8rem;}
+.followup-subtitle{font-size:.85rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6;}
+.discussion-area{background:#fff;border:1.5px dashed var(--border);border-radius:14px;padding:1.2rem 1.4rem;}
+.discussion-area h4{font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:.8rem;}
+.discussion-textarea{width:100%;min-height:100px;padding:.8rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-size:.85rem;font-family:'DM Sans',sans-serif;color:var(--text);resize:vertical;outline:none;transition:border-color .15s;line-height:1.6;}
+.discussion-textarea:focus{border-color:var(--blue-accent);}
+.disc-label{font-size:.74rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;margin-top:.9rem;display:block;}
+
+/* RESULTS */
+.result-zone{padding:2.5rem;}
+.score-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--blue-mid) 100%);border-radius:20px;padding:2rem;text-align:center;margin-bottom:1.8rem;position:relative;overflow:hidden;}
+.score-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(13,148,136,.2),transparent 60%);}
+.score-pct{font-family:'DM Serif Display',serif;font-size:4.5rem;color:#fff;line-height:1;position:relative;}
+.score-label{color:rgba(255,255,255,.65);font-size:.85rem;margin-top:.3rem;position:relative;}
+.score-detail{background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);font-size:.82rem;padding:.4rem 1.2rem;border-radius:99px;display:inline-block;margin-top:.8rem;position:relative;}
+.reinforce-block{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid var(--amber);border-radius:16px;padding:1.2rem 1.4rem;margin-bottom:1.4rem;font-size:.9rem;color:#78350f;line-height:1.6;}
+.reinforce-block strong{display:block;margin-bottom:.4rem;color:#92400e;}
+.perfect-block{background:#ecfdf5;border:1px solid #6ee7b7;border-left:4px solid var(--teal);border-radius:16px;padding:1.2rem 1.4rem;margin-bottom:1.4rem;font-size:.9rem;color:#064e3b;}
+.summary-block{background:#f8fafd;border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.4rem;font-size:.88rem;color:var(--muted);line-height:1.65;}
+.summary-block strong{color:var(--navy);display:block;margin-bottom:.5rem;}
+
+/* ===================== BOTÓN Y MODAL: REPORTE PDF ===================== */
+.pdf-report-btn{position:absolute;top:1.1rem;right:1.5rem;z-index:10;padding:.4rem 1rem;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);font-size:.72rem;font-weight:600;letter-spacing:.03em;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.pdf-report-btn:hover{background:rgba(255,255,255,.2);}
+#pdf-pwd-modal{display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,31,53,.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;}
+.pdf-modal-card{background:#fff;border-radius:18px;padding:2rem 2.2rem;max-width:360px;width:90%;box-shadow:0 24px 60px rgba(0,0,0,.3);text-align:center;font-family:'DM Sans',sans-serif;}
+.pdf-modal-card .icon{font-size:1.8rem;margin-bottom:.5rem;}
+.pdf-modal-card h4{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy);margin-bottom:.3rem;}
+.pdf-modal-card p{font-size:.78rem;color:var(--muted);margin-bottom:1.2rem;}
+.pdf-modal-card input{width:100%;padding:.7rem .9rem;border-radius:10px;border:2px solid var(--border);font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:.5rem;transition:border-color .15s;text-align:center;}
+.pdf-modal-card input:focus{border-color:var(--blue-accent);}
+.pdf-modal-error{display:none;color:var(--rose);font-size:.75rem;margin-bottom:.6rem;padding:.5rem;border-radius:8px;background:#fff1f2;border:1px solid #fda4af;}
+.pdf-modal-error.show{display:block;}
+.pdf-modal-actions{display:flex;gap:.6rem;margin-top:.3rem;}
+.pdf-modal-actions button{flex:1;padding:.65rem;border-radius:9px;border:none;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.pdf-modal-cancel{background:#f1f5f9;color:var(--muted);}
+.pdf-modal-confirm{background:var(--navy);color:#fff;}
+
+#pdf-report{display:none;}
+.pdfr-header{border-bottom:3px solid var(--navy);padding-bottom:.8rem;margin-bottom:1.2rem;}
+.pdfr-header h1{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--navy);}
+.pdfr-header p{font-size:.8rem;color:var(--muted);margin-top:.2rem;}
+.pdfr-meta{display:flex;gap:1.5rem;font-size:.78rem;color:var(--text);margin-top:.6rem;flex-wrap:wrap;}
+.pdfr-meta strong{color:var(--navy);}
+.pdfr-section{margin-bottom:1.4rem;page-break-inside:avoid;}
+.pdfr-section-title{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);border-bottom:2px solid var(--blue-accent);padding-bottom:.3rem;margin-bottom:.7rem;}
+.pdfr-q{border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;margin-bottom:.6rem;font-size:.8rem;page-break-inside:avoid;}
+.pdfr-q .qhead{font-weight:700;color:var(--navy);margin-bottom:.3rem;}
+.pdfr-q .qans{margin-bottom:.2rem;}
+.pdfr-q .qans.ok{color:#065f46;}
+.pdfr-q .qans.bad{color:#881337;}
+.pdfr-q .qfb{color:var(--muted);font-size:.76rem;margin-top:.3rem;line-height:1.5;}
+.pdfr-card{border:1px solid var(--border);border-radius:8px;padding:.55rem .8rem;margin-bottom:.5rem;font-size:.79rem;}
+.pdfr-card .cq{font-weight:600;color:var(--navy);margin-bottom:.25rem;}
+.pdfr-card .cans{color:var(--text);}
+.pdfr-card .cfb{color:var(--muted);font-size:.75rem;margin-top:.25rem;}
+.pdfr-theory{background:#f8fafd;border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;}
+.pdfr-ta{border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;margin-bottom:.6rem;font-size:.8rem;white-space:pre-wrap;}
+.pdfr-ta .talabel{font-weight:700;color:var(--navy);margin-bottom:.3rem;display:block;}
+.pdfr-score{text-align:center;background:var(--navy);color:#fff;border-radius:10px;padding:1rem;margin-bottom:1.2rem;}
+.pdfr-score .pct{font-family:'DM Serif Display',serif;font-size:2.4rem;}
+
+@media print{
+  body *{visibility:hidden;}
+  #pdf-report,#pdf-report *{visibility:visible;}
+  #pdf-report{display:block;position:absolute;left:0;top:0;width:100%;padding:0 1rem;}
+  .no-print{display:none !important;}
+}
+
+@media(max-width:900px){
+  .book-layout{flex-direction:column;}
+  .page-left,.page-right{width:100%;max-height:46vh;}
+}
+@media(max-width:700px){
+  .app-header{padding:1.5rem;}
+  .app-header h1{font-size:1.5rem;}
+  .progress-strip,.fragment-zone,.questions-zone,.ex2-container{padding-left:1.2rem;padding-right:1.2rem;}
+  .nav-zone{padding:1rem 1.2rem 1.5rem;}
+  .cast-grid{grid-template-columns:1fr;}
+  .dnd-grid{grid-template-columns:1fr;}
+  .welcome-zone,.instructions-zone{padding:1.5rem;}
+  .result-zone{padding:1.5rem;}
+}
+</style>
+</head>
+<body>
+<div class="shell" id="root">
+
+<!-- ============ SCREEN: NAME ============ -->
+<div class="screen active" id="screen-name">
+  <div class="app-header">
+    <div class="label">Simulador · Visa T</div>
+    <h1>Caso de Elegibilidad — Domingo Perez Lopez</h1>
+    <p class="subtitle">Esquema Ends · Means · Process</p>
+  </div>
+  <div class="card-body">
+    <div class="welcome-zone">
+      <h2>Bienvenida/o al simulador</h2>
+      <p>Este simulador está diseñado para que practiques el análisis de un caso real bajo el esquema EMP (Ends–Means–Process) aplicado a la elegibilidad de Visa T. La declaración jurada del cliente permanecerá visible en todo momento del lado izquierdo mientras trabajas los ejercicios del lado derecho. Antes de comenzar, por favor ingresa tu nombre.</p>
+      <label class="name-label" for="nameInput">Tu nombre</label>
+      <input class="name-input" id="nameInput" type="text" placeholder="Escribe tu nombre aquí…" autocomplete="off">
+      <br><br>
+      <div style="display:flex;justify-content:flex-end;">
+        <button class="btn btn-primary" onclick="goInstructions()">Continuar →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: INSTRUCTIONS ============ -->
+<div class="screen" id="screen-instructions">
+  <div class="app-header">
+    <div class="label">Simulador · Visa T</div>
+    <h1>Instrucciones y Objetivos</h1>
+    <p class="subtitle">Lee con atención antes de comenzar</p>
+    <span class="user-badge" id="instr-user-badge"></span>
+  </div>
+  <div class="card-body">
+    <div class="instructions-zone">
+      <div class="instr-section">
+        <h3>Objetivo del simulador</h3>
+        <p>Desarrollar la capacidad de identificar y analizar los elementos del esquema <strong>Ends-Means-Process (EMP)</strong> en el caso real de <strong>Domingo Perez Lopez</strong>, víctima de trata laboral, para fundamentar una solicitud de Visa T ante el USCIS.</p>
+      </div>
+      <div class="instr-section">
+        <h3>Cómo está organizada la pantalla</h3>
+        <p>La <strong>declaración jurada completa</strong> de Domingo permanecerá siempre visible del lado izquierdo de la pantalla, con desplazamiento independiente, para que puedas consultarla en cualquier momento mientras respondes. Del lado derecho encontrarás los dos ejercicios, accesibles mediante pestañas:</p>
+        <ul>
+          <li><strong>Ejercicio 1 – Análisis de fragmentos:</strong> Responderás preguntas de comprensión y análisis legal organizadas por criterio EMP: Proceso, Medios, Fin, Presencia Física y Dificultad Extrema. Cada módulo incluye una cita clave y la referencia a la sección de la declaración que debes releer del lado izquierdo.</li>
+          <li><strong>Ejercicio 2 – Hoja de trabajo EMP:</strong> Completarás la hoja de trabajo Ends-Means-Process (CAST) usando herramientas de arrastrar y soltar y de selección múltiple, construirás la teoría legal del caso, y redactarás preguntas de seguimiento.</li>
+        </ul>
+      </div>
+      <div class="instr-section">
+        <h3>Criterios analizados</h3>
+        <span class="instr-chip">Proceso</span>
+        <span class="instr-chip">Medios</span>
+        <span class="instr-chip">Fin (Ends)</span>
+        <span class="instr-chip teal">Presencia Física</span>
+        <span class="instr-chip amber">Dificultad Extrema</span>
+      </div>
+      <div class="instr-section">
+        <h3>Instrucciones generales</h3>
+        <ul>
+          <li>Consulta la declaración del lado izquierdo tantas veces como sea necesario antes de responder.</li>
+          <li>En el Ejercicio 2 – Parte 1 (drag &amp; drop), arrastra las respuestas al recuadro correspondiente. Puedes retirar chips haciendo clic sobre ellos.</li>
+          <li>Usa el botón "Verificar" para obtener retroalimentación inmediata en cada sección.</li>
+          <li>En la sección de preguntas de seguimiento, anota las preguntas que discutirías con el grupo o con el cliente.</li>
+          <li>Al finalizar, recibirás un resumen de tu desempeño.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="nav-zone" style="border-top:1px solid var(--border);">
+      <button class="btn btn-ghost" onclick="goScreen('screen-name')">‹ Regresar</button>
+      <button class="btn btn-primary" onclick="goMain()">Comenzar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: MAIN (TABS) ============ -->
+<div class="screen" id="screen-main">
+  <div class="app-header">
+    <div class="label">Simulador · Visa T</div>
+    <h1 id="main-title">Caso de Elegibilidad</h1>
+    <p class="subtitle" id="main-subtitle">Esquema Ends · Means · Process — Domingo Perez Lopez</p>
+    <span class="user-badge" id="main-user-badge"></span>
+    <button class="pdf-report-btn" onclick="openPdfModal()">📄 Reporte PDF</button>
+  </div>
+  <div class="progress-strip">
+    <span class="prog-label" id="prog-label-txt">Pregunta 1 / 5</span>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <span class="prog-chip" id="prog-chip">PROCESO</span>
+  </div>
+  <div class="card-body">
+    <div class="tabs-bar">
+      <button class="tab-btn active" id="tabbtn-ex1" onclick="switchTab('tab-ex1',this)">📄 Ejercicio 1 – Fragmentos</button>
+      <button class="tab-btn" id="tabbtn-ex2" onclick="switchTab('tab-ex2',this)">📋 Ejercicio 2 – Hoja EMP</button>
+    </div>
+
+    <!-- ===== BOOK LAYOUT: declaración fija (izq) + contenido de ejercicios (der) ===== -->
+    <div class="book-layout">
+      <div class="page-left"><div class="page-left-inner" id="left-panel"></div></div>
+
+      <div class="page-right">
+        <!-- ===== TAB EX1 ===== -->
+        <div class="tab-content active" id="tab-ex1">
+          <div id="ex1-content"></div>
+          <div class="nav-zone">
+            <button class="btn btn-ghost" id="ex1-prev" onclick="ex1Prev()">‹ Anterior</button>
+            <button class="btn btn-primary" id="ex1-next" onclick="ex1Next()">Siguiente ›</button>
+          </div>
+        </div>
+
+        <!-- ===== TAB EX2 ===== -->
+        <div class="tab-content" id="tab-ex2">
+          <div class="ex2-subtabs">
+            <button class="btn btn-ghost" id="ex2-sub-ends" onclick="showEx2('ends')" style="font-size:.8rem;padding:.45rem 1rem;">Ends</button>
+            <button class="btn btn-ghost" id="ex2-sub-means" onclick="showEx2('means')" style="font-size:.8rem;padding:.45rem 1rem;">Means</button>
+            <button class="btn btn-ghost" id="ex2-sub-process" onclick="showEx2('process')" style="font-size:.8rem;padding:.45rem 1rem;">Process</button>
+            <button class="btn btn-ghost" id="ex2-sub-cast" onclick="showEx2('cast')" style="font-size:.8rem;padding:.45rem 1rem;">Cast &amp; Legal Theory</button>
+            <button class="btn btn-ghost" id="ex2-sub-followup" onclick="showEx2('followup')" style="font-size:.8rem;padding:.45rem 1rem;">Follow-up Questions</button>
+          </div>
+          <div id="ex2-panel"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: RESULTS ============ -->
+<div class="screen" id="screen-results">
+  <div class="app-header">
+    <div class="label">Resultado Final</div>
+    <h1>Simulador Visa T — Domingo Perez Lopez</h1>
+    <p class="subtitle">Análisis de elegibilidad bajo esquema EMP</p>
+    <span class="user-badge" id="result-user-badge"></span>
+    <button class="pdf-report-btn" onclick="openPdfModal()">📄 Reporte PDF</button>
+  </div>
+  <div class="card-body">
+    <div class="result-zone" id="result-content"></div>
+  </div>
+</div>
+
+<!-- ============ MODAL: CONTRASEÑA PARA REPORTE PDF ============ -->
+<div id="pdf-pwd-modal" class="no-print">
+  <div class="pdf-modal-card">
+    <div class="icon">🔒</div>
+    <h4>Generar Reporte PDF</h4>
+    <p>Ingresa la contraseña para generar el reporte con todas las respuestas registradas.</p>
+    <input id="pdf-pwd-input" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkPdfPwd()">
+    <div id="pdf-pwd-error" class="pdf-modal-error">❌ Contraseña incorrecta.</div>
+    <div class="pdf-modal-actions">
+      <button class="pdf-modal-cancel" onclick="closePdfModal()">Cancelar</button>
+      <button class="pdf-modal-confirm" onclick="checkPdfPwd()">Generar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CONTENEDOR OCULTO: REPORTE IMPRIMIBLE ============ -->
+<div id="pdf-report"></div>
+
+</div>
+<script>
+// =====================================================================
+// SCORM 1.2 — PERSISTENCIA PARA MOODLE / LMS
+// =====================================================================
+const SCORM = (function(){
+  let API = null;
+  function findAPI(win){
+    let tries = 0;
+    while(win.API == null && win.parent != null && win.parent != win){
+      tries++;
+      if(tries > 7) return null;
+      win = win.parent;
+    }
+    return win.API || null;
+  }
+  function init(){
+    API = findAPI(window);
+    if(!API && window.opener) API = findAPI(window.opener);
+    if(API){ try{ API.LMSInitialize(''); }catch(e){} }
+  }
+  function save(data){
+    if(!API) return;
+    try{
+      const str = JSON.stringify(data);
+      API.LMSSetValue('cmi.suspend_data', str);
+      API.LMSSetValue('cmi.core.lesson_status','incomplete');
+      API.LMSCommit('');
+    }catch(e){}
+  }
+  function load(){
+    if(!API) return null;
+    try{
+      const raw = API.LMSGetValue('cmi.suspend_data');
+      if(raw && raw.length > 0) return JSON.parse(raw);
+    }catch(e){}
+    return null;
+  }
+  function finish(score){
+    if(!API) return;
+    try{
+      API.LMSSetValue('cmi.core.score.raw', String(score));
+      API.LMSSetValue('cmi.core.score.min','0');
+      API.LMSSetValue('cmi.core.score.max','100');
+      API.LMSSetValue('cmi.core.lesson_status', score>=70 ? 'passed' : 'failed');
+      API.LMSCommit('');
+    }catch(e){}
+  }
+  function quit(){
+    if(!API) return;
+    try{ API.LMSCommit(''); API.LMSFinish(''); }catch(e){}
+  }
+  init();
+  window.addEventListener('beforeunload', quit);
+  return {save, load, finish, quit};
+})();
+
+// =====================================================================
+// DECLARACIÓN JURADA — DOMINGO PEREZ LOPEZ
+// =====================================================================
+const DECL = `<strong>Antecedentes y Contexto Personal</strong>
+Mi nombre es Domingo Perez Lopez. Nací el 11 de diciembre de 1984 en Santa Rosa, San Blas Atempa, Oaxaca, México. Así como está escrito aquí es como aparece en mi acta de nacimiento, pero a veces en los papeles ponen mi nombre diferente. Algunas veces sale como Domingo Perez-Lopez, o de alguna otra manera. Eso pasa porque en México y en Estados Unidos escriben los nombres distinto o porque alguien se equivocó al escribir. Pero todos esos nombres soy yo.
+
+Crecí en una región indígena y mi lengua materna es el zapoteco. Allá casi no hay recursos y fue muy difícil sobrevivir. Viví con mis padres y mis cinco hermanos, yo era el segundo más grande, pero por tantas dificultades que teníamos se murieron dos de mis hermanos. Mi madre era una mujer muy amable, me apoyaba y cuidaba mucho, y aunque mi padre era muy serio, también era buena persona. Sin embargo, éramos muy pobres y no nos alcanzaba ni para zapatos. Por eso la escuela fue pesada para mí, el recreo duraba 1 hora y yo tenía que salir para ir con mi mamá a vender tortillas y luego regresar a clases.
+
+Además de la pobreza, había mucha inseguridad en donde vivíamos. Recuerdo que cuando cumplí los 10 años llegaban hombres que querían secuestrarme para que mi papá les diera dinero. Yo sentía mucho miedo, más porque le decían a mi mamá que si no les daban dinero nos llevarían a mis hermanos y a mí para vender nuestros órganos. Teníamos que andar escondidos porque pasaban en sus carros y mi mamá juntaba dinero para dárselos, aunque aun así cuando llegaban nos quitaban todo lo que teníamos. Logré terminar la primaria, pero como apenas nos alcanzaba para comer ya no pude seguir estudiando y desde los 12 años empecé a trabajar en el campo junto con mis padres. Luego a los 15 aprendí a pintar carros y a eso me dediqué.
+
+A los 16 años me fui a la Ciudad de México a trabajar con un amigo que también se dedicaba a los carros, pero sólo estuve 6 meses. Después me fui a Cuernavaca, donde viví casi 6 años y ahí conocí a una mujer estadounidense, fuimos novios y me trajo a los Estados Unidos cuando cumplí los 21 años. Aquí en el país, trabajaba en una Chevrolet. Sin embargo, en el 2011 me mandaron a migración por una infracción que me dieron al manejar un auto al que le faltaba una luz y tuve que salir del país. Llegué a Tamaulipas, sin embargo, quise regresarme a los Estados Unidos porque tenía mi departamento, mi dinero y prácticamente todo lo que había logrado adquirir en este país.
+
+<strong>Reclutamiento y Albergue</strong>
+Cuando salí de los Estados Unidos, llegué a Tamaulipas y busqué un teléfono público para pedir ayuda. Antes de llamar, se me acercó un muchacho de 25 años, me preguntó si planeaba ir a los Estados Unidos, y yo le dije que sí. Él me dijo, "Si quieres cruzar, te cruzo barato, no vas a tardar mucho y el viaje es seguro, conmigo no te van a agarrar. Yo te voy a cuidar. De Tamaulipas a Roseville son 800 dólares y de Roseville a Houston 2,500 dólares" Yo pensé que lo mejor era regresar porque no tenía nada más, mis cosas estaban en Atlanta, y quedarme en Tamaulipas significaba vivir en la calle. Acepté y dijo que lo esperara ahí hasta que saliera de su trabajo. Cuando llegó, me subió a un carro junto con otra persona que también iba a los Estados Unidos. Nos llevó a una casa de lámina donde había alrededor de unas 30 personas esperando viajar también. En la casa había drogas y armas. Cuando el muchacho nos metió a la casa dijo, "Traigo dos chivos". Otra persona se acercó a vernos y dijo, "Ustedes son fáciles de cruzar y en 30 minutos los cruzo", ahí me cobraron 700 dólares porque era todo lo que yo traía. Nos dijeron que teníamos que pagar el resto llegando a Houston, no nos dieron nada de comer ese día y a las 8 nos llevaron al muchacho y a mí hasta el río.
+
+Al llegar, nos dijo que nos quitáramos la ropa para cruzar el río nadando. No estaba seguro de cruzar el río por miedo a que nos arrastrara la corriente, pero él nos dijo, "Si vuelven para atrás, les voy a disparar". Como este hombre traía pistola, supe que no había más opción que seguir. Luego de pasar el río, avanzamos como por 20 minutos y encontramos a otro señor. Nos llevó a una casa que era como un rancho de ladrillo y dijo que ahí nos quedaríamos para luego ir a Houston. Llegamos como a las 9 pm. Dentro había 15 personas, y se veían muy intimidadas. Estábamos en un cuarto con todas esas personas, y hasta las 5 am nos sacaron. Nos llevaron en una camioneta amontonados como por una hora y media cuando a mitad de camino se descompuso la camioneta. Nos bajaron y nos hicieron escondernos entre los montes. Los hombres que nos llevaban traían tres mochilas y nos obligaron a cargarlas para caminar, y no me negué porque estos hombres traían armas y sentí que me dispararían si no los obedecía. Estos hombres me empujaban, me pateaban y tocaban las costillas con el arma para que no dejáramos de caminar. Luego de tres días caminando, nos recogieron en una camioneta. En el camino una patrulla intentó detenerlos, pero estos hombres aceleraron y algunas personas salieron volando de la cabina. Cuando perdieron a los policías, nos hicieron bajar para escondernos de los agentes de migración en unos matorrales. Al siguiente día llegó otra camioneta como a la 1 am y nos llevó a Houston.
+
+Ya en Houston, nos dejaron en una casa que era como un rancho. Era un monte y no había más casas alrededor. En ese ranchito había trabajadores porque eran como 10 hectáreas. Había muchos pinos y tenían cocodrilos, tlacuaches y venados. Nos metieron a la casa, nos encerraron en un cuarto y aunque había más gente cada día, sacaban a los que pagaban. Por dentro la casa estaba limpia, había gente que cocinaba y tenían vigilantes. Nos metieron a un cuarto con baño que sólo se abría por fuera. Solo podíamos tomar agua de un garrafón de agua que había en el cuarto. Había unas personas que tenían apuntado nuestro nombre, cuánto debías y preguntaban cómo ibas a pagar. Mi plan era llamarle a un amigo que tenía dinero mío guardado, pero él no contestó. Los hombres sacaron la pistola, me apuntaron y me dijeron, "Si descubrimos que estás mintiendo aquí están los cocodrilos, te haremos pedacitos para que te coman." Yo sentí mucho miedo, pero aunque marqué otra vez tres veces, mi amigo no contestó. Mientras tanto, escuchaba que entre ellos discutían qué hacer conmigo. Luego de tres días con estos hombres, me dieron de comer sólo las sobras de la comida. Yo me sentía muy mal porque veía cómo la gente entraba y salía, pero a mí no me dejaban ir porque mi amigo no contestaba, sentía que me matarían o me aventarían a los cocodrilos si no pagaba; no podía ni dormir de tanto miedo. Para la segunda semana mi amigo seguía sin contestar, así que les pedí que me dejaran llamar a mi hermana. Le conté mi situación y ella me dijo que pagaría, sin embargo luego de que hizo el depósito, estos hombres dijeron que no había nada en su cuenta. Mi hermana decía que tenía el comprobante, pero en eso la llamada se cortó. Así que me amenazaron diciendo, "Si no llega de aquí a mañana, tenemos que regresarte al desierto y ya sabes cómo es eso".
+
+<strong>Servidumbre involuntaria</strong>
+Al siguiente día llegaron y me dijeron que no recibieron ningún dinero. Tenía mucho miedo porque me habían amenazado con lanzarme a los cocodrilos. Yo les rogué que me dejaran trabajar para pagarles, les dije que sabía reparar carros y que podía arreglar los suyos, pero me dijeron que no y sólo se fueron. Así me tuvieron encerrado unos días más, y yo tenía mucho miedo de lo que fueran a hacerme. Un día, casi empezando la tercera semana, llegaron a mi cuarto como a las 6 am. Me sacaron como a un patio y me dijeron que mientras esperaban a que llegara el nuevo pago, yo iba a tener que trabajar para tener derecho a comer. Me dijeron, "Te vas a poner a limpiar a los animales y desde aquí te vamos a estar viendo, si decides escapar, te vamos a dar un balazo en el pie." En ese momento sentí miedo y sólo agaché la cabeza, pensaba que si me movía o si no hacía lo que me ordenaban me podían disparar. Tuve que limpiar y alimentar a los animales que tenían. Toda esa semana seguí haciendo eso, pero cuando llovía el olor de la suciedad era mucho más fuerte y no podía ni respirar. Luego de eso, me ordenaban agarrar a uno de los caballos para bañarlo. Me costaba mucho trabajo, me caía muchas veces y los hombres me humillaban. Después me volvían a encerrar en el cuarto. Pero como todos los hombres de esa casa tenían armas y me vigilaban, sentía que mi única opción era hacer lo que me ordenaran para evitar que cumplieran sus amenazas y me lastimaran.
+
+La primera semana hice esas mismas actividades, limpiar a los animales, alimentarlos y bañar al caballo que me tocaba, pero al acabar todo me daba un dolor de cabeza muy fuerte por la falta de comida, y sentía mucho mareo y asco por la suciedad de los animales. Luego también me pusieron a limpiar el agua de los cocodrilos y a alimentarlos. Diario me sacaban a las 6 am y me regresaban como a las 11 am y me dejaban encerrado hasta el siguiente día. Cuando salía del cuarto me encontraba con una mujer hondureña con la que había caminado en el desierto, ella me contó que también estaba retenida porque sus familiares no contestaban y por eso la obligaban a cocinar, pero me dijo que a ella y otras mujeres las tenían encerradas, que las violaban y que ellos dormían con ellas en la noche. Ella escondía un poco de comida y me la daba. Pero en las noches, yo no lograba dormir más de 3 horas porque me mantenía alerta, además del calor tan fuerte, así que al otro día despertaba muy cansado, y cuando ellos llegaban yo ya estaba despierto, abrían la puerta y los seguía. Sentía que si no lo hacía me podrían disparar o hacerme daño de alguna otra manera.
+
+A la segunda semana, como terminé más rápido mis actividades, me llevaron a otro lugar en una camioneta junto con otro muchacho que yo había visto que trabajaba con ellos, pero que iba golpeado. Nos cubrieron la cabeza y antes de bajar de la camioneta nos amarraron de los pies para que no pudiéramos escapar. Al bajar, estábamos en otro rancho, dejaron a otra persona para que nos vigilara y le dijeron, "Si ves que quieren escapar, mételes un tiro a los hijos de su puta madre". Ese otro rancho era un terreno vacío con vacas y caballos. Nos pusieron a limpiar la cerca, nos dieron un machete y un palo para quitar la hierba y para eso teníamos que agacharnos. Ahí nos tenían vigilados para que no nos escapáramos, por eso nos tenían amarrados de los pies. El que nos vigilaba estaba armado y traía un radio con el que reportaba las cosas. Llevaba una pistola en el pantalón y un arma larga en las manos. Me señalaba con el arma los lugares donde quería que hiciera algo, me picaba las manos con el cañón del arma para obligarme a trabajar, y yo todo el tiempo sentía miedo. El primer día estuvimos de las 10 am hasta las 6 pm trabajando, no acabamos porque era mucho terreno. No nos dieron ni agua ni comida en todo el día, sin embargo tenía que hacer lo que me ordenaban porque sabía que con cualquier movimiento en falso me dispararían.
+
+De los tres meses que me tuvieron trabajando para ellos, dos meses con dos semanas la rutina fue igual de pesada: pasaban por mí a las 6 am, me obligaban a limpiar el lugar de los animales mientras otros hombres me vigilaban, porque rotaban, aunque todos traían el arma en la mano. A las 9 me daban un desayuno y me llevaban junto con el otro muchacho a limpiar el otro rancho y a veces nos recogían hasta las 8 de la noche. De tanto esfuerzo a veces me sangraba la nariz, pero no podía detenerme. Algunas mañanas eran mucho más pesadas porque tenía que cargar las pacas de alimento. Cuando llegaba la carga tenía que bajarla de la camioneta, cada costal pesaba unos 25 kg, y me echaban dos o tres costales a la vez para acomodarlos. Yo me mareaba y me daban náuseas, también sentía dolor de cabeza, espalda y no aguantaba los pies, pero aun así tenía que hacerlo por miedo a lo que me fueran a hacer si los desobedecía. Luego tenía que limpiar y alimentar a los animales, y otra vez me llevaban al otro rancho a limpiar hierba. Me regresaban hasta las 7 u 8 pm, me encerraban en el cuarto y me daban las sobras de la comida. Aunque estaba tan agotado me costaba dormir porque conforme pasaban las semanas me consumía la preocupación de cuánto tiempo estaría ahí o si algún día me dejarían salir.
+
+También me obligaban a cambiarle el agua a los cocodrilos. Una vez, uno de los hombres me pateó y me caí en el agua de los cocodrilos. Me sentí muy asustado porque el cocodrilo siempre se movía cuando caía su comida al agua, pero alcancé a salir como pude. Luego todo mojado y humillado tuve que acabar de limpiar el estanque. Yo tenía que apurarme a acabar todas las actividades de la mañana en 3 horas porque después tenía que ir a limpiar al otro rancho y no podía dejar algo incompleto, porque me habían amenazado con matarme o aventarme a los cocodrilos si no hacía las actividades.
+
+<strong>Final del Esquema de Trata</strong>
+En el último mes que estuve ahí, los hombres me dijeron: "Si logras montar al caballo bravo, te puedes ir". Lo intenté, porque sabía que si no lo hacía me podrían hacer algo, pero el caballo no se dejó y me dio una patada en la rodilla derecha. No pude pararme porque el dolor era insoportable, tuve que arrastrarme para llegar a la casa. La hondureña me ayudó a entrar al cuarto y ahí comí un poco porque de tanto dolor no podía ni respirar bien. Los hombres me dejaron una semana sin llevarme al otro rancho, pero luego de ese tiempo me dijeron que tenía que seguir trabajando porque no había acabado de pagar. Yo ni sabía cuánto debía, pero como él dijo eso, sentí esperanza de salir si terminaba de pagar mi deuda, así que me levanté como pude y salí del cuarto. Me llevaron al rancho y llegando, el señor que nos vigilaba me dio otra playera porque la mía estaba llena de sangre. Me puse a quitar la hierba como pude, pero no soportaba el dolor y como estaba amarrado al otro muchacho era muy difícil trabajar. Nos recogieron en la noche, y yo no soportaba el dolor. Nos metieron al cuarto y alcancé a escuchar al señor del otro rancho que les decía, "Su pierna no está bien, se está pudriendo y se va a morir aquí". Luego oí que hablaron entre ellos y fueron conmigo para ver mi rodilla. Al verla uno de ellos dijo, "Llévatelo al centro de Houston y tíralo", luego me dijo, "Cuando te tiren, entra al hospital". Me levantaron entre dos porque yo ya no tenía fuerzas y no me taparon la cara esa vez porque ya andaba yo muy mal, sólo me dijeron, "No digas dónde estabas y si preguntan qué pasó, di que te pasó en la calle y no digas de dónde saliste". Todo el camino me repetían que no podía decir nada porque si no me iban a meter un tiro, yo sólo decía que sí una y otra vez, pero el dolor sólo aumentaba. Nos hicimos como una hora y me tiraron afuera de un hospital. Me arrastré a la entrada de la clínica, toqué la puerta y, cuando me vieron, comenzaron a venir personas a ayudarme, me dieron una silla de ruedas y me atendieron.
+
+<strong>Cooperación con las Autoridades</strong>
+Yo no había reportado nada ante las autoridades antes debido al miedo que le tenía a esa gente y también por el miedo que tenía a ser deportado ya que debido al dinero que mi hermano tuvo que pedir para que me liberaran, él estaba en riesgo de muerte y por eso me urgía llegar a Atlanta donde tenía mis ahorros. Lamentablemente no logré mandar el dinero a tiempo y mataron a mi hermano, todo junto me pesó mucho y yo nunca logré volver a confiar en la gente y por lo mismo tardé todo este tiempo en agarrar valor para iniciar este proceso legal. Pero sí sé que esa gente que me tuvo trabajando para ellos es gente muy peligrosa, por lo que estoy dispuesto a seguir cooperando con las autoridades tales como [Departamento de ….] con cualquier información respecto a mi caso.
+
+<strong>Presencia Física en los Estados Unidos a Raíz de la Trata</strong>
+A pesar del dolor cuando entré al hospital me sentí con libertad, sin embargo tenía mucho miedo y dije lo que me habían ordenado, que me había caído. Me limpiaron la herida, me dieron antibiótico, me quedé un día y al otro me dijeron que ya podía irme. Al salir de la clínica yo no tenía absolutamente nada ni a nadie así que tuve que quedarme en la calle, dormía en los botes de basura, y ni siquiera podía intentar trabajar porque tenía mal mi pierna. Buscaba comida en la calle o ya que no aguantaba después de días sin comer, me metía a tiendas mexicanas y agarraba cosas sin pagar. Mi rodilla mejoró un poco después de 3 semanas así que intenté ganarme la vida. Buscaba parqueaderos o carwash para ayudar con lo que se pudiera y me daban un poco de dinero, pero eso sólo me ayudaba a comprar un poco de comida. Seguí un tiempo en la calle, solo, y con mi pierna débil, así que tampoco podía trabajar mucho. Un día estaba en la gasolinera cuando se me acercó un pastor y me ofreció trabajo, me dijo que me daría 300 dólares a la semana. Él me dio comida y me escuchó cuando le compartí mi experiencia, me llevó a un asilo para vivir, me regaló ropa, toallas y me dio otros 300 dólares. Luego empezó a llevarme a su iglesia, primero también para trabajo de limpieza y luego para acercarme a Dios. Dejábamos listo para el domingo y luego en la misa yo intentaba pensar que mi pierna se iba recuperando. Sentí como si la gente de ahí fuera una familia y el pastor contaba mi historia y oraba por mi recuperación, yo sentí que Dios me mandó un ángel después de todo lo que viví porque él me cuidaba, me daba comida y jugos para recuperar mi fuerza porque yo andaba muy débil y flaco. Antes pesaba 156 libras, pero cuando me tiraron en la clínica ya pesaba 125 libras. Tardé un año en recuperar mi peso. Trabajé con el pastor 4 meses. Aunque me sentía bien con el pastor y cuidado por la gente de la iglesia yo necesitaba regresar a Atlanta porque allá tenía todo, mi departamento, mi herramienta para trabajar y sobre todo mis ahorros; tenía 20,000 dólares y necesitaba acceder a ese dinero lo más pronto posible porque mi hermano había pedido dinero prestado con gente peligrosa. Mi hermano estaba amenazado de muerte y por lo mismo mi única opción era quedarme en los Estados Unidos para lograr agarrar mis ahorros o aunque sea ponerme a trabajar duro para enviar dinero lo más pronto posible.
+
+En Houston casi no había trabajo y no podía lograr juntar dinero, pero también estar ahí me hacía sentir muy mal. Cuando llegué a Atlanta yo sentía coraje con el amigo que no me contestó. Perdí el departamento por no haber pagado la renta todo ese tiempo. Necesitaba un trabajo para ganar dinero y depositarlo y poder tener acceso a mi cuenta. Estaba casi a días de mandar el dinero a México cuando el hombre que le prestó el dinero a mi hermano lo mató. Él creyó que no le íbamos a pagar y desde entonces cargo con la muerte mi hermano en la consciencia. Mi mamá nunca volvió a ser igual, el dolor fue demasiado, sé que intenta perdonarme, pero ni yo puedo perdonarme del todo. Lo que me ayudó fue que un amigo me dejó quedarme con él 2 meses y él fue quien me ayudó. Al inicio no podía ponerme de rodillas, pero poco a poco lo fui logrando, sólo que siento que tengo una vena cruzada y me arde si me pongo de rodillas porque siento que aplasto la vena. En general quedé mal de mi cuerpo porque si estoy parado mucho tiempo me duele el tobillo de esa misma pierna, y si me siento me arde la espalda, como si me dieran de golpes, así que me sofoco por el dolor. El ardor me dura unos minutos y luego ya se me pasa, pero si me agacho, empiezo a agitarme porque me da un calambre en la espalda y a veces es tan fuerte que me tengo que detener del todo para respirar bien. De cualquier modo me las he arreglado para seguir trabajando reparando autos porque es a lo que siempre me he dedicado y muchas cosas las puedo hacer sentado para no lastimarme más. Hago varias pausas, pero hay veces que no puedo detenerme tanto porque necesito acabar y aunque el dolor es muy fuerte a veces sólo tomo Tylenol porque no he ido al doctor. No fui al inicio por falta de dinero, pero después porque no me quería tomar un tiempo, quería solo estar trabajando para mantener mi mente ocupada y no pensar en tantos malos recuerdos y la culpa de la muerte de mi hermano. Tardé unos 3 años en recuperarme un poco y acoplarme a estas limitaciones. No es siempre, pero desde que pasó lo del caballo a veces me siento y me da un calambre en la espalda que me hace pararme de inmediato, es a la vez como un ardor que me da en la carne de la espalda. Pero aquí en el país he podido enfocarme en mi trabajo para mejorar mi vida y eso me ha ayudado a recuperarme.
+
+Todo lo que viví con estos hombres me hizo ser una persona muy solitaria. Todo lo que pasé me hizo perder la confianza en la gente y ya no puedo relacionarme. El amigo que nunca me contestó me buscó después y dijo que no sabía lo que yo estaba pasando, que no contestó porque no tenía mi dinero porque lo había usado para pagar su renta. Yo lo perdoné, pero ya no soporto estar con personas, siento que se me sube la presión y siento mucho calor en mi cuerpo. Yo sólo me siento bien estando solo, no soporto ni a hombres ni a mujeres. Ahora tengo novia y me entiende, sabe que no puedo verla a los ojos ni estar con ella mucho tiempo así que sólo nos llamamos y nos vemos el domingo. Porque cuando alguien está cerca de mí me siento encerrado y en peligro así que sólo me siento seguro estando solo. Pienso que si no me hubiera pasado eso mi cuerpo lo tendría sano y podría tener amigos como antes. Tampoco logro estar mucho en mi casa, sólo como 2 horas seguidas porque me siento encerrado y me acelero, tengo que salirme, agarro el carro o camino unas 3 millas para tranquilizarme. En las mañanas no aguanto tanto, máximo hasta las 11 y me desespero, así que mi trabajo también me ayuda. No he tomado terapia porque yo quería recuperarme aunque sea económicamente, y pienso que si hablo de lo que me pasó me voy a poner mal, yo no quiero recordar, sino ocupar mi mente en mi trabajo. Por eso, estar aquí en el país me ayudó a enfocarme en mi trabajo para poder mejorar mi vida.
+
+<strong>Dificultades Extremas ante la deportación a México</strong>
+Yo no puedo regresar a México porque los del Cártel Jalisco Nueva Generación me tienen vigilado a mí y a toda mi familia. Yo quería ayudar a mis padres y hermanos a tener un trabajo porque allá no hay oportunidades, menos para gente de un pueblo indígena como nosotros. Hace como 4 años pusimos dos negocios, un restaurante y una refaccionaria. Pero cuando el cártel se dio cuenta de esto nos empezaron a extorsionar. La primera vez secuestraron a mi hermana y a la manager y dijeron que iban a incendiar el restaurante y matarían a mi hermana si no se les entregaba 200,000 pesos, por lo que tuve que conseguir el dinero. La segunda vez pidieron 100,000 pesos y la tercera vez 85,000. Yo tengo muchísimo miedo de regresar porque la policía no nos ayuda pues están coludidos. Me da miedo que me deporten y que esa gente piense que mis ingresos de aquí son muchos y quizá me matarían.
+
+Yo pienso que en caso de que me deporten por todo el riesgo del cártel lo mejor para mí sería cerrar los negocios, pero eso significaría que no sólo yo no tendría una fuente de ingresos, sino toda mi familia. Me da miedo que me secuestren y me maten, pero en caso de que logre sobrevivir al cártel, pienso que no lograría sobrevivir allá porque no hay trabajo y mucho menos para gente de un pueblo indígena como nosotros. La gente suele rechazarnos y por eso yo quise generar trabajo para nosotros. Así que si cierro los negocios mucha de mi familia se quedaría sin trabajo. Entonces no habría manera de que ellos me apoyaran a mí y todos andaríamos en pobreza extrema, mis padres ya están muy viejos, mis sobrinos tal vez se quedarían sin escuela, y yo siento que no lograría agarrar un trabajo también por todo lo de mi espalda y pierna. Aquí me acomodo y sé que puedo trabajar, pero allá en México casi todos los trabajos para gente sin estudios como yo son muy físicos y no aguantaría.
+
+Tampoco puedo regresar a México por mi salud. Yo agradezco que aquí me hayan tratado mi herida en la rodilla con antibiótico porque ya estaba infectada, pero en México todo es remedio casero. En caso de que con la edad mi rodilla empeorara, yo sé que aquí sí tengo la oportunidad de atenderme, de aunque sea tener acceso a la atención médica, pero allá no creo. Y como me quedaría sin dinero no podría costear la medicina ni para el dolor. Por otro lado no creo lograr enfrentar el ir a mi pueblo y ver la tumba de mi hermano muerto, la culpa me pesa mucho aquí, pero allá no creo lograrlo. Me pesaría mucho eso, ver a mi mamá, saber que perdí todo, y ver a la gente del cártel con sus armas me recordaría todo lo que viví con esos hombres porque ellos eran así, violentos, amenazando de muerte, con pistolas y siento que me voy a poner muy mal.
+
+No puedo regresar a México. Si regresara a México, no tendría la protección y el apoyo que tengo en los Estados Unidos. Solicito que los Estados Unidos de América me permita permanecer aquí y reconstruir mi vida.
+
+Declaro, bajo pena de perjurio, que lo anterior es verdadero y correcto según mi conocimiento, habilidad y capacidad. Firmado el día 18 de junio de 2025, en Marietta, Georgia.`;
+
+function renderLeft(){
+  document.getElementById('left-panel').innerHTML = `
+    <div class="decl-box">
+      <div class="decl-sticky-tag">
+        <h3>Declaración jurada</h3>
+        <div class="decl-subtitle">Domingo Perez Lopez &middot; Elegibilidad Visa T</div>
+      </div>
+      <div class="texto-decl">${DECL}</div>
+    </div>`;
+}
+
+// =====================================================================
+// ESTADO
+// =====================================================================
+let userName = '';
+let ex1Mod = 0;
+let ex1Answers = [];
+let dragState = {};
+let dndVerified = {};
+
+// =====================================================================
+// DATA EJERCICIO 1 — 5 módulos EMP x 3 preguntas
+// =====================================================================
+const MODULES = [
+  {
+    criterion:"PROCESO",tag:"Reclutamiento · Traslado · Acogida",
+    title:"El reclutamiento del 'coyote' y el traslado forzado hacia Houston",
+    quote:`"Si quieres cruzar, te cruzo barato, no vas a tardar mucho y el viaje es seguro, conmigo no te van a agarrar... Si vuelven para atrás, les voy a disparar."`,
+    sectionRef:"Reclutamiento y Albergue",
+    questions:[
+      {type:"multiple",text:"Cuando el joven de 25 años se acerca a Domingo en Tamaulipas y le ofrece un cruce 'barato', 'rápido' y 'seguro', ¿qué etapa del esquema EMP se está configurando?",
+        options:[
+          "Únicamente el traslado físico hacia Houston, ya que lo relevante es el desplazamiento entre países.",
+          "El reclutamiento mediante engaño sobre las condiciones reales del cruce (costo, tiempo y seguridad), aprovechando la vulnerabilidad económica de Domingo tras haber sido deportado.",
+          "La servidumbre involuntaria, porque desde ese momento Domingo ya estaba obligado a trabajar para pagar la deuda."
+        ],
+        correct:1,
+        ok:"Correcto. El fragmento describe la etapa de reclutamiento: el coyote utilizó promesas falsas sobre un cruce rápido, barato y sin riesgos para captar a Domingo, quien se encontraba en una situación de vulnerabilidad extrema (recién deportado, sin dinero, sin lugar donde quedarse). Ese engaño inicial sobre las condiciones del viaje es precisamente el mecanismo de captación que exige el criterio de reclutamiento bajo el esquema EMP para Visa T.",
+        fail:"Incorrecto. Todavía no hay traslado físico ni servidumbre involuntaria en este fragmento; lo que se describe es el momento de captación. El coyote engañó a Domingo sobre la seguridad, el costo y la duración del cruce, aprovechando que él no tenía otra alternativa. Reconocer correctamente esta etapa de reclutamiento es clave, porque documenta que Domingo nunca consintió las condiciones reales bajo las cuales terminaría viviendo."},
+      {type:"truefalse",text:"El hecho de que Domingo aceptara ir con el coyote porque no tenía otra opción (quedarse en la calle en Tamaulipas) elimina el elemento de 'reclutamiento por engaño' necesario para Visa T.",
+        options:[
+          "Verdadero, porque si la víctima acepta voluntariamente ir con el reclutador, ya no puede hablarse de engaño ni de trata.",
+          "Falso, porque la vulnerabilidad económica y la falta de alternativas no eliminan el reclutamiento engañoso; al contrario, es precisamente lo que el tratante explotó para captarlo."
+        ],
+        correct:1,
+        ok:"Correcto: Falso. El TVPA reconoce que los tratantes buscan deliberadamente personas en situación de vulnerabilidad —sin dinero, sin redes de apoyo, recién deportadas— porque son más fáciles de engañar y controlar. Que Domingo aceptara por no tener otra opción no anula el reclutamiento engañoso; de hecho, es un elemento que refuerza el análisis, ya que demuestra que el coyote explotó intencionalmente su vulnerabilidad para conseguir su cooperación inicial.",
+        fail:"Incorrecto. Es Falso. La falta de alternativas de Domingo no elimina el engaño del reclutador; por el contrario, es un factor que los tratantes buscan y explotan activamente. Presentar la vulnerabilidad económica como si invalidara el reclutamiento sería un error legal grave, ya que la explotación de la necesidad es, precisamente, una de las formas más comunes en que opera el reclutamiento fraudulento en casos de trata."},
+      {type:"complete",text:"Para documentar la etapa de reclutamiento y traslado, es clave anotar que los hombres armados obligaron a Domingo y a otros migrantes a caminar por el desierto cargando __________.",
+        options:[
+          "las mochilas de los propios traficantes, bajo amenaza de dispararles si se negaban",
+          "solamente su propio equipaje personal, sin ninguna carga adicional impuesta por los traficantes",
+          "provisiones destinadas a abastecer la casa de acogida en Houston antes de su llegada"
+        ],
+        correct:0,
+        ok:"Correcto. El fragmento es claro: los hombres armados obligaron a Domingo a cargar tres mochilas que pertenecían a los propios traficantes, bajo amenaza de dispararle si no obedecía. Este detalle es importante porque muestra que, desde la etapa de traslado, ya existía control físico y coacción armada, elementos que refuerzan tanto el criterio de reclutamiento/traslado como el de medios coercitivos.",
+        fail:"Incorrecto. La declaración no menciona que Domingo cargara equipaje personal ni provisiones para la casa de Houston; específicamente señala que tuvo que cargar las mochilas de los hombres armados que los transportaban, bajo amenaza de recibir un disparo si se negaba. Este hecho concreto debe documentarse porque demuestra coacción física desde la etapa de traslado."}
+    ]
+  },
+  {
+    criterion:"MEDIOS",tag:"Coerción · Amenazas · Violencia armada",
+    title:"El control mediante armas de fuego, amenazas de muerte y encierro",
+    quote:`"Si descubrimos que estás mintiendo aquí están los cocodrilos, te haremos pedacitos para que te coman."`,
+    sectionRef:"Servidumbre involuntaria",
+    questions:[
+      {type:"multiple",text:"¿Qué combinación de medios de trata se identifica cuando los hombres apuntan a Domingo con una pistola y lo amenazan con lanzarlo a los cocodrilos si no conseguía el dinero?",
+        options:[
+          "Únicamente amenazas relacionadas con su estatus migratorio y el riesgo de deportación.",
+          "Una combinación de amenazas de muerte con arma de fuego, amenazas de mutilación (los cocodrilos), privación de alimento, y encierro en un cuarto que solo se abría por fuera.",
+          "Fraude documental, ya que los traficantes falsificaron papeles migratorios para retenerlo legalmente."
+        ],
+        correct:1,
+        ok:"Correcto. El fragmento muestra múltiples medios coercitivos operando de forma simultánea: amenaza directa con arma de fuego, amenaza explícita de muerte y mutilación (ser arrojado a los cocodrilos), privación sistemática de alimento (solo sobras), y confinamiento físico en un cuarto con baño que solo se abría desde afuera. Esta combinación de fuerza, amenazas graves y confinamiento es exactamente lo que exige el criterio de 'medios' bajo el TVPA para la elegibilidad de Visa T.",
+        fail:"Incorrecto. No hay mención de fraude documental ni de amenazas migratorias en este fragmento. Lo que se documenta es coerción mediante arma de fuego, amenaza de muerte con mutilación específica (los cocodrilos), privación de comida y encierro físico. Identificar correctamente estos medios es esencial, ya que demuestran que Domingo no tenía capacidad real de resistirse ni de escapar."},
+      {type:"truefalse",text:"El hecho de que, en cierto momento, los hombres le ofrecieran a Domingo 'trabajar para tener derecho a comer' en lugar de agredirlo de inmediato significa que la relación dejó de ser coercitiva y se volvió un acuerdo laboral voluntario.",
+        options:[
+          "Verdadero, porque ofrecerle trabajar a cambio de comida convierte la situación en un acuerdo laboral legítimo entre las partes.",
+          "Falso, porque trabajar bajo amenaza constante de recibir un disparo si intentaba escapar, y bajo vigilancia armada permanente, sigue siendo coerción y no consentimiento voluntario."
+        ],
+        correct:1,
+        ok:"Correcto: Falso. La declaración indica expresamente que le dijeron: 'si decides escapar, te vamos a dar un balazo en el pie', y que hombres armados lo vigilaban constantemente durante el trabajo. Que la orden de trabajar viniera acompañada de comida no elimina la coacción; al contrario, la amenaza de violencia armada como condición para 'permitirle' trabajar y comer es en sí misma un medio de control coercitivo bajo el TVPA.",
+        fail:"Incorrecto. Es Falso. Presentar esto como un acuerdo laboral voluntario ignoraría la amenaza explícita de recibir un balazo si intentaba huir y la vigilancia armada constante. La combinación de amenaza de violencia, vigilancia y ausencia de alternativas reales es lo que transforma esta situación en trabajo forzado bajo coacción, no en un empleo legítimo aceptado libremente."},
+      {type:"complete",text:"Un elemento concreto que demuestra que Domingo no tenía capacidad real de negarse a trabajar es que los hombres armados le dijeron que si intentaba escapar, __________.",
+        options:[
+          "le dispararían en el pie",
+          "le descontarían un día de sueldo de la deuda pendiente",
+          "lo regresarían en autobús a la frontera con México"
+        ],
+        correct:0,
+        ok:"Correcto. La declaración cita textualmente la amenaza: 'si decides escapar, te vamos a dar un balazo en el pie'. Esta amenaza directa de violencia física es un elemento central para acreditar el medio de 'amenaza de daño grave' bajo el esquema EMP, ya que elimina cualquier posibilidad de que el trabajo posterior de Domingo pueda interpretarse como voluntario.",
+        fail:"Incorrecto. La declaración no menciona descuentos de sueldo ni traslados en autobús a la frontera; ninguno de esos elementos aparece en el testimonio de Domingo. Lo que sí está documentado textualmente es la amenaza explícita de recibir un disparo en el pie si intentaba escapar, la cual debe citarse con precisión porque es evidencia directa de coacción por amenaza de daño físico grave."}
+    ]
+  },
+  {
+    criterion:"FIN",tag:"Explotación laboral forzada · Servidumbre por deudas",
+    title:"El trabajo forzado como propósito final de la trata",
+    quote:`"Diario me sacaban a las 6 am y me regresaban como a las 11 am... cada costal pesaba unos 25 kg, y me echaban dos o tres costales a la vez."`,
+    sectionRef:"Servidumbre involuntaria",
+    questions:[
+      {type:"multiple",text:"¿Cuál es el 'fin' de la trata que se evidencia en el patrón de trabajo forzado que describe Domingo (limpiar y alimentar animales, bañar caballos, limpiar cocodrilos, cargar costales de 25 kg, desyerbar con machete)?",
+        options:[
+          "El fin era exclusivamente ayudar a cruzar la frontera a otros migrantes, y el trabajo era una forma de retribuir ese servicio.",
+          "La obtención de mano de obra agrícola y de cuidado de animales sin remuneración alguna, impuesta bajo la narrativa de una 'deuda' que los propios traficantes fijaron y nunca documentaron.",
+          "Un empleo legítimo de temporada en un rancho, con salario diferido hasta el final del contrato verbal."
+        ],
+        correct:1,
+        ok:"Correcto. El 'fin' de la trata bajo el esquema EMP es la explotación: los traficantes obtuvieron trabajo agrícola y de cuidado de animales completamente gratuito durante aproximadamente tres meses, bajo la narrativa de una deuda que Domingo nunca supo a cuánto ascendía ni cómo se calculaba. Esta apropiación del trabajo ajeno, sin ningún pago y bajo amenaza constante, es precisamente lo que configura la explotación laboral y la servidumbre por deudas (peonage) como fin de la trata.",
+        fail:"Incorrecto. No existe ningún indicio de que el trabajo fuera una forma de retribuir ayuda migratoria ni de que se tratara de un empleo legítimo con salario diferido. Domingo nunca recibió pago alguno, desconocía el monto de la supuesta deuda, y trabajaba bajo amenaza de violencia armada. El fin real es la explotación económica mediante trabajo forzado no remunerado, disfrazado de 'pago de deuda'."},
+      {type:"truefalse",text:"El hecho de que Domingo nunca supiera cuánto dinero debía realmente a los traficantes refuerza el argumento de servidumbre por deudas (peonage) para efectos de Visa T.",
+        options:[
+          "Verdadero, porque la imposibilidad de conocer o cuestionar el monto de la deuda es un elemento característico del peonage: la víctima trabaja indefinidamente sin poder verificar si 'ya pagó'.",
+          "Falso, porque si no existe un monto exacto documentado, no puede alegarse legalmente que hubiera una deuda ni una servidumbre por deudas."
+        ],
+        correct:0,
+        ok:"Correcto: Verdadero. Una característica central del peonage es precisamente que la víctima no tiene control ni certeza sobre el monto de la deuda que supuestamente debe pagar con su trabajo. En el caso de Domingo, los traficantes nunca especificaron cuánto debía, lo que le impedía saber si algún día terminaría de 'pagar' y reforzaba su sensación de estar atrapado indefinidamente. Esta ambigüedad deliberada es, en sí misma, evidencia de servidumbre por deudas.",
+        fail:"Incorrecto. Es Verdadero. La falta de un monto claro no elimina el argumento de peonage; al contrario, lo fortalece, porque demuestra que la 'deuda' era una herramienta de control arbitraria y no una obligación comercial legítima. Los tratantes usan deliberadamente la ambigüedad del monto para mantener a la víctima trabajando indefinidamente sin posibilidad real de saldar nada."},
+      {type:"complete",text:"Para fortalecer el criterio de 'fin' de explotación laboral, es útil documentar que Domingo trabajaba bajo amenaza constante y sin __________, lo cual elimina cualquier apariencia de relación laboral voluntaria.",
+        options:[
+          "pago alguno, sin alimentación adecuada y sin posibilidad real de negarse a trabajar",
+          "un horario fijo de trabajo previamente acordado por escrito",
+          "un uniforme de trabajo proporcionado por los dueños del rancho"
+        ],
+        correct:0,
+        ok:"Correcto. La ausencia total de pago, la alimentación insuficiente (solo sobras) y la imposibilidad real de negarse a trabajar —bajo amenaza de violencia armada— son los elementos que transforman esta situación en explotación laboral forzada y no en un empleo ordinario. Documentar estos tres elementos en conjunto es esencial para sustentar el criterio de 'fin' en la solicitud de Visa T.",
+        fail:"Incorrecto. El horario y el uniforme son detalles secundarios que no son determinantes para el análisis legal. Lo que realmente sustenta el criterio de explotación laboral forzada es la combinación de ausencia total de pago, alimentación insuficiente y la imposibilidad de negarse a trabajar por miedo a represalias armadas, elementos que sí están documentados en la declaración de Domingo."}
+    ]
+  },
+  {
+    criterion:"PRESENCIA FÍSICA",tag:"Nexo causal · Consecuencias físicas y psicológicas",
+    title:"La presencia en EE.UU. vinculada directamente a la situación de trata",
+    quote:`"No digas dónde estabas y si preguntan qué pasó, di que te pasó en la calle y no digas de dónde saliste."`,
+    sectionRef:"Presencia Física en los Estados Unidos a Raíz de la Trata",
+    questions:[
+      {type:"multiple",text:"¿Por qué es relevante para el criterio de presencia física que los traficantes hayan instruido a Domingo, mientras lo abandonaban frente al hospital, a decir que 'se había caído' y a no revelar de dónde venía?",
+        options:[
+          "No es relevante; se trata simplemente de una mentira personal de Domingo que no tiene relación con el esquema de trata.",
+          "Demuestra que el control y la coacción de los tratantes continuaron incluso en el momento en que Domingo recuperó su libertad física, lo cual explica por qué no denunció de inmediato y refuerza el nexo directo entre la trata y su presencia posterior en EE.UU.",
+          "Muestra que Domingo cooperó voluntariamente con los traficantes para evitar que la policía los investigara."
+        ],
+        correct:1,
+        ok:"Correcto. La instrucción de mentir sobre el origen de sus lesiones, dada bajo amenaza ('si no, te van a meter un tiro'), demuestra que el control coercitivo de los tratantes se extendió más allá del cautiverio físico, condicionando incluso su comportamiento en el hospital. Esto es clave para el criterio de presencia física, porque explica por qué Domingo no reportó su situación de inmediato y establece que su silencio inicial fue resultado directo del miedo inducido por la trata, no una elección independiente.",
+        fail:"Incorrecto. Esto no es una mentira sin relación con el caso ni una muestra de cooperación voluntaria con los traficantes; es evidencia de que el miedo y el control impuesto por los tratantes continuaron después del cautiverio físico, bajo amenaza explícita de recibir un disparo. Este hecho es fundamental para explicar la demora en buscar ayuda y para reforzar el nexo causal entre la trata y la permanencia posterior de Domingo en el país."},
+      {type:"truefalse",text:"El hecho de que Domingo tardara varios años en buscar ayuda legal, debido al miedo hacia los traficantes y a la culpa por la muerte de su hermano, invalida su elegibilidad respecto al criterio de presencia física relacionada con la trata.",
+        options:[
+          "Verdadero, porque Visa T exige que la víctima reporte y solicite ayuda inmediatamente después de escapar de la situación de trata.",
+          "Falso, porque el TVPA no impone un plazo estricto para buscar ayuda, y el miedo fundado, el trauma y las circunstancias personales —como la muerte del hermano— son factores legítimos que explican la demora sin invalidar la elegibilidad."
+        ],
+        correct:1,
+        ok:"Correcto: Falso. No existe un requisito legal de que la víctima reporte de inmediato tras escapar de la trata. El miedo fundado hacia personas que Domingo describe como 'gente muy peligrosa', combinado con el trauma de la muerte de su hermano y la desconfianza generalizada hacia las personas que desarrolló como consecuencia de lo vivido, son factores legítimos y bien documentados que explican por qué tardó en iniciar el proceso legal. Estos elementos deben presentarse como parte del contexto, no como un obstáculo a la elegibilidad.",
+        fail:"Incorrecto. Es Falso. Exigir un reporte inmediato sería una interpretación incorrecta del estándar legal para Visa T. El retraso de Domingo está bien fundamentado en su declaración: miedo a represalias, trauma por la muerte de su hermano, y pérdida de confianza en las personas. Estos factores deben documentarse como parte del contexto humano del caso, no presentarse como una debilidad que comprometa su elegibilidad."},
+      {type:"complete",text:"Las secuelas físicas (dolor crónico de rodilla, tobillo y espalda) y psicológicas (aislamiento social, dificultad para relacionarse, necesidad de caminar largas distancias para calmarse) que describe Domingo funcionan como evidencia __________ del nexo entre la trata sufrida y su presencia continua en los Estados Unidos.",
+        options:[
+          "corroborante y objetiva",
+          "totalmente irrelevante para el análisis legal",
+          "exclusivamente relacionada con su estatus migratorio"
+        ],
+        correct:0,
+        ok:"Correcto. Las secuelas físicas y psicológicas descritas —dolor articular crónico derivado de la patada del caballo y las jornadas de carga pesada, junto con el aislamiento social y la hipervigilancia— constituyen evidencia corroborante y objetiva de la experiencia de trata. Para Visa T, este tipo de evidencia es valioso porque establece una conexión directa y verificable entre lo vivido y el estado actual de Domingo, reforzando el criterio de presencia física ligada a la trata.",
+        fail:"Incorrecto. Estas secuelas no son irrelevantes ni están relacionadas únicamente con el estatus migratorio; son evidencia médica y psicológica objetiva que corrobora la severidad y autenticidad de la experiencia de trata descrita por Domingo, y deben documentarse con el mayor detalle posible, incluyendo, de ser posible, evaluación médica y psicológica profesional."}
+    ]
+  },
+  {
+    criterion:"DIFICULTAD EXTREMA",tag:"Deportación · Cártel · Salud",
+    title:"Las dificultades extremas ante una eventual deportación a México",
+    quote:`"Los del Cártel Jalisco Nueva Generación me tienen vigilado a mí y a toda mi familia... la policía no nos ayuda pues están coludidos."`,
+    sectionRef:"Dificultades Extremas ante la deportación a México",
+    questions:[
+      {type:"multiple",text:"¿Qué elementos concurren en la declaración de Domingo para configurar el estándar de 'dificultad extrema' exigido por Visa T ante una eventual deportación?",
+        options:[
+          "Únicamente la pérdida económica de sus ahorros, ya que ese es el factor central del análisis de dificultad extrema.",
+          "La acumulación de múltiples factores: riesgo de represalias por parte del Cártel Jalisco Nueva Generación (incluyendo extorsiones y un secuestro previo a su hermana), ausencia de protección policial por colusión, incapacidad física para el único tipo de trabajo disponible en su comunidad, falta de acceso a atención médica, y el peso psicológico de confrontar la muerte de su hermano.",
+          "Únicamente su origen de un pueblo indígena, sin relación con ningún otro factor de riesgo."
+        ],
+        correct:1,
+        ok:"Correcto. El estándar de dificultad extrema no se configura con un solo factor aislado, sino con la concurrencia de múltiples agravantes documentados: (1) amenaza concreta y ya materializada del CJNG contra su familia (extorsiones repetidas y secuestro de su hermana); (2) ausencia de protección estatal por colusión policial; (3) limitaciones físicas permanentes (rodilla, tobillo, espalda) que le impedirían realizar el único trabajo disponible —labor física en el campo—; (4) imposibilidad de costear tratamiento médico en México; y (5) el impacto psicológico de regresar al lugar donde está enterrado su hermano. Esta acumulación de factores es lo que supera el umbral de 'extremo'.",
+        fail:"Incorrecto. Reducir el análisis a un solo factor —ya sea económico o étnico— debilita el argumento. El estándar de dificultad extrema exige presentar la concurrencia de todos los factores de riesgo documentados: seguridad (cártel y colusión policial), salud física y mental, y falta de opciones económicas realistas dadas sus limitaciones físicas."},
+      {type:"truefalse",text:"El riesgo de extorsión y violencia por parte del Cártel Jalisco Nueva Generación hacia la familia de Domingo —documentado en al menos tres pagos de extorsión anteriores— es un factor relevante para el análisis de dificultad extrema, aunque las amenazas no se hayan dirigido específicamente a Domingo de forma individual mientras estuvo en EE.UU.",
+        options:[
+          "Verdadero, porque el riesgo objetivo y ya materializado contra la familia (secuestros y extorsiones repetidas) es un indicador creíble del peligro que correría Domingo si regresara, especialmente porque el cártel podría asumir que trae dinero de Estados Unidos.",
+          "Falso, porque si las amenazas nunca fueron dirigidas personalmente a Domingo mientras vivía en EE.UU., no pueden considerarse relevantes para su propio riesgo de dificultad extrema."
+        ],
+        correct:0,
+        ok:"Correcto: Verdadero. El riesgo no depende de que la amenaza haya sido dirigida individualmente a Domingo mientras se encontraba en Estados Unidos; el patrón de extorsión y secuestro ya ejecutado contra su familia y sus negocios establece un riesgo objetivo y verificable. Además, Domingo declara específicamente su temor de que el cártel asuma que trae dinero de Estados Unidos, lo cual incrementaría su exposición personal al regresar. Este tipo de riesgo familiar y comunitario documentado es un elemento central y creíble para el análisis de dificultad extrema.",
+        fail:"Incorrecto. Es Verdadero. Exigir que la amenaza haya sido dirigida individualmente y en tiempo real a Domingo sería un estándar excesivamente restrictivo. El patrón de violencia y extorsión ya documentado contra su familia, sumado a la percepción de que él regresaría con dinero de Estados Unidos, constituye un riesgo objetivo y suficientemente concreto para sustentar el criterio de dificultad extrema."},
+      {type:"complete",text:"Para reforzar el argumento de dificultad extrema, conviene documentar que, además del riesgo del cártel, Domingo no podría sostenerse económicamente en México debido a __________.",
+        options:[
+          "sus limitaciones físicas permanentes en la rodilla, el tobillo y la espalda, que le impiden realizar el trabajo físico pesado que es prácticamente la única opción laboral disponible en su comunidad",
+          "su falta de interés personal en trabajar en el campo, ya que prefiere otro tipo de actividades",
+          "la distancia geográfica entre su pueblo de origen y la Ciudad de México"
+        ],
+        correct:0,
+        ok:"Correcto. La declaración es explícita: Domingo señala que en su comunidad 'casi todos los trabajos para gente sin estudios... son muy físicos' y que, por las secuelas de la patada del caballo y las jornadas de carga forzada, 'no aguantaría' ese tipo de labor. Este vínculo directo entre las secuelas físicas documentadas de la trata y la imposibilidad de generar ingresos en México es un argumento sólido y verificable para el criterio de dificultad extrema.",
+        fail:"Incorrecto. No se trata de falta de interés personal ni de un problema de distancia geográfica; la declaración vincula directamente las lesiones físicas permanentes sufridas durante la trata con la imposibilidad real de realizar el único tipo de trabajo disponible en su comunidad de origen. Este nexo causal —de la trata a la incapacidad económica futura— debe documentarse con precisión."}
+    ]
+  }
+];
+
+function initEx1(){
+  ex1Answers = MODULES.map(m=>m.questions.map(()=>({sel:null,done:false,ok:false})));
+}
+initEx1();
+
+// =====================================================================
+// EJERCICIO 1 — RENDER
+// =====================================================================
+function renderEx1(){
+  const m = MODULES[ex1Mod];
+  const total = MODULES.length;
+  document.getElementById('prog-label-txt').textContent = `Pregunta ${ex1Mod+1} / ${total}`;
+  document.getElementById('prog-fill').style.width = Math.round((ex1Mod/total)*100)+'%';
+  document.getElementById('prog-chip').textContent = m.criterion;
+
+  const qs = m.questions.map((q,qi)=>{
+    const a = ex1Answers[ex1Mod][qi];
+    const opts = q.options.map((o,oi)=>{
+      let cls='';
+      if(a.done&&a.sel===oi) cls=a.ok?' sel-ok':' sel-bad';
+      return `<label class="opt-label${cls}"><input type="radio" name="q${qi}" value="${oi}" ${a.sel===oi?'checked':''} onchange="ex1Answer(${qi},${oi})"><span>${o}</span></label>`;
+    }).join('');
+    const isOk = a.done && a.sel===q.correct;
+    const fb = a.done ? `<div class="feedback-box ${isOk?'ok':'fail'} show">${isOk?'✅':'❌'} ${isOk?q.ok:q.fail}</div>` : '';
+    const div = qi<m.questions.length-1?'<div class="q-divider"></div>':'';
+    return `<div class="q-block"><div class="q-number">Pregunta ${qi+1} de ${m.questions.length}</div><div class="q-text">${q.text}</div><div class="options-list">${opts}</div>${fb}</div>${div}`;
+  }).join('');
+
+  document.getElementById('ex1-content').innerHTML = `
+    <div class="fragment-zone">
+      <div class="section-tag">📁 ${m.tag}</div>
+      <h2 class="fragment-title">${m.title}</h2>
+      <div class="fragment-ref">Relee la sección <strong>"${m.sectionRef}"</strong> de la declaración (columna izquierda) antes de responder.</div>
+      <div class="fragment-quote">${m.quote}</div>
+    </div>
+    <div class="questions-zone">
+      <div class="section-tag teal">🔍 Preguntas de análisis</div>
+      ${qs}
+    </div>`;
+
+  document.getElementById('ex1-prev').disabled = ex1Mod===0;
+  document.getElementById('ex1-next').textContent = ex1Mod===MODULES.length-1 ? 'Ir al Ejercicio 2 ›' : 'Siguiente ›';
+}
+
+function ex1Answer(qi,oi){
+  const m = MODULES[ex1Mod];
+  const isOk = oi===m.questions[qi].correct;
+  ex1Answers[ex1Mod][qi] = {sel:oi,done:true,ok:isOk};
+  renderEx1();
+  persistState();
+}
+function ex1Prev(){if(ex1Mod>0){ex1Mod--;renderEx1();}}
+function ex1Next(){
+  if(ex1Answers[ex1Mod].some(a=>!a.done)){alert('Por favor responde todas las preguntas antes de continuar.');return;}
+  if(ex1Mod===MODULES.length-1){
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-ex2').classList.add('active');
+    document.getElementById('tabbtn-ex2').classList.add('active');
+    showEx2('ends');
+  }
+  else{ex1Mod++;renderEx1();}
+}
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// =====================================================================
+// EJERCICIO 2 — DATA (DND)
+// =====================================================================
+const DND_DATA = {
+  ends:{
+    title:"ENDS",
+    chips:[
+      {id:"e1",text:"Limpieza y alimentación diaria de caballos, vacas y cocodrilos"},
+      {id:"e2",text:"Baño forzado de caballos, incluido el 'caballo bravo'"},
+      {id:"e3",text:"Corte de maleza con machete en el segundo rancho"},
+      {id:"e4",text:"Carga de costales de alimento de 25 kg, dos o tres a la vez"},
+      {id:"e5",text:"Jornadas de 6am a 11am y luego de 6am a 8pm, sin días de descanso"},
+      {id:"e6",text:"Deuda nunca especificada ni documentada por los traficantes"},
+      {id:"e7",text:"Ausencia total de pago por el trabajo realizado"},
+      {id:"e8",text:"Promesa de libertad condicionada a montar al 'caballo bravo'"},
+    ],
+    cards:[
+      {id:"z_1a",label:"1a",question:"What labor or services was the victim made to perform?",accepted:["e1","e2","e3"],explanation:"Domingo fue obligado a limpiar y alimentar animales, bañar caballos y desyerbar con machete en dos ranchos distintos: estos son los servicios laborales concretos que le exigían."},
+      {id:"z_1b",label:"1b",question:"Describe the extent of the labor or services (e.g., hours/day, days/week, no breaks, etc.).",accepted:["e4","e5"],explanation:"Jornadas de aproximadamente 6am a 8pm, sin días de descanso identificables durante casi tres meses, incluyendo cargas físicas de hasta 75 kg de una sola vez (dos o tres costales de 25 kg)."},
+      {id:"z_1c",label:"1c",question:"For commercial sex cases only: what was the thing of value exchanged for the sex act?",accepted:[],explanation:"No aplica. Este es un caso de explotación laboral y servidumbre por deudas, no de explotación sexual comercial."},
+      {id:"z_1d",label:"1d",question:"For debt bondage or peonage: Who controlled the victim's debt and how did that person decide whether the victim's labor or services reduced what was owed?",accepted:["e6","e7","e8"],explanation:"Los traficantes controlaban totalmente la supuesta deuda: nunca la especificaron, nunca pagaron a Domingo, y condicionaron su libertad a una tarea imposible (montar al caballo bravo), configurando un peonage clásico."},
+    ]
+  },
+  means:{
+    title:"MEANS",
+    chips:[
+      {id:"m1",text:"Amenaza explícita de disparar si intentaba escapar"},
+      {id:"m2",text:"Amenaza de arrojarlo a los cocodrilos"},
+      {id:"m3",text:"Golpes, patadas y toques con el cañón del arma"},
+      {id:"m4",text:"Atado de los pies para impedir la huida"},
+      {id:"m5",text:"Vigilancia armada constante, con radio y rotación de hombres"},
+      {id:"m6",text:"Privación de comida y agua durante jornadas completas"},
+      {id:"m7",text:"Encierro en cuarto con baño que solo abría por fuera"},
+      {id:"m8",text:"Promesa falsa inicial de un cruce 'rápido y seguro' por $700"},
+    ],
+    cards:[
+      {id:"z_3a",label:"3a – Force",question:"What physical acts did the perpetrator do to make the victim perform the labor or services identified in the Ends?",accepted:["m3","m4"],explanation:"Los hombres golpeaban y pateaban a Domingo, le picaban las manos con el cañón del arma para dirigirlo, y le ataban los pies antes de bajarlo de la camioneta para impedir que escapara."},
+      {id:"z_3b",label:"3b – Coercion",question:"What implicit or explicit threats did the perpetrator use to make the victim perform the labor or services?",accepted:["m1","m2"],explanation:"Las amenazas explícitas de dispararle en el pie si escapaba y de arrojarlo a los cocodrilos si no pagaba son ejemplos directos de amenazas de daño grave usadas para forzar su obediencia."},
+      {id:"z_3c",label:"3c – Coercion",question:"What perpetrator actions or behaviors created an environment that made the victim believe they would suffer serious harm if they didn't perform the Ends?",accepted:["m5","m7"],explanation:"La vigilancia armada constante con rotación de hombres y radios, junto con el encierro en un cuarto que solo se abría desde afuera, crearon un ambiente de control total del que Domingo no podía escapar."},
+      {id:"z_3d",label:"3d – Serious Harm",question:"What serious harm did the victim believe they would suffer if they didn't perform the labor or services identified in the Ends?",accepted:["m1","m2","m6"],explanation:"Domingo creía que podía recibir un disparo, ser arrojado a los cocodrilos, o continuar sin recibir comida ni agua si no cumplía con las tareas asignadas."},
+      {id:"z_3e",label:"3e – Fraud",question:"What false promises or statements did the perpetrator make to encourage the victim to perform the labor or services?",accepted:["m8"],explanation:"El coyote inicial prometió un cruce 'rápido, barato y seguro' por $700, promesa que resultó completamente falsa una vez que Domingo quedó retenido bajo amenazas y trabajo forzado no remunerado."},
+    ]
+  },
+  process:{
+    title:"PROCESS",
+    chips:[
+      {id:"p1",text:"Contacto inicial en la calle ofreciendo un cruce barato"},
+      {id:"p2",text:"Traslado en vehículo y a pie, incluido el cruce del río"},
+      {id:"p3",text:"Alojamiento en casas de seguridad y ranchos bajo vigilancia armada"},
+      {id:"p4",text:"Traslado entre dos ranchos distintos durante la explotación"},
+      {id:"p5",text:"Explotación laboral diaria bajo amenaza de violencia"},
+      {id:"p6",text:"Abandono final en un hospital con instrucciones de silencio"},
+    ],
+    cards:[
+      {id:"z_5",label:"5",question:"What intentional acts did the perpetrator do to put or keep the victim in the situation? What steps did the perpetrator take to make the victim perform the Ends?",accepted:["p1","p2","p3","p4","p5","p6"],explanation:"El proceso completo incluye: reclutamiento callejero con promesas falsas, traslado forzado por vehículo y a pie (incluido el cruce del río bajo amenaza de disparo), alojamiento en casas de seguridad y ranchos vigilados, cambio de ubicación entre dos ranchos, explotación laboral diaria bajo amenaza armada, y abandono final en un hospital con instrucciones explícitas de no revelar lo ocurrido."},
+    ]
+  }
+};
+
+let dragKey='',dragChip='';
+function showEx2(section){
+  ['ends','means','process','cast','followup'].forEach(s=>{
+    const btn=document.getElementById('ex2-sub-'+s);
+    if(btn){ btn.style.background = s===section?'var(--navy)':''; btn.style.color = s===section?'#fff':''; btn.style.borderColor = s===section?'var(--navy)':''; }
+  });
+  const panel = document.getElementById('ex2-panel');
+  if(section==='ends') panel.innerHTML = renderDNDSection('ends');
+  else if(section==='means') panel.innerHTML = renderDNDSection('means');
+  else if(section==='process') panel.innerHTML = renderDNDSection('process');
+  else if(section==='cast') panel.innerHTML = renderCast();
+  else if(section==='followup') panel.innerHTML = renderFollowup();
+}
+
+function renderDNDSection(key){
+  const sec = DND_DATA[key];
+  if(!dragState[key]) dragState[key]={};
+  sec.cards.forEach(c=>{ if(!dragState[key][c.id]) dragState[key][c.id]=[]; });
+
+  const cards = sec.cards.map(card=>{
+    const placed = dragState[key][card.id]||[];
+    const drops = placed.map(chipId=>{
+      const chip = sec.chips.find(c=>c.id===chipId);
+      return `<div class="drop-chip" onclick="removeChip('${key}','${card.id}','${chipId}')">${chip?chip.text:chipId}</div>`;
+    }).join('');
+    const isVerified = dndVerified[key+card.id];
+    const feedback = isVerified ? buildDNDFeedback(key,card) : '';
+    return `<div class="dnd-card">
+      <div class="dnd-card-label ${key}">${card.label}</div>
+      <div class="dnd-question">${card.question}</div>
+      <div class="drop-zone" id="zone_${key}_${card.id}" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="dropChip(event,'${key}','${card.id}')">
+        ${drops||'<span style="color:#cbd5e1;font-size:.8rem;">Arrastra aquí las respuestas</span>'}
+      </div>
+      ${feedback}
+      <button class="verify-btn" onclick="verifyCard('${key}','${card.id}')">Verificar esta sección</button>
+    </div>`;
+  }).join('');
+
+  const chipBank = sec.chips.map(chip=>{
+    const isPlaced = Object.values(dragState[key]||{}).some(arr=>arr.includes(chip.id));
+    return `<div class="drag-chip ${isPlaced?'placed':''}" draggable="true" id="chip_${key}_${chip.id}" ondragstart="dragStart(event,'${key}','${chip.id}')">${chip.text}</div>`;
+  }).join('');
+
+  const gridClass = key==='process'?'dnd-grid single':'dnd-grid';
+
+  return `<div class="ex2-container">
+    <div class="dnd-page">
+      <div class="dnd-section-title">${sec.title}</div>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">Arrastra las respuestas del banco hacia el recuadro que corresponda. Puedes retirarlas haciendo clic sobre ellas. Consulta la declaración (columna izquierda) para verificar cada hecho.</p>
+      <div class="drag-bank" id="bank_${key}">${chipBank}</div>
+      <div class="${gridClass}">${cards}</div>
+    </div>
+  </div>`;
+}
+
+function dragStart(e,key,chipId){
+  dragKey=key; dragChip=chipId;
+  e.dataTransfer.effectAllowed='move';
+  document.getElementById('chip_'+key+'_'+chipId)?.classList.add('dragging');
+}
+function dropChip(e,key,zoneId){
+  e.preventDefault();
+  document.querySelectorAll('.drop-zone').forEach(z=>z.classList.remove('drag-over'));
+  if(dragKey!==key) return;
+  if(!dragState[key]) dragState[key]={};
+  if(!dragState[key][zoneId]) dragState[key][zoneId]=[];
+  if(!dragState[key][zoneId].includes(dragChip)){
+    dragState[key][zoneId].push(dragChip);
+  }
+  dndVerified[key+zoneId]=false;
+  showEx2(key);
+  persistState();
+}
+function removeChip(key,zoneId,chipId){
+  if(dragState[key]&&dragState[key][zoneId]){
+    dragState[key][zoneId]=dragState[key][zoneId].filter(id=>id!==chipId);
+  }
+  dndVerified[key+zoneId]=false;
+  showEx2(key);
+  persistState();
+}
+function verifyCard(key,cardId){
+  dndVerified[key+cardId]=true;
+  showEx2(key);
+  persistState();
+}
+function buildDNDFeedback(key,card){
+  const placed = dragState[key][card.id]||[];
+  const accepted = card.accepted||[];
+  if(accepted.length===0){
+    if(placed.length===0){
+      return `<div class="dnd-feedback ok show">✅ Correcto. ${card.explanation}</div>`;
+    } else {
+      return `<div class="dnd-feedback fail show">❌ Este recuadro no aplica para este caso y debe quedar vacío. ${card.explanation}</div>`;
+    }
+  }
+  if(placed.length===0) return `<div class="dnd-feedback fail show">❌ No has colocado ninguna respuesta en este recuadro. ${card.explanation}</div>`;
+  const wrong = placed.filter(p=>!accepted.includes(p));
+  if(wrong.length>0){
+    return `<div class="dnd-feedback fail show">❌ Hay respuestas incorrectas en este recuadro. ${card.explanation}</div>`;
+  }
+  return `<div class="dnd-feedback ok show">✅ ¡Correcto! ${card.explanation}</div>`;
+}
+
+// =====================================================================
+// CAST & LEGAL THEORY
+// =====================================================================
+const CAST_DATA = {
+  ends:{
+    options:["Involuntary Servitude","Debt Bondage","Peonage","Slavery","Commercial Sex Act"],
+    correctMulti:[0,2],
+    explanation:"El caso configura principalmente Involuntary Servitude (trabajo forzado bajo amenaza) y Peonage (servidumbre por una deuda impuesta unilateralmente y nunca especificada por los traficantes)."
+  },
+  means:{
+    force:{correct:true,explanation:"Sí. Se documentan golpes, patadas, toques con el cañón del arma y el hecho de ser atado de los pies."},
+    fraud:{correct:true,explanation:"Sí. La promesa inicial del coyote de un cruce 'rápido, barato y seguro' por $700 fue completamente falsa."},
+    coercion:{correct:true,explanation:"Sí. El ambiente de vigilancia armada constante, encierro y privación de alimento generó coerción sostenida."},
+    threats:{correct:true,explanation:"Sí. Amenazas explícitas de disparo y de ser arrojado a los cocodrilos configuran amenazas de daño grave."},
+    scheme:{correct:true,explanation:"Sí. La operación mostró roles organizados: reclutador inicial, casas de seguridad, vigilantes rotativos armados en dos ranchos distintos."},
+    legalProcess:{correct:false,explanation:"No hay evidencia de abuso del proceso legal (documentos migratorios falsificados, procesos judiciales, etc.) en este caso."}
+  },
+  process:{
+    options:["Recruitment","Harboring","Transportation","Provision","Obtaining","Inducing/Patronizing/Soliciting"],
+    correct:[0,1,2],
+    explanation:"Recruitment (contacto inicial del coyote en Tamaulipas), Harboring (retención en casas de seguridad y ranchos vigilados) y Transportation (traslado en vehículo y a pie, incluido el cruce del río) están claramente documentados. No hay evidencia de Provision, Obtaining en sentido comercial, ni de Inducing/Patronizing/Soliciting (propios de trata sexual)."
+  },
+  legalTheory:{
+    processOptions:["Recruited","Harbored","Transported","Recruited, Transported, and Harbored","Obtained"],
+    endsOptions:["Involuntary Servitude","Debt Bondage","Peonage","Slavery","Commercial Sex Act"],
+    workOptions:["performing forced agricultural and animal-care labor without pay to satisfy an undefined debt","providing commercial sexual services","working in a licensed warehouse under a labor contract","transporting goods across state lines for a trucking company"],
+    meansOptions:["Force, Fraud, and Coercion","Fraud alone","Psychological manipulation only","Abuse of legal process"],
+    specificOptions:["armed threats of death and mutilation, physical assaults, confinement, and starvation","withholding identity documents","threats of deportation to immigration authorities","denial of promised promotions"],
+    correctProcess:3,correctEnds:2,correctWork:0,correctMeans:0,correctSpecific:0
+  }
+};
+
+let castAnswers = {
+  endsChecked:[],meansChecked:{force:false,fraud:false,coercion:false,threats:false,scheme:false,legalProcess:false},
+  processChecked:[],
+  theory:{process:'',ends:'',work:'',means:'',specific:''}
+};
+let castVerified = {ends:false,means:false,process:false,theory:false};
+
+function renderCast(){
+  const cd = CAST_DATA;
+  const endsCbs = cd.ends.options.map((o,i)=>`
+    <label class="cast-option" id="cast_ends_opt_${i}">
+      <input type="checkbox" id="cast_ends_cb_${i}" ${castAnswers.endsChecked.includes(i)?'checked':''} onchange="castEndsCb(${i})">
+      <span>${o}</span>
+    </label>`).join('');
+
+  const meansRows = [
+    {key:'force',label:'Force'},
+    {key:'fraud',label:'Fraud*'},
+    {key:'coercion',label:'Coercion'},
+    {key:'threats',label:'Threats of serious harm/physical restraint'},
+    {key:'scheme',label:'Scheme, plan, or pattern'},
+    {key:'legalProcess',label:'Abuse of legal process'},
+  ].map(row=>`
+    <label class="cast-option" id="cast_means_opt_${row.key}">
+      <input type="checkbox" id="cast_means_cb_${row.key}" ${castAnswers.meansChecked[row.key]?'checked':''} onchange="castMeansCb('${row.key}')">
+      <span>${row.label}</span>
+    </label>`).join('');
+
+  const procCbs = cd.process.options.map((o,i)=>`
+    <label class="cast-option" id="cast_proc_opt_${i}">
+      <input type="checkbox" id="cast_proc_cb_${i}" ${castAnswers.processChecked.includes(i)?'checked':''} onchange="castProcCb(${i})">
+      <span>${o}</span>
+    </label>`).join('');
+
+  const endsFB = castVerified.ends ? buildCastEndsFeedback() : '';
+  const meansFB = castVerified.means ? buildCastMeansFeedback() : '';
+  const procFB = castVerified.process ? buildCastProcFeedback() : '';
+  const theoryFB = castVerified.theory ? buildTheoryFeedback() : '';
+
+  const th = castAnswers.theory;
+  const mkSelect = (field,options,val)=>`<select class="theory-select" onchange="castTheoryText('${field}',this.value)">
+    <option value="">— selecciona —</option>
+    ${options.map(o=>`<option value="${o}" ${val===o?'selected':''}>${o}</option>`).join('')}
+  </select>`;
+  const inProc = mkSelect('process',cd.legalTheory.processOptions,th.process);
+  const inEnds = mkSelect('ends',cd.legalTheory.endsOptions,th.ends);
+  const inWork = mkSelect('work',cd.legalTheory.workOptions,th.work);
+  const inMeans = mkSelect('means',cd.legalTheory.meansOptions,th.means);
+  const inSpec = mkSelect('specific',cd.legalTheory.specificOptions,th.specific);
+
+  return `<div class="ex2-container">
+    <div class="dnd-section-title">Cast &amp; Legal Theory Worksheet</div>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1.2rem;">Consulta la declaración de Domingo (columna izquierda) para responder cada columna.</p>
+    <div class="cast-grid">
+      <div class="cast-col cast-col-ends">
+        <div class="cast-col-title">ENDS</div>
+        <div class="cast-question">(1) Based on your analysis, the type of services the victim was made to perform potentially fall under:</div>
+        <div class="cast-options">${endsCbs}</div>
+        <button class="verify-btn" onclick="castVerify('ends')">Verificar Ends</button>
+        ${endsFB}
+      </div>
+      <div class="cast-col cast-col-means">
+        <div class="cast-col-title">MEANS</div>
+        <div class="cast-question">(4) The actions of the perpetrator described in questions 3a–3e amount to:</div>
+        <div class="cast-options">${meansRows}</div>
+        <button class="verify-btn" style="background:#c026d3;" onclick="castVerify('means')">Verificar Means</button>
+        ${meansFB}
+      </div>
+      <div class="cast-col cast-col-process">
+        <div class="cast-col-title">PROCESS</div>
+        <div class="cast-question">(6) Based on the facts in Question 5, what process(es) did the perpetrator(s) use to control the victim?</div>
+        <div class="cast-options">${procCbs}</div>
+        <button class="verify-btn" style="background:var(--teal);" onclick="castVerify('process')">Verificar Process</button>
+        ${procFB}
+      </div>
+    </div>
+
+    <div class="legal-theory-box">
+      <h3>(7) Summarize the Legal Theory</h3>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem;">Selecciona en cada espacio la información que completa la oración de la teoría legal para el caso de Domingo.</p>
+      <div class="theory-sentence">
+        <span>The victim was</span> ${inProc} <span>for the purpose of</span> ${inEnds} <span>, specifically</span> ${inWork} <span>, through the use of</span> ${inMeans} <span>, such as</span> ${inSpec} <span>.</span>
+      </div>
+      <br>
+      <button class="verify-btn" onclick="castVerify('theory')">Verificar Teoría Legal</button>
+      ${theoryFB}
+    </div>
+  </div>`;
+}
+
+function castEndsCb(i){
+  const cb=document.getElementById('cast_ends_cb_'+i);
+  if(cb.checked){if(!castAnswers.endsChecked.includes(i))castAnswers.endsChecked.push(i);}
+  else{castAnswers.endsChecked=castAnswers.endsChecked.filter(x=>x!==i);}
+  castVerified.ends=false;
+  persistState();
+}
+function castMeansCb(key){
+  const cb=document.getElementById('cast_means_cb_'+key);
+  castAnswers.meansChecked[key]=cb.checked;
+  castVerified.means=false;
+  persistState();
+}
+function castProcCb(i){
+  const cb=document.getElementById('cast_proc_cb_'+i);
+  if(cb.checked){if(!castAnswers.processChecked.includes(i))castAnswers.processChecked.push(i);}
+  else{castAnswers.processChecked=castAnswers.processChecked.filter(x=>x!==i);}
+  castVerified.process=false;
+  persistState();
+}
+function castTheoryText(field,val){
+  castAnswers.theory[field]=val;
+  castVerified.theory=false;
+  persistState();
+}
+function castVerify(section){
+  castVerified[section]=true;
+  showEx2('cast');
+  persistState();
+}
+function buildCastEndsFeedback(){
+  const sel=castAnswers.endsChecked;
+  const ok = sel.length>0 && sel.every(i=>CAST_DATA.ends.correctMulti.includes(i)) && sel.some(i=>CAST_DATA.ends.correctMulti.includes(i));
+  const msg = ok ? `✅ Correcto. ${CAST_DATA.ends.explanation}` : `❌ Revisa tu selección. ${CAST_DATA.ends.explanation}`;
+  return `<div class="dnd-feedback ${ok?'ok':'fail'} show" style="margin-top:.8rem;">${msg}</div>`;
+}
+function buildCastMeansFeedback(){
+  const mc=castAnswers.meansChecked;
+  const cd=CAST_DATA.means;
+  let allOk=true;
+  let details='';
+  Object.keys(cd).forEach(k=>{
+    const selected=mc[k]||false;
+    const correct=cd[k].correct;
+    if(selected!==correct) allOk=false;
+    details+=`<br>• <strong>${k.charAt(0).toUpperCase()+k.slice(1)}</strong> (${selected?'seleccionado':'no seleccionado'}): ${cd[k].explanation}`;
+  });
+  return `<div class="dnd-feedback ${allOk?'ok':'fail'} show" style="margin-top:.8rem;">${allOk?'✅ Correcto.':'❌ Revisa tu selección.'}${details}</div>`;
+}
+function buildCastProcFeedback(){
+  const sel=castAnswers.processChecked;
+  const cor=CAST_DATA.process.correct;
+  const ok=sel.length===cor.length&&cor.every(v=>sel.includes(v));
+  return `<div class="dnd-feedback ${ok?'ok':'fail'} show" style="margin-top:.8rem;">${ok?'✅':'❌'} ${CAST_DATA.process.explanation}</div>`;
+}
+function buildTheoryFeedback(){
+  return `<div class="dnd-feedback ok show" style="margin-top:.8rem;">
+    <strong>✅ Respuesta correcta de la Teoría Legal:</strong><br><br>
+    <em style="font-size:.92rem;line-height:1.8;">"The victim was <strong>Recruited, Transported, and Harbored</strong> for the purpose of <strong>Peonage</strong>, specifically <strong>performing forced agricultural and animal-care labor without pay to satisfy an undefined debt</strong>, through the use of <strong>Force, Fraud, and Coercion</strong>, such as <strong>armed threats of death and mutilation, physical assaults, confinement, and starvation</strong>."</em>
+    <br><br>
+    <ul style="padding-left:1.2rem;font-size:.85rem;line-height:1.85;color:#065f46;">
+      <li><strong>Recruited, Transported, and Harbored:</strong> un coyote reclutó a Domingo en Tamaulipas con promesas falsas, lo trasladó en vehículo y a pie (incluido el cruce del río) y finalmente lo mantuvo retenido en casas de seguridad y ranchos vigilados.</li>
+      <li><strong>Peonage:</strong> Domingo fue obligado a trabajar sin remuneración para 'pagar' una deuda que los propios traficantes nunca especificaron ni documentaron.</li>
+      <li><strong>Forced agricultural and animal-care labor:</strong> las tareas concretas exigidas fueron limpiar y alimentar animales, bañar caballos, cargar costales de 25 kg y desyerbar con machete en dos ranchos distintos.</li>
+      <li><strong>Force, Fraud, and Coercion:</strong> los tres medios están documentados: fuerza física (golpes, patadas, atado de pies), fraude (promesa falsa de cruce rápido y barato) y coerción (vigilancia armada constante, encierro, privación de alimento).</li>
+      <li><strong>Armed threats, physical assaults, confinement, and starvation:</strong> amenazas explícitas de disparo y de ser arrojado a los cocodrilos, golpes documentados, encierro en cuarto sin salida propia, y días enteros sin agua ni comida.</li>
+    </ul>
+  </div>`;
+}
+
+// =====================================================================
+// FOLLOW-UP QUESTIONS
+// =====================================================================
+let followupText = {ends:'',means:'',process:'',otros:''};
+function saveFollowup(field,val){ followupText[field]=val; persistState(); }
+
+function renderFollowup(){
+  return `<div class="ex2-container">
+    <div class="followup-title">Follow-up Questions</div>
+    <div class="followup-subtitle">Con base en el análisis de los hechos del caso de Domingo, es posible que necesites desarrollar preguntas de seguimiento para el cliente. Organízalas bajo Ends, Means y Process. Los ejemplos ilustran el tipo de preguntas que ayudan a llenar vacíos en la teoría legal.</div>
+
+    <div class="discussion-area">
+      <h4>💬 Espacio de discusión grupal</h4>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">Usa este espacio para escribir preguntas de seguimiento adicionales que tu equipo le haría al cliente, organizadas por categoría. Los ejemplos son puntos de partida — reemplázalos con tus propias preguntas.</p>
+
+      <span class="disc-label">ENDS – Preguntas que agregaría tu equipo:</span>
+      <textarea class="discussion-textarea followup-ta" id="fuEnds" oninput="saveFollowup('ends',this.value)"
+        placeholder="Preguntas de ejemplo:&#10;• ¿Puede describir con detalle todas las tareas que le exigían realizar en un día típico en cada uno de los dos ranchos?&#10;• ¿Alguna vez intentó negarse a cargar los costales de alimento? ¿Qué ocurrió cuando lo hizo?&#10;• ¿Le explicaron en algún momento a cuánto ascendía la deuda que supuestamente estaba pagando?&#10;• ¿Recibió algún tipo de pago, por mínimo que fuera, durante los tres meses de trabajo?&#10;• ¿Hubo días en que estuvo demasiado enfermo o lastimado para trabajar? ¿Qué pasó esos días?">${followupText.ends}</textarea>
+
+      <span class="disc-label">MEANS – Preguntas que agregaría tu equipo:</span>
+      <textarea class="discussion-textarea followup-ta" id="fuMeans" oninput="saveFollowup('means',this.value)"
+        placeholder="Preguntas de ejemplo:&#10;• Cuando el caballo lo pateó en la rodilla, ¿alguien de los traficantes intentó impedir que buscara ayuda médica de inmediato?&#10;• ¿Puede describir el momento en que sintió más miedo durante su cautiverio? ¿Qué estaba pasando?&#10;• ¿Llegó a ver a los hombres armados amenazar o agredir a alguna otra persona retenida en los ranchos?&#10;• ¿Alguna vez intentó comunicarse con alguien fuera del rancho durante esos tres meses? ¿Qué se lo impidió?&#10;• ¿Recuerda cuántos hombres distintos lo vigilaban y si todos portaban armas?">${followupText.means}</textarea>
+
+      <span class="disc-label">PROCESS – Preguntas que agregaría tu equipo:</span>
+      <textarea class="discussion-textarea followup-ta" id="fuProcess" oninput="saveFollowup('process',this.value)"
+        placeholder="Preguntas de ejemplo:&#10;• Cuando el coyote lo abordó en la calle en Tamaulipas, ¿mencionó en algún momento que tendría que trabajar además de pagar el cruce?&#10;• ¿Quién decidió trasladarlo del primer rancho al segundo, y le explicaron por qué?&#10;• ¿Hubo un momento en que se dio cuenta de que la situación ya no era un simple cruce migratorio, sino algo distinto? ¿Qué cambió?&#10;• ¿Los hombres armados mencionaron en algún momento a otras personas o grupos para quienes trabajaban?&#10;• Cuando lo dejaron frente al hospital, ¿alguien lo vigiló para asegurarse de que entrara y no hablara con nadie más?">${followupText.process}</textarea>
+
+      <span class="disc-label">Otros vacíos o inquietudes identificadas:</span>
+      <textarea class="discussion-textarea" id="fuOtros" oninput="saveFollowup('otros',this.value)" placeholder="Anota cualquier vacío adicional en la teoría legal o áreas que requieran mayor investigación…">${followupText.otros}</textarea>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-top:1.5rem;">
+      <button class="btn btn-primary" onclick="showResults()">Ver resultados →</button>
+    </div>
+  </div>`;
+}
+
+// =====================================================================
+// NAVEGACIÓN Y RESULTADOS
+// =====================================================================
+function goScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function goInstructions(){
+  userName = document.getElementById('nameInput').value.trim();
+  if(!userName){alert('Por favor ingresa tu nombre.');return;}
+  document.getElementById('instr-user-badge').textContent = '👤 '+userName;
+  goScreen('screen-instructions');
+}
+function goMain(){
+  document.getElementById('main-title').textContent = `Hola, ${userName}`;
+  const mb = document.getElementById('main-user-badge');
+  if(mb) mb.textContent = '👤 '+userName;
+  const rb = document.getElementById('result-user-badge');
+  if(rb) rb.textContent = '👤 '+userName;
+  goScreen('screen-main');
+  renderLeft();
+  renderEx1();
+  showEx2('ends');
+  persistState();
+}
+
+function showResults(){
+  const total = MODULES.reduce((a,m)=>a+m.questions.length,0);
+  let correct=0;
+  const failed=new Set();
+  MODULES.forEach((m,mi)=>{
+    m.questions.forEach((q,qi)=>{
+      if(ex1Answers[mi][qi].ok) correct++;
+      else failed.add(m.criterion);
+    });
+  });
+  const score=Math.round((correct/total)*100);
+  const reinforceHtml=failed.size
+    ?`<div class="reinforce-block"><strong>📌 Criterios a reforzar:</strong>${[...failed].join(' · ')}<br><br>Regresa al Ejercicio 1 en los módulos donde tuviste errores y analiza de nuevo cómo los hechos de la declaración de Domingo se conectan con cada criterio del esquema EMP.</div>`
+    :`<div class="perfect-block">✅ <strong>Excelente dominio del caso.</strong> Identificaste correctamente todos los elementos de elegibilidad para Visa T en el esquema EMP aplicado al caso de Domingo Perez Lopez.</div>`;
+
+  document.getElementById('result-content').innerHTML=`
+    <div class="score-hero">
+      <div class="score-pct">${score}%</div>
+      <div class="score-label">Porcentaje de respuestas correctas — Ejercicio 1</div>
+      <div class="score-detail">${correct} de ${total} preguntas · ${MODULES.length} módulos</div>
+    </div>
+    ${reinforceHtml}
+    <div class="summary-block">
+      <strong>📖 Contenidos revisados</strong>
+      Este simulador evaluó los cinco criterios del esquema EMP aplicados al caso de Domingo Perez Lopez: <em>Proceso</em> (reclutamiento engañoso por un coyote y traslado forzado), <em>Medios</em> (armas de fuego, amenazas de muerte y mutilación, encierro), <em>Fin</em> (explotación laboral forzada bajo servidumbre por deudas), <em>Presencia Física en EE.UU.</em> ligada directamente a la trata, y <em>Dificultad Extrema</em> ante una eventual deportación a México (riesgo del Cártel Jalisco Nueva Generación, salud y falta de opciones económicas).
+    </div>
+    <div class="nav-zone" style="border-top:none;padding-top:1.5rem;">
+      <span></span>
+      <button class="btn btn-primary" onclick="restartAll()">⟳ Reiniciar simulador</button>
+    </div>`;
+  goScreen('screen-results');
+  persistState();
+  SCORM.finish(score);
+}
+
+function restartAll(){
+  ex1Mod=0;
+  initEx1();
+  dragState={};
+  dndVerified={};
+  castAnswers={endsChecked:[],meansChecked:{force:false,fraud:false,coercion:false,threats:false,scheme:false,legalProcess:false},processChecked:[],theory:{process:'',ends:'',work:'',means:'',specific:''}};
+  castVerified={ends:false,means:false,process:false,theory:false};
+  followupText={ends:'',means:'',process:'',otros:''};
+  userName='';
+  document.getElementById('nameInput').value='';
+  ['instr-user-badge','main-user-badge','result-user-badge'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='';});
+  goScreen('screen-name');
+  persistState();
+}
+
+// =====================================================================
+// GUARDADO / RESTAURACIÓN DE PROGRESO (SCORM cmi.suspend_data)
+// =====================================================================
+function buildSaveState(){
+  return {
+    userName, ex1Mod, ex1Answers, dragState, dndVerified,
+    castAnswers, castVerified, followupText
+  };
+}
+function applySaveState(s){
+  if(!s) return;
+  if(s.userName!==undefined) userName=s.userName;
+  if(s.ex1Mod!==undefined) ex1Mod=s.ex1Mod;
+  if(s.ex1Answers) ex1Answers=s.ex1Answers;
+  if(s.dragState) dragState=s.dragState;
+  if(s.dndVerified) dndVerified=s.dndVerified;
+  if(s.castAnswers) castAnswers=s.castAnswers;
+  if(s.castVerified) castVerified=s.castVerified;
+  if(s.followupText) followupText=s.followupText;
+}
+function persistState(){
+  SCORM.save(buildSaveState());
+}
+
+(function restoreOnLoad(){
+  const saved = SCORM.load();
+  if(!saved || !saved.userName) return;
+  applySaveState(saved);
+  const ib=document.getElementById('instr-user-badge'); if(ib) ib.textContent='👤 '+userName;
+  const mb=document.getElementById('main-user-badge'); if(mb) mb.textContent='👤 '+userName;
+  const rb=document.getElementById('result-user-badge'); if(rb) rb.textContent='👤 '+userName;
+  document.getElementById('main-title').textContent = `Hola, ${userName}`;
+  document.getElementById('nameInput').value = userName;
+  goScreen('screen-main');
+  renderLeft();
+  renderEx1();
+  showEx2('ends');
+})();
+
+// =====================================================================
+// REPORTE PDF (protegido con contraseña)
+// =====================================================================
+function esc(s){
+  return String(s===undefined||s===null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function openPdfModal(){
+  document.getElementById('pdf-pwd-modal').style.display='flex';
+  document.getElementById('pdf-pwd-error').classList.remove('show');
+  document.getElementById('pdf-pwd-input').value='';
+  setTimeout(()=>document.getElementById('pdf-pwd-input').focus(),80);
+}
+function closePdfModal(){
+  document.getElementById('pdf-pwd-modal').style.display='none';
+}
+function checkPdfPwd(){
+  const val=document.getElementById('pdf-pwd-input').value.trim().toLowerCase();
+  if(val==='contraseña'){
+    closePdfModal();
+    generarReportePDF();
+  } else {
+    document.getElementById('pdf-pwd-error').classList.add('show');
+    document.getElementById('pdf-pwd-input').select();
+  }
+}
+
+function buildEx1Report(){
+  let html='';
+  let correct=0,total=0;
+  MODULES.forEach((m,mi)=>{
+    html+=`<div class="pdfr-section"><div class="pdfr-section-title">Módulo ${mi+1} — ${esc(m.criterion)}: ${esc(m.title)}</div>`;
+    m.questions.forEach((q,qi)=>{
+      total++;
+      const a=ex1Answers[mi][qi];
+      const answered=a.done;
+      if(answered&&a.ok) correct++;
+      const selText = answered ? esc(q.options[a.sel]) : '— sin responder —';
+      const corText = esc(q.options[q.correct]);
+      const status = !answered ? '⚠️ Sin responder' : (a.ok?'✅ Correcta':'❌ Incorrecta');
+      const fbText = answered ? esc(a.ok?q.ok:q.fail) : '';
+      html+=`<div class="pdfr-q">
+        <div class="qhead">Pregunta ${qi+1}: ${esc(q.text)}</div>
+        <div class="qans ${answered?(a.ok?'ok':'bad'):''}"><strong>Respuesta registrada:</strong> ${selText} — ${status}</div>
+        ${answered&&!a.ok?`<div class="qans"><strong>Respuesta correcta:</strong> ${corText}</div>`:''}
+        ${fbText?`<div class="qfb">${fbText}</div>`:''}
+      </div>`;
+    });
+    html+='</div>';
+  });
+  return {html,correct,total};
+}
+
+function buildDNDReport(key,label){
+  const sec=DND_DATA[key];
+  let html=`<div class="pdfr-section"><div class="pdfr-section-title">${esc(label)}</div>`;
+  sec.cards.forEach(card=>{
+    const placed=(dragState[key]&&dragState[key][card.id])||[];
+    const texts=placed.map(id=>{const c=sec.chips.find(c=>c.id===id);return c?c.text:id;});
+    const verified=dndVerified[key+card.id];
+    let statusTxt='No verificado';
+    if(verified){
+      const accepted=card.accepted||[];
+      if(accepted.length===0) statusTxt = placed.length===0?'✅ Correcto (recuadro no aplica y quedó vacío)':'❌ Incorrecto (debía quedar vacío)';
+      else if(placed.length===0) statusTxt='❌ Sin respuesta colocada';
+      else statusTxt = placed.every(p=>accepted.includes(p)) ? '✅ Correcto' : '❌ Contiene respuestas incorrectas';
+    }
+    html+=`<div class="pdfr-card">
+      <div class="cq">${esc(card.label)} — ${esc(card.question)}</div>
+      <div class="cans">Respuesta(s) colocada(s): ${texts.length?esc(texts.join('; ')):'— ninguna —'}</div>
+      <div class="cfb">${statusTxt}${verified?' · '+esc(card.explanation):''}</div>
+    </div>`;
+  });
+  html+='</div>';
+  return html;
+}
+
+function buildCastReport(){
+  const cd=CAST_DATA;
+  let html='<div class="pdfr-section"><div class="pdfr-section-title">Ejercicio 2 · Cast &amp; Legal Theory</div>';
+  const endsSel = castAnswers.endsChecked.map(i=>cd.ends.options[i]);
+  html+=`<div class="pdfr-card"><div class="cq">Ends</div><div class="cans">Seleccionado: ${endsSel.length?esc(endsSel.join(', ')):'— ninguno —'}</div><div class="cfb">${castVerified.ends?'Verificado · '+esc(cd.ends.explanation):'No verificado'}</div></div>`;
+  const meansLabels={force:'Force',fraud:'Fraud',coercion:'Coercion',threats:'Threats',scheme:'Scheme',legalProcess:'Legal Process'};
+  const meansSel=Object.entries(castAnswers.meansChecked).filter(([k,v])=>v).map(([k])=>meansLabels[k]);
+  html+=`<div class="pdfr-card"><div class="cq">Means</div><div class="cans">Seleccionado: ${meansSel.length?esc(meansSel.join(', ')):'— ninguno —'}</div><div class="cfb">${castVerified.means?'Verificado':'No verificado'}</div></div>`;
+  const procSel=castAnswers.processChecked.map(i=>cd.process.options[i]);
+  html+=`<div class="pdfr-card"><div class="cq">Process</div><div class="cans">Seleccionado: ${procSel.length?esc(procSel.join(', ')):'— ninguno —'}</div><div class="cfb">${castVerified.process?'Verificado · '+esc(cd.process.explanation):'No verificado'}</div></div>`;
+  const th=castAnswers.theory;
+  const sentence = `The victim was ${th.process||'—'} for the purpose of ${th.ends||'—'}, specifically ${th.work||'—'}, through the use of ${th.means||'—'}, such as ${th.specific||'—'}.`;
+  html+=`<div class="pdfr-theory"><strong>Teoría legal registrada:</strong><br>"${esc(sentence)}"<br><br>${castVerified.theory?'✅ Verificada':'⚠️ No verificada'}</div>`;
+  html+='</div>';
+  return html;
+}
+
+function buildFollowupReport(){
+  let html='<div class="pdfr-section"><div class="pdfr-section-title">Follow-up Questions</div>';
+  const groups=[['ends','ENDS — preguntas del equipo'],['means','MEANS — preguntas del equipo'],['process','PROCESS — preguntas del equipo'],['otros','Otros vacíos o inquietudes identificadas']];
+  groups.forEach(([k,label])=>{
+    const raw = followupText[k];
+    const val = (raw&&raw.trim()) ? raw : '— sin contenido —';
+    html+=`<div class="pdfr-ta"><span class="talabel">${esc(label)}</span>${esc(val)}</div>`;
+  });
+  html+='</div>';
+  return html;
+}
+
+function generarReportePDF(){
+  const ex1 = buildEx1Report();
+  const score = ex1.total ? Math.round((ex1.correct/ex1.total)*100) : 0;
+  const fecha = new Date().toLocaleString('es-MX',{dateStyle:'long',timeStyle:'short'});
+  const reportHtml = `
+    <div class="pdfr-header">
+      <h1>Reporte de Respuestas — Simulador Visa T</h1>
+      <p>Caso: Domingo Perez Lopez &middot; Esquema Ends&ndash;Means&ndash;Process</p>
+      <div class="pdfr-meta">
+        <div><strong>Participante:</strong> ${esc(userName||'—')}</div>
+        <div><strong>Fecha de generación:</strong> ${esc(fecha)}</div>
+      </div>
+    </div>
+    <div class="pdfr-score"><div class="pct">${score}%</div><div>${ex1.correct} de ${ex1.total} preguntas correctas — Ejercicio 1</div></div>
+    ${ex1.html}
+    ${buildDNDReport('ends','Ejercicio 2 · Ends')}
+    ${buildDNDReport('means','Ejercicio 2 · Means')}
+    ${buildDNDReport('process','Ejercicio 2 · Process')}
+    ${buildCastReport()}
+    ${buildFollowupReport()}
+  `;
+  document.getElementById('pdf-report').innerHTML = reportHtml;
+  document.getElementById('pdf-report').style.display='block';
+  setTimeout(()=>{ window.print(); }, 150);
+}
+
+window.addEventListener('afterprint', ()=>{
+  const el=document.getElementById('pdf-report');
+  if(el) el.style.display='none';
+});
+</script>
+</body>
+</html>
