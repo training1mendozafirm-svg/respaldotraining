@@ -1,0 +1,2431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Módulo 4: End to End – El Proceso Completo del Caso | TMLF Training</title>
+<style>
+/* ============================================================
+   MENDOZA LAW FIRM – MENDOZA LEARNING CENTER
+   Módulo 1: VAWA – Declaración Legal del Cliente
+   Paleta institucional: #9094df | #e5e2f6 | #333333
+   ============================================================ */
+
+:root {
+  --color-primary: #9094df;
+  --color-primary-dark: #7176c8;
+  --color-secondary: #e5e2f6;
+  --color-secondary-dark: #d0ccf0;
+  --text-dark: #333333;
+  --text-white: #ffffff;
+  --color-success: #4caf50;
+  --color-error: #e53935;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fffbeb;
+  --border-radius: 8px;
+  --shadow: 0 2px 8px rgba(144, 148, 223, 0.18);
+  --shadow-lg: 0 4px 20px rgba(144, 148, 223, 0.28);
+  --font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: #f4f3fb;
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── LAYOUT PRINCIPAL ─── */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  background: #fff;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── HEADER ─── */
+.module-header {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.module-header .module-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  opacity: 0.95;
+  letter-spacing: 0.01em;
+}
+
+
+
+.logo-placeholder {
+  width: 120px;
+  height: 38px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 0 8px;
+}
+
+/* ─── BARRA DE PROGRESO ─── */
+.progress-bar-container {
+  background: var(--color-secondary);
+  height: 6px;
+  width: 100%;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  font-size: 0.72rem;
+  color: #888;
+  text-align: right;
+  padding: 3px 28px 0;
+  background: var(--color-secondary);
+}
+
+/* ─── CONTENIDO DE PANTALLA ─── */
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  padding: 36px 40px 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── PORTADA ─── */
+.cover-screen {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+  background: linear-gradient(160deg, #f7f6ff 0%, #edeafb 100%);
+  padding: 60px 48px;
+}
+
+.cover-badge {
+  background: var(--color-primary);
+  color: var(--text-white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.cover-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  line-height: 1.25;
+  max-width: 700px;
+}
+
+.cover-subtitle {
+  font-size: 1rem;
+  color: #666;
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.cover-objective-box {
+  background: var(--color-secondary);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 20px 24px;
+  max-width: 640px;
+  text-align: left;
+}
+
+.cover-objective-box .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary-dark);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cover-objective-box p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-dark);
+}
+
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.cover-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── TÍTULOS DE SECCIÓN ─── */
+.section-title {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 20px;
+  border-radius: var(--border-radius);
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.screen-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ─── CONTENIDO TEÓRICO ─── */
+.content-block {
+  margin-bottom: 20px;
+  line-height: 1.7;
+  font-size: 0.93rem;
+}
+
+.content-block p {
+  margin-bottom: 10px;
+}
+
+.bullet-list {
+  list-style: none;
+  padding-left: 4px;
+  margin: 12px 0;
+}
+
+.bullet-list li {
+  padding: 5px 0 5px 26px;
+  position: relative;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.bullet-list li::before {
+  content: "▸";
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  position: absolute;
+  left: 6px;
+  top: 6px;
+}
+
+/* ─── RECUADROS DESTACADOS ─── */
+.info-box {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.info-box .box-title {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.warning-box {
+  background: var(--color-warning-bg);
+  border: 1.5px solid var(--color-warning);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.warning-box .box-title {
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+/* ─── TABLAS ─── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+
+.data-table th {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #e8e6f8;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.data-table tr:nth-child(even) td {
+  background: var(--color-secondary);
+}
+
+.data-table tr:hover td {
+  background: #ededfa;
+}
+
+/* ─── EJEMPLOS COMPARATIVOS ─── */
+.example-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.example-card {
+  border-radius: var(--border-radius);
+  padding: 14px 16px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.example-card.correct {
+  background: #f0faf0;
+  border: 1.5px solid var(--color-success);
+}
+
+.example-card.incorrect {
+  background: #fdf4f4;
+  border: 1.5px solid var(--color-error);
+}
+
+.example-card .card-label {
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.example-card.correct .card-label { color: #2e7d32; }
+.example-card.incorrect .card-label { color: #c62828; }
+
+.example-card .card-explain {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 0.82rem;
+  opacity: 0.8;
+}
+
+/* ─── EJERCICIOS INTERACTIVOS ─── */
+.exercise-section {
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.exercise-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+.exercise-header .ex-badge {
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.exercise-header h3 {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.question-block {
+  margin-bottom: 24px;
+}
+
+.question-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  color: var(--text-dark);
+}
+
+.question-number {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  margin-right: 6px;
+}
+
+/* Fragmentos de texto (citas) */
+.fragment-quote {
+  background: var(--color-secondary);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  padding: 14px 18px;
+  margin: 10px 0 16px;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  font-style: italic;
+  color: #444;
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.checkbox-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.checkbox-item.selected {
+  border-color: var(--color-primary);
+  background: #f0effe;
+}
+
+.checkbox-item.correct-answer {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.checkbox-item.wrong-answer {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Radio buttons */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.radio-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.radio-item input[type="radio"] {
+  margin-top: 2px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.radio-item.selected-correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.radio-item.selected-wrong {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Campos de texto */
+.text-input-area {
+  width: 100%;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 12px 14px;
+  font-family: var(--font-family);
+  font-size: 0.91rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.15s;
+  min-height: 80px;
+  color: var(--text-dark);
+}
+
+.text-input-area:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(144,148,223,0.12);
+}
+
+.text-input-area.correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.text-input-area.incorrect {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+textarea.text-translation {
+  min-height: 140px;
+}
+
+/* Dropdown/select */
+.inline-select {
+  padding: 3px 8px;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  accent-color: var(--color-primary);
+  background: #fff;
+  cursor: pointer;
+  color: var(--text-dark);
+  font-family: var(--font-family);
+}
+
+.fill-blank-text {
+  font-size: 0.92rem;
+  line-height: 2;
+  background: var(--color-secondary);
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+  margin: 10px 0;
+}
+
+/* Retroalimentación */
+.feedback-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px 18px;
+  border-radius: var(--border-radius);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.feedback-box.correct {
+  background: #f0faf0;
+  border: 1px solid #a5d6a7;
+  color: #2e7d32;
+}
+
+.feedback-box.incorrect {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  color: #c62828;
+}
+
+.feedback-box.info {
+  background: var(--color-secondary);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.feedback-box.visible {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.correct-answer-reveal {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(76,175,80,0.1);
+  border-radius: 4px;
+  font-style: italic;
+}
+
+/* Botón de verificar */
+.btn-check {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  margin-top: 12px;
+}
+
+.btn-check:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-check:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── PANTALLA DE RESUMEN EJECUTIVO ─── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.summary-card {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 18px;
+}
+
+.summary-card .card-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.summary-card .card-concept {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.summary-card .card-detail {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ─── PANTALLA DE RESULTADOS ─── */
+.results-screen {
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.score-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto;
+}
+
+.score-circle .score-num {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-circle .score-label {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.results-breakdown {
+  width: 100%;
+  max-width: 600px;
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.results-breakdown .rb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: 0.88rem;
+  border-bottom: 1px solid #e8e6f8;
+}
+
+.results-breakdown .rb-row:last-child { border-bottom: none; }
+.results-breakdown .rb-row .rb-label { color: #555; }
+.results-breakdown .rb-row .rb-score { font-weight: 700; color: var(--color-primary-dark); }
+
+.incorrect-list {
+  width: 100%;
+  max-width: 640px;
+  text-align: left;
+}
+
+.incorrect-item {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  font-size: 0.87rem;
+}
+
+.incorrect-item .ii-label {
+  font-weight: 600;
+  color: #c62828;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.incorrect-item .ii-yours {
+  color: #c62828;
+  margin-bottom: 4px;
+}
+
+.incorrect-item .ii-correct {
+  color: #2e7d32;
+  font-style: italic;
+}
+
+/* ─── NAVEGACIÓN ─── */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  border-top: 1px solid #e8e6f8;
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 220px;
+  right: 0;
+  z-index: 90;
+  box-shadow: 0 -2px 8px rgba(0,0,0,.06);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary-dark);
+  border: 1.5px solid var(--color-primary);
+}
+
+.btn-secondary:hover { background: var(--color-secondary); }
+
+.btn-large {
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+.btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-success {
+  background: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover { background: #388e3c; }
+
+.page-indicator {
+  font-size: 0.82rem;
+  color: #888;
+}
+
+/* ─── DRAG AND DROP ─── */
+.drag-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.drag-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px;
+  background: var(--color-secondary);
+  border-radius: var(--border-radius);
+  min-height: 60px;
+}
+
+.drag-option {
+  background: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: grab;
+  user-select: none;
+  transition: all 0.15s;
+  border: 2px solid transparent;
+}
+
+.drag-option:active { cursor: grabbing; transform: scale(1.05); }
+
+.drag-target {
+  background: #fff;
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  min-height: 52px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s;
+}
+
+.drag-target.drag-over {
+  background: var(--color-secondary);
+  border-color: var(--color-primary-dark);
+}
+
+.drag-target .target-label {
+  font-size: 0.8rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.drag-target .dropped-item {
+  background: var(--color-primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+  .screen { padding: 24px 18px 16px; }
+  .cover-screen { padding: 36px 20px; }
+  .cover-title { font-size: 1.5rem; }
+  .example-grid, .summary-grid { grid-template-columns: 1fr; }
+  .module-header { padding: 12px 18px; }
+  .nav-bar { padding: 12px 18px; }
+  .btn { padding: 10px 16px; font-size: 0.85rem; }
+}
+
+/* ─── UTILIDADES ─── */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
+.bold { font-weight: 700; }
+.highlight { background: var(--color-secondary); padding: 2px 6px; border-radius: 3px; }
+.emoji { font-style: normal; }
+
+.note-tag {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 4px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.section-divider {
+  border: none;
+  border-top: 2px solid var(--color-secondary);
+  margin: 24px 0;
+}
+
+/* Estilos score badge */
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-primary);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+.logo-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+</style>
+<style>
+#outer-layout{display:flex;align-items:flex-start;max-width:1100px;margin:0 auto;}
+#sidebar{width:220px;min-width:220px;background:#f7f6fd;border-right:2px solid #e5e2f6;padding:16px 0 40px 0;position:sticky;top:70px;height:calc(100vh - 70px);overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;font-family:'Segoe UI',system-ui,sans-serif;}
+#sidebar-title{font-size:.72rem;font-weight:700;letter-spacing:.12em;color:#9094df;text-transform:uppercase;padding:0 14px 12px 14px;border-bottom:1px solid #e5e2f6;margin-bottom:8px;}
+#session-indicator{margin:0 8px 10px 8px;background:linear-gradient(135deg,#9094df,#7a7ec8);color:#fff;border-radius:8px;padding:9px 12px;font-size:.78rem;font-family:'Segoe UI',system-ui,sans-serif;}
+#session-indicator .si-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.8;display:block;margin-bottom:2px;}
+#session-indicator .si-name{font-weight:700;font-size:.84rem;display:block;line-height:1.3;}
+#session-indicator .si-progress{margin-top:6px;background:rgba(255,255,255,.25);border-radius:4px;height:4px;}
+#session-indicator .si-progress-fill{height:4px;border-radius:4px;background:#fff;transition:width .4s ease;}
+.sidebar-group{margin-bottom:4px;}
+.sidebar-group-label{font-size:.65rem;font-weight:700;color:#b0adcc;text-transform:uppercase;letter-spacing:.1em;padding:10px 14px 4px 14px;}
+.sidebar-item{display:flex;align-items:center;gap:9px;margin:2px 8px;padding:8px 10px;font-size:.82rem;font-family:'Segoe UI',system-ui,sans-serif;color:#5a5a7a;cursor:pointer;border-radius:8px;border:1px solid transparent;transition:background .15s,border-color .15s,color .15s;line-height:1.3;text-align:left;background:transparent;width:calc(100% - 16px);}
+.sidebar-item:hover{background:#ebe9f8;color:#4a4d9e;border-color:#d4d0f0;}
+.sidebar-item.active{background:#9094df;color:#fff;border-color:#7a7ec8;font-weight:600;box-shadow:0 2px 6px rgba(144,148,223,.35);}
+.sidebar-item.active .si-dot{background:rgba(255,255,255,.8);}
+.sidebar-item.completed{color:#48bb78;background:#f0fff4;border-color:#c6f6d5;}
+.sidebar-item.completed .si-dot{background:#48bb78;}
+.si-dot{width:7px;height:7px;border-radius:50%;background:#ccc8e8;flex-shrink:0;transition:background .2s;}
+#main-content{flex:1;min-width:0;padding-bottom:72px;}
+.module-header{position:sticky;top:0;z-index:100;}
+@media(max-width:680px){#sidebar{display:none;}}
+.sec-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700;margin-bottom:8px;}
+.sec-1{background:#e3f2fd;color:#1565c0;}
+.sec-2{background:#fce4ec;color:#880e4f;}
+.sec-3{background:#f3e5f5;color:#6a1b9a;}
+.sec-4{background:#e8f5e9;color:#1b5e20;}
+.sec-5{background:#fff3e0;color:#e65100;}
+.flow-timeline{display:flex;align-items:center;gap:0;margin:18px 0;flex-wrap:wrap;}
+.flow-step{display:flex;flex-direction:column;align-items:center;background:#fff;border:2px solid var(--color-primary);border-radius:10px;padding:10px 12px;min-width:88px;text-align:center;flex:1;}
+.flow-step.highlight{background:var(--color-primary);color:#fff;}
+.flow-step .step-day{font-weight:800;font-size:.82rem;color:var(--color-primary-dark);}
+.flow-step.highlight .step-day{color:#fff;}
+.flow-step .step-name{font-size:.73rem;font-weight:700;margin-top:3px;}
+.flow-step .step-label{font-size:.65rem;color:#888;margin-top:2px;}
+.flow-step.highlight .step-label{color:rgba(255,255,255,.85);}
+.flow-arrow{font-size:1.1rem;color:var(--color-primary);padding:0 3px;align-self:center;flex-shrink:0;}
+.route-card{border-radius:10px;padding:14px 16px;margin:8px 0;}
+.route-card.fully{background:#e8f5e9;border:2px solid #1b5e20;}
+.route-card.psych{background:#fce4ec;border:2px solid #880e4f;}
+.route-card .route-title{font-weight:700;font-size:.9rem;margin-bottom:8px;}
+.route-card.fully .route-title{color:#1b5e20;}
+.route-card.psych .route-title{color:#880e4f;}
+.checklist-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;background:#fff;border:1px solid #e0ddf5;margin:6px 0;font-size:.88rem;line-height:1.5;}
+.checklist-icon{width:24px;height:24px;min-width:24px;border:2px solid var(--color-primary);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--color-primary);font-weight:700;font-size:.8rem;}
+.danger-box{background:#fff5f5;border:2px solid #e53935;border-radius:8px;padding:16px 20px;margin:16px 0;}
+.danger-box .box-title{font-weight:700;color:#c62828;margin-bottom:6px;font-size:.9rem;}
+.info-box{background:#e8f4fd;border:2px solid #2196f3;border-radius:8px;padding:16px 20px;margin:12px 0;}
+.info-box .box-title{font-weight:700;color:#1565c0;margin-bottom:6px;font-size:.9rem;}
+.success-box{background:#f0fff4;border:2px solid #48bb78;border-radius:8px;padding:16px 20px;margin:12px 0;}
+.success-box .box-title{font-weight:700;color:#276749;margin-bottom:6px;font-size:.9rem;}
+.warn-box{background:#fffbea;border:2px solid #f6ad55;border-radius:8px;padding:16px 20px;margin:12px 0;}
+.warn-box .box-title{font-weight:700;color:#744210;margin-bottom:6px;font-size:.9rem;}
+.pcr-components{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin:14px 0;}
+.pcr-card{border-radius:10px;padding:14px;text-align:center;border:2px solid #e0ddf5;background:#fff;}
+.pcr-card.highlight-pcr{background:var(--color-primary);color:#fff;border-color:var(--color-primary-dark);}
+.pcr-card .pcr-num{font-size:1.4rem;font-weight:800;margin-bottom:4px;}
+.pcr-card .pcr-name{font-size:.82rem;font-weight:700;}
+.pcr-card .pcr-desc{font-size:.72rem;margin-top:4px;color:#777;line-height:1.4;}
+.pcr-card.highlight-pcr .pcr-desc{color:rgba(255,255,255,.85);}
+.scenario-card{border-radius:10px;background:#f7f6fd;border:2px solid #e0ddf5;padding:16px;margin:10px 0 4px 0;}
+.scenario-card .scenario-num{font-size:.72rem;font-weight:700;color:var(--color-primary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.scenario-card .scenario-body{font-size:.89rem;line-height:1.6;font-style:italic;color:#444;}
+.resumen-item{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #e0ddf5;border-radius:10px;padding:14px;margin:8px 0;}
+.resumen-num{width:32px;height:32px;min-width:32px;border-radius:50%;background:var(--color-primary);color:#fff;font-weight:800;font-size:.95rem;display:flex;align-items:center;justify-content:center;}
+.resumen-text strong{font-size:.88rem;display:block;color:#3d3a6b;margin-bottom:2px;}
+.resumen-text span{font-size:.82rem;color:#666;line-height:1.5;}
+.cover-section{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:30px 20px;}
+.cover-badge{background:var(--color-secondary);color:var(--color-primary-dark);font-weight:700;font-size:.85rem;padding:6px 16px;border-radius:20px;margin-bottom:18px;display:inline-block;}
+.cover-title{font-size:2rem;font-weight:800;color:var(--color-primary-dark);margin:0 0 10px 0;line-height:1.2;}
+.cover-subtitle{font-size:1rem;color:#666;max-width:520px;margin:0 auto 24px auto;line-height:1.6;}
+.cover-flow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:18px;}
+.cover-node{background:var(--color-primary);color:#fff;border-radius:8px;padding:8px 14px;font-size:.78rem;font-weight:700;text-align:center;line-height:1.4;}
+.cover-arrow{color:var(--color-primary);font-size:1.2rem;}
+.cover-obj{background:var(--color-secondary);border-radius:10px;padding:16px 22px;max-width:540px;margin:24px auto 0 auto;font-size:.88rem;line-height:1.6;color:#3d3a6b;}
+.order-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.85rem;}
+.order-table th{background:var(--color-primary);color:#fff;padding:10px 12px;text-align:left;}
+.order-table td{padding:10px 12px;border:1px solid #e0ddf5;vertical-align:middle;}
+.order-table tr:nth-child(even){background:#f7f6fd;}
+.order-table select{font-size:.84rem;padding:5px 8px;border:1px solid #ccc;border-radius:6px;background:#fff;color:#333;}
+.results-header{text-align:center;padding:24px 0 16px 0;}
+.results-score-circle{width:110px;height:110px;border-radius:50%;background:var(--color-primary);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px auto;box-shadow:0 4px 16px rgba(144,148,223,.4);}
+.results-score-circle .sc-num{font-size:2.2rem;font-weight:800;line-height:1;}
+.results-score-circle .sc-lbl{font-size:.72rem;margin-top:2px;}
+.results-breakdown{background:#f7f6fd;border-radius:10px;padding:14px 20px;margin:14px 0;}
+.rb-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #e5e2f6;font-size:.87rem;}
+.rb-row:last-child{border-bottom:none;}
+.rb-label{color:#555;}
+.rb-val{font-weight:700;color:var(--color-primary-dark);}
+/* Feedback blocks — hidden by default, JS shows them */
+.feedback-block{display:none;transition:opacity .25s ease;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="module-header">
+  <span class="module-title">Módulo 4: End to End – El Proceso Completo del Caso</span>
+  <div class="logo-area">
+    <img src="data:image/png;base64,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" alt="Training TMLF" class="logo-img">
+    <div class="logo-label">TRAINING</div>
+  </div>
+</header>
+<div class="progress-bar-container"><div class="progress-bar-fill" id="progress_fill" style="width:6%"></div></div>
+<div class="progress-label" id="progress_label">6% completado</div>
+
+<div id="outer-layout">
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div id="sidebar-title">Módulo 4</div>
+    <div id="session-indicator">
+      <span class="si-label">Sesión actual</span>
+      <span class="si-name" id="si-name-text">Portada</span>
+      <div class="si-progress"><div class="si-progress-fill" id="si-progress-fill" style="width:6%"></div></div>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Teoría</div>
+      <button class="sidebar-item active" id="sb_0" onclick="goToScreen(0)"><span class="si-dot"></span>Portada</button>
+      <button class="sidebar-item" id="sb_1" onclick="goToScreen(1)"><span class="si-dot"></span>Introducción</button>
+      <button class="sidebar-item" id="sb_2" onclick="goToScreen(2)"><span class="si-dot"></span>Día 0 – Sales</button>
+      <button class="sidebar-item" id="sb_3" onclick="goToScreen(3)"><span class="si-dot"></span>Día 5 – PWC</button>
+      <button class="sidebar-item" id="sb_4" onclick="goToScreen(4)"><span class="si-dot"></span>Welcome Call</button>
+      <button class="sidebar-item" id="sb_5" onclick="goToScreen(5)"><span class="si-dot"></span>PCR</button>
+      <button class="sidebar-item" id="sb_6" onclick="goToScreen(6)"><span class="si-dot"></span>Packet Assembly</button>
+      <button class="sidebar-item" id="sb_7" onclick="goToScreen(7)"><span class="si-dot"></span>Case Review</button>
+      <button class="sidebar-item" id="sb_8" onclick="goToScreen(8)"><span class="si-dot"></span>Resumen</button>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Ejercicios</div>
+      <button class="sidebar-item" id="sb_9" onclick="goToScreen(9)"><span class="si-dot"></span>E1: Día 0 y PWC</button>
+      <button class="sidebar-item" id="sb_10" onclick="goToScreen(10)"><span class="si-dot"></span>E2: Welcome Call</button>
+      <button class="sidebar-item" id="sb_11" onclick="goToScreen(11)"><span class="si-dot"></span>E3: PCR y Checklist</button>
+      <button class="sidebar-item" id="sb_12" onclick="goToScreen(12)"><span class="si-dot"></span>E4: Case Review</button>
+      <button class="sidebar-item" id="sb_13" onclick="goToScreen(13)"><span class="si-dot"></span>E5: Precisión</button>
+      <button class="sidebar-item" id="sb_14" onclick="goToScreen(14)"><span class="si-dot"></span>E6: Escenarios</button>
+      <button class="sidebar-item" id="sb_15" onclick="goToScreen(15)"><span class="si-dot"></span>E7: El Flujo</button>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Cierre</div>
+      <button class="sidebar-item" id="sb_16" onclick="goToScreen(16)"><span class="si-dot"></span>Resultados</button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div id="main-content">
+
+    <!-- SCREEN 0: PORTADA -->
+    <div class="screen active" id="screen_0">
+      <div class="cover-section">
+        <span class="cover-badge">TMLF Training &middot; Módulo 4 de 4</span>
+        <h1 class="cover-title">End to End<br>El Proceso Completo del Caso</h1>
+        <p class="cover-subtitle">Comprende el flujo completo desde que el cliente llega a Ventas hasta que el paquete viaja a USCIS, y cuál es tu rol crítico en cada etapa.</p>
+        <div class="cover-flow">
+          <div class="cover-node">📅 Día 0<br><small>Sales</small></div>
+          <span class="cover-arrow">→</span>
+          <div class="cover-node">📋 Día 5<br><small>PWC</small></div>
+          <span class="cover-arrow">→</span>
+          <div class="cover-node">📞 Día 5-15<br><small>Welcome Call</small></div>
+          <span class="cover-arrow">→</span>
+          <div class="cover-node">📁 PCR<br><small>Pre-Case Review</small></div>
+          <span class="cover-arrow">→</span>
+          <div class="cover-node">⚖️ Día 45<br><small>Case Review</small></div>
+        </div>
+        <div class="cover-obj">
+          <strong>🎯 Objetivo del módulo:</strong> Identificar en qué etapas interviene traducción, comprender los plazos críticos (Día 0 al Día 45) y reconocer tu responsabilidad como <strong>último filtro antes de la revisión final del abogado</strong>.
+        </div>
+        <div style="margin-top:18px;color:#888;font-size:.82rem;">⏱ Duración estimada: 50–60 minutos</div>
+      </div>
+    </div>
+
+    <!-- SCREEN 1: INTRODUCCIÓN -->
+    <div class="screen" id="screen_1">
+      <div class="screen-content">
+        <span class="sec-badge sec-1">Introducción</span>
+        <h2 class="screen-title">¿Qué verás en este módulo?</h2>
+        <p class="screen-intro">Este módulo te guía por el ciclo de vida completo de un caso, desde el primer contacto con el cliente hasta el envío del paquete a USCIS. Conocerás cada etapa del proceso, qué documentos llegan en cada una y cuál es tu responsabilidad como traductor.</p>
+
+        <div class="info-box">
+          <div class="box-title">📋 Contenido del módulo</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+            <div style="background:#fff;border:1px solid #d0d5f5;border-radius:8px;padding:10px 12px;font-size:.83rem;line-height:1.5;">
+              <strong style="color:var(--color-primary-dark);display:block;margin-bottom:3px;">📅 Día 0 – Sales</strong>
+              Captación del cliente. El perfil del caso empieza a formarse.
+            </div>
+            <div style="background:#fff;border:1px solid #d0d5f5;border-radius:8px;padding:10px 12px;font-size:.83rem;line-height:1.5;">
+              <strong style="color:var(--color-primary-dark);display:block;margin-bottom:3px;">📋 Día 5 – PWC</strong>
+              Llegan los primeros documentos: actas, IDs y comprobantes.
+            </div>
+            <div style="background:#fff;border:1px solid #d0d5f5;border-radius:8px;padding:10px 12px;font-size:.83rem;line-height:1.5;">
+              <strong style="color:var(--color-primary-dark);display:block;margin-bottom:3px;">📞 Día 5-15 – Welcome Call</strong>
+              El caso se divide en dos rutas: Fully o Psych.
+            </div>
+            <div style="background:#fff;border:1px solid #d0d5f5;border-radius:8px;padding:10px 12px;font-size:.83rem;line-height:1.5;">
+              <strong style="color:var(--color-primary-dark);display:block;margin-bottom:3px;">📁 PCR</strong>
+              Revisión previa al paquete. Tus traducciones deben estar listas.
+            </div>
+            <div style="background:#fff;border:1px solid #d0d5f5;border-radius:8px;padding:10px 12px;font-size:.83rem;line-height:1.5;">
+              <strong style="color:var(--color-primary-dark);display:block;margin-bottom:3px;">📦 Packet Assembly</strong>
+              Ensamblaje final: DCL, Forms y Exhibits integrados.
+            </div>
+            <div style="background:#fff;border:1px solid #d0d5f5;border-radius:8px;padding:10px 12px;font-size:.83rem;line-height:1.5;">
+              <strong style="color:var(--color-primary-dark);display:block;margin-bottom:3px;">⚖️ Día 45 – Case Review</strong>
+              Revisión final del abogado. Eres el último filtro antes de USCIS.
+            </div>
+          </div>
+        </div>
+
+        <div class="warn-box" style="margin-top:14px;">
+          <div class="box-title">🎯 Lo que aprenderás</div>
+          <ul style="font-size:.87rem;line-height:1.8;margin:0;padding-left:18px;">
+            <li>Identificar <strong>en qué etapas interviene el equipo de traducción</strong> y qué documentos llegan en cada una.</li>
+            <li>Comprender los <strong>plazos críticos</strong> del proceso (Día 0 al Día 45).</li>
+            <li>Reconocer tu rol como <strong>último filtro</strong> antes de que el caso llegue al abogado y a USCIS.</li>
+            <li>Tomar decisiones correctas ante situaciones de <strong>presión o incertidumbre</strong>.</li>
+          </ul>
+        </div>
+
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--color-primary-dark);margin:18px 0 10px 0;">🗓 El flujo completo de un caso</h3>
+        <div class="flow-timeline">
+          <div class="flow-step"><span class="step-day">Día 0</span><span class="step-name">Sales</span><span class="step-label">Captación</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 5</span><span class="step-name">PWC</span><span class="step-label">Pre-Welcome Call</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 5-15</span><span class="step-name">Welcome Call</span><span class="step-label">Bifurcación</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">+15 días</span><span class="step-name">PCR</span><span class="step-label">Pre-Case Review</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 45</span><span class="step-name">Case Review</span><span class="step-label">Revisión Final</span></div>
+        </div>
+        <p style="font-size:.85rem;color:#666;margin-top:10px;line-height:1.6;">Cada etapa tiene documentos específicos, plazos definidos y una responsabilidad clara para el área de traducción. Avanza para verlos uno por uno.</p>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: DÍA 0 -->
+    <div class="screen" id="screen_2">
+      <div class="screen-content">
+        <span class="sec-badge sec-1">Etapa 1</span>
+        <h2 class="screen-title">Día 0 – Sales (Captación del Cliente)</h2>
+
+        <div class="flow-timeline">
+          <div class="flow-step highlight"><span class="step-day">Día 0</span><span class="step-name">Sales</span><span class="step-label">← Aquí</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 5</span><span class="step-name">PWC</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 5-15</span><span class="step-name">WC</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">+15 d</span><span class="step-name">PCR</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 45</span><span class="step-name">CR</span></div>
+        </div>
+
+        <h3 style="font-size:.95rem;font-weight:700;color:var(--color-primary-dark);margin:20px 0 10px 0;">¿Llegan documentos para traducir en el Día 0?</h3>
+        <p style="font-size:.9rem;line-height:1.7;color:#444;">En el Día 0, el equipo de ventas está captando al cliente. Generalmente <strong>no llegan documentos para traducir en este punto</strong>. Pero es importante entender por qué esta etapa importa.</p>
+
+        <div class="success-box">
+          <div class="box-title">💡 La información inicial tiene valor</div>
+          <ul style="font-size:.87rem;line-height:1.7;margin:0;padding-left:18px;">
+            <li>Si ventas detecta que el cliente es <strong>víctima de trata</strong> → ya sabes (Módulo 3) que habrá que atender los verbos de reclutamiento y los medios de coerción.</li>
+            <li>Si ventas identifica que hay un <strong>waiver</strong> de por medio → ya sabes (Módulo 2) que el <em>hardship</em> debe ser concreto y vívido.</li>
+          </ul>
+        </div>
+
+        <div class="info-box">
+          <div class="box-title">📌 Conclusión clave</div>
+          <p style="font-size:.88rem;line-height:1.6;margin:0;">Aunque no traduzcas en el Día 0, <strong>estar atento al perfil del cliente</strong> te ayuda a preparar mentalmente el enfoque de traducción que necesitarás más adelante.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: DÍA 5 – PWC -->
+    <div class="screen" id="screen_3">
+      <div class="screen-content">
+        <span class="sec-badge sec-2">Etapa 2</span>
+        <h2 class="screen-title">Día 5 – PWC (Pre-Welcome Call)</h2>
+
+        <div class="flow-timeline">
+          <div class="flow-step"><span class="step-day">Día 0</span><span class="step-name">Sales</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step highlight"><span class="step-day">Día 5</span><span class="step-name">PWC</span><span class="step-label">← Aquí</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 5-15</span><span class="step-name">WC</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">+15 d</span><span class="step-name">PCR</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 45</span><span class="step-name">CR</span></div>
+        </div>
+
+        <h3 style="font-size:.95rem;font-weight:700;color:var(--color-primary-dark);margin:20px 0 10px 0;">Comienza la recopilación de documentos</h3>
+        <p style="font-size:.9rem;line-height:1.7;color:#444;">En la Pre-Welcome Call, el equipo comienza a recopilar información seria del cliente. Aquí <strong>sí pueden empezar a llegar documentos</strong>.</p>
+
+        <h3 style="font-size:.88rem;font-weight:700;color:#444;margin:16px 0 8px 0;">📄 Documentos típicos en esta etapa:</h3>
+        <div class="checklist-item"><div class="checklist-icon">✓</div><div>Acta de nacimiento (cliente o familiar)</div></div>
+        <div class="checklist-item"><div class="checklist-icon">✓</div><div>Acta de matrimonio</div></div>
+        <div class="checklist-item"><div class="checklist-icon">✓</div><div>Identificación oficial</div></div>
+        <div class="checklist-item"><div class="checklist-icon">✓</div><div>Comprobantes de domicilio</div></div>
+
+        <div class="danger-box">
+          <div class="box-title">⚠️ La precisión sigue siendo crítica</div>
+          <p style="font-size:.88rem;line-height:1.6;margin:0;">En esta etapa puedes recibir documentos aparentemente "sencillos" que requieren traducción certificada. <strong>Un error en un nombre o una fecha en un acta de nacimiento puede invalidar todo el caso.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: WELCOME CALL -->
+    <div class="screen" id="screen_4">
+      <div class="screen-content">
+        <span class="sec-badge sec-3">Etapa 3</span>
+        <h2 class="screen-title">Día 5-15 – Welcome Call (WC): El Punto de Bifurcación</h2>
+
+        <div class="flow-timeline">
+          <div class="flow-step"><span class="step-day">Día 0</span><span class="step-name">Sales</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 5</span><span class="step-name">PWC</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step highlight"><span class="step-day">Día 5-15</span><span class="step-name">Welcome Call</span><span class="step-label">← Aquí</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">+15 d</span><span class="step-name">PCR</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 45</span><span class="step-name">CR</span></div>
+        </div>
+
+        <p style="font-size:.9rem;line-height:1.7;color:#444;margin:16px 0 12px 0;">El Welcome Call es el corazón del diagrama. Aquí se evalúa la información del cliente y el caso toma <strong>dos rutas posibles</strong>:</p>
+
+        <div class="route-card fully">
+          <div class="route-title">🟢 Ruta 1: Fully (Superior)</div>
+          <ul style="font-size:.86rem;line-height:1.7;margin:0;padding-left:18px;">
+            <li><strong>Característica:</strong> El cliente tiene toda la información disponible desde el principio.</li>
+            <li><strong>Para traducción:</strong> Los documentos llegarán de forma más ordenada y con menos urgencia. Puedes planificar el trabajo.</li>
+            <li><strong>Plazo:</strong> Aproximadamente +15 días hasta PCR.</li>
+          </ul>
+        </div>
+
+        <div class="route-card psych">
+          <div class="route-title">🔴 Ruta 2: Psych (Inferior)</div>
+          <ul style="font-size:.86rem;line-height:1.7;margin:0;padding-left:18px;">
+            <li><strong>Característica:</strong> El cliente requiere evaluación psicológica (WAE).</li>
+            <li><strong>Para traducción:</strong> Recibirás <strong>reportes psicológicos</strong> — documentos altamente técnicos y sensibles.</li>
+            <li><strong>Plazo:</strong> El caso se alarga, pero cuando el reporte llega, suele ser con urgencia.</li>
+          </ul>
+        </div>
+
+        <div class="danger-box">
+          <div class="box-title">⚠️ Reportes Psicológicos (WAE): Puntos críticos</div>
+          <ul style="font-size:.87rem;line-height:1.7;margin:0;padding-left:18px;">
+            <li>Contienen diagnósticos clínicos (DSM-5), descripciones de trauma y terminología médica especializada.</li>
+            <li>No traduzcas diagnósticos por intuición. <em>"Trastorno de Estrés Postraumático (TEPT)"</em> en inglés es <strong>"Post-Traumatic Stress Disorder (PTSD)"</strong>.</li>
+            <li>Mantén el tono clínico y profesional. No coloquialices el trauma.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: PCR -->
+    <div class="screen" id="screen_5">
+      <div class="screen-content">
+        <span class="sec-badge sec-4">Etapa 4</span>
+        <h2 class="screen-title">PCR – Pre-Case Review: El Semipaquete</h2>
+
+        <div class="flow-timeline">
+          <div class="flow-step"><span class="step-day">Día 0</span><span class="step-name">Sales</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 5</span><span class="step-name">PWC</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 5-15</span><span class="step-name">WC</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step highlight"><span class="step-day">+15 días</span><span class="step-name">PCR</span><span class="step-label">← Aquí</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 45</span><span class="step-name">CR</span></div>
+        </div>
+
+        <p style="font-size:.9rem;line-height:1.7;color:#444;margin:16px 0 12px 0;">El PCR verifica que el paquete esté <strong>semi-completo</strong>. Consta de cinco componentes:</p>
+
+        <div class="pcr-components">
+          <div class="pcr-card">
+            <div class="pcr-num">1</div>
+            <div class="pcr-name">RS</div>
+            <div class="pcr-desc">Record of Sworn Statement. Declaraciones juradas.</div>
+          </div>
+          <div class="pcr-card">
+            <div class="pcr-num">2</div>
+            <div class="pcr-name">Forms</div>
+            <div class="pcr-desc">Formularios USCIS del caso.</div>
+          </div>
+          <div class="pcr-card highlight-pcr">
+            <div class="pcr-num">3</div>
+            <div class="pcr-name">Translations</div>
+            <div class="pcr-desc">Aquí entran ustedes. Todas las traducciones certificadas deben estar listas.</div>
+          </div>
+          <div class="pcr-card">
+            <div class="pcr-num">4</div>
+            <div class="pcr-name">Evidence</div>
+            <div class="pcr-desc">La evidencia que soporta el caso.</div>
+          </div>
+          <div class="pcr-card">
+            <div class="pcr-num">5</div>
+            <div class="pcr-name">Documents</div>
+            <div class="pcr-desc">Documentos de soporte adicionales.</div>
+          </div>
+        </div>
+
+        <div class="danger-box">
+          <div class="box-title">⚠️ Tu responsabilidad en PCR</div>
+          <p style="font-size:.88rem;line-height:1.6;margin:0;">Cuando el caso llega a PCR, tu trabajo de traducción (DCL, actas, reportes, exhibits) <strong>debe estar terminado y revisado</strong>. Si no es así, el caso se retrasa o, peor, se envía con traducciones incompletas.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: PACKET ASSEMBLY -->
+    <div class="screen" id="screen_6">
+      <div class="screen-content">
+        <span class="sec-badge sec-4">Etapa 5</span>
+        <h2 class="screen-title">Packet Assembly – El Ensamblaje Final</h2>
+
+        <p style="font-size:.9rem;line-height:1.7;color:#444;margin-bottom:14px;">Después del PCR, viene el ensamblaje del paquete final. Aquí es donde todo se une y tus traducciones se integran al expediente definitivo.</p>
+
+        <h3 style="font-size:.88rem;font-weight:700;color:var(--color-primary-dark);margin:0 0 10px 0;">📦 Estructura del paquete final:</h3>
+        <div class="checklist-item"><div class="checklist-icon" style="background:var(--color-secondary);">1</div><div><strong>DCL + CVL</strong> — Declaración Legal y Carta de Vínculo (traducidas)</div></div>
+        <div class="checklist-item"><div class="checklist-icon" style="background:var(--color-secondary);">2</div><div><strong>Forms</strong> — Formularios USCIS completados</div></div>
+        <div class="checklist-item"><div class="checklist-icon" style="background:var(--color-secondary);">3</div><div><strong>Exhibits</strong> — Expedientes donde van tus traducciones (reportes policiales, médicos, etc.)</div></div>
+
+        <div class="warn-box">
+          <div class="box-title">📋 Checklist de entrega de traducciones</div>
+          <div class="checklist-item" style="background:transparent;border:none;padding:6px 0;"><div class="checklist-icon">✓</div><div>¿La traducción está <strong>certificada</strong> (con firma, fecha y declaración)?</div></div>
+          <div class="checklist-item" style="background:transparent;border:none;padding:6px 0;"><div class="checklist-icon">✓</div><div>¿El <strong>documento original</strong> está adjunto?</div></div>
+          <div class="checklist-item" style="background:transparent;border:none;padding:6px 0;"><div class="checklist-icon">✓</div><div>¿El <strong>nombre del archivo</strong> sigue la convención del caso?<br><small style="color:#888;">Ej: CASO123_ActaNacimiento_ESP.pdf / CASO123_BirthCertificate_ENG.pdf</small></div></div>
+          <div class="checklist-item" style="background:transparent;border:none;padding:6px 0;"><div class="checklist-icon">✓</div><div>¿Se revisaron los <strong>datos críticos</strong>? (nombres, fechas, números de documento)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 7: CASE REVIEW -->
+    <div class="screen" id="screen_7">
+      <div class="screen-content">
+        <span class="sec-badge sec-5">Etapa 6</span>
+        <h2 class="screen-title">Día 45 – Case Review: El Momento de la Verdad</h2>
+
+        <div class="flow-timeline">
+          <div class="flow-step"><span class="step-day">Día 0</span><span class="step-name">Sales</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 5</span><span class="step-name">PWC</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">Día 5-15</span><span class="step-name">WC</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><span class="step-day">+15 d</span><span class="step-name">PCR</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step highlight"><span class="step-day">Día 45</span><span class="step-name">Case Review</span><span class="step-label">🚨 ÚLTIMO FILTRO</span></div>
+        </div>
+
+        <div class="danger-box" style="margin-top:18px;">
+          <div class="box-title">🚨 Lee esto con atención</div>
+          <p style="font-size:.92rem;font-style:italic;line-height:1.6;margin:0;color:#444;">"Los traductores son el último paso antes del CR. Esto significa que un error de traducción en este punto llega directamente a USCIS sin corrección posterior."</p>
+        </div>
+
+        <h3 style="font-size:.92rem;font-weight:700;color:var(--color-primary-dark);margin:20px 0 10px 0;">¿Qué implica ser el último filtro?</h3>
+        <div class="checklist-item" style="border-color:#e53935;"><div class="checklist-icon" style="border-color:#e53935;color:#e53935;">!</div><div>Si el abogado <strong>encuentra un error</strong> durante el CR → el caso se retrasa.</div></div>
+        <div class="checklist-item" style="border-color:#e53935;"><div class="checklist-icon" style="border-color:#e53935;color:#e53935;">!</div><div>Si el error <strong>no se detecta</strong> → el caso viaja a USCIS con ese error.</div></div>
+        <div class="checklist-item" style="border-color:#e53935;"><div class="checklist-icon" style="border-color:#e53935;color:#e53935;">!</div><div>Un error puede resultar en una <strong>RFE</strong> (Request for Evidence) o en una <strong>negación directa</strong> del caso.</div></div>
+
+        <div class="success-box" style="margin-top:16px;">
+          <div class="box-title">✅ La regla de oro</div>
+          <p style="font-size:1rem;font-weight:700;color:#276749;margin:0 0 6px 0;">Prioriza precisión sobre velocidad.</p>
+          <p style="font-size:.87rem;margin:0;color:#444;">Un día de retraso es preferible a una negación por error de traducción. Cuando sientas presión por el CR, recuerda esta regla.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 8: RESUMEN -->
+    <div class="screen" id="screen_8">
+      <div class="screen-content">
+        <span class="sec-badge sec-1">Resumen</span>
+        <h2 class="screen-title">Ideas Fuerza del Módulo 4</h2>
+        <p style="font-size:.9rem;color:#666;margin-bottom:16px;">Nuestro trabajo no es una isla. Está insertado en un flujo con fechas, responsabilidades y consecuencias reales.</p>
+
+        <div class="resumen-item">
+          <div class="resumen-num">1</div>
+          <div class="resumen-text">
+            <strong>Conoce el flujo completo</strong>
+            <span>Día 0 (Sales) → Día 5 (PWC) → Día 5-15 (WC) → PCR → Día 45 (CR). Tu trabajo tiene un momento en cada etapa.</span>
+          </div>
+        </div>
+        <div class="resumen-item">
+          <div class="resumen-num">2</div>
+          <div class="resumen-text">
+            <strong>Anticipa según la ruta</strong>
+            <span>Si el caso va por ruta Psych, prepárate para reportes psicológicos técnicos con terminología DSM-5.</span>
+          </div>
+        </div>
+        <div class="resumen-item">
+          <div class="resumen-num">3</div>
+          <div class="resumen-text">
+            <strong>Sé el guardián de la precisión</strong>
+            <span>En PCR, tus traducciones deben estar listas y revisadas. Sin excepciones.</span>
+          </div>
+        </div>
+        <div class="resumen-item">
+          <div class="resumen-num">4</div>
+          <div class="resumen-text">
+            <strong>Eres el último filtro</strong>
+            <span>En Case Review, si hay un error, es el último error antes de USCIS.</span>
+          </div>
+        </div>
+        <div class="resumen-item">
+          <div class="resumen-num">5</div>
+          <div class="resumen-text">
+            <strong>Prioriza precisión sobre velocidad</strong>
+            <span>Un error puede costar una negación. La honestidad y precisión siempre van primero.</span>
+          </div>
+        </div>
+
+        <div class="info-box" style="margin-top:18px;">
+          <div class="box-title">📝 A continuación: Ejercicios de comprensión</div>
+          <p style="font-size:.87rem;margin:0;">Pon a prueba tu comprensión del flujo completo con los ejercicios interactivos.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 9: E1 - DÍA 0 Y PWC -->
+    <div class="screen" id="screen_9">
+      <div class="screen-content">
+        <span class="sec-badge sec-2">Ejercicio 1</span>
+        <h2 class="screen-title">Día 0 y PWC: Verifica tu comprensión</h2>
+        <div id="advance_warning"></div>
+
+        <div class="question-block" id="q_t1_1">
+          <p class="question-text">1. ¿Cuál es el rol principal del Día 0 (Sales) en el proceso del caso?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="t1_1" value="A"> <span class="option-text">A) Es cuando llegan los documentos más importantes para traducir.</span></label>
+            <label class="option-label"><input type="radio" name="t1_1" value="B"> <span class="option-text">B) El equipo de ventas capta al cliente. No llegan documentos aún, pero el perfil del caso empieza a formarse.</span></label>
+            <label class="option-label"><input type="radio" name="t1_1" value="C"> <span class="option-text">C) El abogado revisa el paquete final antes de enviarlo a USCIS.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('t1_1','fb_t1_1','B')">Verificar</button>
+          <div class="feedback-block" id="fb_t1_1"></div>
+        </div>
+
+        <div class="question-block" id="q_t1_2">
+          <p class="question-text">2. En el PWC (Día 5), ¿qué tipo de documentos suelen llegar para traducción?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="t1_2" value="A"> <span class="option-text">A) Reportes psicológicos y diagnósticos del DSM-5.</span></label>
+            <label class="option-label"><input type="radio" name="t1_2" value="B"> <span class="option-text">B) Actas de nacimiento, matrimonio, identificaciones y comprobantes de domicilio.</span></label>
+            <label class="option-label"><input type="radio" name="t1_2" value="C"> <span class="option-text">C) El paquete completo con todas las traducciones certificadas del caso.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('t1_2','fb_t1_2','B')">Verificar</button>
+          <div class="feedback-block" id="fb_t1_2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 10: E2 - WELCOME CALL -->
+    <div class="screen" id="screen_10">
+      <div class="screen-content">
+        <span class="sec-badge sec-3">Ejercicio 2</span>
+        <h2 class="screen-title">Welcome Call: Las Dos Rutas</h2>
+        <div id="advance_warning"></div>
+
+        <div class="question-block" id="q_t2_1">
+          <p class="question-text">3. ¿Qué implica la ruta Psych para el área de traducción?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="t2_1" value="A"> <span class="option-text">A) Los documentos llegan de forma más ordenada y con menos urgencia.</span></label>
+            <label class="option-label"><input type="radio" name="t2_1" value="B"> <span class="option-text">B) El cliente requiere evaluación psicológica (WAE) y el traductor recibirá reportes técnicos urgentes con terminología DSM-5.</span></label>
+            <label class="option-label"><input type="radio" name="t2_1" value="C"> <span class="option-text">C) El caso se cancela y no se requieren traducciones adicionales.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('t2_1','fb_t2_1','B')">Verificar</button>
+          <div class="feedback-block" id="fb_t2_1"></div>
+        </div>
+
+        <div class="question-block" id="q_t2_2">
+          <p class="question-text">4. En la ruta Fully (Superior), ¿cuál es la característica principal que beneficia al traductor?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="t2_2" value="A"> <span class="option-text">A) El cliente tiene toda la información disponible y los documentos llegan de manera ordenada, lo que permite planificar el trabajo.</span></label>
+            <label class="option-label"><input type="radio" name="t2_2" value="B"> <span class="option-text">B) No se requieren traducciones certificadas en esta ruta.</span></label>
+            <label class="option-label"><input type="radio" name="t2_2" value="C"> <span class="option-text">C) El caso siempre se resuelve en menos de 10 días totales.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('t2_2','fb_t2_2','A')">Verificar</button>
+          <div class="feedback-block" id="fb_t2_2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 11: E3 - PCR Y CHECKLIST -->
+    <div class="screen" id="screen_11">
+      <div class="screen-content">
+        <span class="sec-badge sec-4">Ejercicio 3</span>
+        <h2 class="screen-title">PCR y Checklist de Entrega</h2>
+        <div id="advance_warning"></div>
+
+        <div class="question-block" id="q_t3_1">
+          <p class="question-text">5. Cuando el caso llega al PCR, ¿cuál es la expectativa sobre el trabajo de traducción?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="t3_1" value="A"> <span class="option-text">A) El traductor puede entregar la mitad de las traducciones; el resto se completará después.</span></label>
+            <label class="option-label"><input type="radio" name="t3_1" value="B"> <span class="option-text">B) El equipo legal completa las traducciones por el traductor si hay atrasos.</span></label>
+            <label class="option-label"><input type="radio" name="t3_1" value="C"> <span class="option-text">C) Toda la traducción (DCL, actas, reportes, exhibits) debe estar terminada y revisada. Si no, el caso se retrasa.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('t3_1','fb_t3_1','C')">Verificar</button>
+          <div class="feedback-block" id="fb_t3_1"></div>
+        </div>
+
+        <div class="question-block" id="q_t3_2">
+          <p class="question-text">6. ¿Cuál de las siguientes opciones describe correctamente el checklist de entrega de traducciones?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="t3_2" value="A"> <span class="option-text">A) Solo verificar que el documento esté en el formato de archivo correcto.</span></label>
+            <label class="option-label"><input type="radio" name="t3_2" value="B"> <span class="option-text">B) Certificación con firma y fecha, documento original adjunto, nombre de archivo con convención del caso, y datos críticos verificados.</span></label>
+            <label class="option-label"><input type="radio" name="t3_2" value="C"> <span class="option-text">C) Solo confirmar que el abogado revisó el documento antes de enviarlo.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('t3_2','fb_t3_2','B')">Verificar</button>
+          <div class="feedback-block" id="fb_t3_2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 12: E4 - CASE REVIEW -->
+    <div class="screen" id="screen_12">
+      <div class="screen-content">
+        <span class="sec-badge sec-5">Ejercicio 4</span>
+        <h2 class="screen-title">Case Review: El Último Filtro</h2>
+        <div id="advance_warning"></div>
+
+        <div class="question-block" id="q_t4_1">
+          <p class="question-text">7. ¿Por qué se dice que el Case Review (Día 45) es el "momento de la verdad" para los traductores?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="t4_1" value="A"> <span class="option-text">A) Es cuando los traductores reciben el pago por su trabajo.</span></label>
+            <label class="option-label"><input type="radio" name="t4_1" value="B"> <span class="option-text">B) Es el momento en que el equipo de ventas evalúa el desempeño del traductor.</span></label>
+            <label class="option-label"><input type="radio" name="t4_1" value="C"> <span class="option-text">C) Es la revisión final del abogado antes de USCIS. Los traductores son el último filtro — un error aquí va directo a USCIS sin corrección.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('t4_1','fb_t4_1','C')">Verificar</button>
+          <div class="feedback-block" id="fb_t4_1"></div>
+        </div>
+
+        <div class="question-block" id="q_t4_2">
+          <p class="question-text">8. ¿Qué consecuencia puede tener un error de traducción que llegue a USCIS sin corrección?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="t4_2" value="A"> <span class="option-text">A) USCIS corrige el error automáticamente y procesa el caso sin problemas.</span></label>
+            <label class="option-label"><input type="radio" name="t4_2" value="B"> <span class="option-text">B) Puede resultar en una RFE (Request for Evidence) o en una negación directa del caso.</span></label>
+            <label class="option-label"><input type="radio" name="t4_2" value="C"> <span class="option-text">C) El abogado tiene la opción de corregirlo después de enviarlo a USCIS.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('t4_2','fb_t4_2','B')">Verificar</button>
+          <div class="feedback-block" id="fb_t4_2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 13: E5 - PRECISIÓN VS VELOCIDAD -->
+    <div class="screen" id="screen_13">
+      <div class="screen-content">
+        <span class="sec-badge sec-5">Ejercicio 5</span>
+        <h2 class="screen-title">Precisión vs. Velocidad</h2>
+        <div id="advance_warning"></div>
+
+        <div class="question-block" id="q_t5_1">
+          <p class="question-text">9. Revisando una traducción entregada hace dos días, descubres un error en una fecha crítica en un acta de matrimonio. El paquete ya fue ensamblado y está en revisión final. ¿Qué debes hacer?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="t5_1" value="A"> <span class="option-text">A) Esperar a ver si el abogado lo nota en el Case Review antes de decir algo.</span></label>
+            <label class="option-label"><input type="radio" name="t5_1" value="B"> <span class="option-text">B) Reportarlo de inmediato al coordinador de traducciones y al equipo legal. Es mejor corregirlo ahora, aunque retrase el caso.</span></label>
+            <label class="option-label"><input type="radio" name="t5_1" value="C"> <span class="option-text">C) Corregir el error silenciosamente en el archivo sin avisar a nadie.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('t5_1','fb_t5_1','B')">Verificar</button>
+          <div class="feedback-block" id="fb_t5_1"></div>
+        </div>
+
+        <div class="question-block" id="q_t5_2">
+          <p class="question-text">10. Recibes un reporte psicológico con 3 días de plazo. Encuentras un término clínico del DSM-5 que no sabes cómo traducir correctamente. ¿Qué haces?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="t5_2" value="A"> <span class="option-text">A) Usas el término que suena más parecido en inglés y continúas sin perder tiempo.</span></label>
+            <label class="option-label"><input type="radio" name="t5_2" value="B"> <span class="option-text">B) Consultas con el supervisor o el equipo legal antes de traducir el término. No improvises terminología médica.</span></label>
+            <label class="option-label"><input type="radio" name="t5_2" value="C"> <span class="option-text">C) Omites el término clínico en la traducción para evitar errores.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('t5_2','fb_t5_2','B')">Verificar</button>
+          <div class="feedback-block" id="fb_t5_2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 14: E6 - ESCENARIOS -->
+    <div class="screen" id="screen_14">
+      <div class="screen-content">
+        <span class="sec-badge sec-2">Ejercicio 6</span>
+        <h2 class="screen-title">Escenarios: ¿Qué Harías Tú?</h2>
+        <p style="font-size:.88rem;color:#666;margin-bottom:16px;">Analiza cada situación y elige la mejor respuesta.</p>
+        <div id="advance_warning"></div>
+
+        <div class="scenario-card">
+          <div class="scenario-num">🏠 Sala 1</div>
+          <div class="scenario-body">"Son las 5:00 PM del Día 44. El abogado necesita una traducción urgente de un reporte policial de 10 páginas para mañana a primera hora. Faltan 2 páginas. Tienes sueño, estás cansado, pero podrías terminarlas en 1 hora si te apuras."</div>
+        </div>
+        <div class="question-block" id="q_s1_1">
+          <p class="question-text">11. ¿Cuál es la mejor decisión?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="s1_1" value="A"> <span class="option-text">A) Tomarte el tiempo necesario para revisar bien las últimas páginas. Entregar tarde y correcto es preferible a entregar rápido y con errores.</span></label>
+            <label class="option-label"><input type="radio" name="s1_1" value="B"> <span class="option-text">B) Terminar rápido aunque sea con posibles errores — el abogado lo revisará de todos modos.</span></label>
+            <label class="option-label"><input type="radio" name="s1_1" value="C"> <span class="option-text">C) Dejar las últimas páginas sin traducir e informar que no fue posible terminar.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('s1_1','fb_s1_1','A')">Verificar</button>
+          <div class="feedback-block" id="fb_s1_1"></div>
+        </div>
+
+        <div class="scenario-card" style="margin-top:14px;">
+          <div class="scenario-num">🏠 Sala 2</div>
+          <div class="scenario-body">"Recibes un reporte psicológico para traducir. Tiene 3 días de plazo, pero contiene un diagnóstico de trastorno de personalidad. No estás 100% seguro de la traducción de un término clínico y tu diccionario no lo aclara."</div>
+        </div>
+        <div class="question-block" id="q_s2_1">
+          <p class="question-text">12. ¿Cuál es la mejor decisión?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="s2_1" value="A"> <span class="option-text">A) Consultar con el supervisor o el equipo legal. No traducir un término clínico si no estás seguro — prefiere preguntar y acertar.</span></label>
+            <label class="option-label"><input type="radio" name="s2_1" value="B"> <span class="option-text">B) Usar el término que mejor suene según tu criterio y continuar para no perder el plazo.</span></label>
+            <label class="option-label"><input type="radio" name="s2_1" value="C"> <span class="option-text">C) Buscar el término en Google Translate y usar el primer resultado.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('s2_1','fb_s2_1','A')">Verificar</button>
+          <div class="feedback-block" id="fb_s2_1"></div>
+        </div>
+
+        <div class="scenario-card" style="margin-top:14px;">
+          <div class="scenario-num">🏠 Sala 3</div>
+          <div class="scenario-body">"Revisando una traducción que hiciste hace dos días, te das cuenta de que cometiste un error en una fecha crítica en un acta de matrimonio. El paquete ya fue ensamblado y está en revisión final."</div>
+        </div>
+        <div class="question-block" id="q_s3_1">
+          <p class="question-text">13. ¿Cuál es la mejor decisión?</p>
+          <div class="options-list">
+            <label class="option-label"><input type="radio" name="s3_1" value="A"> <span class="option-text">A) Reportarlo de inmediato al coordinador de traducciones y al equipo legal. Es mejor corregirlo ahora, aunque retrase el caso, que enviarlo mal a USCIS.</span></label>
+            <label class="option-label"><input type="radio" name="s3_1" value="B"> <span class="option-text">B) Esperar a que alguien más lo detecte para no generar una alerta innecesaria.</span></label>
+            <label class="option-label"><input type="radio" name="s3_1" value="C"> <span class="option-text">C) Corregir el archivo silenciosamente y reemplazarlo sin avisar al equipo.</span></label>
+          </div>
+          <button class="check-btn" onclick="checkRadioTheory('s3_1','fb_s3_1','A')">Verificar</button>
+          <div class="feedback-block" id="fb_s3_1"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 15: E7 - TABLA DEL FLUJO -->
+    <div class="screen" id="screen_15">
+      <div class="screen-content">
+        <span class="sec-badge sec-3">Ejercicio 7</span>
+        <h2 class="screen-title">Ordena el Flujo del Caso</h2>
+        <p style="font-size:.9rem;color:#444;margin-bottom:6px;">Selecciona la etapa correcta para cada posición del flujo del caso.</p>
+        <div id="advance_warning"></div>
+
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th style="width:100px;">Posición</th>
+              <th>Descripción de la Etapa</th>
+              <th style="width:190px;">Selecciona</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1ª Etapa</strong></td>
+              <td>Captación del cliente por ventas. Aún no llegan documentos para traducir.</td>
+              <td>
+                <select id="dd_etapa1">
+                  <option value="">-- Selecciona --</option>
+                  <option value="dia0">Día 0 – Sales</option>
+                  <option value="dia5_pwc">Día 5 – PWC</option>
+                  <option value="dia5_15_wc">Día 5-15 – Welcome Call</option>
+                  <option value="pcr">PCR</option>
+                  <option value="dia45_cr">Día 45 – Case Review</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>2ª Etapa</strong></td>
+              <td>Llegan primeros documentos: actas, identificaciones y comprobantes de domicilio.</td>
+              <td>
+                <select id="dd_etapa2">
+                  <option value="">-- Selecciona --</option>
+                  <option value="dia0">Día 0 – Sales</option>
+                  <option value="dia5_pwc">Día 5 – PWC</option>
+                  <option value="dia5_15_wc">Día 5-15 – Welcome Call</option>
+                  <option value="pcr">PCR</option>
+                  <option value="dia45_cr">Día 45 – Case Review</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>3ª Etapa</strong></td>
+              <td>El caso toma dos rutas posibles: Fully (Superior) o Psych (Inferior).</td>
+              <td>
+                <select id="dd_etapa3">
+                  <option value="">-- Selecciona --</option>
+                  <option value="dia0">Día 0 – Sales</option>
+                  <option value="dia5_pwc">Día 5 – PWC</option>
+                  <option value="dia5_15_wc">Día 5-15 – Welcome Call</option>
+                  <option value="pcr">PCR</option>
+                  <option value="dia45_cr">Día 45 – Case Review</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>4ª Etapa</strong></td>
+              <td>El paquete debe estar semi-completo; todas las traducciones terminadas.</td>
+              <td>
+                <select id="dd_etapa4">
+                  <option value="">-- Selecciona --</option>
+                  <option value="dia0">Día 0 – Sales</option>
+                  <option value="dia5_pwc">Día 5 – PWC</option>
+                  <option value="dia5_15_wc">Día 5-15 – Welcome Call</option>
+                  <option value="pcr">PCR</option>
+                  <option value="dia45_cr">Día 45 – Case Review</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>5ª Etapa</strong></td>
+              <td>El abogado hace la revisión final. Traductores son el último filtro antes de USCIS.</td>
+              <td>
+                <select id="dd_etapa5">
+                  <option value="">-- Selecciona --</option>
+                  <option value="dia0">Día 0 – Sales</option>
+                  <option value="dia5_pwc">Día 5 – PWC</option>
+                  <option value="dia5_15_wc">Día 5-15 – Welcome Call</option>
+                  <option value="pcr">PCR</option>
+                  <option value="dia45_cr">Día 45 – Case Review</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button class="check-btn" onclick="checkOrderTable()">Verificar tabla</button>
+        <div class="feedback-block" id="fb_order_table"></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 16: RESULTADOS -->
+    <div class="screen" id="screen_results">
+      <div class="screen-content">
+        <div class="results-header">
+          <div class="results-score-circle">
+            <span class="sc-num" id="res_pct">—</span>
+            <span class="sc-lbl">Puntuación</span>
+          </div>
+          <h2 class="screen-title" style="margin-top:0;">Módulo 4 Completado</h2>
+          <p id="res_msg" style="font-size:.9rem;color:#666;max-width:460px;margin:0 auto;"></p>
+        </div>
+
+        <div class="results-breakdown">
+          <div class="rb-row"><span class="rb-label">Preguntas respondidas</span><span class="rb-val" id="res_answered">—</span></div>
+          <div class="rb-row"><span class="rb-label">Respuestas correctas</span><span class="rb-val" id="res_correct">—</span></div>
+          <div class="rb-row"><span class="rb-label">Tabla del flujo</span><span class="rb-val" id="res_table">—</span></div>
+          <div class="rb-row"><span class="rb-label">Puntuación total</span><span class="rb-val" id="res_score">—</span></div>
+        </div>
+
+        <div class="success-box">
+          <div class="box-title">🏁 Recuerda siempre</div>
+          <p style="font-size:.88rem;line-height:1.6;margin:0;">Como traductor eres el <strong>último filtro</strong> antes de USCIS. La honestidad, la precisión y el trabajo en equipo son las herramientas más importantes que tienes. Si no sabes, pregunta. Si cometes un error, repórtalo. Somos un equipo.</p>
+        </div>
+
+        <div style="text-align:center;margin-top:20px;">
+          <button class="check-btn" onclick="goToScreen(0)" style="background:#7a7ec8;">↩ Volver al inicio</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAV BUTTONS -->
+    <div class="nav-bar">
+      <button class="nav-btn secondary" id="btn_prev" disabled>&#8592; Anterior</button>
+      <div id="page_indicator" style="font-size:.82rem;color:#999;text-align:center;"></div>
+      <button class="nav-btn primary" id="btn_next">Siguiente &#8594;</button>
+    </div>
+
+  </div><!-- /#main-content -->
+</div><!-- /#outer-layout -->
+
+<script>
+/**
+ * scorm.js – Comunicación SCORM 1.2 con Moodle
+ * Mendoza Learning Center – Módulo 1 VAWA
+ */
+
+var SCORM = (function () {
+  var API = null;
+  var initialized = false;
+  var finished = false;
+
+  // ─── Buscar la API SCORM ───
+  function findAPI(win) {
+    var attempts = 0;
+    while (win.API == null && win.parent != null && win.parent != win) {
+      attempts++;
+      if (attempts > 7) return null;
+      win = win.parent;
+    }
+    return win.API;
+  }
+
+  function getAPI() {
+    var win = window;
+    var api = findAPI(win);
+    if (api == null && win.opener != null) {
+      api = findAPI(win.opener);
+    }
+    return api;
+  }
+
+  // ─── Inicializar ───
+  function initialize() {
+    API = getAPI();
+    if (API == null) {
+      console.warn("[SCORM] API no encontrada – modo standalone");
+      initialized = true; // Continuar en modo local
+      return true;
+    }
+    var result = API.LMSInitialize("");
+    if (result === "true" || result === true) {
+      initialized = true;
+      setValue("cmi.core.lesson_status", "incomplete");
+      return true;
+    }
+    console.error("[SCORM] Error al inicializar:", API.LMSGetLastError());
+    return false;
+  }
+
+  // ─── Leer valor ───
+  function getValue(element) {
+    if (!initialized || API == null) return "";
+    return API.LMSGetValue(element);
+  }
+
+  // ─── Escribir valor ───
+  function setValue(element, value) {
+    if (!initialized) return false;
+    if (API == null) return true; // standalone, ignorar
+    var result = API.LMSSetValue(element, value);
+    if (result === "false" || result === false) {
+      console.error("[SCORM] Error al setear " + element + ":", API.LMSGetLastError());
+      return false;
+    }
+    return true;
+  }
+
+  // ─── Commit ───
+  function commit() {
+    if (!initialized || API == null) return;
+    API.LMSCommit("");
+  }
+
+  // ─── Finalizar ───
+  function finish() {
+    if (!initialized || finished) return;
+    finished = true;
+    if (API != null) {
+      API.LMSFinish("");
+    }
+  }
+
+  // ─── Reportar calificación del módulo ───
+  function setScore(raw, min, max) {
+    min = min || 0;
+    max = max || 100;
+    setValue("cmi.core.score.raw", raw);
+    setValue("cmi.core.score.min", min);
+    setValue("cmi.core.score.max", max);
+    commit();
+  }
+
+  // ─── Reportar estado de completado ───
+  function setCompleted(passed) {
+    setValue("cmi.core.lesson_status", passed ? "passed" : "failed");
+    commit();
+  }
+
+  // ─── Reportar interacción individual ───
+  var interactionIndex = 0;
+  function recordInteraction(id, type, response, correct, result, latency) {
+    var prefix = "cmi.interactions." + interactionIndex + ".";
+    setValue(prefix + "id", id);
+    setValue(prefix + "type", type || "fill-in");
+    setValue(prefix + "student_response", response || "");
+    setValue(prefix + "correct_responses.0.pattern", correct || "");
+    setValue(prefix + "result", result || "neutral");
+    if (latency) setValue(prefix + "latency", latency);
+    interactionIndex++;
+    commit();
+  }
+
+  // ─── Marcar progreso (location) ───
+  function setLocation(screenIndex) {
+    setValue("cmi.core.lesson_location", String(screenIndex));
+    commit();
+  }
+
+  return {
+    initialize: initialize,
+    getValue: getValue,
+    setValue: setValue,
+    commit: commit,
+    finish: finish,
+    setScore: setScore,
+    setCompleted: setCompleted,
+    recordInteraction: recordInteraction,
+    setLocation: setLocation
+  };
+})();
+
+// ─── Inicializar automáticamente ───
+window.addEventListener("load", function () {
+  SCORM.initialize();
+});
+
+window.addEventListener("beforeunload", function () {
+  SCORM.finish();
+});
+
+</script>
+<script>
+/**
+ * interactions4.js – Módulo 4: End to End – El Proceso Completo del Caso
+ * Mendoza Learning Center v2.0
+ */
+var AppState = {
+  currentScreen: 0,
+  totalScreens: 0,
+  scores: {},
+  answers: {},
+  answered: {},
+  startTime: Date.now()
+};
+
+// Mapa de nombre de pantalla para el indicador de sesión
+var SCREEN_NAMES = [
+  "Portada",
+  "Introducción",
+  "Día 0 – Sales",
+  "Día 5 – PWC",
+  "Welcome Call",
+  "PCR",
+  "Packet Assembly",
+  "Case Review",
+  "Resumen",
+  "E1: Día 0 y PWC",
+  "E2: Welcome Call",
+  "E3: PCR y Checklist",
+  "E4: Case Review",
+  "E5: Precisión",
+  "E6: Escenarios",
+  "E7: El Flujo",
+  "Resultados"
+];
+
+function lockQuestion(id) { AppState.answered[id] = true; }
+function isLocked(id) { return !!AppState.answered[id]; }
+
+function normalizeText(t) {
+  return t.toLowerCase().trim()
+    .replace(/[áàäâ]/g,"a").replace(/[éèëê]/g,"e").replace(/[íìïî]/g,"i")
+    .replace(/[óòöô]/g,"o").replace(/[úùüû]/g,"u").replace(/ñ/g,"n")
+    .replace(/[.,;:!?¿¡"'"'«»\-–—]/g,"").replace(/\s+/g," ");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  FEEDBACK LOOKUP
+// ═══════════════════════════════════════════════════════════
+var THEORY_FB = {
+  "t1_1": {
+    correct: "✅ <strong>¡Correcto!</strong> El Día 0 es la etapa de ventas. Aunque no se traducen documentos aún, el perfil del cliente ayuda a anticipar el tipo de caso.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es B. En el Día 0, el equipo de ventas capta al cliente. Aunque aún no llegan documentos, el perfil del caso empieza a formarse aquí."
+  },
+  "t1_2": {
+    correct: "✅ <strong>¡Correcto!</strong> En el PWC (Día 5) comienzan a llegar actas de nacimiento, matrimonio, identificaciones y comprobantes. Son documentos 'sencillos' pero la precisión sigue siendo crítica.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es B. En el PWC los documentos más comunes son actas, identificaciones y documentos de soporte iniciales — no reportes psicológicos ni el paquete final."
+  },
+  "t2_1": {
+    correct: "✅ <strong>¡Correcto!</strong> La ruta Psych implica evaluación psicológica (WAE). El caso se alarga, pero cuando llega el reporte psicológico suele ser urgente y con terminología técnica del DSM-5.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es B. La ruta Psych implica una evaluación psicológica (WAE). Estos reportes son técnicos, sensibles y urgentes cuando llegan."
+  },
+  "t2_2": {
+    correct: "✅ <strong>¡Correcto!</strong> En la ruta Fully el cliente tiene toda la información disponible desde el principio, lo que permite que los documentos lleguen de forma ordenada y con menos urgencia.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es A. En la ruta Fully el cliente tiene toda la información disponible, lo que permite planificar el trabajo de traducción con más tiempo."
+  },
+  "t3_1": {
+    correct: "✅ <strong>¡Correcto!</strong> En el PCR, las traducciones certificadas (actas, DCL, reportes, exhibits) deben estar completamente terminadas y revisadas. Si no, el caso se retrasa.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es C. En el PCR, la responsabilidad del traductor es tener todo terminado y revisado. Las traducciones incompletas retrasan el caso."
+  },
+  "t3_2": {
+    correct: "✅ <strong>¡Correcto!</strong> El checklist de entrega incluye: certificación con firma y fecha, documento original adjunto, nombre de archivo con convención del caso, y revisión de datos críticos. Los cuatro son obligatorios.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es B. Los cuatro elementos del checklist son esenciales: certificación, original adjunto, nombre de archivo correcto y datos críticos verificados."
+  },
+  "t4_1": {
+    correct: "✅ <strong>¡Correcto!</strong> En el Case Review (Día 45), el abogado hace la revisión final. Los traductores son el último filtro — si un error pasa aquí, viaja directamente a USCIS sin corrección.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es C. El Case Review ocurre en el Día 45. Los traductores son el último filtro — si un error pasa aquí, llega a USCIS sin corrección."
+  },
+  "t4_2": {
+    correct: "✅ <strong>¡Correcto!</strong> Un error que llega a USCIS puede resultar en una RFE (solicitud de evidencia adicional) o en una negación directa del caso. La precisión siempre va primero.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es B. USCIS no corrige errores — un error puede causar una RFE o la negación del caso. El abogado tampoco puede corregirlo después del envío."
+  },
+  "t5_1": {
+    correct: "✅ <strong>¡Correcto!</strong> Reportar de inmediato es siempre la decisión correcta. Un día de retraso por corrección es mucho mejor que enviar un error a USCIS que puede costar el caso.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es B. Reportar el error de inmediato al coordinador y al equipo legal. Ni esperarlo silenciosamente ni corregirlo sin avisar — la transparencia protege el caso y al equipo."
+  },
+  "t5_2": {
+    correct: "✅ <strong>¡Correcto!</strong> Ante un término clínico desconocido, siempre se consulta con el supervisor o equipo legal. Nunca se improvisa en terminología médica del DSM-5.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es B. Consultar con el supervisor o equipo legal. Un término clínico mal traducido puede afectar directamente la evaluación del caso en USCIS."
+  },
+  "s1_1": {
+    correct: "✅ <strong>¡Exacto!</strong> La precisión siempre va primero. Tomarte el tiempo necesario para revisar bien es la decisión correcta — entregar tarde y correcto siempre es preferible a entregar rápido y con errores.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es A. Tomarse el tiempo necesario para revisar bien. Un error en las últimas páginas puede costar el caso. La prisa nunca justifica los errores."
+  },
+  "s2_1": {
+    correct: "✅ <strong>¡Correcto!</strong> Ante un término clínico dudoso, se consulta siempre antes de traducir. El equipo legal tiene acceso a recursos técnicos especializados. No se improvisa en terminología del DSM-5.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es A. Consultar antes de traducir. El equipo legal tiene recursos para resolver dudas terminológicas. Un término mal traducido puede cambiar el significado del diagnóstico."
+  },
+  "s3_1": {
+    correct: "✅ <strong>¡Correcto!</strong> Un error descubierto siempre debe reportarse de inmediato. Es mejor corregirlo ahora, aunque retrase el caso, que enviarlo mal a USCIS. La transparencia es parte del trabajo.",
+    incorrect: "❌ <strong>Incorrecto.</strong> La respuesta correcta es A. Reportar el error de inmediato al coordinador. Silenciarlo o intentar corregirlo sin avisar puede crear problemas legales mayores en el proceso."
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+//  RADIO – TEORÍA  (con desbloqueo del botón Siguiente)
+// ═══════════════════════════════════════════════════════════
+function checkRadioTheory(qId, feedbackId, correctValue) {
+  if (isLocked(qId)) return;
+  var radios = document.querySelectorAll('input[name="' + qId + '"]');
+  var sel = null;
+  radios.forEach(function(r) { if (r.checked) sel = r.value; });
+  if (!sel) { alert("Selecciona una opción antes de verificar."); return; }
+
+  var isCorrect = sel === correctValue;
+
+  // Colorear opciones
+  radios.forEach(function(r) {
+    r.disabled = true;
+    var lbl = r.closest(".option-label");
+    if (!lbl) return;
+    if (r.value === correctValue) {
+      lbl.style.background = "#f0fff4";
+      lbl.style.borderColor = "#48bb78";
+      lbl.style.borderWidth = "2px";
+      lbl.style.borderStyle = "solid";
+      lbl.style.borderRadius = "8px";
+    } else if (r.value === sel && !isCorrect) {
+      lbl.style.background = "#fff5f5";
+      lbl.style.borderColor = "#e53935";
+      lbl.style.borderWidth = "2px";
+      lbl.style.borderStyle = "solid";
+      lbl.style.borderRadius = "8px";
+    }
+  });
+
+  // Mostrar feedback
+  var lookup = THEORY_FB[qId];
+  var fb = document.getElementById(feedbackId);
+  if (fb) {
+    fb.style.display = "block";
+    fb.style.padding = "12px 16px";
+    fb.style.borderRadius = "8px";
+    fb.style.marginTop = "10px";
+    fb.style.fontSize = ".87rem";
+    fb.style.lineHeight = "1.6";
+    if (isCorrect) {
+      fb.style.background = "#f0fff4";
+      fb.style.border = "2px solid #48bb78";
+      fb.style.color = "#276749";
+    } else {
+      fb.style.background = "#fff5f5";
+      fb.style.border = "2px solid #e53935";
+      fb.style.color = "#c62828";
+    }
+    fb.innerHTML = isCorrect ? lookup.correct : lookup.incorrect;
+  }
+
+  // Deshabilitar botón verificar
+  var checkBtns = document.querySelectorAll('[onclick*="checkRadioTheory(\'' + qId + '\'"]');
+  checkBtns.forEach(function(b) { b.disabled = true; b.style.opacity = ".5"; });
+
+  AppState.scores[qId] = isCorrect;
+  lockQuestion(qId);
+  SCORM.recordInteraction(qId, "choice", sel, correctValue, isCorrect ? "correct" : "wrong");
+
+  // Intentar habilitar el botón Siguiente si se completaron todos los requisitos de esta pantalla
+  checkIfCanUnlockNext();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TABLA DE ORDENAMIENTO
+// ═══════════════════════════════════════════════════════════
+var CORRECT_ORDER_TABLE = {
+  "dd_etapa1": "dia0",
+  "dd_etapa2": "dia5_pwc",
+  "dd_etapa3": "dia5_15_wc",
+  "dd_etapa4": "pcr",
+  "dd_etapa5": "dia45_cr"
+};
+
+function checkOrderTable() {
+  if (isLocked("order_table")) return;
+  var total = 0; var correct = 0;
+  Object.keys(CORRECT_ORDER_TABLE).forEach(function(key) {
+    var sel = document.getElementById(key);
+    if (!sel) return;
+    total++;
+    var ok = sel.value === CORRECT_ORDER_TABLE[key];
+    if (ok) correct++;
+    sel.style.borderColor = ok ? "#48bb78" : "#e53935";
+    sel.style.background = ok ? "#f0fff4" : "#fff0f0";
+    sel.disabled = true;
+  });
+
+  var fb = document.getElementById("fb_order_table");
+  if (fb) {
+    fb.style.display = "block";
+    fb.style.padding = "12px 16px";
+    fb.style.borderRadius = "8px";
+    fb.style.marginTop = "10px";
+    fb.style.fontSize = ".87rem";
+    fb.style.lineHeight = "1.6";
+    if (correct === total) {
+      fb.style.background = "#f0fff4";
+      fb.style.border = "2px solid #48bb78";
+      fb.style.color = "#276749";
+      fb.innerHTML = "✅ <strong>¡Perfecto!</strong> " + correct + "/" + total + " correctas. ¡Dominas el flujo completo del caso!";
+    } else {
+      fb.style.background = "#fffbea";
+      fb.style.border = "2px solid #f6ad55";
+      fb.style.color = "#744210";
+      fb.innerHTML = "⚠️ <strong>" + correct + "/" + total + " correctas.</strong> Las celdas en rojo necesitan revisión. Recuerda el orden: Día 0 → PWC → Welcome Call → PCR → Case Review.";
+    }
+  }
+
+  AppState.scores["order_table"] = correct;
+  AppState.scores["order_table_total"] = total;
+  lockQuestion("order_table");
+
+  var btn = document.querySelector('[onclick="checkOrderTable()"]');
+  if (btn) { btn.disabled = true; btn.style.opacity = ".5"; }
+
+  SCORM.recordInteraction("order_table", "matching", correct + "/" + total, total + "/" + total, correct === total ? "correct" : "wrong");
+  checkIfCanUnlockNext();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VALIDACIÓN ANTES DE AVANZAR
+// ═══════════════════════════════════════════════════════════
+var SCREEN_REQS = {
+  9:  ["t1_1", "t1_2"],
+  10: ["t2_1", "t2_2"],
+  11: ["t3_1", "t3_2"],
+  12: ["t4_1", "t4_2"],
+  13: ["t5_1", "t5_2"],
+  14: ["s1_1", "s2_1", "s3_1"],
+  15: ["order_table"]
+};
+
+function canAdvance(idx) {
+  var reqs = SCREEN_REQS[idx];
+  if (!reqs) return true;
+  for (var i = 0; i < reqs.length; i++) {
+    if (!AppState.answered[reqs[i]]) return false;
+  }
+  return true;
+}
+
+// Llamar después de cada respuesta para habilitar "Siguiente" dinámicamente
+function checkIfCanUnlockNext() {
+  var btnNext = document.getElementById("btn_next");
+  if (!btnNext) return;
+  if (canAdvance(AppState.currentScreen)) {
+    btnNext.disabled = false;
+    // Efecto visual para guiar al usuario
+    btnNext.style.animation = "none";
+    btnNext.offsetHeight; // trigger reflow
+    btnNext.style.boxShadow = "0 0 0 3px rgba(144,148,223,.45)";
+    setTimeout(function() { btnNext.style.boxShadow = ""; }, 2000);
+  }
+}
+
+function showAdvanceWarning() {
+  var w = document.getElementById("advance_warning");
+  if (w) {
+    w.style.display = "block";
+    w.style.background = "#fff3cd";
+    w.style.border = "1px solid #ffc107";
+    w.style.borderRadius = "8px";
+    w.style.padding = "10px 16px";
+    w.style.fontSize = ".86rem";
+    w.style.color = "#856404";
+    w.style.margin = "8px 0";
+    w.innerHTML = "⚠️ Responde todas las preguntas de esta pantalla para continuar.";
+    setTimeout(function() { w.style.display = "none"; }, 4000);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PUNTUACIÓN Y RESULTADOS
+// ═══════════════════════════════════════════════════════════
+function calcScore() {
+  var allQ = ["t1_1","t1_2","t2_1","t2_2","t3_1","t3_2","t4_1","t4_2","t5_1","t5_2","s1_1","s2_1","s3_1"];
+  var tableC = AppState.scores["order_table"] || 0;
+  var tableT = AppState.scores["order_table_total"] || 5;
+  var c = 0;
+  allQ.forEach(function(id) { if (AppState.scores[id] === true) c++; });
+  return { auto: { correct: c, total: allQ.length }, table: { correct: tableC, total: tableT } };
+}
+
+function renderResults() {
+  var s = calcScore();
+  var total = s.auto.correct + s.table.correct;
+  var max = s.auto.total + s.table.total;
+  var pct = Math.round((total / max) * 100);
+  var passed = pct >= 70;
+
+  var el = function(id) { return document.getElementById(id); };
+
+  if (el("res_pct")) el("res_pct").textContent = pct + "%";
+  if (el("res_msg")) el("res_msg").textContent = passed
+    ? "¡Excelente! Comprendes el flujo completo del caso y tu rol como último filtro."
+    : "Puedes mejorar. Repasa las secciones de teoría antes de continuar.";
+  if (el("res_answered")) el("res_answered").textContent = (s.auto.total + s.table.total) + " / " + max;
+  if (el("res_correct")) el("res_correct").textContent = s.auto.correct + " / " + s.auto.total + " preguntas";
+  if (el("res_table")) el("res_table").textContent = s.table.correct + " / " + s.table.total + " celdas";
+  if (el("res_score")) el("res_score").textContent = total + " / " + max + " (" + pct + "%)";
+
+  // Color del círculo según resultado
+  var circle = document.querySelector(".results-score-circle");
+  if (circle) circle.style.background = passed ? "#48bb78" : "#e53935";
+
+  SCORM.setScore(pct, 0, 100);
+  SCORM.setCompleted(passed);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SIDEBAR — indicador de sesión + estado de pantallas
+// ═══════════════════════════════════════════════════════════
+function updateSidebar(idx) {
+  // Actualizar items activo/completado
+  document.querySelectorAll(".sidebar-item").forEach(function(item, i) {
+    item.classList.remove("active", "completed");
+    if (i === idx) item.classList.add("active");
+    else if (i < idx) item.classList.add("completed");
+  });
+
+  // Actualizar indicador de sesión
+  var nameEl = document.getElementById("si-name-text");
+  var fillEl = document.getElementById("si-progress-fill");
+  var totalS = AppState.totalScreens || 17;
+  if (nameEl) nameEl.textContent = SCREEN_NAMES[idx] || "Pantalla " + (idx + 1);
+  if (fillEl) fillEl.style.width = Math.round(((idx + 1) / totalS) * 100) + "%";
+}
+
+// ═══════════════════════════════════════════════════════════
+//  NAVEGACIÓN
+// ═══════════════════════════════════════════════════════════
+function initNavigation() {
+  var screens = document.querySelectorAll(".screen");
+  AppState.totalScreens = screens.length;
+  updateNavButtons();
+  updateProgressBar();
+  updateSidebar(0);
+
+  var btnNext = document.getElementById("btn_next");
+  var btnPrev = document.getElementById("btn_prev");
+
+  if (btnNext) btnNext.addEventListener("click", function() {
+    if (AppState.currentScreen < AppState.totalScreens - 1) {
+      if (!canAdvance(AppState.currentScreen)) { showAdvanceWarning(); return; }
+      goToScreen(AppState.currentScreen + 1);
+    }
+  });
+
+  if (btnPrev) btnPrev.addEventListener("click", function() {
+    if (AppState.currentScreen > 0) goToScreen(AppState.currentScreen - 1);
+  });
+}
+
+function goToScreen(index) {
+  var screens = document.querySelectorAll(".screen");
+  screens[AppState.currentScreen].classList.remove("active");
+  AppState.currentScreen = index;
+  screens[index].classList.add("active");
+  window.scrollTo(0, 0);
+  updateNavButtons();
+  updateProgressBar();
+  updateSidebar(index);
+  SCORM.setLocation(index);
+  if (screens[index].id === "screen_results") renderResults();
+}
+
+function updateNavButtons() {
+  var btnPrev = document.getElementById("btn_prev");
+  var btnNext = document.getElementById("btn_next");
+  var indicator = document.getElementById("page_indicator");
+  var screens = document.querySelectorAll(".screen");
+
+  if (btnPrev) btnPrev.disabled = (AppState.currentScreen === 0);
+
+  if (btnNext) {
+    var isLastScreen = AppState.currentScreen === AppState.totalScreens - 1;
+    var isResultsScreen = screens[AppState.currentScreen] && screens[AppState.currentScreen].id === "screen_results";
+    btnNext.style.display = isResultsScreen ? "none" : "";
+
+    // En pantallas de ejercicio, bloquear hasta responder; en teoría, libre
+    if (SCREEN_REQS[AppState.currentScreen]) {
+      btnNext.disabled = !canAdvance(AppState.currentScreen);
+    } else {
+      btnNext.disabled = isLastScreen;
+    }
+  }
+
+  if (indicator) indicator.textContent = "Pantalla " + (AppState.currentScreen + 1) + " de " + AppState.totalScreens;
+}
+
+function updateProgressBar() {
+  var fill = document.getElementById("progress_fill");
+  var label = document.getElementById("progress_label");
+  var pct = Math.round(((AppState.currentScreen + 1) / AppState.totalScreens) * 100);
+  if (fill) fill.style.width = pct + "%";
+  if (label) label.textContent = pct + "% completado";
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  initNavigation();
+  var btnStart = document.getElementById("btn_start");
+  if (btnStart) btnStart.addEventListener("click", function() { goToScreen(1); });
+  var btnComplete = document.getElementById("btn_complete");
+  if (btnComplete) btnComplete.addEventListener("click", function() {
+    renderResults(); SCORM.finish();
+    btnComplete.textContent = "✅ Módulo completado";
+    btnComplete.disabled = true;
+  });
+  var btnRestart = document.getElementById("btn_restart");
+  if (btnRestart) btnRestart.addEventListener("click", function() { goToScreen(0); });
+});
+
+</script>
+</body>
+</html>
