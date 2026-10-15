@@ -1,0 +1,1985 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+<!-- ║  TMLF LEARNING CENTER — BASE MAESTRA HOMOLOGADA v1.0           ║ -->
+<!-- ║  Template oficial para construcción de trainings corporativos   ║ -->
+<!-- ║  Editar sección marcada con ✏️  para personalizar cada training  ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+<!-- ✏️ EDITAR: Título del training -->
+<title>Scripts Visa T y VAWA | TMLF Learning Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════
+   DESIGN SYSTEM — TMLF Learning Center
+   Paleta, tipografía y variables base. No modificar sin autorización.
+   ════════════════════════════════════════════════════════════════════ */
+:root{
+  --ink:#0f1923;--slate:#5a6a7a;--steel:#6b8fa8;--ice:#8db8d8;
+  --gold:#c9a84c;--gold-bg:rgba(201,168,76,.09);
+  --white:#fff;--bg:#eef1f5;--shadow:0 8px 28px rgba(15,25,35,.11);--radius:16px;
+  --nav-h:56px;--sidebar-w:272px;
+  --green:#1e6641;--green-bg:rgba(30,102,65,.08);
+  --red:#8b2c2c;--red-bg:rgba(180,50,50,.08);
+  --amber:#7a5200;--amber-bg:rgba(180,130,0,.09);
+  --accent:#1a3a5c;--accent2:#2e5c8a;
+  --sidebar-bg:#0d1e2e;
+  --purple:#7c3aed;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+
+/* ══ TOP NAV ══ */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav-h);background:rgba(10,18,28,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);display:flex;align-items:center;padding:0 18px;gap:10px}
+.topnav .brand{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;white-space:nowrap;letter-spacing:.3px;display:flex;align-items:center;gap:10px}
+.topnav .brand .seal{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.08));border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.topnav .brand span{color:var(--gold)}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topnav-pill{padding:5px 14px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.28);color:rgba(201,168,76,.9)}
+.sidebar-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px}
+@media(max-width:900px){.sidebar-toggle{display:block}}
+
+/* ══ SHELL ══ */
+.app-shell{display:flex;min-height:100vh;padding-top:var(--nav-h)}
+
+/* ══ SIDEBAR ══ */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);position:fixed;top:var(--nav-h);bottom:0;left:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;border-right:1px solid rgba(201,168,76,.07);z-index:200;transition:transform .3s ease}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:3px}
+.sidebar-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sidebar-header .sh-label{font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px}
+.sidebar-header .sh-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.88);font-weight:600;line-height:1.3}
+.sb-group{padding:8px 0}
+.sb-group-label{padding:6px 16px 3px;font-size:8.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.sb-divider{margin:4px 14px 6px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.18),transparent)}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:all .18s;position:relative;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.045)}
+.sb-item.active{background:rgba(141,184,216,.09)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.sb-item.locked{opacity:.42;cursor:not-allowed}
+.sb-item.locked:hover{background:none}
+.sb-item.completed .sb-num{background:var(--green)!important;color:#fff!important}
+.sb-num{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);transition:all .18s}
+.sb-item.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item:hover:not(.locked) .sb-num{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+.sb-text{flex:1;min-width:0}
+.sb-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);line-height:1.3;transition:color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item.active .sb-name{color:rgba(255,255,255,.92)}
+.sb-item:hover:not(.locked) .sb-name{color:rgba(255,255,255,.82)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.sb-item.overview .sb-num{background:rgba(141,184,216,.13);color:var(--ice)}
+.sb-item.overview.active .sb-num{background:var(--ice);color:var(--ink)}
+.sb-spec-banner{margin:6px 12px 2px;padding:7px 11px;border-radius:9px;background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.03));border:1px solid rgba(201,168,76,.16);display:flex;align-items:center;gap:7px}
+.sb-spec-banner .sbb-text{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(201,168,76,.75)}
+.sb-item.exam .sb-num{background:rgba(201,168,76,.14);color:var(--gold)}
+.sb-item.exam.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item.exam .sb-name{color:rgba(255,210,80,.55)}
+.sb-item.exam.active .sb-name{color:rgba(255,210,80,.92)}
+.sb-item.practice .sb-num{background:rgba(30,102,65,.14);color:#4ade80}
+.sb-item.practice.active .sb-num{background:var(--green);color:#fff}
+.sb-item.practice .sb-name{color:rgba(74,222,128,.55)}
+.sb-item.practice.active .sb-name{color:rgba(74,222,128,.92)}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.45)}
+  .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+  .sb-overlay.show{display:block}
+}
+
+/* ══ PROGRESS BAR GLOBAL ══ */
+.progress-bar-wrap{position:fixed;top:var(--nav-h);left:0;right:0;z-index:299;height:3px;background:rgba(255,255,255,.06)}
+.progress-bar-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--ice));transition:width .5s ease;width:0%}
+
+/* ══ MAIN ══ */
+.main{margin-left:var(--sidebar-w);flex:1;padding:26px 26px 60px;max-width:100%}
+@media(max-width:900px){.main{margin-left:0;padding:18px 14px 50px}}
+
+/* ══ HEADER ══ */
+.header{background:linear-gradient(135deg,#0b1f35 0%,#0e2540 45%,#1a3a5c 100%);color:#fff;border-radius:20px;padding:42px 38px 36px;box-shadow:0 16px 40px rgba(10,20,35,.22);position:relative;overflow:hidden;margin-bottom:22px}
+.header::before{content:'';position:absolute;top:-60px;right:-40px;width:270px;height:270px;border:1.5px solid rgba(201,168,76,.1);border-radius:50%;animation:pulse 5s ease-in-out infinite}
+.header::after{content:'';position:absolute;bottom:-70px;right:90px;width:180px;height:180px;border:1.5px solid rgba(37,99,235,.08);border-radius:50%;animation:pulse 6s ease-in-out infinite .8s}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:.85}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.header-seal{position:absolute;top:26px;right:34px;width:62px;height:62px;border:1.5px solid rgba(201,168,76,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;opacity:.5;animation:pulse 4s ease-in-out infinite}
+.header-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:12px}
+.header-badge .dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+h1{font-family:'Cormorant Garamond',serif;font-size:36px;letter-spacing:.4px;position:relative;z-index:1;font-weight:700;line-height:1.15}
+.subtitle{font-size:14px;opacity:.76;max-width:52ch;position:relative;z-index:1;margin-top:6px}
+.header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.header-meta-item{display:flex;align-items:center;gap:6px;padding:5px 13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:11.5px}
+.header-meta-item span:first-child{opacity:.58}
+.header-meta-item strong{font-weight:700}
+
+/* ══ PANELS ══ */
+.panel{display:none;animation:fadeUp .28s ease both}
+.panel.active{display:block}
+
+/* ══ DISTRIBUCIÓN 20/70/10 ══ */
+.dist-bar{display:flex;border-radius:10px;overflow:hidden;height:36px;margin:14px 0}
+.dist-seg{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.dist-seg.theory{background:linear-gradient(135deg,#1a3a5c,#2e5c8a);color:#fff;flex:20}
+.dist-seg.practice{background:linear-gradient(135deg,#1e6641,#2d9d62);color:#fff;flex:70}
+.dist-seg.eval{background:linear-gradient(135deg,var(--gold),#a07828);color:#fff;flex:10}
+.dist-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.dist-lg-item{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--slate)}
+.dist-lg-dot{width:10px;height:10px;border-radius:3px}
+
+/* ══ STAT CARDS ══ */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:9px;margin-bottom:18px}
+.stat-card{background:var(--white);border-radius:13px;padding:15px;border:1px solid rgba(107,143,168,.16);text-align:center}
+.stat-card .stat-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--accent);line-height:1}
+.stat-card .stat-label{font-size:11px;color:var(--slate);margin-top:4px;font-weight:600}
+
+/* ══ BLOCKS ══ */
+.block{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(107,143,168,.15);overflow:hidden;margin-bottom:14px}
+.block:last-child{margin-bottom:0}
+.block .btitle{display:flex;align-items:center;gap:10px;padding:15px 18px;background:linear-gradient(180deg,rgba(141,184,216,.16),rgba(141,184,216,.02));border-bottom:1px solid rgba(107,143,168,.13)}
+.block .btitle .bicon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.block .btitle h3{font-size:15.5px;color:var(--ink);font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.2px;flex:1}
+.block .btitle .mod-badge{margin-left:auto;padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;flex-shrink:0}
+.badge-core{background:rgba(26,58,92,.09);color:#1a3a5c;border:1px solid rgba(26,58,92,.17)}
+.badge-warn{background:rgba(139,44,44,.08);color:#8b2c2c;border:1px solid rgba(139,44,44,.17)}
+.badge-green{background:rgba(30,102,65,.08);color:#1e6641;border:1px solid rgba(30,102,65,.17)}
+.badge-gold{background:rgba(201,168,76,.09);color:#7a5200;border:1px solid rgba(201,168,76,.2)}
+.badge-exam{background:linear-gradient(135deg,rgba(201,168,76,.16),rgba(201,168,76,.05));color:#7a5200;border:1px solid rgba(201,168,76,.28)}
+.badge-practice{background:rgba(30,102,65,.08);color:#1e6641;border:1px solid rgba(30,102,65,.17)}
+.badge-template{background:rgba(124,58,237,.08);color:#7c3aed;border:1px solid rgba(124,58,237,.2)}
+.block .bbody{padding:18px}
+.block .bbody p{margin:0 0 10px;font-size:13.5px}
+.block .bbody p:last-child{margin-bottom:0}
+
+/* ══ DIVIDERS ══ */
+.sdiv{display:flex;align-items:center;gap:11px;margin:20px 0 13px}
+.sdiv .l{flex:1;height:1px;background:linear-gradient(90deg,rgba(107,143,168,.28),transparent)}
+.sdiv .l:last-child{background:linear-gradient(270deg,rgba(107,143,168,.28),transparent)}
+.sdiv .t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--slate);white-space:nowrap}
+
+/* ══ LO CALLOUT ══ */
+.lo-callout{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.13);margin-bottom:13px}
+.lo-callout .lo-icon{font-size:17px;flex-shrink:0;margin-top:1px}
+.lo-callout .lo-text{font-size:12.5px;color:var(--slate);line-height:1.55}
+.lo-callout .lo-text strong{color:var(--ink);display:block;margin-bottom:2px;font-size:13px}
+
+/* ══ ACCORDIONS ══ */
+details.block-accordion{border:none;background:none;padding:0;margin:8px 0 0}
+details.block-accordion+details.block-accordion{margin-top:7px}
+.block-accordion-header{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.04),rgba(107,143,168,.08));border:1px solid rgba(107,143,168,.15);transition:all .2s;user-select:none}
+.block-accordion-header::-webkit-details-marker{display:none}
+details.block-accordion[open] .block-accordion-header{border-radius:11px 11px 0 0;border-bottom-color:transparent;background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.12))}
+.block-accordion-header:hover{background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.13))}
+.bac-left{display:flex;align-items:center;gap:11px}
+.bac-num{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bac-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.bac-title{font-size:13.5px;font-weight:700;color:var(--ink)}
+.bac-arrow{font-size:11px;color:var(--slate);transition:transform .2s;flex-shrink:0}
+details.block-accordion[open] .bac-arrow{transform:rotate(90deg)}
+.bac-body{padding:14px 16px 16px;border:1px solid rgba(107,143,168,.15);border-top:none;border-radius:0 0 11px 11px;background:rgba(242,244,247,.45)}
+.ev-list{margin:8px 0 0;padding:0 0 0 15px;font-size:13px;line-height:1.7}
+.ev-list li{margin-bottom:6px}
+
+/* ══ CHIPS ══ */
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chip{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:600;background:rgba(141,184,216,.13);border:1px solid rgba(107,143,168,.17);color:var(--ink)}
+.chip.green{background:var(--green-bg);border-color:rgba(30,102,65,.17);color:var(--green)}
+.chip.amber{background:var(--amber-bg);border-color:rgba(180,130,0,.19);color:var(--amber)}
+.chip.dark{background:rgba(15,25,35,.07);border-color:rgba(15,25,35,.12);color:var(--ink)}
+.chip.gold{background:var(--gold-bg);border-color:rgba(201,168,76,.2);color:#7a5200}
+.chip.red{background:rgba(180,50,50,.08);border-color:rgba(180,50,50,.18);color:#8b2c2c}
+.chip.blue{background:rgba(37,99,235,.09);border-color:rgba(37,99,235,.18);color:#1a3a5c}
+.chip.purple{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.2);color:#7c3aed}
+
+/* ══ ALERTS ══ */
+.alert{margin-top:10px;padding:10px 13px;border-radius:10px;font-size:12.5px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.alert.warn{background:var(--amber-bg);border:1px solid rgba(180,130,0,.19);color:var(--amber)}
+.alert.danger{background:var(--red-bg);border:1px solid rgba(180,50,50,.17);color:var(--red)}
+.alert.success{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.alert.info{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.18);color:var(--ink)}
+.alert.blue{background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);color:#1a3a5c}
+.alert.purple{background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);color:#7c3aed}
+.alert-icon{flex-shrink:0;margin-top:1px}
+.alert strong{font-weight:700}
+
+/* ══ PRINCIPLE ══ */
+.principle{margin-top:13px;padding:14px 17px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.03),rgba(141,184,216,.06));border:1px solid rgba(107,143,168,.17);border-left:3px solid var(--accent)}
+.principle p{margin:0;font-size:14px;font-weight:600;font-style:italic;font-family:'Cormorant Garamond',serif;line-height:1.55;color:var(--ink)}
+.principle .principle-sub{font-weight:500;color:var(--slate);margin-top:4px;font-style:normal;font-family:'DM Sans',sans-serif;font-size:12px}
+
+/* ══ OB LIST ══ */
+.ob-list{display:grid;grid-template-columns:1fr;gap:6px;margin-top:9px}
+@media(min-width:600px){.ob-list{grid-template-columns:1fr 1fr}}
+.ob-item{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:10px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.16);transition:all .2s}
+.ob-item:hover{transform:translateX(3px);background:rgba(141,184,216,.16)}
+.ob-num{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px}
+.ob-item span{font-size:12.5px;font-weight:600;line-height:1.4}
+
+/* ══ TWO COL ══ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px}
+@media(max-width:700px){.three-col{grid-template-columns:1fr}}
+@media(max-width:600px){.two-col{grid-template-columns:1fr}}
+.mini-card{padding:13px;border-radius:11px;border:1px solid rgba(107,143,168,.15);background:rgba(107,143,168,.04)}
+.mini-card h4{font-size:12.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px;color:var(--ink);font-weight:700}
+.mini-card p,.mini-card li{font-size:12px;color:var(--slate);line-height:1.6}
+.mini-card ul{padding-left:15px}
+
+/* ══ INFO TABLE ══ */
+.info-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.5px;border-radius:11px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.info-table th{background:var(--accent);color:#fff;padding:11px 14px;text-align:left;font-weight:700;font-size:11.5px}
+.info-table td{padding:10px 14px;border-bottom:1px solid rgba(107,143,168,.12)}
+.info-table tr:nth-child(even) td{background:rgba(107,143,168,.04)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:hover td{background:rgba(141,184,216,.08)}
+
+/* ══ MOD META ══ */
+.mod-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:6px;margin-bottom:13px}
+.mod-meta-item{padding:8px 12px;border-radius:9px;background:rgba(107,143,168,.055);border:1px solid rgba(107,143,168,.13)}
+.mod-meta-item .label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.mod-meta-item .value{font-size:12.5px;font-weight:700;color:var(--ink)}
+
+/* ══ OVERVIEW GRID ══ */
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:2px}
+.ov-card{background:var(--white);border-radius:12px;padding:14px;border:1px solid rgba(107,143,168,.15);cursor:pointer;transition:all .22s;display:flex;flex-direction:column;gap:4px;position:relative}
+.ov-card:hover{transform:translateY(-3px);box-shadow:0 7px 20px rgba(15,25,35,.1);border-color:var(--ice)}
+.ov-card.locked-card{opacity:.5;cursor:not-allowed;filter:grayscale(.5)}
+.ov-card.locked-card:hover{transform:none;box-shadow:none}
+.ov-card .ov-icon{font-size:22px;margin-bottom:3px}
+.ov-card strong{font-size:12px;font-weight:700;color:var(--ink);line-height:1.3}
+.ov-card small{font-size:10.5px;color:var(--slate)}
+.ov-card .lock-badge{position:absolute;top:8px;right:8px;font-size:11px;opacity:.6}
+.ov-card.exam-card{background:linear-gradient(135deg,rgba(201,168,76,.05),rgba(201,168,76,.02));border-color:rgba(201,168,76,.18)}
+.ov-card.practice-card{background:linear-gradient(135deg,rgba(30,102,65,.05),rgba(30,102,65,.02));border-color:rgba(30,102,65,.18)}
+.ov-card.completed-card{border-color:rgba(30,102,65,.3);background:rgba(30,102,65,.03)}
+
+/* ══ PROGRESS TRACKER ══ */
+.progress-section{background:var(--white);border-radius:12px;padding:16px;border:1px solid rgba(107,143,168,.15);margin-bottom:14px}
+.progress-section h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:12px}
+.prog-track{display:flex;flex-direction:column;gap:8px}
+.prog-row{display:flex;align-items:center;gap:12px}
+.prog-label{font-size:11.5px;font-weight:600;color:var(--ink);min-width:110px}
+.prog-bar-outer{flex:1;height:7px;background:rgba(107,143,168,.14);border-radius:4px;overflow:hidden}
+.prog-bar-inner{height:7px;border-radius:4px;transition:width .8s ease}
+.prog-bar-inner.theory{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.prog-bar-inner.practice{background:linear-gradient(90deg,var(--green),#2d9d62)}
+.prog-bar-inner.eval{background:linear-gradient(90deg,var(--gold),#a07828)}
+.prog-pct{font-size:11px;font-weight:700;color:var(--slate);min-width:32px;text-align:right}
+
+/* ══ EXERCISE TYPES (CK) ══ */
+/* Multiple choice */
+.ck2-question{background:rgba(242,244,247,.6);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.ck2-qtext{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px}
+.ck2-opts{display:flex;flex-direction:column;gap:7px}
+.ck2-opt{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:8px;border:1.5px solid rgba(107,143,168,.18);background:var(--white);cursor:pointer;font-size:12.5px;transition:all .18s}
+.ck2-opt:hover{border-color:var(--purple);background:rgba(124,58,237,.05)}
+.ck2-opt.selected{border-color:var(--purple);background:rgba(124,58,237,.07)}
+.ck2-opt.correct{border-color:#1e6641;background:#d1fae5;pointer-events:none}
+.ck2-opt.incorrect{border-color:#8b2c2c;background:#fee2e2;pointer-events:none}
+.ck2-opt.disabled{pointer-events:none;opacity:.7}
+.ck2-radio{width:18px;height:18px;border-radius:50%;border:2px solid rgba(107,143,168,.3);flex-shrink:0;transition:all .18s}
+.ck2-opt.selected .ck2-radio{border-color:var(--purple);background:var(--purple)}
+/* True/False */
+.ck4-question{background:rgba(242,244,247,.6);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.ck4-stmt{font-size:13px;color:var(--ink);margin-bottom:12px;padding:12px;background:var(--white);border-radius:8px;border-left:3px solid var(--purple);line-height:1.5}
+.ck4-btns{display:flex;gap:10px}
+.ck4-btn{flex:1;padding:11px 16px;border:1.5px solid rgba(107,143,168,.2);border-radius:9px;background:var(--white);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.ck4-btn:hover{border-color:var(--purple)}
+.ck4-btn.selected{border-color:var(--purple);background:rgba(124,58,237,.07);color:var(--purple)}
+.ck4-btn.correct{border-color:#1e6641;background:#d1fae5;color:#1e6641;pointer-events:none}
+.ck4-btn.incorrect{border-color:#8b2c2c;background:#fee2e2;color:#8b2c2c;pointer-events:none}
+.ck4-btn.disabled{pointer-events:none;opacity:.6}
+/* Matching */
+.ck-matching{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0}
+@media(max-width:580px){.ck-matching{grid-template-columns:1fr}}
+.ck-col-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(107,143,168,.2)}
+.ck-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:9px;border:1.5px solid rgba(107,143,168,.2);background:var(--white);cursor:pointer;transition:all .18s;margin-bottom:7px;font-size:13px;font-weight:600}
+.ck-item:hover{border-color:var(--purple);background:rgba(124,58,237,.05)}
+.ck-item.selected{border-color:var(--purple);background:rgba(124,58,237,.08)}
+.ck-badge{width:24px;height:24px;border-radius:6px;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.ck-drop{padding:11px 14px;border-radius:9px;border:1.5px dashed rgba(107,143,168,.25);background:rgba(107,143,168,.04);cursor:pointer;transition:all .18s;margin-bottom:7px;min-height:46px}
+.ck-drop:hover{border-color:var(--purple);background:rgba(124,58,237,.05)}
+.ck-drop.filled{border-style:solid;border-color:var(--purple);background:var(--white)}
+.ck-drop.correct{border-color:#1e6641!important;background:#d1fae5!important}
+.ck-drop.incorrect{border-color:#8b2c2c!important;background:#fee2e2!important}
+.ck-drop-label{font-size:12.5px;color:var(--slate)}
+/* Ordering */
+.ck3-list{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.ck3-item{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:9px;border:1.5px solid rgba(107,143,168,.2);background:var(--white);cursor:pointer;transition:all .18s;user-select:none}
+.ck3-item:hover{border-color:var(--purple);background:rgba(124,58,237,.05)}
+.ck3-item.ordered{border-color:var(--purple);background:rgba(124,58,237,.07)}
+.ck3-num{width:30px;height:30px;border-radius:7px;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;min-width:30px}
+.ck3-text{font-size:12.5px;font-weight:600;color:var(--ink)}
+/* Feedback & Buttons */
+.ck-feedback{margin-top:10px;padding:10px 13px;border-radius:9px;font-size:12.5px;display:none;line-height:1.5}
+.ck-feedback.show{display:block;animation:fadeUp .25s ease}
+.ck-feedback.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.ck-feedback.fail{background:var(--red-bg);border:1px solid rgba(139,44,44,.17);color:var(--red)}
+.ck-result-summary{margin-top:12px;padding:14px 16px;border-radius:10px;background:var(--white);border:1px solid rgba(107,143,168,.18);text-align:center;font-size:15px;font-weight:700;display:none}
+.ck-result-summary.ok{color:var(--green)}.ck-result-summary.warn{color:var(--amber)}.ck-result-summary.fail{color:var(--red)}
+.ck-actions{display:flex;gap:10px;justify-content:center;margin-top:16px}
+.ck-btn{padding:10px 24px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.ck-verify{background:var(--purple);color:#fff}
+.ck-verify:hover{background:#6d28d9;box-shadow:0 4px 12px rgba(124,58,237,.35)}
+.ck-retry{background:rgba(107,143,168,.12);color:var(--slate);border:1px solid rgba(107,143,168,.2)}
+.ck-retry:hover{background:rgba(107,143,168,.22)}
+.ck-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.ck-next:hover{box-shadow:0 4px 14px rgba(26,58,92,.35);transform:translateY(-1px)}
+.ck-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--purple);margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid rgba(124,58,237,.15)}
+
+/* ══ FINAL EXAM ══ */
+.q-item{background:rgba(242,244,247,.7);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.q-stem{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.5}
+.q-opts{display:flex;flex-direction:column;gap:7px}
+.q-opt{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:8px;border:1.5px solid rgba(107,143,168,.18);background:var(--white);cursor:pointer;font-size:12.5px;transition:all .18s}
+.q-opt:hover{border-color:var(--accent2);background:rgba(26,58,92,.04)}
+.q-opt.selected{border-color:var(--accent2);background:rgba(26,58,92,.06)}
+.q-opt.correct{border-color:#1e6641;background:#d1fae5;pointer-events:none}
+.q-opt.incorrect{border-color:#8b2c2c;background:#fee2e2;pointer-events:none}
+.q-opt.disabled{pointer-events:none;opacity:.7}
+.q-letter{width:22px;height:22px;border-radius:5px;background:rgba(107,143,168,.13);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;flex-shrink:0}
+.q-feedback{display:none;margin-top:10px;padding:9px 12px;border-radius:8px;font-size:12px;line-height:1.5}
+.q-feedback.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.q-feedback.fail{background:var(--red-bg);border:1px solid rgba(139,44,44,.17);color:var(--red)}
+.q-feedback.show{display:block}
+.eval-footer{padding:14px 16px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid rgba(107,143,168,.12)}
+.btn-retry,.btn-submit{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.btn-retry{background:rgba(107,143,168,.12);color:var(--slate);display:none}
+.btn-retry:hover{background:rgba(107,143,168,.22)}
+.btn-submit{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.btn-submit:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(26,58,92,.35)}
+.btn-submit:disabled{opacity:.45;cursor:not-allowed}
+.result-card{display:none;margin:0 16px 16px;padding:22px;border-radius:13px;background:linear-gradient(135deg,rgba(26,58,92,.04),rgba(141,184,216,.06));border:1px solid rgba(107,143,168,.18);text-align:center}
+.result-card.show{display:block;animation:fadeUp .3s ease}
+.result-score{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1}
+.result-score.pass{color:var(--green)}.result-score.warn{color:var(--amber)}.result-score.fail{color:var(--red)}
+.result-label{font-size:13px;font-weight:700;color:var(--ink);margin:6px 0 8px}
+.result-msg{font-size:12px;color:var(--slate);line-height:1.6;max-width:50ch;margin:0 auto 14px}
+.result-breakdown{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.rb-item{padding:10px 18px;border-radius:10px;text-align:center;min-width:80px}
+.rb-ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17)}
+.rb-bad{background:var(--red-bg);border:1px solid rgba(139,44,44,.17)}
+.rb-mod{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.17)}
+.rb-n{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1}
+.rb-ok .rb-n{color:var(--green)}.rb-bad .rb-n{color:var(--red)}.rb-mod .rb-n{color:var(--slate)}
+.rb-l{font-size:10px;font-weight:700;color:var(--slate);margin-top:2px}
+
+/* ══ PRACTICE/SIMULATOR ══ */
+.sim-card{background:linear-gradient(135deg,rgba(30,102,65,.04),rgba(30,102,65,.01));border:1.5px dashed rgba(30,102,65,.25);border-radius:14px;padding:24px;text-align:center;margin-bottom:12px}
+.sim-card .sim-icon{font-size:38px;margin-bottom:10px;opacity:.7}
+.sim-card h4{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.sim-card p{font-size:12.5px;color:var(--slate);max-width:40ch;margin:0 auto 14px;line-height:1.6}
+.sim-card .sim-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;background:rgba(30,102,65,.08);border:1px solid rgba(30,102,65,.2);font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:10px}
+.sim-item{background:var(--white);border-radius:11px;padding:16px;border:1px solid rgba(107,143,168,.15);display:flex;flex-direction:column;gap:6px;opacity:.75}
+.sim-item .si-icon{font-size:24px}
+.sim-item h5{font-size:13px;font-weight:700;color:var(--ink)}
+.sim-item p{font-size:11.5px;color:var(--slate);line-height:1.5;margin:0}
+.sim-item .si-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--green);margin-top:4px}
+
+/* ══ TEMPLATE NOTE ══ */
+.template-note{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:10px;background:rgba(124,58,237,.06);border:1px dashed rgba(124,58,237,.25);margin-bottom:12px;font-size:12px;color:var(--purple);line-height:1.55}
+.template-note .tn-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.template-note strong{font-weight:700;display:block;margin-bottom:2px}
+
+/* ══ SECTION PAGE TITLE ══ */
+.page-title{margin-bottom:16px}
+.page-title .pt-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate);margin-bottom:4px}
+.page-title h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.page-title .pt-sub{font-size:13px;color:var(--slate);margin-top:3px}
+
+/* ══ ROADMAP ══ */
+.roadmap{display:flex;flex-direction:column;gap:0;margin-top:11px;position:relative}
+.roadmap::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2),var(--ice));border-radius:2px}
+.rm-item{display:flex;gap:15px;padding:0 0 16px;position:relative}
+.rm-dot{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;box-shadow:0 3px 9px rgba(26,58,92,.25)}
+.rm-dot.locked{background:rgba(107,143,168,.2)!important;box-shadow:none;color:rgba(107,143,168,.5)!important}
+.rm-dot.done{background:linear-gradient(135deg,var(--green),#2d9d62)!important}
+.rm-content{padding:8px 12px;background:var(--white);border-radius:10px;border:1px solid rgba(107,143,168,.15);flex:1;transition:all .2s}
+.rm-content:hover{border-color:var(--ice);transform:translateX(3px)}
+.rm-level{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px}
+.rm-level.intro{color:var(--green)}.rm-level.inter{color:var(--amber)}.rm-level.avanz{color:#1a3a5c}
+.rm-content h4{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 2px}
+.rm-content p{font-size:11.5px;color:var(--slate);margin:0}
+
+/* ════════════════════════════════════════════════════════════════════
+   SISTEMA EXTENDIDO — BLOQUES CON COLOR
+   Fuente: TMLF_Criterio_VisaT_Abogados
+   Uso: Agrega la clase al .block para aplicar la variante de color
+   ════════════════════════════════════════════════════════════════════ */
+/* 🔵 Ejercicio / práctica — azul */
+.block.b-ejercicio{border-color:rgba(37,99,235,.18);background:#f0f6ff}
+.block.b-ejercicio .btitle{background:rgba(37,99,235,.07);border-bottom-color:rgba(37,99,235,.12)}
+.block.b-ejercicio .btitle h3,.block.b-ejercicio .btitle h2{color:#1a3a8f}
+.block.b-ejercicio .mod-badge{background:rgba(37,99,235,.1);color:#1e40af;border-color:rgba(37,99,235,.25)}
+/* 🟡 Concepto / teoría — dorado */
+.block.b-concepto{border-color:rgba(201,168,76,.22);background:#fffdf0}
+.block.b-concepto .btitle{background:rgba(201,168,76,.08);border-bottom-color:rgba(201,168,76,.15)}
+.block.b-concepto .btitle h3,.block.b-concepto .btitle h2{color:#7a5200}
+.block.b-concepto .mod-badge{background:rgba(201,168,76,.14);color:#7a5200;border-color:rgba(201,168,76,.3)}
+/* 🟢 Caso práctico / ejemplo — verde */
+.block.b-caso{border-color:rgba(30,102,65,.18);background:#f0fbf5}
+.block.b-caso .btitle{background:rgba(30,102,65,.07);border-bottom-color:rgba(30,102,65,.12)}
+.block.b-caso .btitle h3,.block.b-caso .btitle h2{color:#1e5c3a}
+.block.b-caso .mod-badge{background:rgba(30,102,65,.1);color:#1a5234;border-color:rgba(30,102,65,.25)}
+/* 🟣 Flujo / herramienta / proceso — violeta */
+.block.b-flujo{border-color:rgba(109,40,217,.16);background:#faf5ff}
+.block.b-flujo .btitle{background:rgba(109,40,217,.06);border-bottom-color:rgba(109,40,217,.12)}
+.block.b-flujo .btitle h3,.block.b-flujo .btitle h2{color:#5b21b6}
+.block.b-flujo .mod-badge{background:rgba(109,40,217,.09);color:#5b21b6;border-color:rgba(109,40,217,.22)}
+/* 🔴 Error / advertencia crítica — rojo */
+.block.b-error{border-color:rgba(139,44,44,.18);background:#fff5f5}
+.block.b-error .btitle{background:rgba(139,44,44,.06);border-bottom-color:rgba(139,44,44,.12)}
+.block.b-error .btitle h3,.block.b-error .btitle h2{color:#8b2c2c}
+.block.b-error .mod-badge{background:rgba(139,44,44,.1);color:#8b2c2c;border-color:rgba(139,44,44,.22)}
+/* ⭐ Evaluación / cierre especial — dorado oscuro */
+.block.b-eval{border-color:rgba(201,168,76,.35);background:linear-gradient(135deg,#fffdf0 0%,#fff8e1 100%)}
+.block.b-eval .btitle{background:rgba(201,168,76,.13);border-bottom-color:rgba(201,168,76,.22)}
+.block.b-eval .btitle h3,.block.b-eval .btitle h2{color:#7a5200}
+
+/* ════════════════════════════════════════════════════════════════════
+   HIGHLIGHTS INLINE — TEXTO RESALTADO
+   Uso: <mark class="hi">texto</mark> dentro de párrafos
+   ════════════════════════════════════════════════════════════════════ */
+mark.hi{background:rgba(201,168,76,.22);color:#5a3e00;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(201,168,76,.5)}
+mark.hi-red{background:rgba(180,40,40,.12);color:#7a1a1a;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(180,40,40,.4)}
+mark.hi-blue{background:rgba(37,99,235,.1);color:#1a3a8f;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(37,99,235,.35)}
+mark.hi-green{background:rgba(30,102,65,.1);color:#1a5234;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(30,102,65,.35)}
+
+/* ════════════════════════════════════════════════════════════════════
+   CRITICAL RULE — BLOQUE DE REGLA CRÍTICA / PREMISA CLAVE
+   Uso: Reemplaza lo-callout cuando el punto es de máxima importancia
+   ════════════════════════════════════════════════════════════════════ */
+.critical-rule{background:linear-gradient(135deg,rgba(15,25,35,.96) 0%,rgba(26,58,92,.97) 100%);border-radius:14px;padding:18px 22px;margin:16px 0;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(15,25,35,.18)}
+.critical-rule::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.critical-rule-label{font-size:9px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:rgba(201,168,76,.7);margin-bottom:8px}
+.critical-rule-text{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:#fff;line-height:1.3;letter-spacing:.1px;text-transform:uppercase}
+.critical-rule-text em{font-style:normal;color:rgba(201,168,76,.95)}
+.critical-rule-sub{font-size:12px;color:rgba(255,255,255,.58);margin-top:8px;line-height:1.55}
+.critical-rule-sub strong{color:rgba(255,255,255,.82)}
+
+/* ════════════════════════════════════════════════════════════════════
+   CRITICAL VARIANTS — RESALTAR ELEMENTOS CLAVE
+   ════════════════════════════════════════════════════════════════════ */
+/* Fila crítica en tabla */
+tr.tr-critical{background:rgba(201,168,76,.08)!important}
+tr.tr-critical td{font-weight:700;color:var(--ink)}
+tr.tr-critical td:first-child{border-left:3px solid var(--gold)}
+/* Tarjeta ov-card resaltada */
+.ov-card.ov-critical{border:2px solid rgba(201,168,76,.45)!important;background:rgba(201,168,76,.06)!important;box-shadow:0 0 0 3px rgba(201,168,76,.08)}
+/* mini-card resaltada */
+.mini-card.mc-critical{border:2px solid rgba(37,99,235,.3)!important;background:rgba(37,99,235,.05)!important}
+/* Error item crítico */
+.error-item.ei-critical{border:1.5px solid rgba(139,44,44,.3)!important;background:rgba(139,44,44,.04)!important}
+
+/* ════════════════════════════════════════════════════════════════════
+   CASE BOX — CAJA DE CASO PRÁCTICO / NARRATIVA
+   Uso: Para presentar un caso o situación real como punto de partida
+   ════════════════════════════════════════════════════════════════════ */
+.case-box{background:linear-gradient(135deg,#f8f9fb,#f2f4f8);border:1px solid rgba(15,25,35,.1);border-radius:14px;padding:20px 22px;margin-bottom:16px;position:relative}
+.case-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold);border-radius:14px 0 0 14px}
+.case-label{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.case-narrative{font-size:14px;color:var(--ink);line-height:1.7;font-style:italic}
+
+/* ════════════════════════════════════════════════════════════════════
+   SCENARIO CARD — TARJETA DE ESCENARIO PARA EJERCICIOS
+   Uso: Presentar situaciones en ejercicios de análisis
+   ════════════════════════════════════════════════════════════════════ */
+.scenario-card{background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:14px;padding:20px 22px;margin-bottom:14px;box-shadow:0 2px 8px rgba(15,25,35,.05)}
+.scenario-num{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--slate);margin-bottom:8px}
+.scenario-text{font-size:14px;color:var(--ink);line-height:1.65;margin-bottom:14px;padding:12px 16px;background:rgba(15,25,35,.025);border-radius:9px;border-left:3px solid var(--gold)}
+.scenario-q{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px}
+/* Botones de opción para escenarios */
+.opt-btn{display:block;width:100%;text-align:left;padding:11px 16px;margin-bottom:7px;border-radius:10px;border:1.5px solid rgba(15,25,35,.1);background:var(--white);font-size:13.5px;cursor:pointer;transition:all .18s;color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.45}
+.opt-btn:hover{border-color:rgba(37,99,235,.35);background:rgba(37,99,235,.04);color:var(--accent)}
+.opt-btn.correct{border-color:rgba(30,102,65,.5);background:var(--green-bg);color:var(--green);pointer-events:none}
+.opt-btn.wrong{border-color:rgba(139,44,44,.4);background:var(--red-bg);color:var(--red);pointer-events:none}
+
+/* ════════════════════════════════════════════════════════════════════
+   STRENGTH METER — BARRA DE FORTALEZA / NIVEL
+   Uso: Indicar visualmente la fortaleza de un elemento o argumento
+   ════════════════════════════════════════════════════════════════════ */
+.strength-bar{height:6px;border-radius:999px;background:rgba(15,25,35,.08);margin-top:8px;overflow:hidden}
+.strength-fill{height:100%;border-radius:999px;transition:width .5s ease}
+.strength-fill.strong{background:var(--green);width:85%}
+.strength-fill.medium{background:var(--gold);width:55%}
+.strength-fill.weak{background:var(--red);width:25%}
+.strength-label{font-size:10.5px;font-weight:700;letter-spacing:.4px;margin-top:4px}
+.strength-label.strong{color:var(--green)}.strength-label.medium{color:var(--amber)}.strength-label.weak{color:var(--red)}
+
+/* ════════════════════════════════════════════════════════════════════
+   OVERVIEW GRID HORIZONTAL — TARJETAS CON ÍCONO + TEXTO
+   Uso: Presentar principios, pasos o conceptos clave con iconos
+   ════════════════════════════════════════════════════════════════════ */
+.overview-grid-h{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px}
+.ov-card-h{background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:12px;padding:16px;display:flex;gap:12px;align-items:flex-start;transition:all .2s}
+.ov-card-h:hover{border-color:var(--ice);box-shadow:0 4px 12px rgba(15,25,35,.07)}
+.ov-card-h .ov-icon-h{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ov-card-h .ov-label-h{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);margin-bottom:3px}
+.ov-card-h .ov-title-h{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.3}
+.ov-card-h .ov-desc-h{font-size:12px;color:var(--slate);line-height:1.45}
+.ov-card-h.ov-h-critical{border:2px solid rgba(201,168,76,.45);background:rgba(201,168,76,.04)}
+
+/* ════════════════════════════════════════════════════════════════════
+   FLOW DIAGRAM — DIAGRAMA DE FLUJO INTERACTIVO
+   Uso: Presentar flujos de decisión o procesos secuenciales
+   ════════════════════════════════════════════════════════════════════ */
+.flow-container{padding:8px 0}
+.flow-node{background:var(--white);border:1.5px solid rgba(15,25,35,.1);border-radius:12px;padding:12px 18px;margin:0 auto 8px;max-width:480px;text-align:center;font-size:13px;cursor:pointer;transition:all .22s;color:var(--ink)}
+.flow-node:hover{border-color:rgba(37,99,235,.4);background:rgba(37,99,235,.04);transform:translateY(-1px);box-shadow:0 4px 14px rgba(37,99,235,.1)}
+.flow-node.active{border-color:var(--gold);background:var(--gold-bg);color:var(--amber)}
+.flow-node.result-ok{border-color:rgba(30,102,65,.5);background:var(--green-bg);color:var(--green)}
+.flow-node.result-warn{border-color:rgba(201,168,76,.5);background:var(--gold-bg);color:var(--amber)}
+.flow-node.result-no{border-color:rgba(139,44,44,.4);background:var(--red-bg);color:var(--red)}
+.flow-node.result-info{border-color:rgba(141,184,216,.5);background:rgba(141,184,216,.1);color:var(--accent2)}
+.flow-arrow{text-align:center;font-size:18px;color:var(--slate);margin:3px 0;opacity:.5}
+.flow-branch{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:480px;margin:0 auto 8px}
+.flow-branch .flow-node{margin:0}
+.flow-question{font-weight:700;font-size:13.5px;color:var(--ink)}
+.flow-sub{font-size:11.5px;color:var(--slate);margin-top:3px}
+.flow-node.fn-disabled{opacity:.45;pointer-events:none}
+
+/* ════════════════════════════════════════════════════════════════════
+   MATRIX TABLE — TABLA DE MATRIZ CON INDICADORES DE FUERZA
+   Uso: Comparar múltiples elementos en filas/columnas con indicadores
+   ════════════════════════════════════════════════════════════════════ */
+.matrix-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.matrix-table th{padding:9px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);border-bottom:2px solid rgba(15,25,35,.1)}
+.matrix-table td{padding:10px 12px;border-bottom:1px solid rgba(15,25,35,.06);vertical-align:top;line-height:1.5}
+.matrix-table tr:last-child td{border-bottom:none}
+.dot-strong{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--green);margin-right:5px;vertical-align:middle}
+.dot-medium{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--gold);margin-right:5px;vertical-align:middle}
+.dot-weak{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--red);margin-right:5px;vertical-align:middle}
+
+/* ════════════════════════════════════════════════════════════════════
+   ERROR ITEM — TARJETA DE ERROR CON ÍCONO, TÍTULO Y SOLUCIÓN
+   Uso: Listar errores comunes con descripción y cómo corregirlos
+   ════════════════════════════════════════════════════════════════════ */
+.error-item{display:flex;gap:14px;padding:14px 16px;background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:12px;margin-bottom:10px}
+.ei-icon{width:36px;height:36px;border-radius:9px;background:var(--red-bg);border:1px solid rgba(139,44,44,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ei-body .ei-title{font-size:13.5px;font-weight:700;color:var(--red);margin-bottom:4px}
+.ei-body .ei-desc{font-size:13px;color:var(--slate);line-height:1.5}
+.ei-body .ei-fix{font-size:12px;color:var(--green);margin-top:6px;font-weight:600}
+
+/* ════════════════════════════════════════════════════════════════════
+   GAP CARD — TARJETA DE VACÍO O PUNTO PENDIENTE
+   Uso: Identificar información faltante o áreas de mejora
+   ════════════════════════════════════════════════════════════════════ */
+.gap-card{background:rgba(139,44,44,.04);border:1px solid rgba(139,44,44,.18);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.gap-card .gc-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.gap-card .gc-icon{font-size:16px}
+.gap-card .gc-label{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--red)}
+.gap-card .gc-body{font-size:13px;color:var(--ink);line-height:1.5}
+.gap-card .gc-action{font-size:12px;color:var(--green);font-weight:600;margin-top:8px}
+
+/* ════════════════════════════════════════════════════════════════════
+   BOOK CAROUSEL — CARRUSEL DE PÁGINAS CON PROGRESO
+   Uso: Presentar contenido largo en páginas navegables
+   ════════════════════════════════════════════════════════════════════ */
+.book-wrap{position:relative}
+.book-pages{overflow:hidden}
+.book-page{display:none}
+.book-page.bp-active{display:block;animation:fadeUp .25s ease}
+.book-progress{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;background:var(--accent);border-radius:10px}
+.book-prog-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.book-prog-track{flex:1;height:4px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden}
+.book-prog-fill{height:100%;background:var(--gold);border-radius:4px;transition:width .35s ease}
+.book-prog-count{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);flex-shrink:0}
+.book-nav{display:flex;align-items:center;justify-content:space-between;margin-top:16px;gap:10px}
+.book-btn{display:flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.book-btn-prev{background:var(--bg);color:var(--slate);border:1.5px solid rgba(90,106,122,.2)}
+.book-btn-prev:hover{background:#e2e6eb;color:var(--ink)}
+.book-btn-prev:disabled{opacity:.3;cursor:default}
+.book-btn-next{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(26,58,92,.25)}
+.book-btn-next:hover{background:var(--accent2)}
+.book-btn-next:disabled{opacity:.4;cursor:default}
+.book-btn-next.bp-done{background:var(--green)}
+.book-dots{display:flex;gap:5px;align-items:center}
+.book-dot{width:7px;height:7px;border-radius:50%;background:rgba(90,106,122,.25);cursor:pointer;transition:all .2s;border:none;padding:0}
+.book-dot.bd-active{background:var(--accent);width:18px;border-radius:4px}
+
+/* ════════════════════════════════════════════════════════════════════
+   SECTION HEAD — ENCABEZADO DE SECCIÓN CON BADGE
+   Uso: Separar visualmente secciones dentro de un módulo
+   ════════════════════════════════════════════════════════════════════ */
+.section-head{margin-bottom:18px}
+.section-head h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--ink);line-height:1.2}
+.section-head p{font-size:14px;color:var(--slate);margin-top:5px;max-width:60ch}
+.section-head .sh-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;background:var(--gold-bg);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+
+/* ════════════════════════════════════════════════════════════════════
+   MOD NAV BAR — BARRA DE NAVEGACIÓN ENTRE MÓDULOS
+   Uso: Al final de cada módulo para ir al siguiente
+   ════════════════════════════════════════════════════════════════════ */
+.mod-nav-bar{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid rgba(107,143,168,.15)}
+.mod-nav-btn{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.mod-nav-prev{background:rgba(107,143,168,.1);color:var(--slate);border:1px solid rgba(107,143,168,.2)}
+.mod-nav-prev:hover{background:rgba(107,143,168,.2)}
+.mod-nav-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(26,58,92,.2)}
+.mod-nav-next:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,58,92,.3)}
+
+/* ════════════════════════════════════════════════════════════════════
+   ALERT EXTRA — VARIANTE GOLD
+   ════════════════════════════════════════════════════════════════════ */
+.alert.gold{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);color:var(--amber)}
+
+/* ════════════════════════════════════════════════════════════════════
+   SCRIPT DIALOGUE — BLOQUES DE GUION / DIÁLOGO TELEFÓNICO
+   ════════════════════════════════════════════════════════════════════ */
+.script-box{background:#fbfbfa;border:1px solid rgba(107,143,168,.18);border-radius:13px;padding:6px 20px;margin-top:6px}
+.script-line{padding:12px 0;border-bottom:1px dashed rgba(107,143,168,.18)}
+.script-line:last-child{border-bottom:none}
+.sl-label{font-weight:800;color:var(--accent);display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.sl-text{font-size:13.5px;line-height:1.65;color:var(--ink)}
+.sl-text em{color:var(--slate);font-style:italic}
+.sl-cue{display:inline-block;background:rgba(30,102,65,.09);color:var(--green);font-weight:700;font-size:11px;border-radius:5px;padding:1px 7px;margin-left:4px}
+.sl-note{margin-top:6px;font-size:12px;color:var(--slate);font-style:italic;background:rgba(107,143,168,.06);border-left:3px solid var(--ice);padding:7px 10px;border-radius:0 8px 8px 0}
+.script-sub{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:15.5px;color:var(--accent);margin:16px 0 4px}
+.script-list{margin:6px 0 0;padding-left:18px;font-size:13.5px;line-height:1.7;color:var(--ink)}
+.script-list li{margin-bottom:5px}
+.branch-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;margin:10px 0 8px;background:rgba(124,58,237,.09);color:#5b21b6;border:1px solid rgba(124,58,237,.2)}
+
+/* ════════════════════════════════════════════════════════════════════
+   COMPARE COLUMNS — SE PARECE / CAMBIA
+   ════════════════════════════════════════════════════════════════════ */
+.cmp-col-title{display:flex;align-items:center;gap:7px;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.cmp-col-title.same{color:var(--green)}
+.cmp-col-title.diff{color:#8b2c2c}
+
+/* ════════════════════════════════════════════════════════════════════
+   SCRIPT TOOLTIPS — EXPLICACIÓN FLOTANTE AL PASAR EL CURSOR
+   ════════════════════════════════════════════════════════════════════ */
+.script-line{position:relative;cursor:help}
+.script-line:hover{background:rgba(141,184,216,.06)}
+.script-tip{display:none;position:absolute;top:2px;left:calc(100% + 16px);width:300px;background:#fff;border:1px solid rgba(107,143,168,.28);border-radius:11px;padding:13px 15px;box-shadow:0 10px 30px rgba(15,25,35,.18);z-index:80;font-size:12px;line-height:1.6;color:var(--slate)}
+.script-tip::before{content:'';position:absolute;top:14px;left:-7px;width:12px;height:12px;background:#fff;border-left:1px solid rgba(107,143,168,.28);border-bottom:1px solid rgba(107,143,168,.28);transform:rotate(45deg)}
+.script-tip .tip-label{display:flex;align-items:center;gap:5px;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);margin-bottom:6px}
+.script-tip .tip-body strong{color:var(--ink);font-weight:700}
+.script-line:hover .script-tip{display:block;animation:fadeUp .18s ease both}
+@media(max-width:1180px){
+  .script-tip{left:auto;right:0;top:100%;margin-top:6px;width:100%;max-width:420px}
+  .script-tip::before{display:none}
+}
+</style>
+<body>
+
+<!-- ════ TOP NAV ════ -->
+<nav class="topnav">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <div class="seal">🎓</div>
+    TMLF <span>Learning Center</span>
+  </div>
+  <div class="topnav-right">
+    <div class="topnav-pill">Material Informativo</div>
+  </div>
+</nav>
+
+<!-- ════ SIDEBAR OVERLAY (mobile) ════ -->
+<div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
+
+<!-- ════ APP SHELL ════ -->
+<div class="app-shell">
+
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sh-label">TMLF Learning Center</div>
+      <div class="sh-title">Scripts de Visa T y VAWA</div>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Inicio</div>
+      <div class="sb-item overview active" id="nav-instrucciones" onclick="showPanel('instrucciones')">
+        <div class="sb-num">📋</div>
+        <div class="sb-text">
+          <div class="sb-name">Cómo usar este documento</div>
+          <div class="sb-sub">Guía de lectura</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Módulos</div>
+
+      <div class="sb-item" id="nav-modt" onclick="showPanel('modt')">
+        <div class="sb-num">1</div>
+        <div class="sb-text">
+          <div class="sb-name">Módulo 1: Visa T</div>
+          <div class="sb-sub">Intake · Consulta</div>
+        </div>
+      </div>
+
+      <div class="sb-item" id="nav-vawa" onclick="showPanel('vawa')">
+        <div class="sb-num">2</div>
+        <div class="sb-text">
+          <div class="sb-name">Módulo 2: VAWA</div>
+          <div class="sb-sub">Intake · Consulta</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+    <div class="sb-spec-banner">
+      <span style="font-size:14px">🔎</span>
+      <div class="sbb-text">Síntesis</div>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-item overview" id="nav-comparativa" onclick="showPanel('comparativa')">
+        <div class="sb-num">✦</div>
+        <div class="sb-text">
+          <div class="sb-name">Comparativa Final</div>
+          <div class="sb-sub">Visa T vs. VAWA</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN CONTENT ════ -->
+  <main class="main">
+
+    <!-- ════ HEADER PRINCIPAL ════ -->
+    <div class="header">
+      <div class="header-seal">🎓</div>
+      <div class="header-badge">
+        <div class="dot"></div>
+        TMLF Learning Center · Área de Ventas / Intake
+      </div>
+      <h1>Scripts de Visa T y VAWA</h1>
+      <p class="subtitle">Material de referencia con el guion completo y su explicación, tanto para la llamada de Intake como para la llamada de Consulta, de Visa T y de VAWA.</p>
+      <div class="header-meta">
+        <div class="header-meta-item"><span>📚</span><strong>2 Módulos</strong></div>
+        <div class="header-meta-item"><span>📊</span><strong>Nivel: Operativo</strong></div>
+        <div class="header-meta-item"><span>🖥️</span><strong>Consulta libre</strong></div>
+        <div class="header-meta-item"><span>📅</span><strong>v1.0 · 2026</strong></div>
+      </div>
+    </div><!-- /header -->
+
+    <!-- ════ PANEL: INSTRUCCIONES ════ -->
+    <div class="panel active" id="panel-instrucciones">
+
+      <div class="page-title">
+        <div class="pt-label">Inicio</div>
+        <h2>Cómo usar este documento</h2>
+        <p class="pt-sub">Este material es de consulta libre: todos los módulos están disponibles y no requiere completar ejercicios ni evaluaciones para avanzar.</p>
+      </div>
+
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">📖</div>
+          <h3>Qué vas a encontrar</h3>
+          <div class="mod-badge badge-core">Guía</div>
+        </div>
+        <div class="bbody">
+          <div class="lo-callout">
+            <div class="lo-icon">🎯</div>
+            <div class="lo-text">
+              <strong>Propósito de este documento</strong>
+              Servir como referencia operativa para el equipo de ventas/Intake del área de Visa T y VAWA: el guion exacto que se sigue en cada llamada, y una explicación de qué contiene y para qué sirve cada parte.
+            </div>
+          </div>
+          <p>El contenido está organizado en dos módulos, uno por cada visa. Cada módulo cubre las dos llamadas del proceso:</p>
+          <div class="ob-list">
+            <div class="ob-item"><div class="ob-num">1</div><span>Intake — primera llamada, donde se conoce al cliente y se recolecta su historia.</span></div>
+            <div class="ob-item"><div class="ob-num">2</div><span>Consulta — segunda llamada, donde se explica el caso y se cierra la venta.</span></div>
+          </div>
+          <p style="margin-top:12px">Dentro de cada llamada encontrarás dos bloques:</p>
+          <div class="ob-list">
+            <div class="ob-item"><div class="ob-num">A</div><span><strong>El script completo</strong> — el texto tal cual se lee o se sigue en la llamada.</span></div>
+            <div class="ob-item"><div class="ob-num">B</div><span><strong>Información sobre el script</strong> — qué se dice, qué se pide y para qué sirve cada parte, agrupado en temas desplegables.</span></div>
+          </div>
+          <div class="alert info">
+            <span class="alert-icon">ℹ️</span>
+            <div>Al final del documento hay una <strong>Comparativa Final</strong> que resume qué es igual y qué cambia entre los scripts de Visa T y VAWA.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panel instrucciones -->
+    <!-- ════════════════════════════════════════════════════
+         PANEL MÓDULO 1: VISA T
+         ════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-modt">
+
+      <div class="page-title">
+        <div class="pt-label">Módulo 1</div>
+        <h2>Visa T</h2>
+        <p class="pt-sub">Guion completo de las llamadas de Intake y Consulta de Visa T, con la explicación de cada parte.</p>
+      </div>
+
+      <div class="mod-meta">
+        <div class="mod-meta-item"><div class="label">Fases</div><div class="value">Intake · Consulta</div></div>
+        <div class="mod-meta-item"><div class="label">Producto</div><div class="value">1 vía única</div></div>
+        <div class="mod-meta-item"><div class="label">Estándar de prueba</div><div class="value">Declaración jurada</div></div>
+        <div class="mod-meta-item"><div class="label">Formato</div><div class="value">Script + Desglose</div></div>
+      </div>
+
+      <!-- ═══════════ INTAKE ═══════════ -->
+      <div class="sdiv"><div class="l"></div><div class="t">📞 Intake — Primera Llamada</div><div class="l"></div></div>
+
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">📜</div>
+          <h3>El Script Completo — Visa T Intake</h3>
+          <div class="mod-badge badge-core">Script</div>
+        </div>
+        <div class="bbody">
+          <div class="script-box">
+
+            <div class="script-line">
+              <span class="sl-label">Saludo</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Un saludo cálido que le dice al cliente que no está solo. No se pide nada todavía; el objetivo es bajar la guardia antes de las preguntas incómodas.</div></div>
+              <div class="sl-text">Buenas tardes Sr. __________ mi nombre es __________, ¿Cómo está el día hoy?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Conexión emocional</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se refuerza la calidez humana antes de entrar en materia. Sigue sin pedirse nada concreto.</div></div>
+              <div class="sl-text">Es un placer conocerlo. Espero que esté teniendo un buen día. Entiendo que este proceso puede hacerlo sentirse un poco agobiado o nervioso, pero recuerde que no está solo.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Propósito</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se explica que el objetivo es entender su situación y que la abogada revisará todo a fondo. Se plantea la meta atractiva de arreglar papeles sin salir del país — sirve para motivar desde el inicio.</div></div>
+              <div class="sl-text">Soy ___________ y soy una extensión legal de la abogada María Mendoza. Nuestro principal objetivo hoy es comprender mejor su situación y revisar todas las posibles maneras de arreglar sus papeles. La Abogada María Mendoza quiere que le haga muchas preguntas, y después ella hará una revisión a profundidad de sus respuestas para encontrar la mejor manera de arreglar sus papeles.<br><br>Nuestra esperanza es ayudarle de la mejor forma, y si es posible y usted califica, encontrar una manera de arreglar sus papeles sin que tenga que salir de los EE.UU. y obtener un permiso de trabajo y un número de seguro social, si es posible, lo más rápido que se pueda.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">(Enviar SMS) Confidencialidad y grabación</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se pide el "sí, estoy de acuerdo" antes de seguir. Cumple con la ética/legalidad y genera confianza.</div></div>
+              <div class="sl-text">Antes de continuar, le informo que toda la información que compartamos en esta llamada es confidencial y será tratada de manera privada. Esta conversación será grabada únicamente con fines de calidad. La información solo podrá compartirse con usted, salvo que usted autorice expresamente a una persona adicional. ¿Está de acuerdo en continuar bajo estas condiciones? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Contexto político y casos de éxito</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Aunque hay miedo por las noticias, la abogada sigue ganando casos (lista de logros). Es pura persuasión para calmar el miedo migratorio.</div></div>
+              <div class="sl-text">Sabemos que con la administración de Trump las cosas pueden ponerse más difíciles, por eso la abogada quiere asegurarse de encontrar la mejor y más segura opción para ti, basándose en los hechos específicos de tu caso.<br><br>Y aunque la administración de Trump dedica mucho esfuerzo a asustar a los inmigrantes a través de redes sociales y las noticias, la abogada sigue teniendo mucho éxito:</div>
+              <ul class="script-list">
+                <li>Consiguiendo permisos de trabajo y números de seguro social para sus clientes mientras sus casos están pendientes ante USCIS/Inmigración.</li>
+                <li>Logrando acción diferida para sus clientes, lo cual es una protección contra la deportación mientras sus casos están en proceso.</li>
+                <li>Obteniendo amparos para clientes que ya tienen orden de deportación, mientras sus casos están pendientes con inmigración.</li>
+                <li>Ganando permisos de trabajo que eventualmente llevan a un estatus migratorio permanente.</li>
+                <li>Consiguiendo residencias permanentes sin que sus clientes tengan que salir del país.</li>
+              </ul>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Trayectoria de la abogada</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Quince años de experiencia, perfil detallista. Solo se pide un "¿está claro?" — genera credibilidad, no aporta información nueva.</div></div>
+              <div class="sl-text">Ahora bien, la abogada María Mendoza ha sido abogada por quince años. Es una abogada muy detallista y minuciosa, y me ha pedido que te haga varias preguntas ya que ella va a estudiar a fondo tu caso para determinar si puede ayudarte con base en las distintas leyes disponibles. ¿Está claro?<br><br>El día de su consulta, yo mism@ lo contactaré para explicarle las posibles maneras en que La Abogada podría ayudarle, basado en la revisión que la Abogada haga de su caso.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Autorización para iniciar preguntas</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Permiso explícito para empezar con las preguntas. Hace una transición ordenada hacia la entrevista.</div></div>
+              <div class="sl-text">"¿Está bien si empiezo haciendo algunas preguntas?" <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Confidencialidad + privacidad física</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se confirma que el cliente está solo y en un lugar tranquilo. Crea el ambiente correcto para hablar de cosas delicadas como abuso o delitos.</div></div>
+              <div class="sl-text">Aclarar: Puede confiar plenamente en que cualquier información que comparta conmigo será confidencial. ¿De acuerdo? <span class="sl-cue">SI</span> ¡Excelente!<br><br>Es importante mencionar que es mejor realizar esta entrevista en privacidad. ¿Está usted sólo, en un lugar tranquilo donde pueda hablar con libertad? Le pregunto esto, porque le voy a estar haciendo algunas preguntas delicadas y quiero que usted se sienta libre y cómodo de responderlas lo más sincero que usted pueda. <span class="sl-cue">SI</span> ¡Muy bien!</div>
+              <div class="sl-note">Si el cliente dice que está con alguien más y se rehúsa a apartarse: "De acuerdo, es sólo una recomendación pero al final usted decide, no hay ningún problema, vamos a comenzar."</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Compromiso de honestidad</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se pide el compromiso explícito de ser 100% honesto. Protege legalmente el caso antes de recolectar el testimonio.</div></div>
+              <div class="sl-text">Muy bien, y antes de comenzar, solo quiero recordarte que es muy importante que seas completamente honesto(a) conmigo y con la abogada en todas las preguntas que te voy a hacer. La abogada es una profesional muy ética y no acepta casos que estén basados en exageraciones o mentiras, ya que eso constituye fraude migratorio, así que todo lo que me digas debe estar basado en la pura verdad. Dicho eso, ¿estás de acuerdo en ser 100% honesto(a) conmigo y con la abogada en todas tus respuestas?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Preguntas motivacionales (1-4)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Cómo imagina su vida con papeles, qué le ha impedido arreglarlos, si tendría algún impedimento, y qué ha escuchado sobre visas humanitarias. Detecta su motivación real y si hay miedo o desinformación (por ejemplo, rumores de "fraude VAWA").</div></div>
+              <ul class="script-list">
+                <li>¿Cómo imagina que sería su vida y la de su familia en los Estados Unidos si usted consigue arreglar sus papeles?</li>
+                <li>¿Qué te ha impedido arreglar tus papeles y qué dificultades has tenido por no tener papeles?</li>
+                <li>Si la abogada encontrará una posibilidad de poder arreglar sus papeles, ¿tendría algún impedimento de comenzar?</li>
+                <li>¿Qué ha escuchado usted de las visas humanitarias en las redes sociales y las noticias?</li>
+              </ul>
+              <div class="sl-note">Escuchar si el cliente tiene miedo por lo que dicen influencers sobre "fraude VAWA" y resolverlo con testimonios, la ley, y aclarando que un abogado certificado revisa cada caso.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Marco de la entrevista</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se dice cuánto va a durar (~1 hora) y por qué se hacen tantas preguntas. Se pide confirmar que entiende que compartir cada detalle es importante.</div></div>
+              <div class="sl-text">Su entrevista va a durar aproximadamente una hora o un poquito más. Profundizar en estas preguntas tiene el objetivo de asegurarnos que la Abogada Mendoza tenga un conocimiento completo de su historia. ¿Entiende que es importante compartir cada detalle? <span class="sl-cue">SI</span> ¡Perfecto, vamos a empezar!</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Preguntas de inadmisibilidad (1-16)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Las 16 preguntas cubren identidad, estado civil, hijos, familia, peticiones, militares, víctima de delito, entradas a EE.UU., antecedentes penales, detenciones, beneficios previos y falsa ciudadanía. La pregunta 8 (víctima de delito/violencia doméstica) es LA pregunta clave: base directa para calificar para VAWA, Visa U o Visa T. Es el bloque más largo — protege legalmente el caso y detecta problemas de inadmisibilidad.</div></div>
+              <ul class="script-list">
+                <li>1. Nombre completo y fecha de nacimiento.</li>
+                <li>2. ¿Está casado con alguien de EE.UU. o con papeles? (2a-2d: desde cuándo, inicio de relación, acta legal, matrimonios previos no disueltos).</li>
+                <li>3. ¿Se ha divorciado de alguien con papeles de EE.UU.? (3a: cuándo).</li>
+                <li>4. ¿Tiene hijos ciudadanos de EE.UU.? (4a-4c: hijastros, matrimonio antes de los 18 del hijastro, nombres/edades).</li>
+                <li>5. ¿Sus padres son ciudadanos/residentes o son de México?</li>
+                <li>6. ¿Alguien ha presentado petición por usted o por sus padres? (6a-6b, I-II: años y edad).</li>
+                <li>7. ¿Tiene hijos o cónyuge en las fuerzas armadas de EE.UU.?</li>
+                <li>8. ¿Ha sido víctima de delito o violencia doméstica? (8a: reporte policial; hijos víctimas de delito/abuso sexual).</li>
+                <li>9. ¿Entró con ayuda de un coyote en su última entrada?</li>
+                <li>10. ¿Cuándo entró por primera vez?</li>
+                <li>11. ¿Cómo entró (frontera, línea, visa)?</li>
+                <li>12. Después de la primera entrada, ¿salió de EE.UU.? (12a-12b: cuándo salió/regresó).</li>
+                <li>13. ¿Ha tenido problemas con la ley (arrestos, corte, culpabilidad)?</li>
+                <li>14. ¿Ha sido detenido por temas migratorios? (14a: fecha de cita o número de alien).</li>
+                <li>15. ¿Ha solicitado asilo, Visa U u otra petición? ¿Resultado? (15a: por qué se la negaron).</li>
+                <li>16. ¿Ha dicho ser ciudadano de EE.UU. o usado documentos de un ciudadano?</li>
+              </ul>
+              <div class="sl-note">En la pregunta 12, indagar en cada entrada si fue EWI o con visa, si hubo contacto con inmigración, castigo, documentos falsos. En la pregunta 13, capturar fecha, tiempo detenido, disposición del cargo, y enviar por SMS una plantilla de "criminal history" para que el cliente confirme su historial.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Transición a explicación legal</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Puente antes de entrar al detalle de la Visa T; se pide permiso para explicarle.</div></div>
+              <div class="sl-text">Bien Sr./Sra., los abogados de la firma van a analizar toda la información para encontrar todas las soluciones posibles, y unas de las opciones podrían ser las visas humanitarias, si usted cumple con los requisitos. Me gustaría explicarle las posibles maneras que tienen las leyes de inmigración para arreglar sus papeles. ¿Le parece? <span class="sl-cue">SI</span><br><br>Como usted sabrá, las leyes de inmigración en Estados Unidos son de las más estrictas del mundo, especialmente si usted entró de manera ilegal. Pero, afortunadamente, las leyes migratorias también ofrecen opciones para ajustar su estatus SIN SALIR DEL PAÍS, cuando las personas califican para visas humanitarias. Cada una tiene requisitos distintos, pero todas están basadas en situaciones de abuso, fuerza, fraude y/o coerción ocurridas dentro de Estados Unidos. ES SIEMPRE MUY IMPORTANTE DECIR LA VERDAD.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Explicación de la Visa T</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Definición, ventajas (perdona entradas ilegales, deportaciones, crímenes graves) y que puede llevar a la residencia. Los tres escenarios de trata (laboral, doméstica/servidumbre, coyotes) ayudan a que el cliente se identifique con algún ejemplo concreto.</div></div>
+              <div class="sl-text">Hay una visa humanitaria llamada VISA T basada en maltratos ocurridos DENTRO DE ESTADOS UNIDOS DESPUÉS DE SU ÚLTIMA ENTRADA. Es muy generosa: puede perdonar entradas ilegales, deportaciones previas, múltiples entradas, e incluso ciertos crímenes graves, y puede llevar hasta LA RESIDENCIA PERMANENTE.<br><br>La VISA T ofrece protección a quienes han sufrido Trata laboral o Sexual:</div>
+              <ul class="script-list">
+                <li><strong>Trata laboral:</strong> cuando le obligan a trabajar sin pago adecuado y bajo maltratos (salario bajo, sin tiempo extra, condiciones peligrosas, amenazas con inmigración, acoso sexual, jefe agresivo).</li>
+                <li><strong>Violencia doméstica / servidumbre doméstica</strong> (sin ser pareja sentimental): le obligan a cocinar, limpiar y servir como sirviente; si no obedece, hay golpes o abuso.</li>
+                <li><strong>Trata por coyotes:</strong> le retienen tras cruzar y le obligan a trabajar con maltratos, armas, amenazas, incluso abuso sexual forzado.</li>
+              </ul>
+              <div class="sl-text" style="margin-top:8px">Me gustaría preguntarte si te identificas con alguno de estos ejemplos, pero recuerda: TODO debe basarse en LA VERDAD, ¿DE ACUERDO? <span class="sl-cue">SI</span></div>
+              <div class="sl-note">Sondear el escenario y aplicar el Cuestionario Visa T correspondiente.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Evidencia</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El caso se puede ganar solo con la declaración jurada, pero casi siempre se refuerza con evidencia adicional (mensajes, fotos, registros médicos, comprobantes de pago, testimonios). Se busca que el cliente empiece a reunir cualquier evidencia posible.</div></div>
+              <div class="sl-text">La ley es clara: puede ganar un caso de Visa T con una declaración muy detallada y verídica (declaración jurada). NO necesita evidencia adicional obligatoriamente, pero la abogada casi siempre refuerza con evidencia adicional. Muchos clientes creen que no tienen evidencia, pero después descubren que sí la tienen. La evidencia puede incluir: mensajes/correos de control o amenazas, fotos de condiciones laborales abusivas, registros médicos, comprobantes de pagos injustos, y testimonios de terceros.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Agendamiento y cierre</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se pide disponibilidad de horario y se avisa que se enviará un SMS. El bloque de expectativa positiva solo se lee si hubo ejemplos que califican — nunca si el caso fue "denied abuse" o "weak".</div></div>
+              <div class="sl-text">Ahora vamos a programar su consulta. Le enviaré un SMS con día y hora. Toda la información se la daré a La Abogada para que ella y su equipo la revisen antes de su consulta. RECUERDE ESTAR EN COMPLETA PRIVACIDAD el día de la consulta. Le voy a enviar unos videos que debe ver antes de su consulta.</div>
+              <div class="sl-note">Los siguientes dos párrafos SOLO se leen si el cliente dio ejemplos suficientes para calificar — NO se leen si el caso fue clasificado como "denied abuse" o "weak".</div>
+              <div class="sl-text" style="margin-top:8px">El día de su consulta le explicaré todas las opciones por las que podría calificar. SI CALIFICA, le daré información sobre documentos, tiempos y planes de pago. Conociendo los detalles de su caso, es muy posible que la abogada le pueda ayudar — le recomiendo tener su tarjeta a la mano el día de la consulta para iniciar su caso ese mismo día.<br><br>¿Tiene alguna duda? <span class="sl-cue">NO</span> ¡Perfecto! NOS VEMOS el Día, Fecha y Hora de su Consulta. ¡Hasta pronto, muchas bendiciones!</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Seguimiento por SMS</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Recordatorio de ver videos, lista de documentos, confirmación de consulta, y los videos específicos de Visa T.</div></div>
+              <div class="sl-text">Recordatorio de ver videos, documentos a enviar, confirmación de consulta, y los videos de Visa T (maltrato laboral, evidencia necesaria).</div>
+            </div>
+
+          </div>
+        </div>
+      </div><!-- /script Visa T Intake -->
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">🧭</div>
+          <h3>Información sobre el Script — Visa T Intake</h3>
+          <div class="mod-badge badge-gold">Desglose</div>
+        </div>
+        <div class="bbody">
+          <div class="lo-callout">
+            <div class="lo-icon">💡</div>
+            <div class="lo-text">
+              <strong>Cómo leer este desglose</strong>
+              Cada tema explica qué se dice, qué se pide, y para qué sirve dentro del embudo de la llamada.
+            </div>
+          </div>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">Puntos 1-8</div><div class="bac-title">Apertura, confidencialidad y consentimiento</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Apertura y conexión emocional:</strong> un saludo cálido, diciéndole al cliente que no está solo. No se pide nada todavía; el objetivo es bajar la guardia antes de las preguntas incómodas.</li>
+                <li><strong>Propósito de la llamada:</strong> se explica que el objetivo es entender su situación y que la abogada revisará todo a fondo. Se plantea la meta atractiva de arreglar papeles sin salir del país.</li>
+                <li><strong>Aviso de confidencialidad y grabación (SMS):</strong> se pide el "sí, estoy de acuerdo" antes de seguir. Sirve para cumplir con la ética/legalidad y generar confianza.</li>
+                <li><strong>Contexto político y casos de éxito:</strong> aunque hay miedo por las noticias, la abogada sigue ganando casos (lista de logros). Es pura persuasión para calmar el miedo.</li>
+                <li><strong>Trayectoria de la abogada:</strong> quince años de experiencia, perfil detallista. Solo se pide un "¿está claro?" — genera credibilidad, no aporta información nueva.</li>
+                <li><strong>Autorización para iniciar preguntas:</strong> permiso explícito para empezar, transición ordenada hacia la entrevista.</li>
+                <li><strong>Confidencialidad reiterada + verificación de privacidad física:</strong> se confirma que el cliente está solo y en un lugar tranquilo (incluye qué decir si no lo está) — crea el ambiente correcto para hablar de cosas delicadas.</li>
+                <li><strong>Compromiso de honestidad:</strong> se pide el compromiso explícito de ser 100% honesto, protegiendo legalmente el caso antes de recolectar el testimonio.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">Puntos 9-10</div><div class="bac-title">Preguntas motivacionales y marco de la entrevista</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Preguntas motivacionales (1 a 4):</strong> cómo imagina su vida con papeles, qué le ha impedido arreglarlos, si tendría algún impedimento, y qué ha escuchado sobre visas humanitarias en redes/noticias. Sirve para detectar su motivación real y si tiene miedo o desinformación (por ejemplo, rumores de "fraude VAWA").</li>
+                <li><strong>Marco de la entrevista técnica:</strong> se dice cuánto va a durar (~1 hora) y por qué se hacen tantas preguntas. Se pide confirmar que entiende que compartir cada detalle es importante.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">Puntos 11-23</div><div class="bac-title">Las 16 preguntas de inadmisibilidad</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Datos personales básicos:</strong> nombre completo y fecha de nacimiento.</li>
+                <li><strong>Estado civil y relaciones:</strong> si está casado con alguien de EE.UU., desde cuándo, si hay acta legal, y si hay matrimonios previos no disueltos — sirve para ver si existe otra ruta a través del matrimonio.</li>
+                <li><strong>Divorcio previo:</strong> si se divorció de alguien con papeles de EE.UU. y cuándo.</li>
+                <li><strong>Hijos e hijastros:</strong> hijos e hijastros ciudadanos, y si hubo matrimonio legal antes de que el hijastro cumpliera 18 años.</li>
+                <li><strong>Historia familiar migratoria:</strong> si sus padres son ciudadanos/residentes o son de México.</li>
+                <li><strong>Peticiones migratorias previas:</strong> si alguien presentó una petición por usted o por sus padres, y en qué año.</li>
+                <li><strong>Vínculos militares:</strong> si tiene hijos o cónyuge en las fuerzas armadas de EE.UU.</li>
+                <li><strong>Víctima de delito o violencia doméstica:</strong> esta es LA pregunta clave — es la base directa para calificar para VAWA, Visa U o Visa T. Por eso se pide siempre empatizar.</li>
+                <li><strong>Historial de entradas a EE.UU.:</strong> si entró con coyote, cuándo entró la primera vez, cómo entró, y si salió y regresó después. Se debe indagar en cada entrada si fue completa o intento, si fue ilegal o con visa, si hubo contacto con inmigración, castigo, o documentos falsos — arma la línea de tiempo migratoria completa.</li>
+                <li><strong>Antecedentes penales:</strong> arrestos, cortes, declaraciones de culpabilidad. Se debe capturar fecha, tiempo detenido, cargos, y disposición del caso; distinguir shoplifting de robo; pedir el documento de "criminal disposition" salvo excepciones. Es el bloque más largo — protege legalmente el caso y detecta problemas de inadmisibilidad.</li>
+                <li><strong>Detenciones migratorias:</strong> si ha sido detenido por migración, corte pendiente, fecha de cita, número de alien.</li>
+                <li><strong>Beneficios migratorios previos:</strong> si ha pedido asilo, Visa U u otra petición, el resultado, y si le negaron algo.</li>
+                <li><strong>Falsa ciudadanía o uso de documentos ajenos:</strong> detecta un problema grave de inadmisibilidad.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">4</div><div><div class="bac-label">Puntos 24-28</div><div class="bac-title">Explicación legal de la Visa T y evidencia</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Transición hacia explicación de visas humanitarias:</strong> puente antes de entrar al detalle de la Visa T; se pide permiso para explicarle.</li>
+                <li><strong>Explicación de la Visa T:</strong> definición, ventajas (perdona entradas ilegales, deportaciones, crímenes graves) y que puede llevar a la residencia — da esperanza real y la diferencia de otras opciones.</li>
+                <li><strong>Tres escenarios de trata:</strong> laboral, doméstica/servidumbre, y por coyotes — para que el cliente se identifique con algún ejemplo concreto.</li>
+                <li><strong>Recordatorio de veracidad + transición a cuestionario:</strong> se confirma el compromiso con la verdad; se identifica el escenario y se aplica el cuestionario correspondiente.</li>
+                <li><strong>Explicación sobre la evidencia:</strong> el caso se puede ganar solo con la declaración jurada, pero casi siempre se refuerza con evidencia adicional (mensajes, fotos, registros médicos, comprobantes de pago, testimonios). Se busca que el cliente empiece a reunir cualquier evidencia posible.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">5</div><div><div class="bac-label">Puntos 29-31</div><div class="bac-title">Agendamiento, cierre y seguimiento</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Agendamiento de consulta:</strong> se pide disponibilidad de horario y se avisa que se enviará un SMS con día y hora.</li>
+                <li><strong>Cierre y próximos pasos:</strong> la información pasará a la abogada; recordatorio de privacidad; aviso de videos obligatorios. Condicional: solo si hubo ejemplos que califican se refuerza la expectativa positiva (documentos, tiempos, planes de pago, tarjeta a la mano).</li>
+                <li><strong>Seguimiento por SMS:</strong> recordatorio de ver videos, lista de documentos, confirmación de consulta, y los videos específicos de Visa T.</li>
+              </ul>
+              <div class="critical-rule">
+                <div class="critical-rule-label">Regla crítica</div>
+                <div class="critical-rule-text">El bloque de expectativa positiva <em>nunca</em> se lee si el caso fue clasificado como "denied abuse" o "weak".</div>
+              </div>
+            </div>
+          </details>
+
+          <div class="principle">
+            <p>"Conexión → consentimiento → preguntas generales → datos duros → educación legal → identificar el tipo de abuso → cuestionario específico → cerrar agendando la consulta."</p>
+            <div class="principle-sub">Patrón general del guion de Intake</div>
+          </div>
+
+        </div>
+      </div><!-- /desglose Visa T Intake -->
+
+      <!-- ═══════════ CONSULTA ═══════════ -->
+      <div class="sdiv"><div class="l"></div><div class="t">📞 Consulta — Segunda Llamada / Cierre</div><div class="l"></div></div>
+
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">📜</div>
+          <h3>El Script Completo — Visa T Consulta</h3>
+          <div class="mod-badge badge-core">Script</div>
+        </div>
+        <div class="bbody">
+          <div class="script-box">
+
+            <div class="script-line">
+              <span class="sl-label">Saludo</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Saludo, identificación del DVS y la firma, referencia a la cita agendada. Rompe el hielo y confirma que es la llamada correcta.</div></div>
+              <div class="sl-text">Hola Sr./Sra._________, habla [nombre] de DVS de la firma de Abogados Mendoza. Lo tengo agendado para su consulta telefónica ¿Cómo está?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Presentación + confidencialidad</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El DVS es "extensión legal directa" de la abogada; aviso de confidencialidad de la conversación y las notas. Genera confianza antes de tocar temas sensibles.</div></div>
+              <div class="sl-text">¡Bien excelente! Es un placer atenderl@ nuevamente. Le recuerdo que soy una extensión legal directa de la Abogada María Mendoza y su equipo, por lo que puede sentirse en confianza. Todo lo que hablemos y las notas que tome serán confidenciales.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Verificación de privacidad</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Confirmar privacidad y que está listo para empezar. Asegura el ambiente correcto, igual que en el intake.</div></div>
+              <div class="sl-text">Es mejor realizar estas consultas en privacidad, así que si hay más personas alrededor, por favor apártese. ¿De acuerdo? <span class="sl-cue">SI</span> ¿Está listo para empezar? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Resumen de revisión previa</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">La información del intake fue muy útil y la abogada revisó todo a profundidad. Hace que el cliente sienta que su caso ya fue analizado seriamente.</div></div>
+              <div class="sl-text">Excelente, la información de su entrevista inicial fue muy útil; la Abogada María Mendoza hizo una revisión a profundidad de su historial legal, migratorio y familiar para encontrar las mejores estrategias.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Confirmación de expediente (bifurcación)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El equipo confirma brevemente historial migratorio, récord criminal y ejemplos de trata. Si el cliente ya dio ejemplos contundentes → saltar al párrafo 11; si no → seguir con el párrafo 6.</div></div>
+              <div class="sl-text">Tengo su archivo enfrente, solo confirmamos la información antes de continuar. ¿Está bien?</div>
+              <div class="sl-note">El equipo confirma brevemente historial migratorio, récord criminal y ejemplos de trata del intake. Si el cliente dio ejemplos contundentes de trata → saltar al párrafo 11. Si NO dio ejemplos suficientes → continuar con el párrafo 6.</div>
+            </div>
+
+            <div class="branch-tag">Rama B</div>
+            <div class="script-line">
+              <span class="sl-label">Explicación de la Visa T y beneficios</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Recordatorio de qué protege la Visa T y sus beneficios (permiso de trabajo, acción diferida, amparo), incluso con entrada ilegal o antecedentes penales. Refuerza el valor antes de indagar en los detalles del abuso.</div></div>
+              <div class="sl-text">Existe una visa humanitaria que otorga la posibilidad de permanecer legalmente en EE.UU. a víctimas de trata, y puede llevar a la residencia permanente SIN SALIR DEL PAÍS. Mientras el caso está en proceso puede obtener: permiso de trabajo, acción diferida (protección contra deportación), y amparo automático si tiene orden de deportación. Sigue siendo viable incluso con entrada ilegal, múltiples entradas/salidas, deportación previa, o ciertos antecedentes penales. ¿Qué le parece?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Ejemplos de trata según el agresor (7a-7d)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Cuatro versiones de ejemplos, según si el agresor fue el empleador, el coyote, la pareja/familiar, u otra persona. Confirma y profundiza en el escenario ya identificado en el intake.</div></div>
+              <ul class="script-list">
+                <li><strong>7a (empleador):</strong> trabajo excesivo sin pago justo, sin equipo de protección, amenazas con inmigración/policía.</li>
+                <li><strong>7b (violencia doméstica):</strong> trabajo forzado en casa, control del dinero, amenazas de quitarle a los hijos.</li>
+                <li><strong>7c (trata laboral/sexual general):</strong> promesas falsas de "sueño americano", deuda impagable, explotación sexual.</li>
+                <li><strong>7d (coyote):</strong> cobro de deuda extra, encierro, trabajo forzado, violencia, actos sexuales forzados, guardias armados.</li>
+              </ul>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Encuadre legal + confirmación de comprensión</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">La ley considera esto trata laboral (o sexual) y no le afecta negativamente; se repiten los beneficios. Consolida el encuadre legal antes de pedir la confirmación formal.</div></div>
+              <div class="sl-text">La ley considera esto trata laboral (o sexual) y no le afecta negativamente. Recordatorio de beneficios (permiso de trabajo, acción diferida, amparo). ¿Sí queda claro esto? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Explicación adicional + recordatorio de veracidad</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Reafirma que si fue maltratado en el trabajo, con el coyote, o en casa, la Visa T puede ayudarle sin salir del país. Refuerza el mensaje antes del compromiso de veracidad.</div></div>
+              <div class="sl-text">Si fue maltratado en el trabajo, con el coyote, o en su propia casa, la Visa T puede ayudarle sin salir del país. Es muy importante recordar que estos casos están basados en la verdad, no podemos mentir ni exagerar. ¿De acuerdo? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Confirmación de la experiencia (párrafo 11)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Referencia a la experiencia que compartió (con patrón/coyote/pareja/etc.). Punto de control final antes del "abusómetro" — si no hay suficientes ejemplos, se profundiza más o se pasa al Script de Salida.</div></div>
+              <div class="sl-text">En su primera entrevista compartió su experiencia (con patrón/coyote/pareja/familiar/persona). Vamos a confirmar esa información. ¿Le parece? <span class="sl-cue">SI</span></div>
+              <div class="sl-note">Si dio ejemplos suficientes, confirmar brevemente; si no, indagar más con el disclaimer anti-fraude y cuestionarios; si aún no alcanza, ir al Script de Salida.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">"Abusómetro" — pregunta de identificación (12a-12d)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El cliente debe confirmar explícitamente si se identifica como víctima de trata, según el tipo de agresor. Obtiene la admisión verbal necesaria para sostener el caso legalmente; si no se identifica, se va al Script de Salida.</div></div>
+              <div class="sl-text">Con estos ejemplos, ¿se identifica con la visa T por...</div>
+              <ul class="script-list">
+                <li>12a: abuso laboral por parte de un empleador?</li>
+                <li>12b: explotación por parte de un coyote?</li>
+                <li>12c: explotación por parte de una pareja o familiar?</li>
+                <li>12d: explotación por parte de alguna otra persona?</li>
+              </ul>
+              <div class="sl-note">El cliente debe aceptar explícitamente haber sido víctima. Si no se identifica → Script de Salida.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Validación + confirmación de calificación</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Empatía por las dificultades sufridas; confirmación de que puede calificar para la Visa T (permiso de trabajo, seguro social, residencia). Es una auto-petición.</div></div>
+              <div class="sl-text">Lamento mucho escuchar las dificultades, pero con esto puede calificar para una Visa T (permiso de trabajo, seguro social, y después residencia permanente sin salir del país). Puede presentar la petición usted mismo.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Requisitos adicionales</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">También deberá demostrar buen carácter moral y cooperar con las agencias del orden público en la investigación o procesamiento de la trata.</div></div>
+              <div class="sl-text">También deberá demostrar buen carácter moral y cooperar con las agencias del orden público en la investigación o procesamiento de la trata.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Tiempos del proceso</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">1.5 a 2 años para el permiso de trabajo. Si se niega, se puede apelar (4-5 años más).</div></div>
+              <div class="sl-text">Aproximadamente 1.5 a 2 años para el permiso de trabajo. Si se niega, se puede apelar (4-5 años más).</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Camino a la residencia</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Después de 3 años de aprobada la Visa T (o 1 año en algunos casos) se puede pedir la residencia permanente, y como residente puede viajar de ida y vuelta a México.</div></div>
+              <div class="sl-text">Después de 3 años de aprobada la Visa T (o 1 año en algunos casos) se puede aplicar a la residencia permanente, y como residente puede viajar de ida y vuelta a México.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Entrevista con el psicólogo</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Deberá hablar con un especialista que documentará su historia. Prepara al cliente para la siguiente etapa (la declaración).</div></div>
+              <div class="sl-text">Deberá hablar con un especialista/psicólogo que documentará su historia en un informe consistente con la verdad. ¿De acuerdo? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Validación empática final + repetición de beneficios</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Empatía y agradecimiento por la honestidad; se repite el cronograma de beneficios y se menciona el contexto político para reforzar urgencia y valor antes de hablar de honorarios.</div></div>
+              <div class="sl-text">Siento mucho lo que ha pasado. Recordatorio del cronograma completo (permiso de trabajo, seguro social, acción diferida, amparo) considerando el contexto de la administración Trump.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Transición a honorarios</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se van a explicar los próximos pasos (honorarios y documentos). Se pide confirmación de acuerdo.</div></div>
+              <div class="sl-text">Ahora le explico los honorarios y documentos necesarios. ¿De acuerdo?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Planes de pago</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Las tres opciones de pago disponibles para financiar el caso.</div></div>
+              <ul class="script-list">
+                <li>Enganche $2,100 + 36 mensualidades de $375 (total $15,600).</li>
+                <li>Enganche $5,000 + 18 mensualidades de $500 (total $14,000).</li>
+                <li>Pago único de $12,500 (precio de contado).</li>
+              </ul>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Qué incluye el monto</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El monto cubre todo el trabajo de la abogada hasta la entrevista final de residencia.</div></div>
+              <div class="sl-text">Todo el trabajo de la abogada, desde armar el expediente hasta la entrevista final de residencia.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Costos adicionales (no incluidos)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Evaluación psicológica y GOV FEE I-485, pagados por persona en distintos momentos — no están incluidos en el monto anterior.</div></div>
+              <ul class="script-list">
+                <li>Evaluación psicológica: $800-$1,300 USD.</li>
+                <li>GOV FEE I-485: $1,500.</li>
+              </ul>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Paquete post-pago inicial</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Qué recibirá el cliente por correo (carta de representación, formularios) y el trámite de huellas.</div></div>
+              <div class="sl-text">Envío de carta de representación, carta de récord, formularios para firmar; contratos digitales; trámite de huellas (~$50 USD).</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Trayectoria de la abogada + estándar de prueba (escala 51%/90%)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Quince años de experiencia y alta tasa de éxito; la analogía de la escala 0-100 con el umbral legal del 51% (obligación de aprobar una vez llegado ahí) y la meta interna del 90%. Justifica el valor de los honorarios antes de pedir el pago.</div></div>
+              <div class="sl-text">Quince años de experiencia, alta tasa de éxito incluso bajo la administración Trump. <em>Imagine una escala del 0 al 100, donde 50 es la mitad. Para ganar el caso, la abogada solo necesita convencer a USCIS con un 51%. Una vez llegado ahí, USCIS está obligado por ley a aprobar el caso. La abogada nunca se conforma con el 51%: siempre busca el 90% o más.</em> ¿Le parece bien eso?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Cierre de venta con urgencia</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">No hay que pagar todo de una vez, hay planes de financiamiento. Baja la fricción del pago y genera urgencia.</div></div>
+              <div class="sl-text">No hay que pagar todo hoy — hay planes de financiamiento. Comencemos su caso ahora mismo.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Selección de plan y cobro</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Elegir entre pago total o plan; si decide abrir el caso, confirmar "Acepto", datos de tarjeta, monto y autorización.</div></div>
+              <div class="sl-text">¿Cuál opción de pago prefiere?</div>
+              <div class="sl-note">Si decide abrir caso: enviar el mensaje de Visa T, pedir "Acepto", confirmar datos de tarjeta, monto, y autorización del cargo.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Disclaimer post-cobro</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">La representación se limita a temas migratorios; casos criminales o de detención generan honorarios adicionales.</div></div>
+              <div class="sl-text">La representación se limita a temas migratorios; casos criminales o de detención generan honorarios adicionales. Se invita a mantener buen récord.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Evidencia (si fue venta)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Puede ayudar contar con evidencia (no obligatoria): mensajes, fotos de daños o lesiones, reportes médicos o policiales, evidencia de terapia.</div></div>
+              <div class="sl-text">Puede ayudar contar con evidencia (no obligatoria): mensajes/notas de voz de insultos o amenazas, fotos de daños o lesiones, reportes médicos o policiales, evidencia de terapia.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Referidos</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Si conoce a alguien que haya pasado por algo similar, se pide su nombre y número.</div></div>
+              <div class="sl-text">Si conoce a alguien que haya pasado por algo similar, ¿nos podría compartir su nombre y número?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Agendamiento de la entrevista de declaración</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">La siguiente llamada con especialistas dura ~4 horas, por videollamada, requiere privacidad y disponibilidad. Formaliza el siguiente paso operativo del caso ya vendido.</div></div>
+              <div class="sl-text">La siguiente llamada con especialistas dura ~4 horas, por videollamada, requiere privacidad y disponibilidad; ahí se documentará el testimonio y se recopilará evidencia adicional. Reúna la mayor cantidad de documentos posible antes de esa cita.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Cierre general</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Agradecimiento y bienvenida a la firma.</div></div>
+              <div class="sl-text">Muchas gracias por su confianza y por elegir a la Abogada María Mendoza. ¡Bienvenid@ a la firma!</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Script de salida (si no calificó)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Si el cliente no calificó: explicación empática de que por ahora no hay forma de arreglar papeles sin salir del país; se pide referidos igualmente.</div></div>
+              <div class="sl-text">Lo siento, pero por el momento no hay forma de arreglar sus papeles sin salir del país (salvo salir 10 años y que un hijo o esposo peticione, sin garantía de aprobación). Tenemos fe en una futura reforma migratoria. ¿Tiene alguna pregunta?</div>
+              <div class="sl-note">Se pide referidos igualmente.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Encuesta de calidad</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se avisa que se envió una encuesta de satisfacción por SMS; se pide confirmar que llegó.</div></div>
+              <div class="sl-text">Se envía una breve encuesta de satisfacción por SMS; se pide confirmación de que llegó.</div>
+            </div>
+
+          </div>
+        </div>
+      </div><!-- /script Visa T Consulta -->
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">🧭</div>
+          <h3>Información sobre el Script — Visa T Consulta</h3>
+          <div class="mod-badge badge-gold">Desglose</div>
+        </div>
+        <div class="bbody">
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">Puntos 1-5</div><div class="bac-title">Apertura y confirmación de expediente</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Saludo inicial:</strong> saludo, identificación del DVS y la firma, referencia a la cita agendada — rompe el hielo y confirma que es la llamada correcta.</li>
+                <li><strong>Presentación como extensión legal + confidencialidad:</strong> genera confianza antes de tocar temas sensibles.</li>
+                <li><strong>Verificación de privacidad + disposición para empezar:</strong> asegura el ambiente correcto, igual que en el intake.</li>
+                <li><strong>Resumen de la revisión previa del caso:</strong> refuerza que el caso ya fue analizado seriamente.</li>
+                <li><strong>Confirmación de expediente (bifurcación):</strong> el equipo confirma brevemente historial migratorio, récord criminal y ejemplos de trata. Si ya dio ejemplos contundentes → saltar al párrafo 11; si no → seguir con el párrafo 6.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">Puntos 6-12</div><div class="bac-title">Explicación de la Visa T, ejemplos por agresor y "abusómetro"</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Explicación de la Visa T y sus beneficios (rama B):</strong> refuerza el valor antes de indagar en los detalles del abuso.</li>
+                <li><strong>Ejemplos de trata según el tipo de agresor (7a-7d):</strong> cuatro versiones, según si el agresor fue el empleador, el coyote, la pareja/familiar, u otra persona — confirma y profundiza en el escenario ya identificado en el intake.</li>
+                <li><strong>Encuadre legal del abuso como "trata":</strong> consolida el encuadre legal antes de pedir la confirmación formal.</li>
+                <li><strong>Explicación adicional de la Visa T:</strong> refuerza el mensaje antes del compromiso de veracidad.</li>
+                <li><strong>Recordatorio de veracidad:</strong> blindaje legal antes de la pregunta de calificación.</li>
+                <li><strong>Confirmación de la experiencia compartida en el intake:</strong> punto de control final antes del "abusómetro".</li>
+                <li><strong>Pregunta de identificación / "abusómetro" (12a-12d):</strong> obtiene la admisión verbal necesaria para sostener el caso legalmente. Si no se identifica, se va al Script de Salida.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">Puntos 13-19</div><div class="bac-title">Validación, requisitos, tiempos y psicólogo</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Validación empática + confirmación de calificación:</strong> refuerza la parte emocional y avanza hacia el detalle del proceso legal.</li>
+                <li><strong>Requisitos adicionales:</strong> buen carácter moral y cooperación con las autoridades en la investigación de la trata.</li>
+                <li><strong>Tiempos del proceso:</strong> 1.5 a 2 años para el permiso de trabajo; apelación 4-5 años más si se niega.</li>
+                <li><strong>Camino a la residencia permanente:</strong> 3 años tras la aprobación (o 1 en algunos casos); viajes a México como residente.</li>
+                <li><strong>Entrevista con el psicólogo:</strong> prepara al cliente para la siguiente etapa (la declaración).</li>
+                <li><strong>Validación empática final:</strong> agradecimiento por la honestidad; expectativa positiva.</li>
+                <li><strong>Repetición de beneficios y tiempos + contexto Trump:</strong> refuerza urgencia y valor antes de hablar de honorarios.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">4</div><div><div class="bac-label">Puntos 20-25</div><div class="bac-title">Honorarios, cobro, evidencia y referidos</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Transición a honorarios:</strong> se van a explicar los próximos pasos.</li>
+                <li><strong>Planes de pago:</strong> las tres opciones de pago disponibles.</li>
+                <li><strong>Qué incluye el monto:</strong> cubre todo el trabajo de la abogada hasta la entrevista final de residencia.</li>
+                <li><strong>Costos adicionales no incluidos:</strong> evaluación psicológica y GOV FEE I-485, pagados por persona.</li>
+                <li><strong>Paquete post-pago inicial:</strong> qué recibirá el cliente por correo y el trámite de huellas.</li>
+                <li><strong>Trayectoria de la abogada + estándar de prueba:</strong> justifica el valor de los honorarios antes de pedir el pago (escala 51%/90%).</li>
+                <li><strong>Cierre de venta con urgencia:</strong> baja la fricción del pago y genera urgencia.</li>
+                <li><strong>Selección de plan de pago y cobro:</strong> confirmar "Acepto", datos de tarjeta, monto y autorización.</li>
+                <li><strong>Disclaimer post-cobro + evidencia + referidos:</strong> límites de la representación, evidencia útil (no obligatoria), solicitud de referidos.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">5</div><div><div class="bac-label">Punto 26 + cierre</div><div class="bac-title">Agendamiento de la declaración, cierre y script de salida</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Agendamiento de la entrevista de declaración:</strong> formaliza el siguiente paso operativo del caso ya vendido (llamada de ~4 horas con especialistas, por videollamada).</li>
+                <li><strong>Cierre general:</strong> agradecimiento y bienvenida a la firma.</li>
+                <li><strong>Script de salida:</strong> si el cliente no calificó, explicación empática de que por ahora no hay forma de arreglar papeles sin salir del país; se pide referidos igualmente.</li>
+                <li><strong>Encuesta de calidad:</strong> se avisa que se envió por SMS y se pide confirmación de que llegó.</li>
+              </ul>
+            </div>
+          </details>
+
+        </div>
+      </div><!-- /desglose Visa T Consulta -->
+
+    </div><!-- /panel modt -->
+    <!-- ════════════════════════════════════════════════════
+         PANEL MÓDULO 2: VAWA
+         ════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-vawa">
+
+      <div class="page-title">
+        <div class="pt-label">Módulo 2</div>
+        <h2>VAWA</h2>
+        <p class="pt-sub">Guion completo de las llamadas de Intake y Consulta de VAWA, con la explicación de cada parte, incluyendo las ramas de Hijos y de Esposos.</p>
+      </div>
+
+      <div class="mod-meta">
+        <div class="mod-meta-item"><div class="label">Fases</div><div class="value">Intake · Consulta</div></div>
+        <div class="mod-meta-item"><div class="label">Producto</div><div class="value">3 vías en cascada</div></div>
+        <div class="mod-meta-item"><div class="label">Estándar de prueba</div><div class="value">Escala 51% / 90%</div></div>
+        <div class="mod-meta-item"><div class="label">Ramas</div><div class="value">Hijos · Esposos</div></div>
+      </div>
+
+      <div class="alert info">
+        <span class="alert-icon">ℹ️</span>
+        <div>El Intake de VAWA incluye, como primer tramo, el mismo cuestionario y la misma explicación de Visa T (ver Módulo 1). Aquí se resume esa parte compartida y se detalla completo lo que es exclusivo de VAWA.</div>
+      </div>
+
+      <!-- ═══════════ INTAKE ═══════════ -->
+      <div class="sdiv"><div class="l"></div><div class="t">📞 Intake — Primera Llamada</div><div class="l"></div></div>
+
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">📜</div>
+          <h3>El Script Completo — VAWA Intake</h3>
+          <div class="mod-badge badge-core">Script</div>
+        </div>
+        <div class="bbody">
+          <div class="script-box">
+
+            <div class="script-line">
+              <span class="sl-label">Puntos 1-24 (idénticos a Visa T Intake)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Es exactamente el mismo texto que en Visa T Intake (saludo, propósito, confidencialidad, contexto político, trayectoria, autorización, preguntas motivacionales, marco de entrevista y las 16 preguntas de inadmisibilidad). El entrevistador todavía no sabe qué visa va a ofrecer mientras hace estas preguntas — un único cuestionario alimenta a las dos visas.</div></div>
+              <div class="sl-text">Saludo → conexión emocional → propósito → SMS de confidencialidad → contexto político y casos de éxito → trayectoria de la abogada → autorización para preguntar → confidencialidad y privacidad física → compromiso de honestidad → 4 preguntas motivacionales → marco de la entrevista → las 16 preguntas de inadmisibilidad (identidad, estado civil, hijos, familia, peticiones, militares, víctima de delito, entradas a EE.UU., antecedentes penales, detenciones migratorias, beneficios previos, falsa ciudadanía).</div>
+              <div class="sl-note">Es exactamente el mismo texto que en Visa T Intake — un único cuestionario alimenta a las dos visas. Ver el detalle completo en el Módulo 1.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Transición a explicación legal (igual que Visa T)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Mismo texto que en Visa T: puente antes de explicar las visas humanitarias, pidiendo permiso para continuar.</div></div>
+              <div class="sl-text">Bien Sr./Sra., los abogados de la firma van a analizar toda la información... Me gustaría explicarle las posibles maneras que tienen las leyes de inmigración para arreglar sus papeles. ¿Le parece? <span class="sl-cue">SI</span> ... ES SIEMPRE MUY IMPORTANTE DECIR LA VERDAD.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Explicación completa de la Visa T (idéntica)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Definición, ventajas, tres escenarios de trata y explicación de evidencia — genera esperanza y diferencia la Visa T de otras vías, antes incluso de hablar de VAWA.</div></div>
+              <div class="sl-text">Definición, ventajas (perdona entradas ilegales, deportaciones, crímenes graves; puede llevar a residencia), los tres escenarios de trata (laboral, doméstica/servidumbre, coyotes), recordatorio de veracidad, cuestionario según escenario, y explicación de evidencia (declaración jurada suficiente, tipos de evidencia).</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Agendamiento de consulta (dentro del bloque Visa T)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Mismos pasos que en Visa T Intake: agendar la consulta, avisar de los videos, y preparar el checklist final por SMS.</div></div>
+              <div class="sl-text">Ahora vamos a programar su consulta... (mismo texto que en Visa T Intake).</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">VAWA — Introducción</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Quién protege VAWA y qué permite (arreglar papeles sin salir del país, con permiso de trabajo en 6-8 meses o 2-3 años según el caso). Se pide permiso para explicarlo.</div></div>
+              <div class="sl-text">También existe una ley humanitaria que se llama VAWA, que protege a personas que han sufrido violencia doméstica, maltrato o abuso por parte de sus hijos ciudadanos americanos mayores de 21 años, o por parte de un esposo ciudadano americano o residente permanente. Si califican, permite arreglar papeles sin salir de EE.UU., a veces con permiso de trabajo en 6 a 8 meses, otras en 2 a 3 años. Me gustaría explicarle cómo esta ley protege a las personas que han sufrido maltrato. ¿Le parece? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Beneficios de VAWA</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Permiso de trabajo y seguro social durante el proceso; posible residencia permanente. Se pide la reacción del cliente ante estos beneficios.</div></div>
+              <div class="sl-text">Antes de explicarte los requisitos legales, quiero hablarte de los beneficios:</div>
+              <ul class="script-list">
+                <li>Permiso de trabajo y número de seguro social mientras el caso está en proceso.</li>
+                <li>Un permiso de trabajo que puede llevar a estatus permanente y, en muchos casos, a la residencia (green card).</li>
+              </ul>
+              <div class="sl-text" style="margin-top:8px">¿Qué le parecen estos beneficios?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Requisitos legales y definición amplia de abuso</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">En EE.UU. la definición de abuso es más amplia que en el país de origen — incluye lo emocional, psicológico, verbal, financiero, físico y sexual.</div></div>
+              <div class="sl-text">Ahora quiero explicarte con más detalle los requisitos legales. La definición de maltrato o abuso en EE.UU. es amplia y puede incluir cosas que en su país se consideran normales, pero que aquí sí son un problema: abuso emocional, psicológico, verbal, financiero, físico y sexual.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Confidencialidad de VAWA y no afectación a la familia</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">VAWA no afecta a los hijos ni esposos; es confidencial (multa de $5,000 a inmigración si divulga información); es una auto-petición, nadie más necesita saber ni firmar. Quita al cliente el miedo o la culpa de "delatar" a un familiar.</div></div>
+              <div class="sl-text">Es muy importante que sepa que VAWA no afecta a los hijos o esposos de ninguna manera negativa. Es un proceso completamente confidencial que no perjudica a nadie. VAWA es tan confidencial que inmigración puede recibir una multa de hasta $5,000 dólares si divulga información sobre su caso. De hecho, nadie necesitaría saber que está presentando esta petición, porque es una AUTO-PETICIÓN: ni los hijos ni los esposos necesitan firmar ni saber nada. ¿De acuerdo? <span class="sl-cue">SI</span><br><br>Si usted ha sido maltratado o abusado, VAWA puede ayudarlo a arreglar sus papeles SIN SALIR DEL PAÍS, posiblemente con permiso de trabajo mientras el caso está pendiente.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Bifurcación</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El script se divide según el perfil: clic a "VAWA por esposo/esposa" o "VAWA por hijos USC mayores de 21".</div></div>
+              <div class="sl-text">Clic al que corresponda: VAWA por esposo/esposa, o VAWA por hijos USC mayores de 21.</div>
+            </div>
+
+            <div class="branch-tag">Rama A — VAWA Hijos (si tiene hijos USC mayores de 21 años)</div>
+
+            <div class="script-line">
+              <span class="sl-label">Ejemplos de maltrato por hijos mayores de 21</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Ejemplos concretos (irrespeto, insultos, robo de dinero, agresión física, amenazas de llamar a la policía/inmigración, contexto de adicciones). Ayuda al cliente a identificarse con alguna situación real.</div></div>
+              <div class="sl-text">Cuando hablo de maltrato o abuso me refiero a cosas que pasan cuando los hijos cumplen 21 años, por ejemplo: siguen siendo irrespetuosos, gritan groserías, roban dinero de la cartera o tarjeta, azotan puertas (a veces empeora si hay malas compañías, drogas o alcohol), siguen viviendo en casa exigiendo dinero o amenazando con llamar a la policía o inmigración si no se los das. A veces se ponen agresivos: empujan, jalan el cabello, dan cachetadas, golpean, o intimidan y hacen sentir miedo. CADA CASO ES DIFERENTE, pero estos son ejemplos que podrían calificar.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Validación y transición</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se normaliza la vergüenza de hablar del tema; se recuerda que el abuso debe ser extremo y frecuente, y que la abogada no toma casos que no cree poder ganar. Se aplica la "2 Strike Rule" y se pide escuchar con empatía y preguntas abiertas.</div></div>
+              <div class="sl-text">Sé que puede ser difícil o vergonzoso hablar de esto, pero todo quedará entre nosotros, la Abogada y el oficial de inmigración. Es muy importante decir la verdad porque estos casos no están basados en mentiras. ¿De acuerdo? <span class="sl-cue">SI</span><br><br>No hablamos de algo que pasó una o dos veces, sino de algo frecuente y extremo. Todo lo que me diga no afectará a su hij@ ni a su familia, pero sí puede marcar la diferencia para que la Abogada arregle sus papeles SIN SALIR DEL PAÍS. Para ganar una petición de VAWA, el abuso tiene que ser extremo, y la abogada no toma casos que no cree poder ganar.<br><br>¿Usted se siente identificado con algunos de estos ejemplos? Vamos a enfocarnos en cosas que hayan ocurrido después de que su hijo cumplió 21 años.</div>
+              <div class="sl-note">Aplicar 2 Strike Rule. El equipo debe escuchar activamente con empatía y hacer preguntas abiertas: qué hizo, con qué frecuencia, cómo le hizo sentir, si intentó corregirlo, si ha mejorado.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Si el cliente admitió el abuso</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Si ya admitió el abuso: se pide empezar a reunir evidencia y se explica qué se necesita para ganar un caso VAWA — con un índice de éxito muy alto incluso con antecedentes complejos.</div></div>
+              <div class="sl-text">Antes de programar su consulta, si tiene evidencia del abuso, empiece a reunirla. Y con eso en mente, le explico qué se necesita para ganar un caso VAWA.<br><br>VAWA es el principal tipo de caso en el que se enfoca la abogada, con un índice de éxito muy alto, incluso en clientes que entraron ilegalmente, tienen múltiples entradas/salidas, órdenes de deportación previas, o ciertos antecedentes penales.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Estándar de prueba (escala 51%/90%)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">La analogía de la escala 0-100: para ganar el caso, la abogada solo necesita convencer a USCIS con un 51%, aunque nunca se conforma con menos del 90%.</div></div>
+              <div class="sl-text">Imagine una escala del 0 al 100, donde 50 es la mitad. Para ganar su caso VAWA, la abogada debe convencer a USCIS con solo un punto más de la mitad — 51% — de que sufrió abuso. Una vez llegado ahí, USCIS está OBLIGADO por ley a aprobar el caso. Pero la abogada nunca se conforma con el 51%: siempre busca el 90% o más. ¿Hasta aquí todo claro?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Evidencia (VAWA)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El caso se puede ganar solo con el testimonio (declaración jurada); no es obligatoria más evidencia, pero ayuda: mensajes abusivos, fotos de moretones u objetos rotos, evidencia de adicciones o antecedentes del agresor.</div></div>
+              <div class="sl-text">El caso se puede ganar solo con su testimonio (declaración jurada muy detallada y verídica); NO necesita evidencia obligatoria, pero la abogada casi siempre presenta evidencia adicional. Puede incluir: mensajes de texto abusivos, fotos de moretones o cicatrices, fotos de objetos rotos por el agresor, o evidencia de que el agresor bebe en exceso, usa drogas o ha estado en la cárcel.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Agendamiento y cierre (Rama Hijos)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Misma estructura que en Visa T: agendar consulta, enviar SMS, recordatorio de privacidad, videos obligatorios específicos de la rama Hijos.</div></div>
+              <div class="sl-text">Misma estructura que en Visa T: agendar consulta, enviar SMS, recordatorio de privacidad, videos obligatorios.</div>
+              <div class="sl-note">Videos VAWA Hijos: cómo arreglar papeles a través de un hijo ciudadano; con deportación previa; con entradas y salidas; qué es VAWA y cómo fortalecer el caso; con entrada ilegal.</div>
+            </div>
+
+            <div class="branch-tag">Rama B — VAWA Esposos (si tiene espos@ USC o LPR)</div>
+
+            <div class="script-line">
+              <span class="sl-label">Beneficios (repetidos)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Mismo bloque de beneficios que en la rama Hijos (permiso de trabajo, seguro social, posible residencia), adaptado a esta rama.</div></div>
+              <div class="sl-text">Mismo bloque que arriba (permiso de trabajo, seguro social, posible residencia). ¿Qué le parecen estos beneficios?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Requisitos legales</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El abuso conyugal no tiene que ser algo físico extremo — puede ser algo del pasado ya "superado" pero que dejó una afectación. VAWA no afecta negativamente a los hijos ni esposos y es confidencial.</div></div>
+              <div class="sl-text">Cuando hablamos de maltrato o abuso en el matrimonio, nos referimos a cosas por las que pasan muchos matrimonios en un período difícil — no tiene que ser algo físico extremo, puede ser algo del pasado ya "superado" pero que dejó una afectación. VAWA no afecta negativamente a los hijos ni esposos; es confidencial (multa de $5,000 a inmigración si se divulga).</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Ejemplos de maltrato conyugal</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Abuso verbal, control/celos, agresión física, y problemas en la vida sexual (con ejemplos diferenciados por género). Ayuda al cliente a identificarse con su situación específica en el matrimonio.</div></div>
+              <ul class="script-list">
+                <li><strong>Abuso verbal:</strong> insultos, humillación delante de otros o de los hijos.</li>
+                <li><strong>Relacionado con el estatus migratorio:</strong> burlas por no tener papeles, amenazas de llamar a la policía/inmigración o de quitarle a los hijos.</li>
+                <li><strong>Control y celos excesivos:</strong> GPS, control del dinero, aislamiento de amigos y familia.</li>
+                <li><strong>Agresión física:</strong> cachetadas, empujones, arañazos, escupitajos.</li>
+                <li><strong>Problemas en la vida sexual:</strong> presión u obligación de tener relaciones sin consentimiento (con ejemplos diferenciados para mujeres con esposos y hombres con esposas).</li>
+              </ul>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Validación y transición</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Igual que en la rama Hijos, pero enfocado en el cónyuge: normalizar la vergüenza, recordar confidencialidad, y pedir que se identifique con los ejemplos.</div></div>
+              <div class="sl-text">Sé que puede ser difícil compartir esto, pero todo permanecerá confidencial. Es muy importante decir la verdad. ¿De acuerdo? <span class="sl-cue">SI</span><br><br>No hablamos de algo que pasó una o dos veces, sino de algo frecuente. Todo lo que me diga no afectará a su espos@ ni a su familia, pero sí puede ayudar a que la Abogada arregle sus papeles SIN SALIR DEL PAÍS. El abuso debe ser extremo y la abogada no toma casos que no cree poder ganar.<br><br>¿Se siente identificado con algunos de estos ejemplos?</div>
+              <div class="sl-note">El equipo debe escuchar con empatía, preguntas abiertas: qué hizo, con qué frecuencia, cómo le hizo sentir, si ha mejorado.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Si el cliente admitió el abuso</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Mismo contenido que en la rama Hijos: reunir evidencia si la tiene, y explicar el estándar de prueba (escala 51%/90%).</div></div>
+              <div class="sl-text">Reunir evidencia si la tiene. Explicación de qué se necesita para ganar el caso VAWA — mismo bloque de estándar de prueba (51%/90%) y mismos tipos de evidencia que en la Rama Hijos.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Agendamiento y cierre (Rama Esposos)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Mismos pasos de siempre, más contenido exclusivo: información de la "Red Card" y videos sobre qué hacer si ICE toca la puerta; videos diferenciados para Esposo y Esposa.</div></div>
+              <div class="sl-text">Misma estructura: agendar, SMS, privacidad, videos.</div>
+              <div class="sl-note">Contenido adicional exclusivo: Red Card (Tarjeta Roja) y video de "¿qué hacer si ICE toca la puerta?". Videos diferenciados VAWA Esposo (incluye "los hombres también sufren maltrato") y VAWA Esposa (incluye perdón I-601A y riesgos de salir del país).</div>
+            </div>
+
+          </div>
+        </div>
+      </div><!-- /script VAWA Intake -->
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">🧭</div>
+          <h3>Información sobre el Script — VAWA Intake</h3>
+          <div class="mod-badge badge-gold">Desglose</div>
+        </div>
+        <div class="bbody">
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">Puntos 1-32</div><div class="bac-title">Bloque compartido: apertura, inadmisibilidad y Visa T</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <p>Los puntos 1 a 24 (apertura, propósito, confidencialidad, contexto político, trayectoria, autorización, preguntas motivacionales, marco de entrevista, y las 16 preguntas de inadmisibilidad) son exactamente los mismos que en Visa T Intake. El entrevistador todavía no sabe qué visa va a ofrecer mientras hace estas preguntas — el mismo cuestionario sirve para ambas visas.</p>
+              <ul class="ev-list">
+                <li><strong>Explicación de la Visa T (25):</strong> definición, ventajas, que puede llevar a residencia — genera esperanza y la diferencia de otras vías, antes incluso de hablar de VAWA.</li>
+                <li><strong>Tres escenarios de trata (26):</strong> los mismos tres ejemplos (laboral, doméstica/servidumbre, coyotes), por si su caso es de Visa T y no de VAWA.</li>
+                <li><strong>Cuestionario Visa T según escenario (27):</strong> se sondea el escenario y se aplica el cuestionario correspondiente.</li>
+                <li><strong>Explicación sobre la evidencia — Visa T (28):</strong> la declaración jurada basta, pero se recomienda reunir evidencia.</li>
+                <li><strong>Agendamiento y cierre — bloque Visa T (29-32):</strong> mismos pasos que en Visa T Intake.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">Puntos 33-37</div><div class="bac-title">Introducción a VAWA y bifurcación</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Introducción a VAWA:</strong> quién protege VAWA y qué permite (arreglar papeles sin salir del país, con permiso de trabajo en 6-8 meses o 2-3 años según el caso).</li>
+                <li><strong>Beneficios de VAWA:</strong> permiso de trabajo y seguro social durante el proceso; posible residencia permanente.</li>
+                <li><strong>Requisitos legales y definición amplia de abuso:</strong> en EE.UU. la definición de abuso es más amplia que en el país de origen — incluye lo emocional, psicológico, verbal, financiero, físico y sexual.</li>
+                <li><strong>Confidencialidad de VAWA y no afectación a la familia:</strong> quita al cliente el miedo o la culpa de "delatar" a un familiar, facilitando que hable con confianza. Es una auto-petición: nadie más necesita saber ni firmar.</li>
+                <li><strong>Bifurcación del guion:</strong> el script se divide según el perfil — "VAWA por esposo/esposa" o "VAWA por hijos USC mayores de 21".</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">Puntos 38-41</div><div class="bac-title">Rama A — VAWA Hijos</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Ejemplos de maltrato por hijos mayores de 21:</strong> ayuda al cliente a identificarse con alguna situación real (irrespeto, insultos, robo de dinero, agresión física, amenazas de llamar a la policía/inmigración).</li>
+                <li><strong>Validación y transición a preguntas de identificación:</strong> normaliza la vergüenza; recuerda que el abuso debe ser extremo y frecuente. Se aplica la "2 Strike Rule" y se pide escuchar con empatía y preguntas abiertas.</li>
+                <li><strong>Evidencia y estándar de prueba (VAWA hijos):</strong> la analogía de la escala 51%/90%; el caso se gana solo con declaración jurada, pero se recomienda reunir evidencia.</li>
+                <li><strong>Agendamiento, cierre y seguimiento:</strong> mismos pasos de siempre, más la lista de videos específicos de la rama Hijos.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">4</div><div><div class="bac-label">Puntos 42-47</div><div class="bac-title">Rama B — VAWA Esposos</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Beneficios de VAWA (repetido):</strong> mismo contenido, adaptado a esta rama.</li>
+                <li><strong>Requisitos legales y confidencialidad (repetido):</strong> el abuso conyugal no tiene que ser algo físico extremo — puede ser algo del pasado que dejó una afectación.</li>
+                <li><strong>Ejemplos de maltrato conyugal:</strong> abuso verbal, control/celos, agresión física, y problemas en la vida sexual (con ejemplos separados por género).</li>
+                <li><strong>Validación y transición:</strong> igual que en la rama Hijos, pero enfocado en el cónyuge.</li>
+                <li><strong>Evidencia y estándar de prueba (VAWA esposos):</strong> mismo contenido que la rama Hijos (escala 51%/90%).</li>
+                <li><strong>Agendamiento, cierre y seguimiento:</strong> mismos pasos, más contenido exclusivo: información de la "Red Card" y videos sobre qué hacer si ICE toca la puerta; lista de videos diferenciada para Esposo y Esposa.</li>
+              </ul>
+            </div>
+          </details>
+
+          <div class="principle">
+            <p>"Visa T + VAWA Hijos + VAWA Esposos, en una sola llamada, repitiendo casi textualmente el bloque de evidencia y estándar de prueba en cada rama."</p>
+            <div class="principle-sub">Patrón general del guion de Intake de VAWA — tres productos encadenados</div>
+          </div>
+
+        </div>
+      </div><!-- /desglose VAWA Intake -->
+
+      <!-- ═══════════ CONSULTA ═══════════ -->
+      <div class="sdiv"><div class="l"></div><div class="t">📞 Consulta — Segunda Llamada / Cierre</div><div class="l"></div></div>
+
+      <div class="alert warn">
+        <span class="alert-icon">⚠️</span>
+        <div>El script de Consulta detallado a continuación corresponde a la rama <strong>VAWA por Hijo Ciudadano Adulto</strong>. La rama de Esposos en la llamada de consulta comparte la misma apertura/cierre, pero no está redactada palabra por palabra en el documento fuente.</div>
+      </div>
+
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">📜</div>
+          <h3>El Script Completo — VAWA Consulta (Hijo Ciudadano Adulto)</h3>
+          <div class="mod-badge badge-core">Script</div>
+        </div>
+        <div class="bbody">
+          <div class="script-box">
+
+            <div class="script-line">
+              <span class="sl-label">Saludo, presentación y verificación de privacidad (idénticos a Visa T Consulta)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Igual que en Visa T Consulta: saludo, identificación, referencia a la cita, y la presentación como extensión legal confidencial de la abogada.</div></div>
+              <div class="sl-text">Hola Sr./Sra._________, habla [nombre] de DVS de la firma de Abogados Mendoza. Lo tengo agendado para su consulta ¿Cómo está? ... soy una extensión legal directa de la Abogada María Mendoza... todo será confidencial... ¿Está en un lugar privado? ¿De acuerdo? ¿Está listo para empezar? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Resumen de revisión previa (idéntico)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">La información del intake fue muy útil; la Abogada revisó a profundidad el historial legal, migratorio y familiar del cliente.</div></div>
+              <div class="sl-text">La información de su entrevista inicial fue muy útil; la Abogada revisó a profundidad su historial legal, migratorio y familiar.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Confirmación de expediente (bifurcación)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El equipo confirma historial migratorio, récord criminal y ejemplos de abuso VAWA por hijos. Si ya dio ejemplos contundentes → confirmar y seguir al párrafo 6; si no, se re-explica todo y se busca de nuevo llegar ahí (o se evalúa Visa T como plan B).</div></div>
+              <div class="sl-text">Tengo su archivo enfrente, solo confirmamos la información. ¿Está bien? <span class="sl-cue">SI</span></div>
+              <div class="sl-note">A) Si dio ejemplos contundentes → confirmar brevemente y continuar con el párrafo 6. B) Si NO dio ejemplos suficientes o negó el abuso → explicar que existen 3 visas humanitarias, pedir permiso para preguntas adicionales sobre la familia, reforzar confidencialidad, pedir compromiso de veracidad, y si da ejemplos continuar al párrafo 6; si no, evaluar Visa T antes del Script de Salida.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Abusómetro VAWA (párrafo 6)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El cliente debe confirmar explícitamente si siente que ha sufrido maltrato o abuso por parte de su hijo. Es el equivalente exacto al "abusómetro" de Visa T — la admisión verbal necesaria para continuar legalmente. Si dice que no, se evalúa Visa T o se pasa al Script de Salida.</div></div>
+              <div class="sl-text">Necesito hacerle una pregunta que la abogada pide hacer antes de continuar. Con los ejemplos que nos ha dado, ¿se identifica con la ley VAWA, en otras palabras, siente que ha sufrido maltrato o abuso por parte de su hijo?</div>
+              <div class="sl-note">SI → continúa con el párrafo 7. NO → continúa con screening de Visa T; si tampoco aplica, Script de Salida.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Validación empática + transición legal</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Empatía; recordatorio de que existen opciones humanitarias sin salir del país, a veces con permiso de trabajo en 6-8 meses. Se pide permiso para explicar.</div></div>
+              <div class="sl-text">Lamento mucho que haya pasado por estas situaciones. Las leyes de inmigración tienen opciones humanitarias que pueden darnos la manera de arreglar los papeles SIN SALIR de EE.UU., muchas veces con permiso de trabajo en 6 a 8 meses. ¿De acuerdo? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Contexto sobre la vía "normal" (salida obligatoria)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Normalmente hay que salir del país para arreglar papeles por un hijo ciudadano, salvo excepciones; VAWA es la alternativa mejor. Refuerza el valor de VAWA frente a la opción de salir del país.</div></div>
+              <div class="sl-text">Los padres de hijos ciudadanos que entraron ilegalmente normalmente tienen que salir del país para arreglar sus papeles, salvo excepciones (hijo/esposo en el ejército, o petición aprobada antes del 30 de abril de 2001). Si la abogada puede ayudarle sin salir del país, esta es una solución mucho mejor. ¿Correcto? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Definición de VAWA</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Quién protege VAWA y qué permite (arreglar papeles sin salir, con permiso de trabajo).</div></div>
+              <div class="sl-text">La ley VAWA protege a personas que han sufrido maltrato o abuso familiar por parte de sus hijos ciudadanos mayores de 21 años, permitiendo arreglar papeles sin salir del país y con permiso de trabajo.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Recordatorio de frecuencia y veracidad</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se habla de algo frecuente, no de un incidente aislado; debe basarse en la verdad.</div></div>
+              <div class="sl-text">Hablamos de algo que pasa con frecuencia, y siempre debe basarse en la verdad. ¿De acuerdo? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">No afectación al hijo</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">La ley protege a ambas partes; es confidencial y no perjudica el récord del hijo.</div></div>
+              <div class="sl-text">Esto no afecta al hijo de ninguna manera negativa. Es un proceso completamente confidencial que no perjudica a nadie. Su hijo no quedará con mal récord; nadie sabrá a menos que usted les diga.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Naturaleza de auto-petición</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">El hijo no necesita firmar ni saber nada; es solo entre el cliente y su abogado. Reduce la culpa o el miedo del cliente hacia su hijo, para que se anime a avanzar con el caso.</div></div>
+              <div class="sl-text">Su hijo ni siquiera necesita saber que usted está presentando esta petición — es una auto-petición, solo entre usted y su abogado. ¿Tiene sentido? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Tiempos del proceso</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Permiso de trabajo en 6-8 meses; residencia en 2-3 años más; todo el proceso es confidencial.</div></div>
+              <div class="sl-text">Permiso de trabajo en 6 a 8 meses; residencia legal permanente en 2-3 años más; como residente puede viajar a México. Todo el proceso es estrictamente confidencial.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Refuerzo de protección total</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Nadie del gobierno podrá hablar con el hijo (ni con el cliente) sobre esto.</div></div>
+              <div class="sl-text">No habrá impacto negativo en su hijo o familia; nadie del gobierno podrá hablar con su hijo, ¡ni siquiera con usted! sobre esto. ¿Sí queda claro esto? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Involucramiento de la abogada y el psicólogo</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Solo hablará del tema con la Abogada y un psicólogo especialista.</div></div>
+              <div class="sl-text">Las únicas personas con las que hablará de esto son la Abogada y un psicólogo que documentará su historia. ¿De acuerdo? <span class="sl-cue">SI</span></div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Validación + contexto Trump + evidencia + estándar de prueba (bloque más largo)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Combina empatía, la protección que da presentar el caso a tiempo bajo la administración Trump, el concepto de "cualquier evidencia creíble" (el testimonio basta, pero más evidencia ayuda), ejemplos de evidencia, la trayectoria de la abogada, y la escala 51%/90%. Es el bloque más largo de la llamada, preparando el cierre de venta.</div></div>
+              <div class="sl-text">Siento mucho lo que pasó con su hijo. Bajo la administración Trump, presentar el caso a tiempo puede protegerlo si ICE lo detiene — mostrar los "recibos" de un caso pendiente puede marcar la diferencia. VAWA funciona con "cualquier evidencia creíble": no se exige evidencia específica, el testimonio basta, pero más evidencia fortalece el caso. Ejemplos: mensajes/notas de voz de insultos o amenazas, fotos de objetos destruidos, fotos de lesiones. Quince años de experiencia de la abogada y alta tasa de éxito, incluso bajo Trump. La misma escala 0-100/51%/90% de siempre. ¿Le parece bien eso?</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Planes de pago (idénticos a Visa T)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Mismas tres opciones de pago que en Visa T.</div></div>
+              <ul class="script-list">
+                <li>Enganche $2,100 + 36 mensualidades de $375 (total $15,600).</li>
+                <li>Enganche $5,000 + 18 mensualidades de $500 (total $14,000).</li>
+                <li>Pago único $12,500.</li>
+              </ul>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Qué incluye el monto</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Cubre todo el trabajo de la abogada hasta la entrega de la green card.</div></div>
+              <div class="sl-text">Todo el trabajo de la abogada hasta la entrega de la green card (2-3 años).</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Costos adicionales (4 en VAWA, más que en Visa T)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Cuatro costos por persona: evaluación psicológica, examen médico, GOV FEE I-485, e intérprete si aplica — más que en Visa T.</div></div>
+              <ul class="script-list">
+                <li>Evaluación psicológica: $800-$1,300.</li>
+                <li>Examen médico: ~$400.</li>
+                <li>GOV FEE I-485: $1,500.</li>
+                <li>Intérprete el día de la entrevista (si aplica): $500.</li>
+              </ul>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Paquete post-pago inicial (idéntico)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Qué recibirá el cliente por correo tras el pago inicial, y el trámite de huellas.</div></div>
+              <div class="sl-text">Carta de representación, carta de récord, formularios, contratos por correo, trámite de huellas (~$50).</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Repetición de beneficios y tiempos + refuerzo de credibilidad</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Se repite el cronograma sin necesidad de salir del país, reforzando la credibilidad de la abogada como argumento de cierre.</div></div>
+              <div class="sl-text">Se repite el cronograma (6-8 meses / 2-3 años), sin necesidad de salir del país. "No creo que pueda equivocarse."</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Cierre de venta con urgencia</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">No hay que pagar todo de inmediato; hay planes de financiamiento; comparación con el éxito de otros clientes.</div></div>
+              <div class="sl-text">No hay que pagar todo de inmediato; hay planes de financiamiento; comparación con el éxito de otros clientes.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Selección de plan de pago y cobro</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Elegir entre pago total o financiamiento; si decide abrir caso, confirmar "Acepto", datos de tarjeta, monto y autorización.</div></div>
+              <div class="sl-text">Elegir entre pago total o financiamiento; si decide abrir caso: confirmar "Acepto", datos de tarjeta, monto y autorización.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Disclaimer post-cobro + evidencia + referidos</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">La representación se limita a temas migratorios; incluye evidencia de vigilancia/GPS (algo que no aparece en Visa T); solicitud de referidos.</div></div>
+              <div class="sl-text">La representación se limita a temas migratorios. Si fue venta: tipos de evidencia útil (mensajes, fotos, reportes médicos/policiales, evidencia de vigilancia/GPS, evidencia de terapia). Solicitud de referidos.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Agendamiento de la entrevista de declaración (idéntico)</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Igual que en Visa T: llamada de ~4 horas por videollamada con especialistas.</div></div>
+              <div class="sl-text">Siguiente llamada de ~4 horas por videollamada, con especialistas, requiere privacidad y disponibilidad.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Cierre general</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Agradecimiento y bienvenida a la firma.</div></div>
+              <div class="sl-text">Agradecimiento y bienvenida a la firma.</div>
+            </div>
+
+            <div class="script-line">
+              <span class="sl-label">Script de salida y encuesta de calidad</span><div class="script-tip"><div class="tip-label">💡 Qué es</div><div class="tip-body">Igual que en Visa T Consulta: explicación empática si no calificó, y encuesta de satisfacción por SMS.</div></div>
+              <div class="sl-text">Igual que en Visa T Consulta.</div>
+            </div>
+
+          </div>
+        </div>
+      </div><!-- /script VAWA Consulta -->
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">🧭</div>
+          <h3>Información sobre el Script — VAWA Consulta</h3>
+          <div class="mod-badge badge-gold">Desglose</div>
+        </div>
+        <div class="bbody">
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">Puntos 1-6</div><div class="bac-title">Apertura y "abusómetro" VAWA</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Saludo, presentación y verificación de privacidad:</strong> igual que en Visa T Consulta — generar confianza antes de hablar de temas familiares delicados.</li>
+                <li><strong>Resumen de la revisión previa del caso:</strong> refuerza que el caso ya fue analizado en serio.</li>
+                <li><strong>Confirmación de expediente (bifurcación):</strong> si el cliente ya dio ejemplos contundentes → saltar al párrafo 6. Si no, se re-explica que existen 3 visas humanitarias y se busca de nuevo llegar al párrafo 6 (o se evalúa Visa T como plan B).</li>
+                <li><strong>"Abusómetro" VAWA — pregunta de identificación:</strong> es el equivalente exacto al "abusómetro" de Visa T — la admisión verbal necesaria para poder continuar legalmente. Si dice que no, se evalúa Visa T o se pasa al Script de Salida.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">Puntos 7-15</div><div class="bac-title">Explicación legal, confidencialidad y auto-petición</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Validación empática + transición a explicación legal:</strong> empatía y recordatorio de las opciones humanitarias sin salir del país.</li>
+                <li><strong>Contexto sobre la vía normal (salida obligatoria):</strong> refuerza el valor de VAWA comparado con la alternativa de salir del país.</li>
+                <li><strong>Definición de VAWA:</strong> qué protege y qué permite.</li>
+                <li><strong>Recordatorio de frecuencia y veracidad:</strong> se habla de algo frecuente, no de un incidente aislado.</li>
+                <li><strong>No afectación al hijo:</strong> la ley protege a ambas partes; es confidencial y no perjudica el récord del hijo.</li>
+                <li><strong>Naturaleza de auto-petición:</strong> reduce la culpa o el miedo del cliente hacia su hijo, para que se anime a avanzar con el caso.</li>
+                <li><strong>Tiempos del proceso:</strong> permiso de trabajo en 6-8 meses; residencia en 2-3 años más.</li>
+                <li><strong>Refuerzo de protección total:</strong> nadie del gobierno podrá hablar con el hijo (ni con el cliente) sobre esto.</li>
+                <li><strong>Involucramiento de la abogada y el psicólogo:</strong> solo hablará del tema con la Abogada y un especialista.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">Punto 16</div><div class="bac-title">Bloque más largo: contexto Trump, evidencia y estándar de prueba</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <p>Combina empatía, la mención de que presentar el caso a tiempo puede proteger contra detención bajo la administración Trump, el concepto de "cualquier evidencia creíble" (no se exige algo específico, el testimonio basta, pero más evidencia ayuda), ejemplos de evidencia, la trayectoria de la abogada, y la analogía de la escala 51%/90%. Es el bloque más largo de la llamada — combina urgencia política, el estándar legal y la credibilidad de la abogada, todo junto, para preparar el cierre de venta.</p>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">4</div><div><div class="bac-label">Puntos 17-25</div><div class="bac-title">Honorarios, cobro y evidencia post-venta</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Planes de pago:</strong> mismas tres opciones que en Visa T.</li>
+                <li><strong>Qué incluye el monto:</strong> cubre todo el trabajo de la abogada hasta la entrega de la green card.</li>
+                <li><strong>Costos adicionales no incluidos:</strong> cuatro costos por persona — evaluación psicológica, examen médico, GOV FEE I-485, e intérprete si aplica.</li>
+                <li><strong>Paquete post-pago inicial:</strong> qué recibirá el cliente por correo, y el trámite de huellas.</li>
+                <li><strong>Repetición de beneficios y tiempos, y refuerzo de credibilidad:</strong> se reitera la alta tasa de éxito como argumento de cierre.</li>
+                <li><strong>Cierre de venta con urgencia:</strong> no hay que pagar todo de inmediato, hay planes de financiamiento.</li>
+                <li><strong>Selección de plan de pago y cobro:</strong> confirmar "Acepto", datos de tarjeta, monto y autorización.</li>
+                <li><strong>Disclaimer post-cobro + evidencia + referidos:</strong> incluye evidencia de vigilancia/GPS, algo que no aparece en Visa T; solicitud de referidos.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">5</div><div><div class="bac-label">Punto 26 + cierre</div><div class="bac-title">Agendamiento de la declaración, cierre y script de salida</div></div></div>
+              <span class="bac-arrow">▶</span>
+            </summary>
+            <div class="bac-body">
+              <ul class="ev-list">
+                <li><strong>Agendamiento de la entrevista de declaración:</strong> igual que en Visa T — llamada de ~4 horas por videollamada con especialistas.</li>
+                <li><strong>Cierre general, Script de salida y Encuesta de calidad:</strong> igual que en Visa T Consulta.</li>
+              </ul>
+            </div>
+          </details>
+
+        </div>
+      </div><!-- /desglose VAWA Consulta -->
+
+    </div><!-- /panel vawa -->
+    <!-- ════════════════════════════════════════════════════
+         PANEL: COMPARATIVA FINAL
+         ════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-comparativa">
+
+      <div class="page-title">
+        <div class="pt-label">Síntesis</div>
+        <h2>Comparativa Final de los Scripts</h2>
+        <p class="pt-sub">Qué es igual y qué cambia entre Visa T y VAWA, tanto en Intake como en Consulta.</p>
+      </div>
+
+      <!-- ═══ COMPARATIVA INTAKE ═══ -->
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">⚖️</div>
+          <h3>Comparativa — Intake (Visa T vs. VAWA)</h3>
+          <div class="mod-badge badge-core">Intake</div>
+        </div>
+        <div class="bbody">
+
+          <div class="two-col">
+            <div class="mini-card">
+              <div class="cmp-col-title same">✅ Lo que se parece</div>
+              <ul>
+                <li>La apertura es exactamente igual: conexión emocional, propósito, confidencialidad/grabación, contexto político, trayectoria de la abogada, autorización, verificación de privacidad, compromiso de honestidad y preguntas motivacionales — el mismo texto, palabra por palabra.</li>
+                <li>Las 16 preguntas de inadmisibilidad son idénticas — es un único cuestionario que alimenta a las dos visas.</li>
+                <li>La explicación completa de la Visa T aparece copiada tal cual dentro del script de VAWA.</li>
+                <li>Ambos usan frases de "suavización" antes de preguntas delicadas.</li>
+                <li>El cierre condicional es igual: el bloque de expectativa positiva solo se lee si el caso calificó.</li>
+                <li>El embudo general es el mismo: conexión → consentimiento → datos duros → educación legal → cuestionario → cierre.</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <div class="cmp-col-title diff">🔀 Lo que cambia</div>
+              <ul>
+                <li>Visa T tiene un solo camino; VAWA encadena tres explicaciones de producto (Visa T + VAWA Hijos + VAWA Esposos).</li>
+                <li>El estándar de prueba (escala 51%/90%) solo existe en VAWA.</li>
+                <li>Las garantías de confidencialidad familiar y auto-petición solo aparecen en VAWA.</li>
+                <li>Los ejemplos de abuso son distintos: Visa T por tipo de trata; VAWA por tipo de relación familiar y género.</li>
+                <li>La "2 Strike Rule" es exclusiva de la rama Hijos de VAWA.</li>
+                <li>El seguimiento de VAWA es más extenso (incluye Red Card y videos sobre ICE).</li>
+                <li>VAWA es mucho más largo por repetir el bloque de beneficios y evidencia tres veces.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="principle">
+            <p>"Visa T ofrece un solo producto con un estándar simple (declaración + evidencia); VAWA ofrece tres productos en cascada, añade el marco de probabilidad de éxito ante USCIS, y refuerza mucho más la garantía de que el proceso no dañará al familiar."</p>
+            <div class="principle-sub">Conclusión — Comparativa de Intake</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ COMPARATIVA CONSULTA ═══ -->
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">⚖️</div>
+          <h3>Comparativa — Consulta (Visa T vs. VAWA Hijo Ciudadano)</h3>
+          <div class="mod-badge badge-core">Consulta</div>
+        </div>
+        <div class="bbody">
+
+          <div class="two-col">
+            <div class="mini-card">
+              <div class="cmp-col-title same">✅ Lo que se parece</div>
+              <ul>
+                <li>Apertura y cierre 100% idénticos: saludo, presentación, verificación de privacidad, resumen de revisión previa, agendamiento de la declaración, cierre general, script de salida y encuesta de calidad.</li>
+                <li>Ambos usan el punto de confirmación del expediente como control de bifurcación.</li>
+                <li>El "abusómetro" cumple la misma función en ambos: la admisión verbal como condición para continuar.</li>
+                <li>El estándar de prueba (51%/90%) es prácticamente idéntico, palabra por palabra.</li>
+                <li>Los honorarios son exactamente iguales en los dos scripts.</li>
+                <li>El protocolo de cobro, el disclaimer post-venta, la lógica de "evidencia recomendada pero no obligatoria" y la solicitud de referidos son iguales.</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <div class="cmp-col-title diff">🔀 Lo que cambia</div>
+              <ul>
+                <li>Visa T repite ejemplos de trata segmentados por tipo de agresor; VAWA no los repite, va directo a la pregunta de identificación.</li>
+                <li>El "abusómetro" de Visa T tiene cuatro variantes (por agresor); el de VAWA tiene una sola pregunta.</li>
+                <li>Visa T exige buen carácter moral y cooperación con las autoridades; VAWA exige confidencialidad familiar y auto-petición.</li>
+                <li>Tiempos distintos: Visa T 1.5-2 años + 3 para residencia; VAWA 6-8 meses + 2-3 años.</li>
+                <li>Costos adicionales: 2 en Visa T, 4 en VAWA (examen médico e intérprete extra).</li>
+                <li>La ubicación del bloque de evidencia y estándar de prueba cambia: en Visa T está repartido en dos momentos; en VAWA está fusionado en un solo párrafo extenso.</li>
+                <li>VAWA menciona los "recibos" como protección ante ICE y la evidencia de vigilancia/GPS — ninguno aparece en Visa T Consulta.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="principle">
+            <p>"La llamada de cierre comparte el mismo molde en apertura, cobro, agendamiento y salida. Las diferencias reales están en cómo se confirma la calificación, los requisitos legales específicos de cada visa, y los tiempos, costos y tipos de evidencia — que reflejan la naturaleza distinta de cada abuso."</p>
+            <div class="principle-sub">Conclusión — Comparativa de Consulta</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /panel comparativa -->
+
+  </main>
+</div><!-- /app-shell -->
+
+<script>
+function showPanel(name){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.sb-item').forEach(function(n){n.classList.remove('active');});
+  var panel = document.getElementById('panel-'+name);
+  if(panel) panel.classList.add('active');
+  var nav = document.getElementById('nav-'+name);
+  if(nav) nav.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=900){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sbOverlay').classList.remove('show');
+  }
+}
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sbOverlay').classList.toggle('show');
+}
+</script>
+
+</body>
+</html>
