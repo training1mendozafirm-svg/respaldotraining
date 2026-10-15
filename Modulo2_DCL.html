@@ -1,0 +1,2417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Módulo 2: Visas NO VAWA con DCL | Mendoza Learning Center</title>
+<style>
+/* ============================================================
+   MENDOZA LAW FIRM – MENDOZA LEARNING CENTER
+   Módulo 1: VAWA – Declaración Legal del Cliente
+   Paleta institucional: #9094df | #e5e2f6 | #333333
+   ============================================================ */
+
+:root {
+  --color-primary: #9094df;
+  --color-primary-dark: #7176c8;
+  --color-secondary: #e5e2f6;
+  --color-secondary-dark: #d0ccf0;
+  --text-dark: #333333;
+  --text-white: #ffffff;
+  --color-success: #4caf50;
+  --color-error: #e53935;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fffbeb;
+  --border-radius: 8px;
+  --shadow: 0 2px 8px rgba(144, 148, 223, 0.18);
+  --shadow-lg: 0 4px 20px rgba(144, 148, 223, 0.28);
+  --font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: #f4f3fb;
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── LAYOUT PRINCIPAL ─── */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  background: #fff;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── HEADER ─── */
+.module-header {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.module-header .module-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  opacity: 0.95;
+  letter-spacing: 0.01em;
+}
+
+
+
+.logo-placeholder {
+  width: 120px;
+  height: 38px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 0 8px;
+}
+
+/* ─── BARRA DE PROGRESO ─── */
+.progress-bar-container {
+  background: var(--color-secondary);
+  height: 6px;
+  width: 100%;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  font-size: 0.72rem;
+  color: #888;
+  text-align: right;
+  padding: 3px 28px 0;
+  background: var(--color-secondary);
+}
+
+/* ─── CONTENIDO DE PANTALLA ─── */
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  padding: 36px 40px 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── PORTADA ─── */
+.cover-screen {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+  background: linear-gradient(160deg, #f7f6ff 0%, #edeafb 100%);
+  padding: 60px 48px;
+}
+
+.cover-badge {
+  background: var(--color-primary);
+  color: var(--text-white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.cover-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  line-height: 1.25;
+  max-width: 700px;
+}
+
+.cover-subtitle {
+  font-size: 1rem;
+  color: #666;
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.cover-objective-box {
+  background: var(--color-secondary);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 20px 24px;
+  max-width: 640px;
+  text-align: left;
+}
+
+.cover-objective-box .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary-dark);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cover-objective-box p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-dark);
+}
+
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.cover-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── TÍTULOS DE SECCIÓN ─── */
+.section-title {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 20px;
+  border-radius: var(--border-radius);
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.screen-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ─── CONTENIDO TEÓRICO ─── */
+.content-block {
+  margin-bottom: 20px;
+  line-height: 1.7;
+  font-size: 0.93rem;
+}
+
+.content-block p {
+  margin-bottom: 10px;
+}
+
+.bullet-list {
+  list-style: none;
+  padding-left: 4px;
+  margin: 12px 0;
+}
+
+.bullet-list li {
+  padding: 5px 0 5px 26px;
+  position: relative;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.bullet-list li::before {
+  content: "▸";
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  position: absolute;
+  left: 6px;
+  top: 6px;
+}
+
+/* ─── RECUADROS DESTACADOS ─── */
+.info-box {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.info-box .box-title {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.warning-box {
+  background: var(--color-warning-bg);
+  border: 1.5px solid var(--color-warning);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.warning-box .box-title {
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+/* ─── TABLAS ─── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+
+.data-table th {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #e8e6f8;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.data-table tr:nth-child(even) td {
+  background: var(--color-secondary);
+}
+
+.data-table tr:hover td {
+  background: #ededfa;
+}
+
+/* ─── EJEMPLOS COMPARATIVOS ─── */
+.example-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.example-card {
+  border-radius: var(--border-radius);
+  padding: 14px 16px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.example-card.correct {
+  background: #f0faf0;
+  border: 1.5px solid var(--color-success);
+}
+
+.example-card.incorrect {
+  background: #fdf4f4;
+  border: 1.5px solid var(--color-error);
+}
+
+.example-card .card-label {
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.example-card.correct .card-label { color: #2e7d32; }
+.example-card.incorrect .card-label { color: #c62828; }
+
+.example-card .card-explain {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 0.82rem;
+  opacity: 0.8;
+}
+
+/* ─── EJERCICIOS INTERACTIVOS ─── */
+.exercise-section {
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.exercise-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+.exercise-header .ex-badge {
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.exercise-header h3 {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.question-block {
+  margin-bottom: 24px;
+}
+
+.question-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  color: var(--text-dark);
+}
+
+.question-number {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  margin-right: 6px;
+}
+
+/* Fragmentos de texto (citas) */
+.fragment-quote {
+  background: var(--color-secondary);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  padding: 14px 18px;
+  margin: 10px 0 16px;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  font-style: italic;
+  color: #444;
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.checkbox-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.checkbox-item.selected {
+  border-color: var(--color-primary);
+  background: #f0effe;
+}
+
+.checkbox-item.correct-answer {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.checkbox-item.wrong-answer {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Radio buttons */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.radio-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.radio-item input[type="radio"] {
+  margin-top: 2px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.radio-item.selected-correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.radio-item.selected-wrong {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Campos de texto */
+.text-input-area {
+  width: 100%;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 12px 14px;
+  font-family: var(--font-family);
+  font-size: 0.91rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.15s;
+  min-height: 80px;
+  color: var(--text-dark);
+}
+
+.text-input-area:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(144,148,223,0.12);
+}
+
+.text-input-area.correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.text-input-area.incorrect {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+textarea.text-translation {
+  min-height: 140px;
+}
+
+/* Dropdown/select */
+.inline-select {
+  padding: 3px 8px;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  accent-color: var(--color-primary);
+  background: #fff;
+  cursor: pointer;
+  color: var(--text-dark);
+  font-family: var(--font-family);
+}
+
+.fill-blank-text {
+  font-size: 0.92rem;
+  line-height: 2;
+  background: var(--color-secondary);
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+  margin: 10px 0;
+}
+
+/* Retroalimentación */
+.feedback-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px 18px;
+  border-radius: var(--border-radius);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.feedback-box.correct {
+  background: #f0faf0;
+  border: 1px solid #a5d6a7;
+  color: #2e7d32;
+}
+
+.feedback-box.incorrect {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  color: #c62828;
+}
+
+.feedback-box.info {
+  background: var(--color-secondary);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.feedback-box.visible {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.correct-answer-reveal {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(76,175,80,0.1);
+  border-radius: 4px;
+  font-style: italic;
+}
+
+/* Botón de verificar */
+.btn-check {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  margin-top: 12px;
+}
+
+.btn-check:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-check:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── PANTALLA DE RESUMEN EJECUTIVO ─── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.summary-card {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 18px;
+}
+
+.summary-card .card-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.summary-card .card-concept {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.summary-card .card-detail {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ─── PANTALLA DE RESULTADOS ─── */
+.results-screen {
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.score-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto;
+}
+
+.score-circle .score-num {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-circle .score-label {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.results-breakdown {
+  width: 100%;
+  max-width: 600px;
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.results-breakdown .rb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: 0.88rem;
+  border-bottom: 1px solid #e8e6f8;
+}
+
+.results-breakdown .rb-row:last-child { border-bottom: none; }
+.results-breakdown .rb-row .rb-label { color: #555; }
+.results-breakdown .rb-row .rb-score { font-weight: 700; color: var(--color-primary-dark); }
+
+.incorrect-list {
+  width: 100%;
+  max-width: 640px;
+  text-align: left;
+}
+
+.incorrect-item {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  font-size: 0.87rem;
+}
+
+.incorrect-item .ii-label {
+  font-weight: 600;
+  color: #c62828;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.incorrect-item .ii-yours {
+  color: #c62828;
+  margin-bottom: 4px;
+}
+
+.incorrect-item .ii-correct {
+  color: #2e7d32;
+  font-style: italic;
+}
+
+/* ─── NAVEGACIÓN ─── */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  border-top: 1px solid #e8e6f8;
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 220px;
+  right: 0;
+  z-index: 90;
+  box-shadow: 0 -2px 8px rgba(0,0,0,.06);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary-dark);
+  border: 1.5px solid var(--color-primary);
+}
+
+.btn-secondary:hover { background: var(--color-secondary); }
+
+.btn-large {
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+.btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-success {
+  background: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover { background: #388e3c; }
+
+.page-indicator {
+  font-size: 0.82rem;
+  color: #888;
+}
+
+/* ─── DRAG AND DROP ─── */
+.drag-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.drag-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px;
+  background: var(--color-secondary);
+  border-radius: var(--border-radius);
+  min-height: 60px;
+}
+
+.drag-option {
+  background: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: grab;
+  user-select: none;
+  transition: all 0.15s;
+  border: 2px solid transparent;
+}
+
+.drag-option:active { cursor: grabbing; transform: scale(1.05); }
+
+.drag-target {
+  background: #fff;
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  min-height: 52px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s;
+}
+
+.drag-target.drag-over {
+  background: var(--color-secondary);
+  border-color: var(--color-primary-dark);
+}
+
+.drag-target .target-label {
+  font-size: 0.8rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.drag-target .dropped-item {
+  background: var(--color-primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+  .screen { padding: 24px 18px 16px; }
+  .cover-screen { padding: 36px 20px; }
+  .cover-title { font-size: 1.5rem; }
+  .example-grid, .summary-grid { grid-template-columns: 1fr; }
+  .module-header { padding: 12px 18px; }
+  .nav-bar { padding: 12px 18px; }
+  .btn { padding: 10px 16px; font-size: 0.85rem; }
+}
+
+/* ─── UTILIDADES ─── */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
+.bold { font-weight: 700; }
+.highlight { background: var(--color-secondary); padding: 2px 6px; border-radius: 3px; }
+.emoji { font-style: normal; }
+
+.note-tag {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 4px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.section-divider {
+  border: none;
+  border-top: 2px solid var(--color-secondary);
+  margin: 24px 0;
+}
+
+/* Estilos score badge */
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-primary);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+.logo-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+</style>
+<style>
+#advance_warning{display:none;background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px 18px;margin:8px 0;font-size:.88rem;color:#856404;}
+.visa-type-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700;letter-spacing:.05em;margin-bottom:8px;}
+.badge-u{background:#e3f2fd;color:#1565c0;}
+.badge-k{background:#fce4ec;color:#880e4f;}
+.badge-waiver{background:#e8f5e9;color:#1b5e20;}
+.badge-vawa{background:var(--color-secondary);color:var(--color-primary-dark);}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:16px 0;}
+.visa-intro-card{background:#fff;border-radius:10px;padding:18px;border-top:4px solid var(--color-primary);box-shadow:0 1px 4px rgba(0,0,0,.07);}
+.visa-intro-card .vc-icon{font-size:2rem;margin-bottom:8px;}
+.visa-intro-card .vc-name{font-weight:700;font-size:.93rem;color:var(--color-primary-dark);margin-bottom:4px;}
+.visa-intro-card .vc-key{font-size:.82rem;color:#666;}
+.table-comparison{width:100%;border-collapse:collapse;margin:14px 0;font-size:.85rem;}
+.table-comparison th{background:var(--color-primary);color:#fff;padding:9px 12px;text-align:left;}
+.table-comparison td{padding:8px 12px;border-bottom:1px solid #e8e8f0;vertical-align:top;}
+.table-comparison tr:nth-child(even) td{background:var(--color-secondary);}
+.table-comparison .tag-error{color:#c62828;font-style:italic;font-size:.8rem;}
+.table-comparison .tag-correct{color:#1b5e20;font-weight:600;}
+.comparative-table{width:100%;border-collapse:collapse;margin:16px 0;}
+.comparative-table th{background:var(--color-primary);color:#fff;padding:10px 14px;font-size:.85rem;text-align:center;}
+.comparative-table td{padding:10px 12px;border:1px solid #d0d0e0;vertical-align:middle;text-align:center;}
+.comparative-table td:first-child{font-weight:600;text-align:left;background:#f8f8fc;}
+.comparative-table select{width:100%;padding:6px 8px;border:1.5px solid var(--color-primary);border-radius:6px;font-size:.82rem;background:#fff;}
+.dropdown-label{font-size:.78rem;font-weight:600;color:var(--color-primary-dark);margin-bottom:4px;}
+.fragment-quote-en{background:#f0f4ff;border-left:4px solid #5c6bc0;border-radius:0 8px 8px 0;padding:14px 18px;margin:12px 0;font-style:italic;font-size:.9rem;line-height:1.7;color:#1a1a2e;}
+.lang-tag{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:8px;background:#5c6bc0;color:#fff;vertical-align:middle;}
+.lang-tag.es{background:var(--color-primary);}
+.tip-box{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:14px 18px;margin:12px 0;}
+.tip-box .box-title{font-weight:700;font-size:.85rem;color:#1b5e20;margin-bottom:6px;}
+.score-badge-mini{font-size:.72rem;background:var(--color-primary);color:#fff;padding:2px 8px;border-radius:8px;font-weight:600;margin-left:6px;}
+
+/* ── SIDEBAR LAYOUT ─────────────────────────────────────── */
+#outer-layout {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+#sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: #f7f6fd;
+  border-right: 2px solid #e5e2f6;
+  padding: 16px 0 40px 0;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+#sidebar-title {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: #9094df;
+  text-transform: uppercase;
+  padding: 0 14px 12px 14px;
+  border-bottom: 1px solid #e5e2f6;
+  margin-bottom: 8px;
+}
+.sidebar-group { margin-bottom: 4px; }
+.sidebar-group-label {
+  font-size: .65rem;
+  font-weight: 700;
+  color: #b0adcc;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  padding: 10px 14px 4px 14px;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 2px 8px;
+  padding: 8px 10px;
+  font-size: .82rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: #5a5a7a;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: background .15s, border-color .15s, color .15s;
+  line-height: 1.3;
+  text-align: left;
+  background: transparent;
+}
+.sidebar-item:hover { background: #ebe9f8; color: #4a4d9e; border-color: #d4d0f0; }
+.sidebar-item.active {
+  background: #9094df; color: #ffffff; border-color: #7a7ec8;
+  font-weight: 600; box-shadow: 0 2px 6px rgba(144,148,223,.35);
+}
+.sidebar-item.active .si-dot { background: rgba(255,255,255,.8); }
+.sidebar-item.completed { color: #48bb78; background: #f0fff4; border-color: #c6f6d5; }
+.sidebar-item.completed .si-dot { background: #48bb78; }
+.sidebar-item.locked { opacity: .4; cursor: default; pointer-events: none; }
+.si-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #ccc8e8; flex-shrink: 0; transition: background .2s;
+}
+#main-content {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 72px;
+}
+.module-header { position: sticky; top: 0; z-index: 100; }
+@media (max-width: 680px) { #sidebar { display: none; } } } } }
+</style>
+</head>
+<body>
+<!-- HEADER -->
+<header class="module-header">
+  <span class="module-title">Módulo 2: Visas NO VAWA con DCL (Visa U, Visa K, Waivers)</span>
+  <div class="logo-area">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD0AAAAsCAYAAADW6LDXAAANHklEQVR4nN1ae1RU57Xf+zvzgoKDghoIgTDig6rR8Kg1VexEc8PVxNWbwJQ8VuxKcy83uWltSCxGbzNM0iSmJgavbdQsbdaKNiWjubk+4q2QMIhGyMBowFjAgLxUIIAoIwMzc863+8ecAwPyEolN+/trZs732L9vv76z9wCMEUQkjHXsrYTZbGaMsYlbDABg7969P9q1a9fdAACMMSCiCdrhpoE2m02lfMnNzf3Jzp07A29qRSJSAQCcOnXqN5cvX/aWlJQ8BwCC3zO8qQ1uAlarVVC0m5OTM6+urq6wpaWlOy0tLUCWb3yyKaTLysrWkoz6+vri3NzcHwIAICJYrdZbavJEhH5uprHb7Rs6OzuvERFdvXq1HgAmhnRpaWkmEXEi6iEicjqd3rNnz742e/bsYHmcMO5NbkyevgP++OOPlzY2NjpkXXAiEjs7Oy9ERkbeMGlU/Fie6E+aiMgrSZJIRBIRUXNzc1V+fv4qZby/f00k/LW7atWqyeXl5f/jdDq5LJOHiEQiomFI45gOwGolf78dQJr60UtE5PV6qbq6+o8bNmwIl+cw/4O7WfgfZF5e3kMtLS3n5f1FWcOkKGEwabPZzBCH54sAAE+ueyM45d8eiwQAQGRw5Mg57SDSYldX17XGxsZav808REQdHR0XT548uWYoYccDs9nMlCzxyiuv3FFVVfWBJEkDDryrq8vb1NRUpZD3J71zZ5laWWtNRtad/jz7NgAAeG7972O37ipss2z6c6b/AD/SdOnSpc6oqKjwyspKS1dXl9dfCCKihoaGQ9u3b/8+gC+9jSPQoWJhAAAnT57MaGtra/czZS7L8aXVav1BSUnJfyh7+5MGAHjsyXWzt79fXLD5D0d3AwxURJ8pur2d3qCgyVPmLkx+6+0dBSd+8es37wEAwH4bIcaY6q677vLGxcWZ8/Pz77l48WIRAGjl556oqKgH0tPT7aWlpVmcc8FkMkk0xvRmtVoFRCREFHfv3r2goaEhf/HixTvCwsJCAcANAGqn09lbXl5ujoiIWGwymex6vT5YmU9EGBkZCWvWrNG9vPnDrGXLf1p6p2G+Uaf9nmvwXn3s1aoglERR7HZdE+6MnXePSs0OAUCoWq2W/BamtrY2gYgERCwFgB+fOnXqlwaDIVuv14cAgCckJOR7iYmJm5qamh764osvMhHxc0QEzrmAiNJgAeRAw+RnWofD8eKMGTOy9Hq9TiarBQBtfX19wfHjxzOfeOKJcvkgWWVlZd96nEhVUlLS8y8P/uLpu+KNm645r3qvXbsice69LsYM+AGRIQIILpdTUmsCJAAASZJowATGCBElOVVBfHz81r179ybV1dX9LwBo5GHuyMjIH9x///1FX3755dtJSUmT/Ob0aV0+PEJE6cCBA/deunSpOD4+3qzX67UA4AUAbUdHx2W73f50TEzMcoWww+FAROQDqfi+Mk1AkOj1SKIkiohsSPcaMtIioIAEowUjjohks9lUzz77bI3BYHi4qKjo8fb29gvg044YFBRECxYs+NWhQ4dKCwoKViGihIgkE0ZElB599NHJZ86c+f199933WXh4+N3g0y4CgLq2tvbDbdu2JSxatGgHETEiYogoJiQkkKyQAVL7lAKATCUADJ+qhiRNRHDt2uUro5AGAACj0SjK0VZYtmzZn7Zs2RJfVVW12+PxqMB3bXVPmzZtVnJy8uHa2tr33n333UgiYtnZ2VhYWGjaunWrY968ef8VEBAgAoAEANr29vbzhYWFabGxsekWi6XeZrOpEJEP1q4g+CnSxxGvdrR2dzs7RQGFGyCNQIAE7e3N/w0AIIpcfd2YQbBYLFwx39dff70tLi7uqYKCgpTm5uaz4NM6CYIgGgyGnyUnJ/8fIvIFCxasXLZs2YdhYWEx4DNllcvlEiorK7c988wzSUajcT8RCWazmRmNRnE0GRhDMS0tTffWa0/v/qb1QoVao9Vyzocce70JEwACwmR9aDcAAOd87Fc6H3ElMB0FgKKzZ8++GB0dnRkQEKBjjEk6nU4vDw8FnyN6iUjb0tJyqqysLHP16tXHAPr8/brA54+B5g3Q09ODAOBWqzXekeYNe3vycs+4XiaUwGS1WgUics+dO/elvLy8dYwxAQAEzrkIACDfqhgAaJqbm2siIiIWr169+hgRqRR/H8/+MPjqiddTHJY0Q0bDPRsLTCaT5HA4BCISPB7PN30yyHmfc658REmSnIjokbUrKsFunBh17rdaEHA6nYSIEmNsxLjAGBOICAVBGK92B4DIjzdd79c3RJoxxjUazdDRYRQ5lA/DBBeCMWhoXLgR8x5qular7Z02bVrvxEn098EIpH1xzK/mRj09PYEXLly4uTrUEBgutUwIbta8JxIDiU6sZQ/IsTdp3v80GIH0hATS7yT+oTU94O59A/iOkJ7gYuoItTGA7wzpiQhkY19jDKS/nXOZsP5THyaU9K3Are0Q3TDpgICACZFwgi4kfbLgEPl4OAyqkY06niRJkm51D2sIKF0Pv/dmBICIMU0e/XhY38sA6XQ66ujoEEwmkwQAE9jDGrs/EpGgUqm8iCi5XK7pfk84wKXr1h2K4KikVYxpwHeMnpCQkEmffvrpZ0eOHFmpvPd+Wz2swVDqcIgoGY1GfUVFxduzZ8/+NedcAgAJEXRut3tMShiWNJdfSltaWhp6enoAAHQAIE2fPn3uihUrPqmurt79wgsv3GY0GsUb6WENeNftw8iy2mw2lVKH++STTx7es2ePY/78+b8KCgpSMcYQAIRvvmm96HQ6ubzJiOsNEJT8XmtF0XcPXbly5QdHjx41NjU1nQZfTY3UarV31qxZT2ZlZZ06duzYzxCRWywWLmt9RAYjNdUGQy77olxxjaqqqvogJSVl/2233TYDfKVi5nQ6oaKiYsvGjS/dW1xc3Asw0Fn4EKoY1jSVSFVWVqZKTEwsBIDFDofjhdjY2I2TJk0KAAB3WFhYeHJy8nu1tbU/zcvLe95oNP6VMQa5ubmK348XqJSOAACKioqeiYuLe1lu8XjA11TQNjY22ouLizPT09M/l+cxGFTwHt2nCUFRlCAIkGa1CufPn+fy3x3cCQkJr3700UeLampqCqC/h+U2GAwpjzzyiL2srOxFzrla6WGdO3du+NrzgMtJf/qS9yJEFHfu3BlfV1f32dKlS//gT/jKlSvX7Hb7+ujo6CXp6emf+/fLrFYSYJQa25CaRkS4fLVd2pf571Ka9SuNyTTXC2BSTv8MACw/ceLEf86ZM+e3oaGhoQDg0ev1gQkJCa/V19c/ZLfbf4mIxUTEJk+ePIb0hkpPS9Guzm63Z82cOXNDSEiIBvp7Wpq6uroj+fn5z2dkZFQpVoWIonxYEhHBlu2f+vEa3P7x07RKJSAiEAFwzjk3xMx/87n1O1JMpnkeACSz2SwgotLNwCVLluzYtWtXfE1NzZ8550qEd0dHRyempKScOH369FuJiYnBJpNJ0mq1IwY5ImBKxzI3N9dYX19fkpSUlB0SEqKC/p5Wy/Hjx580GAyrMjIyqmw2m4pzDmlpadxKJJhMJikqKirkd1sP5kyZGj7f7e71MsYkt8cVPHi/PmE8XS6vKHo0QYHBgtfjliaHhcfdnfTj/38j5+B7i+69d7rFYlHq1KCkqvXr1zfOnDnz0fz8/NSWlpZaWRtScHAwLVy4MPPAgQNlhw8fNn799dfdI5HmnPdOmTJlUnl5+bYHHnigIDo6eoGsXSaKorqqqur9LVu2xCcnJ7+nZApfcLOpEJFMiNJzG955OCv7A8eMOQlrEZkKAVGnCxLcLtd1hX8E6G/M9/KIf42eMW/z9HBDXHf3VeIEPDhoktDa2nCxsebsi5tefmoPAECa1SrsM5kks9nMsrOzERGlFStW6HNyciwxMTFrAwMDAWT/6+npgYaGhr/GxsbOUalUrL6+vjomJmbOvn37Hk9NTd0DAFJ7e3tHb29vV2RkZCz4qhcIAKy5uflcRUXF8ykpKYcBfKnL1+IhRBSIiENKymORyx98YlN4RMxjKo0Genu6PYGBek13dxe0Xqp9p+ncmZfCwtydFks2Afh83S/QEMo/Br721sGNU2+PygwKCtH19nSLOl2gioigtbnu0JnTtnV/3PHbap8vkGye/S2Y/fv3Jy9atOjNyMjIJPBFKCZrkzPGhiItQn9sEQFA5XQ6PefPn89JTU19taampku+cnK5CYDgy0rspVf/lHF71CxL6NTbp7pcXRIRoVYXyNpbmhzVVY512zavtQ1lWX6+hiT/G8C14fnVG+2f/2V5W2vjVxq1Ruh1uySv6JaiYr7/4A+X/qR44yvv/zw+Pl6tWIjSwyIiVWpqatEdd9yx1OFwvOFyubyccy5J0mhvFyTfrFhra+tXBw8eTFm4cGFWbW1tl3KgiEjg2wMef2pjzO+2/eXg3IU/emdSSOhUp7NTBEAELnlrqkrffPbnS5Zs27zWNty94W/+dTc74hV6rQAAAABJRU5ErkJggg==" alt="Training TMLF" class="logo-img">
+    <div class="logo-label">TRAINING</div>
+  </div>
+</header>
+<div class="progress-bar-container"><div class="progress-bar-fill" id="progress_fill" style="width:4%"></div></div>
+<div class="progress-label" id="progress_label">4% completado</div>
+<div id="outer-layout">
+<div id="sidebar">
+  <div id="sidebar-title">Índice del módulo</div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Teoría</div>
+    <div class="sidebar-item" data-target="0" onclick="goToScreenFromSidebar(0)"><span class="si-dot"></span>Portada</div>
+    <div class="sidebar-item" data-target="1" onclick="goToScreenFromSidebar(1)"><span class="si-dot"></span>Introducción</div>
+    <div class="sidebar-item" data-target="2" onclick="goToScreenFromSidebar(2)"><span class="si-dot"></span>Visa U – Teoría</div>
+    <div class="sidebar-item" data-target="3" onclick="goToScreenFromSidebar(3)"><span class="si-dot"></span>Visa U – Ejercicio</div>
+    <div class="sidebar-item" data-target="4" onclick="goToScreenFromSidebar(4)"><span class="si-dot"></span>Visa K – Teoría</div>
+    <div class="sidebar-item" data-target="5" onclick="goToScreenFromSidebar(5)"><span class="si-dot"></span>Visa K – Ejercicio</div>
+    <div class="sidebar-item" data-target="6" onclick="goToScreenFromSidebar(6)"><span class="si-dot"></span>Waivers – Teoría</div>
+    <div class="sidebar-item" data-target="7" onclick="goToScreenFromSidebar(7)"><span class="si-dot"></span>Waivers – Ejercicio</div>
+    <div class="sidebar-item" data-target="8" onclick="goToScreenFromSidebar(8)"><span class="si-dot"></span>Resumen</div>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Ejercicio práctico</div>
+    <div class="sidebar-item" data-target="9" onclick="goToScreenFromSidebar(9)"><span class="si-dot"></span>Instrucciones</div>
+    <div class="sidebar-item" data-target="10" onclick="goToScreenFromSidebar(10)"><span class="si-dot"></span>Fragmento A – VAWA</div>
+    <div class="sidebar-item" data-target="11" onclick="goToScreenFromSidebar(11)"><span class="si-dot"></span>Fragmento B – Visa U</div>
+    <div class="sidebar-item" data-target="12" onclick="goToScreenFromSidebar(12)"><span class="si-dot"></span>Fragmento C – Visa K</div>
+    <div class="sidebar-item" data-target="13" onclick="goToScreenFromSidebar(13)"><span class="si-dot"></span>Fragmento D – Waiver</div>
+    <div class="sidebar-item" data-target="14" onclick="goToScreenFromSidebar(14)"><span class="si-dot"></span>Tabla comparativa</div>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Cierre</div>
+    <div class="sidebar-item" data-target="15" onclick="goToScreenFromSidebar(15)"><span class="si-dot"></span>Resultados</div>
+  </div>
+</div>
+<div id="main-content">
+
+
+<!-- ══ PANTALLA 0: PORTADA ══ -->
+<div class="screen cover-screen active" id="screen_0">
+  <span class="cover-badge">TMLF Training · Serie Capacitación Legal</span>
+  <h1 class="cover-title">Módulo 2: Visas NO VAWA<br>con DCL</h1>
+  <p class="cover-subtitle">Aprende a diferenciar los enfoques narrativos de las DCL para Visa U, Visa K y Waivers, y aplica criterios de traducción específicos para cada tipo de visa.</p>
+  <div class="cover-objective-box">
+    <div class="label">🎯 Objetivo del módulo</div>
+    <p>Al finalizar este módulo, serás capaz de diferenciar los enfoques narrativos de las DCL en Visa U, Visa K y Waivers, y aplicarás criterios de traducción específicos para cada una, prestando especial atención a la terminología legal, los tiempos verbales y la descripción de hardship.</p>
+  </div>
+  <div class="cover-meta">
+    <span class="meta-item">⏱️ Duración estimada: 60-75 minutos</span>
+    <span class="meta-item">📋 Versión 1.0 · TMLF Training</span>
+  </div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary,#9094df);border-radius:12px;padding:22px 28px;margin:22px 0 20px 0;max-width:620px;text-align:left;">
+    <div style="font-weight:700;font-size:.97rem;color:var(--color-primary-dark,#4a4d9e);margin-bottom:14px;">📌 Antes de comenzar</div>
+    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;">
+        <span style="flex-shrink:0;color:#9094df;font-weight:700;">①</span>
+        <span><strong>Lee con atención cada pantalla</strong> antes de avanzar. La teoría y los ejercicios están conectados.</span>
+      </li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;">
+        <span style="flex-shrink:0;color:#9094df;font-weight:700;">②</span>
+        <span><strong>Contesta con cuidado.</strong> Cada pregunta del ejercicio práctico <strong>solo puede responderse una vez</strong>. Una vez verificada, no se puede modificar.</span>
+      </li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;">
+        <span style="flex-shrink:0;color:#9094df;font-weight:700;">③</span>
+        <span><strong>Intentos limitados a 1.</strong> Este módulo está diseñado para completarse en una sola sesión. Tu calificación queda registrada al finalizar.</span>
+      </li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;">
+        <span style="flex-shrink:0;color:#9094df;font-weight:700;">④</span>
+        <span><strong>¿Problema técnico?</strong> Toma una captura de pantalla del error y comunícate con el equipo de Training antes de cerrar el módulo.</span>
+      </li>
+    </ul>
+  </div>
+  <button class="btn btn-primary btn-large" id="btn_start">Comenzar módulo →</button>
+</div>
+
+<!-- ══ PANTALLA 1: INTRODUCCIÓN ══ -->
+<div class="screen" id="screen_1">
+  <span class="screen-label">Introducción</span>
+  <div class="section-title">🔄 No todas las DCL son iguales</div>
+  <div class="content-block">
+    <p>En el Módulo 1 trabajamos con VAWA, donde el eje central era el abuso y la relación con el agresor. En este módulo vamos a ver tres tipos de visas que, aunque también pueden requerir una Declaración Legal (DCL), tienen <strong>enfoques narrativos completamente distintos</strong>.</p>
+  </div>
+  <div class="info-box">
+    <div class="box-title">💡 Tu misión como traductor</div>
+    <p>No puedes aplicar el mismo "chip" mental a todos los documentos. Tu flexibilidad para cambiar de registro es lo que aquí se evalúa. Cada visa tiene su propia "huella digital" narrativa.</p>
+  </div>
+  <div class="three-col" style="margin-top:20px;">
+    <div class="visa-intro-card">
+      <div class="vc-icon">🚨</div>
+      <div class="vc-name">Visa U</div>
+      <div class="vc-key">Cooperación / Delito</div>
+      <p style="font-size:.8rem;margin-top:8px;color:#555;">Casi un informe policial colaborativo. La precisión legal no es negociable.</p>
+    </div>
+    <div class="visa-intro-card">
+      <div class="vc-icon">💍</div>
+      <div class="vc-name">Visa K</div>
+      <div class="vc-key">Relación / Afecto</div>
+      <p style="font-size:.8rem;margin-top:8px;color:#555;">Una carta de amor con respaldo legal. El tono y los tiempos verbales construyen la narrativa.</p>
+    </div>
+    <div class="visa-intro-card">
+      <div class="vc-icon">⚖️</div>
+      <div class="vc-name">Waiver</div>
+      <div class="vc-key">Sufrimiento / Consecuencias</div>
+      <p style="font-size:.8rem;margin-top:8px;color:#555;">Un expediente médico-económico-emocional. Los detalles concretos son todo.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 2: VISA U – TEORÍA ══ -->
+<div class="screen" id="screen_2">
+  <span class="screen-label">Visa U</span>
+  <div class="section-title"><span class="visa-type-badge badge-u">VISA U</span> Víctimas de Crimen – ¿Qué debe probar la DCL?</div>
+  <div class="content-block">
+    <p>La Visa U está diseñada para víctimas de ciertos delitos que han sufrido abuso físico o mental sustancial y que han cooperado (o están dispuestas a cooperar) con las autoridades en la investigación o persecución del crimen.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;">
+    <div style="background:var(--color-secondary);border-radius:8px;padding:14px;text-align:center;">
+      <div style="font-size:1.5rem;margin-bottom:6px;">⚖️</div>
+      <div style="font-weight:700;font-size:.88rem;margin-bottom:4px;">Crimen calificado</div>
+      <div style="font-size:.78rem;color:#666;">El delito debe estar en la lista de USCIS (violación, trata, asalto, secuestro, etc.)</div>
+    </div>
+    <div style="background:var(--color-secondary);border-radius:8px;padding:14px;text-align:center;">
+      <div style="font-size:1.5rem;margin-bottom:6px;">🩹</div>
+      <div style="font-weight:700;font-size:.88rem;margin-bottom:4px;">Abuso sustancial</div>
+      <div style="font-size:.78rem;color:#666;">Descripción clara del sufrimiento físico o psicológico. No fue un daño menor.</div>
+    </div>
+    <div style="background:var(--color-secondary);border-radius:8px;padding:14px;text-align:center;">
+      <div style="font-size:1.5rem;margin-bottom:6px;">🤝</div>
+      <div style="font-weight:700;font-size:.88rem;margin-bottom:4px;">Cooperación</div>
+      <div style="font-size:.78rem;color:#666;">El cliente reportó el crimen, ayudó en la investigación o está dispuesto a hacerlo.</div>
+    </div>
+  </div>
+  <div class="section-title" style="font-size:1rem;margin-top:20px;">🔑 El gran desafío: La terminología legal</div>
+  <p style="font-size:.9rem;margin-bottom:12px;">Aquí no podemos traducir por intuición. El nombre del delito en inglés tiene un equivalente legal específico. Usar la palabra incorrecta puede hacer que el oficial cuestione si el crimen realmente califica.</p>
+  <table class="table-comparison">
+    <thead><tr><th>Español (lo que dice el cliente)</th><th>Inglés (término legal)</th><th>Error común</th></tr></thead>
+    <tbody>
+      <tr><td>"Me asaltaron en la calle"</td><td><strong>Robbery</strong> (fuerza/intimidación para robar)<br><strong>Assault</strong> (agresión sin robo)</td><td class="tag-error">"Asalto" en español puede ser robo o agresión. En inglés son delitos distintos.</td></tr>
+      <tr><td>"Abusaron de mí"</td><td><strong>Sexual abuse / Rape</strong> (según el grado)</td><td class="tag-error">No uses "abuse" genérico. Especifica si fue violación u otro tipo.</td></tr>
+      <tr><td>"Me golpearon"</td><td><strong>Battery</strong> (contacto físico)<br><strong>Assault</strong> (amenaza sin contacto)</td><td class="tag-error">Recordatorio Mód. 1: Assault es amenaza, battery es contacto físico.</td></tr>
+    </tbody>
+  </table>
+  <div class="warning-box">
+    <div class="box-title">🔑 Regla de oro</div>
+    <p>Si tienes dudas sobre el término legal exacto en inglés, <strong>consúltalo con el equipo legal o con un glosario de USCIS.</strong> No improvises. Un término incorrecto puede hacer que el caso no califique.</p>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 3: VISA U – ASSAULT VS ROBBERY ══ -->
+<div class="screen" id="screen_3">
+  <span class="screen-label">Visa U – Ejercicio conceptual</span>
+  <div class="section-title"><span class="visa-type-badge badge-u">VISA U</span> ¿Assault, Battery o Robbery?</div>
+  <p style="font-size:.9rem;margin-bottom:16px;">Este es el error más frecuente en traducciones de Visa U. Analiza cada situación y memoriza la diferencia.</p>
+  <div style="display:grid;gap:14px;">
+    <div style="background:#fff;border-radius:10px;padding:16px 20px;border-left:4px solid #1565c0;box-shadow:0 1px 4px rgba(0,0,0,.07);">
+      <div style="font-size:.78rem;font-weight:700;color:#1565c0;margin-bottom:8px;">SITUACIÓN 1</div>
+      <div class="fragment-quote" style="margin:0 0 8px 0;">"Iba caminando por la calle cuando un hombre se me acercó por detrás, me puso un cuchillo en el cuello y me quitó la cartera."</div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="background:#1565c0;color:#fff;padding:4px 14px;border-radius:12px;font-weight:700;font-size:.88rem;">ROBBERY</span>
+        <span style="font-size:.85rem;color:#444;">Hubo robo con intimidación (uso de arma). Robo + amenaza = Robbery.</span>
+      </div>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:16px 20px;border-left:4px solid #6a1b9a;box-shadow:0 1px 4px rgba(0,0,0,.07);">
+      <div style="font-size:.78rem;font-weight:700;color:#6a1b9a;margin-bottom:8px;">SITUACIÓN 2</div>
+      <div class="fragment-quote" style="margin:0 0 8px 0;">"En un bar, un tipo comenzó a insultarme y de repente me lanzó un puñetazo en la cara sin razón."</div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="background:#6a1b9a;color:#fff;padding:4px 14px;border-radius:12px;font-weight:700;font-size:.88rem;">BATTERY</span>
+        <span style="font-size:.85rem;color:#444;">Hubo contacto físico. Si solo hubiera amenazado sin golpear, sería Assault.</span>
+      </div>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:16px 20px;border-left:4px solid #e65100;box-shadow:0 1px 4px rgba(0,0,0,.07);">
+      <div style="font-size:.78rem;font-weight:700;color:#e65100;margin-bottom:8px;">SITUACIÓN 3</div>
+      <div class="fragment-quote" style="margin:0 0 8px 0;">"Mi ex pareja me esperó a la salida del trabajo y me gritó que me iba a matar. No me tocó, pero yo quedé aterrorizada."</div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="background:#e65100;color:#fff;padding:4px 14px;border-radius:12px;font-weight:700;font-size:.88rem;">ASSAULT</span>
+        <span style="font-size:.85rem;color:#444;">Amenaza creíble de violencia inminente, aunque no hubo contacto físico.</span>
+      </div>
+    </div>
+  </div>
+  <div class="info-box" style="margin-top:16px;">
+    <div class="box-title">📌 La regla que no puedes olvidar</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;">
+      <div style="text-align:center;padding:10px;background:#fff;border-radius:6px;"><div style="font-weight:700;font-size:.85rem;color:#1565c0;">ROBBERY</div><div style="font-size:.78rem;margin-top:4px;">Robo + fuerza<br>o intimidación</div></div>
+      <div style="text-align:center;padding:10px;background:#fff;border-radius:6px;"><div style="font-weight:700;font-size:.85rem;color:#6a1b9a;">BATTERY</div><div style="font-size:.78rem;margin-top:4px;">Contacto físico<br>violento</div></div>
+      <div style="text-align:center;padding:10px;background:#fff;border-radius:6px;"><div style="font-weight:700;font-size:.85rem;color:#e65100;">ASSAULT</div><div style="font-size:.78rem;margin-top:4px;">Amenaza creíble<br>sin contacto</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 4: VISA K – TEORÍA ══ -->
+<div class="screen" id="screen_4">
+  <span class="screen-label">Visa K</span>
+  <div class="section-title"><span class="visa-type-badge badge-k">VISA K</span> Prometido/a – Un tono completamente diferente</div>
+  <div class="content-block">
+    <p>La Visa K (prometidos) es el polo opuesto a VAWA. Aquí no hay abuso. El objetivo es demostrar que la relación es genuina y que la pareja tiene la intención de casarse en los 90 días siguientes a la llegada a EE.UU.</p>
+  </div>
+  <div class="info-box">
+    <div class="box-title">⏱️ Los tiempos verbales importan</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+      <div style="background:#fff;border-radius:6px;padding:12px;">
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:6px;">Simple Past</div>
+        <div style="font-style:italic;font-size:.88rem;color:#1a1a2e;">"We met in 2022."</div>
+        <div style="font-size:.78rem;color:#666;margin-top:4px;">Un hecho puntual en el pasado. Ya terminó.</div>
+      </div>
+      <div style="background:#fff;border-radius:6px;padding:12px;">
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:6px;">Present Perfect</div>
+        <div style="font-style:italic;font-size:.88rem;color:#1a1a2e;">"We have been together for two years."</div>
+        <div style="font-size:.78rem;color:#666;margin-top:4px;">Comenzó en el pasado y continúa. Transmite continuidad.</div>
+      </div>
+    </div>
+  </div>
+  <div class="section-title" style="font-size:1rem;margin-top:18px;">🎯 El tono: descriptivo y afectivo, pero natural</div>
+  <table class="table-comparison">
+    <thead><tr><th>Español (descripción del cliente)</th><th>Traducción pobre (literal)</th><th class="tag-correct">Traducción efectiva (natural)</th></tr></thead>
+    <tbody>
+      <tr><td>"Nos llevamos muy bien"</td><td class="tag-error">"We get along very well"</td><td class="tag-correct">"We have a great connection" / "We really understand each other"</td></tr>
+      <tr><td>"Hablamos todos los días"</td><td class="tag-error">"We talk every day"</td><td class="tag-correct">"We talk every single day" / "We are in constant communication"</td></tr>
+      <tr><td>"Él es muy atento conmigo"</td><td class="tag-error">"He is very attentive with me"</td><td class="tag-correct">"He is very thoughtful and caring"</td></tr>
+    </tbody>
+  </table>
+  <div class="tip-box">
+    <div class="box-title">✅ Clave de traducción</div>
+    <p style="font-size:.88rem;">Busca la naturalidad, no la literalidad. El cliente debe sonar como una persona real describiendo a su pareja, no como una traducción de Google.</p>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 5: VISA K – EJERCICIO CONCEPTUAL ══ -->
+<div class="screen" id="screen_5">
+  <span class="screen-label">Visa K – Ejercicio conceptual</span>
+  <div class="section-title"><span class="visa-type-badge badge-k">VISA K</span> Traduciendo el afecto con naturalidad</div>
+  <p style="font-size:.9rem;margin-bottom:16px;">Analiza cada frase y su traducción. Observa cómo la versión efectiva suena más auténtica que la versión literal.</p>
+  <div style="display:grid;gap:14px;">
+    <div style="background:#fff;border-radius:10px;padding:16px 20px;box-shadow:0 1px 4px rgba(0,0,0,.07);">
+      <div style="font-size:.78rem;font-weight:700;color:#880e4f;margin-bottom:8px;">FRASE 1</div>
+      <div class="fragment-quote" style="margin:0 0 10px 0;">"Desde que la conocí, supe que ella era la persona con la que quería pasar el resto de mi vida."</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="padding:10px;background:#fff0f0;border-radius:6px;"><div style="font-size:.75rem;color:#c62828;font-weight:700;margin-bottom:4px;">❌ Literal</div><div style="font-size:.83rem;font-style:italic;">"Since I met her, I knew she was the person with whom I wanted to spend the rest of my life."</div></div>
+        <div style="padding:10px;background:#f0fff4;border-radius:6px;"><div style="font-size:.75rem;color:#1b5e20;font-weight:700;margin-bottom:4px;">✅ Natural</div><div style="font-size:.83rem;font-style:italic;">"The moment I met her, I knew she was the one I wanted to spend my life with."</div></div>
+      </div>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:16px 20px;box-shadow:0 1px 4px rgba(0,0,0,.07);">
+      <div style="font-size:.78rem;font-weight:700;color:#880e4f;margin-bottom:8px;">FRASE 2</div>
+      <div class="fragment-quote" style="margin:0 0 10px 0;">"A pesar de la distancia, nuestra relación se ha fortalecido con el tiempo."</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="padding:10px;background:#fff0f0;border-radius:6px;"><div style="font-size:.75rem;color:#c62828;font-weight:700;margin-bottom:4px;">❌ Literal</div><div style="font-size:.83rem;font-style:italic;">"Despite the distance, our relationship has strengthened with time."</div></div>
+        <div style="padding:10px;background:#f0fff4;border-radius:6px;"><div style="font-size:.75rem;color:#1b5e20;font-weight:700;margin-bottom:4px;">✅ Natural (Present Perfect)</div><div style="font-size:.83rem;font-style:italic;">"Despite the distance, our relationship <strong>has grown stronger over time</strong>."</div></div>
+      </div>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:16px 20px;box-shadow:0 1px 4px rgba(0,0,0,.07);">
+      <div style="font-size:.78rem;font-weight:700;color:#880e4f;margin-bottom:8px;">FRASE 3</div>
+      <div class="fragment-quote" style="margin:0 0 10px 0;">"Valoro mucho su apoyo incondicional y cómo me anima a ser mejor persona."</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="padding:10px;background:#fff0f0;border-radius:6px;"><div style="font-size:.75rem;color:#c62828;font-weight:700;margin-bottom:4px;">❌ Literal</div><div style="font-size:.83rem;font-style:italic;">"I value a lot her unconditional support and how she animates me to be a better person."</div></div>
+        <div style="padding:10px;background:#f0fff4;border-radius:6px;"><div style="font-size:.75rem;color:#1b5e20;font-weight:700;margin-bottom:4px;">✅ Natural</div><div style="font-size:.83rem;font-style:italic;">"I deeply value her <strong>unconditional support</strong> and the way she <strong>encourages me</strong> to be a better person."</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 6: WAIVERS – TEORÍA ══ -->
+<div class="screen" id="screen_6">
+  <span class="screen-label">Waivers</span>
+  <div class="section-title"><span class="visa-type-badge badge-waiver">WAIVER</span> El arte de traducir el hardship concreto</div>
+  <div class="content-block">
+    <p>Los waivers (perdones) se solicitan cuando el cliente es "inadmisible" para ingresar a EE.UU. Para que se apruebe, el cliente debe demostrar que su familiar calificado sufriría <strong>extreme hardship</strong> (dificultad extrema) si el cliente no puede entrar o es deportado.</p>
+  </div>
+  <div class="warning-box">
+    <div class="box-title">❌ El error más común</div>
+    <p>Traducir el hardship de forma genérica: <em>"Si no me permiten entrar, mi esposa sufriría una dificultad extrema porque me necesita."</em></p>
+    <p style="margin-top:8px;font-size:.85rem;">Esto es vago. No describe nada concreto. El oficial necesita ver <strong>situaciones específicas y vívidas</strong>.</p>
+  </div>
+  <div class="section-title" style="font-size:1rem;margin-top:18px;">✅ Las tres áreas de hardship que debes preservar</div>
+  <table class="table-comparison">
+    <thead><tr><th>Área</th><th>Ejemplo en español</th><th>Clave de traducción</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>🏥 Médico</strong></td>
+        <td>"Mi hijo tiene asma y necesita tratamiento cada mes. Si me deportan, mi esposa no podrá llevar a mi hijo al hospital porque ella trabaja todo el día y no tenemos quien la ayude."</td>
+        <td class="tag-correct">Preserva los detalles: "monthly treatment", "works all day", "no one to help".</td>
+      </tr>
+      <tr>
+        <td><strong>💰 Económico</strong></td>
+        <td>"Gano 00 a la semana. Con mi dinero pagamos la renta, la comida y los servicios. Sin mí, mi familia perdería el único ingreso fijo."</td>
+        <td class="tag-correct">Sé específico: "00 a week", "rent, food, utilities", "only steady income", "evicted".</td>
+      </tr>
+      <tr>
+        <td><strong>💔 Emocional</strong></td>
+        <td>"Mi madre está en terapia por depresión desde que mi padre murió. Yo soy su único apoyo. Si me voy, ella se quedaría sola."</td>
+        <td class="tag-correct">Conecta las emociones: "therapy for depression", "her only support", "I fear she might have a breakdown".</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip-box">
+    <div class="box-title">✅ Tu misión como traductor</div>
+    <p style="font-size:.88rem;">No puedes inventar detalles, pero debes asegurarte de que los detalles que el cliente dio en español <strong>lleguen al inglés con la misma fuerza y especificidad</strong>. Si el cliente dijo "mi hijo necesita su medicina", no puedes poner "my son needs medical care". Debes poner <em>"my son needs his medication"</em>.</p>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 7: WAIVERS – GENÉRICO VS ESPECÍFICO ══ -->
+<div class="screen" id="screen_7">
+  <span class="screen-label">Waivers – De lo genérico a lo específico</span>
+  <div class="section-title"><span class="visa-type-badge badge-waiver">WAIVER</span> La diferencia que cambia todo</div>
+  <p style="font-size:.9rem;margin-bottom:16px;">Observa cómo la misma situación, descrita con o sin detalles concretos, tiene un impacto radicalmente diferente en inglés.</p>
+  <div style="background:#fff3e0;border:1px solid #ffcc02;border-radius:8px;padding:16px 20px;margin-bottom:16px;">
+    <div style="font-weight:700;font-size:.85rem;color:#e65100;margin-bottom:8px;">❌ Frase genérica (no funciona)</div>
+    <div style="font-style:italic;font-size:.9rem;color:#333;">"Si me voy, mi familia lo pasará muy mal."</div>
+    <div style="font-style:italic;font-size:.85rem;color:#666;margin-top:6px;">Traducción inevitable: "If I leave, my family will have a very hard time." — Demasiado vago, sin sustancia.</div>
+  </div>
+  <div style="background:#f0fff4;border:1px solid #a5d6a7;border-radius:8px;padding:16px 20px;">
+    <div style="font-weight:700;font-size:.85rem;color:#1b5e20;margin-bottom:8px;">✅ Frase mejorada (con detalles concretos)</div>
+    <div style="font-style:italic;font-size:.9rem;color:#333;margin-bottom:10px;">"Si me deportan, mi esposa, que es ciudadana, no podrá pagar la renta de ,200 porque ella gana 00 a la semana y yo soy quien cubre el resto. Además, ella tiene una condición cardíaca y depende de mí para recordarle sus medicinas y llevarla al cardiólogo."</div>
+    <div style="font-style:italic;font-size:.85rem;color:#1b5e20;background:#fff;border-radius:6px;padding:10px 14px;">"If I am deported, my wife, who is a U.S. citizen, will not be able to pay the <strong>,200 rent</strong> because she earns <strong>00 a week</strong> and I cover the rest. Additionally, she has a <strong>heart condition</strong> and depends on me to remind her of her <strong>medication</strong> and to take her to the <strong>cardiologist</strong>."</div>
+  </div>
+  <div class="info-box" style="margin-top:16px;">
+    <div class="box-title">📌 ¿Qué preguntas hacen la diferencia?</div>
+    <p style="font-size:.88rem;">Cuando una declaración de Waiver es demasiado genérica, el equipo de Training debe identificar los vacíos. Estas son las preguntas clave:</p>
+    <ul class="bullet-list" style="font-size:.85rem;margin-top:8px;">
+      <li>¿Por qué lo pasará mal? ¿Es dinero, salud, emocional?</li>
+      <li>¿Quiénes son los familiares y cuánto dependen de él/ella?</li>
+      <li>¿Tienen alguna condición médica diagnosticada?</li>
+      <li>¿Qué pasaría concretamente? ¿Perderían la casa? ¿No habría quien cuide a los niños?</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 8: RESUMEN DE TEORÍA ══ -->
+<div class="screen" id="screen_8">
+  <span class="screen-label">Resumen de la teoría</span>
+  <div class="section-title">🎯 Resumen: Los tres registros narrativos</div>
+  <div style="display:grid;gap:14px;margin-top:10px;">
+    <div style="background:#fff;border-radius:10px;padding:18px 20px;border-left:5px solid #1565c0;box-shadow:0 1px 4px rgba(0,0,0,.07);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span class="visa-type-badge badge-u" style="font-size:.82rem;">VISA U</span>
+        <span style="font-weight:700;">Delito exacto + Cooperación</span>
+      </div>
+      <ul class="bullet-list" style="font-size:.86rem;">
+        <li>La precisión legal no es negociable. Robbery ≠ Assault ≠ Battery.</li>
+        <li>Siempre menciona la cooperación con autoridades (911, detective, fiscal).</li>
+        <li>Si dudas del término, consulta al equipo legal. Nunca improvises.</li>
+      </ul>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:18px 20px;border-left:5px solid #880e4f;box-shadow:0 1px 4px rgba(0,0,0,.07);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span class="visa-type-badge badge-k" style="font-size:.82rem;">VISA K</span>
+        <span style="font-weight:700;">Relación genuina + Tiempos verbales</span>
+      </div>
+      <ul class="bullet-list" style="font-size:.86rem;">
+        <li>Busca la naturalidad, no la literalidad.</li>
+        <li>Usa Present Perfect para acciones que continúan: "We have been together..."</li>
+        <li>El tono debe ser afectivo pero creíble. El cliente debe sonar como persona real.</li>
+      </ul>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:18px 20px;border-left:5px solid #1b5e20;box-shadow:0 1px 4px rgba(0,0,0,.07);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span class="visa-type-badge badge-waiver" style="font-size:.82rem;">WAIVER</span>
+        <span style="font-weight:700;">Detalles concretos de hardship</span>
+      </div>
+      <ul class="bullet-list" style="font-size:.86rem;">
+        <li>El hardship debe ser vívido y específico: montos, medicamentos, condiciones médicas.</li>
+        <li>Tres áreas: médico, económico, emocional. Preserva los detalles en inglés.</li>
+        <li>"My son needs his medication" ≠ "My son needs medical care".</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box" style="margin-top:20px;">
+    <div class="box-title">📋 ¿Qué sigue?</div>
+    <p>A continuación está el <strong>Ejercicio Práctico del Módulo 2</strong>: cuatro fragmentos reales de DCL de distintos tipos de visa. Para cada uno deberás identificar la visa, analizar sus características y traducir frases clave. <strong>Debes responder todas las preguntas de cada pantalla antes de avanzar.</strong></p>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 9: INSTRUCCIONES DEL EJERCICIO ══ -->
+<div class="screen" id="screen_9">
+  <span class="screen-label">Ejercicio Práctico</span>
+  <div class="section-title">📝 Ejercicio: Identificación de Tonos y Enfoques en DCL</div>
+  <div class="info-box"><div class="box-title">🎯 Objetivo</div><p>Analizar cuatro fragmentos de DCL correspondientes a distintos tipos de visa e identificar las diferencias de tono, vocabulario y enfoque narrativo.</p></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;">
+    <div style="background:var(--color-secondary);border-radius:8px;padding:14px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:6px;">🏷️</div><div style="font-weight:700;font-size:.85rem;margin-bottom:4px;">Parte 1</div><div style="font-size:.78rem;color:#666;">Identificar a qué tipo de visa corresponde el fragmento</div></div>
+    <div style="background:var(--color-secondary);border-radius:8px;padding:14px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:6px;">🔍</div><div style="font-weight:700;font-size:.85rem;margin-bottom:4px;">Parte 2</div><div style="font-size:.78rem;color:#666;">Analizar las características del fragmento</div></div>
+    <div style="background:var(--color-secondary);border-radius:8px;padding:14px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:6px;">🌐</div><div style="font-weight:700;font-size:.85rem;margin-bottom:4px;">Parte 3</div><div style="font-size:.78rem;color:#666;">Traducir frases clave específicas de cada visa</div></div>
+    <div style="background:var(--color-secondary);border-radius:8px;padding:14px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:6px;">📊</div><div style="font-weight:700;font-size:.85rem;margin-bottom:4px;">Parte 4</div><div style="font-size:.78rem;color:#666;">Tabla comparativa de los cuatro tipos de DCL</div></div>
+  </div>
+  <div class="warning-box">
+    <div class="box-title">📌 Antes de comenzar</div>
+    <ul class="bullet-list">
+      <li>Debes responder <strong>todas</strong> las preguntas de cada pantalla antes de avanzar.</li>
+      <li>Cada pregunta solo puede responderse <strong>una vez</strong>. No se puede modificar después de verificar.</li>
+      <li>Fragmentos A y B: traduce del <strong>español al inglés</strong> (ES→EN). Fragmentos C y D: traduce del <strong>inglés al español</strong> (EN→ES).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 10: FRAGMENTO A – VAWA ══ -->
+<div class="screen" id="screen_10">
+  <span class="screen-label">Fragmento A</span>
+  <div id="advance_warning">⚠️ Debes responder y verificar <strong>todas</strong> las preguntas de esta pantalla antes de continuar.</div>
+  <div class="section-title">📄 Fragmento A</div>
+  <div class="fragment-quote">
+    A partir de que mi hijo cumplió 17 años, su comportamiento comenzó a cambiar para mal y comenzó a ponerme en riesgo. René comenzó a beber en exceso, era común que llegara a la casa gritando e insultándome. Si yo intentaba parar esto, él inmediatamente me gritaba: "¿Qué chingados quieres? ¡Déjame en paz!". Esto escaló al punto que, aún siendo menor de edad, René tenía una pistola con él [...] Ahora que es mayor de edad, sigue tomando en exceso y sigue siendo igual de agresivo, al punto que no solo me grita y me insulta, sino que incluso ha llegado a empujarme. [...] En una ocasión, con su brazo, me empujó hacia atrás para quitarme de su camino. [...] Actualmente, él sigue comportándose de una manera intimidante conmigo. Aunque no esté borracho me intimida y me hace sentir que esto puede escalar a algo peor. [...] Tengo miedo de que, cuando venga a visitarme, un día René se enoje conmigo y me vuelva a empujar o, peor aún, a golpearme. Es un miedo constante que me hace vivir nerviosa todo el tiempo.
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 1</span><h3>Identificación de visa <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">A.1</span> ¿A qué tipo de visa corresponde principalmente este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="qA1" value="visa_u"> Visa U (Víctimas de crimen)</label>
+      <label class="radio-item"><input type="radio" name="qA1" value="visa_k"> Visa K (Prometido/a)</label>
+      <label class="radio-item"><input type="radio" name="qA1" value="vawa"> VAWA (Violence Against Women Act)</label>
+      <label class="radio-item"><input type="radio" name="qA1" value="waiver"> Waiver (I-601 / I-601A)</label>
+    </div>
+    <button class="btn-check" id="btn_qA1" onclick="checkVisaId('qA1','fb_qA1')">Verificar identificación</button>
+    <div class="feedback-box" id="fb_qA1"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 2</span><h3>Análisis de características <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">A.2</span> Selecciona las características que mejor describen este fragmento:</p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="qA2" value="romance"> Describe un romance o relación afectiva</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qA2" value="violence_physical"> Incluye violencia física (empujones, golpes)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qA2" value="family_consequences"> Se enfoca en las consecuencias para familiares ciudadanos</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qA2" value="violence_verbal"> Incluye violencia verbal y psicológica (insultos, gritos, miedo)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qA2" value="tone_narrative"> Mantiene un tono narrativo simple, acorde al perfil del cliente</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qA2" value="cooperation"> Enfatiza la cooperación con autoridades</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qA2" value="legal_terms"> Incluye terminología legal precisa sobre el delito</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qA2" value="pattern_abuse"> Describe un patrón de abuso continuo</label>
+    </div>
+    <button class="btn-check" id="btn_cb_qA2" onclick="checkCheckboxExercise('qA2','fb_qA2')">Verificar análisis</button>
+    <div class="feedback-box" id="fb_qA2"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 3</span><h3>Frase clave <span class="score-badge">Calificado automáticamente</span> <span class="lang-tag es">ES→EN</span></h3></div>
+    <p class="question-text"><span class="question-number">A.3</span> Traduce al inglés:</p>
+    <div class="fragment-quote">"Es horrible vivir así, siempre alerta y sin sentirme en paz."</div>
+    <textarea class="text-input-area" id="qA3_input" rows="2" placeholder="Tu traducción al inglés..."></textarea>
+    <button class="btn-check" id="btn_check_qA3" onclick="checkPhrase('qA3','fb_qA3','en')">Verificar</button>
+    <div class="feedback-box" id="fb_qA3"></div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 11: FRAGMENTO B – VISA U ══ -->
+<div class="screen" id="screen_11">
+  <span class="screen-label">Fragmento B</span>
+  <div id="advance_warning" style="display:none;">⚠️ Debes responder y verificar <strong>todas</strong> las preguntas antes de continuar.</div>
+  <div class="section-title">📄 Fragmento B</div>
+  <div class="fragment-quote">
+    A las seis y media de la madrugada del 25 de diciembre de 2011, escuché que alguien estaba quemando llanta alrededor de la casa. Poco después, oí que alguien pasó corriendo frente a la vivienda y enseguida comenzaron disparos dentro de la casa. [...] Mi hijo, muy asustado, pensaba que se iba a morir porque tenía sangre en el pecho y el estómago.
+    <br><br>
+    No sabíamos qué hacer, porque teníamos miedo de abrir la puerta y que esas personas regresaran. En medio de la confusión, recuerdo que Alejandro llamó al 911. [...] Solo abrimos la puerta cuando llegaron la policía, la ambulancia y los bomberos. [...] Yo me quedé en casa para hablar con la policía. Me pidieron documentos e información y me preguntaron si conocía a las personas que dispararon. Les respondí que no tenía enemigos y que no era alguien que buscara problemas. Después de hacerme preguntas, recogieron los casquillos regados y me dijeron que, si detenían a algún sospechoso, nos avisarían.
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 1</span><h3>Identificación de visa <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">B.1</span> ¿A qué tipo de visa corresponde principalmente este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="qB1" value="visa_u"> Visa U (Víctimas de crimen)</label>
+      <label class="radio-item"><input type="radio" name="qB1" value="visa_k"> Visa K (Prometido/a)</label>
+      <label class="radio-item"><input type="radio" name="qB1" value="vawa"> VAWA (Violence Against Women Act)</label>
+      <label class="radio-item"><input type="radio" name="qB1" value="waiver"> Waiver (I-601 / I-601A)</label>
+    </div>
+    <button class="btn-check" id="btn_qB1" onclick="checkVisaId('qB1','fb_qB1')">Verificar identificación</button>
+    <div class="feedback-box" id="fb_qB1"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 2</span><h3>Análisis de características <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">B.2</span> Selecciona las características que mejor describen este fragmento:</p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="qB2" value="tone_factual"> El tono es factual y descriptivo, con énfasis en los hechos del crimen</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qB2" value="romance"> Describe un romance o relación afectiva</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qB2" value="crime_specific"> Describe un crimen específico (disparos, ataque a la vivienda)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qB2" value="family_hardship"> Se enfoca en las consecuencias para familiares ciudadanos</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qB2" value="cooperation"> Menciona explícitamente la cooperación con autoridades (911, policía)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qB2" value="pattern_abuse"> Describe un patrón de abuso continuo</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qB2" value="injuries"> Incluye descripción de las lesiones sufridas</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qB2" value="investigation"> Incluye detalles sobre la investigación policial</label>
+    </div>
+    <button class="btn-check" id="btn_cb_qB2" onclick="checkCheckboxExercise('qB2','fb_qB2')">Verificar análisis</button>
+    <div class="feedback-box" id="fb_qB2"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 3</span><h3>Frases clave <span class="score-badge">Calificado automáticamente</span> <span class="lang-tag es">ES→EN</span></h3></div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">B.3</span> Traduce al inglés:</p>
+      <div class="fragment-quote">"En medio de la confusión, recuerdo que Alejandro llamó al 911."</div>
+      <textarea class="text-input-area" id="qB3_input" rows="2" placeholder="Tu traducción al inglés..."></textarea>
+      <button class="btn-check" id="btn_check_qB3" onclick="checkPhrase('qB3','fb_qB3','en')">Verificar</button>
+      <div class="feedback-box" id="fb_qB3"></div>
+    </div>
+    <div class="question-block" style="margin-top:16px;">
+      <p class="question-text"><span class="question-number">B.4</span> Traduce al inglés — presta atención al término correcto para "la policía":</p>
+      <div class="fragment-quote">"Yo me quedé en casa para hablar con la policía. Me pidieron documentos e información y me preguntaron si conocía a las personas que dispararon."</div>
+      <textarea class="text-input-area" id="qB4_input" rows="3" placeholder="Tu traducción al inglés..."></textarea>
+      <button class="btn-check" id="btn_check_qB4" onclick="checkPhrase('qB4','fb_qB4','en')">Verificar</button>
+      <div class="feedback-box" id="fb_qB4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 12: FRAGMENTO C – VISA K ══ -->
+<div class="screen" id="screen_12">
+  <span class="screen-label">Fragmento C</span>
+  <div id="advance_warning" style="display:none;">⚠️ Debes responder y verificar <strong>todas</strong> las preguntas antes de continuar.</div>
+  <div class="section-title">📄 Fragmento C <span class="lang-tag">EN</span></div>
+  <div class="fragment-quote-en">
+    I met my fiancé, Annel Angelica Morales Sarmiento, through Facebook in 2019. She was born on June 11th, 1997. I had just arrived once again in Mexico and didn't really know anyone after being in this country for so long, so I started adding people who had friends in common with me, and she accepted. I sent her a message, and we talked for about a month and a half to two months before meeting in person on August 23rd, 2019.
+    <br><br>
+    When Annel introduced us, she was distrustful of me. I understood that I had to earn her affection, so I immersed myself in her world, I played with her, I made her laugh. Little by little she began to get closer, and when her mom trusted me enough to let me pick her up from school and take care of her, I felt like I was doing things right. I always treated her like my princess, as if she were my own daughter.
+    <br><br>
+    I decided I had to take the next step with Annel to do things right. One day, around April 2024, I asked her to marry me over a call. [...] Through these years we have grown very much as a couple, but I do think we would feel better and stronger together.
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 1</span><h3>Identificación de visa <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">C.1</span> ¿A qué tipo de visa corresponde principalmente este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="qC1" value="visa_u"> Visa U (Víctimas de crimen)</label>
+      <label class="radio-item"><input type="radio" name="qC1" value="visa_k"> Visa K (Prometido/a)</label>
+      <label class="radio-item"><input type="radio" name="qC1" value="vawa"> VAWA (Violence Against Women Act)</label>
+      <label class="radio-item"><input type="radio" name="qC1" value="waiver"> Waiver (I-601 / I-601A)</label>
+    </div>
+    <button class="btn-check" id="btn_qC1" onclick="checkVisaId('qC1','fb_qC1')">Verificar identificación</button>
+    <div class="feedback-box" id="fb_qC1"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 2</span><h3>Análisis de características <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">C.2</span> Selecciona las características que mejor describen este fragmento:</p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="qC2" value="cooperation"> Se enfoca en la cooperación con autoridades</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qC2" value="genuine_relationship"> Busca demostrar que la relación es genuina y de buena fe</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qC2" value="crime"> Describe un crimen o violencia</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qC2" value="kids_integration"> Incluye detalles sobre la integración con los hijos de la pareja</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qC2" value="hardship"> Describe consecuencias para familiares ciudadanos</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qC2" value="romantic_start"> Describe el inicio y desarrollo de una relación romántica</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qC2" value="tone_affective"> El tono es afectivo, personal y conmovedor</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qC2" value="marriage"> Menciona la petición de matrimonio y el compromiso</label>
+    </div>
+    <button class="btn-check" id="btn_cb_qC2" onclick="checkCheckboxExercise('qC2','fb_qC2')">Verificar análisis</button>
+    <div class="feedback-box" id="fb_qC2"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 3</span><h3>Frases clave <span class="score-badge">Calificado automáticamente</span> <span class="lang-tag">EN→ES</span></h3></div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">C.3</span> Traduce al español:</p>
+      <div class="fragment-quote-en">"When Annel introduced us, she was distrustful of me. I understood that I had to earn her affection, so I immersed myself in her world, I played with her, I made her laugh."</div>
+      <textarea class="text-input-area" id="qC3_input" rows="3" placeholder="Tu traducción al español..."></textarea>
+      <button class="btn-check" id="btn_check_qC3" onclick="checkPhrase('qC3','fb_qC3','es')">Verificar</button>
+      <div class="feedback-box" id="fb_qC3"></div>
+    </div>
+    <div class="question-block" style="margin-top:16px;">
+      <p class="question-text"><span class="question-number">C.4</span> Traduce al español:</p>
+      <div class="fragment-quote-en">"I decided I had to take the next step with Annel to do things right. One day, around April 2024, I asked her to marry me over a call."</div>
+      <textarea class="text-input-area" id="qC4_input" rows="3" placeholder="Tu traducción al español..."></textarea>
+      <button class="btn-check" id="btn_check_qC4" onclick="checkPhrase('qC4','fb_qC4','es')">Verificar</button>
+      <div class="feedback-box" id="fb_qC4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 13: FRAGMENTO D – WAIVER ══ -->
+<div class="screen" id="screen_13">
+  <span class="screen-label">Fragmento D</span>
+  <div id="advance_warning" style="display:none;">⚠️ Debes responder y verificar <strong>todas</strong> las preguntas antes de continuar.</div>
+  <div class="section-title">📄 Fragmento D <span class="lang-tag">EN</span></div>
+  <div class="fragment-quote-en">
+    If my daughter were deported, our entire family would suffer terribly. Inés is the head of her family and the most important person in it, especially since separating from her ex-husband. One of her sons, the eldest, had a disability at birth, as he was born without an ear. Since arriving in the United States, Inés has sought ways to get help for my grandson, and today he is a perfectly functional adult thanks to my daughter's effort.
+    <br><br>
+    Inés often takes care of her grandchildren, who are 11 and 8 years old. She picks them up from school, feeds them, spends time with them, and is always attentive to their needs. Without a doubt, if Inés is deported, my grandchildren would lose not only their grandmother, but also the person who is with them when my granddaughter can't be there for work.
+    <br><br>
+    If my daughter leaves, my grandchildren wouldn't be able to go with her to Mexico because they grew up here, they have always lived here, and their lives are established here. This would mean a separation that, I'm sure, would be very sad and depressing for both my daughter and my grandchildren.
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 1</span><h3>Identificación de visa <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">D.1</span> ¿A qué tipo de visa corresponde principalmente este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="qD1" value="visa_u"> Visa U (Víctimas de crimen)</label>
+      <label class="radio-item"><input type="radio" name="qD1" value="visa_k"> Visa K (Prometido/a)</label>
+      <label class="radio-item"><input type="radio" name="qD1" value="vawa"> VAWA (Violence Against Women Act)</label>
+      <label class="radio-item"><input type="radio" name="qD1" value="waiver"> Waiver (I-601 / I-601A)</label>
+    </div>
+    <button class="btn-check" id="btn_qD1" onclick="checkVisaId('qD1','fb_qD1')">Verificar identificación</button>
+    <div class="feedback-box" id="fb_qD1"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 2</span><h3>Análisis de características <span class="score-badge">Calificado</span></h3></div>
+    <p class="question-text"><span class="question-number">D.2</span> Selecciona las características que mejor describen este fragmento:</p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="qD2" value="crime"> Describe un crimen o violencia</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qD2" value="care_hardship"> Describe hardship de cuidado (cuidado de nietos, apoyo familiar)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qD2" value="romance"> Describe una relación romántica</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qD2" value="family_consequences"> Se enfoca en las consecuencias para familiares ciudadanos</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qD2" value="cooperation"> Describe cooperación con autoridades</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qD2" value="medical"> Menciona condiciones médicas o discapacidades</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qD2" value="emotional_hardship"> Describe hardship emocional (depresión, tristeza, pérdida del vínculo)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="qD2" value="tone_emotivo"> El tono es emotivo pero factual, describiendo el impacto real</label>
+    </div>
+    <button class="btn-check" id="btn_cb_qD2" onclick="checkCheckboxExercise('qD2','fb_qD2')">Verificar análisis</button>
+    <div class="feedback-box" id="fb_qD2"></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header"><span class="ex-badge">Parte 3</span><h3>Frases clave <span class="score-badge">Calificado automáticamente</span> <span class="lang-tag">EN→ES</span></h3></div>
+    <div class="question-block">
+      <p class="question-text"><span class="question-number">D.3</span> Traduce al español:</p>
+      <div class="fragment-quote-en">"If my daughter were deported, our entire family would suffer terribly."</div>
+      <textarea class="text-input-area" id="qD3_input" rows="2" placeholder="Tu traducción al español..."></textarea>
+      <button class="btn-check" id="btn_check_qD3" onclick="checkPhrase('qD3','fb_qD3','es')">Verificar</button>
+      <div class="feedback-box" id="fb_qD3"></div>
+    </div>
+    <div class="question-block" style="margin-top:14px;">
+      <p class="question-text"><span class="question-number">D.4</span> Traduce al español — presta atención a la condición médica: <span style="font-size:.75rem;background:#e3f2fd;color:#1565c0;padding:2px 8px;border-radius:8px;font-weight:600;margin-left:6px;">📋 Revisión manual</span></p>
+      <div class="fragment-quote-en">"One of her sons, the eldest, had a disability at birth, as he was born without an ear. Since arriving in the United States, Inés has sought ways to get help for my grandson."</div>
+      <textarea class="text-input-area" id="qD4_input" rows="3" placeholder="Tu traducción al español..."></textarea>
+      <button class="btn-check" id="btn_save_qD4" onclick="saveManualTranslation('qD4')">Guardar traducción</button>
+      <div class="feedback-box" id="fb_qD4"></div>
+    </div>
+    <div class="question-block" style="margin-top:14px;">
+      <p class="question-text"><span class="question-number">D.5</span> Traduce al español — hardship emocional y de raíces: <span style="font-size:.75rem;background:#e3f2fd;color:#1565c0;padding:2px 8px;border-radius:8px;font-weight:600;margin-left:6px;">📋 Revisión manual</span></p>
+      <div class="fragment-quote-en">"If my daughter leaves, my grandchildren wouldn't be able to go with her to Mexico because they grew up here, they have always lived here, and their lives are established here. This would mean a separation that, I'm sure, would be very sad and depressing for both my daughter and my grandchildren."</div>
+      <textarea class="text-input-area" id="qD5_input" rows="4" placeholder="Tu traducción al español..."></textarea>
+      <button class="btn-check" id="btn_save_qD5" onclick="saveManualTranslation('qD5')">Guardar traducción</button>
+      <div class="feedback-box" id="fb_qD5"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 14: TABLA COMPARATIVA ══ -->
+<div class="screen" id="screen_14">
+  <span class="screen-label">Parte 4 – Tabla Comparativa</span>
+  <div id="advance_warning" style="display:none;">⚠️ Debes verificar la tabla comparativa antes de continuar.</div>
+  <div class="section-title">📊 Tabla Comparativa Final</div>
+  <p style="font-size:.9rem;margin-bottom:16px;">Para cada tipo de visa, selecciona la opción correcta en cada categoría.</p>
+
+  <div class="exercise-section">
+    <table class="comparative-table">
+      <thead>
+        <tr>
+          <th style="text-align:left;width:22%;">Característica</th>
+          <th>VAWA</th>
+          <th>Visa U</th>
+          <th>Visa K</th>
+          <th>Waiver</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Enfoque principal</strong></td>
+          <td>
+            <div class="dropdown-label">Opción:</div>
+            <select id="dd_enfoque_vawa">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Abuso y relación con el abusador</option>
+              <option value="B">B) Crimen calificado y cooperación</option>
+              <option value="C">C) Relación genuina y de buena fe</option>
+              <option value="D">D) Dificultad extrema para familiares</option>
+            </select>
+          </td>
+          <td>
+            <select id="dd_enfoque_visa_u">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Abuso y relación con el abusador</option>
+              <option value="B">B) Crimen calificado y cooperación</option>
+              <option value="C">C) Relación genuina y de buena fe</option>
+              <option value="D">D) Dificultad extrema para familiares</option>
+            </select>
+          </td>
+          <td>
+            <select id="dd_enfoque_visa_k">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Abuso y relación con el abusador</option>
+              <option value="B">B) Crimen calificado y cooperación</option>
+              <option value="C">C) Relación genuina y de buena fe</option>
+              <option value="D">D) Dificultad extrema para familiares</option>
+            </select>
+          </td>
+          <td>
+            <select id="dd_enfoque_waiver">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Abuso y relación con el abusador</option>
+              <option value="B">B) Crimen calificado y cooperación</option>
+              <option value="C">C) Relación genuina y de buena fe</option>
+              <option value="D">D) Dificultad extrema para familiares</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Tono narrativo</strong></td>
+          <td>
+            <select id="dd_tono_vawa">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Afectivo, personal, conmovedor</option>
+              <option value="B">B) Descriptivo del abuso, énfasis en miedo</option>
+              <option value="C">C) Factual, casi como informe policial</option>
+              <option value="D">D) Emotivo pero factual, centrado en consecuencias</option>
+            </select>
+          </td>
+          <td>
+            <select id="dd_tono_visa_u">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Afectivo, personal, conmovedor</option>
+              <option value="B">B) Descriptivo del abuso, énfasis en miedo</option>
+              <option value="C">C) Factual, casi como informe policial</option>
+              <option value="D">D) Emotivo pero factual, centrado en consecuencias</option>
+            </select>
+          </td>
+          <td>
+            <select id="dd_tono_visa_k">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Afectivo, personal, conmovedor</option>
+              <option value="B">B) Descriptivo del abuso, énfasis en miedo</option>
+              <option value="C">C) Factual, casi como informe policial</option>
+              <option value="D">D) Emotivo pero factual, centrado en consecuencias</option>
+            </select>
+          </td>
+          <td>
+            <select id="dd_tono_waiver">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Afectivo, personal, conmovedor</option>
+              <option value="B">B) Descriptivo del abuso, énfasis en miedo</option>
+              <option value="C">C) Factual, casi como informe policial</option>
+              <option value="D">D) Emotivo pero factual, centrado en consecuencias</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Elemento clave</strong></td>
+          <td>
+            <select id="dd_elemento_vawa">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Matrimonio genuino / buena fe</option>
+              <option value="B">B) Patrón de abuso / violencia</option>
+              <option value="C">C) Hardship extremo para familiares</option>
+              <option value="D">D) Cooperación con autoridades / crimen</option>
+            </select>
+          </td>
+          <td>
+            <select id="dd_elemento_visa_u">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Matrimonio genuino / buena fe</option>
+              <option value="B">B) Patrón de abuso / violencia</option>
+              <option value="C">C) Hardship extremo para familiares</option>
+              <option value="D">D) Cooperación con autoridades / crimen</option>
+            </select>
+          </td>
+          <td>
+            <select id="dd_elemento_visa_k">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Matrimonio genuino / buena fe</option>
+              <option value="B">B) Patrón de abuso / violencia</option>
+              <option value="C">C) Hardship extremo para familiares</option>
+              <option value="D">D) Cooperación con autoridades / crimen</option>
+            </select>
+          </td>
+          <td>
+            <select id="dd_elemento_waiver">
+              <option value="">— Seleccionar —</option>
+              <option value="A">A) Matrimonio genuino / buena fe</option>
+              <option value="B">B) Patrón de abuso / violencia</option>
+              <option value="C">C) Hardship extremo para familiares</option>
+              <option value="D">D) Cooperación con autoridades / crimen</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn-check" id="btn_check_table" onclick="checkComparativeTable()">Verificar tabla comparativa</button>
+    <div class="feedback-box" id="fb_table"></div>
+
+    <div class="info-box" style="margin-top:20px;">
+      <div class="box-title">💡 Pista: recuerda los tres registros</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;font-size:.83rem;">
+        <div><strong>VAWA:</strong> El abuso es el eje. El cliente narra el miedo y el control.</div>
+        <div><strong>Visa U:</strong> El crimen + la cooperación con autoridades son los pilares.</div>
+        <div><strong>Visa K:</strong> La relación debe verse genuina y emocionalmente creíble.</div>
+        <div><strong>Waiver:</strong> Todo gira en el hardship concreto de los familiares ciudadanos.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 15: RESULTADOS ══ -->
+<div class="screen results-screen" id="screen_results">
+  <span class="screen-label">Resultados del módulo</span>
+  <div class="section-title" style="width:100%;text-align:center;">🏆 Resultados – Módulo 2 DCL</div>
+  <div class="score-circle">
+    <div class="score-num" id="score_circle_num">--</div>
+    <div class="score-label" id="score_label">Calculando...</div>
+  </div>
+  <div class="results-breakdown" id="results_breakdown"></div>
+  <div class="incorrect-list" id="incorrect_list" style="margin-top:8px;">
+    <p style="font-weight:700;font-size:.9rem;margin-bottom:10px;color:var(--color-primary-dark);">Frases clave para repasar:</p>
+  </div>
+  <div class="info-box" style="max-width:600px;margin-top:16px;">
+    <div class="box-title">📚 Análisis por visa</div>
+    <ul style="font-size:.85rem;line-height:1.9;padding-left:18px;">
+      <li><strong>VAWA:</strong> Foco en el patrón de abuso y la voz del cliente.</li>
+      <li><strong>Visa U:</strong> Busca siempre el crimen y la cooperación con autoridades.</li>
+      <li><strong>Visa K:</strong> Tono afectivo. Naturalidad sobre literalidad.</li>
+      <li><strong>Waiver:</strong> Todo gira en el hardship concreto de los familiares.</li>
+    </ul>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px;">
+    <button class="btn btn-success btn-large" id="btn_complete">✅ Marcar módulo como completado</button>
+    <button class="btn btn-secondary" id="btn_restart">🔄 Volver al inicio</button>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<nav class="nav-bar" id="nav_bar">
+  <button class="btn btn-secondary" id="btn_prev" disabled>← Anterior</button>
+  <span class="page-indicator" id="page_indicator">Pantalla 1 de 16</span>
+  <button class="btn btn-primary" id="btn_next">Siguiente →</button>
+</nav>
+<script>
+/**
+ * scorm.js – Comunicación SCORM 1.2 con Moodle
+ * Mendoza Learning Center – Módulo 1 VAWA
+ */
+
+var SCORM = (function () {
+  var API = null;
+  var initialized = false;
+  var finished = false;
+
+  // ─── Buscar la API SCORM ───
+  function findAPI(win) {
+    var attempts = 0;
+    while (win.API == null && win.parent != null && win.parent != win) {
+      attempts++;
+      if (attempts > 7) return null;
+      win = win.parent;
+    }
+    return win.API;
+  }
+
+  function getAPI() {
+    var win = window;
+    var api = findAPI(win);
+    if (api == null && win.opener != null) {
+      api = findAPI(win.opener);
+    }
+    return api;
+  }
+
+  // ─── Inicializar ───
+  function initialize() {
+    API = getAPI();
+    if (API == null) {
+      console.warn("[SCORM] API no encontrada – modo standalone");
+      initialized = true; // Continuar en modo local
+      return true;
+    }
+    var result = API.LMSInitialize("");
+    if (result === "true" || result === true) {
+      initialized = true;
+      setValue("cmi.core.lesson_status", "incomplete");
+      return true;
+    }
+    console.error("[SCORM] Error al inicializar:", API.LMSGetLastError());
+    return false;
+  }
+
+  // ─── Leer valor ───
+  function getValue(element) {
+    if (!initialized || API == null) return "";
+    return API.LMSGetValue(element);
+  }
+
+  // ─── Escribir valor ───
+  function setValue(element, value) {
+    if (!initialized) return false;
+    if (API == null) return true; // standalone, ignorar
+    var result = API.LMSSetValue(element, value);
+    if (result === "false" || result === false) {
+      console.error("[SCORM] Error al setear " + element + ":", API.LMSGetLastError());
+      return false;
+    }
+    return true;
+  }
+
+  // ─── Commit ───
+  function commit() {
+    if (!initialized || API == null) return;
+    API.LMSCommit("");
+  }
+
+  // ─── Finalizar ───
+  function finish() {
+    if (!initialized || finished) return;
+    finished = true;
+    if (API != null) {
+      API.LMSFinish("");
+    }
+  }
+
+  // ─── Reportar calificación del módulo ───
+  function setScore(raw, min, max) {
+    min = min || 0;
+    max = max || 100;
+    setValue("cmi.core.score.raw", raw);
+    setValue("cmi.core.score.min", min);
+    setValue("cmi.core.score.max", max);
+    commit();
+  }
+
+  // ─── Reportar estado de completado ───
+  function setCompleted(passed) {
+    setValue("cmi.core.lesson_status", passed ? "passed" : "failed");
+    commit();
+  }
+
+  // ─── Reportar interacción individual ───
+  var interactionIndex = 0;
+  function recordInteraction(id, type, response, correct, result, latency) {
+    var prefix = "cmi.interactions." + interactionIndex + ".";
+    setValue(prefix + "id", id);
+    setValue(prefix + "type", type || "fill-in");
+    setValue(prefix + "student_response", response || "");
+    setValue(prefix + "correct_responses.0.pattern", correct || "");
+    setValue(prefix + "result", result || "neutral");
+    if (latency) setValue(prefix + "latency", latency);
+    interactionIndex++;
+    commit();
+  }
+
+  // ─── Marcar progreso (location) ───
+  function setLocation(screenIndex) {
+    setValue("cmi.core.lesson_location", String(screenIndex));
+    commit();
+  }
+
+  return {
+    initialize: initialize,
+    getValue: getValue,
+    setValue: setValue,
+    commit: commit,
+    finish: finish,
+    setScore: setScore,
+    setCompleted: setCompleted,
+    recordInteraction: recordInteraction,
+    setLocation: setLocation
+  };
+})();
+
+// ─── Inicializar automáticamente ───
+window.addEventListener("load", function () {
+  SCORM.initialize();
+});
+
+window.addEventListener("beforeunload", function () {
+  SCORM.finish();
+});
+
+</script>
+<script>
+/**
+ * interactions.js – Módulo 2 v2.0
+ * Cambios: coincidencia laxa (70%), sin penalización acentos/mayúsculas ES,
+ * sinónimos expandidos, D.4 y D.5 → revisión manual.
+ */
+var AppState={currentScreen:0,totalScreens:0,scores:{},answers:{},answered:{},startTime:Date.now()};
+function lockQuestion(id){AppState.answered[id]=true;}
+function isLocked(id){return !!AppState.answered[id];}
+
+function normalizeText(t){
+  return t.toLowerCase().trim()
+    .replace(/[áàäâ]/g,"a").replace(/[éèëê]/g,"e").replace(/[íìïî]/g,"i")
+    .replace(/[óòöô]/g,"o").replace(/[úùüû]/g,"u").replace(/ñ/g,"n")
+    .replace(/[.,;:!?¿¡"'"'«»\-–—]/g,"").replace(/\s+/g," ");
+}
+
+var STOPS=["that","this","with","from","they","them","have","been","were","will","would","could","should",
+  "also","very","just","when","what","which","here","there","para","como","pero","sino","todo","toda",
+  "todos","estas","estos","esta","este","cada","algo","mas","por","que","una","uno","los","las","del","con","era"];
+var PREPS_EN=["in","on","at","from","to","with","against","for","of","by","into"];
+var PREPS_ES=["en","de","a","con","por","para","sin","desde","hasta","sobre","bajo"];
+
+function flexibleMatch(user,correct,lang,strictPrep){
+  var uN=normalizeText(user),cN=normalizeText(correct);
+  if(uN===cN)return true;
+  if(uN.length<4)return false;
+  var preps=lang==="es"?PREPS_ES:PREPS_EN;
+  var uW=uN.split(" ").filter(function(w){return w.length>0;});
+  var cW=cN.split(" ").filter(function(w){return w.length>0;});
+  if(strictPrep){
+    for(var i=0;i<cW.length;i++){
+      if(preps.indexOf(cW[i])!==-1&&uW.indexOf(cW[i])===-1)return false;
+    }
+  }
+  var sub=cW.filter(function(w){return w.length>3&&preps.indexOf(w)===-1&&STOPS.indexOf(w)===-1;});
+  if(!sub.length)return true;
+  var m=0;sub.forEach(function(w){if(uN.indexOf(w)!==-1)m++;});
+  return(m/sub.length)>=0.70;
+}
+
+var PHRASE_CONFIG={
+  "qA3":{lang:"en",strictPrep:false,variants:[
+    "it is horrible to live like this always alert and without feeling at peace",
+    "it is horrible living like this always on alert and never at peace",
+    "it is awful to live this way always vigilant and never feeling at peace",
+    "its horrible to live like this always alert and without feeling at peace",
+    "living like this is horrible always on alert and never at peace",
+    "it is terrible to live like this always on alert and never feeling safe",
+    "it is awful living this way always alert and without peace",
+    "its horrible living like this always alert and never at peace",
+    "it is horrible to live this way always on alert and never feeling at peace"
+  ]},
+  "qB3":{lang:"en",strictPrep:false,variants:[
+    "in the midst of the confusion i remember that alejandro called 911",
+    "in the middle of the confusion i remember that alejandro called 911",
+    "amid the confusion i remember that alejandro called 911",
+    "amongst the confusion i remember that alejandro called 911",
+    "in the middle of the chaos i remember that alejandro called 911",
+    "amidst the confusion i remember alejandro called 911",
+    "in the midst of all the confusion i remember alejandro called 911",
+    "during the confusion i remember that alejandro called 911",
+    "in the chaos i remember that alejandro called 911"
+  ]},
+  "qB4":{lang:"en",strictPrep:false,variants:[
+    "i stayed home to speak with the police they asked me for documents and information and asked me if i knew the people who fired the shots",
+    "i stayed at home to speak with the police they asked me for documents and information and asked me if i knew the people who had fired the shots",
+    "i stayed home to talk with the police they asked me for documents and information and asked me if i knew the people who fired the shots",
+    "i stayed at home to talk to the police they asked me for documents and information and asked me if i knew the people who shot",
+    "i remained at home to speak with the police they requested my documents and information and asked if i knew the people who fired the shots",
+    "i stayed home to talk to the police they asked me for documents and information and asked me if i knew the people who shot",
+    "i stayed home to speak with the police they asked for my documents and information and asked me if i knew who had fired the shots",
+    "i stayed home to talk with the police they asked me for my documents and information and asked whether i knew the people who fired",
+    "i stayed at home to talk to the police they asked me for documents and information and asked if i knew the people who had shot",
+    "i stayed home talking to the police they asked for my documents and information and asked if i knew the people who fired",
+    "i stayed at home and spoke with the police they asked me for documents and information and asked me if i knew the people who shot"
+  ]},
+  "qC3":{lang:"es",strictPrep:false,variants:[
+    "cuando annel nos presento ella desconfiaba de mi entendi que tenia que ganarme su carino asi que me sumergi en su mundo jugaba con ella la hacia reir",
+    "cuando annel nos presento ella desconfiaba de mi entendi que tenia que ganarme su afecto asi que me sumergi en su mundo jugaba con ella la hacia reir",
+    "cuando annel nos presento ella no confiaba en mi entendi que tenia que ganarme su carino asi que me sumergi en su mundo jugaba con ella la hacia reir",
+    "cuando annel nos presento ella era desconfiada conmigo entendi que tenia que ganarme su carino me sumergi en su mundo jugaba con ella la hacia reir",
+    "cuando annel nos presento ella estaba desconfiada entendi que debia ganarme su carino entonces me sumergi en su mundo jugaba con ella y la hacia reir",
+    "cuando annel nos presento ella desconfiaba de mi comprendi que tenia que ganarme su carino asi que me sumergi en su mundo jugaba con ella y la hacia reir",
+    "cuando annel nos presento ella no confiaba en mi comprendi que habia que ganarme su carino asi que me sumergi en su mundo jugaba con ella la hacia reir",
+    "al presentarnos annel ella desconfiaba de mi entendi que debia ganarme su carino me sumergi en su mundo jugaba con ella y la hacia reir",
+    "cuando annel nos presento ella desconfiaba de mi supe que tenia que ganarme su carino asi que me sumergi en su mundo jugaba con ella la hacia reir"
+  ]},
+  "qC4":{lang:"es",strictPrep:false,variants:[
+    "decidi que tenia que dar el siguiente paso con annel para hacer las cosas bien un dia alrededor de abril de 2024 le pedi que se casara conmigo por una llamada",
+    "decidi que tenia que dar el proximo paso con annel para hacer las cosas bien un dia alrededor de abril de 2024 le pedi matrimonio por una llamada",
+    "decidi que tenia que dar el siguiente paso con annel para hacer las cosas bien un dia aproximadamente en abril de 2024 le pedi que se casara conmigo por telefono",
+    "decidi que habia que dar el siguiente paso con annel para hacer las cosas bien un dia como en abril de 2024 le pedi que se casara conmigo en una llamada",
+    "decidi dar el siguiente paso con annel para hacer las cosas bien un dia hacia abril de 2024 le pedi matrimonio por telefono",
+    "tome la decision de dar el siguiente paso con annel para hacer las cosas bien un dia alrededor de abril de 2024 le propuse matrimonio por llamada",
+    "decidi que era momento de dar el siguiente paso con annel un dia alrededor de abril de 2024 le pedi que se casara conmigo por una llamada"
+  ]},
+  "qD3":{lang:"es",strictPrep:false,variants:[
+    "si mi hija fuera deportada toda nuestra familia sufriria terriblemente",
+    "si deportaran a mi hija toda nuestra familia sufriria terriblemente",
+    "si mi hija fuese deportada toda nuestra familia sufriria terriblemente",
+    "si mi hija fuera deportada toda la familia sufriria terriblemente",
+    "si mi hija fuera deportada nuestra familia entera sufriria muchisimo",
+    "si deportaran a mi hija toda la familia sufriria de manera terrible",
+    "si mi hija fuera deportada toda nuestra familia lo pasaria muy mal",
+    "si mi hija llegara a ser deportada toda nuestra familia sufriria terriblemente"
+  ]}
+};
+
+function checkPhraseAnswer(qId,userAnswer){
+  var cfg=PHRASE_CONFIG[qId];if(!cfg)return false;
+  if(normalizeText(userAnswer).length<4)return false;
+  for(var i=0;i<cfg.variants.length;i++){
+    if(flexibleMatch(userAnswer,cfg.variants[i],cfg.lang,cfg.strictPrep))return true;
+  }
+  return false;
+}
+
+var CORRECT_CHECKBOXES={
+  "qA2":["tone_narrative","violence_physical","violence_verbal","pattern_abuse"],
+  "qB2":["tone_factual","crime_specific","cooperation","investigation","injuries"],
+  "qC2":["genuine_relationship","tone_affective","kids_integration","romantic_start","marriage"],
+  "qD2":["tone_emotivo","family_consequences","care_hardship","emotional_hardship","medical"]
+};
+
+function checkCheckboxGroup(groupId){
+  var correct=CORRECT_CHECKBOXES[groupId];if(!correct)return false;
+  var checkboxes=document.querySelectorAll('[data-group="'+groupId+'"]');
+  var selected=[];checkboxes.forEach(function(cb){if(cb.checked)selected.push(cb.value);});
+  if(selected.length!==correct.length)return false;
+  var ss=selected.slice().sort();var sc=correct.slice().sort();
+  for(var i=0;i<sc.length;i++){if(ss[i]!==sc[i])return false;}
+  return true;
+}
+
+var CORRECT_VISA_ID={"qA1":"vawa","qB1":"visa_u","qC1":"visa_k","qD1":"waiver"};
+
+function checkVisaId(qId,feedbackId){
+  if(isLocked(qId))return;
+  var radios=document.querySelectorAll('input[name="'+qId+'"]');
+  var selected=null;radios.forEach(function(r){if(r.checked)selected=r.value;});
+  if(!selected){alert("Selecciona una opción antes de verificar.");return;}
+  var correct=CORRECT_VISA_ID[qId];var isCorrect=selected===correct;
+  radios.forEach(function(r){
+    r.disabled=true;var item=r.closest(".radio-item");
+    if(r.value===correct)item.classList.add("selected-correct");
+    else if(r.value===selected&&!isCorrect)item.classList.add("selected-wrong");
+  });
+  var msgs={
+    "qA1":{c:"✅ <strong>Correcto — VAWA.</strong> Describe un patrón de abuso continuo por parte del hijo: violencia física (empujones), verbal (insultos) y psicológica (miedo constante). El tono es narrativo y personal.",i:"❌ <strong>Incorrecto.</strong> Este fragmento es VAWA. Observa el patrón de abuso repetido, la descripción del miedo y el control ejercido por el agresor."},
+    "qB1":{c:"✅ <strong>Correcto — Visa U.</strong> Describe un crimen calificado (disparos), las lesiones sufridas y la cooperación con autoridades: llamada al 911 y hablar con la policía.",i:"❌ <strong>Incorrecto.</strong> Este fragmento es Visa U. La clave está en el crimen específico y la cooperación con las autoridades."},
+    "qC1":{c:"✅ <strong>Correcto — Visa K.</strong> Tono afectivo y personal. Describe el origen de la relación, la integración familiar, la petición de matrimonio y los planes de futuro.",i:"❌ <strong>Incorrecto.</strong> Este fragmento es Visa K. Busca el tono romántico, los detalles de la relación y la prueba de que el compromiso es genuino."},
+    "qD1":{c:"✅ <strong>Correcto — Waiver.</strong> El enfoque está en demostrar el <em>extreme hardship</em>: consecuencias emocionales, de cuidado y médicas para los familiares ciudadanos.",i:"❌ <strong>Incorrecto.</strong> Este fragmento es Waiver. Todo gira en el hardship: ¿qué perderían los familiares ciudadanos si la persona es deportada?"}
+  };
+  var fb=document.getElementById(feedbackId);
+  if(fb){var m=msgs[qId]||{c:"✅ Correcto.",i:"❌ Incorrecto."};fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");fb.innerHTML=isCorrect?m.c:m.i;}
+  AppState.scores[qId]=isCorrect;lockQuestion(qId);
+  var btn=document.getElementById("btn_"+qId);if(btn)btn.disabled=true;
+  SCORM.recordInteraction(qId,"choice",selected,correct,isCorrect?"correct":"wrong");
+}
+
+function checkCheckboxExercise(groupId,feedbackId){
+  if(isLocked(groupId))return;
+  var isCorrect=checkCheckboxGroup(groupId);
+  var correctSet=CORRECT_CHECKBOXES[groupId]||[];
+  var checkboxes=document.querySelectorAll('[data-group="'+groupId+'"]');
+  checkboxes.forEach(function(cb){
+    var item=cb.closest(".checkbox-item");if(!item)return;
+    if(correctSet.indexOf(cb.value)!==-1)item.classList.add("correct-answer");
+    if(cb.checked&&correctSet.indexOf(cb.value)===-1)item.classList.add("wrong-answer");
+    cb.disabled=true;
+  });
+  var msgs={
+    "qA2":{c:"✅ <strong>Correcto.</strong> VAWA: patrón de abuso continuo, violencia física y psicológica, tono narrativo que refleja la voz del cliente.",i:"❌ <strong>Revisa.</strong> Correctas: patrón de abuso continuo, violencia física, violencia verbal/psicológica y tono narrativo simple."},
+    "qB2":{c:"✅ <strong>Correcto.</strong> Visa U: tono factual, describe el crimen, las lesiones y la cooperación con autoridades.",i:"❌ <strong>Revisa.</strong> Busca: crimen específico, lesiones, cooperación con autoridades, detalles de investigación y tono factual."},
+    "qC2":{c:"✅ <strong>Correcto.</strong> Visa K: prueba de relación genuina, inicio romántico, integración familiar, petición de matrimonio y tono afectivo.",i:"❌ <strong>Revisa.</strong> Claves de Visa K: inicio de la relación, integración con hijos, matrimonio/compromiso, tono afectivo y demostrar buena fe."},
+    "qD2":{c:"✅ <strong>Correcto.</strong> Waiver: hardship concreto, consecuencias para familiares, sufrimiento emocional, impacto de cuidado y condiciones médicas.",i:"❌ <strong>Revisa.</strong> Waiver: consecuencias para familiares ciudadanos, hardship emocional, hardship de cuidado, condiciones médicas y tono emotivo-factual."}
+  };
+  var fb=document.getElementById(feedbackId);
+  if(fb){var m=msgs[groupId]||{c:"✅ Correcto.",i:"❌ Revisa."};fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");fb.innerHTML=isCorrect?m.c:m.i;}
+  AppState.scores[groupId]=isCorrect;lockQuestion(groupId);
+  var btn=document.getElementById("btn_cb_"+groupId);if(btn)btn.disabled=true;
+  var sel=[];checkboxes.forEach(function(cb){if(cb.checked)sel.push(cb.value);});
+  SCORM.recordInteraction(groupId,"choice",sel.join("|"),correctSet.join("|"),isCorrect?"correct":"wrong");
+}
+
+function checkPhrase(qId,feedbackId){
+  if(isLocked(qId))return;
+  var input=document.getElementById(qId+"_input");if(!input)return;
+  var userAnswer=input.value.trim();
+  if(userAnswer.length<4){alert("Escribe tu traducción antes de verificar.");return;}
+  var isCorrect=checkPhraseAnswer(qId,userAnswer);
+  var cfg=PHRASE_CONFIG[qId]||{};var correctVariant=(cfg.variants||[""])[0];
+  input.className="text-input-area "+(isCorrect?"correct":"incorrect");
+  input.readOnly=true;
+  var fb=document.getElementById(feedbackId);
+  if(fb){fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");fb.innerHTML=isCorrect?"✅ <strong>¡Correcto!</strong> Tu traducción captura los elementos clave.":"❌ <strong>Revisa tu traducción.</strong><div class='correct-answer-reveal'>Referencia: <em>"+correctVariant+"</em></div>";}
+  AppState.scores[qId]=isCorrect;lockQuestion(qId);
+  var btn=document.getElementById("btn_check_"+qId);if(btn)btn.disabled=true;
+  SCORM.recordInteraction(qId,"fill-in",userAnswer,correctVariant,isCorrect?"correct":"wrong");
+}
+
+function saveManualTranslation(qId){
+  if(isLocked(qId+"_saved"))return;
+  var input=document.getElementById(qId+"_input");
+  if(!input||!input.value.trim()){alert("Escribe tu traducción antes de guardar.");return;}
+  AppState.answers[qId]=input.value;lockQuestion(qId+"_saved");
+  input.readOnly=true;
+  var fb=document.getElementById("fb_"+qId);
+  if(fb){fb.className="feedback-box visible info";fb.innerHTML="📝 Tu traducción ha sido registrada y será revisada por el equipo de Training.";}
+  var btn=document.getElementById("btn_save_"+qId);if(btn)btn.disabled=true;
+  SCORM.recordInteraction(qId,"fill-in",input.value,"","neutral");
+}
+
+var CORRECT_TABLE={
+  "enfoque_vawa":"A","enfoque_visa_u":"B","enfoque_visa_k":"C","enfoque_waiver":"D",
+  "tono_vawa":"B","tono_visa_u":"C","tono_visa_k":"A","tono_waiver":"D",
+  "elemento_vawa":"B","elemento_visa_u":"D","elemento_visa_k":"A","elemento_waiver":"C"
+};
+
+function checkComparativeTable(){
+  if(isLocked("comparative_table"))return;
+  var total=0;var correct=0;
+  Object.keys(CORRECT_TABLE).forEach(function(key){
+    var sel=document.getElementById("dd_"+key);if(!sel)return;
+    total++;var isCorrect=sel.value===CORRECT_TABLE[key];
+    if(isCorrect)correct++;
+    sel.style.borderColor=isCorrect?"var(--color-success)":"var(--color-error)";
+    sel.style.background=isCorrect?"#f0fff4":"#fff0f0";
+    sel.disabled=true;
+  });
+  var fb=document.getElementById("fb_table");
+  if(fb){fb.className="feedback-box visible "+(correct===total?"correct":"info");fb.innerHTML=correct===total?"✅ <strong>¡Tabla completa y correcta!</strong> "+correct+"/"+total+" — Tienes muy claro el perfil narrativo de cada visa.":"⚠️ <strong>"+correct+"/"+total+" correctas.</strong> Las celdas en rojo tienen la opción incorrecta. Repasa el resumen de la teoría.";}
+  AppState.scores["comparative_table"]=correct;AppState.scores["comparative_table_total"]=total;
+  lockQuestion("comparative_table");document.getElementById("btn_check_table").disabled=true;
+  SCORM.recordInteraction("comparative_table","matching",correct+"/"+total,total+"/"+total,correct===total?"correct":"wrong");
+}
+
+var SCREEN_REQUIREMENTS={
+  10:["qA1","qA2","qA3"],
+  11:["qB1","qB2","qB3","qB4"],
+  12:["qC1","qC2","qC3","qC4"],
+  13:["qD1","qD2","qD3","qD4_saved","qD5_saved"],
+  14:["comparative_table"]
+};
+
+function canAdvance(screenIndex){
+  var reqs=SCREEN_REQUIREMENTS[screenIndex];if(!reqs)return true;
+  for(var i=0;i<reqs.length;i++){if(!AppState.answered[reqs[i]])return false;}
+  return true;
+}
+
+function calculateFinalScore(){
+  var visaIds=["qA1","qB1","qC1","qD1"];
+  var cbIds=["qA2","qB2","qC2","qD2"];
+  var phraseIds=["qA3","qB3","qB4","qC3","qC4","qD3"];
+  var tC=AppState.scores["comparative_table"]||0;var tT=AppState.scores["comparative_table_total"]||12;
+  var vC=0;visaIds.forEach(function(id){if(AppState.scores[id])vC++;});
+  var cC=0;cbIds.forEach(function(id){if(AppState.scores[id])cC++;});
+  var pC=0;phraseIds.forEach(function(id){if(AppState.scores[id])pC++;});
+  return{visaIds:{correct:vC,total:visaIds.length},checkboxes:{correct:cC,total:cbIds.length},phrases:{correct:pC,total:phraseIds.length},table:{correct:tC,total:tT},
+    phraseDetails:phraseIds.map(function(id){var inp=document.getElementById(id+"_input");var cfg=PHRASE_CONFIG[id]||{};return{id:id,correct:AppState.scores[id]===true,userAnswer:inp?inp.value:"",expected:(cfg.variants||[""])[0]};})};
+}
+
+function renderResultsScreen(){
+  var s=calculateFinalScore();
+  var total=s.visaIds.correct+s.checkboxes.correct+s.phrases.correct+s.table.correct;
+  var max=s.visaIds.total+s.checkboxes.total+s.phrases.total+s.table.total;
+  var pct=Math.round((total/max)*100);var passed=pct>=70;
+  var sc=document.getElementById("score_circle_num");if(sc)sc.textContent=pct+"%";
+  var sl=document.getElementById("score_label");if(sl)sl.textContent=passed?"¡Aprobado!":"Necesitas repasar";
+  var rb=document.getElementById("results_breakdown");
+  if(rb)rb.innerHTML='<div class="rb-row"><span class="rb-label">Identificación de visa (4)</span><span class="rb-score">'+s.visaIds.correct+' / '+s.visaIds.total+'</span></div><div class="rb-row"><span class="rb-label">Análisis de características (4)</span><span class="rb-score">'+s.checkboxes.correct+' / '+s.checkboxes.total+'</span></div><div class="rb-row"><span class="rb-label">Frases clave automáticas (6)</span><span class="rb-score">'+s.phrases.correct+' / '+s.phrases.total+'</span></div><div class="rb-row"><span class="rb-label">Tabla comparativa (12 celdas)</span><span class="rb-score">'+s.table.correct+' / '+s.table.total+'</span></div><div class="rb-row" style="font-weight:700;background:var(--color-secondary)"><span class="rb-label">TOTAL (D.4 y D.5: revisión manual del equipo de Training)</span><span class="rb-score">'+total+' / '+max+' ('+pct+'%)</span></div>';
+  var il=document.getElementById("incorrect_list");
+  if(il){var bad=s.phraseDetails.filter(function(d){return!d.correct&&d.userAnswer;});
+    if(!bad.length){il.innerHTML='<p style="color:var(--color-success);font-weight:600">✅ ¡Todas las frases calificadas automáticamente fueron correctas!</p>';}
+    else{var labels={"qA3":"A.3","qB3":"B.3","qB4":"B.4","qC3":"C.3 (EN→ES)","qC4":"C.4 (EN→ES)","qD3":"D.3 (EN→ES)"};
+      var html="";bad.forEach(function(item){html+='<div class="incorrect-item"><div class="ii-label">'+(labels[item.id]||item.id)+'</div><div class="ii-yours">Tu respuesta: '+(item.userAnswer||"<em>sin respuesta</em>")+'</div><div class="ii-correct">Referencia: '+item.expected+'</div></div>';});
+      il.innerHTML=html;}}
+  SCORM.setScore(pct,0,100);SCORM.setCompleted(passed);
+}
+
+function initNavigation(){
+  var screens=document.querySelectorAll(".screen");AppState.totalScreens=screens.length;
+  updateNavButtons();updateProgressBar();updateSidebar(0);
+  var btnNext=document.getElementById("btn_next");var btnPrev=document.getElementById("btn_prev");
+  if(btnNext)btnNext.addEventListener("click",function(){
+    if(AppState.currentScreen<AppState.totalScreens-1){if(!canAdvance(AppState.currentScreen)){showAdvanceWarning();return;}goToScreen(AppState.currentScreen+1);}
+  });
+  if(btnPrev)btnPrev.addEventListener("click",function(){if(AppState.currentScreen>0)goToScreen(AppState.currentScreen-1);});
+}
+function showAdvanceWarning(){var warn=document.getElementById("advance_warning");if(warn){warn.style.display="block";setTimeout(function(){warn.style.display="none";},4000);}}
+function goToScreen(index){var screens=document.querySelectorAll(".screen");screens[AppState.currentScreen].classList.remove("active");AppState.currentScreen=index;screens[index].classList.add("active");window.scrollTo(0,0);updateNavButtons();updateProgressBar();updateSidebar(index);SCORM.setLocation(index);if(screens[index].id==="screen_results")renderResultsScreen();}
+function updateNavButtons(){var btnPrev=document.getElementById("btn_prev");var btnNext=document.getElementById("btn_next");var indicator=document.getElementById("page_indicator");var screens=document.querySelectorAll(".screen");if(btnPrev)btnPrev.disabled=(AppState.currentScreen===0);if(btnNext){btnNext.disabled=(AppState.currentScreen===AppState.totalScreens-1);btnNext.style.display=(screens[AppState.currentScreen]&&screens[AppState.currentScreen].id==="screen_results")?"none":"";}if(indicator)indicator.textContent="Pantalla "+(AppState.currentScreen+1)+" de "+AppState.totalScreens;}
+function updateProgressBar(){var fill=document.getElementById("progress_fill");var label=document.getElementById("progress_label");var pct=Math.round(((AppState.currentScreen+1)/AppState.totalScreens)*100);if(fill)fill.style.width=pct+"%";if(label)label.textContent=pct+"% completado";}
+document.addEventListener("DOMContentLoaded",function(){
+  initNavigation();
+  var btnStart=document.getElementById("btn_start");if(btnStart)btnStart.addEventListener("click",function(){goToScreen(1);});
+  var btnComplete=document.getElementById("btn_complete");if(btnComplete)btnComplete.addEventListener("click",function(){renderResultsScreen();SCORM.finish();btnComplete.textContent="✅ Módulo completado";btnComplete.disabled=true;});
+  var btnRestart=document.getElementById("btn_restart");if(btnRestart)btnRestart.addEventListener("click",function(){goToScreen(0);});
+});
+
+// ═══════════════════════════════════════════════════════════
+//  SIDEBAR – actualiza estado activo/completado
+// ═══════════════════════════════════════════════════════════
+function updateSidebar(currentIndex) {
+  var items = document.querySelectorAll('.sidebar-item');
+  items.forEach(function(item) {
+    var target = parseInt(item.getAttribute('data-target'));
+    item.classList.remove('active','completed');
+    if (target === currentIndex) item.classList.add('active');
+    else if (target < currentIndex) item.classList.add('completed');
+  });
+}
+
+function goToScreenFromSidebar(index) {
+  var exerciseStart = 10; // screens 10-14 require sequential completion
+  if (index >= exerciseStart && index > AppState.currentScreen) {
+    for (var s = AppState.currentScreen; s < index; s++) {
+      if (!canAdvance(s)) { showAdvanceWarning(); return; }
+    }
+  }
+  goToScreen(index);
+}
+
+</script>
+</div><!-- /main-content -->
+</div><!-- /outer-layout -->
+</body>
+</html>
