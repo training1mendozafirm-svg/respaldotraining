@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taller VAWA · Criterios de Elegibilidad · Mendoza Learning Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1c2130;--navy2:#252d42;--navy3:#2e3850;--gold:#c5a028;--gold2:#e0b830;--gold3:#f5e9c0;--gold4:#fdf6e3;--page:#faf6ef;--page2:#f3ede0;--card:#fff;--ink:#1a1712;--ink2:#312e28;--ink3:#5c5648;--red:#8a1818;--red2:#c93030;--red3:#fde6e6;--blue:#2a4a8a;--blue3:#e6ecf8;--amber:#8a5a00;--exc-c:#1a5e36;--exc-bg:#e5f4ec;--border:#e4ddd0;--border2:#d0c8b8;--sh:0 2px 12px rgba(0,0,0,.08);--r:10px;--rs:6px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"DM Sans",system-ui,sans-serif;background:var(--page);color:var(--ink);font-size:14px;line-height:1.65;height:100vh;overflow:hidden}
+#app{display:flex;flex-direction:column;height:100vh}
+.topbar{background:var(--navy);padding:.8rem 1.8rem;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--gold)}
+.topbar h2{font-family:"Cormorant Garamond",serif;font-size:1.25rem;color:#f2ead8}
+.topbar h2 em{color:var(--gold2);font-style:italic}
+.topbar-meta{font-size:11px;color:rgba(242,234,216,.5);margin-top:2px;letter-spacing:.04em}
+.user-badge{font-size:11.5px;color:rgba(242,234,216,.6);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:.25rem .9rem}
+.progress-bar-wrap{height:3px;background:var(--border);flex-shrink:0}
+.progress-bar-fill{height:100%;background:var(--gold);transition:width .4s}
+/* SCREENS */
+.screen{display:none;flex:1;overflow:hidden}
+.screen.active{display:flex}
+/* COVER */
+#screen-cover{flex-direction:column;align-items:center;justify-content:center;background:var(--navy);position:relative;overflow:hidden}
+#screen-cover::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(197,160,40,.12) 0%,transparent 60%)}
+.cover-inner{text-align:center;z-index:1;padding:2rem}
+.cover-logo{font-family:"Cormorant Garamond",serif;font-size:3rem;color:#f2ead8;margin-bottom:.5rem;line-height:1.1}
+.cover-logo em{color:var(--gold2);font-style:italic}
+.cover-sub{font-size:13px;color:rgba(242,234,216,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2.5rem}
+.cover-card{background:rgba(255,255,255,.06);border:1px solid rgba(197,160,40,.3);border-radius:var(--r);padding:2rem 2.5rem;max-width:440px;margin:0 auto}
+.cover-card label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:rgba(242,234,216,.7);margin-bottom:.6rem}
+.cover-card input{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(197,160,40,.4);border-radius:var(--rs);padding:.75rem 1rem;color:#f2ead8;font-size:15px;font-family:"DM Sans",sans-serif;outline:none}
+.cover-card input::placeholder{color:rgba(242,234,216,.35)}
+.cover-card input:focus{border-color:var(--gold2)}
+.btn-cover{margin-top:1.2rem;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:var(--r);padding:.8rem;font-weight:700;font-size:14px;cursor:pointer;letter-spacing:.05em}
+.cover-hint{font-size:11px;color:rgba(242,234,216,.4);margin-top:.9rem}
+/* INTRO */
+#screen-intro{flex-direction:column;overflow-y:auto;padding:2rem;background:var(--page)}
+.intro-inner{max-width:860px;margin:0 auto;width:100%}
+.intro-header{background:var(--navy2);border-radius:var(--r);padding:1.5rem 2rem;margin-bottom:1.5rem;color:#f2ead8}
+.intro-header h2{font-family:"Cormorant Garamond",serif;font-size:1.8rem;margin-bottom:.3rem}
+.intro-header p{font-size:12.5px;color:rgba(242,234,216,.7)}
+.intro-block{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem 1.6rem;margin-bottom:1.2rem;box-shadow:var(--sh)}
+.intro-block h3{font-family:"Cormorant Garamond",serif;font-size:1.2rem;border-left:3px solid var(--gold);padding-left:.8rem;margin-bottom:.8rem}
+.intro-block p,.intro-block li{font-size:13px;color:var(--ink2);line-height:1.7}
+.intro-block ul{padding-left:1.4rem;margin-top:.4rem}
+.intro-block li{margin-bottom:.3rem}
+.criterios-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.8rem}
+.crit-card{background:var(--page2);border:1px solid var(--border);border-radius:var(--rs);padding:.8rem 1rem}
+.crit-card .num{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:.3rem}
+.crit-card p{font-size:12.5px;color:var(--ink2);line-height:1.5}
+.btn-start{display:block;margin:1.5rem auto 0;background:linear-gradient(135deg,var(--navy),var(--navy3));color:#f2ead8;border:none;border-radius:var(--r);padding:.75rem 2.5rem;font-weight:600;font-size:14px;cursor:pointer}
+/* MAIN LAYOUT */
+#screen-main{flex-direction:column}
+.book-layout{display:flex;flex:1;overflow:hidden;min-height:0}
+.page-left{width:44%;flex-shrink:0;overflow-y:auto;background:var(--page2);border-right:1px solid var(--border2)}
+.page-left-inner{padding:1.5rem 1.6rem}
+.decl-box{background:var(--card);border-radius:var(--r);padding:1rem 1.3rem;border:1px solid var(--border);box-shadow:var(--sh)}
+.decl-box h3{font-family:"Cormorant Garamond",serif;font-size:1.2rem;margin-bottom:.3rem;border-left:3px solid var(--gold);padding-left:.8rem}
+.decl-subtitle{font-size:11px;color:var(--ink3);margin-bottom:.8rem;padding-left:.8rem}
+.texto-decl{font-family:"Cormorant Garamond",serif;font-size:13px;line-height:1.85;color:var(--ink2);white-space:pre-wrap}
+.page-right{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--page)}
+.criteria-tabs{display:flex;overflow-x:auto;background:var(--card);border-bottom:2px solid var(--border2);flex-shrink:0;padding:0 .5rem}
+.criteria-tabs button{padding:.7rem 1rem;border:none;background:none;cursor:pointer;font-size:12px;font-weight:500;color:var(--ink3);border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:.4rem}
+.criteria-tabs button.on{color:var(--gold);border-bottom-color:var(--gold);font-weight:600;background:var(--gold4)}
+.criteria-tabs button .tab-check{display:none;color:var(--exc-c);font-size:11px}
+.criteria-tabs button.done .tab-check{display:inline}
+.criteria-tabs button.results-tab{color:var(--navy2);font-weight:600}
+.criteria-tabs button.results-tab.on{color:var(--navy);border-bottom-color:var(--navy)}
+.analysis-body{flex:1;overflow-y:auto;padding:1.5rem}
+.sec-head{background:var(--navy2);border-radius:var(--r);padding:1rem 1.3rem;margin-bottom:1.2rem;color:#f2ead8}
+.sec-head h3{font-family:"Cormorant Garamond",serif;font-size:1.3rem;font-weight:600}
+.sec-head p{font-size:12px;color:rgba(242,234,216,.7);margin-top:.2rem}
+.teoria-box{background:var(--blue3);border:1px solid #b8c8e8;border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1.2rem}
+.teoria-box h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);margin-bottom:.4rem}
+.teoria-box p{font-size:12.5px;color:#2a3a5a;line-height:1.6}
+.qblock{background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:1rem;overflow:hidden}
+.qlabel{background:var(--page);border-bottom:1px solid var(--border);padding:.55rem 1rem;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3)}
+.qbody{padding:1rem 1.1rem}
+.qtext{font-size:13.5px;font-weight:500;margin-bottom:.8rem;color:var(--ink2)}
+.radio-grid,.check-grid{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.9rem}
+.ropt,.chkopt{display:flex;align-items:flex-start;gap:.65rem;padding:.65rem .8rem;border:1.5px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .18s;background:var(--page);user-select:none}
+.ropt:hover,.chkopt:hover{border-color:var(--gold);background:var(--gold4)}
+.ropt input,.chkopt input{margin-top:3px;flex-shrink:0;accent-color:var(--gold)}
+.ropt label,.chkopt label{font-size:13px;color:var(--ink2);cursor:pointer;line-height:1.45;pointer-events:none}
+.ropt.selected{border-color:var(--gold);background:var(--gold4)}
+.ropt.selected label{color:var(--amber);font-weight:500}
+.ropt.correct,.chkopt.correct{border-color:var(--exc-c)!important;background:var(--exc-bg)!important}
+.ropt.correct label,.chkopt.correct label{color:var(--exc-c)!important;font-weight:600}
+.ropt.incorrect,.chkopt.incorrect{border-color:var(--red2)!important;background:var(--red3)!important}
+.ropt.incorrect label,.chkopt.incorrect label{color:var(--red)!important}
+.fb{display:none;border-radius:var(--rs);padding:.7rem .95rem;font-size:12.5px;line-height:1.6;margin-top:.5rem}
+.fb.ok{background:var(--exc-bg);border:1px solid #90d0aa;color:var(--exc-c);display:block}
+.fb.bad{background:var(--red3);border:1px solid #e09090;color:var(--red);display:block}
+.open-section-head{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);background:var(--blue3);border-left:3px solid var(--blue);padding:.45rem .8rem;margin:1.2rem 0 .8rem}
+.jcontext{background:var(--page2);border:1px solid var(--border);border-radius:var(--rs);padding:.65rem .9rem;font-family:"Cormorant Garamond",serif;font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:.6rem;font-style:italic}
+textarea.jta{width:100%;min-height:110px;border:1.5px solid var(--border);border-radius:var(--rs);padding:.7rem .9rem;font-family:"DM Sans",sans-serif;font-size:13px;background:var(--page);resize:vertical}
+textarea.jta:focus{outline:none;border-color:var(--gold)}
+.charct{font-size:10.5px;text-align:right;margin-top:.25rem}
+.charct.ok{color:var(--exc-c)}
+.charct.bad{color:var(--red2)}
+.submit-bar{border-top:2px solid var(--border);background:var(--card);padding:.8rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap;flex-shrink:0}
+.score-note{font-size:12.5px;color:var(--ink3);flex:1;min-width:0}
+.btn-group{display:flex;gap:.5rem}
+.btn-check{background:linear-gradient(135deg,var(--navy),var(--navy3));color:#f2ead8;border:none;border-radius:var(--r);padding:.6rem 1.5rem;font-weight:600;cursor:pointer;font-size:13px}
+.btn-next{background:var(--gold);color:var(--navy);border:none;border-radius:var(--r);padding:.6rem 1.2rem;font-weight:600;cursor:pointer;font-size:13px;display:none}
+.btn-next.vis{display:block}
+/* RESULTS */
+.results-wrap{padding:1.5rem;overflow-y:auto;flex:1}
+.results-header{background:var(--navy2);border-radius:var(--r);padding:1.2rem 1.5rem;color:#f2ead8;margin-bottom:1.2rem;text-align:center}
+.results-header h2{font-family:"Cormorant Garamond",serif;font-size:1.8rem}
+.results-header .score-big{font-size:3rem;font-weight:700;color:var(--gold2);margin:.5rem 0;font-family:"Cormorant Garamond",serif}
+.results-header p{font-size:12px;color:rgba(242,234,216,.7)}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem}
+.res-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;box-shadow:var(--sh)}
+.res-card h4{font-family:"Cormorant Garamond",serif;font-size:1.1rem;margin-bottom:.7rem;border-left:3px solid var(--gold);padding-left:.6rem}
+.res-card.refuerza h4{border-left-color:var(--red2)}
+.res-card.fortaleza h4{border-left-color:var(--exc-c)}
+.res-item{display:flex;align-items:center;gap:.5rem;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:12.5px}
+.res-item:last-child{border-bottom:none}
+.res-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-red{background:var(--red2)}
+.dot-green{background:var(--exc-c)}
+.progress-circle-wrap{display:flex;justify-content:center;margin:.5rem 0}
+.bar-wrap{background:var(--border);border-radius:4px;height:8px;margin-top:.3rem;width:100%}
+.bar-fill{height:100%;border-radius:4px;background:var(--gold);transition:width .6s}
+.bar-fill.low{background:var(--red2)}
+.bar-fill.high{background:var(--exc-c)}
+@media(max-width:780px){.book-layout{flex-direction:column}.page-left{width:100%;max-height:40vh}.results-grid{grid-template-columns:1fr}.criterios-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <div>
+      <h2>VAWA &middot; <em>Taller de Criterios de Elegibilidad</em></h2>
+      <div class="topbar-meta">Mendoza Learning Center &middot; The Mendoza Law Firm</div>
+    </div>
+    <div class="user-badge" id="user-badge">👤 —</div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+
+  <!-- COVER -->
+  <div class="screen active" id="screen-cover" style="flex-direction:column;align-items:center;justify-content:center">
+    <div class="cover-inner">
+      <div class="cover-logo">Taller VAWA<br><em>Criterios de Elegibilidad</em></div>
+      <div class="cover-sub">Mendoza Learning Center &middot; TMLF</div>
+      <div class="cover-card">
+        <label>Escribe tu nombre completo para comenzar</label>
+        <input type="text" id="cover-name" placeholder="Nombre y apellido..." autocomplete="off" onkeydown="if(event.key==='Enter')startTaller()">
+        <button class="btn-cover" onclick="startTaller()">Comenzar taller →</button>
+        <div class="cover-hint">Este taller incluye 7 criterios de elegibilidad VAWA &middot; Preguntas, análisis y reescritura</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="screen" id="screen-intro" style="flex-direction:column;overflow-y:auto">
+    <div class="intro-inner" style="padding:2rem;max-width:860px;margin:0 auto;width:100%">
+      <div class="intro-header">
+        <h2>Instrucciones del simulador</h2>
+        <p>Lee con atención antes de comenzar el análisis de la declaración</p>
+      </div>
+      <div class="intro-block">
+        <h3>¿Qué encontrarás en este taller?</h3>
+        <p>Analizarás la declaración jurada de <strong>Carmen Elena Rojas Villanueva</strong>, peticionaria en un caso hipotético VAWA (I-360 + AOS). Tu tarea es identificar si cada criterio de elegibilidad se cumple, detectar los problemas, y practicar la reescritura correcta de los fragmentos problemáticos.</p>
+      </div>
+      <div class="intro-block">
+        <h3>Dinámica del ejercicio</h3>
+        <ul>
+          <li>Cada pestaña corresponde a un <strong>criterio de elegibilidad VAWA</strong>.</li>
+          <li>En cada criterio encontrarás: marco teórico, preguntas de opción múltiple, selección múltiple, y ejercicios de reescritura.</li>
+          <li>Haz clic en <strong>"Verificar respuestas"</strong> al terminar cada criterio para recibir retroalimentación.</li>
+          <li>El botón <strong>"Siguiente criterio"</strong> se activa solo cuando todas las respuestas son correctas y las reescrituras están completas.</li>
+          <li>Al finalizar todos los criterios, revisa tu pestaña de <strong>Resultados</strong>.</li>
+        </ul>
+      </div>
+      <div class="intro-block">
+        <h3>Criterios de elegibilidad VAWA que se analizarán</h3>
+        <p style="margin-bottom:.6rem;font-size:12.5px;color:var(--ink3)">Basados en la política actualizada de USCIS &mdash; diciembre 2025</p>
+        <div class="criterios-grid">
+          <div class="crit-card"><div class="num">① Criterio 1</div><p><strong>Relación familiar calificada</strong> con el abusador (cónyuge, hijo/a, padre/madre de USC o LPR)</p></div>
+          <div class="crit-card"><div class="num">② Criterio 2</div><p><strong>Ciudadanía o estatus migratorio</strong> del abusador: debe ser USC o LPR</p></div>
+          <div class="crit-card"><div class="num">③ Criterio 3</div><p><strong>Matrimonio de buena fe</strong> (solo para cónyuges): intención genuina, no solo migratoria</p></div>
+          <div class="crit-card"><div class="num">④ Criterio 4</div><p><strong>Batería o crueldad extrema</strong>: abuso físico o psicológico significativo con patrón y consecuencias</p></div>
+          <div class="crit-card"><div class="num">⑤ Criterio 5</div><p><strong>Buen carácter moral</strong>: historial de los últimos 3 años; documentación proactiva obligatoria (dic. 2025)</p></div>
+          <div class="crit-card"><div class="num">⑥ Criterio 6</div><p><strong>Residencia compartida</strong> con el abusador durante la relación calificada (obligatorio desde dic. 2025)</p></div>
+          <div class="crit-card"><div class="num">⑦ Criterio 7</div><p><strong>Residencia actual en los Estados Unidos</strong> al momento de presentar la autopetición</p></div>
+        </div>
+      </div>
+      <button class="btn-start" onclick="startMain()">Ir al análisis del caso →</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="screen" id="screen-main" style="flex-direction:column">
+    <div class="book-layout">
+      <div class="page-left"><div class="page-left-inner" id="left-panel"></div></div>
+      <div class="page-right">
+        <div class="criteria-tabs" id="tab-bar"></div>
+        <div class="analysis-body" id="right-panel"></div>
+        <div class="submit-bar">
+          <span class="score-note" id="score-note">Selecciona un criterio para comenzar</span>
+          <div class="btn-group">
+            <button class="btn-next" id="btn-next" onclick="goNext()">Siguiente →</button>
+            <button class="btn-check" id="btn-check" onclick="checkCurrentTab()">Verificar respuestas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// ---------------------------------------------------------------
+// DECLARACION
+// ---------------------------------------------------------------
+const DECL = `DECLARACIÓN Y EVIDENCIA DE CARMEN ELENA ROJAS VILLANUEVA
+
+Yo, Carmen Elena Rojas Villanueva, por la presente juro y afirmo que la siguiente declaración es verdadera y correcta según mi conocimiento, habilidad y capacidad.
+
+Mi nombre es Carmen Elena Rojas Villanueva. Nací el 14 de marzo de 1985 en Guadalajara, Jalisco, México. Mi nombre puede aparecer como Villanueva Carmen E, Carmen Elena Rojas, Carmen E Rojas o alguna otra variación.
+
+Cuando era niña vivía con mis padres y mis tres hermanos en Guadalajara. Mi infancia fue tranquila y sin violencia. Decidí venir a los Estados Unidos en el año 2010 porque quería mejores oportunidades económicas, no porque huyera de ninguna situación de peligro.
+
+Conocí a Marco Antonio Delgado Reyes en una fiesta en Chicago, Illinois, en septiembre de 2015. Nos hicimos amigos rápidamente y empezamos a salir juntos esa misma noche. Después de aproximadamente tres semanas, él me propuso mudarnos juntos para ahorrar en renta. Yo acepté. Nunca hablamos de matrimonio ni de formar una familia en ese momento. Nos casamos en una ceremonia civil en marzo de 2016, principalmente porque él me dijo que así yo podría arreglar mis papeles migratorios más fácilmente. No tenía planes de quedarme permanentemente en los Estados Unidos en ese momento, y tampoco estaba segura de querer pasar el resto de mi vida con Marco Antonio, pero me pareció una oportunidad práctica para regularizar mi situación.
+
+Poco después de casarnos, me enteré de que Marco Antonio no era ciudadano estadounidense ni residente permanente legal. Era originario de México y había entrado con una visa de turista vencida. Me dijo que tenía un permiso de trabajo temporal, pero nunca me lo mostró. Cuando le pregunté directamente sobre su estatus migratorio, se molestó y cambió el tema. Yo nunca vi ningún documento que acreditara que él era ciudadano o residente permanente.
+
+<strong>MARCO ANTONIO ES AGRESIVO Y ME HACE SENTIR MIEDO CUANDO SE ENOJA</strong>
+
+Desde los primeros meses de matrimonio, la relación tuvo momentos de tensión que en ese entonces yo no interpretaba como algo grave. Marco Antonio era de carácter fuerte y, cuando discutíamos, solía alzar mucho la voz. En una ocasión, en 2017, discutimos porque yo llegué tarde a la casa después del trabajo. Él estaba muy molesto, me sujetó del brazo con fuerza y me empujó levemente con el hombro contra la pared del pasillo; no caí ni sufrí ninguna lesión visible, pero sí sentí miedo en ese momento. Le dije que no me tocara y él se encerró en la otra habitación dando un portazo. No llamé a la policía porque en ese entonces pensé que discutir así era normal entre parejas y no le di mayor importancia. No volvió a repetirse un incidente físico como ese durante el resto de la relación.
+
+<strong>MARCO ANTONIO ME HUMILLA Y ME HACE SENTIR SOLA EN LA RELACIÓN</strong>
+
+En cuanto a lo emocional, Marco Antonio a veces era distante y poco comunicativo. Cuando le pedía que pasáramos más tiempo juntos, decía estar cansado y se encerraba a ver televisión sin hablarme, a veces durante todo el fin de semana; en esos momentos me sentía muy sola en la relación. También discutíamos con frecuencia sobre el dinero; en una ocasión me llamó "gastadora" frente a mis suegros durante una cena familiar y dijo que sin él yo no habría logrado nada en este país, lo cual me hizo sentir muy humillada delante de su familia. Nunca volvió a hacer un comentario así en público, y aunque estos episodios me dolieron, seguí pensando que eran conflictos similares a los de muchas parejas y que no llegaban a ser algo que yo consideraría violencia.
+
+<strong>MARCO ANTONIO ME GRITA Y ME DICE QUE NO VALGO NADA CADA VEZ QUE SE ENOJA, Y CUANDO LE PIDO QUE SE CALME ME AMENAZA CON SEGUIR TRATÁNDOME ASÍ</strong>
+
+Marco Antonio también me insultaba con frecuencia cuando se enojaba, sobre todo cuando yo llegaba tarde del trabajo o cuando discutíamos por las cuentas de la casa. En varias ocasiones me decía cosas como “eres una inútil, no sirves para nada” o “sin mí no eres nadie en este país”. Recuerdo una vez, a mediados de 2017, que llegué del trabajo muy cansada y le pregunté si podíamos pedir comida porque no tenía ánimos de cocinar; él se molestó y empezó a gritarme que yo era una floja y que no hacía nada en la casa, aunque yo también trabajaba tiempo completo. Cuando le pedí que dejara de gritarme, me contestó “así soy yo, y así te vas a aguantar si te quieres quedar conmigo”. Esos comentarios se repitieron varias veces a lo largo de la relación, sobre todo cuando él había bebido, y cada vez que yo intentaba defenderme me decía que estaba exagerando o que yo lo provocaba. Nunca me pidió disculpas por esos insultos; al contrario, en más de una ocasión me dijo que si no me gustaba cómo me trataba, podía irme, sabiendo que yo no tenía a dónde ir en ese momento.
+
+Vivimos juntos por primera vez cuando nos mudamos a un apartamento en octubre de 2015, donde compartimos vivienda durante aproximadamente cuatro meses. En febrero de 2016, Marco Antonio se fue a vivir con un amigo en Indiana. Nos casamos en marzo de 2016, cuando él vino de visita para la ceremonia, pero después de la boda cada quien regresó a su lugar: él a Indiana y yo me quedé en Chicago. Nos veíamos los fines de semana. Esa situación de vivir en ciudades distintas duró aproximadamente un año y medio. A finales de 2017 volvimos a vivir juntos por unos meses en Chicago, pero a principios de 2018 me fui a vivir con mi hermana porque la relación no estaba funcionando bien. En total, calculo que el tiempo que vivimos bajo el mismo techo, sumando ambos períodos, fue de aproximadamente seis meses.
+
+<strong>MARCO ANTONIO HA TOMADO MI DINERO SIN AVISARME Y CUANDO LE RECLAMO ME DICE QUE ÉL DECIDE CÓMO SE GASTA, LO CUAL ME PREOCUPA PORQUE PODRÍA QUEDARME SIN NADA</strong>
+
+En cuanto al dinero, aunque yo trabajaba y manejaba mi propio sueldo, hubo un período en el que compartíamos una cuenta bancaria para pagar algunos gastos comunes cuando vivíamos juntos en Chicago. En dos ocasiones, a finales de 2017, noté que faltaba dinero de esa cuenta que yo había depositado de mi sueldo; cuando le pregunté a Marco Antonio, me dijo que él había tomado el dinero para pagar unas deudas suyas sin decirme nada. Le reclamé que al menos me avisara antes de sacar mi dinero, y me respondió “el dinero que entra a esta casa es de los dos, y yo decido en qué se gasta”. Cuando le dije que eso no era justo y que yo también necesitaba ese dinero para mis propios gastos, se molestó y me dijo que si seguía reclamando, mejor cerraba la cuenta y ya no me daría acceso a nada. Después de eso dejé de depositar mi sueldo en esa cuenta y empecé a guardar el dinero en efectivo para que él no lo tomara; mientras seguimos viviendo juntos no volvió a pasar algo similar porque preferí evitar más conflictos.
+
+En cuanto a los gastos del hogar, cuando sí vivíamos juntos, Marco Antonio pagaba la renta y yo pagaba los servicios. Él nunca me impidió trabajar. Yo tenía mi propio empleo como cajera y manejaba mis propias finanzas, aunque, como ya mencioné, hubo ocasiones en las que él tomó dinero de la cuenta que compartíamos sin decírmelo. Nunca dependí económicamente de él de manera exclusiva.
+
+En 2018, mientras discutíamos sobre la posibilidad de separarnos, Marco Antonio me dijo que si yo quería el divorcio, lo tramitara yo sola. Le pregunté si me ayudaría con mis papeles migratorios y me contestó que eso ya no era su problema. No fue una amenaza directa de deportación, sino más bien una expresión de frustración en medio de una discusión; él nunca llamó a ninguna autoridad migratoria ni hizo ninguna gestión para reportarme. Sus palabras sí me preocuparon porque yo no tenía estatus migratorio regular, pero reconozco que en ese momento los dos estábamos muy enojados.
+
+En general, yo no dependía de Marco Antonio para mi situación migratoria. Yo busqué asesoría legal por mi cuenta para entender mis opciones, independientemente de lo que él hiciera.`;
+
+// ---------------------------------------------------------------
+// FEEDBACK TEORICO POR CRITERIO (para reescritura "por qué no se cumple")
+// ---------------------------------------------------------------
+const feedbackTeorico = [
+  // c1
+  `<strong>¿Por qué NO se cumple en la declaración?</strong><br>
+  Este criterio exige que la relación calificante sea de buena fe y que el abusador sea USC o LPR. En la declaración de Carmen:<br>
+  • El matrimonio se describe como un arreglo por conveniencia migratoria ("me pareció una oportunidad práctica"), no como una unión genuina.<br>
+  • No se mencionan planes de vida compartidos, historia de noviazgo, ni intención real de formar una familia.<br>
+  • No se establece claramente el estatus del abusador como USC o LPR, que es indispensable para que exista una relación calificante bajo VAWA.<br>
+  <strong>Qué debe demostrarse:</strong> tipo de relación (cónyuge/hijo/padre), cómo y cuándo se estableció, historia con fechas y lugares clave.`,
+  // c2
+  `<strong>¿Por qué NO se cumple en la declaración?</strong><br>
+  Este criterio es uno de los más determinantes y la declaración lo destruye explícitamente:<br>
+  • Carmen declara que Marco Antonio "no era ciudadano estadounidense ni residente permanente legal".<br>
+  • Él entró con visa de turista vencida y nunca presentó documentos migratorios calificantes.<br>
+  • Sin que el abusador sea USC o LPR, no existe elegibilidad VAWA independientemente del nivel de abuso.<br>
+  <strong>Qué debe demostrarse:</strong> cómo y cuándo se tuvo conocimiento del estatus, documentos específicos vistos (pasaporte, green card, certificado de naturalización), y si el abusador usó ese estatus como herramienta de control.`,
+  // c3
+  `<strong>¿Por qué NO se cumple en la declaración?</strong><br>
+  La buena fe matrimonial está directamente comprometida por las propias palabras de Carmen:<br>
+  • Afirma que nunca hablaron de matrimonio ni de formar una familia.<br>
+  • Reconoce que se casó "principalmente porque así podría arreglar sus papeles".<br>
+  • Admite que no tenía planes de quedarse permanentemente ni estaba segura de querer una vida con Marco Antonio.<br>
+  • No hay referencia a noviazgo genuino, planes compartidos, vida doméstica real, ni decisión conjunta de casarse.<br>
+  <strong>Qué debe demostrarse:</strong> historia del noviazgo, decisión genuina de casarse, planes de vida compartidos, vida doméstica en común (hijos, vivienda, finanzas, familia extendida).`,
+  // c4
+  `<strong>¿Por qué NO se cumple en la declaración?</strong><br>
+  El estándar VAWA requiere batería o crueldad extrema con patrón, contexto e impacto demostrado. En la declaración:<br>
+  • El único incidente físico fue un empujón leve con el hombro, sin lesiones ni consecuencias.<br>
+  • Carmen misma describe los conflictos como "similares a los de muchas parejas" y sin escalar a lo que considera violencia.<br>
+  • No hay patrón de control coercitivo, aislamiento, humillaciones sistemáticas ni daño psicológico documentado.<br>
+  • La actualización de dic. 2025 exige demostrar el impacto y contexto, no solo que ocurrió un acto.<br>
+  <strong>Qué debe demostrarse:</strong> actos específicos con fechas y lugares, patrón de conducta, daño físico o psicológico, impacto en la vida de la peticionaria.`,
+  // c5
+  `<strong>¿Por qué NO se cumple en la declaración?</strong><br>
+  El buen carácter moral se ve comprometido por una declaración explícita de posible fraude migratorio:<br>
+  • Carmen reconoce que contrajo matrimonio principalmente para regularizar su situación migratoria.<br>
+  • Bajo la política actualizada de diciembre 2025, la carga de la prueba recae completamente en la peticionaria.<br>
+  • Las declaraciones sin suficiente detalle o que contienen admisiones de fraude pueden recibir poco peso o resultar en negación.<br>
+  • No se menciona historial laboral, participación comunitaria, crianza de hijos ni cumplimiento de obligaciones legales.<br>
+  <strong>Qué debe demostrarse:</strong> historial personal, laboral y comunitario (últimos 3 años), empleo, voluntariado, crianza de hijos, cumplimiento tributario. Si hay antecedentes, explicarlos y vincularlos al abuso.`,
+  // c6
+  `<strong>¿Por qué NO se cumple en la declaración?</strong><br>
+  La residencia compartida es ahora un requisito obligatorio (actualización dic. 2025) y en este caso:<br>
+  • Carmen admite que solo vivieron juntos aproximadamente seis meses en total a lo largo de toda la relación.<br>
+  • La convivencia fue intermitente: él vivía en Indiana y ella en Chicago la mayor parte del tiempo.<br>
+  • No se describen direcciones específicas, vida doméstica compartida, rutinas o gastos del hogar conjuntos de manera sustancial.<br>
+  • La falta de coresidencia sostenida, sin justificación por abuso extremo, compromete gravemente este criterio.<br>
+  <strong>Qué debe demostrarse:</strong> direcciones donde vivieron juntos, períodos de convivencia, vida doméstica compartida (rutinas, roles, gastos), y justificación si hubo separaciones.`,
+  // c7
+  `<strong>¿Por qué NO se cumple en la declaración?</strong><br>
+  La declaración no acredita explícitamente la residencia actual en los Estados Unidos:<br>
+  • No se menciona el estado ni ciudad de residencia al momento de presentar la petición.<br>
+  • No se incluyen comprobantes de domicilio ni descripción de la permanencia actual en el país.<br>
+  • Si bien se menciona que llegó en 2010, no queda claro si sigue residiendo actualmente en EEUU.<br>
+  <strong>Qué debe demostrarse:</strong> residencia actual en territorio estadounidense (estado y ciudad), circunstancias de llegada y permanencia, comprobantes de domicilio actuales.`
+];
+
+// ---------------------------------------------------------------
+// TALLERES
+// ---------------------------------------------------------------
+const talleres = [
+  {id:"c1",label:"① Relación familiar",
+   teoria:"La persona peticionaria debe tener una relación calificada con el abusador: cónyuge, hijo/a o padre/madre de un ciudadano (USC) o residente permanente (LPR). Para cónyuges, el matrimonio debe ser legal y de buena fe. La relación puede ser actual o pasada. Sin esta relación calificada, la petición no puede avanzar.",
+   preguntas:[
+    {type:"mc",id:"c1_mc1",text:"¿Cuál de los siguientes vínculos NO califica como 'relación familiar calificante' bajo VAWA?",
+     opts:["Cónyuge de un ciudadano estadounidense (USC)","Hijo/a abusado/a de un residente permanente (LPR)","Padre/madre abusado/a de un hijo ciudadano estadounidense","Pareja en unión libre sin matrimonio legal formal"],correct:3,
+     fb_ok:"Correcto. VAWA requiere matrimonio legal o relación filial específica. La unión libre sin matrimonio formal no califica.",
+     fb_bad:"Incorrecto. Las parejas en unión libre sin matrimonio formal no califican para VAWA. Se requiere matrimonio legal o vínculo filial reconocido."},
+    {type:"mc",id:"c1_mc2",text:"Carmen menciona que se casó 'principalmente porque él me dijo que así podría arreglar mis papeles'. ¿Qué problema legal genera esto para el criterio de relación familiar?",
+     opts:["Ninguno; el motivo del matrimonio no es relevante para VAWA.","Indica un posible matrimonio de mala fe, lo que puede invalidar la relación calificante.","Solo importa si el cónyuge abusador es ciudadano; el motivo es secundario.","Aunque haya mala fe, si existió abuso el caso puede avanzar."],correct:1,
+     fb_ok:"Correcto. VAWA exige que el matrimonio haya sido de buena fe. La declaración sugiere conveniencia migratoria, comprometiendo la elegibilidad.",
+     fb_bad:"Incorrecto. Si el matrimonio no fue de buena fe, la relación no es calificante. La admisión de Carmen compromete este criterio fundamental."},
+    {type:"mc",id:"c1_mc3",text:"En relaciones de padrastro/madrastra, ¿qué debe demostrarse adicionalmente bajo la actualización de diciembre 2025?",
+     opts:["Que convivieron más de 5 años bajo el mismo techo","Que la relación con el abusador continúa vigente tras el fallecimiento del progenitor biológico","Que el padrastro/madrastra es ciudadano o LPR desde antes del matrimonio","Que el hijo/a era menor de edad cuando inició la relación abusiva"],correct:1,
+     fb_ok:"Correcto. La actualización de dic. 2025 aclara que en relaciones de padrastro/madrastra se debe demostrar que la relación con el abusador sobreviviente continúa vigente.",
+     fb_bad:"Incorrecto. La nueva política exige demostrar la continuidad del vínculo con el abusador sobreviviente tras el fallecimiento del progenitor biológico."},
+    {type:"mc",id:"c1_mc4",text:"¿Puede la relación calificante ser PASADA (ya no vigente al momento de presentar la petición)?",
+     opts:["No, la relación debe estar activa al presentar la petición VAWA.","Sí, la relación puede ser actual o pasada.","Solo si hubo hijos en común durante la relación.","Depende del estatus migratorio del peticionario al presentar."],correct:1,
+     fb_ok:"Correcto. La relación calificante puede ser actual o pasada; no es necesario que siga activa al presentar la autopetición.",
+     fb_bad:"Incorrecto. VAWA permite que la relación sea actual o pasada. No es requisito que esté vigente al momento de presentar la petición."},
+    {type:"check",id:"c1_ch1",text:"¿Cuáles elementos son esenciales en una declaración VAWA para acreditar la relación familiar calificante? (Selecciona todas las correctas)",
+     opts:["Fecha y lugar exactos del matrimonio o establecimiento de la relación","Nombre completo del abusador y acta de matrimonio o documento de parentesco","Declaración explícita de que el matrimonio fue de buena fe (genuino)","Estatus migratorio del abusador (USC o LPR)"],correct:[0,1,2,3],
+     fb_ok:"Correcto. Los cuatro elementos son esenciales: fecha/lugar, identificación del abusador, buena fe del matrimonio, y estatus calificante del abusador.",
+     fb_bad:"Respuesta incompleta. Todos son necesarios: fecha/lugar, documentos de parentesco, buena fe, y estatus migratorio calificante del abusador."},
+    {type:"mc",id:"c1_mcRW",text:"La declaración de Carmen dice: \u201cNunca hablamos de matrimonio ni de formar una familia. Nos casamos en marzo de 2016, principalmente porque me dijo que así podría arreglar mis papeles. No tenía planes de quedarme permanentemente y tampoco estaba segura de querer pasar el resto de mi vida con Marco Antonio.\u201d ¿Cuál de las siguientes reescrituras corrige mejor este fragmento para demostrar una relación familiar calificante genuina?",
+     opts:["Desde que empezamos a salir hablábamos de casarnos y formar una familia juntos. Decidimos casarnos en marzo de 2016 porque queríamos compartir nuestra vida, comprar una casa y tener hijos en el futuro.","Nos casamos en marzo de 2016 principalmente porque así yo podría arreglar mis papeles migratorios más rápido, aunque también nos llevábamos bien.","Nos casamos en marzo de 2016 en una ceremonia civil pequeña, sin invitados y sin luna de miel.","Decidí no casarme con Marco Antonio, pero terminamos haciéndolo por presión de su familia."],correct:0,
+     fb_ok:"Correcto. Esta reescritura elimina las señales de mala fe y demuestra intención genuina de formar una vida en común, tal como exige el criterio de relación familiar calificante.",
+     fb_bad:"Incorrecto. Esa opción no corrige el problema: mantiene la admisión de conveniencia migratoria, se enfoca en detalles irrelevantes o introduce nuevas inconsistencias."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras por qué el criterio de Relación Familiar Calificante NO se cumple en la declaración de Carmen. Menciona al menos 2 elementos problemáticos concretos.",
+   fbWhy:0},
+
+  {id:"c2",label:"② Estatus del abusador",
+   teoria:"El abusador debe ser ciudadano estadounidense (USC) o residente permanente legal (LPR). La persona peticionaria debe demostrar cómo tuvo conocimiento de ese estatus, con referencia a documentos específicos (pasaporte, green card, certificado de naturalización). Sin este estatus calificante, no hay elegibilidad VAWA.",
+   preguntas:[
+    {type:"mc",id:"c2_mc1",text:"¿Qué estatus debe tener el abusador para que una cónyuge sea elegible bajo VAWA?",
+     opts:["Ciudadano estadounidense (USC) o residente permanente legal (LPR)","Cualquier persona con permiso de trabajo vigente en EEUU","Cualquier persona que viva en EEUU, independientemente de su estatus","Exclusivamente ciudadano estadounidense; los LPR no califican"],correct:0,
+     fb_ok:"Correcto. VAWA requiere que el abusador sea ciudadano estadounidense o residente permanente legal (LPR).",
+     fb_bad:"Incorrecto. El abusador debe ser ciudadano o residente permanente legal. No basta vivir en EEUU ni tener permiso de trabajo."},
+    {type:"mc",id:"c2_mc2",text:"Carmen indica que Marco Antonio no era ciudadano ni residente permanente y tenía visa de turista vencida. ¿Qué implica esto para su caso VAWA?",
+     opts:["El caso puede avanzar si el abuso fue suficientemente grave.","Carmen no es elegible para VAWA porque el abusador no tiene estatus calificante.","Sigue siendo elegible porque él vivía en EEUU al momento del abuso.","Solo necesitan haber estado legalmente casados; el estatus de él no afecta."],correct:1,
+     fb_ok:"Correcto. Si el abusador no es USC ni LPR, la cónyuge NO califica para VAWA, sin importar la gravedad del abuso.",
+     fb_bad:"Incorrecto. Uno de los requisitos fundamentales es que el abusador sea USC o LPR. Si no lo es, no hay elegibilidad."},
+    {type:"mc",id:"c2_mc3",text:"¿De qué manera puede el abusador usar su estatus migratorio como herramienta de control según USCIS?",
+     opts:["Negándose a renovar la visa de turista del peticionario","Amenazando constantemente con llamar a ICE, negándose a someter papeles prometidos, o escondiendo documentos migratorios","Presentando impuestos de manera separada","Reportando al peticionario con el empleador"],correct:1,
+     fb_ok:"Correcto. Amenazar con ICE, negar la presentación de papeles prometidos y esconder documentos migratorios son formas reconocidas de crueldad extrema.",
+     fb_bad:"Incorrecto. USCIS reconoce amenazas de deportación, negativa a someter papeles prometidos y esconder documentos como formas de control coercitivo."},
+    {type:"mc",id:"c2_mc4",text:"¿Qué documento sirve como evidencia primaria del estatus de ciudadano estadounidense del abusador?",
+     opts:["Una carta de un conocido que confirma que el abusador es americano","Certificado de naturalización, pasaporte estadounidense o acta de nacimiento en EEUU","Un permiso de trabajo (EAD) con fecha de vencimiento","Una identificación estatal (driver license) del abusador"],correct:1,
+     fb_ok:"Correcto. El certificado de naturalización, pasaporte estadounidense y acta de nacimiento en EEUU son evidencias primarias del estatus de ciudadano.",
+     fb_bad:"Incorrecto. Las evidencias primarias son el certificado de naturalización, pasaporte estadounidense o acta de nacimiento en EEUU."},
+    {type:"check",id:"c2_ch1",text:"Selecciona las acciones que DEBE realizar un abogado al evaluar el estatus migratorio del abusador en un caso VAWA:",
+     opts:["Revisar acta de nacimiento, pasaporte o certificado de naturalización del abusador","Verificar el número de extranjero (A-number) en el sistema USCIS","Aceptar la declaración verbal del cliente sin solicitar documentación","Solicitar copia de la green card o certificado de ciudadanía"],correct:[0,1,3],
+     fb_ok:"Correcto. La documentación del estatus del abusador es indispensable. No se puede aceptar solo la palabra del cliente.",
+     fb_bad:"Incorrecto. Se requiere evidencia documental. Aceptar solo la palabra del cliente sin verificación es una práctica inadecuada."},
+    {type:"mc",id:"c2_mcRW",text:"La declaración de Carmen dice: \u201cPoco después de casarnos, me enteré de que Marco Antonio no era ciudadano ni residente permanente. Tenía visa de turista vencida. Me dijo que tenía permiso de trabajo pero nunca me lo mostró.\u201d ¿Cuál de las siguientes reescrituras corrige mejor este fragmento para acreditar el estatus calificante del abusador?",
+     opts:["Al poco tiempo de casarnos, Marco Antonio me mostró su certificado de naturalización, obtenido en 2012, y su pasaporte estadounidense; desde entonces supe con certeza que era ciudadano de Estados Unidos.","Marco Antonio me dijo que tenía papeles en trámite, pero seguía usando su visa de turista vencida sin mostrarme ningún documento adicional.","Nunca hablamos del estatus migratorio de Marco Antonio durante toda la relación.","Marco Antonio mencionó que alguna vez tuvo residencia permanente, pero la perdió antes de conocerme."],correct:0,
+     fb_ok:"Correcto. Esta reescritura acredita, con documentos específicos, que el abusador es ciudadano estadounidense, cumpliendo el criterio de estatus calificante.",
+     fb_bad:"Incorrecto. Esa opción no resuelve el problema: sigue sin evidencia documental del estatus, evita el tema por completo, o describe un estatus que ya no calificaría."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras por qué el criterio de Estatus del Abusador NO se cumple en la declaración de Carmen. ¿Qué hace que este caso sea inelegible desde este criterio específico?",
+   fbWhy:1},
+
+  {id:"c3",label:"③ Matrimonio de buena fe",
+   teoria:"Para cónyuges, USCIS debe estar convencido de que el matrimonio fue genuino (no solo para obtener beneficios migratorios). Se demuestra con vida conyugal real: documentos financieros conjuntos, fotografías, arrendamientos, declaraciones de testigos. La actualización de diciembre 2025 refuerza la exigencia de evidencia primaria.",
+   preguntas:[
+    {type:"mc",id:"c3_mc1",text:"¿Cuál de estos elementos es más determinante para demostrar buena fe matrimonial en VAWA?",
+     opts:["Que la pareja haya vivido junta durante varios años sin interrupción","Que hayan compartido vida en común genuina: proyecto de vida, finanzas, familia, planes futuros","Que el peticionario no tenga antecedentes penales de ningún tipo","Que haya al menos un hijo o hija en común"],correct:1,
+     fb_ok:"Correcto. La buena fe se acredita con vida conyugal real: proyecto compartido, convivencia genuina, finanzas conjuntas.",
+     fb_bad:"Incorrecto. La buena fe exige evidencia de vida conyugal genuina: convivencia, proyectos comunes, afecto, decisión conjunta de casarse."},
+    {type:"mc",id:"c3_mc2",text:"¿Qué afirmación en la declaración de Carmen daña más severamente la buena fe del matrimonio?",
+     opts:["Que él levantaba la voz durante las discusiones","Que no vivieron bajo el mismo techo durante la mayor parte del matrimonio","Que ella no estaba segura de querer pasar el resto de su vida con él y se casó por conveniencia migratoria","Que él la llamó gastadora en una ocasión"],correct:2,
+     fb_ok:"Correcto. Admitir explícitamente que el matrimonio fue principalmente para arreglar papeles es el mayor indicador de mala fe.",
+     fb_bad:"Incorrecto. La declaración explícita de matrimonio por conveniencia migratoria es el factor más dañino para la buena fe."},
+    {type:"mc",id:"c3_mc3",text:"¿Qué tipo de evidencia prioriza USCIS para demostrar matrimonio de buena fe bajo la actualización de diciembre 2025?",
+     opts:["Cartas de amor escritas por cualquiera de los cónyuges","Evidencia primaria y concreta: documentos financieros conjuntos, fotos de boda, contratos de arrendamiento","Testimonio verbal del peticionario sin corroboración documental","Registros de llamadas telefónicas entre los cónyuges"],correct:1,
+     fb_ok:"Correcto. La actualización de dic. 2025 incentiva específicamente la presentación de evidencia primaria: documentos financieros conjuntos, fotos y contratos.",
+     fb_bad:"Incorrecto. La nueva política enfatiza evidencia primaria y concreta. El testimonio verbal sin corroboración tiene poco peso."},
+    {type:"mc",id:"c3_mc4",text:"¿USCIS puede reconocer buena fe si el matrimonio posteriormente se volvió abusivo?",
+     opts:["Sí, si el matrimonio se volvió abusivo significa que nunca fue genuino.","No, USCIS evalúa el carácter genuino del matrimonio incluso si después se volvió abusivo.","Solo si hay una orden de protección emitida durante el matrimonio.","Depende de la duración del matrimonio antes del inicio del abuso."],correct:1,
+     fb_ok:"Correcto. USCIS evalúa si el matrimonio fue genuino al contraerse, independientemente de que posteriormente se haya vuelto abusivo.",
+     fb_bad:"Incorrecto. USCIS puede reconocer buena fe incluso en matrimonios que se volvieron abusivos. Evalúa la intención original al contraerse."},
+    {type:"check",id:"c3_ch1",text:"¿Cuáles son evidencias típicas de buena fe matrimonial en una declaración VAWA? (Selecciona todas las correctas)",
+     opts:["Fotografías de eventos familiares y bodas compartidas","Declaraciones de testigos sobre la vida en pareja","Contratos de arrendamiento, cuentas bancarias o facturas a nombre de ambos","Un solo testimonio del cliente sin ninguna corroboración adicional"],correct:[0,1,2],
+     fb_ok:"Correcto. Fotos, testigos y documentos financieros conjuntos son evidencias de buena fe. El testimonio del cliente por sí solo no es suficiente.",
+     fb_bad:"Evidencia insuficiente. Se requieren múltiples fuentes de corroboración: documentos, testigos y registros visuales de la vida en común."},
+    {type:"mc",id:"c3_mcRW",text:"La declaración de Carmen dice: \u201cNunca hablamos de matrimonio ni de formar una familia. Nos casamos en marzo de 2016, principalmente porque me dijo que así podría arreglar mis papeles. No tenía planes de quedarme permanentemente y tampoco estaba segura de querer pasar el resto de mi vida con Marco Antonio.\u201d ¿Cuál de las siguientes reescrituras demuestra mejor que el matrimonio se contrajo de buena fe?",
+     opts:["Nos casamos en marzo de 2016 después de un año de noviazgo, con la ilusión de construir una familia juntos; compartimos una cuenta bancaria, firmamos el contrato de renta a nombre de los dos y planeábamos tener hijos.","Nos casamos en marzo de 2016 principalmente porque me dijo que así podría arreglar mis papeles.","Nos casamos en marzo de 2016 y seguimos manteniendo cuentas bancarias y domicilios completamente separados.","No recuerdo bien por qué decidimos casarnos en marzo de 2016."],correct:0,
+     fb_ok:"Correcto. Esta reescritura incluye evidencia primaria de vida conyugal real: noviazgo, finanzas conjuntas, vivienda compartida y planes de familia.",
+     fb_bad:"Incorrecto. Esa opción no demuestra buena fe: admite conveniencia migratoria, describe vidas separadas o no aporta ningún detalle de vida conyugal genuina."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras por qué el criterio de Matrimonio de Buena Fe NO se cumple en la declaración de Carmen. ¿Cuáles son las admisiones específicas que comprometen este criterio?",
+   fbWhy:2},
+
+  {id:"c4",label:"④ Batería / Crueldad extrema",
+   teoria:"Debe demostrarse batería (violencia física) o crueldad extrema (abuso psicológico, control coercitivo, aislamiento, amenazas). USCIS evalúa el contexto completo: no solo que ocurrió un acto dañino, sino por qué y cómo afectó a la víctima. La actualización de diciembre 2025 enfatiza especificidad, fechas, patrón y consecuencias del abuso.",
+   preguntas:[
+    {type:"mc",id:"c4_mc1",text:"¿Qué estándar de abuso requiere VAWA para acreditar este criterio?",
+     opts:["Cualquier desacuerdo verbal o conflicto en la relación de pareja","Batería o crueldad extrema (física o psicológica significativa, con patrón y consecuencias)","Exclusivamente violencia física con lesiones graves documentadas médicamente","Abuso económico exclusivo, sin necesidad de otros tipos de abuso"],correct:1,
+     fb_ok:"Correcto. VAWA requiere batería o crueldad extrema, que puede ser física o psicológica significativa, con patrón y consecuencias documentadas.",
+     fb_bad:"Incorrecto. El estándar es batería o crueldad extrema, no cualquier conflicto menor ni exclusivamente violencia física."},
+    {type:"mc",id:"c4_mc2",text:"Según la declaración, ¿el abuso descrito alcanza el nivel de batería o crueldad extrema bajo VAWA?",
+     opts:["Sí, porque la empujó levemente una vez y le dijo gastadora","Sí, porque hubo insultos reiterados y distanciamiento emocional sostenido","No, porque los incidentes son leves, no existe patrón de violencia grave ni control coercitivo","Sí, porque ella se sentía sola y eso constituye daño emocional calificante"],correct:2,
+     fb_ok:"Correcto. Un empujón leve sin lesiones, un insulto aislado y distancia emocional no constituyen batería o crueldad extrema bajo el estándar VAWA.",
+     fb_bad:"Incorrecto. VAWA requiere abuso con patrón, control coercitivo y consecuencias. Un empujón leve y un insulto no alcanzan el umbral requerido."},
+    {type:"mc",id:"c4_mc3",text:"¿Cuál de los siguientes actos es reconocido por USCIS como crueldad extrema?",
+     opts:["Discusiones ocasionales sobre el dinero y los gastos del hogar","Aislamiento social sistemático: prohibir hablar con familia, controlar mensajes, quitar el teléfono","Distanciamiento emocional del cónyuge que trabaja muchas horas","Diferencias de opinión en la crianza de los hijos"],correct:1,
+     fb_ok:"Correcto. El aislamiento social sistemático (prohibir contacto con familia, vigilar mensajes) es una forma reconocida de crueldad extrema bajo VAWA.",
+     fb_bad:"Incorrecto. El aislamiento social sistemático es una forma reconocida de crueldad extrema. Las discusiones sobre dinero o el distanciamiento laboral no califican."},
+    {type:"mc",id:"c4_mc4",text:"¿Se puede acreditar crueldad extrema SOLO con abuso emocional, sin evidencia de violencia física?",
+     opts:["No, siempre se requiere al menos un incidente de violencia física documentado.","Sí, el abuso emocional solo puede calificar si está bien documentado con especificidad y patrón.","Solo si hay una evaluación psicológica formal de un profesional con licencia.","Únicamente si hubo amenazas explícitas de muerte o daño físico grave."],correct:1,
+     fb_ok:"Correcto. El abuso emocional exclusivo puede calificar si está bien documentado: conductas específicas de control, humillación o intimidación, con patrón y consecuencias.",
+     fb_bad:"Incorrecto. VAWA reconoce que el abuso emocional solo puede calificar si está bien documentado con suficiente especificidad, patrón y evidencia de impacto."},
+    {type:"check",id:"c4_ch1",text:"Selecciona los elementos que DEBE tener una declaración para acreditar batería o crueldad extrema bajo VAWA:",
+     opts:["Descripción específica de actos de violencia con fechas y lugares aproximados","Patrón de control coercitivo (aislamiento, amenazas, vigilancia, restricción económica)","Daño psicológico documentado (diagnóstico, atención psicológica, impacto en vida diaria)","Un incidente aislado menor sin consecuencias ni patrón de comportamiento"],correct:[0,1,2],
+     fb_ok:"Correcto. La crueldad extrema requiere actos concretos con fechas, patrón de control y evidencia del daño causado.",
+     fb_bad:"Incorrecto. Un incidente aislado menor no es suficiente. Se requieren actos específicos, patrón de control y evidencia de daño."},
+    {type:"mc",id:"c4_mcRW",text:"La declaración de Carmen dice: \u201cEn 2017, discutimos porque llegué tarde. Él me empujó levemente con el hombro. No me lastimé. No llamé a la policía. A veces era distante y me sentía sola.\u201d ¿Cuál de las siguientes reescrituras incluiría los elementos necesarios para alcanzar el estándar de batería o crueldad extrema exigido por VAWA?",
+     opts:["Describir un patrón sostenido de incidentes con fechas y lugares específicos, evidencia de control coercitivo (aislamiento, amenazas, vigilancia), y el impacto documentado en la salud física y psicológica de la peticionaria.","Repetir que discutieron una vez porque llegó tarde y que él la empujó levemente, sin agregar más contexto ni consecuencias.","Mencionar únicamente que a veces se sentía sola en la relación, sin describir ningún acto específico.","Aclarar que el empujón fue un accidente y que en realidad la relación era mayormente tranquila."],correct:0,
+     fb_ok:"Correcto. USCIS exige patrón, contexto e impacto documentado, no solo la mención de un acto aislado.",
+     fb_bad:"Incorrecto. Esa opción no aporta el patrón, el control coercitivo ni el impacto documentado que exige el estándar de crueldad extrema."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras por qué el criterio de Batería o Crueldad Extrema NO se cumple en la declaración de Carmen. ¿Qué elementos concretos faltan?",
+   fbWhy:3},
+
+  {id:"c5",label:"⑤ Buen carácter moral",
+   teoria:"La persona peticionaria debe poseer buen carácter moral (últimos 3 años). La actualización de diciembre 2025 eliminó el lenguaje protector anterior: ahora la carga de la prueba recae completamente en el peticionario. Las declaraciones sin detalle y especificidad pueden recibir poco peso.",
+   preguntas:[
+    {type:"mc",id:"c5_mc1",text:"Bajo la política actualizada de diciembre 2025, ¿qué cambió respecto al requisito de buen carácter moral en VAWA?",
+     opts:["Se eliminó el requisito; el buen carácter ya no es necesario.","Se eliminó el lenguaje protector: ahora la carga de la prueba recae completamente en el peticionario.","USCIS puede presumir buen carácter si hay evidencia de abuso grave.","Solo se evalúa si el peticionario tiene antecedentes penales previos."],correct:1,
+     fb_ok:"Correcto. La actualización de 2025 eliminó el lenguaje que protegía al peticionario de negación por falta de evidencia de buen carácter. La documentación proactiva es ahora crítica.",
+     fb_bad:"Incorrecto. La nueva política eliminó protecciones previas y exige documentación proactiva del buen carácter moral."},
+    {type:"mc",id:"c5_mc2",text:"¿La declaración de Carmen contiene alguna afirmación que pueda comprometer su buen carácter moral?",
+     opts:["No, toda la declaración es compatible con buen carácter moral.","Sí, admite haber contraído matrimonio principalmente para regularizar su situación migratoria (posible fraude).","Sí, por haber llegado tarde a casa en una ocasión.","No, porque tenía empleo formal y manejaba sus propias finanzas."],correct:1,
+     fb_ok:"Correcto. Admitir que el matrimonio fue para arreglar papeles puede interpretarse como fraude migratorio, comprometiendo el buen carácter moral.",
+     fb_bad:"Incorrecto. La admisión de matrimonio por conveniencia migratoria es un indicador de posible fraude, comprometiendo el buen carácter moral."},
+    {type:"mc",id:"c5_mc3",text:"¿Con qué período histórico evalúa USCIS el buen carácter moral en una autopetición VAWA?",
+     opts:["Los últimos 10 años de historial del peticionario","Generalmente los últimos 3 años","Solo el período durante el cual duró el matrimonio o relación abusiva","Desde que el peticionario llegó a los Estados Unidos"],correct:1,
+     fb_ok:"Correcto. USCIS evalúa generalmente el buen carácter moral de los últimos 3 años.",
+     fb_bad:"Incorrecto. El buen carácter moral se evalúa generalmente en los últimos 3 años."},
+    {type:"mc",id:"c5_mc4",text:"Si el peticionario tiene un antecedente penal, ¿qué debe hacer en la declaración VAWA?",
+     opts:["Omitirlo completamente para no perjudicar el caso.","Explicarlo y vincularlo al contexto del abuso, acompañado preferentemente de una evaluación psicológica.","Esperar a que USCIS lo descubra y pida explicación mediante una RFE.","Cancelar la petición VAWA y buscar otra vía migratoria."],correct:1,
+     fb_ok:"Correcto. Los antecedentes deben declararse, explicarse y vincularse al abuso si aplica. Ocultarlos daña la credibilidad.",
+     fb_bad:"Incorrecto. Ocultar antecedentes daña gravemente la credibilidad. Deben declararse y contextualizarse."},
+    {type:"check",id:"c5_ch1",text:"¿Cuáles son buenas prácticas para demostrar buen carácter moral en una declaración VAWA? (Selecciona todas las correctas)",
+     opts:["Declarar cualquier contacto con autoridades, aunque sea menor","Ser transparente y no minimizar ni ocultar información relevante","Aportar evidencia de rehabilitación o contexto si existen antecedentes","Omitir multas de tránsito o infracciones menores para no perjudicarse"],correct:[0,1,2],
+     fb_ok:"Correcto. Transparencia, declaración de todos los contactos con autoridades y evidencia de rehabilitación son clave.",
+     fb_bad:"Incorrecto. Ocultar información afecta la credibilidad. La transparencia es fundamental bajo la política actualizada."},
+    {type:"mc",id:"c5_mcRW",text:"La declaración de Carmen dice: \u201cNos casamos en marzo de 2016, principalmente porque me dijo que así podría arreglar mis papeles. No tenía planes de quedarme permanentemente y tampoco estaba segura de querer pasar el resto de mi vida con Marco Antonio.\u201d ¿Cuál de las siguientes reescrituras evita comprometer el buen carácter moral de Carmen?",
+     opts:["Nos casamos en marzo de 2016 porque queríamos formar una familia juntos; la posibilidad de regularizar mi estatus migratorio fue un beneficio adicional, no la razón principal de nuestra decisión.","Nos casamos en marzo de 2016 principalmente porque me dijo que así podría arreglar mis papeles.","Nos casamos en marzo de 2016 sin haber discutido nunca nuestra situación migratoria.","No sé exactamente por qué decidimos casarnos en esa fecha."],correct:0,
+     fb_ok:"Correcto. Esta reescritura elimina la admisión de fraude migratorio y presenta la regularización como consecuencia secundaria de una intención genuina.",
+     fb_bad:"Incorrecto. Esa opción mantiene o agrava la admisión de conveniencia migratoria, o no aporta claridad sobre la intención del matrimonio."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras por qué el criterio de Buen Carácter Moral está en riesgo en la declaración de Carmen. ¿Qué admisión específica genera el problema y cuál es su implicación legal?",
+   fbWhy:4},
+
+  {id:"c6",label:"⑥ Residencia compartida",
+   teoria:"La persona peticionaria debe demostrar que residió con el abusador durante la relación calificada. La actualización de diciembre 2025 convirtió esto en un requisito obligatorio con mayor rigor. Deben documentarse direcciones, períodos de convivencia y vida doméstica compartida.",
+   preguntas:[
+    {type:"mc",id:"c6_mc1",text:"Bajo la actualización de política de diciembre 2025, ¿qué cambió respecto al requisito de residencia compartida?",
+     opts:["Se eliminó el requisito; ya no es necesario haber vivido con el abusador.","Pasó de ser flexible a ser un requisito obligatorio evaluado con mayor rigor.","Solo aplica si la peticionaria tiene hijos en común con el abusador.","No hubo cambios significativos en este requisito específico."],correct:1,
+     fb_ok:"Correcto. Esta es una de las modificaciones más significativas de dic. 2025: la coresidencia es ahora obligatoria y se evalúa con mayor escrutinio.",
+     fb_bad:"Incorrecto. La actualización de dic. 2025 convirtió la residencia compartida en un requisito obligatorio con mayor rigor."},
+    {type:"mc",id:"c6_mc2",text:"Según la declaración de Carmen, ¿cuánto tiempo vivió realmente con Marco Antonio bajo el mismo techo?",
+     opts:["Más de tres años de manera continua","Aproximadamente seis meses de manera intermitente","Nunca llegaron a vivir juntos formalmente","Vivieron juntos durante todo el matrimonio sin interrupciones"],correct:1,
+     fb_ok:"Correcto. La declaración indica que en total vivieron juntos aproximadamente seis meses, de forma intermitente.",
+     fb_bad:"Incorrecto. La declaración señala explícitamente que el tiempo total bajo el mismo techo fue de aproximadamente seis meses."},
+    {type:"mc",id:"c6_mc3",text:"¿Es necesario seguir viviendo con el abusador al momento de presentar la autopetición VAWA?",
+     opts:["Sí, se debe seguir conviviendo con el abusador para mantener la elegibilidad.","No, el requisito de coresidencia aplica durante la relación calificada, no al momento de presentar la petición.","Solo si no hay hijos en común; si los hay, no se requiere convivencia actual.","Depende del estado donde se presente la petición."],correct:1,
+     fb_ok:"Correcto. No es necesario seguir viviendo con el abusador al presentar la petición. El requisito aplica durante la relación calificada.",
+     fb_bad:"Incorrecto. La coresidencia debe demostrarse durante la relación calificada, no al momento de presentar la petición."},
+    {type:"mc",id:"c6_mc4",text:"¿Qué tipo de evidencia documental ayuda a acreditar la residencia compartida con el abusador?",
+     opts:["Exclusivamente fotos de los dos juntos en el hogar","Contratos de arrendamiento a nombre de ambos, facturas de servicios, correspondencia oficial al mismo domicilio","Solo el testimonio verbal de los cónyuges sin documentos adicionales","Registros de redes sociales donde se mencionen la misma ciudad"],correct:1,
+     fb_ok:"Correcto. Los contratos de arrendamiento conjuntos, facturas y correspondencia oficial son evidencia documental sólida de coresidencia.",
+     fb_bad:"Incorrecto. Se necesitan documentos concretos: contratos, facturas o correspondencia que acrediten convivencia en el mismo domicilio."},
+    {type:"check",id:"c6_ch1",text:"¿Qué elementos debería incluir una declaración VAWA para documentar la residencia compartida? (Selecciona todas las correctas)",
+     opts:["Direcciones específicas donde vivieron juntos con fechas de inicio y fin","Facturas de servicios, contratos de arrendamiento o correspondencia a nombre de ambos","Testimonios de vecinos, familiares o conocidos sobre la convivencia","Explicación de períodos de separación con justificación si aplica"],correct:[0,1,2,3],
+     fb_ok:"Correcto. Todos estos elementos son necesarios para acreditar la residencia compartida o justificar su ausencia.",
+     fb_bad:"Faltan elementos. Se necesita documentar todas las direcciones, períodos, evidencias corroborativas y justificaciones de cualquier separación."},
+    {type:"mc",id:"c6_mcRW",text:"La declaración de Carmen dice: \u201cHubo períodos en los que no vivimos en el mismo domicilio. En total vivimos juntos aproximadamente seis meses. Después de la boda cada quien regresó a su lugar: él en Indiana y yo en Chicago.\u201d ¿Cuál de las siguientes reescrituras fortalece mejor el criterio de residencia compartida?",
+     opts:["Desde marzo de 2016 hasta enero de 2018 vivimos juntos de manera continua en un apartamento en Chicago, Illinois, compartiendo gastos, rutinas y responsabilidades del hogar.","Hubo períodos en los que no vivimos en el mismo domicilio, y en total solo convivimos unos seis meses de manera intermitente.","Vivimos en la misma ciudad, aunque no siempre en la misma casa.","No recuerdo con exactitud cuánto tiempo vivimos juntos."],correct:0,
+     fb_ok:"Correcto. Esta reescritura documenta una convivencia continua y sostenida, con dirección y vida doméstica compartida, tal como exige la actualización de diciembre 2025.",
+     fb_bad:"Incorrecto. Esa opción no resuelve el problema: mantiene la convivencia intermitente e insuficiente, o no aporta información concreta sobre la residencia compartida."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras por qué el criterio de Residencia Compartida es problemático en la declaración de Carmen. ¿Qué impacto tiene la actualización de diciembre 2025 en este caso específico?",
+   fbWhy:5},
+
+  {id:"c7",label:"⑦ Residencia en EEUU",
+   teoria:"La persona peticionaria debe residir en los Estados Unidos al momento de presentar la autopetición. No se requiere estatus migratorio regular para presentar. La declaración debe confirmar la residencia actual con estado, ciudad y circunstancias de permanencia.",
+   preguntas:[
+    {type:"mc",id:"c7_mc1",text:"¿Se requiere tener estatus migratorio regular para presentar una autopetición VAWA?",
+     opts:["Sí, se debe tener visa válida o residencia permanente al momento de presentar.","No, no se requiere estatus migratorio regular para presentar la autopetición.","Solo si el abusador es ciudadano; si es LPR, sí se requiere estatus regular.","Depende del estado de residencia; cada estado tiene reglas distintas."],correct:1,
+     fb_ok:"Correcto. No se requiere estatus migratorio regular para presentar una autopetición VAWA. Solo se debe demostrar residencia actual en EEUU.",
+     fb_bad:"Incorrecto. VAWA no requiere estatus migratorio regular para la autopetición. La víctima puede estar sin documentos y aún ser elegible."},
+    {type:"mc",id:"c7_mc2",text:"¿Qué debe incluir una declaración VAWA para acreditar la residencia actual en los Estados Unidos?",
+     opts:["Un comprobante de ciudadanía o residencia permanente","Estado y ciudad de residencia actual, con descripción de las circunstancias de llegada y permanencia","Solo la firma del abogado confirma la residencia; no se requiere declaración del cliente","Un contrato de trabajo activo o verificación de empleo en EEUU"],correct:1,
+     fb_ok:"Correcto. La declaración debe mencionar el estado y ciudad de residencia actual y describir cómo llegó y ha permanecido en el país.",
+     fb_bad:"Incorrecto. La declaración debe incluir residencia actual (estado, ciudad) y circunstancias de llegada y permanencia."},
+    {type:"mc",id:"c7_mc3",text:"¿Existe alguna excepción para presentar la autopetición VAWA desde fuera de los Estados Unidos?",
+     opts:["No, es absolutamente imposible presentar la petición desde fuera de EEUU.","Sí, existen excepciones limitadas para víctimas en el extranjero en circunstancias específicas.","Sí, cualquier persona fuera de EEUU puede presentar la petición con una carta de un familiar.","No aplica; VAWA solo protege a personas con residencia permanente."],correct:1,
+     fb_ok:"Correcto. Existen excepciones limitadas que permiten presentar la autopetición desde fuera de EEUU en circunstancias específicas.",
+     fb_bad:"Incorrecto. Aunque la regla general es residencia en EEUU, existen excepciones limitadas para víctimas en circunstancias específicas fuera del país."},
+    {type:"mc",id:"c7_mc4",text:"¿Qué problema tiene la declaración de Carmen respecto al criterio de residencia actual en EEUU?",
+     opts:["Declara explícitamente que ya no vive en los Estados Unidos.","No menciona explícitamente su estado y ciudad de residencia actual ni acredita su permanencia presente.","Admite que entró al país de manera irregular, lo que la descalifica.","Declara que vive en dos estados diferentes, lo que genera inconsistencia."],correct:1,
+     fb_ok:"Correcto. La declaración no incluye información explícita sobre su residencia actual: estado, ciudad, ni comprobantes de domicilio vigentes.",
+     fb_bad:"Incorrecto. El problema es que la declaración omite mencionar la residencia actual con estado, ciudad y evidencia de permanencia vigente."},
+    {type:"check",id:"c7_ch1",text:"¿Cuáles de las siguientes evidencias pueden documentar la residencia actual en EEUU para una autopetición VAWA? (Selecciona todas las correctas)",
+     opts:["Contrato de arrendamiento actual o recibos de servicios públicos","Correspondencia oficial reciente (cartas del banco, hospital, escuela)","Declaración del propio peticionario en la declaración jurada","Certificado de nacimiento del peticionario (aunque sea de otro país)"],correct:[0,1,2],
+     fb_ok:"Correcto. Contratos, correspondencia oficial y la declaración jurada son evidencias válidas. El certificado de nacimiento no acredita residencia actual.",
+     fb_bad:"Incorrecto. El certificado de nacimiento no es evidencia de residencia actual en EEUU. Se necesitan documentos que acrediten presencia actual."},
+    {type:"mc",id:"c7_mcRW",text:"La declaración de Carmen no menciona su residencia actual en Estados Unidos. ¿Cuál de los siguientes párrafos cumpliría correctamente con el criterio de residencia actual?",
+     opts:["Actualmente resido en Chicago, Illinois, donde he vivido de manera continua desde 2018. Cuento con un contrato de arrendamiento a mi nombre y recibos de servicios que acreditan mi domicilio actual.","Actualmente resido en algún lugar de Estados Unidos, aunque no recuerdo la dirección exacta.","Viví en Chicago hasta 2018, pero no he actualizado mi domicilio desde entonces.","Actualmente resido en Guadalajara, Jalisco, mientras resuelvo mi situación migratoria."],correct:0,
+     fb_ok:"Correcto. Esta reescritura acredita estado, ciudad, continuidad de la residencia y comprobantes disponibles, cumpliendo el criterio de residencia actual.",
+     fb_bad:"Incorrecto. Esa opción no acredita claramente el criterio: falta precisión, describe residencia pasada, o ubica a Carmen fuera de Estados Unidos."}
+   ],
+   rewriteWhyPrompt:"Explica con tus propias palabras qué elemento específico falta en la declaración de Carmen para acreditar el criterio de Residencia Actual en los Estados Unidos.",
+   fbWhy:6}
+];
+
+// ---------------------------------------------------------------
+// ESTADO
+// ---------------------------------------------------------------
+let userName = "";
+let currentTab = 0;
+let showingResults = false;
+const tabDone = new Array(talleres.length).fill(false);
+const respMC = {}, respCheck = {};
+const respRW = {};   // textarea content: {tabIdx: {rw2: "..."}}
+const fbState = {};  // feedback after Verificar: {qid: {cls, html}} + rw keys
+// tracking per pregunta para resultados
+const pregScores = {}; // id -> true/false
+
+// ---------------------------------------------------------------
+// NAV
+// ---------------------------------------------------------------
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+}
+
+function startTaller(){
+  const n = document.getElementById('cover-name').value.trim();
+  if(!n){document.getElementById('cover-name').style.borderColor='#e0b830';return;}
+  userName = n;
+  document.getElementById('user-badge').textContent = '👤 ' + n;
+  showScreen('intro');
+}
+
+function startMain(){
+  showScreen('main');
+  renderLeft();
+  renderTabs();
+  renderTabContent(0);
+}
+
+// ---------------------------------------------------------------
+// LEFT PANEL
+// ---------------------------------------------------------------
+function renderLeft(){
+  document.getElementById('left-panel').innerHTML = `
+    <div class="decl-box">
+      <h3>Declaración jurada</h3>
+      <div class="decl-subtitle">Carmen Elena Rojas Villanueva &middot; I-360 y AOS</div>
+      <div class="texto-decl">${DECL.replace(/\n/g,'<br>')}</div>
+    </div>`;
+}
+
+// ---------------------------------------------------------------
+// TABS
+// ---------------------------------------------------------------
+function renderTabs(){
+  const done = tabDone.filter(Boolean).length;
+  const pct = (done / talleres.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('tab-bar').innerHTML =
+    talleres.map((t,i)=>
+      `<button class="${i===currentTab&&!showingResults?'on':''} ${tabDone[i]?'done':''}" onclick="loadTab(${i})">${t.label} <span class="tab-check">✓</span></button>`
+    ).join('') +
+    `<button class="results-tab ${showingResults?'on':''}" onclick="loadResults()">📊 Resultados</button>`;
+}
+
+// ---------------------------------------------------------------
+// CONTENT
+// ---------------------------------------------------------------
+function renderTabContent(idx){
+  showingResults = false;
+  const t = talleres[idx];
+  let html = `<div class="sec-head"><h3>${t.label}</h3><p>Analiza si la declaración cumple este criterio de elegibilidad VAWA</p></div>`;
+  html += `<div class="teoria-box"><h4>📖 Marco teórico – Actualización USCIS dic. 2025</h4><p>${t.teoria}</p></div>`;
+
+  t.preguntas.forEach(p=>{
+    if(p.type==='mc'){
+      const saved = respMC[p.id]!==undefined ? respMC[p.id] : null;
+      html += `<div class="qblock" id="qb-${p.id}"><div class="qlabel">Opción múltiple</div><div class="qbody"><div class="qtext">${p.text}</div><div class="radio-grid" id="rg-${p.id}">`;
+      p.opts.forEach((opt,oi)=>{
+        const sel = saved===oi;
+        html += `<label class="ropt ${sel?'selected':''}" id="ro-${p.id}-${oi}" onclick="selectMC('${p.id}',${oi})"><input type="radio" name="${p.id}" ${sel?'checked':''}><span>${opt}</span></label>`;
+      });
+      html += `</div><div class="fb" id="fb-${p.id}"></div></div></div>`;
+    } else if(p.type==='check'){
+      const savedArr = respCheck[p.id]||[];
+      html += `<div class="qblock" id="qb-${p.id}"><div class="qlabel">Selección múltiple (varias correctas)</div><div class="qbody"><div class="qtext">${p.text}</div><div class="check-grid" id="cg-${p.id}">`;
+      p.opts.forEach((opt,oi)=>{
+        const chk = savedArr.includes(oi);
+        html += `<label class="chkopt" id="ch-${p.id}-${oi}" onclick="toggleCheck('${p.id}',${oi})"><input type="checkbox" ${chk?'checked':''}><span>${opt}</span></label>`;
+      });
+      html += `</div><div class="fb" id="fb-${p.id}"></div></div></div>`;
+    }
+  });
+
+  // Análisis crítico: por qué no se cumple
+  html += `<div class="open-section-head">🔍 Análisis crítico – ¿Por qué no se cumple este criterio?</div>
+  <div class="qblock"><div class="qlabel">Explica por qué el criterio NO se cumple en la declaración</div><div class="qbody">
+  <div class="jcontext">${t.rewriteWhyPrompt}</div>
+  <textarea class="jta" id="rw2-${idx}" placeholder="Mínimo 100 caracteres..."></textarea>
+  <div class="charct bad" id="rw2c-${idx}">0 / mínimo 100</div>
+  <div class="fb" id="fb-rw2-${idx}"></div>
+  </div></div>`;
+
+  document.getElementById('right-panel').innerHTML = html;
+  document.getElementById('score-note').innerHTML = `<strong>${t.label}</strong> &middot; Responde las preguntas y completa los ejercicios de escritura`;
+  document.getElementById('btn-next').classList.remove('vis');
+  document.getElementById('btn-check').style.display = '';
+
+  const ta2 = document.getElementById(`rw2-${idx}`);
+  if(ta2) ta2.addEventListener('input',()=>countChars(ta2,`rw2c-${idx}`,100));
+
+  // Restore textarea content
+  if(respRW[idx]){
+    if(ta2 && respRW[idx].rw2 !== undefined){ ta2.value = respRW[idx].rw2; countChars(ta2,`rw2c-${idx}`,100); }
+  }
+  // Restore feedback state after Verificar
+  t.preguntas.forEach(p => {
+    const fbDiv = document.getElementById(`fb-${p.id}`);
+    if(fbState[p.id] && fbDiv){ fbDiv.className = fbState[p.id].cls; fbDiv.innerHTML = fbState[p.id].html; }
+    if(p.type==='mc' && respMC[p.id] !== undefined && fbState[p.id]){
+      const sel = respMC[p.id];
+      document.getElementById(`ro-${p.id}-${sel}`)?.classList.add(sel===p.correct?'correct':'incorrect');
+      if(sel !== p.correct) document.getElementById(`ro-${p.id}-${p.correct}`)?.classList.add('correct');
+    }
+    if(p.type==='check' && fbState[p.id]){
+      const selArr = respCheck[p.id]||[];
+      selArr.forEach(oi => document.getElementById(`ch-${p.id}-${oi}`)?.classList.add(fbState[p.id].cls==='fb ok'?'correct':'incorrect'));
+      if(fbState[p.id].cls!=='fb ok') p.correct.forEach(oi => document.getElementById(`ch-${p.id}-${oi}`)?.classList.add('correct'));
+    }
+  });
+  const rw2fb = document.getElementById(`fb-rw2-${idx}`);
+  if(fbState[`rw2_${idx}`] && rw2fb){ rw2fb.className=fbState[`rw2_${idx}`].cls; rw2fb.innerHTML=fbState[`rw2_${idx}`].html; }
+  if(tabDone[idx]){
+    document.getElementById('score-note').innerHTML='✅ Este criterio ya fue completado.';
+    document.getElementById('btn-next').classList.add('vis');
+    if(idx === talleres.length-1) document.getElementById('btn-next').classList.remove('vis');
+  }
+}
+
+// ---------------------------------------------------------------
+// INTERACCIONES
+// ---------------------------------------------------------------
+function selectMC(qid,optIdx){
+  respMC[qid]=optIdx;
+  for(let i=0;i<6;i++){const el=document.getElementById(`ro-${qid}-${i}`);if(el)el.classList.remove('selected','correct','incorrect');}
+  document.getElementById(`ro-${qid}-${optIdx}`)?.classList.add('selected');
+  const fb=document.getElementById(`fb-${qid}`);if(fb){fb.className='fb';fb.innerHTML='';}
+}
+
+function toggleCheck(qid,optIdx){
+  let arr=respCheck[qid]||[];
+  if(arr.includes(optIdx))arr=arr.filter(v=>v!==optIdx);else arr.push(optIdx);
+  respCheck[qid]=arr;
+  const inp=document.getElementById(`ch-${qid}-${optIdx}`)?.querySelector('input');
+  if(inp)inp.checked=arr.includes(optIdx);
+  const fb=document.getElementById(`fb-${qid}`);if(fb){fb.className='fb';fb.innerHTML='';}
+}
+
+// ---------------------------------------------------------------
+// VERIFICAR
+// ---------------------------------------------------------------
+function checkCurrentTab(){
+  const t=talleres[currentTab];
+  let allOk=true;
+
+  t.preguntas.forEach(p=>{
+    const fbDiv=document.getElementById(`fb-${p.id}`);
+    if(p.type==='mc'){
+      const sel=respMC[p.id];
+      document.querySelectorAll(`#rg-${p.id} .ropt`).forEach(r=>r.classList.remove('correct','incorrect'));
+      if(sel===undefined){if(fbDiv){fbDiv.className='fb bad';fbDiv.innerHTML='❌ No respondiste esta pregunta.';}allOk=false;return;}
+      if(sel===p.correct){
+        if(fbDiv){fbDiv.className='fb ok';fbDiv.innerHTML='✓ '+p.fb_ok;}
+        document.getElementById(`ro-${p.id}-${sel}`)?.classList.add('correct');
+        pregScores[p.id]=true;
+        fbState[p.id]={cls:'fb ok',html:'✓ '+p.fb_ok};
+      }else{
+        if(fbDiv){fbDiv.className='fb bad';fbDiv.innerHTML='✗ '+p.fb_bad;}
+        document.getElementById(`ro-${p.id}-${sel}`)?.classList.add('incorrect');
+        document.getElementById(`ro-${p.id}-${p.correct}`)?.classList.add('correct');
+        pregScores[p.id]=false;allOk=false;
+        fbState[p.id]={cls:'fb bad',html:'✗ '+p.fb_bad};
+      }
+    } else if(p.type==='check'){
+      const sel=respCheck[p.id]||[];const cor=p.correct;
+      const ok=sel.length===cor.length&&cor.every(v=>sel.includes(v));
+      document.querySelectorAll(`#cg-${p.id} .chkopt`).forEach(c=>c.classList.remove('correct','incorrect'));
+      if(ok){
+        if(fbDiv){fbDiv.className='fb ok';fbDiv.innerHTML='✓ '+p.fb_ok;}
+        sel.forEach(oi=>document.getElementById(`ch-${p.id}-${oi}`)?.classList.add('correct'));
+        pregScores[p.id]=true;
+        fbState[p.id]={cls:'fb ok',html:'✓ '+p.fb_ok};
+      }else{
+        if(fbDiv){fbDiv.className='fb bad';fbDiv.innerHTML='✗ '+p.fb_bad;}
+        sel.forEach(oi=>document.getElementById(`ch-${p.id}-${oi}`)?.classList.add('incorrect'));
+        cor.forEach(oi=>document.getElementById(`ch-${p.id}-${oi}`)?.classList.add('correct'));
+        pregScores[p.id]=false;allOk=false;
+        fbState[p.id]={cls:'fb bad',html:'✗ '+p.fb_bad};
+      }
+    }
+  });
+
+  // Save textarea content
+  if(!respRW[currentTab]) respRW[currentTab]={};
+  const _ta2=document.getElementById(`rw2-${currentTab}`);
+  if(_ta2) respRW[currentTab].rw2=_ta2.value;
+
+  // rw2
+  const ta2=document.getElementById(`rw2-${currentTab}`);
+  const len2=ta2?ta2.value.trim().length:0;
+  const fb2=document.getElementById(`fb-rw2-${currentTab}`);
+  const fbTeo=feedbackTeorico[talleres[currentTab].fbWhy];
+  if(len2>=100){
+    if(fb2){fb2.className='fb ok';fb2.innerHTML='✓ Análisis completado.<br><br>'+fbTeo;}
+  }else{if(fb2){fb2.className='fb bad';fb2.innerHTML='✗ El análisis debe tener al menos 100 caracteres.';}allOk=false;}
+  if(fb2) fbState[`rw2_${currentTab}`]={cls:fb2.className,html:fb2.innerHTML};
+
+  if(allOk){
+    tabDone[currentTab]=true;
+    document.getElementById('score-note').innerHTML='✅ ¡Correcto! Has completado este criterio. Puedes avanzar al siguiente.';
+    if(currentTab<talleres.length-1) document.getElementById('btn-next').classList.add('vis');
+    else{
+      document.getElementById('btn-next').style.display='none';
+      document.getElementById('score-note').innerHTML='🎉 ¡Has completado todos los criterios! Revisa tus resultados.';
+    }
+  } else {
+    document.getElementById('score-note').innerHTML='❌ Algunas respuestas son incorrectas o incompletas. Revisa los feedbacks en rojo.';
+    document.getElementById('btn-next').classList.remove('vis');
+  }
+  renderTabs();
+}
+
+function goNext(){if(currentTab<talleres.length-1)loadTab(currentTab+1);}
+
+function countChars(ta,spanId,min){
+  if(!ta)return;const len=ta.value.length;
+  const span=document.getElementById(spanId);if(!span)return;
+  if(len>=min){span.textContent=`${len} caracteres ✓`;span.className='charct ok';}
+  else{span.textContent=`${len} / mínimo ${min}`;span.className='charct bad';}
+}
+
+function loadTab(idx){
+  currentTab=idx;showingResults=false;
+  renderTabs();renderTabContent(idx);
+}
+
+// ---------------------------------------------------------------
+// RESULTADOS
+// ---------------------------------------------------------------
+function loadResults(){
+  showingResults=true;
+  renderTabs();
+  document.getElementById('btn-check').style.display='none';
+  document.getElementById('btn-next').classList.remove('vis');
+
+  // calcular por criterio
+  const critStats = talleres.map(t=>{
+    let total=0,correct=0;
+    t.preguntas.forEach(p=>{
+      total++;
+      if(pregScores[p.id]===true) correct++;
+    });
+    return {label:t.label,total,correct,pct:total>0?Math.round(correct/total*100):0};
+  });
+
+  const totalPregs = critStats.reduce((a,c)=>a+c.total,0);
+  const totalCorrect = critStats.reduce((a,c)=>a+c.correct,0);
+  const globalPct = totalPregs>0?Math.round(totalCorrect/totalPregs*100):0;
+
+  const sorted = [...critStats].sort((a,b)=>a.pct-b.pct);
+  const refuerza = sorted.slice(0,3);
+  const fortaleza = sorted.slice(-3).reverse();
+
+  let scoreColor = globalPct>=80?'#1a5e36':globalPct>=60?'#8a5a00':'#8a1818';
+
+  const html = `<div class="results-wrap">
+    <div class="results-header">
+      <h2>Resultados del Taller</h2>
+      <div class="score-big" style="color:${scoreColor}">${globalPct}%</div>
+      <p>${totalCorrect} de ${totalPregs} preguntas correctas &middot; ${tabDone.filter(Boolean).length} de ${talleres.length} criterios completados</p>
+      <p style="margin-top:.3rem;font-size:11px">Participante: ${userName}</p>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;margin-bottom:1.2rem;box-shadow:var(--sh)">
+      <h4 style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;border-left:3px solid var(--gold);padding-left:.6rem;margin-bottom:.8rem">Desempeño por criterio</h4>
+      ${critStats.map(c=>{
+        const barClass=c.pct>=80?'high':c.pct>=50?'':'low';
+        return `<div style="margin-bottom:.8rem">
+          <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:.3rem"><span>${c.label}</span><strong>${c.pct}% (${c.correct}/${c.total})</strong></div>
+          <div class="bar-wrap"><div class="bar-fill ${barClass}" style="width:${c.pct}%"></div></div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="results-grid">
+      <div class="res-card refuerza">
+        <h4>🔴 Temas a reforzar</h4>
+        ${refuerza.map(c=>{
+          const taller = talleres.find(t=>t.label===c.label);
+          const wrongPregs = taller ? taller.preguntas.filter(p=>pregScores[p.id]===false) : [];
+          const wrongDetail = wrongPregs.map(p=>`
+            <div style="margin-top:10px;background:#fff8f8;border:1px solid #f0c0c0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:12px;font-weight:600;color:#6b2020;margin-bottom:4px;">❌ ${p.text}</div>
+              <div style="font-size:12px;color:#5c3030;line-height:1.5;"><strong>Lo que debes saber:</strong> ${p.fb_bad}</div>
+            </div>`).join('');
+          return `<div class="res-item" style="flex-direction:column;align-items:flex-start;">
+            <div style="display:flex;align-items:center;gap:.5rem;width:100%"><div class="dot dot-red"></div><div><div style="font-weight:600">${c.label}</div><div style="font-size:11.5px;color:var(--ink3)">${c.pct}% de aciertos (${c.correct}/${c.total})</div></div></div>
+            ${wrongDetail}
+          </div>`;
+        }).join('')}
+        <p style="font-size:11.5px;color:var(--ink3);margin-top:10px;">Revisa los criterios marcados y el marco teórico correspondiente.</p>
+      </div>
+      <div class="res-card fortaleza">
+        <h4>🟢 Mayores fortalezas</h4>
+        ${fortaleza.map(c=>`<div class="res-item"><div class="dot dot-green"></div><div><div style="font-weight:600">${c.label}</div><div style="font-size:11.5px;color:var(--ink3)">${c.pct}% de aciertos (${c.correct}/${c.total})</div></div></div>`).join('')}
+        <p style="font-size:11.5px;color:var(--ink3);margin-top:.7rem">¡Buen dominio en estos criterios! Sigue reforzando los conceptos con práctica adicional.</p>
+      </div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;box-shadow:var(--sh);font-size:12.5px;color:var(--ink2);text-align:center">
+      ${globalPct>=80
+        ? '✅ <strong>Excelente desempeño.</strong> Tienes un sólido dominio de los criterios de elegibilidad VAWA.'
+        : globalPct>=60
+          ? '⚠️ <strong>Desempeño aceptable.</strong> Revisa los criterios marcados en rojo para reforzar tu comprensión.'
+          : '❌ <strong>Se requiere refuerzo.</strong> Repasa el material teórico y vuelve a intentar los criterios con menor puntaje.'}
+    </div>
+  </div>`;
+
+  document.getElementById('right-panel').innerHTML = html;
+  document.getElementById('score-note').innerHTML = `Taller completado &middot; ${userName} &middot; ${globalPct}% de aciertos globales`;
+}
+</script>
+</body>
+</html>
