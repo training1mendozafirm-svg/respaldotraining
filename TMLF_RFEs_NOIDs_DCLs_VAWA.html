@@ -1,0 +1,1540 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RFEs, NOIDs y Declaraciones Juradas de Respuesta (VAWA) | TMLF Learning Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1923;--slate:#5a6a7a;--steel:#6b8fa8;--ice:#8db8d8;
+  --gold:#c9a84c;--gold-bg:rgba(201,168,76,.09);
+  --white:#fff;--bg:#eef1f5;--shadow:0 8px 28px rgba(15,25,35,.11);--radius:16px;
+  --nav-h:56px;--sidebar-w:272px;
+  --green:#1e6641;--green-bg:rgba(30,102,65,.08);
+  --red:#8b2c2c;--red-bg:rgba(180,50,50,.08);
+  --amber:#7a5200;--amber-bg:rgba(180,130,0,.09);
+  --accent:#1a3a5c;--accent2:#2e5c8a;
+  --sidebar-bg:#0d1e2e;
+  --purple:#7c3aed;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+p,li,td,.bac-body,.mini-card p,.result-msg,.q-feedback,.alert{text-align:justify;text-justify:inter-word}
+h1,h2,h3,h4,h5,th,.sb-name,.bac-title,.stat-card,.rb-l,.result-label,.header-meta-item{text-align:left}
+
+/* ══ TOP NAV ══ */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav-h);background:rgba(10,18,28,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);display:flex;align-items:center;padding:0 18px;gap:10px}
+.topnav .brand{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;white-space:nowrap;letter-spacing:.3px;display:flex;align-items:center;gap:10px}
+.topnav .brand .seal{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.08));border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.topnav .brand span{color:var(--gold)}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topnav-pill{padding:5px 14px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.28);color:rgba(201,168,76,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:42vw}
+.sidebar-toggle{display:block;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px;line-height:1}
+.sidebar-toggle:hover{color:var(--gold)}
+
+/* ══ SHELL ══ */
+.app-shell{display:flex;min-height:100vh;padding-top:var(--nav-h)}
+
+/* ══ SIDEBAR ══ */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);position:fixed;top:var(--nav-h);bottom:0;left:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;border-right:1px solid rgba(201,168,76,.07);z-index:200;transition:transform .3s ease}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:3px}
+.sidebar-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sidebar-header .sh-label{font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px}
+.sidebar-header .sh-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.88);font-weight:600;line-height:1.3}
+.sb-group{padding:8px 0}
+.sb-group-label{padding:6px 16px 3px;font-size:8.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.sb-divider{margin:4px 14px 6px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.18),transparent)}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:all .18s;position:relative;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.045)}
+.sb-item.active{background:rgba(141,184,216,.09)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.sb-item.locked{opacity:.42;cursor:not-allowed}
+.sb-item.locked:hover{background:none}
+.sb-item.completed .sb-num{background:var(--green)!important;color:#fff!important}
+.sb-num{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);transition:all .18s}
+.sb-item.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item:hover:not(.locked) .sb-num{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+.sb-text{flex:1;min-width:0}
+.sb-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);line-height:1.3;transition:color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item.active .sb-name{color:rgba(255,255,255,.92)}
+.sb-item:hover:not(.locked) .sb-name{color:rgba(255,255,255,.82)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.sb-item.overview .sb-num{background:rgba(141,184,216,.13);color:var(--ice)}
+.sb-item.overview.active .sb-num{background:var(--ice);color:var(--ink)}
+.sb-spec-banner{margin:6px 12px 2px;padding:7px 11px;border-radius:9px;background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.03));border:1px solid rgba(201,168,76,.16);display:flex;align-items:center;gap:7px}
+.sb-spec-banner .sbb-text{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(201,168,76,.75)}
+.sb-item.exam .sb-num{background:rgba(201,168,76,.14);color:var(--gold)}
+.sb-item.exam.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item.exam .sb-name{color:rgba(255,210,80,.55)}
+.sb-item.exam.active .sb-name{color:rgba(255,210,80,.92)}
+.sb-user{margin:10px 12px 4px;padding:9px 11px;border-radius:9px;background:rgba(141,184,216,.08);border:1px solid rgba(255,255,255,.07)}
+.sb-user .su-l{font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.sb-user .su-n{font-size:12px;font-weight:700;color:rgba(255,255,255,.85);margin-top:2px;word-break:break-word}
+
+/* colapsable en cualquier ancho */
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+.sb-overlay.show{display:block}
+body.nav-hidden .sidebar{transform:translateX(-100%)}
+body.nav-hidden .main{margin-left:0}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.45)}
+  body.nav-hidden .sidebar.open{transform:translateX(0)}
+}
+
+/* ══ PROGRESS BAR ══ */
+.progress-bar-wrap{position:fixed;top:var(--nav-h);left:0;right:0;z-index:299;height:3px;background:rgba(255,255,255,.06)}
+.progress-bar-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--ice));transition:width .5s ease;width:0%}
+
+/* ══ MAIN ══ */
+.main{margin-left:var(--sidebar-w);flex:1;padding:26px 26px 60px;max-width:100%;transition:margin-left .3s ease}
+@media(max-width:900px){.main{margin-left:0;padding:18px 14px 50px}}
+
+/* ══ HEADER ══ */
+.header{background:linear-gradient(135deg,#0b1f35 0%,#0e2540 45%,#1a3a5c 100%);color:#fff;border-radius:20px;padding:42px 38px 36px;box-shadow:0 16px 40px rgba(10,20,35,.22);position:relative;overflow:hidden;margin-bottom:22px}
+.header::before{content:'';position:absolute;top:-60px;right:-40px;width:270px;height:270px;border:1.5px solid rgba(201,168,76,.1);border-radius:50%;animation:pulse 5s ease-in-out infinite}
+.header::after{content:'';position:absolute;bottom:-70px;right:90px;width:180px;height:180px;border:1.5px solid rgba(37,99,235,.08);border-radius:50%;animation:pulse 6s ease-in-out infinite .8s}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:.85}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.header-seal{position:absolute;top:26px;right:34px;width:62px;height:62px;border:1.5px solid rgba(201,168,76,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;opacity:.5;animation:pulse 4s ease-in-out infinite}
+.header-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:12px}
+.header-badge .dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+h1{font-family:'Cormorant Garamond',serif;font-size:36px;letter-spacing:.4px;position:relative;z-index:1;font-weight:700;line-height:1.15}
+.subtitle{font-size:14px;opacity:.76;max-width:62ch;position:relative;z-index:1;margin-top:6px;text-align:justify}
+.header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.header-meta-item{display:flex;align-items:center;gap:6px;padding:5px 13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:11.5px}
+.header-meta-item span:first-child{opacity:.58}
+.header-meta-item strong{font-weight:700}
+
+/* ══ PANELS ══ */
+.panel{display:none;animation:fadeUp .28s ease both}
+.panel.active{display:block}
+
+/* ══ BLOCKS ══ */
+.block{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(107,143,168,.15);overflow:hidden;margin-bottom:14px}
+.block .btitle{display:flex;align-items:center;gap:10px;padding:15px 18px;background:linear-gradient(180deg,rgba(141,184,216,.16),rgba(141,184,216,.02));border-bottom:1px solid rgba(107,143,168,.13)}
+.block .btitle .bicon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.block .btitle h3{font-size:15.5px;color:var(--ink);font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.2px;flex:1}
+.block .btitle .mod-badge{margin-left:auto;padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;flex-shrink:0}
+.badge-core{background:rgba(26,58,92,.09);color:#1a3a5c;border:1px solid rgba(26,58,92,.17)}
+.badge-warn{background:rgba(139,44,44,.08);color:#8b2c2c;border:1px solid rgba(139,44,44,.17)}
+.badge-green{background:rgba(30,102,65,.08);color:#1e6641;border:1px solid rgba(30,102,65,.17)}
+.badge-gold{background:rgba(201,168,76,.09);color:#7a5200;border:1px solid rgba(201,168,76,.2)}
+.block .bbody{padding:18px}
+.block .bbody p{margin:0 0 10px;font-size:13.5px}
+.block .bbody p:last-child{margin-bottom:0}
+.block.b-concepto{border-color:rgba(201,168,76,.22);background:#fffdf0}
+.block.b-concepto .btitle{background:rgba(201,168,76,.08);border-bottom-color:rgba(201,168,76,.15)}
+.block.b-concepto .btitle h3{color:#7a5200}
+.block.b-caso{border-color:rgba(30,102,65,.18);background:#f0fbf5}
+.block.b-caso .btitle{background:rgba(30,102,65,.07);border-bottom-color:rgba(30,102,65,.12)}
+.block.b-caso .btitle h3{color:#1e5c3a}
+.block.b-error{border-color:rgba(139,44,44,.18);background:#fff5f5}
+.block.b-error .btitle{background:rgba(139,44,44,.06);border-bottom-color:rgba(139,44,44,.12)}
+.block.b-error .btitle h3{color:#8b2c2c}
+.block.b-eval{border-color:rgba(201,168,76,.35);background:linear-gradient(135deg,#fffdf0 0%,#fff8e1 100%)}
+.block.b-eval .btitle{background:rgba(201,168,76,.13);border-bottom-color:rgba(201,168,76,.22)}
+.block.b-eval .btitle h3{color:#7a5200}
+
+/* ══ DIVIDERS / CALLOUTS ══ */
+.sdiv{display:flex;align-items:center;gap:11px;margin:20px 0 13px}
+.sdiv .l{flex:1;height:1px;background:linear-gradient(90deg,rgba(107,143,168,.28),transparent)}
+.sdiv .l:last-child{background:linear-gradient(270deg,rgba(107,143,168,.28),transparent)}
+.sdiv .t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--slate);white-space:nowrap}
+.lo-callout{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.13);margin-bottom:13px}
+.lo-callout .lo-icon{font-size:17px;flex-shrink:0;margin-top:1px}
+.lo-callout .lo-text{font-size:12.5px;color:var(--slate);line-height:1.55;text-align:justify}
+.lo-callout .lo-text strong{color:var(--ink);display:block;margin-bottom:2px;font-size:13px}
+.alert{margin-top:10px;padding:10px 13px;border-radius:10px;font-size:12.5px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.alert.warn{background:var(--amber-bg);border:1px solid rgba(180,130,0,.19);color:var(--amber)}
+.alert.danger{background:var(--red-bg);border:1px solid rgba(180,50,50,.17);color:var(--red)}
+.alert.success{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.alert.info{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.18);color:var(--ink)}
+.alert-icon{flex-shrink:0;margin-top:1px}
+.alert strong{font-weight:700}
+.principle{margin-top:13px;padding:14px 17px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.03),rgba(141,184,216,.06));border:1px solid rgba(107,143,168,.17);border-left:3px solid var(--accent)}
+.principle p{margin:0;font-size:14px;font-weight:600;font-style:italic;font-family:'Cormorant Garamond',serif;line-height:1.55;color:var(--ink)}
+.critical-rule{background:linear-gradient(135deg,rgba(15,25,35,.96) 0%,rgba(26,58,92,.97) 100%);border-radius:14px;padding:18px 22px;margin:16px 0;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(15,25,35,.18)}
+.critical-rule::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.critical-rule-label{font-size:9px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:rgba(201,168,76,.7);margin-bottom:8px}
+.critical-rule-text{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:#fff;line-height:1.3;letter-spacing:.1px;text-transform:uppercase;text-align:left}
+.critical-rule-sub{font-size:12px;color:rgba(255,255,255,.58);margin-top:8px;line-height:1.55;text-align:justify}
+.critical-rule-sub strong{color:rgba(255,255,255,.82)}
+mark.hi{background:rgba(201,168,76,.22);color:#5a3e00;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(201,168,76,.5)}
+
+/* ══ ACCORDIONS ══ */
+details.block-accordion{border:none;background:none;padding:0;margin:8px 0 0}
+details.block-accordion+details.block-accordion{margin-top:7px}
+.block-accordion-header{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.04),rgba(107,143,168,.08));border:1px solid rgba(107,143,168,.15);transition:all .2s;user-select:none}
+.block-accordion-header::-webkit-details-marker{display:none}
+details.block-accordion[open] .block-accordion-header{border-radius:11px 11px 0 0;border-bottom-color:transparent;background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.12))}
+.block-accordion-header:hover{background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.13))}
+.bac-left{display:flex;align-items:center;gap:11px}
+.bac-num{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bac-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.bac-title{font-size:13.5px;font-weight:700;color:var(--ink)}
+.bac-arrow{font-size:11px;color:var(--slate);transition:transform .2s;flex-shrink:0}
+details.block-accordion[open] .bac-arrow{transform:rotate(90deg)}
+.bac-body{padding:14px 16px 16px;border:1px solid rgba(107,143,168,.15);border-top:none;border-radius:0 0 11px 11px;background:rgba(242,244,247,.45);font-size:13px}
+details.acc-rfe .bac-num{background:linear-gradient(135deg,#1a3a5c,#2e5c8a)}
+details.acc-noid .bac-num{background:linear-gradient(135deg,#8b2c2c,#b04a3a)}
+details.acc-major>.block-accordion-header{padding:15px 18px;background:linear-gradient(135deg,rgba(26,58,92,.1),rgba(141,184,216,.14));border-color:rgba(26,58,92,.2)}
+details.acc-major .bac-title{font-size:15px;font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.2px}
+details.acc-noid.acc-major>.block-accordion-header{background:linear-gradient(135deg,rgba(139,44,44,.09),rgba(180,90,70,.1));border-color:rgba(139,44,44,.2)}
+.ev-list{margin:8px 0 0;padding:0 0 0 17px;font-size:13px;line-height:1.7}
+.ev-list li{margin-bottom:6px}
+
+/* ══ CHIPS / LINKS ══ */
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chip{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:600;background:rgba(141,184,216,.13);border:1px solid rgba(107,143,168,.17);color:var(--ink)}
+.chip.blue{background:rgba(37,99,235,.09);border-color:rgba(37,99,235,.18);color:#1a3a5c}
+.chip.red{background:rgba(180,50,50,.08);border-color:rgba(180,50,50,.18);color:#8b2c2c}
+.chip.gold{background:var(--gold-bg);border-color:rgba(201,168,76,.2);color:#7a5200}
+.ex-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.ex-link{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9px;background:rgba(26,58,92,.06);border:1px solid rgba(26,58,92,.18);color:var(--accent);font-size:12.5px;font-weight:700;text-decoration:none;transition:all .18s}
+.ex-link:hover{background:rgba(26,58,92,.12);transform:translateY(-1px);box-shadow:0 4px 12px rgba(26,58,92,.14)}
+.ex-link .exi{font-size:14px}
+.ex-link.noid{background:rgba(139,44,44,.06);border-color:rgba(139,44,44,.2);color:#8b2c2c}
+.ex-link.noid:hover{background:rgba(139,44,44,.12);box-shadow:0 4px 12px rgba(139,44,44,.14)}
+a.case-link{color:inherit;text-decoration:none;border-bottom:1.5px dotted rgba(201,168,76,.7)}
+a.case-link:hover{color:var(--accent2);border-bottom-color:var(--accent2)}
+
+/* ══ TABLES ══ */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:11px;border:1px solid rgba(107,143,168,.16);margin:14px 0}
+.info-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:680px}
+.info-table th{background:var(--accent);color:#fff;padding:11px 14px;text-align:left;font-weight:700;font-size:11.5px;vertical-align:bottom}
+.info-table td{padding:10px 14px;border-bottom:1px solid rgba(107,143,168,.12);vertical-align:top;line-height:1.6}
+.info-table tr:nth-child(even) td{background:rgba(107,143,168,.04)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:hover td{background:rgba(141,184,216,.08)}
+.info-table td.n{width:44px;text-align:center;font-weight:800;color:var(--slate);font-size:11.5px}
+.info-table td.def{border-left:3px solid var(--red);font-weight:600;color:var(--ink);width:34%}
+.info-table.is-rfe td.def{border-left-color:var(--accent2)}
+.info-table.two td:first-child{width:38%;font-weight:600;color:var(--ink);border-left:3px solid var(--accent2)}
+.info-table.versus th:nth-child(2){background:#1a3a5c}
+.info-table.versus th:nth-child(3){background:#8b2c2c}
+.info-table.versus td:first-child{width:18%;font-weight:700;color:var(--ink)}
+.ref{display:block;margin-top:6px;font-size:11px;color:var(--slate);font-style:italic;text-align:left}
+
+/* ══ PLAZOS ══ */
+.plazos{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:22px 24px 16px;margin-top:18px;position:relative;z-index:1}
+.plazos h4{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:rgba(201,168,76,.85);margin-bottom:18px}
+.plazo-row{margin-bottom:18px}
+.plazo-label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px}
+.plazo-label b{font-size:14px;font-weight:700}
+.plazo-label span{font-size:11.5px;color:rgba(255,255,255,.7)}
+.track{position:relative;height:10px;background:rgba(255,255,255,.1);border-radius:6px}
+.bar{position:absolute;top:0;height:10px;border-radius:6px}
+.bar.rfe{background:linear-gradient(90deg,#2e5c8a,#8db8d8)}
+.bar.noid{background:linear-gradient(90deg,#8b2c2c,#c96a56)}
+.scale{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.45);margin-top:9px;border-top:1px dashed rgba(255,255,255,.14);padding-top:7px}
+
+/* ══ MINI CARDS / GRIDS ══ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:700px){.two-col{grid-template-columns:1fr}}
+.mini-card{padding:13px;border-radius:11px;border:1px solid rgba(107,143,168,.15);background:rgba(107,143,168,.04)}
+.mini-card h4{font-size:12.5px;margin-bottom:6px;color:var(--ink);font-weight:700}
+.mini-card .who{font-size:10.5px;color:var(--slate);margin-bottom:8px;font-weight:600}
+.mini-card p,.mini-card li{font-size:12px;color:var(--slate);line-height:1.6}
+.mini-card ul{padding-left:16px}
+.mini-card li{margin-bottom:6px}
+.fix-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid rgba(107,143,168,.13)}
+.fix-item:last-child{border-bottom:none}
+.fix-kind{flex:0 0 96px;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent2);padding-top:2px}
+.fix-body b{display:block;font-size:13px;color:var(--ink);margin-bottom:3px}
+.fix-body p{margin:0;font-size:12.5px;color:var(--slate)}
+@media(max-width:600px){.fix-item{flex-direction:column;gap:3px}.fix-kind{flex:none}}
+
+/* ══ PAGE TITLE ══ */
+.page-title{margin-bottom:16px}
+.page-title .pt-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate);margin-bottom:4px}
+.page-title h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ink);line-height:1.2}
+.page-title .pt-sub{font-size:13px;color:var(--slate);margin-top:3px;max-width:80ch;text-align:justify}
+
+/* ══ GATE (nombre del colaborador) ══ */
+.gate{max-width:620px;margin:10px auto 0;background:var(--white);border-radius:18px;box-shadow:var(--shadow);border:1px solid rgba(107,143,168,.15);padding:34px 32px;text-align:center}
+.gate .gate-seal{width:64px;height:64px;margin:0 auto 14px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 8px 20px rgba(26,58,92,.25)}
+.gate h2{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:700;color:var(--ink);line-height:1.2}
+.gate .gate-sub{font-size:13px;color:var(--slate);margin:8px auto 22px;max-width:52ch;text-align:center}
+.gate label{display:block;text-align:left;font-size:10px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--slate);margin-bottom:6px}
+.gate input{width:100%;padding:13px 15px;border-radius:11px;border:1.5px solid rgba(107,143,168,.28);font-family:'DM Sans',sans-serif;font-size:14.5px;color:var(--ink);background:#fbfcfd;transition:all .18s}
+.gate input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(46,92,138,.13);background:#fff}
+.gate .gate-err{display:none;margin-top:9px;font-size:12px;color:var(--red);font-weight:600;text-align:left}
+.gate .gate-err.show{display:block}
+.btn{padding:12px 26px;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 5px 16px rgba(26,58,92,.32)}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed}
+.btn-ghost{background:rgba(107,143,168,.12);color:var(--slate);border:1px solid rgba(107,143,168,.2)}
+.btn-ghost:hover{background:rgba(107,143,168,.22)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#a07828);color:#fff}
+.btn-gold:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 5px 16px rgba(201,168,76,.35)}
+.gate .btn{margin-top:18px;width:100%}
+.gate-note{font-size:11px;color:var(--slate);margin-top:14px;text-align:center}
+
+/* ══ EXAM ══ */
+.exam-shell{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(107,143,168,.15);overflow:hidden}
+.exam-top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(107,143,168,.13);background:linear-gradient(180deg,rgba(201,168,76,.12),rgba(201,168,76,.02))}
+.exam-top .et-count{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);white-space:nowrap}
+.exam-top .et-track{flex:1;height:7px;background:rgba(107,143,168,.16);border-radius:4px;overflow:hidden}
+.exam-top .et-fill{height:7px;background:linear-gradient(90deg,var(--gold),#a07828);width:0;transition:width .35s ease}
+.exam-body{padding:20px 22px}
+.exam-q{display:none}
+.exam-q.active{display:block;animation:fadeUp .25s ease both}
+.q-stem{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:14px;line-height:1.55;text-align:justify}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:9px;border:1.5px solid rgba(107,143,168,.18);background:#fff;cursor:pointer;font-size:13px;transition:all .18s;text-align:left}
+.q-opt:hover{border-color:var(--accent2);background:rgba(26,58,92,.04)}
+.q-opt.selected{border-color:var(--accent2);background:rgba(26,58,92,.06)}
+.q-opt.correct{border-color:#1e6641;background:#d1fae5;pointer-events:none}
+.q-opt.incorrect{border-color:#8b2c2c;background:#fee2e2;pointer-events:none}
+.q-opt.disabled{pointer-events:none;opacity:.75}
+.q-letter{width:24px;height:24px;border-radius:6px;background:rgba(107,143,168,.13);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.q-feedback{display:none;margin-top:13px;padding:12px 14px;border-radius:9px;font-size:12.5px;line-height:1.6}
+.q-feedback.show{display:block;animation:fadeUp .22s ease both}
+.q-feedback.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.q-feedback.fail{background:var(--red-bg);border:1px solid rgba(139,44,44,.17);color:var(--red)}
+.exam-footer{padding:14px 18px;display:flex;gap:10px;justify-content:flex-end;align-items:center;border-top:1px solid rgba(107,143,168,.12);flex-wrap:wrap}
+.exam-footer .ef-hint{margin-right:auto;font-size:11.5px;color:var(--slate)}
+.result-card{padding:26px 22px;text-align:center}
+.result-score{font-family:'Cormorant Garamond',serif;font-size:58px;font-weight:700;line-height:1}
+.result-score.pass{color:var(--green)}.result-score.fail{color:var(--red)}
+.result-label{font-size:14px;font-weight:700;color:var(--ink);margin:6px 0 8px}
+.result-msg{font-size:12.5px;color:var(--slate);line-height:1.6;max-width:56ch;margin:0 auto 16px}
+.result-breakdown{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.rb-item{padding:12px 20px;border-radius:11px;text-align:center;min-width:92px}
+.rb-ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17)}
+.rb-bad{background:var(--red-bg);border:1px solid rgba(139,44,44,.17)}
+.rb-mod{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.17)}
+.rb-n{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;line-height:1}
+.rb-ok .rb-n{color:var(--green)}.rb-bad .rb-n{color:var(--red)}.rb-mod .rb-n{color:var(--slate)}
+.rb-l{font-size:10px;font-weight:700;color:var(--slate);margin-top:3px}
+.lms-status{margin-top:18px;font-size:11.5px;font-weight:600;color:var(--slate);display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;background:rgba(107,143,168,.09);border:1px solid rgba(107,143,168,.17)}
+.lms-status.ok{background:var(--green-bg);border-color:rgba(30,102,65,.2);color:var(--green)}
+.lms-status.off{background:var(--amber-bg);border-color:rgba(180,130,0,.2);color:var(--amber)}
+
+/* ══ QUINTA PARTE — PRÁCTICA ══ */
+.sb-item.practice .sb-num{background:rgba(30,102,65,.16);color:#4ade80}
+.sb-item.practice.active .sb-num{background:var(--green);color:#fff}
+.sb-item.practice .sb-name{color:rgba(120,220,170,.6)}
+.sb-item.practice.active .sb-name{color:rgba(160,240,200,.95)}
+.launch{background:linear-gradient(135deg,#0b1f35 0%,#14385d 55%,#1e6641 160%);border-radius:16px;padding:34px 34px 30px;color:#fff;box-shadow:0 14px 34px rgba(10,20,35,.2);margin-bottom:18px}
+.launch h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#fff;margin:0 0 8px;letter-spacing:.2px}
+.launch p{font-size:13.5px;color:rgba(255,255,255,.8);max-width:70ch;margin:0 0 8px}
+.launch .lmeta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 22px}
+.launch .lmeta span{padding:5px 13px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);font-size:11.5px;font-weight:600;color:#dbe7f2}
+.launch-btns{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.launch-btn{display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border-radius:10px;background:var(--gold);color:#20160a;font-size:14.5px;font-weight:700;text-decoration:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:transform .16s,box-shadow .16s}
+.launch-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(201,168,76,.35)}
+.launch-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.launch-alt{font-size:12.5px;color:rgba(255,255,255,.72);text-decoration:underline;text-underline-offset:3px}
+.launch-alt:hover{color:#fff}
+.launch-nota{font-size:11.5px;color:rgba(255,255,255,.55);margin-top:16px}
+.caso-mini{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media(max-width:760px){.caso-mini{grid-template-columns:1fr}}
+.caso-mini .cm{border:1px solid var(--grey-200,rgba(107,143,168,.2));border-radius:11px;padding:16px 18px;background:#fff}
+.caso-mini .cm .cmt{font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:9px}
+.caso-mini .cm.r .cmt{background:rgba(37,99,235,.1);color:#1a3a8a}
+.caso-mini .cm.n .cmt{background:rgba(139,44,44,.09);color:#8b2c2c}
+.caso-mini .cm h5{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.caso-mini .cm p{font-size:12.5px;color:var(--slate);margin:0 0 10px}
+.caso-mini .cm .cmd{font-size:11.5px;color:var(--slate);border-top:1px solid rgba(107,143,168,.16);padding-top:9px;line-height:1.7}
+.caso-mini .cm .cmd b{color:var(--ink)}
+
+@media print{.topnav,.sidebar,.progress-bar-wrap{display:none}.main{margin-left:0}.panel{display:block!important}}
+</style>
+</head>
+<body class="gated">
+
+<!-- ════ TOP NAV ════ -->
+<nav class="topnav">
+  <button class="sidebar-toggle" onclick="toggleSidebar()" title="Mostrar u ocultar el menú" aria-label="Mostrar u ocultar el menú">☰</button>
+  <div class="brand">
+    <div class="seal">🎓</div>
+    TMLF <span>Learning Center</span>
+  </div>
+  <div class="topnav-right">
+    <div class="topnav-pill">Compliance · VAWA</div>
+  </div>
+</nav>
+
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="globalProgress"></div></div>
+<div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-shell">
+
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sh-label">TMLF Learning Center</div>
+      <div class="sh-title">RFEs, NOIDs y Declaraciones Juradas de Respuesta</div>
+    </div>
+
+    <div class="sb-user" id="sbUser" style="display:none">
+      <div class="su-l">Colaborador</div>
+      <div class="su-n" id="sbUserName"></div>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Inicio</div>
+      <div class="sb-item overview active" id="nav-bienvenida" onclick="showPanel('bienvenida')">
+        <div class="sb-num">👤</div>
+        <div class="sb-text">
+          <div class="sb-name">Bienvenida</div>
+          <div class="sb-sub">Registro del colaborador</div>
+        </div>
+      </div>
+      <div class="sb-item overview locked" id="nav-introduccion" onclick="showPanel('introduccion')">
+        <div class="sb-num">📖</div>
+        <div class="sb-text">
+          <div class="sb-name">Introducción</div>
+          <div class="sb-sub">Resumen del contenido</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Módulos del Training</div>
+      <div class="sb-item locked" id="nav-parte1" onclick="showPanel('parte1')">
+        <div class="sb-num">1</div>
+        <div class="sb-text">
+          <div class="sb-name">Primera parte</div>
+          <div class="sb-sub">Análisis de cada documento</div>
+        </div>
+      </div>
+      <div class="sb-item locked" id="nav-parte2" onclick="showPanel('parte2')">
+        <div class="sb-num">2</div>
+        <div class="sb-text">
+          <div class="sb-name">Segunda parte</div>
+          <div class="sb-sub">Tablas comparativas</div>
+        </div>
+      </div>
+      <div class="sb-item locked" id="nav-parte3" onclick="showPanel('parte3')">
+        <div class="sb-num">3</div>
+        <div class="sb-text">
+          <div class="sb-name">Tercera parte</div>
+          <div class="sb-sub">Correcciones y aclaraciones</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+    <div class="sb-spec-banner">
+      <span style="font-size:14px">⭐</span>
+      <div class="sbb-text">Cierre del Training</div>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-item exam locked" id="nav-evaluacion" onclick="showPanel('evaluacion')">
+        <div class="sb-num">✦</div>
+        <div class="sb-text">
+          <div class="sb-name">Cuarta parte · Evaluación</div>
+          <div class="sb-sub">20 preguntas · 85% aprobatorio</div>
+        </div>
+      </div>
+      <div class="sb-item practice locked" id="nav-practica" onclick="showPanel('practica')">
+        <div class="sb-num">▶</div>
+        <div class="sb-text">
+          <div class="sb-name">Quinta parte · Práctica</div>
+          <div class="sb-sub">Simulador de opciones</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN ════ -->
+  <main class="main">
+
+    <!-- ════════ PANEL: BIENVENIDA (registro) ════════ -->
+    <section class="panel active" id="panel-bienvenida">
+      <div class="header">
+        <div class="header-seal">🎓</div>
+        <div class="header-badge"><div class="dot"></div>The Mendoza Law Firm · Compliance</div>
+        <h1>RFEs, NOIDs y Declaraciones Juradas de Respuesta</h1>
+        <p class="subtitle">Cómo se responde una Solicitud de Evidencia o una Notificación de Intento de Denegar en una petición bajo el beneficio migratorio VAWA.</p>
+        <div class="header-meta">
+          <div class="header-meta-item"><span>Módulos</span><strong>4</strong></div>
+          <div class="header-meta-item"><span>Evaluación</span><strong>20 preguntas</strong></div>
+          <div class="header-meta-item"><span>Mínimo aprobatorio</span><strong>85%</strong></div>
+        </div>
+      </div>
+
+      <div class="gate">
+        <div class="gate-seal">👤</div>
+        <h2>Antes de comenzar</h2>
+        <p class="gate-sub">Escribe tu nombre completo. Se usará para registrar tu avance y el resultado de la evaluación final.</p>
+        <label for="colabName">Nombre del colaborador</label>
+        <input type="text" id="colabName" placeholder="Nombre y apellidos" autocomplete="name" onkeydown="if(event.key==='Enter')startTraining()">
+        <div class="gate-err" id="gateErr">Escribe tu nombre completo para continuar.</div>
+        <button class="btn btn-primary" onclick="startTraining()">Comenzar el training</button>
+        <p class="gate-note">Al continuar se habilitan la introducción, los tres módulos de contenido y la evaluación final.</p>
+      </div>
+    </section>
+
+    <!-- ════════ PANEL: INTRODUCCIÓN ════════ -->
+    <section class="panel" id="panel-introduccion">
+      <div class="header">
+        <div class="header-seal">📖</div>
+        <div class="header-badge"><div class="dot"></div>Introducción</div>
+        <h1>Qué vas a encontrar en este training</h1>
+        <p class="subtitle">Un recorrido en cuatro partes: qué son los instrumentos que emite USCIS, cómo se construye la declaración que los responde, cómo se documenta la trazabilidad entre cada deficiencia y su prueba, y una evaluación final para verificar el dominio del contenido.</p>
+
+        <div class="plazos">
+          <h4>La diferencia que manda en la operación: el plazo para responder</h4>
+          <div class="plazo-row">
+            <div class="plazo-label"><b>RFE</b><span>30 a 87 días</span></div>
+            <div class="track"><span class="bar rfe" style="left:33.3%;width:63.4%"></span></div>
+          </div>
+          <div class="plazo-row">
+            <div class="plazo-label"><b>NOID</b><span>máximo 30 días · 33 con envío postal</span></div>
+            <div class="track"><span class="bar noid" style="left:0;width:36.7%"></span></div>
+          </div>
+          <div class="scale"><span>0 días</span><span>30</span><span>60</span><span>90</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="btitle"><div class="bicon">🗺️</div><h3>Resumen del contenido</h3><span class="mod-badge badge-core">Mapa</span></div>
+        <div class="bbody">
+          <p>Este material organiza el análisis de las Solicitudes de Evidencia (RFEs), las Notificaciones de Intento de Denegar (NOIDs) y las Declaraciones Juradas de Respuesta (DCLs / Affidavits) presentadas bajo el beneficio migratorio VAWA. Cada parte vive en una pantalla distinta y se navega desde el menú lateral.</p>
+
+          <div class="two-col">
+            <div class="mini-card">
+              <h4>1 · Análisis de cada documento</h4>
+              <p>Definición general de cada instrumento y su fundamento legal: 8 CFR 103.2(b), USCIS Policy Manual Vol. 1 Parte E Caps. 6 y 9, y la actualización del 5 de agosto de 2026. Anatomía completa del RFE y del NOID, contenido de las DCLs dividido en Affidavit y Declaración, y el resumen estructural comparado.</p>
+            </div>
+            <div class="mini-card">
+              <h4>2 · Tablas comparativas</h4>
+              <p>La tabla general teórica que vincula cada requerimiento típico de USCIS con la evidencia que lo subsana, y la trazabilidad punto por punto de cuatro expedientes reales entre la deficiencia señalada y la respuesta provista en la declaración.</p>
+            </div>
+            <div class="mini-card">
+              <h4>3 · Correcciones y aclaraciones</h4>
+              <p>Lo que se corrige de forma sistemática en cualquier DCL —domicilios, formularios, nombres, antecedentes, prueba faltante— y lo que fue particular de cada uno de los cuatro casos analizados.</p>
+            </div>
+            <div class="mini-card">
+              <h4>4 · Evaluación final</h4>
+              <p>Veinte preguntas de opción múltiple, una por pantalla, con retroalimentación en cada respuesta. El mínimo aprobatorio es 85% y el resultado se registra en Moodle al finalizar.</p>
+            </div>
+          </div>
+
+          <div class="lo-callout" style="margin-top:14px">
+            <div class="lo-icon">🎯</div>
+            <div class="lo-text">
+              <strong>Objetivo del training</strong>
+              Que el colaborador identifique con precisión qué instrumento tiene enfrente, qué plazo corre, qué debe contener la respuesta y cómo se documenta que cada deficiencia señalada quedó efectivamente atendida.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ PANEL: PRIMERA PARTE ════════ -->
+    <section class="panel" id="panel-parte1">
+      <div class="page-title">
+        <div class="pt-label">Primera parte</div>
+        <h2>Análisis de cada documento</h2>
+        <p class="pt-sub">Qué es cada instrumento, de dónde viene su autoridad legal, cómo está construido y qué debe contener la declaración jurada que lo responde.</p>
+      </div>
+
+      <div class="sdiv"><div class="l"></div><div class="t">Apartado A</div><div class="l"></div></div>
+
+      <div class="block b-concepto">
+        <div class="btitle"><div class="bicon">📌</div><h3>A. Qué son los NOIDs y los RFEs</h3><span class="mod-badge badge-gold">Definición</span></div>
+        <div class="bbody">
+          <div class="two-col">
+            <div class="mini-card" style="border-left:3px solid var(--accent2)">
+              <h4>RFE — Request for Evidence</h4>
+              <p>Es la comunicación oficial con la que USCIS informa al peticionario que el expediente está incompleto y le pide evidencia adicional antes de resolver. No es una negativa ni un anticipo de ella: el oficial todavía no ha tomado postura sobre el fondo del caso, sino que identifica qué elemento de elegibilidad no quedó demostrado con lo que ya se presentó y otorga una única oportunidad para completarlo dentro de un plazo determinado.</p>
+            </div>
+            <div class="mini-card" style="border-left:3px solid var(--red)">
+              <h4>NOID — Notice of Intent to Deny</h4>
+              <p>Es la comunicación oficial con la que USCIS anuncia que, con la evidencia que obra en el expediente, la petición sería denegada, y expone el razonamiento que sostiene esa conclusión. A diferencia del RFE, no pide documentos faltantes: confronta al peticionario con motivos concretos —insuficiencia sustantiva o información derogatoria— y le concede una última oportunidad, más breve, para refutarlos antes de emitir la decisión.</p>
+            </div>
+          </div>
+
+          <div class="sdiv"><div class="l"></div><div class="t">Fundamento legal general</div><div class="l"></div></div>
+
+          <p>Ambos instrumentos derivan de <mark class="hi">8 CFR 103.2(b)</mark>, que regula la evidencia inicial y la evidencia adicional, y se rigen operativamente por el USCIS Policy Manual.</p>
+
+          <div class="table-wrap">
+            <table class="info-table two">
+              <thead><tr><th>Fuente</th><th>Contenido</th></tr></thead>
+              <tbody>
+                <tr><td>8 CFR 103.2(b)</td><td>Evidencia inicial y evidencia adicional; carga de la prueba del peticionario.</td></tr>
+                <tr><td>Policy Manual, Vol. 1, Parte E, Cap. 6</td><td>“Evidence, Requests for Evidence, and Notices of Intent to Deny”.</td></tr>
+                <tr><td>Policy Manual, Vol. 1, Parte E, Cap. 9</td><td>“Rendering a Decision”.</td></tr>
+                <tr><td>Policy Alert PA-2026-05</td><td>Actualización del 5 de agosto de 2026: amplía la discreción del oficial para denegar sin emitir RFE ni NOID cuando la evidencia inicial no acredita elegibilidad.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="critical-rule">
+            <div class="critical-rule-label">Nota de verificación — PA-2026-05</div>
+            <div class="critical-rule-text">Los RFE no desaparecen, pero ya no se pueden dar por descontados</div>
+            <div class="critical-rule-sub">El cambio está confirmado y entró en vigor de inmediato, aplicable a peticiones pendientes y a las presentadas desde el 5 de agosto de 2026. Rescinde la guía de 2021 que instruía emitir RFE antes de denegar. Dos precisiones relevantes para la operación: <strong>el oficial conserva discreción para emitir RFE</strong>, y el tope de 12 semanas para responder dejó de ser el plazo que se otorga por defecto —ahora es un techo, y el oficial puede fijar plazos más cortos—. Antes de usar este material como referencia definitiva conviene contrastar el texto vigente del Policy Manual.</div>
+          </div>
+
+          <div class="sdiv"><div class="l"></div><div class="t">Anatomía de cada instrumento</div><div class="l"></div></div>
+          <p style="font-size:12.5px;color:var(--slate)">Da clic en cada instrumento para desplegarlo, y luego en cada apartado numerado para ver su descripción.</p>
+
+          <!-- ===== RFE ===== -->
+          <details class="block-accordion acc-rfe acc-major">
+            <summary class="block-accordion-header">
+              <div class="bac-left">
+                <div class="bac-num">📄</div>
+                <div>
+                  <div class="bac-label">Instrumento</div>
+                  <div class="bac-title">RFE — Request for Evidence</div>
+                </div>
+              </div>
+              <div class="bac-arrow">▶</div>
+            </summary>
+            <div class="bac-body">
+              <p style="margin-bottom:10px"><strong>Propósito:</strong> completar el expediente. Falta evidencia y el oficial todavía no tiene postura sobre el fondo.</p>
+
+              <details class="block-accordion acc-rfe">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">1</div><div><div class="bac-title">Encabezado / membrete oficial</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Logo de USCIS, número de recibo (receipt number), tipo de formulario, fecha de emisión y datos del peticionario y beneficiario.</div>
+              </details>
+              <details class="block-accordion acc-rfe">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">2</div><div><div class="bac-title">Cita de la base legal</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Referencia a la INA y/o al 8 CFR aplicable a esa categoría de beneficio.</div>
+              </details>
+              <details class="block-accordion acc-rfe">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">3</div><div><div class="bac-title">Resumen de la evidencia ya presentada</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Lista de lo que el oficial reconoce haber recibido en el expediente. Sirve para detectar qué no fue registrado o no fue leído como se esperaba.</div>
+              </details>
+              <details class="block-accordion acc-rfe">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">4</div><div><div class="bac-title">Sección de deficiencias — “Evidence Lacking” / “Missing Evidence”</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">El corazón del documento: explica qué elemento de elegibilidad no quedó demostrado y qué tipo de prueba se necesita para subsanarlo.</div>
+              </details>
+              <details class="block-accordion acc-rfe">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">5</div><div><div class="bac-title">Instrucciones de respuesta</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Cómo organizar y presentar la evidencia. Hay una sola oportunidad de respuesta: USCIS no acepta respuestas parciales sucesivas.</div>
+              </details>
+              <details class="block-accordion acc-rfe">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">6</div><div><div class="bac-title">Plazo de respuesta</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Generalmente entre 30 y 87 días según el trámite. Bajo la política vigente desde 2018 ya no existe la extensión automática de 60 días por correo.</div>
+              </details>
+              <details class="block-accordion acc-rfe">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">7</div><div><div class="bac-title">Advertencia de consecuencias</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Si no hay respuesta dentro del plazo, se adjudica con la evidencia existente, lo que usualmente significa denegación.</div>
+              </details>
+              <details class="block-accordion acc-rfe">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">8</div><div><div class="bac-title">Dirección de envío</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Una para USPS y otra distinta para servicios de mensajería (FedEx, UPS, DHL).</div>
+              </details>
+
+              <div class="ex-links">
+                <a class="ex-link" href="https://drive.google.com/file/d/1XetD-xWq0hxm-2nsLXQVnoz6-6U74qOC/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span class="exi">🔗</span>Ejemplo 1</a>
+                <a class="ex-link" href="https://drive.google.com/file/d/1_61kIpjx0d4xRdhQI8lza3_CFFLFk5XN/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span class="exi">🔗</span>Ejemplo 2</a>
+              </div>
+            </div>
+          </details>
+
+          <!-- ===== NOID ===== -->
+          <details class="block-accordion acc-noid acc-major">
+            <summary class="block-accordion-header">
+              <div class="bac-left">
+                <div class="bac-num">⚠️</div>
+                <div>
+                  <div class="bac-label">Instrumento</div>
+                  <div class="bac-title">NOID — Notice of Intent to Deny</div>
+                </div>
+              </div>
+              <div class="bac-arrow">▶</div>
+            </summary>
+            <div class="bac-body">
+              <p style="margin-bottom:10px"><strong>Propósito:</strong> anunciar y justificar una denegación. El oficial ya se inclina a negar y expone su razonamiento.</p>
+
+              <details class="block-accordion acc-noid">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">1</div><div><div class="bac-title">Encabezado / membrete oficial</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Los mismos datos identificativos que el RFE, con la leyenda de intención de denegar (“Intent to Deny”).</div>
+              </details>
+              <details class="block-accordion acc-noid">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">2</div><div><div class="bac-title">Base legal y estándar de prueba aplicable</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Preponderance of the evidence, clear and convincing evidence, etc., según la categoría del beneficio solicitado.</div>
+              </details>
+              <details class="block-accordion acc-noid">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">3</div><div><div class="bac-title">Declaración de hechos y análisis</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">A diferencia del RFE, el NOID expone el razonamiento del oficial: por qué, con la evidencia actual, el caso <em>sería denegado</em>. Suele incluir análisis caso por caso, no solo una lista de documentos faltantes.</div>
+              </details>
+              <details class="block-accordion acc-noid">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">4</div><div><div class="bac-title">Motivos específicos de la intención de denegar</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Cada motivo debe estar suficientemente detallado para que el peticionario pueda responder de manera informada. Incluye información derogatoria desconocida por el solicitante, cuando aplica.</div>
+              </details>
+              <details class="block-accordion acc-noid">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">5</div><div><div class="bac-title">Oportunidad de respuesta</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Invitación a presentar evidencia adicional o argumentos legales que refuten los motivos señalados.</div>
+              </details>
+              <details class="block-accordion acc-noid">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">6</div><div><div class="bac-title">Plazo de respuesta</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">No puede exceder 30 días —33 si se computa el envío postal—, más corto que el plazo típico de un RFE.</div>
+              </details>
+              <details class="block-accordion acc-noid">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">7</div><div><div class="bac-title">Consecuencia de no responder</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">Denegación automática con base en los motivos ya expuestos.</div>
+              </details>
+              <details class="block-accordion acc-noid">
+                <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">8</div><div><div class="bac-title">Notificación de derechos posteriores</div></div></div><div class="bac-arrow">▶</div></summary>
+                <div class="bac-body">En la decisión final derivada del NOID se indica si existe derecho de apelación o solo moción de reconsideración o reapertura.</div>
+              </details>
+
+              <div class="ex-links">
+                <a class="ex-link noid" href="https://drive.google.com/file/d/1uBG7AtPsXVWhONzoV5Itq7DXZPSIdEST/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span class="exi">🔗</span>Ejemplo 1</a>
+                <a class="ex-link noid" href="https://drive.google.com/file/d/1mC0UEGHYA5okMfhZQCYzNDg3IbcK70cE/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span class="exi">🔗</span>Ejemplo 2</a>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="sdiv"><div class="l"></div><div class="t">Apartado B</div><div class="l"></div></div>
+
+      <div class="block">
+        <div class="btitle"><div class="bicon">📝</div><h3>B. Contenido de las DCLs que responden a RFEs o NOIDs</h3><span class="mod-badge badge-core">Estructura</span></div>
+        <div class="bbody">
+          <p>La Declaración Jurada de Respuesta cumple dos funciones que conviene no mezclar al redactarla. La primera es administrativa y legal: responde formalmente cada punto que USCIS enumeró. La segunda es sustantiva: desarrolla la narrativa de victimización que acredita la elegibilidad. En la práctica de TMLF, la primera corresponde al Affidavit y la segunda a la Declaración, que es donde se narran los abusos nuevos.</p>
+
+          <details class="block-accordion acc-major">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">b1</div><div><div class="bac-label">Componente</div><div class="bac-title">Affidavit</div></div></div>
+              <div class="bac-arrow">▶</div>
+            </summary>
+            <div class="bac-body">
+              <p>Aclaraciones administrativas y legales requeridas formalmente por USCIS. Es la parte que cierra las puertas procesales antes de entrar al fondo:</p>
+              <ul class="ev-list">
+                <li><strong>Corrección de domicilios.</strong> Distinción explícita entre el domicilio físico real de residencia y el domicilio de correspondencia seguro, con el domicilio físico identificado para efectos de la cita biométrica.</li>
+                <li><strong>Formularios incompletos.</strong> Subsanación de las omisiones en el I-360, típicamente Parte 3 (información del peticionario y del presunto abusador) y Parte 10 (declaración, firma e información de contacto).</li>
+                <li><strong>Validez de firmas.</strong> Ratificación de que la firma manuscrita original es del peticionario y confirmación del G-28 de representación legal.</li>
+                <li><strong>Estatus del presunto abusador.</strong> Acreditación del estatus de ciudadano o residente permanente del abusador, o justificación legal de por qué no fue posible obtener el documento primario.</li>
+                <li><strong>Inconsistencias documentales.</strong> Corrección de fechas de matrimonio, separación y divorcio cuando el registro civil, el formulario y la narrativa no coinciden.</li>
+                <li><strong>Buena conducta moral.</strong> Recaracterización de antecedentes penales bajo INA 101(f), con atenuantes, contexto y explicación del acto imputado.</li>
+                <li><strong>Pruebas de rehabilitación.</strong> Constancias, cartas de comunidad, polígrafos y demás evidencia que sostenga la recaracterización anterior.</li>
+                <li><strong>Imposibilidad de obtener documentos.</strong> Justificantes de por qué cierta prueba no está en el expediente: negativas de cortes o registros, riesgo de seguridad para el peticionario, o inexistencia del registro.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="block-accordion acc-major">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">b2</div><div><div class="bac-label">Componente</div><div class="bac-title">Declaración</div></div></div>
+              <div class="bac-arrow">▶</div>
+            </summary>
+            <div class="bac-body">
+              <p>Desarrollo detallado de la victimización, en orden cronológico y con hechos verificables:</p>
+              <ul class="ev-list">
+                <li><strong>Agresión física (“batería”).</strong> Descripción concreta de cada episodio: qué ocurrió, dónde, quién estuvo presente, qué lesión resultó.</li>
+                <li><strong>Violencia psicológica, financiera y verbal.</strong> Humillación, aislamiento, apropiación de ingresos y bienes, amenazas.</li>
+                <li><strong>Control migratorio.</strong> Amenazas de deportación, retención de documentos, uso del estatus como instrumento de coerción.</li>
+                <li><strong>Edades y fechas exactas.</strong> Estructurar los hechos con precisión temporal es determinante cuando la elegibilidad depende de la edad del agresor —por ejemplo, violencia ejercida por hijos mayores de 21 años, donde solo cuentan los actos posteriores a esa edad.</li>
+                <li><strong>Impacto psicológico.</strong> Diagnósticos conforme al DSM-5 y evaluación profesional que vincule los síntomas con los hechos narrados.</li>
+                <li><strong>Tablas-resumen de maltrato.</strong> Consolidación de episodios, domicilios y periodos en tablas que el oficial pueda leer de un vistazo.</li>
+                <li><strong>Evidencia fotográfica y homologada.</strong> Acompañada de cláusulas formales de autenticación que identifiquen qué muestra cada imagen, cuándo fue tomada y quién la tomó.</li>
+              </ul>
+            </div>
+          </details>
+
+          <div class="ex-links">
+            <a class="ex-link" href="https://drive.google.com/file/d/1UnC12izXt3avUlkRRxs2R9G4LlalpkTQ/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span class="exi">🔗</span>Ejemplo 1</a>
+            <a class="ex-link" href="https://drive.google.com/file/d/1FGy4uziPsMoWM8ay45inD4_OE0JmaalG/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span class="exi">🔗</span>Ejemplo 2</a>
+            <a class="ex-link" href="https://drive.google.com/file/d/1jpzZlAKBIfgj2TwxzLpbRE-wft8fwHgv/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span class="exi">🔗</span>Ejemplo 3</a>
+            <a class="ex-link" href="https://drive.google.com/file/d/1bDpSqB810-eppy9fC5TKFEHCExHNQn6n/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><span class="exi">🔗</span>Ejemplo 4</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="sdiv"><div class="l"></div><div class="t">Apartado C</div><div class="l"></div></div>
+
+      <div class="block">
+        <div class="btitle"><div class="bicon">⚖️</div><h3>C. Comparativa y resumen estructural</h3><span class="mod-badge badge-core">Síntesis</span></div>
+        <div class="bbody">
+          <h4 style="font-size:13px;font-weight:700;margin-bottom:4px">(I) Diferencias clave entre RFEs y NOIDs</h4>
+          <div class="table-wrap">
+            <table class="info-table versus">
+              <thead><tr><th>Criterio</th><th>RFE</th><th>NOID</th></tr></thead>
+              <tbody>
+                <tr><td>Función</td><td>Falta evidencia y el oficial aún no tiene postura. Solicita completar el expediente.</td><td>Expone la intención y la justificación de denegar por insuficiencia sustantiva o información derogatoria.</td></tr>
+                <tr><td>Tono</td><td>Requerimiento neutral: pide lo que falta.</td><td>Persuasivo y adversarial: justifica por qué denegaría, salvo respuesta que lo refute.</td></tr>
+                <tr><td>Plazo</td><td>30 a 87 días según el trámite.</td><td>Máximo 30 días; 33 con envío postal.</td></tr>
+                <tr><td>Uso típico en el área</td><td>Complementar pruebas de elegibilidad: relación calificada en VAWA, victimización en peticiones U.</td><td>Impugnar información derogatoria o insuficiencia sustantiva de la petición.</td></tr>
+                <tr><td>Efecto sobre la estrategia de respuesta</td><td>Aportar y ordenar prueba faltante en una sola entrega.</td><td>Argumentar contra el razonamiento del oficial, además de aportar prueba.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4 style="font-size:13px;font-weight:700;margin:18px 0 4px">(II) Resumen de la estructura estándar de una DCL</h4>
+          <div class="table-wrap">
+            <table class="info-table">
+              <thead><tr><th style="width:44px">#</th><th style="width:34%">Sección</th><th>Contenido</th></tr></thead>
+              <tbody>
+                <tr><td class="n">1</td><td><strong>Encabezado formal y fórmula de juramento</strong></td><td>Identificación del declarante, número de recibo y protesta de decir verdad.</td></tr>
+                <tr><td class="n">2</td><td><strong>Aclaraciones administrativas y correcciones preliminares</strong></td><td>Párrafos introductorios: domicilios, formularios, firmas, nombres, imposibilidad de obtener documentos.</td></tr>
+                <tr><td class="n">3</td><td><strong>Historial de la relación y cohabitación</strong></td><td>Con tablas de domicilios y periodos de residencia compartida.</td></tr>
+                <tr><td class="n">4</td><td><strong>Subsanación de deficiencias legales y antecedentes</strong></td><td>Buena conducta moral bajo INA 101(f), atenuantes y pruebas de rehabilitación.</td></tr>
+                <tr><td class="n">5</td><td><strong>Narrativa de abuso sustantivo</strong></td><td>Dividida en “Eventos” numerados y cronológicos, con fechas, lugares y testigos.</td></tr>
+                <tr><td class="n">6</td><td><strong>Evaluación de impacto psicológico y médico</strong></td><td>Diagnósticos DSM-5, tratamiento, medicación y vínculo causal con los hechos.</td></tr>
+                <tr><td class="n">7</td><td><strong>Cierre formal</strong></td><td>Fórmula de perjurio, constancia de que el documento fue revisado en español y firmas.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ PANEL: SEGUNDA PARTE ════════ -->
+    <section class="panel" id="panel-parte2">
+      <div class="page-title">
+        <div class="pt-label">Segunda parte</div>
+        <h2>Tabla comparativa: elemento solicitado en el RFE o NOID frente a la respuesta en la DCL</h2>
+        <p class="pt-sub">Primero el mapa teórico de requerimientos y evidencia. Después, la trazabilidad punto por punto de los cuatro expedientes. Da clic en cada caso para desplegar su contenido.</p>
+      </div>
+
+      <div class="block">
+        <div class="btitle"><div class="bicon">📊</div><h3>1. Tabla general teórica</h3><span class="mod-badge badge-core">Teoría</span></div>
+        <div class="bbody">
+          <p>Requerimiento típico de USCIS y evidencia que lo subsana. Aplicable a cualquier petición VAWA, con independencia del instrumento que la origine.</p>
+          <div class="table-wrap">
+            <table class="info-table two">
+              <thead><tr><th>Requerimiento o deficiencia típica solicitada por USCIS en un RFE o NOID</th><th>Información y tipo de evidencia que debe proveerse en la Declaración / Affidavit</th></tr></thead>
+              <tbody>
+                <tr><td>Estatus del abusador como ciudadano o residente permanente</td><td>Acta de nacimiento, certificado de naturalización, pasaporte o tarjeta de residencia del abusador. Cuando no es posible obtenerlos: declaración jurada que describa las gestiones realizadas, las negativas de cortes o registros civiles, el riesgo de seguridad que implicaría solicitarlos, y evidencia secundaria —número de seguro social, empleos con verificación de estatus, declaraciones de terceros que conocieron el estatus—.</td></tr>
+                <tr><td>Residencia compartida con el abusador</td><td>Tabla de domicilios con periodos exactos, contratos de arrendamiento, recibos de servicios, estados de cuenta, correspondencia oficial a nombre de ambos, registros escolares de los hijos, declaraciones de vecinos o arrendadores, y narrativa que explique los tramos sin documentación.</td></tr>
+                <tr><td>Buena conducta moral</td><td>Antecedentes penales completos con disposición final de cada cargo, recaracterización del hecho bajo INA 101(f) con atenuantes y contexto, cartas de la comunidad, constancias de empleo, evidencia de rehabilitación, y explicación de barreras de idioma o representación deficiente cuando incidieron en la declaración de culpabilidad.</td></tr>
+                <tr><td>Batería o crueldad mental extrema</td><td>Narrativa cronológica dividida en “Eventos” con fecha, lugar, conducta específica y consecuencia; evaluación psicológica con diagnóstico DSM-5; registros médicos o recetas; fotografías autenticadas de lesiones o daños; reportes policiales o justificación de su ausencia; declaraciones de testigos; evidencia de control financiero y migratorio.</td></tr>
+                <tr><td>Domicilio para la cita biométrica</td><td>Identificación expresa del domicilio físico real donde reside el peticionario, distinguido del domicilio postal seguro utilizado por razones de protección, con la explicación de por qué se usan dos direcciones distintas.</td></tr>
+                <tr><td>Firma y formularios</td><td>Ratificación de la firma manuscrita original en el I-360, subsanación de las Partes 3 y 10 con la información completa, confirmación del G-28 vigente, y unificación de las variantes de nombre que aparecen en los distintos documentos del expediente.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="block b-caso">
+        <div class="btitle"><div class="bicon">🗂️</div><h3>Casos</h3><span class="mod-badge badge-green">Trazabilidad</span></div>
+        <div class="bbody">
+
+          <!-- CASO 1 -->
+          <details class="block-accordion acc-noid acc-major">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">NOID · VAWA cónyuge · 14 puntos</div><div class="bac-title">Caso 1 — <a class="case-link" href="https://drive.google.com/file/d/1bDpSqB810-eppy9fC5TKFEHCExHNQn6n/view?usp=drive_link" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Eloy Alexis Ruiz Ayala</a></div></div></div>
+              <div class="bac-arrow">▶</div>
+            </summary>
+            <div class="bac-body">
+              <p>Petición de cónyuge maltratado. El NOID combina deficiencias formales, inconsistencias de fechas e información derogatoria por antecedentes penales.</p>
+              <div class="table-wrap">
+                <table class="info-table">
+                  <thead><tr><th style="width:44px">#</th><th>Deficiencia señalada en el NOID</th><th>Respuesta y evidencia provista en la DCL</th></tr></thead>
+                  <tbody>
+                    <tr><td class="n">1</td><td class="def">Domicilio del peticionario: el expediente reporta una dirección de correspondencia y USCIS requiere el domicilio físico real para la cita biométrica.</td><td>Se distingue expresamente el domicilio postal seguro en El Paso, usado por razones de protección, del domicilio físico real de residencia, que se identifica para efectos biométricos.<span class="ref">Párrafos introductorios — aclaraciones administrativas.</span></td></tr>
+                    <tr><td class="n">2</td><td class="def">Parte 3 del I-360 incompleta: falta información del peticionario y del presunto abusador.</td><td>Se completa la Parte 3 con los datos requeridos y se ratifica su contenido bajo protesta de decir verdad en la propia declaración.<span class="ref">Párrafos introductorios — subsanación de formularios.</span></td></tr>
+                    <tr><td class="n">3</td><td class="def">Parte 10 del I-360 incompleta: declaración, firma e información de contacto del peticionario.</td><td>Se subsana la Parte 10 y se ratifica que la información de contacto es la vigente, alineada con el domicilio físico aclarado en el punto 1.<span class="ref">Párrafos introductorios — subsanación de formularios.</span></td></tr>
+                    <tr><td class="n">4</td><td class="def">Validez de la firma en el I-360: USCIS cuestiona si la firma es manuscrita y original del peticionario.</td><td>El peticionario ratifica que la firma es suya, manuscrita y original, y confirma que firmó el formulario con conocimiento de su contenido.<span class="ref">Párrafos introductorios — ratificación de firmas.</span></td></tr>
+                    <tr><td class="n">5</td><td class="def">Formulario G-28: representación legal no acreditada o inconsistente en el expediente.</td><td>Se confirma la vigencia del G-28 y la representación de TMLF, y se ratifica que toda la correspondencia debe dirigirse al representante acreditado.<span class="ref">Párrafos introductorios — representación legal.</span></td></tr>
+                    <tr><td class="n">6</td><td class="def">Estatus de la presunta abusadora: no se acreditó su condición de ciudadana o residente permanente.</td><td>Se aporta la evidencia disponible sobre el estatus de la abusadora y se describen las gestiones realizadas para obtener el documento primario.<span class="ref">Párrafos introductorios — estatus del abusador.</span></td></tr>
+                    <tr><td class="n">7</td><td class="def">Ausencia del documento primario de estatus de la abusadora en el expediente.</td><td>Justificación legal de la imposibilidad de obtenerlo: negativas de registros, imposibilidad de contactar a la abusadora y riesgo de seguridad para el peticionario si intentara solicitarlo directamente.<span class="ref">Párrafos introductorios — imposibilidad documental.</span></td></tr>
+                    <tr><td class="n">8</td><td class="def">Inconsistencia en la fecha de matrimonio: el expediente refiere 2009 y el registro indica 2010.</td><td>Se corrige la fecha: el matrimonio se celebró en 2010, no en 2009, y se explica el origen del error en el llenado inicial del formulario.<span class="ref">Párrafos introductorios — corrección de fechas.</span></td></tr>
+                    <tr><td class="n">9</td><td class="def">Inconsistencia en el fin de la convivencia frente a la fecha del divorcio.</td><td>Se aclara que la convivencia terminó en 2010 en México, mientras que el divorcio se formalizó en 2013; los dos hechos son distintos y no se contradicen.<span class="ref">Historial de relación y cohabitación.</span></td></tr>
+                    <tr><td class="n">10</td><td class="def">Divorcio de 2013: USCIS cuestiona su alcance y las circunstancias en que se firmó.</td><td>Se explica que el peticionario firmó el convenio de divorcio en 2013 sin comprender el inglés, sin explicación del contenido y sin asesoría, lo que explica las discrepancias entre lo firmado y los hechos narrados.<span class="ref">Historial de relación y cohabitación.</span></td></tr>
+                    <tr><td class="n">11</td><td class="def">Información derogatoria: arresto de 2009 por incendio provocado, con impacto en la buena conducta moral.</td><td>Recaracterización del hecho bajo INA 101(f): el objeto involucrado era un encendedor de uso personal y la imputación se agravó por una barrera de idioma que impidió al peticionario explicar los hechos al momento del arresto.<span class="ref">Subsanación de deficiencias legales — buena conducta moral.</span></td></tr>
+                    <tr><td class="n">12</td><td class="def">Buena conducta moral: falta de evidencia afirmativa de rehabilitación y conducta posterior.</td><td>Se aportan atenuantes, disposición final del cargo y elementos de rehabilitación y conducta posterior que sostienen la recaracterización del punto anterior.<span class="ref">Subsanación de deficiencias legales — rehabilitación.</span></td></tr>
+                    <tr><td class="n">13</td><td class="def">Batería o crueldad mental extrema: la evidencia presentada no acredita el maltrato alegado.</td><td>Narrativa sustantiva desde el “Evento #1”: agresión física, violencia psicológica y verbal, control financiero y uso del estatus migratorio como coerción, con fechas y lugares determinados.<span class="ref">Narrativa de abuso sustantivo — Eventos numerados.</span></td></tr>
+                    <tr><td class="n">14</td><td class="def">Evaluación psicológica: no se acredita el impacto del maltrato en el peticionario.</td><td>Evaluación profesional con diagnóstico conforme al DSM-5 que vincula los síntomas con los eventos narrados, acompañada de la cláusula formal de autenticación de la evidencia y del cierre bajo pena de perjurio con constancia de revisión en español.<span class="ref">Evaluación de impacto psicológico y cierre formal.</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+
+          <!-- CASO 2 -->
+          <details class="block-accordion acc-noid acc-major">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">NOID · VAWA madre — hija mayor de 21 · 13 puntos</div><div class="bac-title">Caso 2 — <a class="case-link" href="https://drive.google.com/file/d/1FGy4uziPsMoWM8ay45inD4_OE0JmaalG/view?usp=drive_link" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Julia Martínez Hernández</a></div></div></div>
+              <div class="bac-arrow">▶</div>
+            </summary>
+            <div class="bac-body">
+              <p>Petición de madre maltratada por su hija. El eje del NOID es temporal: solo cuentan los actos de crueldad cometidos después de que la hija cumplió 21 años.</p>
+              <div class="table-wrap">
+                <table class="info-table">
+                  <thead><tr><th style="width:44px">#</th><th>Deficiencia señalada en el NOID</th><th>Respuesta y evidencia provista en la DCL</th></tr></thead>
+                  <tbody>
+                    <tr><td class="n">1</td><td class="def">Parte 10 del I-360 incompleta: declaración, firma e información de contacto de la peticionaria.</td><td>Se subsana la Parte 10 y se ratifica su contenido bajo protesta de decir verdad dentro de la declaración.<span class="ref">Párrafos introductorios — subsanación de formularios.</span></td></tr>
+                    <tr><td class="n">2</td><td class="def">Domicilio: se requiere el domicilio físico real, distinto del de correspondencia, para la cita biométrica.</td><td>Se distingue el domicilio postal seguro del domicilio físico de residencia y se identifica el segundo para efectos biométricos.<span class="ref">Párrafos introductorios — aclaraciones administrativas.</span></td></tr>
+                    <tr><td class="n">3</td><td class="def">Variantes de nombre: la peticionaria aparece con distintas combinaciones de nombres y apellidos en el expediente.</td><td>Se unifican las variantes y se explica el uso de dos apellidos conforme a la costumbre cultural mexicana, identificando qué documento usa cada variante y por qué corresponden a la misma persona.<span class="ref">Párrafos introductorios — unificación de nombres.</span></td></tr>
+                    <tr><td class="n">4</td><td class="def">Firma en el I-360: validez y originalidad de la firma manuscrita.</td><td>La peticionaria ratifica que la firma es suya, manuscrita y original.<span class="ref">Párrafos introductorios — ratificación de firmas.</span></td></tr>
+                    <tr><td class="n">5</td><td class="def">Residencia compartida con la hija: no quedó acreditada la cohabitación durante el periodo relevante.</td><td>Tabla de domicilios con periodos exactos de residencia compartida, acompañada de la evidencia documental disponible por cada tramo.<span class="ref">Historial de relación y cohabitación — tabla de domicilios.</span></td></tr>
+                    <tr><td class="n">6</td><td class="def">Titularidad de la propiedad: el título del inmueble genera dudas sobre quién residía y en qué calidad.</td><td>Se aclara la titularidad y se documenta el retiro de la hija del título en 2024, con la explicación de las circunstancias que llevaron a ese cambio.<span class="ref">Historial de relación y cohabitación — titularidad.</span></td></tr>
+                    <tr><td class="n">7</td><td class="def">Crueldad mental extrema: los actos alegados no se distinguen de la conducta anterior a los 21 años de la hija.</td><td>Reencuadre estructural de la narrativa: los actos de abuso se delimitan estrictamente al periodo en que la hija tenía entre 21 y 27 años, con fecha y edad indicadas en cada evento.<span class="ref">Narrativa de abuso sustantivo — Eventos delimitados por edad.</span></td></tr>
+                    <tr><td class="n">8</td><td class="def">Conducta específica atribuible a la hija después de cumplir 21 años.</td><td>Descripción evento por evento de la conducta de la hija dentro del periodo delimitado: agresión, humillación, aislamiento y control, con lugar y testigos.<span class="ref">Narrativa de abuso sustantivo.</span></td></tr>
+                    <tr><td class="n">9</td><td class="def">Ausencia de reportes policiales de los incidentes alegados.</td><td>Justificación de la falta de denuncias: miedo a la deportación, dependencia migratoria y temor a las consecuencias para la hija, con explicación de por qué la peticionaria no acudió a la autoridad.<span class="ref">Párrafos introductorios y narrativa — justificación de ausencia de prueba.</span></td></tr>
+                    <tr><td class="n">10</td><td class="def">Fotografías de lesiones: no se acreditó el daño físico alegado.</td><td>Se aporta la evidencia fotográfica disponible con cláusula formal de autenticación que identifica qué muestra cada imagen, cuándo fue tomada y quién la tomó.<span class="ref">Narrativa de abuso sustantivo — evidencia fotográfica.</span></td></tr>
+                    <tr><td class="n">11</td><td class="def">Impacto psicológico: falta de evaluación profesional que acredite el daño.</td><td>Evaluación del Dr. Gordon con diagnóstico conforme al DSM-5, vinculando los síntomas con los eventos delimitados en el periodo relevante.<span class="ref">Evaluación de impacto psicológico.</span></td></tr>
+                    <tr><td class="n">12</td><td class="def">Carga económica: no se acreditó la explotación financiera alegada.</td><td>Se documenta la carga económica soportada por la peticionaria mediante los time-sheets que acreditan 166 horas de trabajo, como prueba del esfuerzo laboral destinado a sostener a la hija.<span class="ref">Narrativa de abuso sustantivo — violencia financiera.</span></td></tr>
+                    <tr><td class="n">13</td><td class="def">Cierre formal y consistencia general de la declaración.</td><td>Tabla-resumen de maltrato que consolida los eventos del periodo relevante, fórmula de perjurio, constancia de revisión del documento en español y firma.<span class="ref">Cierre formal.</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+
+          <!-- CASO 3 -->
+          <details class="block-accordion acc-rfe acc-major">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">RFE · VAWA cónyuge</div><div class="bac-title">Caso 3 — <a class="case-link" href="https://drive.google.com/file/d/1jpzZlAKBIfgj2TwxzLpbRE-wft8fwHgv/view?usp=drive_link" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Rafael Barajas Juárez</a></div></div></div>
+              <div class="bac-arrow">▶</div>
+            </summary>
+            <div class="bac-body">
+              <p>Petición de cónyuge maltratado. El RFE pide completar formularios y acreditar los elementos centrales de elegibilidad; la DCL concentra toda la narrativa en un único “Evento 1” extenso.</p>
+              <div class="table-wrap">
+                <table class="info-table is-rfe">
+                  <thead><tr><th style="width:44px">#</th><th>Punto señalado en el RFE</th><th>Respuesta y prueba aportada en la DCL</th></tr></thead>
+                  <tbody>
+                    <tr><td class="n">1</td><td class="def">Parte 3 del I-360 incompleta: información del peticionario y de la presunta abusadora.</td><td>Se completa la Parte 3 y se ratifica su contenido en la declaración.<span class="ref">Párrafos introductorios — subsanación de formularios.</span></td></tr>
+                    <tr><td class="n">2</td><td class="def">Parte 10 del I-360 incompleta: declaración, firma e información de contacto.</td><td>Se subsana la Parte 10 con la información vigente del peticionario.<span class="ref">Párrafos introductorios — subsanación de formularios.</span></td></tr>
+                    <tr><td class="n">3</td><td class="def">Domicilio físico: se requiere la dirección real de residencia para la cita biométrica.</td><td>Se distingue el domicilio postal seguro del domicilio físico real y se identifica el segundo para efectos biométricos.<span class="ref">Párrafos introductorios — aclaraciones administrativas.</span></td></tr>
+                    <tr><td class="n">4</td><td class="def">Estatus de la cónyuge como ciudadana o residente permanente.</td><td>Se aporta la evidencia disponible sobre el estatus de la cónyuge y se justifica legalmente la imposibilidad de obtener el documento primario, describiendo las gestiones intentadas.<span class="ref">Párrafos introductorios — estatus del abusador e imposibilidad documental.</span></td></tr>
+                    <tr><td class="n">5</td><td class="def">Cohabitación: no quedó acreditada la residencia compartida con la cónyuge.</td><td>Tabla de domicilios con los periodos de convivencia y la evidencia documental disponible por tramo.<span class="ref">Historial de relación y cohabitación.</span></td></tr>
+                    <tr><td class="n">6</td><td class="def">Matrimonio de buena fe: se cuestiona la genuinidad de la relación.</td><td>Narrativa del origen y desarrollo de la relación, con los elementos de vida en común y la explicación de por qué el matrimonio fue celebrado de buena fe.<span class="ref">Historial de relación y cohabitación.</span></td></tr>
+                    <tr><td class="n">7</td><td class="def">Batería o crueldad mental extrema: la evidencia no acredita el maltrato alegado.</td><td>Narrativa concentrada en un único “Evento 1” extenso, que desarrolla de forma continua el maltrato en lugar de fragmentarlo en episodios numerados; se explica la razón de esa estructura.<span class="ref">Narrativa de abuso sustantivo — Evento 1.</span></td></tr>
+                    <tr><td class="n">8</td><td class="def">Evidencia del acoso alegado por parte de la cónyuge.</td><td>Capturas de pantalla del acoso telefónico ejercido a través de la cuenta compartida de Apple ID, con cláusula de autenticación de las imágenes.<span class="ref">Narrativa de abuso sustantivo — evidencia digital.</span></td></tr>
+                    <tr><td class="n">9</td><td class="def">Impacto médico y psicológico: registros clínicos insuficientes.</td><td>Receta de hidroxizina de 2022 como evidencia del tratamiento recibido, junto con la explicación de por qué no existen registros médicos completos de Cherry Health.<span class="ref">Evaluación de impacto psicológico y médico.</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+
+          <!-- CASO 4 -->
+          <details class="block-accordion acc-rfe acc-major">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">4</div><div><div class="bac-label">RFE · VAWA padre — hija mayor de 21</div><div class="bac-title">Caso 4 — <a class="case-link" href="https://drive.google.com/file/d/1UnC12izXt3avUlkRRxs2R9G4LlalpkTQ/view?usp=drive_link" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Sigifredo Ramírez Arámbula</a></div></div></div>
+              <div class="bac-arrow">▶</div>
+            </summary>
+            <div class="bac-body">
+              <p>Petición de padre maltratado por su hija. La DCL desarrolla cinco Eventos y sustituye la ausencia de fotografías de lesiones por un comprobante judicial de tráfico.</p>
+              <div class="table-wrap">
+                <table class="info-table is-rfe">
+                  <thead><tr><th style="width:44px">#</th><th>Punto señalado en el RFE</th><th>Respuesta y prueba aportada en la DCL</th></tr></thead>
+                  <tbody>
+                    <tr><td class="n">1</td><td class="def">Parte 10 del I-360 incompleta: declaración, firma e información de contacto.</td><td>Se subsana la Parte 10 y se ratifica su contenido bajo protesta de decir verdad.<span class="ref">Párrafos introductorios — subsanación de formularios.</span></td></tr>
+                    <tr><td class="n">2</td><td class="def">Residencia compartida con la hija durante el periodo relevante.</td><td>Tabla de domicilios con los periodos de cohabitación y la evidencia disponible por tramo.<span class="ref">Historial de relación y cohabitación.</span></td></tr>
+                    <tr><td class="n">3</td><td class="def">Violencia o crueldad mental extrema cometida por la hija después de cumplir 21 años.</td><td>Narrativa dividida en cinco Eventos, todos delimitados al periodo posterior a los 21 años de la hija, con fecha y edad señaladas en cada uno.<span class="ref">Narrativa de abuso sustantivo — Eventos 1 a 5.</span></td></tr>
+                    <tr><td class="n">4</td><td class="def">Acreditación de la agresión física alegada.</td><td>Evento de agresión física ocurrido a raíz del cuidado del nieto, con descripción de la conducta, el lugar y las personas presentes.<span class="ref">Narrativa de abuso sustantivo — Evento de agresión física.</span></td></tr>
+                    <tr><td class="n">5</td><td class="def">Acreditación de la explotación y el control financiero.</td><td>Robo de $3,000 dólares de los ahorros del peticionario y uso no autorizado de su tarjeta, más el gasto mensual de $1,100 dólares que la hija le imponía.<span class="ref">Narrativa de abuso sustantivo — violencia financiera.</span></td></tr>
+                    <tr><td class="n">6</td><td class="def">Acreditación de la crueldad mental y la degradación alegadas.</td><td>Documentación explícita de la humillación étnica y lingüística ejercida por la hija contra el peticionario, con las expresiones y contextos concretos en que ocurrió.<span class="ref">Narrativa de abuso sustantivo — violencia verbal y psicológica.</span></td></tr>
+                    <tr><td class="n">7</td><td class="def">Acreditación de la interferencia en la vida familiar del peticionario.</td><td>Evento de intento de sabotaje de la relación conyugal del peticionario, con la descripción de las acciones de la hija dirigidas a provocar la ruptura.<span class="ref">Narrativa de abuso sustantivo — Evento de sabotaje conyugal.</span></td></tr>
+                    <tr><td class="n">8</td><td class="def">Evidencia física del daño: no se aportaron fotografías de lesiones corporales.</td><td>Sustitución probatoria: se aporta el comprobante judicial de una multa de tráfico —Imagen 1— como evidencia del impacto financiero y legal generado por la conducta de la hija, con la explicación de por qué no existen fotografías de lesiones.<span class="ref">Narrativa de abuso sustantivo — Imagen 1 y cláusula de autenticación.</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ PANEL: TERCERA PARTE ════════ -->
+    <section class="panel" id="panel-parte3">
+      <div class="page-title">
+        <div class="pt-label">Tercera parte</div>
+        <h2>Lista de correcciones y aclaraciones hechas en la respuesta</h2>
+        <p class="pt-sub">Lo que se corrige de forma sistemática en cualquier DCL, y lo que fue particular de cada expediente.</p>
+      </div>
+
+      <div class="block">
+        <div class="btitle"><div class="bicon">🧾</div><h3>1. Resumen general — lo que suele aclararse en todos los casos</h3><span class="mod-badge badge-core">Sistemático</span></div>
+        <div class="bbody">
+          <div class="fix-item">
+            <div class="fix-kind">Domicilio</div>
+            <div class="fix-body"><b>Domicilio postal seguro frente a domicilio físico real</b><p>Se diferencia la dirección de correspondencia en El Paso, usada por razones de protección de la peticionaria o peticionario, del domicilio físico donde efectivamente reside, que es el que USCIS necesita para la cita biométrica.</p></div>
+          </div>
+          <div class="fix-item">
+            <div class="fix-kind">Formularios</div>
+            <div class="fix-body"><b>Omisiones en el I-360 y ratificación de firmas</b><p>Subsanación de las Partes 3 y 10 del I-360 y ratificación expresa de que las firmas manuscritas son originales y del propio peticionario, junto con la confirmación del G-28.</p></div>
+          </div>
+          <div class="fix-item">
+            <div class="fix-kind">Identidad</div>
+            <div class="fix-body"><b>Variaciones de nombres y apellidos hispanos</b><p>Aclaración y unificación de las variantes que aparecen en los distintos documentos, explicando el uso de dos apellidos conforme a la costumbre cultural mexicana y por qué todas corresponden a la misma persona.</p></div>
+          </div>
+          <div class="fix-item">
+            <div class="fix-kind">Prueba faltante</div>
+            <div class="fix-body"><b>Imposibilidad de obtener documentos primarios del abusador</b><p>Justificación legal de la ausencia: negativas de cortes y registros, imposibilidad de contacto y riesgo de seguridad que implicaría para el peticionario intentar obtenerlos directamente.</p></div>
+          </div>
+          <div class="fix-item">
+            <div class="fix-kind">Antecedentes</div>
+            <div class="fix-body"><b>Recaracterización de antecedentes penales históricos</b><p>Reencuadre del hecho imputado bajo INA 101(f) mediante atenuantes, contexto, barreras de idioma, polígrafos y pruebas de rehabilitación, en lugar de omitir o minimizar el antecedente.</p></div>
+          </div>
+          <div class="fix-item">
+            <div class="fix-kind">Prueba faltante</div>
+            <div class="fix-body"><b>Falta de reportes policiales o médicos</b><p>Explicación de por qué no existen: miedo a la deportación, control migratorio ejercido por el abusador, dependencia económica y desconfianza hacia la autoridad. La ausencia se argumenta, no se deja sin explicar.</p></div>
+          </div>
+
+          <div class="critical-rule">
+            <div class="critical-rule-label">Criterio operativo</div>
+            <div class="critical-rule-text">Ninguna deficiencia se deja sin respuesta, incluso cuando la prueba no existe</div>
+            <div class="critical-rule-sub">Cuando no hay documento, lo que se aporta es la explicación jurídica y fáctica de su ausencia — y esa explicación es, en sí misma, evidencia.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block b-caso">
+        <div class="btitle"><div class="bicon">📁</div><h3>2. Resumen específico por caso</h3><span class="mod-badge badge-green">Por expediente</span></div>
+        <div class="bbody">
+          <div class="two-col">
+            <div class="mini-card">
+              <h4>Eloy Alexis Ruiz Ayala</h4>
+              <div class="who">NOID · VAWA cónyuge</div>
+              <ul>
+                <li>Corrección de la fecha de matrimonio: 2010 en lugar de 2009.</li>
+                <li>Aclaración del fin de la convivencia en 2010 en México, frente al divorcio de 2013 firmado sin comprender el inglés.</li>
+                <li>Explicación del arresto de 2009 por incendio provocado: el objeto era un encendedor de uso personal y la imputación se agravó por la barrera del idioma.</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4>Julia Martínez Hernández</h4>
+              <div class="who">NOID · VAWA madre — hija mayor de 21 años</div>
+              <ul>
+                <li>Reencuadre estructural: los actos de abuso se delimitan estrictamente al periodo en que la hija tenía entre 21 y 27 años.</li>
+                <li>Aclaración de la titularidad de la propiedad, con el retiro de la hija del título en 2024.</li>
+                <li>Unificación de las variantes de nombre de la peticionaria en el expediente.</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4>Rafael Barajas Juárez</h4>
+              <div class="who">RFE · VAWA cónyuge</div>
+              <ul>
+                <li>Corrección conceptual de la narrativa, concentrada en un único “Evento 1” extenso en lugar de episodios fragmentados.</li>
+                <li>Explicación de la falta de registros médicos completos de Cherry Health.</li>
+                <li>Documentación del acoso digital ejercido a través de la cuenta compartida de Apple ID.</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4>Sigifredo Ramírez Arámbula</h4>
+              <div class="who">RFE · VAWA padre — hija mayor de 21 años</div>
+              <ul>
+                <li>Sustitución de las fotografías de lesiones corporales por el comprobante judicial de tráfico (Imagen 1), como evidencia del impacto financiero y legal.</li>
+                <li>Documentación explícita de la humillación étnica y lingüística ejercida por la hija.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="alert info" style="margin-top:16px">
+            <span class="alert-icon">📌</span>
+            <div>Documento de trabajo interno de análisis y capacitación. Los plazos y facultades descritos corresponden a 8 CFR 103.2(b) y al USCIS Policy Manual, Vol. 1, Parte E, Caps. 6 y 9, con la actualización del Policy Alert PA-2026-05 del 5 de agosto de 2026. Antes de usarlo como referencia definitiva conviene contrastar el texto vigente del Policy Manual, ya que la guía cambió recientemente y puede volver a hacerlo.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ PANEL: CUARTA PARTE — EVALUACIÓN ════════ -->
+    <section class="panel" id="panel-evaluacion">
+      <div class="page-title">
+        <div class="pt-label">Cuarta parte</div>
+        <h2>Evaluación final</h2>
+        <p class="pt-sub">Veinte preguntas de opción múltiple, una por pantalla. Cada respuesta recibe retroalimentación inmediata. El mínimo aprobatorio es 85%.</p>
+      </div>
+
+      <div class="exam-shell">
+        <div class="exam-top">
+          <div class="et-count" id="examCount">Pregunta 1 de 20</div>
+          <div class="et-track"><div class="et-fill" id="examFill"></div></div>
+        </div>
+        <div class="exam-body" id="examStage"></div>
+        <div class="exam-footer" id="examFooter">
+          <div class="ef-hint" id="examHint">Selecciona una opción y comprueba tu respuesta.</div>
+          <button class="btn btn-primary" id="btnCheck" onclick="examCheck()" disabled>Comprobar respuesta</button>
+          <button class="btn btn-gold" id="btnNext" onclick="examNext()" style="display:none">Siguiente pregunta</button>
+        </div>
+      </div>
+
+      <div class="exam-shell" id="examResultShell" style="display:none;margin-top:16px">
+        <div class="exam-top" style="background:linear-gradient(180deg,rgba(201,168,76,.18),rgba(201,168,76,.04))">
+          <div class="et-count">Resultado de la evaluación</div>
+        </div>
+        <div class="result-card">
+          <div class="result-score" id="resScore">0%</div>
+          <div class="result-label" id="resLabel"></div>
+          <div class="result-msg" id="resMsg"></div>
+          <div class="result-breakdown">
+            <div class="rb-item rb-ok"><div class="rb-n" id="resOk">0</div><div class="rb-l">Correctas</div></div>
+            <div class="rb-item rb-bad"><div class="rb-n" id="resBad">0</div><div class="rb-l">Incorrectas</div></div>
+            <div class="rb-item rb-mod"><div class="rb-n">85%</div><div class="rb-l">Mínimo</div></div>
+          </div>
+          <div><span class="lms-status" id="lmsStatus">Registrando resultado…</span></div>
+          <div style="margin-top:20px"><button class="btn btn-ghost" onclick="examReset()">Repetir la evaluación</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ PANEL: QUINTA PARTE — PRÁCTICA ════════ -->
+    <section class="panel" id="panel-practica">
+      <div class="page-title">
+        <div class="pt-label">Quinta parte</div>
+        <h2>Práctica: Simulador de Opciones</h2>
+        <p class="pt-sub">Aplicación del contenido sobre dos expedientes reales. El simulador se abre en otra pestaña con el aviso oficial de USCIS a la vista y quince decisiones estratégicas por caso.</p>
+      </div>
+
+      <div class="launch">
+        <h3>Simulador de atención de RFEs y NOIDs (I-360 VAWA)</h3>
+        <p>Trabajarás como en la operación: el aviso oficial completo del lado izquierdo, con desplazamiento y zoom, y del lado derecho las preguntas que citan textualmente el documento. Cada respuesta recibe retroalimentación inmediata con la base normativa, y al cerrar el ejercicio obtienes el desglose de temas dominados y temas a reforzar.</p>
+        <div class="lmeta">
+          <span>2 casos reales</span>
+          <span>15 preguntas por caso</span>
+          <span>Aviso oficial incrustado</span>
+          <span>Mínimo aprobatorio 85%</span>
+        </div>
+        <div class="launch-btns">
+          <a class="launch-btn" id="btnPractica" href="https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/simuladorRFE-NOID-I360-VAWA.html" target="_blank" rel="noopener noreferrer">Abrir el simulador en otra pestaña</a>
+        </div>
+        <div class="launch-nota">El simulador se abre en una pestaña nueva y requiere conexión a internet.</div>
+      </div>
+
+      <div class="block b-caso">
+        <div class="btitle"><div class="bicon">🗂️</div><h3>Los dos expedientes del simulador</h3><span class="mod-badge badge-green">Práctica</span></div>
+        <div class="bbody">
+          <p>Cada ruta es independiente: puedes hacer una, revisar tu reporte y pasar a la otra desde la propia pantalla de resultados.</p>
+          <div class="caso-mini">
+            <div class="cm r">
+              <span class="cmt">RFE</span>
+              <h5>Fabiola Areli Mendoza Ruiz</h5>
+              <p>I-360 VAWA, cónyuge maltratada. Request for Evidence del 23 de mayo de 2025.</p>
+              <div class="cmd">Receipt: <b>EAC2216550395</b><br>A-Number: <b>A094-899-081</b><br>Fecha límite: <b>18 de agosto de 2025</b></div>
+            </div>
+            <div class="cm n">
+              <span class="cmt">NOID</span>
+              <h5>Carla Yadira Perez Hernandez</h5>
+              <p>I-360 VAWA, madre de hijo ciudadano. Notice of Intent to Deny del 17 de junio de 2026.</p>
+              <div class="cmd">Receipt: <b>EAC2222551156</b><br>A-Number: <b>A240-693-771</b><br>Fecha límite: <b>20 de julio de 2026</b></div>
+            </div>
+          </div>
+          <div class="alert info" style="margin-top:16px">
+            <span class="alert-icon">📌</span>
+            <div>El resultado que Moodle registra es el de la Cuarta parte. El simulador es un ejercicio de aplicación: su reporte se muestra en pantalla para que identifiques qué reforzar antes de trabajar un expediente real.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   ESTADO
+   ═══════════════════════════════════════════════════ */
+var state = { name:'', started:false, visited:{}, examCompleted:false, examScore:0 };
+var panels = ['bienvenida','introduccion','parte1','parte2','parte3','evaluacion','practica'];
+
+/* ═══════════════════════════════════════════════════
+   SCORM / MOODLE
+   ═══════════════════════════════════════════════════ */
+var SCORM = (function(){
+  var api=null, version=null, initialized=false;
+
+  function find(win){
+    var d=0;
+    while(win && d<12){
+      try{
+        if(win.API_1484_11) return {api:win.API_1484_11,version:'2004'};
+        if(win.API) return {api:win.API,version:'1.2'};
+      }catch(e){ return null; }
+      var up=null;
+      try{ up=(win.parent && win.parent!==win)?win.parent:null; }catch(e){ return null; }
+      if(!up) break;
+      win=up; d++;
+    }
+    return null;
+  }
+  function discover(){
+    var f=null;
+    try{ f=find(window); }catch(e){}
+    if(!f){ try{ if(window.opener) f=find(window.opener); }catch(e){} }
+    if(!f){ try{ if(window.top!==window) f=find(window.top); }catch(e){} }
+    return f;
+  }
+  function init(){
+    var f=discover();
+    if(!f) return false;
+    api=f.api; version=f.version;
+    try{
+      var ok = (version==='2004') ? api.Initialize('') : api.LMSInitialize('');
+      initialized = (ok===true||ok==='true');
+    }catch(e){ initialized=false; }
+    return initialized;
+  }
+  function get(k){
+    if(!initialized) return '';
+    try{ return (version==='2004')?api.GetValue(k):api.LMSGetValue(k); }catch(e){ return ''; }
+  }
+  function set(k,v){
+    if(!initialized) return false;
+    try{ var r=(version==='2004')?api.SetValue(k,String(v)):api.LMSSetValue(k,String(v)); return (r===true||r==='true'); }catch(e){ return false; }
+  }
+  function commit(){
+    if(!initialized) return false;
+    try{ var r=(version==='2004')?api.Commit(''):api.LMSCommit(''); return (r===true||r==='true'); }catch(e){ return false; }
+  }
+  function finish(){
+    if(!initialized) return false;
+    try{ return (version==='2004')?api.Terminate(''):api.LMSFinish(''); }catch(e){ return false; }
+  }
+  return {
+    init:init,
+    isActive:function(){ return initialized; },
+    version:function(){ return version; },
+    learnerName:function(){
+      var n = (version==='2004') ? get('cmi.learner_name') : get('cmi.core.student_name');
+      if(!n) return '';
+      if(n.indexOf(',')>-1){ var p=n.split(','); n=(p[1]||'').trim()+' '+(p[0]||'').trim(); }
+      return n.trim();
+    },
+    markIncomplete:function(){
+      if(version==='2004'){ set('cmi.completion_status','incomplete'); }
+      else { set('cmi.core.lesson_status','incomplete'); }
+      commit();
+    },
+    saveScore:function(score,pass,name){
+      if(!initialized) return false;
+      var ok=true;
+      if(version==='2004'){
+        ok = set('cmi.score.raw',score) && ok;
+        ok = set('cmi.score.min',0) && ok;
+        ok = set('cmi.score.max',100) && ok;
+        set('cmi.score.scaled',(score/100).toFixed(2));
+        set('cmi.completion_status','completed');
+        set('cmi.success_status',pass?'passed':'failed');
+        set('cmi.suspend_data','colaborador='+name+'|score='+score);
+      } else {
+        ok = set('cmi.core.score.raw',score) && ok;
+        set('cmi.core.score.min','0');
+        set('cmi.core.score.max','100');
+        set('cmi.core.lesson_status',pass?'passed':'failed');
+        set('cmi.suspend_data','colaborador='+name+'|score='+score);
+      }
+      commit();
+      return ok;
+    },
+    finish:finish
+  };
+})();
+
+/* ═══════════════════════════════════════════════════
+   NAVEGACIÓN
+   ═══════════════════════════════════════════════════ */
+function showPanel(id){
+  if(!state.started && id!=='bienvenida'){ 
+    document.getElementById('gateErr').textContent='Escribe tu nombre completo para desbloquear el contenido.';
+    document.getElementById('gateErr').classList.add('show');
+    document.getElementById('colabName').focus();
+    return;
+  }
+  panels.forEach(function(p){
+    var el=document.getElementById('panel-'+p), nav=document.getElementById('nav-'+p);
+    if(el) el.classList.remove('active');
+    if(nav) nav.classList.remove('active');
+  });
+  var t=document.getElementById('panel-'+id), n=document.getElementById('nav-'+id);
+  if(t) t.classList.add('active');
+  if(n) n.classList.add('active');
+  state.visited[id]=true;
+  if(id!=='bienvenida' && n) n.classList.add('completed');
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=900){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sbOverlay').classList.remove('show');
+  }
+}
+
+function toggleSidebar(){
+  if(window.innerWidth<=900){
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sbOverlay').classList.toggle('show');
+  } else {
+    document.body.classList.toggle('nav-hidden');
+  }
+}
+
+function updateProgress(){
+  var done=0, total=6;
+  ['introduccion','parte1','parte2','parte3'].forEach(function(p){ if(state.visited[p]) done++; });
+  if(state.examCompleted) done++;
+  if(state.visited['practica']) done++;
+  document.getElementById('globalProgress').style.width=Math.round(done/total*100)+'%';
+}
+
+/* ═══════════════════════════════════════════════════
+   REGISTRO DEL COLABORADOR
+   ═══════════════════════════════════════════════════ */
+function startTraining(){
+  var v=document.getElementById('colabName').value.trim();
+  var err=document.getElementById('gateErr');
+  if(v.length<3 || v.indexOf(' ')===-1){
+    err.textContent='Escribe tu nombre completo (nombre y apellidos) para continuar.';
+    err.classList.add('show');
+    return;
+  }
+  err.classList.remove('show');
+  state.name=v; state.started=true;
+  document.body.classList.remove('gated');
+  document.getElementById('sbUser').style.display='block';
+  document.getElementById('sbUserName').textContent=v;
+  ['introduccion','parte1','parte2','parte3','evaluacion','practica'].forEach(function(p){
+    var n=document.getElementById('nav-'+p); if(n) n.classList.remove('locked');
+  });
+  if(SCORM.isActive()) SCORM.markIncomplete();
+  showPanel('introduccion');
+}
+
+/* ═══════════════════════════════════════════════════
+   EVALUACIÓN FINAL — 20 PREGUNTAS
+   ═══════════════════════════════════════════════════ */
+var EXAM=[
+ {q:'¿De qué disposición reglamentaria derivan tanto el RFE como el NOID?',
+  o:['8 CFR 103.2(b), sobre evidencia inicial y evidencia adicional.','INA 101(f), sobre buena conducta moral.','8 CFR 214.14, sobre peticiones de la categoría U.','INA 204(a), sobre peticiones familiares.'],
+  c:0,
+  ok:'Correcto. Ambos instrumentos derivan de 8 CFR 103.2(b) y se rigen operativamente por el USCIS Policy Manual, Vol. 1, Parte E, Caps. 6 y 9.',
+  no:'La respuesta correcta es 8 CFR 103.2(b), que regula la evidencia inicial y la adicional. INA 101(f) se usa para recaracterizar antecedentes, no para fundamentar el instrumento.'},
+
+ {q:'¿Cuál es el plazo máximo de respuesta de un NOID?',
+  o:['87 días naturales.','60 días, con extensión automática por correo.','Máximo 30 días; 33 con envío postal.','No hay plazo: se responde antes de la decisión final.'],
+  c:2,
+  ok:'Correcto. El NOID no puede exceder 30 días —33 si se computa el envío postal—, un plazo más corto que el típico de un RFE.',
+  no:'El plazo del NOID no puede exceder 30 días, o 33 computando el envío postal. Los 87 días corresponden al extremo superior del rango del RFE.'},
+
+ {q:'Un RFE se emite cuando:',
+  o:['El oficial ya se inclina a denegar y expone su razonamiento.','Falta evidencia y el oficial aún no tiene postura sobre el fondo.','La petición fue denegada y procede apelación.','Se detectó fraude documental en el expediente.'],
+  c:1,
+  ok:'Correcto. El RFE busca completar el expediente: el oficial identifica qué elemento de elegibilidad no quedó demostrado, sin haber tomado postura sobre el fondo.',
+  no:'Eso describe al NOID. El RFE se emite cuando falta evidencia y el oficial todavía no tiene postura sobre el fondo del caso.'},
+
+ {q:'¿Qué caracteriza el tono de un NOID frente al de un RFE?',
+  o:['Es un requerimiento neutral que solo pide lo que falta.','Es informativo y no requiere respuesta del peticionario.','Es persuasivo y adversarial: justifica por qué denegaría, salvo respuesta que lo refute.','Es idéntico al del RFE, solo cambia el plazo.'],
+  c:2,
+  ok:'Correcto. El NOID es persuasivo y adversarial; el RFE es un requerimiento neutral que pide completar el expediente.',
+  no:'El NOID es persuasivo y adversarial: justifica por qué denegaría salvo que la respuesta refute sus motivos. El tono neutral corresponde al RFE.'},
+
+ {q:'¿Qué elemento aparece en un NOID y no en un RFE típico?',
+  o:['El número de recibo del expediente.','La declaración de hechos y el análisis del razonamiento del oficial, con información derogatoria cuando aplica.','La cita de la base legal aplicable.','Las direcciones de envío de la respuesta.'],
+  c:1,
+  ok:'Correcto. El NOID expone el razonamiento del oficial y los motivos específicos de la intención de denegar, incluida la información derogatoria desconocida por el solicitante.',
+  no:'El número de recibo, la base legal y las direcciones aparecen también en el RFE. Lo distintivo del NOID es la declaración de hechos y el análisis del razonamiento del oficial.'},
+
+ {q:'Si no se responde un RFE dentro del plazo, ¿qué ocurre?',
+  o:['El caso queda suspendido hasta que el peticionario responda.','Se adjudica con la evidencia existente, lo que usualmente significa denegación.','Se emite automáticamente un NOID.','Se concede una prórroga automática de 60 días.'],
+  c:1,
+  ok:'Correcto. La advertencia de consecuencias del RFE es explícita: sin respuesta en plazo, se adjudica con lo que ya obra en el expediente.',
+  no:'Sin respuesta en plazo, USCIS adjudica con la evidencia existente y el resultado usual es la denegación. La extensión automática de 60 días por correo ya no existe.'},
+
+ {q:'¿Cuántas oportunidades de respuesta otorga un RFE?',
+  o:['Tantas como sean necesarias hasta completar el expediente.','Dos: una parcial y una definitiva.','Una sola; USCIS no acepta respuestas parciales sucesivas.','Depende del criterio del oficial en cada caso.'],
+  c:2,
+  ok:'Correcto. Hay una sola oportunidad de respuesta, por lo que toda la evidencia debe organizarse y enviarse en una única entrega.',
+  no:'Es una sola oportunidad: USCIS no acepta respuestas parciales sucesivas, de modo que la entrega debe ser completa desde el inicio.'},
+
+ {q:'La sección “Evidence Lacking” de un RFE contiene:',
+  o:['El listado de la evidencia que el oficial reconoce haber recibido.','La explicación de qué elemento de elegibilidad no quedó demostrado y qué prueba se necesita.','El estándar de prueba aplicable a la categoría.','La notificación de derechos de apelación.'],
+  c:1,
+  ok:'Correcto. Es el corazón del documento: identifica la deficiencia de elegibilidad y el tipo de prueba que la subsanaría.',
+  no:'El listado de lo recibido es una sección distinta. “Evidence Lacking” explica qué elemento de elegibilidad no quedó demostrado y qué prueba se necesita para subsanarlo.'},
+
+ {q:'La notificación de derechos posteriores, propia del NOID, indica:',
+  o:['El domicilio al que debe enviarse la evidencia adicional.','Si en la decisión final existe derecho de apelación o solo moción de reconsideración o reapertura.','El plazo que tiene el oficial para resolver.','La lista de formularios que deben acompañarse.'],
+  c:1,
+  ok:'Correcto. En la decisión final derivada del NOID se indica si procede apelación o únicamente moción de reconsideración o reapertura.',
+  no:'Se refiere al remedio posterior: la decisión final derivada del NOID indica si hay derecho de apelación o solo moción de reconsideración o reapertura.'},
+
+ {q:'¿Qué introdujo la actualización del USCIS Policy Manual del 5 de agosto de 2026?',
+  o:['La eliminación definitiva de los RFEs y los NOIDs.','La ampliación de la discreción del oficial para denegar sin emitir RFE ni NOID cuando la evidencia inicial no acredita elegibilidad.','La extensión automática del plazo de respuesta a 87 días para todos los trámites.','La obligación de emitir siempre un NOID antes de cualquier denegación.'],
+  c:1,
+  ok:'Correcto. El Policy Alert PA-2026-05 amplía la discreción para denegar sin emitir previamente RFE o NOID; el oficial conserva la facultad de emitirlos cuando lo estime pertinente.',
+  no:'No se eliminaron los instrumentos ni se ampliaron los plazos: la actualización amplía la discreción del oficial para denegar sin emitir previamente un RFE o un NOID.'},
+
+ {q:'Respecto de las direcciones de envío que incluye un RFE:',
+  o:['Se indica una sola dirección para cualquier medio de envío.','Se indica una para USPS y otra distinta para servicios de mensajería como FedEx, UPS o DHL.','No se indica dirección: la respuesta se carga en línea.','Se indica la dirección de la oficina de campo más cercana al peticionario.'],
+  c:1,
+  ok:'Correcto. El RFE señala dos direcciones distintas: una para USPS y otra para servicios de mensajería.',
+  no:'El RFE incluye dos direcciones distintas: una para USPS y otra para servicios de mensajería (FedEx, UPS, DHL).'},
+
+ {q:'Dentro de la Declaración Jurada de Respuesta, ¿cuál es la función del Affidavit?',
+  o:['Narrar cronológicamente los episodios de violencia.','Responder formalmente las aclaraciones administrativas y legales que USCIS enumeró.','Sustituir la evaluación psicológica del peticionario.','Acreditar el impacto médico del maltrato.'],
+  c:1,
+  ok:'Correcto. El Affidavit cierra las puertas procesales: domicilios, formularios, firmas, estatus del abusador, inconsistencias documentales y antecedentes.',
+  no:'La narrativa de los hechos corresponde a la Declaración. El Affidavit responde formalmente las aclaraciones administrativas y legales requeridas por USCIS.'},
+
+ {q:'¿Qué contiene la Declaración dentro de la DCL?',
+  o:['La subsanación de las Partes 3 y 10 del I-360.','La ratificación de la firma manuscrita y del G-28.','La narrativa sustantiva de la victimización, que es donde se narran los abusos nuevos.','La lista de direcciones de envío de la respuesta.'],
+  c:2,
+  ok:'Correcto. La Declaración desarrolla la victimización en orden cronológico: agresión física, violencia psicológica, financiera y verbal, y control migratorio.',
+  no:'Las subsanaciones de formularios y firmas pertenecen al Affidavit. La Declaración contiene la narrativa sustantiva, que es donde se narran los abusos nuevos.'},
+
+ {q:'¿Por qué son determinantes las edades y fechas exactas en la narrativa?',
+  o:['Porque USCIS exige que la declaración tenga una extensión mínima.','Porque la elegibilidad puede depender de que los actos sean posteriores a los 21 años del agresor.','Porque permiten omitir la evaluación psicológica.','Porque sustituyen la necesidad de acreditar residencia compartida.'],
+  c:1,
+  ok:'Correcto. Cuando la violencia es ejercida por un hijo o hija mayor de 21 años, solo cuentan los actos posteriores a esa edad, de modo que la precisión temporal es determinante.',
+  no:'La precisión temporal importa porque la elegibilidad puede depender de que los actos sean posteriores a los 21 años del agresor; no sustituye ninguna otra prueba.'},
+
+ {q:'La evidencia fotográfica presentada en una DCL debe acompañarse de:',
+  o:['Una traducción notarial al inglés de la imagen.','Un reporte policial que la respalde en todos los casos.','Una cláusula formal de autenticación que identifique qué muestra, cuándo fue tomada y quién la tomó.','Una copia certificada del expediente médico.'],
+  c:2,
+  ok:'Correcto. Sin cláusula de autenticación, la fotografía queda sin anclaje probatorio: debe identificarse qué muestra, cuándo fue tomada y quién la tomó.',
+  no:'Lo que se requiere es la cláusula formal de autenticación que identifique qué muestra la imagen, cuándo fue tomada y quién la tomó.'},
+
+ {q:'Ante un antecedente penal que afecta la buena conducta moral, la DCL debe:',
+  o:['Omitir el antecedente para no perjudicar la petición.','Recaracterizar el hecho bajo INA 101(f), con atenuantes, contexto y pruebas de rehabilitación.','Limitarse a señalar que el cargo ya prescribió.','Solicitar que USCIS obtenga los registros directamente de la corte.'],
+  c:1,
+  ok:'Correcto. La estrategia es recaracterizar el hecho bajo INA 101(f) aportando atenuantes, contexto, barreras de idioma y evidencia de rehabilitación.',
+  no:'Omitir o minimizar el antecedente es justamente lo que no debe hacerse. Se recaracteriza el hecho bajo INA 101(f) con atenuantes, contexto y pruebas de rehabilitación.'},
+
+ {q:'Cuando no es posible obtener el documento primario del estatus del abusador, lo que procede es:',
+  o:['Presentar la petición sin mención alguna al estatus.','Aportar una declaración que describa las gestiones, las negativas y el riesgo de seguridad, más evidencia secundaria.','Solicitar una prórroga indefinida del plazo de respuesta.','Sustituirlo por la evaluación psicológica del peticionario.'],
+  c:1,
+  ok:'Correcto. La ausencia se argumenta: gestiones realizadas, negativas de cortes o registros, riesgo de seguridad, y evidencia secundaria como empleos con verificación de estatus o declaraciones de terceros.',
+  no:'La ausencia no se deja sin explicar ni se sustituye con otra prueba: se aporta la declaración de gestiones, negativas y riesgo, junto con evidencia secundaria.'},
+
+ {q:'Para acreditar la residencia compartida con el abusador, la DCL debe aportar:',
+  o:['Únicamente la declaración del peticionario.','La evaluación psicológica con diagnóstico DSM-5.','Tabla de domicilios con periodos exactos, contratos, recibos, correspondencia y declaraciones de terceros.','El certificado de naturalización del abusador.'],
+  c:2,
+  ok:'Correcto. Además, la narrativa debe explicar los tramos en los que no existe documentación disponible.',
+  no:'La residencia compartida se acredita con tabla de domicilios y periodos exactos, contratos, recibos, correspondencia oficial y declaraciones de vecinos o arrendadores.'},
+
+ {q:'Respecto del domicilio, ¿qué debe precisar la DCL para la cita biométrica?',
+  o:['Únicamente el domicilio postal seguro utilizado por protección.','El domicilio físico real de residencia, distinguido del domicilio postal seguro.','El domicilio del representante legal acreditado en el G-28.','El último domicilio compartido con el abusador.'],
+  c:1,
+  ok:'Correcto. Se identifica expresamente el domicilio físico real y se explica por qué se usan dos direcciones distintas.',
+  no:'Para la cita biométrica USCIS necesita el domicilio físico real de residencia, expresamente distinguido del domicilio postal seguro.'},
+
+ {q:'¿Cómo se aborda en la DCL la falta de reportes policiales o médicos?',
+  o:['Se omite el punto, porque la ausencia de prueba no perjudica.','Se explica su ausencia por el miedo a la deportación, el control migratorio y la dependencia económica.','Se sustituye por una declaración de un testigo presencial certificada ante notario.','Se solicita a USCIS que requiera los registros de oficio.'],
+  c:1,
+  ok:'Correcto. La ausencia se argumenta, no se deja sin explicar: esa explicación es, en sí misma, evidencia.',
+  no:'La ausencia nunca se deja sin explicar: se justifica por el miedo a la deportación, el control migratorio ejercido por el abusador, la dependencia económica y la desconfianza hacia la autoridad.'}
+];
+
+var examIdx=0, examSel=null, examAnswers=[], examChecked=false;
+
+function renderQuestion(){
+  var q=EXAM[examIdx];
+  var letters=['A','B','C','D'];
+  var html='<div class="exam-q active" id="examQ"><div class="q-stem">'+(examIdx+1)+'. '+q.q+'</div><div class="q-opts">';
+  for(var i=0;i<q.o.length;i++){
+    html+='<div class="q-opt" data-val="'+i+'" onclick="examPick(this)"><div class="q-letter">'+letters[i]+'</div><div>'+q.o[i]+'</div></div>';
+  }
+  html+='</div><div class="q-feedback" id="examFb"></div></div>';
+  document.getElementById('examStage').innerHTML=html;
+  document.getElementById('examCount').textContent='Pregunta '+(examIdx+1)+' de '+EXAM.length;
+  document.getElementById('examFill').style.width=Math.round((examIdx)/EXAM.length*100)+'%';
+  document.getElementById('btnCheck').style.display='inline-block';
+  document.getElementById('btnCheck').disabled=true;
+  document.getElementById('btnNext').style.display='none';
+  document.getElementById('btnNext').textContent = (examIdx===EXAM.length-1)?'Ver resultados':'Siguiente pregunta';
+  document.getElementById('examHint').textContent='Selecciona una opción y comprueba tu respuesta.';
+  examSel=null; examChecked=false;
+}
+
+function examPick(el){
+  if(examChecked) return;
+  var opts=document.querySelectorAll('#examQ .q-opt');
+  for(var i=0;i<opts.length;i++) opts[i].classList.remove('selected');
+  el.classList.add('selected');
+  examSel=parseInt(el.getAttribute('data-val'));
+  document.getElementById('btnCheck').disabled=false;
+}
+
+function examCheck(){
+  if(examSel===null||examChecked) return;
+  examChecked=true;
+  var q=EXAM[examIdx], correct=(examSel===q.c);
+  examAnswers[examIdx]=correct;
+  var opts=document.querySelectorAll('#examQ .q-opt');
+  for(var i=0;i<opts.length;i++){
+    var v=parseInt(opts[i].getAttribute('data-val'));
+    opts[i].classList.add('disabled');
+    if(v===q.c) opts[i].classList.add('correct');
+    else if(v===examSel) opts[i].classList.add('incorrect');
+  }
+  var fb=document.getElementById('examFb');
+  fb.className='q-feedback show '+(correct?'ok':'fail');
+  fb.innerHTML=(correct?'✅ ':'❌ ')+(correct?q.ok:q.no);
+  document.getElementById('btnCheck').style.display='none';
+  document.getElementById('btnNext').style.display='inline-block';
+  document.getElementById('examHint').textContent=correct?'Respuesta correcta.':'Respuesta incorrecta. Revisa la retroalimentación.';
+}
+
+function examNext(){
+  if(examIdx<EXAM.length-1){ examIdx++; renderQuestion(); window.scrollTo({top:0,behavior:'smooth'}); }
+  else examFinish();
+}
+
+function examFinish(){
+  var ok=0;
+  for(var i=0;i<EXAM.length;i++) if(examAnswers[i]) ok++;
+  var pct=Math.round(ok/EXAM.length*100);
+  var pass=pct>=85;
+
+  document.getElementById('examFill').style.width='100%';
+  document.getElementById('examStage').innerHTML='<div style="text-align:center;padding:26px 10px;color:var(--slate);font-size:13px">Evaluación finalizada. Consulta tu resultado abajo.</div>';
+  document.getElementById('examFooter').style.display='none';
+  document.getElementById('examCount').textContent='Evaluación completada';
+
+  var shell=document.getElementById('examResultShell');
+  shell.style.display='block';
+  var sc=document.getElementById('resScore');
+  sc.textContent=pct+'%';
+  sc.className='result-score '+(pass?'pass':'fail');
+  document.getElementById('resLabel').textContent=pass?'✅ APROBADO':'❌ NO APROBADO';
+  document.getElementById('resMsg').textContent=pass
+    ? (state.name+', has aprobado la evaluación final con '+pct+'%. Se acredita el dominio del contenido sobre RFEs, NOIDs y Declaraciones Juradas de Respuesta bajo VAWA.')
+    : (state.name+', tu puntaje es '+pct+'%. El mínimo aprobatorio es 85%. Repasa los módulos del training y vuelve a intentarlo.');
+  document.getElementById('resOk').textContent=ok;
+  document.getElementById('resBad').textContent=EXAM.length-ok;
+
+  state.examCompleted=true; state.examScore=pct;
+  var navExam=document.getElementById('nav-evaluacion');
+  if(navExam&&pass) navExam.classList.add('completed');
+  updateProgress();
+
+  var st=document.getElementById('lmsStatus');
+  if(SCORM.isActive()){
+    var saved=SCORM.saveScore(pct,pass,state.name);
+    st.className='lms-status ok';
+    st.textContent=saved?'✔ Resultado registrado en Moodle (SCORM '+SCORM.version()+') a nombre de '+state.name:'✔ Resultado enviado a Moodle (SCORM '+SCORM.version()+')';
+  } else {
+    st.className='lms-status off';
+    st.textContent='ⓘ Sin conexión con Moodle: el resultado se muestra localmente. Al publicar este archivo como paquete SCORM en Moodle, la calificación se registra automáticamente.';
+  }
+  shell.scrollIntoView({behavior:'smooth'});
+}
+
+function examReset(){
+  examIdx=0; examSel=null; examAnswers=[]; examChecked=false;
+  document.getElementById('examResultShell').style.display='none';
+  document.getElementById('examFooter').style.display='flex';
+  renderQuestion();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+window.addEventListener('beforeunload',function(){ if(SCORM.isActive()) SCORM.finish(); });
+
+/* ═══════════════════
+   INIT
+   ═══════════════════ */
+(function(){
+  SCORM.init();
+  if(SCORM.isActive()){
+    var n=SCORM.learnerName();
+    if(n) document.getElementById('colabName').value=n;
+  }
+  renderQuestion();
+  updateProgress();
+})();
+</script>
+</body>
+</html>
