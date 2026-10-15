@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador Caso Visa T | Esquema EMP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f1f35;
+  --blue-mid: #1a3a5c;
+  --blue-accent: #2563a8;
+  --teal: #0d9488;
+  --amber: #d97706;
+  --rose: #be123c;
+  --green: #059669;
+  --cream: #faf8f3;
+  --text: #1a1a2e;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --card: #ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--cream);
+  background-image:radial-gradient(circle at 10% 20%,rgba(37,99,168,.06) 0%,transparent 50%),radial-gradient(circle at 90% 80%,rgba(13,148,136,.05) 0%,transparent 50%);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  padding:2rem 1rem;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
+.shell{width:100%;max-width:900px;}
+
+/* SCREENS */
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* HEADER */
+.app-header{
+  background:var(--navy);
+  border-radius:24px 24px 0 0;
+  padding:2rem 2.5rem 1.6rem;
+  position:relative;overflow:hidden;
+}
+.app-header::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(37,99,168,.18);}
+.app-header::after{content:'';position:absolute;bottom:-30px;left:40%;width:120px;height:120px;border-radius:50%;background:rgba(13,148,136,.12);}
+.app-header .label{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem;}
+.app-header h1{font-family:'DM Serif Display',serif;font-size:2rem;color:#fff;line-height:1.2;position:relative;z-index:1;}
+.app-header .subtitle{color:rgba(255,255,255,.55);font-size:.85rem;margin-top:.4rem;position:relative;z-index:1;}
+.user-badge{position:absolute;top:1.1rem;right:1.5rem;z-index:2;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);font-size:.75rem;font-weight:600;padding:.3rem .9rem;border-radius:99px;letter-spacing:.03em;}
+
+/* BODY CARD */
+.card-body{background:var(--card);border-radius:0 0 24px 24px;box-shadow:0 8px 40px rgba(15,31,53,.1);overflow:hidden;}
+
+/* PROGRESS */
+.progress-strip{background:var(--blue-mid);padding:.9rem 2.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.prog-label{font-size:.78rem;color:rgba(255,255,255,.65);font-weight:500;white-space:nowrap;}
+.prog-track{flex:1;min-width:120px;height:4px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),#34d399);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1);}
+.prog-chip{background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);font-size:.72rem;padding:.2rem .7rem;border-radius:99px;font-weight:600;letter-spacing:.03em;white-space:nowrap;}
+
+/* NAV */
+.nav-zone{padding:1.2rem 2.5rem 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;border-top:1px solid var(--border);}
+.btn{font-family:'DM Sans',sans-serif;font-weight:600;font-size:.88rem;padding:.7rem 1.6rem;border-radius:99px;border:none;cursor:pointer;transition:all .15s ease;letter-spacing:.02em;}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.btn-ghost:hover:not(:disabled){border-color:var(--blue-accent);color:var(--blue-accent);}
+.btn-ghost:disabled{opacity:.35;cursor:default;}
+.btn-primary{background:var(--navy);color:#fff;box-shadow:0 2px 8px rgba(15,31,53,.25);}
+.btn-primary:hover{background:var(--blue-mid);transform:translateY(-1px);}
+.btn-teal{background:var(--teal);color:#fff;box-shadow:0 2px 8px rgba(13,148,136,.3);}
+.btn-teal:hover{background:#0f766e;transform:translateY(-1px);}
+
+/* INPUT / WELCOME */
+.welcome-zone{padding:3rem 2.5rem;}
+.welcome-zone h2{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--navy);margin-bottom:.5rem;}
+.welcome-zone p{color:var(--muted);font-size:.95rem;line-height:1.6;margin-bottom:1.5rem;}
+.name-input{width:100%;padding:.9rem 1.2rem;font-size:1rem;font-family:'DM Sans',sans-serif;border:1.5px solid var(--border);border-radius:14px;outline:none;transition:border-color .15s;color:var(--text);}
+.name-input:focus{border-color:var(--blue-accent);}
+.name-label{font-size:.78rem;font-weight:600;color:var(--navy);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;display:block;}
+
+/* INSTRUCTIONS */
+.instructions-zone{padding:2rem 2.5rem;}
+.instr-section{margin-bottom:1.5rem;}
+.instr-section h3{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--navy);margin-bottom:.6rem;}
+.instr-section p,.instr-section li{font-size:.92rem;color:var(--text);line-height:1.7;}
+.instr-section ul{padding-left:1.3rem;}
+.instr-section li{margin-bottom:.3rem;}
+.instr-chip{display:inline-block;background:#eff6ff;color:var(--blue-accent);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .7rem;border-radius:99px;margin-right:.4rem;margin-bottom:.4rem;}
+.instr-chip.teal{background:#f0fdfa;color:var(--teal);}
+.instr-chip.amber{background:#fffbeb;color:var(--amber);}
+
+/* TABS */
+.tabs-bar{display:flex;border-bottom:2px solid var(--border);background:#f8fafd;}
+.tab-btn{padding:1rem 1.5rem;font-size:.88rem;font-weight:600;color:var(--muted);border:none;background:transparent;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;font-family:'DM Sans',sans-serif;}
+.tab-btn.active{color:var(--blue-accent);border-bottom-color:var(--blue-accent);}
+.tab-btn:hover:not(.active){color:var(--navy);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* FRAGMENT */
+.section-tag{display:inline-flex;align-items:center;gap:.4rem;background:#eff6ff;color:var(--blue-accent);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .8rem;border-radius:99px;margin-bottom:.9rem;}
+.section-tag.teal{background:#f0fdfa;color:var(--teal);}
+.fragment-zone{padding:2rem 2.5rem 1rem;border-bottom:1px solid var(--border);}
+.fragment-title{font-family:'DM Serif Display',serif;font-size:1.35rem;color:var(--navy);margin-bottom:1rem;line-height:1.3;}
+.fragment-quote{background:#f8fafd;border:1px solid #dbeafe;border-left:4px solid var(--blue-accent);border-radius:12px;padding:1.2rem 1.5rem;font-size:.92rem;line-height:1.7;color:var(--text);position:relative;}
+
+/* QUESTIONS (EJ 1) */
+.questions-zone{padding:1.8rem 2.5rem 1rem;}
+.q-block{margin-bottom:2rem;}
+.q-number{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+.q-text{font-size:1rem;font-weight:600;color:var(--navy);line-height:1.45;margin-bottom:1rem;}
+.options-list{display:flex;flex-direction:column;gap:.55rem;}
+.opt-label{display:flex;align-items:flex-start;gap:.85rem;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:all .15s ease;font-size:.9rem;color:var(--text);line-height:1.4;}
+.opt-label:hover{border-color:var(--blue-accent);background:#f0f7ff;}
+.opt-label input[type="radio"]{margin-top:.15rem;accent-color:var(--blue-accent);flex-shrink:0;}
+.opt-label.sel-ok{border-color:var(--teal);background:#f0fdf9;color:#064e3b;}
+.opt-label.sel-bad{border-color:var(--rose);background:#fff1f2;color:#881337;}
+.feedback-box{margin-top:.8rem;padding:.9rem 1.1rem;border-radius:12px;font-size:.88rem;line-height:1.5;display:none;}
+.feedback-box.show{display:block;animation:fadeUp .25s ease;}
+.feedback-box.ok{background:#ecfdf5;border-left:3px solid var(--teal);color:#065f46;}
+.feedback-box.fail{background:#fff1f2;border-left:3px solid var(--rose);color:#881337;}
+.q-divider{height:1px;background:var(--border);margin:1.5rem 0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ========================= EJERCICIO 2 ========================= */
+.ex2-container{padding:1.5rem 2.5rem 2rem;}
+
+/* CAST PAGE */
+.cast-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;margin-bottom:2rem;}
+.cast-col-title{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid;}
+.cast-col-ends .cast-col-title{color:var(--blue-accent);border-color:var(--blue-accent);}
+.cast-col-means .cast-col-title{color:#c026d3;border-color:#c026d3;}
+.cast-col-process .cast-col-title{color:var(--teal);border-color:var(--teal);}
+
+.cast-question{font-size:.82rem;color:var(--muted);margin-bottom:.6rem;font-weight:500;}
+.cast-options{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem;}
+.cast-option{display:flex;align-items:center;gap:.5rem;padding:.5rem .7rem;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:.82rem;color:var(--text);transition:all .15s;}
+.cast-option:hover{border-color:var(--blue-accent);background:#f0f7ff;}
+.cast-option input[type="checkbox"]{accent-color:var(--blue-accent);flex-shrink:0;}
+.cast-option.sel-ok{border-color:var(--teal);background:#f0fdf9;color:#064e3b;}
+.cast-option.sel-bad{border-color:var(--rose);background:#fff1f2;color:#881337;}
+
+/* Legal theory fill */
+.legal-theory-box{background:#f8fafd;border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-top:1.5rem;}
+.legal-theory-box h3{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:1rem;}
+.theory-sentence{font-size:.9rem;color:var(--text);line-height:2.2;flex-wrap:wrap;display:flex;align-items:baseline;gap:.4rem;}
+.theory-select{padding:.3rem .6rem;border:1.5px solid var(--blue-accent);border-radius:8px;font-size:.82rem;font-family:'DM Sans',sans-serif;color:var(--navy);background:#eff6ff;cursor:pointer;min-width:130px;}
+.theory-select.sel-ok{border-color:var(--teal);background:#f0fdf9;color:#064e3b;}
+.theory-select.sel-bad{border-color:var(--rose);background:#fff1f2;color:#881337;}
+
+/* DRAG & DROP */
+.dnd-page{margin-bottom:2rem;}
+.dnd-section-title{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:1.2rem;padding-bottom:.6rem;border-bottom:2px solid var(--blue-accent);}
+.dnd-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem;}
+.dnd-grid.single{grid-template-columns:1fr;}
+.dnd-card{background:#f8fafd;border:1.5px solid #dbeafe;border-radius:14px;padding:1.1rem 1.3rem;}
+.dnd-card-label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-accent);margin-bottom:.5rem;}
+.dnd-card-label.means{color:#c026d3;}
+.dnd-card-label.process{color:var(--teal);}
+.dnd-question{font-size:.85rem;color:var(--navy);font-weight:600;margin-bottom:.7rem;line-height:1.4;}
+.drop-zone{min-height:60px;background:#fff;border:2px dashed #bfdbfe;border-radius:10px;padding:.6rem;display:flex;flex-wrap:wrap;gap:.4rem;align-content:flex-start;transition:all .15s;}
+.drop-zone.drag-over{border-color:var(--blue-accent);background:#eff6ff;}
+.drop-zone.has-answer{border-color:var(--teal);border-style:solid;}
+.drag-bank{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0;padding:1rem;background:#fff;border:1px solid var(--border);border-radius:12px;}
+.drag-chip{padding:.45rem .9rem;background:#e0f2fe;color:#075985;font-size:.8rem;font-weight:600;border-radius:99px;cursor:grab;border:1.5px solid #bae6fd;transition:all .15s;user-select:none;}
+.drag-chip:hover{background:#bae6fd;transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,.1);}
+.drag-chip.dragging{opacity:.5;cursor:grabbing;}
+.drag-chip.placed{background:#d1fae5;color:#065f46;border-color:#6ee7b7;}
+.drag-chip.wrong{background:#ffe4e6;color:#9f1239;border-color:#fda4af;}
+.drop-chip{padding:.3rem .7rem;background:#d1fae5;color:#065f46;border-radius:99px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid #6ee7b7;display:flex;align-items:center;gap:.3rem;}
+.drop-chip::after{content:'×';font-size:1rem;opacity:.6;}
+.drop-chip.wrong{background:#ffe4e6;color:#9f1239;border-color:#fda4af;}
+.dnd-feedback{margin-top:.8rem;padding:.8rem 1rem;border-radius:10px;font-size:.83rem;display:none;}
+.dnd-feedback.show{display:block;}
+.dnd-feedback.ok{background:#ecfdf5;border-left:3px solid var(--teal);color:#065f46;}
+.dnd-feedback.fail{background:#fff1f2;border-left:3px solid var(--rose);color:#881337;}
+.verify-btn{background:var(--blue-accent);color:#fff;border:none;padding:.55rem 1.2rem;border-radius:99px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:.8rem;transition:all .15s;}
+.verify-btn:hover{background:#1d4ed8;}
+
+/* FOLLOW-UP QUESTIONS */
+.followup-zone{padding:0 2.5rem 2rem;}
+.followup-title{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--navy);margin-bottom:.8rem;}
+.followup-subtitle{font-size:.88rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6;}
+.followup-examples{background:#f8fafd;border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.5rem;}
+.followup-examples h4{font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;}
+.followup-group{margin-bottom:1rem;}
+.followup-group-label{font-size:.8rem;font-weight:700;color:var(--blue-accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;}
+.followup-group-label.means{color:#c026d3;}
+.followup-group-label.process{color:var(--teal);}
+.followup-examples li{font-size:.85rem;color:var(--text);line-height:1.6;margin-bottom:.25rem;margin-left:1rem;}
+.discussion-area{background:#fff;border:1.5px dashed var(--border);border-radius:14px;padding:1.2rem 1.4rem;}
+.discussion-area h4{font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:.8rem;}
+.discussion-textarea{width:100%;min-height:100px;padding:.8rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-size:.88rem;font-family:'DM Sans',sans-serif;color:var(--text);resize:vertical;outline:none;transition:border-color .15s;line-height:1.6;}
+.discussion-textarea:focus{border-color:var(--blue-accent);}
+.disc-label{font-size:.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;margin-top:.9rem;display:block;}
+
+/* RESULTS */
+.result-zone{padding:2.5rem;}
+.score-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--blue-mid) 100%);border-radius:20px;padding:2rem;text-align:center;margin-bottom:1.8rem;position:relative;overflow:hidden;}
+.score-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(13,148,136,.2),transparent 60%);}
+.score-pct{font-family:'DM Serif Display',serif;font-size:4.5rem;color:#fff;line-height:1;position:relative;}
+.score-label{color:rgba(255,255,255,.65);font-size:.85rem;margin-top:.3rem;position:relative;}
+.score-detail{background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);font-size:.82rem;padding:.4rem 1.2rem;border-radius:99px;display:inline-block;margin-top:.8rem;position:relative;}
+.reinforce-block{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid var(--amber);border-radius:16px;padding:1.2rem 1.4rem;margin-bottom:1.4rem;font-size:.9rem;color:#78350f;line-height:1.6;}
+.reinforce-block strong{display:block;margin-bottom:.4rem;color:#92400e;}
+.perfect-block{background:#ecfdf5;border:1px solid #6ee7b7;border-left:4px solid var(--teal);border-radius:16px;padding:1.2rem 1.4rem;margin-bottom:1.4rem;font-size:.9rem;color:#064e3b;}
+.summary-block{background:#f8fafd;border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.4rem;font-size:.88rem;color:var(--muted);line-height:1.65;}
+.summary-block strong{color:var(--navy);display:block;margin-bottom:.5rem;}
+
+/* CAST CHECKBOXES */
+.cast-checkbox-group{margin-bottom:1rem;}
+.cast-checkbox-label{font-size:.8rem;font-weight:600;color:var(--navy);margin-bottom:.4rem;display:block;}
+.cast-check-feedback{font-size:.8rem;padding:.4rem .7rem;border-radius:8px;margin-top:.3rem;display:none;}
+.cast-check-feedback.show{display:block;}
+.cast-check-feedback.ok{background:#ecfdf5;color:#065f46;}
+.cast-check-feedback.fail{background:#fff1f2;color:#881337;}
+
+/* Process checkboxes */
+.process-check-list{display:flex;flex-direction:column;gap:.35rem;}
+
+@media(max-width:700px){
+  .app-header{padding:1.5rem;}
+  .app-header h1{font-size:1.5rem;}
+  .progress-strip,.fragment-zone,.questions-zone,.ex2-container,.followup-zone{padding-left:1.2rem;padding-right:1.2rem;}
+  .nav-zone{padding:1rem 1.2rem 1.5rem;}
+  .cast-grid{grid-template-columns:1fr;}
+  .dnd-grid{grid-template-columns:1fr;}
+  .welcome-zone,.instructions-zone{padding:1.5rem;}
+  .result-zone{padding:1.5rem;}
+}
+</style>
+</head>
+<body>
+<div class="shell" id="root">
+
+<!-- ============ SCREEN: NAME ============ -->
+<div class="screen active" id="screen-name">
+  <div class="app-header">
+    <div class="label">Simulador · Visa T</div>
+    <h1>Caso de Elegibilidad</h1>
+    <p class="subtitle">Esquema Ends · Means · Process</p>
+  </div>
+  <div class="card-body">
+    <div class="welcome-zone">
+      <h2>Bienvenida/o al simulador</h2>
+      <p>Este simulador está diseñado para que practiques el análisis de un caso real bajo el esquema EMP (Ends-Means-Process) aplicado a la elegibilidad de Visa T. Antes de comenzar, por favor ingresa tu nombre.</p>
+      <label class="name-label" for="nameInput">Tu nombre</label>
+      <input class="name-input" id="nameInput" type="text" placeholder="Escribe tu nombre aquí…" autocomplete="off">
+      <br><br>
+      <div style="display:flex;justify-content:flex-end;">
+        <button class="btn btn-primary" onclick="goInstructions()">Continuar →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: INSTRUCTIONS ============ -->
+<div class="screen" id="screen-instructions">
+  <div class="app-header">
+    <div class="label">Simulador · Visa T</div>
+    <h1>Instrucciones y Objetivos</h1>
+    <p class="subtitle">Lee con atención antes de comenzar</p>
+    <span class="user-badge" id="instr-user-badge"></span>
+  </div>
+  <div class="card-body">
+    <div class="instructions-zone">
+      <div class="instr-section">
+        <h3>Objetivo del simulador</h3>
+        <p>Desarrollar la capacidad de identificar y analizar los elementos del esquema <strong>Ends-Means-Process (EMP)</strong> en un caso real de trata de personas, para fundamentar una solicitud de Visa T ante el USCIS.</p>
+      </div>
+      <div class="instr-section">
+        <h3>Contenido que verás</h3>
+        <p>El simulador está organizado en <strong>dos ejercicios principales</strong>, accesibles mediante pestañas:</p>
+        <ul>
+          <li><strong>Ejercicio 1 – Análisis de fragmentos:</strong> Leerás fragmentos del testimonio real de la víctima (en primera persona) organizados por criterio EMP: Proceso, Medios, Fin, Presencia Física y Dificultad Extrema. Responderás preguntas de comprensión y análisis legal.</li>
+          <li><strong>Ejercicio 2 – Hoja de trabajo EMP:</strong> Completarás la hoja de trabajo Ends-Means-Process (CAST) usando las herramientas drag & drop y selección múltiple. Incluye la construcción de la teoría legal del caso y preguntas de seguimiento.</li>
+        </ul>
+      </div>
+      <div class="instr-section">
+        <h3>Criterios analizados</h3>
+        <span class="instr-chip">Proceso</span>
+        <span class="instr-chip">Medios</span>
+        <span class="instr-chip">Fin (Ends)</span>
+        <span class="instr-chip teal">Presencia Física</span>
+        <span class="instr-chip amber">Dificultad Extrema</span>
+      </div>
+      <div class="instr-section">
+        <h3>Instrucciones generales</h3>
+        <ul>
+          <li>Lee cada fragmento completo antes de responder.</li>
+          <li>En el Ejercicio 2 – Parte 1 (drag &amp; drop), arrastra las respuestas al recuadro correspondiente. Puedes retirar chips haciendo clic sobre ellos.</li>
+          <li>Usa el botón "Verificar" para obtener retroalimentación inmediata en cada sección.</li>
+          <li>En la sección de preguntas de seguimiento, anota las preguntas que discutirías con el grupo.</li>
+          <li>Al finalizar, recibirás un resumen de tu desempeño.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="nav-zone" style="border-top:1px solid var(--border);">
+      <button class="btn btn-ghost" onclick="goScreen('screen-name')">‹ Regresar</button>
+      <button class="btn btn-primary" onclick="goMain()">Comenzar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: MAIN (TABS) ============ -->
+<div class="screen" id="screen-main">
+  <div class="app-header">
+    <div class="label">Simulador · Visa T</div>
+    <h1 id="main-title">Caso de Elegibilidad</h1>
+    <p class="subtitle" id="main-subtitle">Esquema Ends · Means · Process</p>
+    <span class="user-badge" id="main-user-badge"></span>
+  </div>
+  <div class="progress-strip">
+    <span class="prog-label" id="prog-label-txt">Pregunta 1 / 5</span>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <span class="prog-chip" id="prog-chip">PROCESO</span>
+  </div>
+  <div class="card-body">
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('tab-ex1',this)">📄 Ejercicio 1 – Fragmentos</button>
+      <button class="tab-btn" onclick="switchTab('tab-ex2',this)">📋 Ejercicio 2 – Hoja EMP</button>
+    </div>
+
+    <!-- ===== TAB EX1 ===== -->
+    <div class="tab-content active" id="tab-ex1">
+      <div id="ex1-content"></div>
+      <div class="nav-zone">
+        <button class="btn btn-ghost" id="ex1-prev" onclick="ex1Prev()">‹ Anterior</button>
+        <button class="btn btn-primary" id="ex1-next" onclick="ex1Next()">Siguiente ›</button>
+      </div>
+    </div>
+
+    <!-- ===== TAB EX2 ===== -->
+    <div class="tab-content" id="tab-ex2">
+      <!-- Sub-tabs -->
+      <div style="display:flex;gap:.5rem;padding:1rem 2.5rem .5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;">
+        <button class="btn btn-ghost" id="ex2-sub-ends" onclick="showEx2('ends')" style="font-size:.8rem;padding:.45rem 1rem;">Ends</button>
+        <button class="btn btn-ghost" id="ex2-sub-means" onclick="showEx2('means')" style="font-size:.8rem;padding:.45rem 1rem;">Means</button>
+        <button class="btn btn-ghost" id="ex2-sub-process" onclick="showEx2('process')" style="font-size:.8rem;padding:.45rem 1rem;">Process</button>
+        <button class="btn btn-ghost" id="ex2-sub-cast" onclick="showEx2('cast')" style="font-size:.8rem;padding:.45rem 1rem;">Cast & Legal Theory</button>
+        <button class="btn btn-ghost" id="ex2-sub-followup" onclick="showEx2('followup')" style="font-size:.8rem;padding:.45rem 1rem;">Follow-up Questions</button>
+      </div>
+      <div id="ex2-panel"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: RESULTS ============ -->
+<div class="screen" id="screen-results">
+  <div class="app-header">
+    <div class="label">Resultado Final</div>
+    <h1>Simulador Visa T</h1>
+    <p class="subtitle">Análisis de elegibilidad bajo esquema EMP</p>
+    <span class="user-badge" id="result-user-badge"></span>
+  </div>
+  <div class="card-body">
+    <div class="result-zone" id="result-content"></div>
+  </div>
+</div>
+
+</div><!-- end shell -->
+
+<script>
+// ==================== SCORM 1.2 PERSISTENCE ====================
+const SCORM = (function(){
+  let API = null;
+  function findAPI(win){
+    let tries = 0;
+    while(win.API == null && win.parent != null && win.parent != win){
+      tries++;
+      if(tries > 7) return null;
+      win = win.parent;
+    }
+    return win.API || null;
+  }
+  function init(){
+    API = findAPI(window);
+    if(!API && window.opener) API = findAPI(window.opener);
+    if(API){ try{ API.LMSInitialize(''); }catch(e){} }
+  }
+  function save(data){
+    if(!API) return;
+    try{
+      const str = JSON.stringify(data);
+      API.LMSSetValue('cmi.suspend_data', str);
+      API.LMSSetValue('cmi.core.lesson_status','incomplete');
+      API.LMSCommit('');
+    }catch(e){}
+  }
+  function load(){
+    if(!API) return null;
+    try{
+      const raw = API.LMSGetValue('cmi.suspend_data');
+      if(raw && raw.length > 0) return JSON.parse(raw);
+    }catch(e){}
+    return null;
+  }
+  function finish(score){
+    if(!API) return;
+    try{
+      API.LMSSetValue('cmi.core.score.raw', String(score));
+      API.LMSSetValue('cmi.core.score.min','0');
+      API.LMSSetValue('cmi.core.score.max','100');
+      API.LMSSetValue('cmi.core.lesson_status', score>=70 ? 'passed' : 'failed');
+      API.LMSCommit('');
+      API.LMSFinish('');
+    }catch(e){}
+  }
+  init();
+  return {save, load, finish};
+})();
+
+// ==================== STATE ====================
+let userName = '';
+
+function buildSaveState(){
+  return {
+    userName,
+    ex1Mod,
+    ex1Answers,
+    dragState,
+    dndVerified,
+    castAnswers,
+    castVerified
+  };
+}
+function applySaveState(s){
+  if(!s) return;
+  if(s.userName) userName = s.userName;
+  if(s.ex1Mod !== undefined) ex1Mod = s.ex1Mod;
+  if(s.ex1Answers) ex1Answers = s.ex1Answers;
+  if(s.dragState) dragState = s.dragState;
+  if(s.dndVerified) dndVerified = s.dndVerified;
+  if(s.castAnswers) castAnswers = s.castAnswers;
+  if(s.castVerified) castVerified = s.castVerified;
+}
+function persistState(){
+  SCORM.save(buildSaveState());
+}
+
+let ex1Mod = 0;
+let ex1Answers = [];
+let dragState = {}; // {zoneId: [chipIds]}
+let dndVerified = {}; // {sectionId: bool}
+
+// ==================== DATA EX1 ====================
+const MODULES = [
+  {
+    criterion:"PROCESO",tag:"Reclutamiento · Traslado · Acogida",
+    title:"El inicio de la relación con Manuel Álvarez Yupa",
+    fragment:`A finales de 2018, Manuel Álvarez Yupa me mandó un mensaje por Facebook. Él es ecuatoriano, y yo lo conocía de Ecuador desde 1997 o 1999. Éramos solo conocidos, nos saludábamos cuando nos veíamos por el sector donde vivíamos. Él nunca había intentado acercarse a mí con intenciones de pareja.
+
+Cuando me contactó por Facebook, se presentó diciendo que tanto tiempo que allá nos conocíamos. Al principio, él se portaba muy bien, como que quería ver si se daba una oportunidad. Él estaba en Nueva York y yo en Maryland.
+
+Durante los seis meses que hablamos por Facebook, antes de vernos, platicábamos de nuestras vidas. Yo le platiqué que ya me había separado de mi pareja y que tenía a mis dos hijos. Él me dijo que como no tenía hijos, él iba a estar bien conmigo y que iba a ser como un papá para mis hijos, que iba a educarlos y ayudar así a trabajar. Él no me preguntó si yo tenía papeles o permiso de trabajo, y yo supe que él tampoco tenía nada.
+
+Después de seis meses de hablar por Facebook, él viajó a Maryland para verme. Estuvo solo medio día. En esa primera plática, él me dijo que quería estar conmigo y que quería que viviéramos juntos. Me propuso que nos fuéramos a vivir juntos por mis hijos y porque él me quería. También me dijo que quería comprar una casa, que íbamos a trabajar los dos y que íbamos a vivir bien. Yo miraba sus intenciones y sus palabras, y pensaba que era algo bueno, que iba a ser verdad. Yo también pensaba en trabajar y comprar una casa. En esa ocasión, él se portó muy cariñoso.
+
+Él regresó a Nueva York, pero quedó en que iba a venir cada semana, y sí lo hizo. Esas visitas eran de una mañana, y en la tarde se iba. Salíamos a comer, a caminar. En ese tiempo, él insistía en que viviéramos juntos para no estar viajando. Él me convenció de tener una relación diciéndome que íbamos a vivir bien, que si íbamos a hacer las cosas bien, entonces que nos va a ir bien.`,
+    questions:[
+      {type:"multiple",text:"¿Qué etapa del proceso de trata se evidencia en el fragmento?",
+        options:[
+          "Únicamente el traslado físico de la víctima a otro estado, ya que Manuel viajó de Nueva York a Maryland para encontrarse con ella.",
+          "El reclutamiento mediante engaño y promesas falsas de una vida en pareja, apoyo económico estable, rol paterno para los hijos y compra de casa compartida.",
+          "La acogida forzada en un espacio cerrado sin posibilidad de salida, dado que la víctima quedó atrapada en la relación desde el inicio."
+        ],
+        correct:1,
+        ok:"Correcto. El fragmento describe la etapa de reclutamiento: Manuel utilizó promesas falsas de relación amorosa, rol de padre para los hijos, compra de casa conjunta y bienestar económico compartido para convencer a la víctima de cohabitar con él. Este engaño sistemático a lo largo de seis meses es precisamente el mecanismo de captación que define el reclutamiento en el esquema EMP. Para la elegibilidad de Visa T, es fundamental documentar cómo estas promesas nunca tuvieron intención de cumplirse, pues constituyeron el primer paso del proceso de trata.",
+        fail:"Incorrecto. No se describe traslado forzado al otro estado ni acogida en espacio cerrado. Lo que se narra es el reclutamiento engañoso: Manuel utilizó mensajes por Facebook durante seis meses y visitas presenciales para construir confianza y hacer promesas que nunca cumplió. El reclutamiento es la primera etapa del esquema EMP, y en este caso operó mediante seducción emocional y promesas económicas, no mediante fuerza física ni secuestro. Reconocer esta etapa correctamente es clave para fundamentar la solicitud de Visa T."},
+      {type:"truefalse",text:"¿El reclutamiento para Visa T requiere necesariamente que el tratante ofrezca trabajo formal o empleo documentado para configurarse legalmente?",
+        options:[
+          "Verdadero, porque la definición legal de trata laboral exige que haya una oferta de empleo, aunque sea fraudulenta, como punto de partida del proceso.",
+          "Falso, porque el reclutamiento puede operar a través de promesas sentimentales, de estabilidad familiar o de bienestar económico general, sin necesidad de una oferta de trabajo formal."
+        ],
+        correct:1,
+        ok:"Correcto: Falso. El reclutamiento para Visa T no requiere que exista una oferta laboral explícita. Puede configurarse mediante cualquier forma de engaño que lleve a la víctima a una situación de explotación posterior. En este caso, Manuel usó promesas de relación amorosa estable, figura paterna para los hijos y proyecto de vida compartido (compra de casa). Estas promesas sentimentales y económicas son suficientes para configurar el reclutamiento engañoso bajo la definición del TVPA, ya que el propósito final era la explotación de su trabajo y sus ingresos.",
+        fail:"Incorrecto. Es Falso. La ley no exige que el tratante presente una oferta de empleo formal para que se configure el reclutamiento. Las promesas de relación amorosa, apoyo económico y estabilidad familiar que Manuel hizo a la víctima son formas válidas y documentadas de reclutamiento engañoso bajo el Trafficking Victims Protection Act. Lo relevante no es la forma que tomó la promesa, sino que dicha promesa fue el mecanismo mediante el cual Manuel consiguió que la víctima le permitiera vivir con ella, lo que facilitó su posterior explotación."},
+      {type:"complete",text:"Un elemento concreto del fragmento que demuestra el engaño en el reclutamiento es: 'Manuel prometió ser como un padre para los hijos y __________, pero nunca cumplió ninguna de estas promesas.'",
+        options:[
+          "aportar económicamente para que juntos pudieran comprar una casa y construir una vida estable para la familia",
+          "ayudar a la víctima con sus trámites migratorios y conseguirle un permiso de trabajo legal en Maryland",
+          "conseguirle un empleo formal en una empresa reconocida de California, con beneficios y contrato escrito"
+        ],
+        correct:0,
+        ok:"Correcto. La promesa concreta documentada en el fragmento fue aportar económicamente para comprar una casa y construir una vida en pareja. Este fue el anzuelo emocional y material que Manuel usó para reclutar a la víctima, convenciéndola de que su mudanza sería beneficiosa para ella y sus hijos. Para efectos legales de la Visa T, es crucial documentar estas promesas específicas y contrastarlas con lo que realmente ocurrió una vez que Manuel se mudó, demostrando así el dolo desde el inicio de la relación.",
+        fail:"Incorrecto. El fragmento no hace ninguna mención a trámites migratorios, permisos de trabajo ni empleos en California. Esos elementos no forman parte del testimonio y no pueden usarse para fundamentar el caso. La promesa concreta y documentada que configuró el engaño en el reclutamiento fue aportar económicamente para comprar una casa juntos, trabajar los dos y vivir bien. Esta es la promesa que debe documentarse, ya que su incumplimiento sistemático es la base del argumento de reclutamiento fraudulento para Visa T."}
+    ]
+  },
+  {
+    criterion:"MEDIOS",tag:"Coerción · Control · Explotación",
+    title:"El control y la explotación económica y física",
+    fragment:`Prácticamente en cuanto empezamos a vivir juntos, él empezó a cambiar. Se empezó a portar diferente. Él empezó a controlarme, a decirme que tenía que apartarme de las personas, hasta de mi familia. Me apartó de mis amistades, y yo para no tener problemas con él, para no estar peleándonos, me fui apartando poco a poco de las personas con las que conversaba.
+
+Desde que Manuel se mudó a mi casa en febrero de 2019, él no hacía nada en la casa durante los dos meses que estuvo sin trabajar. Yo tenía que hacer todas las actividades domésticas. Cuando yo llegaba de mis dos trabajos —limpieza de 6:00 a.m. a 12:00 p.m. y restaurante de 12:00 p.m. a 6:00 o 7:00 p.m.—, él me decía que tenía que cocinar, porque él quería la comida y tenía hambre. Yo no podía negarme a hacer la comida, porque él me decía: "TIENES QUE HACERME DE LA COMIDA QUE TENGO HAMBRE". Si me negaba, se ponía de mal genio y me empujaba. Una vez me empujó contra un mueble, dejándome un moretón en el brazo y la pierna.
+
+A finales de 2019, Manuel abrió una cuenta bancaria. Me dijo que era para que tuviéramos acceso los dos y que era para comprar una casa. Pero yo no me acuerdo de haber firmado nada, y solo podía acceder al dinero si le pedía a él. Él me dijo que yo tenía que darle todo mi cheque para que él lo depositara en esa cuenta. Yo le daba todo mi dinero, que eran $1,200 o $1,300 quincenales, por temor a él.
+
+De todo mi dinero, él solo me daba $200 o $300 quincenales para los gastos de la casa y la comida. Cuando yo le pedía dinero, él decía que no tenía, que no le habían pagado. Yo no sabía qué hacía Manuel con el resto del dinero. Él se compraba ropa de marca cada mes, y yo compraba la mía y la de mis hijos en tiendas más económicas. Supe que él mandaba dinero a su país para ayudar a su mamá y a su hermano; una vez encontré un recibo de $1,500 que había enviado. Cuando lo confronté, me dijo que era para un trabajo o para comprar algo allá. En total, Manuel me quitó más de $80,000 dólares en tres años, entre 2021 y 2023.
+
+Yo le suplicaba a Manuel que me dejara, que yo ya no quería más, que yo iba a quedar bien sola y que ya no quería vivir eso. Él me decía que se iba a ir, pero tardó como cinco o seis meses en hacerlo, siempre con el pretexto de que no tenía dónde ir o que él iba a cambiar. Finalmente, se fue en noviembre de 2023. Se llevó todo el dinero que me había estado quitando.`,
+    questions:[
+      {type:"multiple",text:"¿Qué medios de trata se identifican en el fragmento según el esquema EMP para Visa T?",
+        options:[
+          "Únicamente violencia física directa y documentada, representada por los empujones y los moretones que Manuel le causó a la víctima al negarse a cocinar.",
+          "Una combinación de aislamiento social sistemático, violencia física documentada, control financiero total del salario y coerción psicológica sostenida para retenerla en la situación.",
+          "Fraude en documentos migratorios, retención del pasaporte y amenazas explícitas de deportación como mecanismos de control sobre la víctima."
+        ],
+        correct:1,
+        ok:"Correcto. El fragmento muestra una combinación de múltiples medios coercitivos que operaron de forma simultánea: (1) aislamiento social, cortando los vínculos con familia y amistades; (2) coerción física, mediante empujones documentados con moretones; (3) control financiero absoluto, obligándola a entregar todo su salario quincenal; y (4) manipulación psicológica, usando pretextos para no marcharse cuando ella lo pedía. Esta combinación es precisamente lo que configura los 'medios' de trata bajo el TVPA y es fundamental para la elegibilidad de Visa T, ya que demuestra que la víctima no actuaba por voluntad propia sino bajo coacción multidimensional.",
+        fail:"Incorrecto. Si bien la violencia física está documentada, es incompleta como único 'medio'. El fragmento evidencia claramente aislamiento social progresivo, control financiero total mediante la apropiación del 100% del salario, y manipulación psicológica mediante chantaje emocional. Tampoco hay mención de fraude en documentos migratorios ni retención de pasaporte en este fragmento. Para Visa T, los medios de trata incluyen fuerza, fraude y coerción en todas sus formas, no solo violencia física."},
+      {type:"truefalse",text:"Para Visa T, el control financiero —como obligar a la víctima a entregar todo su salario quincenal bajo amenaza o miedo— puede constituir por sí mismo un 'medio' de trata reconocido legalmente.",
+        options:[
+          "Verdadero, porque el control económico coercitivo es una forma reconocida de coerción bajo el TVPA, que no requiere violencia física para configurarse como medio de trata.",
+          "Falso, porque sin violencia física grave y documentada el control financiero no tiene suficiente peso legal para ser considerado un medio de trata en una solicitud de Visa T."
+        ],
+        correct:0,
+        ok:"Correcto: Verdadero. La coerción económica es un medio reconocido de trata bajo el Trafficking Victims Protection Act. Obligar a la víctima a entregar su salario completo —en un contexto donde ya existe violencia física y aislamiento— constituye abuso de poder y coerción económica. Este control financiero no solo es un 'medio' en sí mismo, sino que también refuerza todos los demás medios coercitivos, ya que sin acceso a dinero propio, la víctima no podía buscar alternativas de vivienda, apoyo externo o independencia. Para documentar correctamente este medio, es importante obtener estados de cuenta bancarios, registros de depósitos y declaraciones que demuestren la ausencia de consentimiento voluntario.",
+        fail:"Incorrecto. Es Verdadero. El TVPA reconoce explícitamente que los medios de trata incluyen coerción económica, no solo violencia física. En este caso, el control financiero absoluto —obligar a la víctima a entregar $1,200–$1,300 quincenales con solo recibir $200–$300 de vuelta— operó como mecanismo de control que mantuvo a la víctima en situación de dependencia total. La ausencia de violencia física en algunos momentos no invalida el medio coercitivo económico; al contrario, la coerción económica sostenida durante años es en muchos casos más difícil de superar que un episodio de violencia puntual."},
+      {type:"complete",text:"Para fortalecer el criterio de 'medios' en este caso, sería jurídicamente útil documentar que la víctima entregaba su dinero a Manuel ____________.",
+        options:[
+          "por miedo a las consecuencias físicas y psicológicas si se negaba, y no como resultado de una decisión libre y voluntaria de su parte",
+          "para cumplir un acuerdo económico formal que ambos habían firmado y que establecía cómo administrarían sus finanzas compartidas",
+          "porque Manuel tenía más experiencia administrando dinero y ambos acordaron verbalmente que él sería quien manejara las finanzas del hogar"
+        ],
+        correct:0,
+        ok:"Correcto. Demostrar que la entrega del salario ocurría por miedo —en un contexto de violencia física previa y aislamiento social— es clave para eliminar cualquier apariencia de voluntariedad. Para la solicitud de Visa T, es fundamental establecer que no existió consentimiento real: la víctima actuaba bajo coacción, no por elección. Esto puede documentarse con declaración detallada de la víctima, testimonios de personas que la conocieran en esa época, registros médicos de los moretones y cualquier comunicación donde Manuel exigiera el dinero. La ausencia de consentimiento es el elemento que transforma una relación económica en un medio de trata.",
+        fail:"Incorrecto. Presentar la entrega del salario como un acuerdo voluntario o una decisión de confianza mutua destruiría completamente el argumento de trata en la solicitud de Visa T. Si la entrega de dinero parece una decisión libre, desaparece el elemento de coerción que configura el 'medio'. La clave legal es precisamente demostrar lo contrario: que la víctima no tenía otra opción que obedecer, que intentar retener su dinero le traía consecuencias físicas o psicológicas, y que el contexto de violencia y aislamiento hacía imposible cualquier negativa."}
+    ]
+  },
+  {
+    criterion:"FIN",tag:"Explotación laboral · Beneficio económico",
+    title:"La explotación laboral como propósito final",
+    fragment:`La víctima mantenía dos empleos simultáneos (limpieza y restaurante), trabajando aproximadamente 12 horas diarias. Al llegar a casa debía además realizar todas las tareas domésticas. Manuel, durante los primeros dos meses tras mudarse, no trabajó ni contribuyó económicamente. Se apropiaba de más de $1,000 quincenales del salario de la víctima, con los que compraba ropa de marca, enviaba remesas a Ecuador y satisfacía sus propios gastos. En total sustrajo más de $80,000 dólares.
+
+Me he recuperado de la anemia, ya estoy en mi peso normal, y mi pelo me está creciendo de nuevo; antes lo tenía muy ralito y se me veía el cuero cabelludo. Mis uñas también volvieron a crecer. A la fecha, ya no tengo síntomas de anemia como mareos, dolores de cabeza o náuseas. Tengo unos exámenes el 9 de julio para ver cómo sigo de la anemia, pero me han dicho que estoy mucho mejor. Me he sentido mucho mejor desde que Manuel se fue, como normal, como normal.
+
+Aunque me siento mucho mejor, el estrés que viví me afectó mucho. Era muy difícil ir a trabajar con anemia y estrés, porque no me concentraba y me daba mucho sueño, no tenía fuerzas ni ánimos. Yo me encerraba y lloraba sola en silencio, no le decía nada a mis hijos. Solo le pedía a Dios que me ayudara a apartarme de él.`,
+    questions:[
+      {type:"multiple",text:"¿Por qué el fragmento evidencia el 'fin' o propósito final de la trata bajo la definición legal de Visa T?",
+        options:[
+          "Porque la víctima cruzó fronteras internacionales para trabajar en EE.UU., lo cual constituye el fin de la trata según la definición del TVPA para casos transnacionales.",
+          "Porque el propósito final de Manuel era obtener beneficio económico directo y sostenido mediante la apropiación sistemática del trabajo y los ingresos de la víctima bajo coerción.",
+          "Porque la víctima fue reclutada por una agencia de empleo fraudulenta que la asignó a trabajar en condiciones de explotación en dos empleos simultáneos."
+        ],
+        correct:1,
+        ok:"Correcto. El 'fin' de la trata bajo el esquema EMP es la explotación: Manuel obtenía beneficio económico directo y sostenido del trabajo de la víctima, quien laboraba aproximadamente 14 horas diarias (dos empleos más tareas domésticas) mientras él vivía a su costa durante los primeros meses sin trabajar, y posteriormente se apropiaba de más de $1,000 quincenales de su salario. Este patrón de apropiación de los frutos del trabajo ajeno bajo coacción es precisamente lo que define la explotación laboral como 'fin' de la trata. El deterioro físico documentado (anemia severa, caída de cabello) es evidencia corroborante de la sobrecarga de trabajo sostenida.",
+        fail:"Incorrecto. La víctima no cruzó fronteras para trabajar en el contexto de la trata —llevaba en EE.UU. desde 2003— y no fue reclutada por ninguna agencia de empleo. El 'fin' de la trata en este caso es la explotación económica interna: Manuel se beneficiaba directamente de los ingresos y el trabajo doméstico de la víctima bajo un esquema de coacción que ella no podía resistir. Identificar correctamente el 'fin' es esencial para la elegibilidad de Visa T, ya que debe demostrarse que existía un propósito de explotación, no solo una relación conflictiva."},
+      {type:"truefalse",text:"El deterioro de la salud física de la víctima —anemia severa, caída de cabello, pérdida de peso, agotamiento crónico— puede servir como evidencia médica corroborante del fin de explotación laboral.",
+        options:[
+          "Verdadero, porque las condiciones médicas documentadas son evidencia objetiva del agotamiento causado por jornadas extremas, y sirven para corroborar la explotación laboral sostenida.",
+          "Falso, porque las condiciones médicas son consecuencias personales de la víctima y no tienen relevancia legal directa para demostrar el fin de explotación laboral en una solicitud de Visa T."
+        ],
+        correct:0,
+        ok:"Correcto: Verdadero. El daño físico documentado —resultado directo del agotamiento causado por jornadas de trabajo extremas, estrés crónico y falta de recursos para cuidar su salud— es evidencia médica objetiva que corrobora la explotación laboral como fin de la trata. En una solicitud de Visa T, los registros médicos que documentan anemia severa, pérdida de cabello y peso durante el período de trata, seguidos de recuperación paulatina después de que Manuel se fue, son especialmente valiosos porque establecen una correlación temporal directa entre la situación de explotación y el daño físico sufrido. Este tipo de evidencia es difícil de refutar.",
+        fail:"Incorrecto. Es Verdadero. Las condiciones médicas documentadas son altamente relevantes en una solicitud de Visa T, especialmente cuando existe una correlación temporal clara: la anemia severa y el deterioro físico comenzaron durante el período de trata y mejoraron notablemente una vez que el tratante se fue. Esto establece una cadena causal entre la explotación laboral y el daño a la salud. Los registros médicos que documentan estos diagnósticos durante el período 2019–2023 son evidencia objetiva y verificable que refuerza el argumento de explotación laboral como 'fin' de la trata."},
+      {type:"complete",text:"Para demostrar el fin de explotación laboral en esta solicitud de Visa T, es esencial establecer que la víctima no podía disponer libremente de los ingresos de su propio trabajo porque __________.",
+        options:[
+          "Manuel los tomaba bajo un contexto de miedo, violencia previa y aislamiento social, sin el consentimiento real ni voluntario de la víctima",
+          "ambos habían acordado expresamente que él administraría las finanzas del hogar como parte de un arreglo económico que beneficiaba a los dos",
+          "ella voluntariamente prefería no manejar dinero y le resultaba más cómodo que Manuel se encargara de todos los gastos y ahorros"
+        ],
+        correct:0,
+        ok:"Correcto. Establecer la ausencia de consentimiento real —en un contexto de violencia física previa y aislamiento social impuesto— es el elemento jurídico central para demostrar que la extracción económica era explotación y no un arreglo voluntario. Para la solicitud de Visa T, debe documentarse que la víctima no tenía otra opción: intentar retener su salario implicaba enfrentar agresión física o consecuencias emocionales severas. Este elemento, combinado con el daño físico documentado por la sobrecarga laboral, es lo que eleva la situación del nivel de 'relación conflictiva' al nivel legal de trata con fines de explotación laboral.",
+        fail:"Incorrecto. Presentarlo como un acuerdo voluntario de administración financiera o una preferencia personal destruiría el elemento de explotación que es central para la elegibilidad de Visa T. Si la entrega del dinero aparenta ser una decisión libre, desaparece el 'fin' de explotación y el caso se debilita significativamente. El argumento legal correcto es que Manuel tomaba el dinero bajo un contexto de coerción donde la víctima no tenía capacidad real de negarse, lo que transforma la apropiación económica en explotación laboral bajo el TVPA."}
+    ]
+  },
+  {
+    criterion:"PRESENCIA FÍSICA",tag:"Nexo causal · Permanencia",
+    title:"Presencia en EE.UU. vinculada a la situación de trata",
+    fragment:`Decidí migrar a los Estados Unidos porque allá no había trabajo, necesitaba trabajar para darles a mis hijos. Esa era mi necesidad, emigrar para trabajar, para darles lo que necesitaban. Vine a los Estados Unidos en septiembre de 2003, cuando tenía como 26 años. En ese tiempo, mis dos hijos mayores, Brian y Oscar, ya habían nacido.
+
+Sin embargo, todavía tengo dolor en la rodilla y estoy en tratamiento. Después de la histerectomía, la doctora me dijo que no puedo hacer mucha fuerza ni cargar cosas muy pesadas.
+
+Manuel me quitó más de $80,000 dólares. Si no me los hubiera quitado, yo habría podido comprar una casa para rentar y mejorar mi situación. Tuve que apretar mis gastos por un año para estabilizarme después de que se fue. También tuve que comprar otro coche porque el mío ya no servía, y si hubiera tenido ese dinero, habría podido comprarme uno nuevo más fácilmente.`,
+    questions:[
+      {type:"multiple",text:"¿Cómo se cumple correctamente el criterio de 'presencia física en EE.UU. a raíz de la trata' en este caso?",
+        options:[
+          "Porque la víctima lleva más de 20 años residiendo en EE.UU., lo que por sí solo satisface el requisito temporal de presencia física establecido para Visa T.",
+          "Porque durante el período de trata (2019–2023) la permanencia de la víctima en EE.UU. fue mantenida bajo condiciones de explotación y control económico que hacían imposible su salida voluntaria de la situación.",
+          "Porque la víctima ingresó al país sin documentos migratorios regulares como parte de un proceso de trata organizado por redes de tráfico transnacional."
+        ],
+        correct:1,
+        ok:"Correcto. El criterio de presencia física para Visa T no se basa en la cantidad de años de residencia ni en la forma de ingreso al país, sino en el nexo causal entre la situación de trata y la permanencia en EE.UU. durante el período de explotación. En este caso, durante 2019–2023, el control financiero absoluto de Manuel —quien retuvo más de $80,000— eliminó la capacidad económica de la víctima para buscar alternativas o salir de la situación, mientras que el aislamiento social impuesto le quitó las redes de apoyo que podrían haberle ayudado. Para documentar este criterio, debe establecerse que la permanencia en EE.UU. durante ese período estaba condicionada por las circunstancias de la trata.",
+        fail:"Incorrecto. Los 20 años de residencia no satisfacen por sí solos el criterio de presencia física para Visa T, ya que este criterio no es temporal sino causal. Tampoco hubo ingreso como parte de trata organizada; la víctima llegó en 2003 por razones económicas propias. Lo que determina el criterio es que durante el período de explotación (2019–2023), el control coercitivo de Manuel mantuvo a la víctima en una situación en la que no podía ejercer su voluntad libremente. Esta distinción es crucial: la presencia física es válida cuando la trata condicionó la permanencia, independientemente de cuándo y cómo se llegó al país."},
+      {type:"truefalse",text:"Si la víctima ingresó a EE.UU. años antes del inicio de la trata, esto automáticamente la descalifica para cumplir el criterio de presencia física requerido para Visa T.",
+        options:[
+          "Verdadero, porque el requisito de Visa T exige que el ingreso al país haya ocurrido directamente como resultado del proceso de trata, y no por motivos independientes años antes.",
+          "Falso, porque una persona puede haber llegado a EE.UU. por razones completamente ajenas a la trata y aún así calificar si, estando ya en el país, fue sometida a trata de personas."
+        ],
+        correct:1,
+        ok:"Correcto: Falso. El TVPA no exige que el ingreso al país haya ocurrido como consecuencia de la trata. Una persona puede haber llegado a EE.UU. años antes, por razones laborales, familiares o de cualquier otro tipo, y aun así cumplir el criterio de presencia física si, una vez en el país, fue víctima de trata. En este caso, la víctima llegó en 2003 por necesidad económica, dieciséis años antes de que comenzara la explotación. Lo que importa para el criterio de presencia física es que durante el período de trata la víctima se encontraba en suelo estadounidense, y que las circunstancias de la explotación condicionaron su permanencia en esa situación.",
+        fail:"Incorrecto. Es Falso. Exigir que el ingreso al país sea consecuencia directa de la trata sería una interpretación incorrecta y muy restrictiva del TVPA. Muchas víctimas de trata ya se encontraban en EE.UU. cuando fueron explotadas, especialmente en casos de trata interna o de explotación por parte de personas conocidas. Para Visa T, lo relevante no es cuándo ni cómo llegó la víctima, sino que estuviera presente en EE.UU. durante el período en que ocurrió la trata y que su permanencia en esa situación estuvo condicionada por las circunstancias de explotación."},
+      {type:"complete",text:"Para reforzar el nexo entre presencia en EE.UU. y la trata, podría documentarse que durante 2019–2023 la víctima no podía salir de la situación de explotación porque __________.",
+        options:[
+          "el control financiero absoluto, el miedo derivado de la violencia física previa y el aislamiento social impuesto le impedían buscar alternativas o alejarse de Manuel",
+          "no tenía documentos migratorios válidos ni permiso de trabajo activo que le permitieran trasladarse legalmente a otro estado o buscar ayuda institucional",
+          "prefería permanecer en EE.UU. junto a sus hijos ciudadanos estadounidenses y no quería separarse de ellos bajo ninguna circunstancia"
+        ],
+        correct:0,
+        ok:"Correcto. Para establecer el nexo causal entre la trata y la permanencia en EE.UU., es fundamental documentar que las condiciones de explotación —el control del dinero, el aislamiento social y el miedo generado por la violencia— eliminaron la capacidad real de la víctima para salir de la situación. Estos factores coercitivos son los que establecen que su permanencia no era una elección libre sino el resultado de la trata. En términos legales, esto es lo que diferencia a una víctima de trata de alguien que voluntariamente decide continuar en una relación problemática.",
+        fail:"Incorrecto. La falta de documentos migratorios puede ser un factor relevante en algunos casos, pero no es el argumento central documentado en este testimonio. La preferencia por permanecer junto a sus hijos, si se presenta como razón principal, convierte la permanencia en una elección voluntaria y debilita el nexo de trata. El argumento correcto y más sólido es que la coerción —control económico, violencia y aislamiento— eliminaron la libertad de decisión de la víctima, haciendo que su permanencia en la situación fuera el resultado de la explotación y no de una elección libre."}
+    ]
+  },
+  {
+    criterion:"DIFICULTAD EXTREMA",tag:"Deportación · Riesgos · Salud",
+    title:"Consecuencias ante una eventual deportación a Ecuador",
+    fragment:`Manuel sabe dónde está mi familia en Ecuador. La situación de seguridad en Ecuador hoy en día es muy peligrosa. Me dicen que está así como más o menos como era El Salvador antes, así está mucha corrupción, muchos ladrones. Me han contado que los ladrones van a las casas a robar, y que en las carreteras asaltan a la gente, les quitan todo y los golpean. Si yo volviera, estas personas se darían cuenta de que vengo de Estados Unidos y podrían pensar que tengo dinero, lo que me pondría en riesgo de ser robada o agredida. En mi país, las leyes no son como aquí, antes no se podía denunciar, y aunque ahora tal vez sí, la delincuencia es mucha.
+
+Si volviera a Ecuador, el único trabajo que hay es en el campo, sembradíos, que es un trabajo pesado. Con mi anemia, no podría trabajar así, porque me da mucho sueño y no tengo fuerzas. Además, después de mi histerectomía, no puedo hacer mucha fuerza ni cargar cosas pesadas, lo que me impediría realizar ese tipo de trabajo. El dinero que se gana en el campo apenas alcanzaría para comer, no para mis tratamientos médicos. No hay seguros médicos ni programas de gobierno que cubran mis atenciones, y los medicamentos son más caros allá. Si dejara de tomarlos, mi anemia volvería.
+
+Tengo dos hijos menores que son ciudadanos de los Estados Unidos. Si yo fuera deportada, ellos se quedarían aquí porque en Ecuador no hay lo suficiente para sobrevivir o estudiar. Yo no podría apoyarlos si estuviera allá. Mi hijo Jake, con su diagnóstico de autismo, requiere que yo esté pendiente de él y lo acompañe a algunos lugares. En Ecuador, él no podría obtener el tratamiento o las terapias que necesita, ya que no hay. El padre biológico de mis hijos menores ya tiene su familia y no podría hacerse cargo de ellos si yo no estuviera.
+
+He vivido en los Estados Unidos por más de 20 años y he construido una vida aquí. Tengo mi casa y mi coche, que dejaría a mis hijos si me fuera. He salido adelante con mi trabajo, y ahora administro mi dinero. Asisto a una iglesia cristiana desde hace cinco años, donde he encontrado apoyo y he hablado con una hermana de la iglesia sobre mis problemas. Si fuera deportada, perdería toda esta red de apoyo y no encontraría algo similar en Ecuador.`,
+    questions:[
+      {type:"multiple",text:"¿Qué elementos del fragmento contribuyen a configurar el estándar de 'dificultad extrema' requerido para Visa T bajo el TVPA?",
+        options:[
+          "Únicamente el diagnóstico de autismo del hijo Jake, que por ser una condición médica grave y sin acceso a tratamiento en Ecuador representa el factor más determinante para la elegibilidad.",
+          "La acumulación de múltiples factores concurrentes: riesgo de represalias de Manuel, inseguridad generalizada en Ecuador, incapacidad laboral por condiciones de salud, inaccesibilidad de tratamientos médicos, y separación de hijos ciudadanos con necesidades especiales.",
+          "Únicamente los daños económicos acumulados de $80,000 sustraídos, que representan una pérdida patrimonial que la víctima no podría recuperar si fuera deportada a Ecuador."
+        ],
+        correct:1,
+        ok:"Correcto. La 'dificultad extrema' bajo Visa T no se configura con un solo factor aislado, sino con la acumulación de múltiples agravantes que, considerados en conjunto, superan el umbral de lo que podría esperarse como consecuencia ordinaria de una deportación. En este caso convergen: (1) riesgo de represalias por parte de Manuel, quien conoce la ubicación de la familia; (2) inseguridad crítica en Ecuador que la expone como retornada desde EE.UU.; (3) incapacidad física para el único trabajo disponible en su comunidad; (4) falta de acceso a seguros médicos y medicamentos necesarios; y (5) imposibilidad de apoyar a un hijo ciudadano con autismo cuyos tratamientos no existen en Ecuador. Esta acumulación es lo que supera el estándar 'extremo'.",
+        fail:"Incorrecto. El estándar de dificultad extrema para Visa T requiere la concurrencia de múltiples factores, no uno solo aislado. Si bien el autismo del hijo Jake es un factor humanitario importante, presentarlo como el único elemento determinante debilita el argumento, ya que la norma exige demostrar dificultad excepcional más allá de lo ordinario. Igualmente, los $80,000 sustraídos son relevantes como daño económico, pero el daño patrimonial por sí solo tampoco alcanza el umbral de 'extremo'. La fortaleza del caso radica en la presentación acumulativa y detallada de todos los factores de riesgo concurrentes."},
+      {type:"truefalse",text:"El hecho de que los hijos menores de la víctima sean ciudadanos estadounidenses y uno de ellos tenga diagnóstico de autismo con necesidad de terapias especializadas es un factor relevante para el análisis de dificultad extrema bajo Visa T.",
+        options:[
+          "Verdadero, porque el impacto en hijos dependientes con necesidades especiales es un factor humanitario que se pondera en el análisis de dificultad extrema, especialmente cuando los tratamientos no existen en el país de origen.",
+          "Falso, porque la situación de los hijos es una circunstancia familiar general que no tiene peso legal específico en el análisis de dificultad extrema de la solicitante de Visa T."
+        ],
+        correct:0,
+        ok:"Correcto: Verdadero. El impacto en hijos dependientes, especialmente cuando tienen necesidades especiales, es un factor humanitario que los evaluadores de USCIS ponderan en el análisis de dificultad extrema. En este caso, Jake es ciudadano estadounidense con diagnóstico de autismo que requiere terapias especializadas que no existen en Ecuador. Si la víctima es deportada, se enfrentaría a la disyuntiva de separarse de su hijo o llevarlo a un país donde no podría acceder a sus tratamientos. Ninguna de las dos opciones es viable sin causar daño grave. Este tipo de argumento, bien documentado con registros médicos del diagnóstico y las terapias actuales de Jake, es uno de los más sólidos para cumplir el criterio de dificultad extrema.",
+        fail:"Incorrecto. Es Verdadero. La situación de los hijos dependientes, especialmente cuando son ciudadanos estadounidenses con necesidades médicas especiales, tiene peso legal específico en el análisis de dificultad extrema bajo Visa T. El USCIS considera el impacto que la deportación tendría en los hijos dependientes como parte del análisis humanitario. En este caso, la combinación de la ciudadanía estadounidense de Jake, su diagnóstico de autismo y la inexistencia de tratamientos adecuados en Ecuador crea una situación donde la deportación causaría daño grave no solo a la madre sino también a un ciudadano menor de edad con necesidades especiales."},
+      {type:"complete",text:"Para fortalecer el criterio de dificultad extrema por razones de salud de la víctima en la solicitud de Visa T, se debería documentar específicamente __________.",
+        options:[
+          "que los tratamientos médicos que necesita —anemia crónica, rodilla, seguimiento post-histerectomía— no están disponibles o son económicamente inaccesibles en su comunidad de origen en Ecuador",
+          "que la víctima ha expresado su preferencia personal por los médicos y el sistema de salud de EE.UU. por considerar que tienen mejor calidad técnica y equipamiento que los de Ecuador",
+          "que la víctima ya pagó íntegramente todos sus tratamientos médicos en EE.UU. con sus propios recursos, lo que demuestra su capacidad económica y responsabilidad personal"
+        ],
+        correct:0,
+        ok:"Correcto. Documentar la indisponibilidad o inaccesibilidad de los tratamientos específicos que necesita la víctima en su comunidad de origen establece un riesgo concreto, objetivo y verificable para su salud en caso de deportación. Para la solicitud de Visa T, esto puede respaldarse con: cartas médicas que detallen los tratamientos actuales y su necesidad de continuidad; investigación o declaraciones sobre la disponibilidad de esos tratamientos y medicamentos en Ecuador; y documentación del costo relativo de los medicamentos en ambos países. La combinación de condiciones crónicas (anemia, rodilla, post-histerectomía) que requieren atención continua, sumada a la imposibilidad de acceder a trabajo físico en Ecuador, crea un argumento de dificultad extrema por salud muy sólido.",
+        fail:"Incorrecto. Una preferencia personal por los médicos de EE.UU. no constituye dificultad extrema bajo ninguna interpretación legal, ya que es una valoración subjetiva que no implica un riesgo objetivo. Haber pagado tratamientos previos tampoco demuestra dificultad futura; al contrario, podría interpretarse como capacidad económica. Lo determinante para el criterio de dificultad extrema por salud es demostrar objetivamente que los tratamientos médicos necesarios —para condiciones ya diagnosticadas y en curso— no existen o no son económicamente accesibles en la comunidad de origen, creando así un riesgo real y documentable para la vida y la salud de la víctima si fuera deportada."}
+    ]
+  }
+];
+
+// Initialize ex1 answers
+function initEx1(){
+  ex1Answers = MODULES.map(m=>m.questions.map(()=>({sel:null,done:false,ok:false})));
+}
+initEx1();
+
+// ==================== DND DATA ====================
+// Each section has cards, each card has a question and accepted chips
+const DND_DATA = {
+  ends:{
+    title:"ENDS",
+    chips:[
+      {id:"e1",text:"Trabajo doméstico no remunerado y doble jornada laboral"},
+      {id:"e2",text:"Apropiación total del salario quincenal ($1,200–$1,300)"},
+      {id:"e3",text:"Más de $80,000 sustraídos en tres años"},
+      {id:"e4",text:"Aislamiento de familia y amistades"},
+      {id:"e5",text:"Amenazas y empujones para obligar a cocinar"},
+      {id:"e6",text:"Retención del dinero bajo pretexto de ahorro conjunto"},
+      {id:"e7",text:"Anemia severa, caída de cabello, agotamiento extremo"},
+      {id:"e8",text:"Envío de remesas con dinero de la víctima"},
+    ],
+    cards:[
+      {id:"z_1a",label:"1a",question:"What labor or services was the victim made to perform?",accepted:["e1","e6"],explanation:"La víctima realizaba trabajo en dos empleos (limpieza y restaurante) más tareas domésticas, y su salario era retenido. Esto constituye los servicios que el tratante le exigía."},
+      {id:"z_1b",label:"1b",question:"Describe the extent of the labor or services (e.g., hours/day, days/week, no breaks, etc.).",accepted:["e2","e3","e7"],explanation:"Aproximadamente 12 horas diarias en trabajos externos, más tareas domésticas al llegar a casa, 7 días a la semana, resultando en anemia severa y agotamiento. El 100% del salario era apropiado."},
+      {id:"z_1c",label:"1c",question:"For commercial sex cases only: what was the thing of value exchanged for the sex act?",accepted:[],explanation:"No aplica. Este es un caso de explotación laboral, no de explotación sexual comercial."},
+      {id:"z_1d",label:"1d",question:"For debt bondage or peonage: Who controlled the victim's debt and how did that person decide whether the victim's labor or services reduced what was owed?",accepted:["e4","e5","e8"],explanation:"Manuel controlaba completamente el dinero bajo el pretexto de 'ahorrar para una casa'. La víctima nunca supo cuánto había acumulado ni cómo se usaba, configurando un control de deuda ficticia."},
+    ]
+  },
+  means:{
+    title:"MEANS",
+    chips:[
+      {id:"m1",text:"Aislamiento progresivo de familia y amistades"},
+      {id:"m2",text:"Empujones y agresión física ante negativas"},
+      {id:"m3",text:"Control total de la cuenta bancaria"},
+      {id:"m4",text:"Promesas falsas de vida compartida y compra de casa"},
+      {id:"m5",text:"Amenazas implícitas de represalias si se negaba"},
+      {id:"m6",text:"Chantaje emocional ('no tengo dónde ir', 'voy a cambiar')"},
+      {id:"m7",text:"Daño físico documentado (moretones en brazo y pierna)"},
+      {id:"m8",text:"Dependencia económica forzada"},
+    ],
+    cards:[
+      {id:"z_3a",label:"3a – Force",question:"What physical acts did the perpetrator do to make the victim perform the labor or services identified in the Ends?",accepted:["m2","m7"],explanation:"Manuel empujó físicamente a la víctima contra un mueble cuando intentaba negarse a cocinar, dejándole moretones. Esta es la fuerza física documentada."},
+      {id:"z_3b",label:"3b – Coercion",question:"What implicit or explicit threats did the perpetrator use to make the victim perform the labor or services?",accepted:["m5","m6"],explanation:"Manuel usaba el chantaje emocional y amenazas veladas (hostilidad, mal genio) para que la víctima continuara trabajando y entregando el dinero."},
+      {id:"z_3c",label:"3c – Coercion",question:"What perpetrator actions or behaviors created an environment that made the victim believe they would suffer serious harm if they didn't perform the Ends?",accepted:["m1","m8"],explanation:"El aislamiento social y la dependencia económica forzada crearon un entorno donde la víctima percibía que resistirse traería consecuencias graves."},
+      {id:"z_3d",label:"3d – Serious Harm",question:"What serious harm did the victim believe they would suffer if they didn't perform the labor or services identified in the Ends?",accepted:["m5","m2"],explanation:"La víctima temía agresión física (había sido empujada antes) y consecuencias económicas graves si no cumplía las exigencias de Manuel."},
+      {id:"z_3e",label:"3e – Fraud",question:"What false promises or statements did the perpetrator make to encourage the victim to perform the labor or services?",accepted:["m4"],explanation:"Manuel prometió que el dinero era para ahorrar juntos y comprar una casa, cuando en realidad lo usaba para su propio beneficio y lo enviaba a su familia."},
+    ]
+  },
+  process:{
+    title:"PROCESS",
+    chips:[
+      {id:"p1",text:"Contacto por Facebook con promesas románticas"},
+      {id:"p2",text:"Visitas semanales para generar confianza"},
+      {id:"p3",text:"Mudarse a la casa de la víctima en Maryland"},
+      {id:"p4",text:"Control progresivo del acceso al dinero"},
+      {id:"p5",text:"Aislamiento sistemático de redes de apoyo"},
+      {id:"p6",text:"Apertura de cuenta bancaria conjunta bajo control exclusivo"},
+      {id:"p7",text:"Negativa a irse pese a súplicas de la víctima"},
+      {id:"p8",text:"Apropiación final de todo el dinero al marcharse"},
+    ],
+    cards:[
+      {id:"z_5",label:"5",question:"What intentional acts did the perpetrator do to put or keep the victim in the situation? What steps did the perpetrator take to make the victim perform the Ends?",accepted:["p1","p2","p3","p4","p5","p6","p7","p8"],explanation:"El proceso completo incluye: reclutamiento por Facebook con promesas falsas, visitas para generar confianza, mudanza al hogar de la víctima, control financiero progresivo, aislamiento social, retención del dinero, negativa a marcharse y apropiación final del capital."},
+    ]
+  }
+};
+
+// CAST DATA
+const CAST_DATA = {
+  ends:{
+    question:"Based on your analysis, the type of services the victim was made to perform potentially fall under:",
+    options:["Involuntary Servitude","Debt Bondage","Peonage","Slavery","Commercial Sex Act"],
+    correct:[0], // Involuntary Servitude (and potentially Debt Bondage - allow both)
+    correctMulti:[0,1],
+    explanation:"El caso configura principalmente Involuntary Servitude: la víctima fue obligada a trabajar y entregar su salario bajo coerción. También puede argumentarse Debt Bondage dado el control financiero mediante una deuda ficticia."
+  },
+  means:{
+    force:{correct:true,explanation:"Sí. Manuel usó fuerza física (empujones que dejaron moretones documentados)."},
+    fraud:{correct:true,explanation:"Sí. Manuel prometió falsamente ahorrar para una casa. Nota: si se selecciona Involuntary Servitude o Peonage, el fraude solo no es suficiente."},
+    coercion:{correct:true,explanation:"Sí. Manuel creó un ambiente de miedo mediante aislamiento, control económico y amenazas."},
+    threats:{correct:true,explanation:"Sí (amenazas de daño serio). El historial de violencia física generaba un miedo razonado a represalias."},
+    scheme:{correct:true,explanation:"Sí. El conjunto de actos de Manuel constituyen un esquema sistemático de control."},
+    legalProcess:{correct:false,explanation:"No hay evidencia de abuso del proceso legal en este caso."}
+  },
+  process:{
+    options:["Recruitment","Harboring","Transportation","Provision","Obtaining","Inducing/Patronizing/Soliciting"],
+    correct:[0,1],
+    explanation:"Recruitment (reclutamiento por Facebook con promesas falsas) y Harboring (Manuel vivió en el hogar de la víctima manteniéndola en situación de explotación). No hay evidencia clara de Transportation, Provision u Obtaining en el sentido legal."
+  },
+  legalTheory:{
+    processOptions:["Recruited","Harbored","Recruited and Harbored","Transported","Obtained"],
+    endsOptions:["Involuntary Servitude","Debt Bondage","Peonage","Slavery","Commercial Sex Act"],
+    workOptions:["performing domestic labor and surrendering her full wages","providing commercial sexual services","transporting goods across borders","performing agricultural labor"],
+    meansOptions:["Force, Fraud, and Coercion","Force alone","Fraud alone","Psychological manipulation"],
+    specificOptions:["physical violence (pushing), financial control, isolation from support networks, and false promises of shared savings","threats of deportation to immigration authorities","withholding identity documents","abuse of legal process"],
+    correctProcess:2,correctEnds:0,correctWork:0,correctMeans:0,correctSpecific:0
+  }
+};
+
+let castAnswers = {
+  endsChecked:[],meansChecked:{force:false,fraud:false,coercion:false,threats:false,scheme:false,legalProcess:false},
+  processChecked:[],
+  theory:{process:'',ends:'',work:'',means:'',specific:''}
+};
+let castVerified = {ends:false,means:false,process:false,theory:false};
+
+// ==================== NAVIGATION ====================
+function goScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function goInstructions(){
+  userName = document.getElementById('nameInput').value.trim();
+  if(!userName){alert('Por favor ingresa tu nombre.');return;}
+  const ib = document.getElementById('instr-user-badge');
+  if(ib) ib.textContent = '👤 '+userName;
+  goScreen('screen-instructions');
+}
+function goMain(){
+  document.getElementById('main-title').textContent = `Hola, ${userName}`;
+  document.getElementById('main-subtitle').textContent = 'Esquema Ends · Means · Process';
+  const mb = document.getElementById('main-user-badge');
+  if(mb) mb.textContent = '👤 '+userName;
+  const rb = document.getElementById('result-user-badge');
+  if(rb) rb.textContent = '👤 '+userName;
+  goScreen('screen-main');
+  renderEx1();
+  showEx2('ends');
+  persistState();
+}
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ==================== EX1 ====================
+function renderEx1(){
+  const m = MODULES[ex1Mod];
+  const total = MODULES.length;
+  document.getElementById('prog-label-txt').textContent = `Pregunta ${ex1Mod+1} / ${total}`;
+  document.getElementById('prog-fill').style.width = Math.round((ex1Mod/total)*100)+'%';
+  document.getElementById('prog-chip').textContent = m.criterion;
+
+  const qs = m.questions.map((q,qi)=>{
+    const a = ex1Answers[ex1Mod][qi];
+    const opts = q.options.map((o,oi)=>{
+      let cls='';
+      if(a.done&&a.sel===oi) cls=a.ok?' sel-ok':' sel-bad';
+      return `<label class="opt-label${cls}"><input type="radio" name="q${qi}" value="${oi}" ${a.sel===oi?'checked':''} onchange="ex1Answer(${qi},${oi},${qi===q.correct?1:0})"><span>${o}</span></label>`;
+    }).join('');
+    // recalc
+    const isOk = a.done && a.sel===q.correct;
+    const fb = a.done ? `<div class="feedback-box ${isOk?'ok':'fail'} show">${isOk?'✅':'❌'} ${isOk?q.ok:q.fail}</div>` : '';
+    const div = qi<m.questions.length-1?'<div class="q-divider"></div>':'';
+    return `<div class="q-block"><div class="q-number">Pregunta ${qi+1} de ${m.questions.length}</div><div class="q-text">${q.text}</div><div class="options-list">${opts}</div>${fb}</div>${div}`;
+  }).join('');
+
+  document.getElementById('ex1-content').innerHTML = `
+    <div class="fragment-zone">
+      <div class="section-tag">📁 ${m.tag}</div>
+      <h2 class="fragment-title">${m.title}</h2>
+      <div class="fragment-quote" style="white-space:pre-line;">${m.fragment}</div>
+    </div>
+    <div class="questions-zone">
+      <div class="section-tag teal">🔍 Preguntas de análisis</div>
+      ${qs}
+    </div>`;
+
+  document.getElementById('ex1-prev').disabled = ex1Mod===0;
+  document.getElementById('ex1-next').textContent = ex1Mod===MODULES.length-1 ? 'Ir al Ejercicio 2 ›' : 'Siguiente ›';
+}
+
+function ex1Answer(qi,oi,_){
+  const m = MODULES[ex1Mod];
+  const isOk = oi===m.questions[qi].correct;
+  ex1Answers[ex1Mod][qi] = {sel:oi,done:true,ok:isOk};
+  renderEx1();
+  persistState();
+}
+function ex1Prev(){if(ex1Mod>0){ex1Mod--;renderEx1();}}
+function ex1Next(){
+  if(ex1Answers[ex1Mod].some(a=>!a.done)){alert('Por favor responde todas las preguntas antes de continuar.');return;}
+  if(ex1Mod===MODULES.length-1){
+    // Switch to Ejercicio 2 tab
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-ex2').classList.add('active');
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    showEx2('ends');
+  }
+  else{ex1Mod++;renderEx1();}
+}
+
+// ==================== EX2 RENDER ====================
+function showEx2(section){
+  // update sub-tab buttons
+  ['ends','means','process','cast','followup'].forEach(s=>{
+    const btn=document.getElementById('ex2-sub-'+s);
+    if(btn) btn.style.background = s===section?'var(--navy)':'';
+    if(btn) btn.style.color = s===section?'#fff':'';
+  });
+  const panel = document.getElementById('ex2-panel');
+  if(section==='ends') panel.innerHTML = renderDNDSection('ends');
+  else if(section==='means') panel.innerHTML = renderDNDSection('means');
+  else if(section==='process') panel.innerHTML = renderDNDSection('process');
+  else if(section==='cast') panel.innerHTML = renderCast();
+  else if(section==='followup') panel.innerHTML = renderFollowup();
+  initDND();
+}
+
+// ==================== DRAG & DROP ====================
+function renderDNDSection(key){
+  const sec = DND_DATA[key];
+  // init state
+  if(!dragState[key]) dragState[key]={};
+  sec.cards.forEach(c=>{ if(!dragState[key][c.id]) dragState[key][c.id]=[]; });
+
+  const cards = sec.cards.map(card=>{
+    const placed = dragState[key][card.id]||[];
+    const drops = placed.map(chipId=>{
+      const chip = sec.chips.find(c=>c.id===chipId);
+      return `<div class="drop-chip" onclick="removeChip('${key}','${card.id}','${chipId}')">${chip?chip.text:chipId}</div>`;
+    }).join('');
+    const isVerified = dndVerified[key+card.id];
+    const feedback = isVerified ? buildDNDFeedback(key,card) : '';
+    return `<div class="dnd-card">
+      <div class="dnd-card-label ${key}">${card.label}</div>
+      <div class="dnd-question">${card.question}</div>
+      <div class="drop-zone" id="zone_${key}_${card.id}" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="dropChip(event,'${key}','${card.id}')">
+        ${drops||'<span style="color:#cbd5e1;font-size:.8rem;">Arrastra aquí las respuestas</span>'}
+      </div>
+      ${feedback}
+      <button class="verify-btn" onclick="verifyCard('${key}','${card.id}')">Verificar esta sección</button>
+    </div>`;
+  }).join('');
+
+  const chipBank = sec.chips.map(chip=>{
+    const isPlaced = Object.values(dragState[key]||{}).some(arr=>arr.includes(chip.id));
+    return `<div class="drag-chip ${isPlaced?'placed':''}" draggable="true" id="chip_${key}_${chip.id}" ondragstart="dragStart(event,'${key}','${chip.id}')">${chip.text}</div>`;
+  }).join('');
+
+  const gridClass = key==='process'?'dnd-grid single':'dnd-grid';
+
+  return `<div class="ex2-container">
+    <div class="dnd-page">
+      <div class="dnd-section-title">${sec.title}</div>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">Arrastra las respuestas del banco hacia el recuadro que corresponda. Puedes retirarlas haciendo clic sobre ellas.</p>
+      <div class="drag-bank" id="bank_${key}">${chipBank}</div>
+      <div class="${gridClass}">${cards}</div>
+    </div>
+  </div>`;
+}
+
+function initDND(){}
+
+let _dragKey='',_dragChip='';
+function dragStart(e,key,chipId){
+  _dragKey=key; _dragChip=chipId;
+  e.dataTransfer.effectAllowed='move';
+  document.getElementById('chip_'+key+'_'+chipId)?.classList.add('dragging');
+}
+function dropChip(e,key,zoneId){
+  e.preventDefault();
+  document.querySelectorAll('.drop-zone').forEach(z=>z.classList.remove('drag-over'));
+  if(_dragKey!==key) return;
+  if(!dragState[key]) dragState[key]={};
+  if(!dragState[key][zoneId]) dragState[key][zoneId]=[];
+  if(!dragState[key][zoneId].includes(_dragChip)){
+    dragState[key][zoneId].push(_dragChip);
+  }
+  dndVerified[key+zoneId]=false;
+  showEx2(key);
+  persistState();
+}
+function removeChip(key,zoneId,chipId){
+  if(dragState[key]&&dragState[key][zoneId]){
+    dragState[key][zoneId]=dragState[key][zoneId].filter(id=>id!==chipId);
+  }
+  dndVerified[key+zoneId]=false;
+  showEx2(key);
+  persistState();
+}
+function verifyCard(key,cardId){
+  dndVerified[key+cardId]=true;
+  showEx2(key);
+  persistState();
+}
+function buildDNDFeedback(key,card){
+  const placed = dragState[key][card.id]||[];
+  const accepted = card.accepted||[];
+  if(accepted.length===0){
+    if(placed.length===0){
+      return `<div class="dnd-feedback ok show">✅ Correcto. ${card.explanation}</div>`;
+    } else {
+      return `<div class="dnd-feedback fail show">❌ Este recuadro no aplica para este caso y debe quedar vacío. ${card.explanation}</div>`;
+    }
+  }
+  if(placed.length===0) return `<div class="dnd-feedback fail show">❌ No has colocado ninguna respuesta en este recuadro. ${card.explanation}</div>`;
+  const wrong = placed.filter(p=>!accepted.includes(p));
+  if(wrong.length>0){
+    return `<div class="dnd-feedback fail show">❌ Hay respuestas incorrectas en este recuadro. ${card.explanation}</div>`;
+  }
+  return `<div class="dnd-feedback ok show">✅ ¡Correcto! ${card.explanation}</div>`;
+}
+
+// ==================== CAST ====================
+function renderCast(){
+  const cd = CAST_DATA;
+  // ENDS checkboxes
+  const endsCbs = cd.ends.options.map((o,i)=>`
+    <label class="cast-option" id="cast_ends_opt_${i}">
+      <input type="checkbox" id="cast_ends_cb_${i}" ${castAnswers.endsChecked.includes(i)?'checked':''} onchange="castEndsCb(${i})">
+      <span>${o}</span>
+    </label>`).join('');
+
+  // MEANS
+  const meansRows = [
+    {key:'force',label:'Force'},
+    {key:'fraud',label:'Fraud*'},
+    {key:'coercion',label:'Coercion'},
+    {key:'threats',label:'Threats of serious harm/physical restraint'},
+    {key:'scheme',label:'Scheme, plan, or pattern'},
+    {key:'legalProcess',label:'Abuse of legal process'},
+  ].map(row=>`
+    <label class="cast-option" id="cast_means_opt_${row.key}">
+      <input type="checkbox" id="cast_means_cb_${row.key}" ${castAnswers.meansChecked[row.key]?'checked':''} onchange="castMeansCb('${row.key}')">
+      <span>${row.label}</span>
+    </label>`).join('');
+
+  // PROCESS
+  const procCbs = cd.process.options.map((o,i)=>`
+    <label class="cast-option" id="cast_proc_opt_${i}">
+      <input type="checkbox" id="cast_proc_cb_${i}" ${castAnswers.processChecked.includes(i)?'checked':''} onchange="castProcCb(${i})">
+      <span>${o}</span>
+    </label>`).join('');
+
+  // Legal theory selects
+  const theoryVals = castAnswers.theory;
+  const endsFB = castVerified.ends ? buildCastEndsFeedback() : '';
+  const meansFB = castVerified.means ? buildCastMeansFeedback() : '';
+  const procFB = castVerified.process ? buildCastProcFeedback() : '';
+  const theoryFB = castVerified.theory ? buildTheoryFeedback() : '';
+
+  function makeInput(id, placeholder, val, field){
+    const v = (val && val !== '') ? val.replace(/"/g,'&quot;') : '';
+    return `<input type="text" class="theory-input" id="${id}" placeholder="${placeholder}" value="${v}" oninput="castTheoryText('${field}',this.value)" style="display:inline-block;min-width:220px;max-width:100%;padding:.35rem .7rem;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--blue-accent)'" onblur="this.style.borderColor='var(--border)'">`;
+  }
+
+  const inProc = makeInput('th_proc','ej: Recruited and Harbored', theoryVals.process, 'process');
+  const inEnds = makeInput('th_ends','ej: Involuntary Servitude', theoryVals.ends, 'ends');
+  const inWork = makeInput('th_work','ej: performing domestic labor…', theoryVals.work, 'work');
+  const inMeans = makeInput('th_means','ej: Force, Fraud, and Coercion', theoryVals.means, 'means');
+  const inSpec = makeInput('th_spec','ej: physical violence, financial control…', theoryVals.specific, 'specific');
+
+  return `<div class="ex2-container">
+    <h2 style="font-family:'DM Serif Display',serif;color:var(--navy);margin-bottom:.4rem;">Cast – Ends · Means · Process Worksheet</h2>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1.5rem;">Selecciona las respuestas que aplican para cada sección basándote en el análisis del caso.</p>
+
+    <div class="cast-grid">
+      <div class="cast-col cast-col-ends">
+        <div class="cast-col-title">ENDS</div>
+        <div class="cast-question">(2) Based on your analysis, the type of services the victim was made to perform potentially fall under:</div>
+        <div class="cast-options">${endsCbs}</div>
+        <button class="verify-btn" onclick="castVerify('ends')">Verificar Ends</button>
+        ${endsFB}
+      </div>
+
+      <div class="cast-col cast-col-means">
+        <div class="cast-col-title">MEANS</div>
+        <div class="cast-question">(4) The actions of the perpetrator described in questions 3a–3e amount to:</div>
+        <div class="cast-options">${meansRows}</div>
+        <button class="verify-btn" style="background:#c026d3;" onclick="castVerify('means')">Verificar Means</button>
+        ${meansFB}
+      </div>
+
+      <div class="cast-col cast-col-process">
+        <div class="cast-col-title">PROCESS</div>
+        <div class="cast-question">(6) Based on the facts in Question 5, what process(es) did the perpetrator(s) use to control the victim?</div>
+        <div class="cast-options process-check-list">${procCbs}</div>
+        <button class="verify-btn" style="background:var(--teal);" onclick="castVerify('process')">Verificar Process</button>
+        ${procFB}
+      </div>
+    </div>
+
+    <div class="legal-theory-box">
+      <h3>(7) Summarize the Legal Theory</h3>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem;">Escribe en cada espacio la información que completa la oración de la teoría legal para este caso.</p>
+      <div class="theory-sentence">
+        <span>The victim was</span> ${inProc} <span>for the purpose of</span> ${inEnds} <span>, specifically</span> ${inWork} <span>, through the use of</span> ${inMeans} <span>, such as</span> ${inSpec} <span>.</span>
+      </div>
+      <br>
+      <button class="verify-btn" onclick="castVerify('theory')">Verificar Teoría Legal</button>
+      ${theoryFB}
+    </div>
+  </div>`;
+}
+
+function castEndsCb(i){
+  const cb=document.getElementById('cast_ends_cb_'+i);
+  if(cb.checked){if(!castAnswers.endsChecked.includes(i))castAnswers.endsChecked.push(i);}
+  else{castAnswers.endsChecked=castAnswers.endsChecked.filter(x=>x!==i);}
+  castVerified.ends=false;
+  persistState();
+}
+function castMeansCb(key){
+  const cb=document.getElementById('cast_means_cb_'+key);
+  castAnswers.meansChecked[key]=cb.checked;
+  castVerified.means=false;
+  persistState();
+}
+function castProcCb(i){
+  const cb=document.getElementById('cast_proc_cb_'+i);
+  if(cb.checked){if(!castAnswers.processChecked.includes(i))castAnswers.processChecked.push(i);}
+  else{castAnswers.processChecked=castAnswers.processChecked.filter(x=>x!==i);}
+  castVerified.process=false;
+  persistState();
+}
+function castTheoryText(field,val){
+  castAnswers.theory[field]=val;
+  castVerified.theory=false;
+  persistState();
+}
+function castVerify(section){
+  castVerified[section]=true;
+  showEx2('cast');
+  persistState();
+}
+function buildCastEndsFeedback(){
+  const sel=castAnswers.endsChecked;
+  const ok = sel.length===1 && sel.includes(0);
+  const msg = ok ? `✅ Correcto. ${CAST_DATA.ends.explanation}` : `❌ Revisa tu selección. ${CAST_DATA.ends.explanation}`;
+  return `<div class="dnd-feedback ${ok?'ok':'fail'} show" style="margin-top:.8rem;">${msg}</div>`;
+}
+function buildCastMeansFeedback(){
+  const mc=castAnswers.meansChecked;
+  const cd=CAST_DATA.means;
+  let allOk=true;
+  let details='';
+  Object.keys(cd).forEach(k=>{
+    if(k==='force'||k==='fraud'||k==='coercion'||k==='threats'||k==='scheme'||k==='legalProcess'){
+      const selected=mc[k]||false;
+      const correct=cd[k].correct;
+      if(selected!==correct) allOk=false;
+      details+=`<br>• <strong>${k.charAt(0).toUpperCase()+k.slice(1)}</strong> (${selected?'seleccionado':'no seleccionado'}): ${cd[k].explanation}`;
+    }
+  });
+  return `<div class="dnd-feedback ${allOk?'ok':'fail'} show" style="margin-top:.8rem;">${allOk?'✅ Correcto.':'❌ Revisa tu selección.'}${details}</div>`;
+}
+function buildCastProcFeedback(){
+  const sel=castAnswers.processChecked;
+  const ok=sel.length===2&&sel.includes(0)&&sel.includes(1);
+  return `<div class="dnd-feedback ${ok?'ok':'fail'} show" style="margin-top:.8rem;">${ok?'✅':' ❌'} ${CAST_DATA.process.explanation}</div>`;
+}
+function buildTheoryFeedback(){
+  return `<div class="dnd-feedback ok show" style="margin-top:.8rem;">
+    <strong>✅ Respuesta correcta de la Teoría Legal:</strong><br><br>
+    <em style="font-size:.95rem;line-height:1.8;">"The victim was <strong>Recruited and Harbored</strong> for the purpose of <strong>Involuntary Servitude</strong>, specifically <strong>performing domestic labor and surrendering her full wages</strong>, through the use of <strong>Force, Fraud, and Coercion</strong>, such as <strong>physical violence (pushing), financial control, isolation from support networks, and false promises of shared savings</strong>."</em>
+    <br><br>
+    <ul style="padding-left:1.2rem;font-size:.87rem;line-height:1.9;color:#065f46;">
+      <li><strong>Recruited and Harbored:</strong> Manuel reclutó a la víctima mediante promesas falsas de vida compartida a través de Facebook y posteriormente la mantuvo bajo control viviendo en su hogar — acciones que configuran reclutamiento y acogida bajo el TVPA.</li>
+      <li><strong>Involuntary Servitude:</strong> La víctima fue obligada a mantener dos empleos y realizar trabajo doméstico sin compensación ni libertad de negarse, bajo un contexto de coerción física y económica que elimina cualquier voluntariedad.</li>
+      <li><strong>Performing domestic labor and surrendering her full wages:</strong> Los servicios concretos exigidos fueron el trabajo en limpieza, restaurante y hogar, más la entrega forzada del 100% de su salario quincenal — estas son las Ends específicas del caso.</li>
+      <li><strong>Force, Fraud, and Coercion:</strong> Los tres medios están documentados: fuerza física (empujones con moretones), fraude (promesas falsas de ahorro conjunto) y coerción (aislamiento social, control financiero, chantaje emocional).</li>
+      <li><strong>Physical violence, financial control, isolation, and false promises:</strong> Estas son las acciones concretas que operacionalizan los medios: el empuje físico, la apropiación de más de $80,000, el corte de vínculos familiares y las promesas incumplidas de comprar una casa.</li>
+    </ul>
+  </div>`;
+}
+
+// ==================== FOLLOW-UP ====================
+function renderFollowup(){
+  return `<div class="ex2-container">
+    <div class="followup-title" style="font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:.5rem;">Follow-up Questions</div>
+    <div class="followup-subtitle">Based on the analysis of the facts in your scenario, you may need to develop follow-up questions to ask your client. Organize them under Ends, Means, and Process. These examples illustrate the kinds of questions that help fill gaps in your legal theory.</div>
+
+    <div class="discussion-area">
+      <h4>💬 Group Discussion Space</h4>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">Use this space to write additional follow-up questions your group would ask the client, organized by category. The examples shown are starting points — replace them with your own questions.</p>
+
+      <span class="disc-label">ENDS – Questions your group would add:</span>
+      <textarea class="discussion-textarea followup-ta" id="fuEnds"
+        placeholder="Example questions:&#10;• Can you describe in detail all the tasks Manuel required you to do on a typical day, from waking up until going to sleep?&#10;• Did you ever try to keep any of your paycheck? What happened when you did?&#10;• How did Manuel react if you came home late from work or didn't finish cooking?&#10;• Did Manuel ever tell you specifically what would happen if you didn't give him your full paycheck?&#10;• Were there any weeks when you were sick and couldn't work? What did Manuel do or say?"></textarea>
+
+      <span class="disc-label">MEANS – Questions your group would add:</span>
+      <textarea class="discussion-textarea followup-ta" id="fuMeans"
+        placeholder="Example questions:&#10;• When Manuel pushed you against the furniture, did you seek medical attention? Is there any documentation of that injury?&#10;• Can you describe the moment you felt most afraid of Manuel? What was happening?&#10;• Did Manuel ever make explicit threats about what he would do if you contacted police or family?&#10;• How did Manuel react when you tried to call or visit friends or family? Did he check your phone or monitor your calls?&#10;• Did anyone outside the home ever witness Manuel's behavior — a neighbor, coworker, or church member?"></textarea>
+
+      <span class="disc-label">PROCESS – Questions your group would add:</span>
+      <textarea class="discussion-textarea followup-ta" id="fuProcess"
+        placeholder="Example questions:&#10;• When Manuel first contacted you on Facebook, did he ask about your immigration status or financial situation?&#10;• Who suggested that you two move in together, and how did that conversation happen?&#10;• Was there a moment when you realized the relationship wasn't what Manuel had promised? What changed?&#10;• Did Manuel ever threaten to report you to immigration authorities or use your undocumented status against you?&#10;• When you asked Manuel to leave, what exactly did he say or do to prevent you from making him go?"></textarea>
+
+      <span class="disc-label">Other gaps or concerns identified:</span>
+      <textarea class="discussion-textarea" placeholder="Note any additional gaps in the legal theory or areas that need further investigation…"></textarea>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-top:1.5rem;">
+      <button class="btn btn-primary" onclick="showResults()">Ver resultados →</button>
+    </div>
+  </div>`;
+}
+
+// ==================== RESULTS ====================
+function showResults(){
+  const total = MODULES.reduce((a,m)=>a+m.questions.length,0);
+  let correct=0;
+  const failed=new Set();
+  MODULES.forEach((m,mi)=>{
+    m.questions.forEach((q,qi)=>{
+      if(ex1Answers[mi][qi].ok) correct++;
+      else failed.add(m.criterion);
+    });
+  });
+  const score=Math.round((correct/total)*100);
+  const reinforceHtml=failed.size
+    ?`<div class="reinforce-block"><strong>📌 Criterios a reforzar:</strong>${[...failed].join(' · ')}<br><br>Regresa a los módulos donde tuviste errores y analiza de nuevo cómo los hechos del caso se conectan con cada criterio del esquema EMP.</div>`
+    :`<div class="perfect-block">✅ <strong>Excelente dominio del caso.</strong> Identificaste correctamente todos los elementos de elegibilidad para Visa T en el esquema EMP.</div>`;
+
+  document.getElementById('result-content').innerHTML=`
+    <div class="score-hero">
+      <div class="score-pct">${score}%</div>
+      <div class="score-label">Porcentaje de respuestas correctas — Ejercicio 1</div>
+      <div class="score-detail">${correct} de ${total} preguntas · ${MODULES.length} módulos</div>
+    </div>
+    ${reinforceHtml}
+    <div class="summary-block">
+      <strong>📖 Contenidos revisados</strong>
+      Este simulador evaluó los cinco criterios del esquema EMP aplicados al caso real: <em>Proceso</em> (reclutamiento mediante engaño romántico), <em>Medios</em> (aislamiento, violencia y control financiero), <em>Fin</em> (explotación laboral con apropiación de ingresos), <em>Presencia Física en EE.UU.</em> durante la trata, y <em>Dificultad Extrema</em> ante deportación.
+    </div>
+    <div class="nav-zone" style="border-top:none;padding-top:1.5rem;">
+      <span></span>
+      <button class="btn btn-primary" onclick="restartAll()">⟳ Reiniciar simulador</button>
+    </div>`;
+  goScreen('screen-results');
+  SCORM.finish(score);
+}
+
+function restartAll(){
+  ex1Mod=0;
+  initEx1();
+  dragState={};
+  dndVerified={};
+  castAnswers={endsChecked:[],meansChecked:{force:false,fraud:false,coercion:false,threats:false,scheme:false,legalProcess:false},processChecked:[],theory:{process:'',ends:'',work:'',means:'',specific:''}};
+  castVerified={ends:false,means:false,process:false,theory:false};
+  userName='';
+  document.getElementById('nameInput').value='';
+  ['instr-user-badge','main-user-badge','result-user-badge'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='';});
+  SCORM.save(buildSaveState());
+  goScreen('screen-name');
+}
+
+// ==================== RESTORE STATE ON LOAD ====================
+(function restoreOnLoad(){
+  const saved = SCORM.load();
+  if(!saved || !saved.userName) return;
+  applySaveState(saved);
+  initEx1(); // ensure array is initialized if not in saved data
+  if(saved.ex1Answers) ex1Answers = saved.ex1Answers;
+  // Restore badges and go to main screen
+  const ib = document.getElementById('instr-user-badge');
+  if(ib) ib.textContent = '👤 '+userName;
+  const mb = document.getElementById('main-user-badge');
+  if(mb) mb.textContent = '👤 '+userName;
+  const rb = document.getElementById('result-user-badge');
+  if(rb) rb.textContent = '👤 '+userName;
+  document.getElementById('main-title').textContent = `Hola, ${userName}`;
+  goScreen('screen-main');
+  renderEx1();
+  showEx2('ends');
+})();
+</script>
+</body>
+</html>
