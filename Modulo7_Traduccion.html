@@ -1,0 +1,2458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Módulo 7: Redacción y Traducción | TMLF Training</title>
+<style>
+/* ============================================================
+   MENDOZA LAW FIRM – MENDOZA LEARNING CENTER
+   Módulo 1: VAWA – Declaración Legal del Cliente
+   Paleta institucional: #9094df | #e5e2f6 | #333333
+   ============================================================ */
+
+:root {
+  --color-primary: #9094df;
+  --color-primary-dark: #7176c8;
+  --color-secondary: #e5e2f6;
+  --color-secondary-dark: #d0ccf0;
+  --text-dark: #333333;
+  --text-white: #ffffff;
+  --color-success: #4caf50;
+  --color-error: #e53935;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fffbeb;
+  --border-radius: 8px;
+  --shadow: 0 2px 8px rgba(144, 148, 223, 0.18);
+  --shadow-lg: 0 4px 20px rgba(144, 148, 223, 0.28);
+  --font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: #f4f3fb;
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── LAYOUT PRINCIPAL ─── */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  background: #fff;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── HEADER ─── */
+.module-header {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.module-header .module-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  opacity: 0.95;
+  letter-spacing: 0.01em;
+}
+
+
+
+.logo-placeholder {
+  width: 120px;
+  height: 38px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 0 8px;
+}
+
+/* ─── BARRA DE PROGRESO ─── */
+.progress-bar-container {
+  background: var(--color-secondary);
+  height: 6px;
+  width: 100%;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  font-size: 0.72rem;
+  color: #888;
+  text-align: right;
+  padding: 3px 28px 0;
+  background: var(--color-secondary);
+}
+
+/* ─── CONTENIDO DE PANTALLA ─── */
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  padding: 36px 40px 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── PORTADA ─── */
+.cover-screen {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+  background: linear-gradient(160deg, #f7f6ff 0%, #edeafb 100%);
+  padding: 60px 48px;
+}
+
+.cover-badge {
+  background: var(--color-primary);
+  color: var(--text-white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.cover-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  line-height: 1.25;
+  max-width: 700px;
+}
+
+.cover-subtitle {
+  font-size: 1rem;
+  color: #666;
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.cover-objective-box {
+  background: var(--color-secondary);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 20px 24px;
+  max-width: 640px;
+  text-align: left;
+}
+
+.cover-objective-box .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary-dark);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cover-objective-box p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-dark);
+}
+
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.cover-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── TÍTULOS DE SECCIÓN ─── */
+.section-title {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 20px;
+  border-radius: var(--border-radius);
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.screen-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ─── CONTENIDO TEÓRICO ─── */
+.content-block {
+  margin-bottom: 20px;
+  line-height: 1.7;
+  font-size: 0.93rem;
+}
+
+.content-block p {
+  margin-bottom: 10px;
+}
+
+.bullet-list {
+  list-style: none;
+  padding-left: 4px;
+  margin: 12px 0;
+}
+
+.bullet-list li {
+  padding: 5px 0 5px 26px;
+  position: relative;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.bullet-list li::before {
+  content: "▸";
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  position: absolute;
+  left: 6px;
+  top: 6px;
+}
+
+/* ─── RECUADROS DESTACADOS ─── */
+.info-box {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.info-box .box-title {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.warning-box {
+  background: var(--color-warning-bg);
+  border: 1.5px solid var(--color-warning);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.warning-box .box-title {
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+/* ─── TABLAS ─── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+
+.data-table th {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #e8e6f8;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.data-table tr:nth-child(even) td {
+  background: var(--color-secondary);
+}
+
+.data-table tr:hover td {
+  background: #ededfa;
+}
+
+/* ─── EJEMPLOS COMPARATIVOS ─── */
+.example-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.example-card {
+  border-radius: var(--border-radius);
+  padding: 14px 16px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.example-card.correct {
+  background: #f0faf0;
+  border: 1.5px solid var(--color-success);
+}
+
+.example-card.incorrect {
+  background: #fdf4f4;
+  border: 1.5px solid var(--color-error);
+}
+
+.example-card .card-label {
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.example-card.correct .card-label { color: #2e7d32; }
+.example-card.incorrect .card-label { color: #c62828; }
+
+.example-card .card-explain {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 0.82rem;
+  opacity: 0.8;
+}
+
+/* ─── EJERCICIOS INTERACTIVOS ─── */
+.exercise-section {
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.exercise-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+.exercise-header .ex-badge {
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.exercise-header h3 {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.question-block {
+  margin-bottom: 24px;
+}
+
+.question-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  color: var(--text-dark);
+}
+
+.question-number {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  margin-right: 6px;
+}
+
+/* Fragmentos de texto (citas) */
+.fragment-quote {
+  background: var(--color-secondary);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  padding: 14px 18px;
+  margin: 10px 0 16px;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  font-style: italic;
+  color: #444;
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.checkbox-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.checkbox-item.selected {
+  border-color: var(--color-primary);
+  background: #f0effe;
+}
+
+.checkbox-item.correct-answer {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.checkbox-item.wrong-answer {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Radio buttons */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.radio-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.radio-item input[type="radio"] {
+  margin-top: 2px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.radio-item.selected-correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.radio-item.selected-wrong {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Campos de texto */
+.text-input-area {
+  width: 100%;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 12px 14px;
+  font-family: var(--font-family);
+  font-size: 0.91rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.15s;
+  min-height: 80px;
+  color: var(--text-dark);
+}
+
+.text-input-area:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(144,148,223,0.12);
+}
+
+.text-input-area.correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.text-input-area.incorrect {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+textarea.text-translation {
+  min-height: 140px;
+}
+
+/* Dropdown/select */
+.inline-select {
+  padding: 3px 8px;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  accent-color: var(--color-primary);
+  background: #fff;
+  cursor: pointer;
+  color: var(--text-dark);
+  font-family: var(--font-family);
+}
+
+.fill-blank-text {
+  font-size: 0.92rem;
+  line-height: 2;
+  background: var(--color-secondary);
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+  margin: 10px 0;
+}
+
+/* Retroalimentación */
+.feedback-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px 18px;
+  border-radius: var(--border-radius);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.feedback-box.correct {
+  background: #f0faf0;
+  border: 1px solid #a5d6a7;
+  color: #2e7d32;
+}
+
+.feedback-box.incorrect {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  color: #c62828;
+}
+
+.feedback-box.info {
+  background: var(--color-secondary);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.feedback-box.visible {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.correct-answer-reveal {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(76,175,80,0.1);
+  border-radius: 4px;
+  font-style: italic;
+}
+
+/* Botón de verificar */
+.btn-check {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  margin-top: 12px;
+}
+
+.btn-check:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-check:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── PANTALLA DE RESUMEN EJECUTIVO ─── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.summary-card {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 18px;
+}
+
+.summary-card .card-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.summary-card .card-concept {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.summary-card .card-detail {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ─── PANTALLA DE RESULTADOS ─── */
+.results-screen {
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.score-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto;
+}
+
+.score-circle .score-num {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-circle .score-label {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.results-breakdown {
+  width: 100%;
+  max-width: 600px;
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.results-breakdown .rb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: 0.88rem;
+  border-bottom: 1px solid #e8e6f8;
+}
+
+.results-breakdown .rb-row:last-child { border-bottom: none; }
+.results-breakdown .rb-row .rb-label { color: #555; }
+.results-breakdown .rb-row .rb-score { font-weight: 700; color: var(--color-primary-dark); }
+
+.incorrect-list {
+  width: 100%;
+  max-width: 640px;
+  text-align: left;
+}
+
+.incorrect-item {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  font-size: 0.87rem;
+}
+
+.incorrect-item .ii-label {
+  font-weight: 600;
+  color: #c62828;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.incorrect-item .ii-yours {
+  color: #c62828;
+  margin-bottom: 4px;
+}
+
+.incorrect-item .ii-correct {
+  color: #2e7d32;
+  font-style: italic;
+}
+
+/* ─── NAVEGACIÓN ─── */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  border-top: 1px solid #e8e6f8;
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 220px;
+  right: 0;
+  z-index: 90;
+  box-shadow: 0 -2px 8px rgba(0,0,0,.06);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary-dark);
+  border: 1.5px solid var(--color-primary);
+}
+
+.btn-secondary:hover { background: var(--color-secondary); }
+
+.btn-large {
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+.btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-success {
+  background: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover { background: #388e3c; }
+
+.page-indicator {
+  font-size: 0.82rem;
+  color: #888;
+}
+
+/* ─── DRAG AND DROP ─── */
+.drag-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.drag-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px;
+  background: var(--color-secondary);
+  border-radius: var(--border-radius);
+  min-height: 60px;
+}
+
+.drag-option {
+  background: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: grab;
+  user-select: none;
+  transition: all 0.15s;
+  border: 2px solid transparent;
+}
+
+.drag-option:active { cursor: grabbing; transform: scale(1.05); }
+
+.drag-target {
+  background: #fff;
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  min-height: 52px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s;
+}
+
+.drag-target.drag-over {
+  background: var(--color-secondary);
+  border-color: var(--color-primary-dark);
+}
+
+.drag-target .target-label {
+  font-size: 0.8rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.drag-target .dropped-item {
+  background: var(--color-primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+  .screen { padding: 24px 18px 16px; }
+  .cover-screen { padding: 36px 20px; }
+  .cover-title { font-size: 1.5rem; }
+  .example-grid, .summary-grid { grid-template-columns: 1fr; }
+  .module-header { padding: 12px 18px; }
+  .nav-bar { padding: 12px 18px; }
+  .btn { padding: 10px 16px; font-size: 0.85rem; }
+}
+
+/* ─── UTILIDADES ─── */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
+.bold { font-weight: 700; }
+.highlight { background: var(--color-secondary); padding: 2px 6px; border-radius: 3px; }
+.emoji { font-style: normal; }
+
+.note-tag {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 4px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.section-divider {
+  border: none;
+  border-top: 2px solid var(--color-secondary);
+  margin: 24px 0;
+}
+
+/* Estilos score badge */
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-primary);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+.logo-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+</style>
+<style>
+/* ── SIDEBAR LAYOUT ─────────────────────────────── */
+#outer-layout{display:flex;align-items:flex-start;max-width:1100px;margin:0 auto;}
+#sidebar{width:220px;min-width:220px;background:#f7f6fd;border-right:2px solid #e5e2f6;padding:16px 0 40px 0;position:sticky;top:70px;height:calc(100vh - 70px);overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;font-family:"Segoe UI",system-ui,sans-serif;}
+#sidebar-title{font-size:.72rem;font-weight:700;letter-spacing:.12em;color:#9094df;text-transform:uppercase;padding:0 14px 12px 14px;border-bottom:1px solid #e5e2f6;margin-bottom:8px;}
+.sidebar-group{margin-bottom:4px;}
+.sidebar-group-label{font-size:.65rem;font-weight:700;color:#b0adcc;text-transform:uppercase;letter-spacing:.1em;padding:10px 14px 4px 14px;}
+.sidebar-item{display:flex;align-items:center;gap:9px;margin:2px 8px;padding:8px 10px;font-size:.82rem;color:#5a5a7a;cursor:pointer;border-radius:8px;border:1px solid transparent;transition:background .15s,border-color .15s,color .15s;line-height:1.3;text-align:left;background:transparent;}
+.sidebar-item:hover{background:#ebe9f8;color:#4a4d9e;border-color:#d4d0f0;}
+.sidebar-item.active{background:#9094df;color:#fff;border-color:#7a7ec8;font-weight:600;box-shadow:0 2px 6px rgba(144,148,223,.35);}
+.sidebar-item.active .si-dot{background:rgba(255,255,255,.8);}
+.sidebar-item.completed{color:#48bb78;background:#f0fff4;border-color:#c6f6d5;}
+.sidebar-item.completed .si-dot{background:#48bb78;}
+.si-dot{width:7px;height:7px;border-radius:50%;background:#ccc8e8;flex-shrink:0;transition:background .2s;}
+#main-content{flex:1;min-width:0;padding-bottom:72px;}
+.module-header{position:sticky;top:0;z-index:100;}
+@media(max-width:680px){#sidebar{display:none;}}
+/* Contrast table */
+.contrast-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:14px 0;}
+.contrast-table th{background:var(--color-primary);color:#fff;padding:10px 12px;text-align:left;font-size:.82rem;}
+.contrast-table td{padding:9px 12px;border-bottom:1px solid #e8e6f8;vertical-align:top;line-height:1.5;}
+.contrast-table tr:nth-child(even) td{background:#f8f7fe;}
+.contrast-table .col-literal{color:#c62828;font-style:italic;}
+.contrast-table .col-correct{color:#276749;font-weight:600;}
+/* Rules cards */
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.rule-card{background:#fff;border:1.5px solid var(--color-primary);border-radius:10px;padding:16px;}
+.rule-card .rule-num{background:var(--color-primary);color:#fff;border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;margin-bottom:8px;}
+.rule-card .rule-title{font-weight:700;font-size:.9rem;color:var(--color-primary-dark);margin-bottom:6px;}
+.rule-card .rule-body{font-size:.84rem;color:#555;line-height:1.5;}
+/* Errors table */
+.error-table{width:100%;border-collapse:collapse;font-size:.84rem;margin:12px 0;}
+.error-table th{background:#fce4ec;color:#880e4f;padding:9px 12px;text-align:left;}
+.error-table td{padding:9px 12px;border-bottom:1px solid #fce4ec;vertical-align:top;line-height:1.5;}
+.error-table tr:nth-child(even) td{background:#fff8f8;}
+/* Section header */
+.sec-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sec-num{background:var(--color-primary);color:#fff;border-radius:8px;padding:4px 12px;font-weight:700;font-size:.82rem;white-space:nowrap;}
+/* Fragment box */
+.fragment-box{background:#f8f7fd;border-left:4px solid var(--color-primary);border-radius:0 10px 10px 0;padding:16px 20px;margin:14px 0;font-size:.9rem;line-height:1.8;color:#333;font-style:italic;}
+/* Question blocks */
+.question-block{margin-top:20px;}
+.question-label{font-size:.8rem;font-weight:700;color:#7176c8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.question-text{font-size:.93rem;color:#333;margin-bottom:10px;line-height:1.5;}
+.radio-group{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.radio-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid #e5e2f6;border-radius:8px;cursor:pointer;font-size:.9rem;transition:background .15s;}
+.radio-item:hover{background:#ebe9f8;}
+.radio-item.selected-correct{background:#f0fff4;border-color:#48bb78;color:#276749;}
+.radio-item.selected-wrong{background:#fff5f5;border-color:#ef9a9a;color:#c53030;}
+.checkbox-group{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.checkbox-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid #e5e2f6;border-radius:8px;cursor:pointer;font-size:.88rem;line-height:1.4;transition:background .15s;}
+.checkbox-item:hover{background:#ebe9f8;}
+.checkbox-item.selected-correct{background:#f0fff4;border-color:#48bb78;color:#276749;}
+.checkbox-item.selected-wrong{background:#fff5f5;border-color:#ef9a9a;color:#c53030;}
+.text-input-area{width:100%;padding:12px 14px;border:1.5px solid #ccc8e8;border-radius:8px;font-size:.9rem;font-family:"Segoe UI",system-ui,sans-serif;resize:vertical;min-height:70px;margin-bottom:8px;}
+.text-input-area:focus{outline:none;border-color:var(--color-primary);}
+.text-input-area.correct{border-color:var(--color-success);background:#f0fff4;}
+.text-input-area.incorrect{border-color:var(--color-error);background:#fff5f5;}
+.feedback-box{display:none;padding:12px 16px;border-radius:8px;font-size:.88rem;margin-top:8px;}
+.feedback-box.visible{display:block;}
+.feedback-box.correct{background:#f0fff4;border:1px solid #48bb78;color:#276749;}
+.feedback-box.incorrect{background:#fff5f5;border:1px solid #ef9a9a;color:#c53030;}
+.correct-answer-reveal{margin-top:8px;padding:8px 12px;background:rgba(255,255,255,.7);border-radius:6px;font-size:.85rem;}
+.score-badge{display:inline-flex;align-items:center;gap:4px;background:var(--color-primary);color:white;padding:3px 10px;border-radius:12px;font-size:.8rem;font-weight:700;}
+.ex-badge{display:inline-block;background:var(--color-secondary);color:var(--color-primary-dark);padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700;margin-bottom:6px;}
+.exercise-header{margin-bottom:10px;}
+.exercise-header h3{font-size:1rem;color:var(--color-primary-dark);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+/* Progress dots */
+.frag-progress{display:flex;gap:6px;margin-bottom:16px;}
+.fp-dot{width:28px;height:6px;border-radius:3px;background:#e5e2f6;}
+.fp-dot.active{background:var(--color-primary);}
+.fp-dot.done{background:#48bb78;}
+/* Advance warning */
+#advance_warning{display:none;background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:8px 14px;font-size:.85rem;color:#856404;margin-bottom:6px;}
+/* Idea fuerza box */
+.idea-fuerza{background:linear-gradient(135deg,#f0eeff 0%,#e8f5e9 100%);border:1.5px solid var(--color-primary);border-radius:12px;padding:20px 24px;margin:16px 0;text-align:center;}
+.idea-fuerza .if-label{font-size:.75rem;font-weight:700;color:#9094df;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
+.idea-fuerza .if-text{font-size:1rem;font-weight:600;color:#333;line-height:1.6;font-style:italic;}
+/* Checklist */
+.checklist{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.checklist li{display:flex;align-items:center;gap:10px;font-size:.9rem;padding:10px 14px;border-radius:8px;}
+.checklist li.no{background:#fff5f5;border:1px solid #ef9a9a;color:#c53030;}
+.checklist li.si{background:#f0fff4;border:1px solid #48bb78;color:#276749;}
+.checklist li .cl-icon{font-size:1rem;flex-shrink:0;}
+</style>
+</head>
+<body>
+<header class="module-header">
+  <span class="module-title">Módulo 7: Redacción y Traducción – El Arte de No Ser Literal</span>
+  <div class="logo-area">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD0AAAAsCAYAAADW6LDXAAANHklEQVR4nN1ae1RU57Xf+zvzgoKDghoIgTDig6rR8Kg1VexEc8PVxNWbwJQ8VuxKcy83uWltSCxGbzNM0iSmJgavbdQsbdaKNiWjubk+4q2QMIhGyMBowFjAgLxUIIAoIwMzc863+8ecAwPyEolN+/trZs732L9vv76z9wCMEUQkjHXsrYTZbGaMsYlbDABg7969P9q1a9fdAACMMSCiCdrhpoE2m02lfMnNzf3Jzp07A29qRSJSAQCcOnXqN5cvX/aWlJQ8BwCC3zO8qQ1uAlarVVC0m5OTM6+urq6wpaWlOy0tLUCWb3yyKaTLysrWkoz6+vri3NzcHwIAICJYrdZbavJEhH5uprHb7Rs6OzuvERFdvXq1HgAmhnRpaWkmEXEi6iEicjqd3rNnz742e/bsYHmcMO5NbkyevgP++OOPlzY2NjpkXXAiEjs7Oy9ERkbeMGlU/Fie6E+aiMgrSZJIRBIRUXNzc1V+fv4qZby/f00k/LW7atWqyeXl5f/jdDq5LJOHiEQiomFI45gOwGolf78dQJr60UtE5PV6qbq6+o8bNmwIl+cw/4O7WfgfZF5e3kMtLS3n5f1FWcOkKGEwabPZzBCH54sAAE+ueyM45d8eiwQAQGRw5Mg57SDSYldX17XGxsZav808REQdHR0XT548uWYoYccDs9nMlCzxyiuv3FFVVfWBJEkDDryrq8vb1NRUpZD3J71zZ5laWWtNRtad/jz7NgAAeG7972O37ipss2z6c6b/AD/SdOnSpc6oqKjwyspKS1dXl9dfCCKihoaGQ9u3b/8+gC+9jSPQoWJhAAAnT57MaGtra/czZS7L8aXVav1BSUnJfyh7+5MGAHjsyXWzt79fXLD5D0d3AwxURJ8pur2d3qCgyVPmLkx+6+0dBSd+8es37wEAwH4bIcaY6q677vLGxcWZ8/Pz77l48WIRAGjl556oqKgH0tPT7aWlpVmcc8FkMkk0xvRmtVoFRCREFHfv3r2goaEhf/HixTvCwsJCAcANAGqn09lbXl5ujoiIWGwymex6vT5YmU9EGBkZCWvWrNG9vPnDrGXLf1p6p2G+Uaf9nmvwXn3s1aoglERR7HZdE+6MnXePSs0OAUCoWq2W/BamtrY2gYgERCwFgB+fOnXqlwaDIVuv14cAgCckJOR7iYmJm5qamh764osvMhHxc0QEzrmAiNJgAeRAw+RnWofD8eKMGTOy9Hq9TiarBQBtfX19wfHjxzOfeOKJcvkgWWVlZd96nEhVUlLS8y8P/uLpu+KNm645r3qvXbsice69LsYM+AGRIQIILpdTUmsCJAAASZJowATGCBElOVVBfHz81r179ybV1dX9LwBo5GHuyMjIH9x///1FX3755dtJSUmT/Ob0aV0+PEJE6cCBA/deunSpOD4+3qzX67UA4AUAbUdHx2W73f50TEzMcoWww+FAROQDqfi+Mk1AkOj1SKIkiohsSPcaMtIioIAEowUjjohks9lUzz77bI3BYHi4qKjo8fb29gvg044YFBRECxYs+NWhQ4dKCwoKViGihIgkE0ZElB599NHJZ86c+f199933WXh4+N3g0y4CgLq2tvbDbdu2JSxatGgHETEiYogoJiQkkKyQAVL7lAKATCUADJ+qhiRNRHDt2uUro5AGAACj0SjK0VZYtmzZn7Zs2RJfVVW12+PxqMB3bXVPmzZtVnJy8uHa2tr33n333UgiYtnZ2VhYWGjaunWrY968ef8VEBAgAoAEANr29vbzhYWFabGxsekWi6XeZrOpEJEP1q4g+CnSxxGvdrR2dzs7RQGFGyCNQIAE7e3N/w0AIIpcfd2YQbBYLFwx39dff70tLi7uqYKCgpTm5uaz4NM6CYIgGgyGnyUnJ/8fIvIFCxasXLZs2YdhYWEx4DNllcvlEiorK7c988wzSUajcT8RCWazmRmNRnE0GRhDMS0tTffWa0/v/qb1QoVao9Vyzocce70JEwACwmR9aDcAAOd87Fc6H3ElMB0FgKKzZ8++GB0dnRkQEKBjjEk6nU4vDw8FnyN6iUjb0tJyqqysLHP16tXHAPr8/brA54+B5g3Q09ODAOBWqzXekeYNe3vycs+4XiaUwGS1WgUics+dO/elvLy8dYwxAQAEzrkIACDfqhgAaJqbm2siIiIWr169+hgRqRR/H8/+MPjqiddTHJY0Q0bDPRsLTCaT5HA4BCISPB7PN30yyHmfc658REmSnIjokbUrKsFunBh17rdaEHA6nYSIEmNsxLjAGBOICAVBGK92B4DIjzdd79c3RJoxxjUazdDRYRQ5lA/DBBeCMWhoXLgR8x5qular7Z02bVrvxEn098EIpH1xzK/mRj09PYEXLly4uTrUEBgutUwIbta8JxIDiU6sZQ/IsTdp3v80GIH0hATS7yT+oTU94O59A/iOkJ7gYuoItTGA7wzpiQhkY19jDKS/nXOZsP5THyaU9K3Are0Q3TDpgICACZFwgi4kfbLgEPl4OAyqkY06niRJkm51D2sIKF0Pv/dmBICIMU0e/XhY38sA6XQ66ujoEEwmkwQAE9jDGrs/EpGgUqm8iCi5XK7pfk84wKXr1h2K4KikVYxpwHeMnpCQkEmffvrpZ0eOHFmpvPd+Wz2swVDqcIgoGY1GfUVFxduzZ8/+NedcAgAJEXRut3tMShiWNJdfSltaWhp6enoAAHQAIE2fPn3uihUrPqmurt79wgsv3GY0GsUb6WENeNftw8iy2mw2lVKH++STTx7es2ePY/78+b8KCgpSMcYQAIRvvmm96HQ6ubzJiOsNEJT8XmtF0XcPXbly5QdHjx41NjU1nQZfTY3UarV31qxZT2ZlZZ06duzYzxCRWywWLmt9RAYjNdUGQy77olxxjaqqqvogJSVl/2233TYDfKVi5nQ6oaKiYsvGjS/dW1xc3Asw0Fn4EKoY1jSVSFVWVqZKTEwsBIDFDofjhdjY2I2TJk0KAAB3WFhYeHJy8nu1tbU/zcvLe95oNP6VMQa5ubmK348XqJSOAACKioqeiYuLe1lu8XjA11TQNjY22ouLizPT09M/l+cxGFTwHt2nCUFRlCAIkGa1CufPn+fy3x3cCQkJr3700UeLampqCqC/h+U2GAwpjzzyiL2srOxFzrla6WGdO3du+NrzgMtJf/qS9yJEFHfu3BlfV1f32dKlS//gT/jKlSvX7Hb7+ujo6CXp6emf+/fLrFYSYJQa25CaRkS4fLVd2pf571Ka9SuNyTTXC2BSTv8MACw/ceLEf86ZM+e3oaGhoQDg0ev1gQkJCa/V19c/ZLfbf4mIxUTEJk+ePIb0hkpPS9Guzm63Z82cOXNDSEiIBvp7Wpq6uroj+fn5z2dkZFQpVoWIonxYEhHBlu2f+vEa3P7x07RKJSAiEAFwzjk3xMx/87n1O1JMpnkeACSz2SwgotLNwCVLluzYtWtXfE1NzZ8550qEd0dHRyempKScOH369FuJiYnBJpNJ0mq1IwY5ImBKxzI3N9dYX19fkpSUlB0SEqKC/p5Wy/Hjx580GAyrMjIyqmw2m4pzDmlpadxKJJhMJikqKirkd1sP5kyZGj7f7e71MsYkt8cVPHi/PmE8XS6vKHo0QYHBgtfjliaHhcfdnfTj/38j5+B7i+69d7rFYlHq1KCkqvXr1zfOnDnz0fz8/NSWlpZaWRtScHAwLVy4MPPAgQNlhw8fNn799dfdI5HmnPdOmTJlUnl5+bYHHnigIDo6eoGsXSaKorqqqur9LVu2xCcnJ7+nZApfcLOpEJFMiNJzG955OCv7A8eMOQlrEZkKAVGnCxLcLtd1hX8E6G/M9/KIf42eMW/z9HBDXHf3VeIEPDhoktDa2nCxsebsi5tefmoPAECa1SrsM5kks9nMsrOzERGlFStW6HNyciwxMTFrAwMDAWT/6+npgYaGhr/GxsbOUalUrL6+vjomJmbOvn37Hk9NTd0DAFJ7e3tHb29vV2RkZCz4qhcIAKy5uflcRUXF8ykpKYcBfKnL1+IhRBSIiENKymORyx98YlN4RMxjKo0Genu6PYGBek13dxe0Xqp9p+ncmZfCwtydFks2Afh83S/QEMo/Br721sGNU2+PygwKCtH19nSLOl2gioigtbnu0JnTtnV/3PHbap8vkGye/S2Y/fv3Jy9atOjNyMjIJPBFKCZrkzPGhiItQn9sEQFA5XQ6PefPn89JTU19taampku+cnK5CYDgy0rspVf/lHF71CxL6NTbp7pcXRIRoVYXyNpbmhzVVY512zavtQ1lWX6+hiT/G8C14fnVG+2f/2V5W2vjVxq1Ruh1uySv6JaiYr7/4A+X/qR44yvv/zw+Pl6tWIjSwyIiVWpqatEdd9yx1OFwvOFyubyccy5J0mhvFyTfrFhra+tXBw8eTFm4cGFWbW1tl3KgiEjg2wMef2pjzO+2/eXg3IU/emdSSOhUp7NTBEAELnlrqkrffPbnS5Zs27zWNty94W/+dTc74hV6rQAAAABJRU5ErkJggg==" alt="Training TMLF" class="logo-img">
+    <div class="logo-label">TRAINING</div>
+  </div>
+</header>
+<div class="progress-bar-container"><div class="progress-bar-fill" id="progress_fill" style="width:7%"></div></div>
+<div class="progress-label" id="progress_label">7% completado</div>
+
+<div id="outer-layout">
+<div id="sidebar">
+  <div id="sidebar-title">Índice del módulo</div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Inicio</div>
+    <div class="sidebar-item" data-target="0" onclick="goToScreenFromSidebar(0)"><span class="si-dot"></span>Portada</div>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Teoría</div>
+    <div class="sidebar-item" data-target="1" onclick="goToScreenFromSidebar(1)"><span class="si-dot"></span>Introducción</div>
+    <div class="sidebar-item" data-target="2" onclick="goToScreenFromSidebar(2)"><span class="si-dot"></span>Literal vs. Interpretativa</div>
+    <div class="sidebar-item" data-target="3" onclick="goToScreenFromSidebar(3)"><span class="si-dot"></span>Las 6 Reglas de Oro</div>
+    <div class="sidebar-item" data-target="4" onclick="goToScreenFromSidebar(4)"><span class="si-dot"></span>Errores Comunes</div>
+    <div class="sidebar-item" data-target="5" onclick="goToScreenFromSidebar(5)"><span class="si-dot"></span>Resumen</div>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Ejercicio práctico</div>
+    <div class="sidebar-item" data-target="6" onclick="goToScreenFromSidebar(6)"><span class="si-dot"></span>Instrucciones</div>
+    <div class="sidebar-item" data-target="7" onclick="goToScreenFromSidebar(7)"><span class="si-dot"></span>Sección 1</div>
+    <div class="sidebar-item" data-target="8" onclick="goToScreenFromSidebar(8)"><span class="si-dot"></span>Sección 2</div>
+    <div class="sidebar-item" data-target="9" onclick="goToScreenFromSidebar(9)"><span class="si-dot"></span>Sección 3</div>
+    <div class="sidebar-item" data-target="10" onclick="goToScreenFromSidebar(10)"><span class="si-dot"></span>Sección 4</div>
+    <div class="sidebar-item" data-target="11" onclick="goToScreenFromSidebar(11)"><span class="si-dot"></span>Sección 5</div>
+    <div class="sidebar-item" data-target="12" onclick="goToScreenFromSidebar(12)"><span class="si-dot"></span>Sección 6</div>
+    <div class="sidebar-item" data-target="13" onclick="goToScreenFromSidebar(13)"><span class="si-dot"></span>Sección 7</div>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Cierre</div>
+    <div class="sidebar-item" data-target="14" onclick="goToScreenFromSidebar(14)"><span class="si-dot"></span>Resultados</div>
+  </div>
+</div>
+<div id="main-content">
+
+<!-- ══ PANTALLA 0: PORTADA ══ -->
+<div class="screen cover-screen active" id="screen_0">
+  <span class="cover-badge">TMLF Training · Serie Capacitación Legal</span>
+  <h1 class="cover-title">Módulo 7: Redacción y Traducción<br>El Arte de No Ser Literal</h1>
+  <p class="cover-subtitle">Distingue entre una traducción literal mecánica y una traducción que preserva la intención, el tono y el efecto legal del texto original.</p>
+  <div class="idea-fuerza">
+    <div class="if-label">💡 Idea fuerza del módulo</div>
+    <div class="if-text">"Traducir no es cambiar palabras de un diccionario. Es volver a contar una historia en otro idioma, con la misma intensidad, el mismo tono y el mismo significado legal."</div>
+  </div>
+  <div class="cover-objective-box">
+    <div class="label">🎯 Objetivo del módulo</div>
+    <p>Al finalizar este módulo, serás capaz de distinguir entre una traducción literal mecánica y una traducción que preserva la intención, el tono y el efecto legal del texto original, aplicando las reglas de oro de la firma.</p>
+  </div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:12px;padding:22px 28px;margin:0 0 20px 0;max-width:620px;text-align:left;">
+    <div style="font-weight:700;font-size:.97rem;color:var(--color-primary-dark);margin-bottom:14px;">📌 Antes de comenzar</div>
+    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">①</span><span><strong>Lee cada fragmento completo</strong> antes de responder. El tono solo se percibe en el texto completo, no en frases sueltas.</span></li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">②</span><span><strong>Responde las tres partes</strong> de cada sección (tono, elemento legal y traducción) antes de avanzar.</span></li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">③</span><span><strong>En las traducciones</strong>, no necesitas copiar la referencia palabra por palabra. Se evalúa que preserves el tono y los elementos clave.</span></li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">④</span><span><strong>Intentos limitados a 1.</strong> Una vez verificada, una respuesta no puede modificarse.</span></li>
+    </ul>
+  </div>
+  <div class="cover-meta">
+    <span class="meta-item">⏱️ Duración estimada: 60 minutos</span>
+    <span class="meta-item">📋 Versión 1.0 · TMLF Training</span>
+  </div>
+  <button class="btn btn-primary btn-large" id="btn_start">Comenzar módulo →</button>
+</div>
+
+<!-- ══ PANTALLA 1: INTRODUCCIÓN ══ -->
+<div class="screen" id="screen_1">
+  <span class="screen-label">Introducción</span>
+  <div class="section-title">📖 El Principio Fundamental</div>
+  <div class="content-block">
+    <p>En los módulos anteriores hemos visto <em>qué</em> traducir. Ahora vamos a ver <em>cómo</em> hacerlo. Y la respuesta no es "palabra por palabra".</p>
+  </div>
+  <div class="info-box">
+    <div class="box-title">⚖️ El principio que guía todo nuestro trabajo</div>
+    <p style="font-style:italic;font-size:.95rem;">"Una traducción legal humanitaria no es un ejercicio lingüístico mecánico. Es una interpretación fiel del significado, intención y efecto legal del texto original."</p>
+  </div>
+  <div style="background:var(--color-secondary);border-radius:10px;padding:18px 20px;margin:16px 0;">
+    <div style="font-weight:700;font-size:.9rem;color:var(--color-primary-dark);margin-bottom:14px;">¿Qué significa esto en la práctica?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+      <div style="background:#fff;border-radius:8px;padding:14px;border-top:3px solid var(--color-primary);">
+        <div style="font-size:1.4rem;margin-bottom:6px;">💬</div>
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:4px;">Significado</div>
+        <div style="font-size:.8rem;color:#666;">Lo que el cliente quiso decir</div>
+      </div>
+      <div style="background:#fff;border-radius:8px;padding:14px;border-top:3px solid var(--color-primary);">
+        <div style="font-size:1.4rem;margin-bottom:6px;">🎯</div>
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:4px;">Intención</div>
+        <div style="font-size:.8rem;color:#666;">Por qué lo dijo: declarar, mostrar emoción, establecer contexto</div>
+      </div>
+      <div style="background:#fff;border-radius:8px;padding:14px;border-top:3px solid var(--color-primary);">
+        <div style="font-size:1.4rem;margin-bottom:6px;">⚖️</div>
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:4px;">Efecto legal</div>
+        <div style="font-size:.8rem;color:#666;">Cómo esa frase impacta los requisitos de la visa</div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box" style="border-left-color:var(--color-warning);background:#fffbeb;">
+    <div class="box-title" style="color:#92400e;">⚠️ ¿Por qué importa tanto?</div>
+    <p style="font-size:.88rem;line-height:1.6;">Un oficial de USCIS no lee tu traducción para evaluar tu inglés. La lee para evaluar la <strong>credibilidad del cliente</strong> y si cumple los requisitos legales. Si tu traducción es literal pero suena robótica o confusa, el oficial puede dudar.</p>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 2: LITERAL VS. INTERPRETATIVA ══ -->
+<div class="screen" id="screen_2">
+  <span class="screen-label">Literal vs. Interpretativa</span>
+  <div class="section-title">⚖️ Traducción Literal vs. Traducción con Interpretación</div>
+  <div class="content-block">
+    <p>No siempre la versión más larga es la correcta. A veces la literal es perfecta. La clave está en <strong>leer el contexto</strong> y decidir qué versión transmite la misma realidad emocional y legal.</p>
+  </div>
+  <table class="contrast-table">
+    <thead>
+      <tr><th>Frase en español</th><th>Literal (riesgosa)</th><th>Con interpretación (correcta)</th><th>¿Por qué?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>"Me sentía mal"</td><td class="col-literal">"I felt bad"</td><td class="col-correct">"I felt really bad" / "I felt terrible"</td><td>Mantén el registro sencillo del cliente. "Felt bad" puede ser correcto si se acompaña de contexto; lo que importa es que no suene vacío si hay más detalles en el texto.</td></tr>
+      <tr><td>"Me golpeó fuerte"</td><td class="col-literal">"He hit me hard"</td><td class="col-correct">"He hit me hard" ✓</td><td>Aquí la literal es perfecta. No añadir adverbios como "brutally" si el cliente no dijo más.</td></tr>
+      <tr><td>"Me ignoraba"</td><td class="col-literal">"He ignored me"</td><td class="col-correct">"He would ignore me" / "He acted like I wasn't there"</td><td>En abuso emocional sostenido, el tiempo verbal importa. El imperfecto en español indica una acción repetida — "would ignore" lo captura mejor que el simple "ignored".</td></tr>
+      <tr><td>"Sufrí mucho"</td><td class="col-literal">"I suffered a lot"</td><td class="col-correct">"I went through a lot" / "I suffered a great deal"</td><td>"A lot" es coloquial pero no siempre débil. Lo importante es que el contexto circundante dé el peso legal. No infles si el cliente no lo hizo.</td></tr>
+      <tr><td>"Tenía miedo"</td><td class="col-literal">"I was afraid"</td><td class="col-correct">"I was scared" / "I was always afraid"</td><td>Si el miedo era constante, añadir un adverbio de frecuencia que el cliente sí insinuó: "I was always afraid", "I was scared all the time".</td></tr>
+      <tr><td>"Él era malo conmigo"</td><td class="col-literal">"He was bad to me"</td><td class="col-correct">"He treated me badly" / "He hurt me"</td><td>"Bad to me" no suena natural en inglés. Usa el verbo "treat" o el verbo específico del daño. Evita términos clínicos como "mistreated" o "abused" si el cliente habló de forma sencilla.</td></tr>
+    </tbody>
+  </table>
+  <div class="info-box" style="margin-top:16px;">
+    <div class="box-title">📌 Observación clave sobre la voz del cliente</div>
+    <p style="font-size:.88rem;line-height:1.6;">Si el cliente habla con un tono humilde y sencillo, la traducción no debe sonar a lenguaje de abogado.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;font-size:.85rem;">
+      <div style="background:#fff5f5;border-radius:8px;padding:10px 12px;border-left:3px solid #ef9a9a;">
+        <div style="font-weight:700;color:#c62828;margin-bottom:4px;">❌ Pierde la voz</div>
+        <div style="color:#555;">"Indeed, I experienced significant suffering"</div>
+      </div>
+      <div style="background:#f0fff4;border-radius:8px;padding:10px 12px;border-left:3px solid #48bb78;">
+        <div style="font-weight:700;color:#276749;margin-bottom:4px;">✅ Mantiene la voz</div>
+        <div style="color:#555;">"Well, honestly, I did suffer a lot" / "I really did go through a lot"</div>
+      </div>
+      <div style="background:#fff5f5;border-radius:8px;padding:10px 12px;border-left:3px solid #ef9a9a;">
+        <div style="font-weight:700;color:#c62828;margin-bottom:4px;">❌ Pierde la voz</div>
+        <div style="color:#555;">"My sole desire was for him to cease bothering me"</div>
+      </div>
+      <div style="background:#f0fff4;border-radius:8px;padding:10px 12px;border-left:3px solid #48bb78;">
+        <div style="font-weight:700;color:#276749;margin-bottom:4px;">✅ Mantiene la voz</div>
+        <div style="color:#555;">"I just wanted him to leave me alone" / "I just wanted him to stop"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 3: REGLAS DE ORO ══ -->
+<div class="screen" id="screen_3">
+  <span class="screen-label">Las 6 Reglas de Oro</span>
+  <div class="section-title">🏆 Las 6 Reglas de Oro del Traductor</div>
+  <div class="content-block">
+    <p>En nuestra firma, estas reglas no son sugerencias. Son el <strong>estándar de calidad</strong> que esperamos de cada traducción.</p>
+  </div>
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-num">1</div>
+      <div class="rule-title">No inventes hechos</div>
+      <div class="rule-body">Si el cliente no mencionó una fecha, un lugar o un detalle, <strong>no lo agregues</strong>. Tu trabajo es traducir lo que está, no completar lo que falta.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">2</div>
+      <div class="rule-title">No suavices el abuso</div>
+      <div class="rule-body">Las palabras fuertes ("violó", "golpeó", "amenazó") están ahí por una razón legal. Si las suavizas, el oficial puede no entender la gravedad del caso.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">3</div>
+      <div class="rule-title">No exageres</div>
+      <div class="rule-body">Agregar "me golpeó salvajemente" si el cliente solo dijo "me golpeó" puede considerarse fraude o, al menos, una traducción infiel.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">4</div>
+      <div class="rule-title">Mantén la voz del cliente</div>
+      <div class="rule-body">El registro lingüístico debe coincidir con el perfil del cliente. No uses lenguaje de abogado si el cliente habla de forma sencilla.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">5</div>
+      <div class="rule-title">Consulta antes de asumir</div>
+      <div class="rule-body">Si un término es ambiguo o no estás seguro del matiz, <strong>pregunta</strong>. Un correo de 2 minutos al supervisor puede evitar un error que cueste un caso.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">6</div>
+      <div class="rule-title">Cuida el registro lingüístico</div>
+      <div class="rule-body">La complejidad del lenguaje debe coincidir con el perfil del cliente. No uses palabras sofisticadas si habla de forma sencilla, ni jerga si es una persona formal.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 4: ERRORES COMUNES ══ -->
+<div class="screen" id="screen_4">
+  <span class="screen-label">Errores Comunes</span>
+  <div class="section-title">⚠️ Errores Comunes y Cómo Evitarlos</div>
+  <table class="error-table">
+    <thead><tr><th>Error común</th><th>Por qué es peligroso</th><th>Solución / Alternativa</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Usar sinónimos más "profesionales" de lo que el cliente dijo</td>
+        <td>Cambia la voz del cliente; puede sonar inverosímil</td>
+        <td>Mantén el registro. Si el cliente dijo "feo", no pongas "repugnante"</td>
+      </tr>
+      <tr>
+        <td>Añadir adverbios de énfasis ("brutally", "savagely")</td>
+        <td>Es añadir información que no está en el original; puede ser fraude</td>
+        <td>Traduce el verbo y deja que el contexto dé el énfasis</td>
+      </tr>
+      <tr>
+        <td>Convertir verbos en jerga legal ("me golpeó" → "he committed a battery")</td>
+        <td>Cambia la narrativa personal a terminología técnica que el cliente no usó</td>
+        <td>Mantén el verbo; el abogado tipificará el delito en otro documento</td>
+      </tr>
+      <tr>
+        <td>Traducir modismos literalmente ("me puso el dedo en la llaga" → "he put his finger on the wound")</td>
+        <td>No tiene sentido en inglés; confunde al oficial</td>
+        <td>Busca el significado: "he hit a nerve" / "he pointed out my deepest pain"</td>
+      </tr>
+      <tr>
+        <td>Usar "abuse" cuando el cliente dijo "violó" o "rape"</td>
+        <td>Suaviza el delito; "abuse" es más genérico y menos grave en términos legales</td>
+        <td>Usa el verbo preciso: "he raped me" cuando el cliente describió violación</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="info-box" style="margin-top:16px;">
+    <div class="box-title">🎯 La regla de verificación rápida</div>
+    <p style="font-size:.88rem;line-height:1.6;">Antes de entregar cualquier traducción, pregúntate: <strong>"¿Suena esto como algo que mi cliente diría, o suena como algo que yo inventé?"</strong> Si la respuesta es lo segundo, regresa al texto original.</p>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 5: RESUMEN ══ -->
+<div class="screen" id="screen_5">
+  <span class="screen-label">Resumen</span>
+  <div class="section-title">📋 Resumen del Módulo 7</div>
+  <div class="content-block">
+    <p>Hoy hemos dado un salto cualitativo. No se trata solo de saber <em>qué</em> traducir, sino de entender <em>cómo</em> hacerlo para que el cliente suene real, creíble y legalmente preciso.</p>
+  </div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:12px;padding:20px 24px;margin:16px 0;">
+    <div style="font-weight:700;font-size:.95rem;color:var(--color-primary-dark);margin-bottom:14px;">🔑 Ideas fuerza</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">1</span><span><strong>El principio:</strong> Traducir es interpretar fielmente el significado, la intención y el efecto legal.</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">2</span><span><strong>La decisión:</strong> No hay una sola traducción correcta; hay opciones que respetan mejor el contexto y la voz del cliente.</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">3</span><span><strong>Las reglas de oro:</strong> No inventes, no suavices, no exageres, mantén la voz, consulta, cuida el registro.</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">4</span><span><strong>El objetivo final:</strong> Que un oficial de USCIS lea tu traducción y crea en la historia del cliente.</span></div>
+    </div>
+  </div>
+  <div style="background:#fff;border:1.5px solid #e5e2f6;border-radius:12px;padding:18px 22px;margin-top:16px;">
+    <div style="font-weight:700;font-size:.9rem;color:var(--color-primary-dark);margin-bottom:12px;">✅ Checklist de calidad — antes de entregar una traducción</div>
+    <ul class="checklist">
+      <li class="no"><span class="cl-icon">❌</span><span>¿Inventé hechos que el cliente no mencionó?</span></li>
+      <li class="no"><span class="cl-icon">❌</span><span>¿Suavicé el abuso o usé un verbo más débil del original?</span></li>
+      <li class="no"><span class="cl-icon">❌</span><span>¿Exageré con adverbios o detalles que no estaban en el texto?</span></li>
+      <li class="si"><span class="cl-icon">✅</span><span>¿La traducción suena como algo que el cliente diría?</span></li>
+      <li class="si"><span class="cl-icon">✅</span><span>¿Consulté mis dudas con el supervisor antes de asumir?</span></li>
+      <li class="si"><span class="cl-icon">✅</span><span>¿El registro lingüístico es coherente con el perfil del cliente?</span></li>
+    </ul>
+  </div>
+  <div class="info-box" style="text-align:center;margin-top:16px;">
+    <div class="box-title">🚀 A continuación: Ejercicio práctico</div>
+    <p>Trabajarás con 7 secciones de una Declaración Legal de Visa T. Para cada una identificarás el tono, el elemento legal y producirás una traducción.</p>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 6: INSTRUCCIONES ══ -->
+<div class="screen" id="screen_6">
+  <span class="screen-label">Ejercicio práctico</span>
+  <div class="section-title">📝 Taller de Redacción y Traducción</div>
+  <div class="content-block">
+    <p>A continuación se te presentarán <strong>7 secciones</strong> de una Declaración Legal de un caso real de Visa T. Cada sección tiene un propósito específico dentro de la narrativa legal y un tono particular que refleja la voz del cliente.</p>
+  </div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:12px;padding:20px 24px;margin:16px 0;">
+    <div style="font-weight:700;font-size:.97rem;color:var(--color-primary-dark);margin-bottom:14px;">📋 Para cada sección deberás:</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;padding:10px 12px;background:var(--color-secondary);border-radius:8px;"><span style="background:var(--color-primary);color:#fff;border-radius:4px;padding:2px 8px;font-weight:700;font-size:.82rem;flex-shrink:0;">Parte 1</span><span>Identificar el <strong>tono predominante</strong> del cliente en el fragmento</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;padding:10px 12px;background:var(--color-secondary);border-radius:8px;"><span style="background:var(--color-primary);color:#fff;border-radius:4px;padding:2px 8px;font-weight:700;font-size:.82rem;flex-shrink:0;">Parte 2</span><span>Identificar qué <strong>elemento legal</strong> de la Visa T demuestra principalmente la sección</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;padding:10px 12px;background:var(--color-secondary);border-radius:8px;"><span style="background:var(--color-primary);color:#fff;border-radius:4px;padding:2px 8px;font-weight:700;font-size:.82rem;flex-shrink:0;">Parte 3</span><span><strong>Traducir al inglés</strong> una o más frases del fragmento, preservando tono y elemento legal</span></div>
+    </div>
+  </div>
+  <div class="info-box" style="border-left-color:var(--color-warning);background:#fffbeb;">
+    <div class="box-title" style="color:#92400e;">📌 Recuerda</div>
+    <p style="font-size:.87rem;line-height:1.6;">En las traducciones no se evalúa que copies la referencia exacta. Se evalúa que <strong>preserves el tono, los verbos clave y los elementos legales</strong>. Aplica las 6 reglas de oro que acabas de aprender.</p>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 7: SECCIÓN 1 – ANTECEDENTES ══ -->
+<div class="screen" id="screen_7">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Sección 1 de 7 — Antecedentes e Historia Personal <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress">
+    <div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div>
+  </div>
+  <p class="question-text" style="margin-bottom:10px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">
+    De niña, viví con mis padres y mis tres hermanos. Mi vida fue difícil porque éramos una familia muy pobre, por lo que nuestra casa estaba hecha de adobe con techo de zinc y tenía un solo cuarto, donde dormíamos todos. Mis primeros años los viví sin electricidad, así que para alumbrarnos teníamos lámparas de combustible. No teníamos baño, así que teníamos que ir a un monte a hacer nuestras necesidades. Nuestra comida era limitada, pero siempre comíamos lo que cosechábamos, especialmente maíz. Mi papá era buena persona, ya que era muy cariñoso con nosotros y muy responsable. Pero mi mamá era más estricta, nos castigaba y a veces nos pegaba con un palo. Mi papá era muy trabajador, pero cuando yo tenía entre 10 y 13 años él tuvo un problema en sus piernas por lo que ya no pudo caminar ni mover una de sus manos. Yo no entendía qué enfermedad tenía mi papá, pero lo cierto es que se quedó sin trabajo y no teníamos ingresos. Mi papá falleció cuando yo tenía 20 años, por lo que tuve que ponerme a trabajar para ayudar a mi familia.
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — Tono del fragmento</div>
+    <p class="question-text">¿Qué tono predomina en este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s1_1" value="narrativo"> Narrativo / Descriptivo, con tono de nostalgia y honestidad</label>
+      <label class="radio-item"><input type="radio" name="s1_1" value="formal"> Formal / Legal, con terminología técnica</label>
+      <label class="radio-item"><input type="radio" name="s1_1" value="dramatico"> Emocional / Dramático, con énfasis en el sufrimiento</label>
+      <label class="radio-item"><input type="radio" name="s1_1" value="coloquial"> Coloquial / Informal, con lenguaje callejero</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s1_1" onclick="checkRadio('s1_1','fb_s1_1')">Verificar</button>
+    <div class="feedback-box" id="fb_s1_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Elemento legal</div>
+    <p class="question-text">¿Qué elemento legal demuestra principalmente esta sección?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s1_2" value="reclutamiento"> Esquema de trata (reclutamiento)</label>
+      <label class="radio-item"><input type="radio" name="s1_2" value="medios"> Medios de control (violencia, amenazas)</label>
+      <label class="radio-item"><input type="radio" name="s1_2" value="fines"> Fines de la trata (explotación)</label>
+      <label class="radio-item"><input type="radio" name="s1_2" value="vulnerabilidad"> Vulnerabilidad previa / Contexto de pobreza</label>
+      <label class="radio-item"><input type="radio" name="s1_2" value="cooperacion"> Cooperación con autoridades</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s1_2" onclick="checkRadio('s1_2','fb_s1_2')">Verificar</button>
+    <div class="feedback-box" id="fb_s1_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3 — Traducción</div>
+    <p class="question-text">Traduce las primeras dos oraciones del fragmento al inglés, preservando el tono narrativo y la voz sencilla de la cliente:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"De niña, viví con mis padres y mis tres hermanos. Mi vida fue difícil porque éramos una familia muy pobre..."</div>
+    <textarea class="text-input-area" id="s1_3_input" placeholder="Escribe tu traducción aquí..." style="min-height:80px;"></textarea>
+    <button class="btn btn-primary" id="btn_check_s1_3" onclick="checkPhrase('s1_3','fb_s1_3')">Verificar</button>
+    <div class="feedback-box" id="fb_s1_3"></div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 8: SECCIÓN 2 – RECLUTAMIENTO ══ -->
+<div class="screen" id="screen_8">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Sección 2 de 7 — Reclutamiento <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress">
+    <div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div>
+  </div>
+  <p class="question-text" style="margin-bottom:10px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">
+    A finales del 2018, Manuel Alvarez Yupa me mandó un mensaje por una red social y empezó a buscarme para hablar conmigo. Yo lo había conocido en Ecuador, entre 1997 y 1999, pero no teníamos ningún tipo de amistad y él nunca había intentado ser mi pareja. En aquel mensaje, Manuel se presentó conmigo, me recordó de dónde nos conocíamos y comenzamos a hablar. Para aquel entonces, él vivía en Nueva York y yo en Maryland. Durante seis meses estuvimos hablando por mensaje, siempre de forma amistosa y contándonos sobre nuestras vidas. Le conté a Manuel sobre mis hijos y le conté que me había separado. Él, en cambio, me decía que me quería como pareja y que, si le daba una oportunidad, él sería como un padre para mis hijos, ya que trabajaría para ayudarlos y educarlos.<br><br>
+    Después de esos seis meses platicando, él viajó a Maryland para vernos en persona. Esa vez me dijo que quería que viviéramos juntos porque me quería mucho a mí y a mis hijos. Me decía que quería comprar una casa para nosotros y que le gustaría que los dos trabajáramos para salir adelante juntos. Para entonces, yo sentía que Manuel me apoyaría y que quería estar conmigo de verdad para ayudarnos. Él regresó a Nueva York, pero a partir de entonces me visitó cada semana. Durante sus visitas era cariñoso y atento, me trataba bien, y salíamos a comer o a caminar. Me insistía en que viviríamos bien y que quería estar junto a mí, así que me terminó convenciendo de empezar una relación.
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — Tono del fragmento</div>
+    <p class="question-text">¿Qué tono predomina en este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s2_1" value="confiado"> Confiado / Esperanzado, reflejando la ilusión inicial de la cliente</label>
+      <label class="radio-item"><input type="radio" name="s2_1" value="formal"> Formal / Legal</label>
+      <label class="radio-item"><input type="radio" name="s2_1" value="temeroso"> Temeroso / Ansioso</label>
+      <label class="radio-item"><input type="radio" name="s2_1" value="coloquial"> Coloquial / Informal</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s2_1" onclick="checkRadio('s2_1','fb_s2_1')">Verificar</button>
+    <div class="feedback-box" id="fb_s2_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Elemento legal</div>
+    <p class="question-text">¿Qué elemento legal de la Visa T demuestra principalmente esta sección?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s2_2" value="reclutamiento"> Esquema de Trata (reclutamiento mediante promesas falsas)</label>
+      <label class="radio-item"><input type="radio" name="s2_2" value="fines"> Fines de la trata (explotación)</label>
+      <label class="radio-item"><input type="radio" name="s2_2" value="medios"> Medios (violencia)</label>
+      <label class="radio-item"><input type="radio" name="s2_2" value="cooperacion"> Cooperación con autoridades</label>
+      <label class="radio-item"><input type="radio" name="s2_2" value="presencia"> Presencia física</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s2_2" onclick="checkRadio('s2_2','fb_s2_2')">Verificar</button>
+    <div class="feedback-box" id="fb_s2_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3 — Traducción</div>
+    <p class="question-text">Traduce la primera oración del fragmento al inglés, preservando el tono de inicio amistoso y la precisión temporal:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"A finales del 2018, Manuel Alvarez Yupa me mandó un mensaje por una red social y empezó a buscarme para hablar conmigo."</div>
+    <textarea class="text-input-area" id="s2_3_input" placeholder="Escribe tu traducción aquí..."></textarea>
+    <button class="btn btn-primary" id="btn_check_s2_3" onclick="checkPhrase('s2_3','fb_s2_3')">Verificar</button>
+    <div class="feedback-box" id="fb_s2_3"></div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 9: SECCIÓN 3 – SERVIDUMBRE ══ -->
+<div class="screen" id="screen_9">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Sección 3 de 7 — Servidumbre Involuntaria <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress">
+    <div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div>
+  </div>
+  <p class="question-text" style="margin-bottom:10px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">
+    Manuel también empezó a exigirme que hiciera todo el quehacer y que hiciera cosas para atenderlo. Yo trabajaba en la limpieza de 06:00 am a 12:00 pm, mientras que en el restaurante trabajaba de 12:00 pm a 6:00 o 7:00 pm. Pero cuando llegaba a casa, Manuel me exigía que le cocinara la cena. También me exigía lavar y planchar su ropa. Si yo me negaba, Manuel me empujaba por la espalda de manera violenta y me presionaba hasta que yo lo obedeciera. En alguna ocasión intenté negarme a hacer lo que me pedía, pero me empujó tan fuerte que choqué con un mueble, por lo que me golpeé el brazo y mi pierna. Tuve moretones después de ese empujón y me sentí muy asustada por lo que era capaz de hacerme si no hacía lo que me ordenaba. Sentía que no tenía otra opción más que obedecerlo.<br><br>
+    Manuel también me obligaba a tener sexo con él. Solía agarrarme por la fuerza y violarme, diciendo que era mi obligación tener relaciones con él. Yo le tenía mucho miedo y no podía evitar que abusara de mí porque me agredía y me amenazaba. Esto era algo que pasaba todos los días. Lloraba y me sentía triste, ya que Manuel me utilizaba sólo para aprovecharse de mí y me agredía para obligarme a estar con él. Cuando intentaba defenderme, él se volvía más agresivo y me tomaba con más fuerza. Tenía tanto miedo que mi única opción era seguir obedeciendo todas sus órdenes.
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — Tono del fragmento</div>
+    <p class="question-text">¿Qué tono predomina en este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s3_1" value="confiado"> Confiado / Esperanzado</label>
+      <label class="radio-item"><input type="radio" name="s3_1" value="temeroso"> Temeroso / Desesperado / Atrapado</label>
+      <label class="radio-item"><input type="radio" name="s3_1" value="formal"> Formal / Legal</label>
+      <label class="radio-item"><input type="radio" name="s3_1" value="nostalgico"> Nostálgico</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s3_1" onclick="checkRadio('s3_1','fb_s3_1')">Verificar</button>
+    <div class="feedback-box" id="fb_s3_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Elementos legales</div>
+    <p class="question-text">¿Qué elementos legales de la Visa T demuestra esta sección? <em>(Selecciona todos los que correspondan)</em></p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="s3_2" value="trabajo_forzado"> Fines: trabajo doméstico forzado / servidumbre</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="s3_2" value="explotacion_sexual"> Fines: explotación sexual</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="s3_2" value="violencia"> Medios: violencia física</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="s3_2" value="amenazas"> Medios: amenazas de deportación</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="s3_2" value="cooperacion"> Cooperación con autoridades</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="s3_2" value="presencia"> Presencia física</label>
+    </div>
+    <button class="btn btn-primary" id="btn_cb_s3_2" onclick="checkCheckboxes('s3_2','fb_s3_2')">Verificar</button>
+    <div class="feedback-box" id="fb_s3_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3a — Traducción (servidumbre doméstica)</div>
+    <p class="question-text">Traduce la siguiente frase al inglés. Usa verbos precisos y mantén la sensación de coerción:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"Si yo me negaba, Manuel me empujaba por la espalda de manera violenta y me presionaba hasta que yo lo obedeciera."</div>
+    <textarea class="text-input-area" id="s3_3_input" placeholder="Escribe tu traducción aquí..."></textarea>
+    <button class="btn btn-primary" id="btn_check_s3_3" onclick="checkPhrase('s3_3','fb_s3_3')">Verificar</button>
+    <div class="feedback-box" id="fb_s3_3"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3b — Traducción (explotación sexual)</div>
+    <p class="question-text">Traduce la siguiente frase. Recuerda: usa "rape" — no suavices el delito a "abuse":</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"Manuel también me obligaba a tener sexo con él. Solía agarrarme por la fuerza y violarme, diciendo que era mi obligación tener relaciones con él."</div>
+    <textarea class="text-input-area" id="s3_4_input" placeholder="Escribe tu traducción aquí..."></textarea>
+    <button class="btn btn-primary" id="btn_check_s3_4" onclick="checkPhrase('s3_4','fb_s3_4')">Verificar</button>
+    <div class="feedback-box" id="fb_s3_4"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3c — Traducción (sensación de estar atrapada)</div>
+    <p class="question-text">Traduce la siguiente frase. Preserva la intensidad del miedo y la sensación de no tener salida:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"Tenía tanto miedo que mi única opción era seguir obedeciendo todas sus órdenes."</div>
+    <textarea class="text-input-area" id="s3_5_input" placeholder="Escribe tu traducción aquí..."></textarea>
+    <button class="btn btn-primary" id="btn_check_s3_5" onclick="checkPhrase('s3_5','fb_s3_5')">Verificar</button>
+    <div class="feedback-box" id="fb_s3_5"></div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 10: SECCIÓN 4 – FIN DE LA TRATA ══ -->
+<div class="screen" id="screen_10">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Sección 4 de 7 — Fin de la Trata <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress">
+    <div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div>
+  </div>
+  <p class="question-text" style="margin-bottom:10px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">
+    Ya no quería seguir con toda la violencia y con todo lo que sufría con Manuel. Incluso, en un momento, mis hijos menores se vinieron a vivir conmigo. Mi hija Kimberly me decía que Manuel era malo conmigo y siempre me dijo que no le gustaba como me trataba. Después de varios intentos de terminar mi relación con Manuel, un día tomé el coraje para enfrentarlo. Le dije que me sentía estresada, que ya estaba cansada y que quería paz en mi vida. Le pedí que se fuera de la casa. Al final, él decidió irse, sobre todo porque yo había empezado a dejar de atenderlo de la misma forma, así que ya no le servía igual. Tardó poco más de seis meses en irse de casa, pero en noviembre del 2023 se acabó todo. Manuel se fue de casa, no sin antes robarme todo el dinero que tenía en su cuenta, el cual yo había ganado con mi trabajo y mi esfuerzo. En total fue alrededor de 80,000 dólares lo que Manuel me robó.
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — Tono del fragmento</div>
+    <p class="question-text">¿Qué tono predomina en este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s4_1" value="determinacion"> Determinación / Agotamiento / Alivio final</label>
+      <label class="radio-item"><input type="radio" name="s4_1" value="temeroso"> Temeroso</label>
+      <label class="radio-item"><input type="radio" name="s4_1" value="formal"> Formal / Legal</label>
+      <label class="radio-item"><input type="radio" name="s4_1" value="nostalgico"> Nostálgico</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s4_1" onclick="checkRadio('s4_1','fb_s4_1')">Verificar</button>
+    <div class="feedback-box" id="fb_s4_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Elemento legal</div>
+    <p class="question-text">¿Qué aspecto de la narrativa demuestra principalmente esta sección?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s4_2" value="reclutamiento"> Esquema de reclutamiento</label>
+      <label class="radio-item"><input type="radio" name="s4_2" value="medios"> Medios de control</label>
+      <label class="radio-item"><input type="radio" name="s4_2" value="escape"> Intento de escape / Fin de la explotación</label>
+      <label class="radio-item"><input type="radio" name="s4_2" value="cooperacion"> Cooperación con autoridades</label>
+      <label class="radio-item"><input type="radio" name="s4_2" value="presencia"> Presencia física</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s4_2" onclick="checkRadio('s4_2','fb_s4_2')">Verificar</button>
+    <div class="feedback-box" id="fb_s4_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3a — Traducción (determinación)</div>
+    <p class="question-text">Traduce la siguiente frase. Preserva la sensación de que requirió valor después de múltiples intentos fallidos:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"Después de varios intentos de terminar mi relación con Manuel, un día tomé el coraje para enfrentarlo."</div>
+    <textarea class="text-input-area" id="s4_3_input" placeholder="Escribe tu traducción aquí..."></textarea>
+    <button class="btn btn-primary" id="btn_check_s4_3" onclick="checkPhrase('s4_3','fb_s4_3')">Verificar</button>
+    <div class="feedback-box" id="fb_s4_3"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3b — Traducción (robo de ahorros)</div>
+    <p class="question-text">Traduce la siguiente frase. Preserva la indignación y el detalle del monto robado:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"Manuel se fue de casa, no sin antes robarme todo el dinero que tenía en su cuenta, el cual yo había ganado con mi trabajo y mi esfuerzo. En total fue alrededor de 80,000 dólares lo que Manuel me robó."</div>
+    <textarea class="text-input-area" id="s4_4_input" placeholder="Escribe tu traducción aquí..."></textarea>
+    <button class="btn btn-primary" id="btn_check_s4_4" onclick="checkPhrase('s4_4','fb_s4_4')">Verificar</button>
+    <div class="feedback-box" id="fb_s4_4"></div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 11: SECCIÓN 5 – PRESENCIA FÍSICA ══ -->
+<div class="screen" id="screen_11">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Sección 5 de 7 — Presencia Física en EE.UU. <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress">
+    <div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div>
+  </div>
+  <p class="question-text" style="margin-bottom:10px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">
+    La situación con Manuel estaba tan mal que afectó mi salud. No comía por el miedo y por nervios, así que tuve anemia. Fui al hospital para que me revisaran y ahí fue donde me detectaron que tenía anemia. Durante un periodo de cinco años, bajé alrededor de 20 libras, tenía dolores de cabeza constantes y tensión muscular. Mi pelo se comenzó a caer y mis uñas se terminaron. Cuando iba a trabajar, yo me sentía cansada todo el tiempo, me sentía sin fuerzas y lloraba a escondidas, para que nadie notara lo que tenía. Yo no tenía ningún problema de salud antes de estar con Manuel. En 2024, una vez que ya no estaba con Manuel, me tuvieron que quitar el útero porque tenía un quiste. Para curar la anemia y las consecuencias de la operación, tuve que tomar medicamentos recetados y vitaminas. También tuve que tomar medicamentos para calmar el estrés. Gracias al tratamiento médico que he recibido, me he recuperado de la anemia. Actualmente, mi peso ya está normal, mi pelo ya está creciendo y mis uñas también volvieron a crecer. Poco a poco he ido recuperando mi vida normal. Por eso, quedarme en el país me ayudó a recuperar mi salud, ya que en Ecuador no hubiera podido tener la misma atención médica que recibí aquí.
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — Tono del fragmento</div>
+    <p class="question-text">¿Qué tono predomina en este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s5_1" value="temeroso"> Temeroso</label>
+      <label class="radio-item"><input type="radio" name="s5_1" value="sufrimiento"> Descriptivo del sufrimiento físico / Recuperación y gratitud</label>
+      <label class="radio-item"><input type="radio" name="s5_1" value="formal"> Formal / Legal</label>
+      <label class="radio-item"><input type="radio" name="s5_1" value="confiado"> Confiado / Esperanzado</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s5_1" onclick="checkRadio('s5_1','fb_s5_1')">Verificar</button>
+    <div class="feedback-box" id="fb_s5_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Elemento legal</div>
+    <p class="question-text">¿Qué elemento de la Visa T demuestra principalmente esta sección?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s5_2" value="reclutamiento"> Esquema de trata</label>
+      <label class="radio-item"><input type="radio" name="s5_2" value="medios"> Medios de control</label>
+      <label class="radio-item"><input type="radio" name="s5_2" value="fines"> Fines de la trata</label>
+      <label class="radio-item"><input type="radio" name="s5_2" value="cooperacion"> Cooperación con autoridades</label>
+      <label class="radio-item"><input type="radio" name="s5_2" value="presencia"> Presencia física en EE.UU. (continuidad, reconstrucción de vida)</label>
+      <label class="radio-item"><input type="radio" name="s5_2" value="dificultades"> Dificultades extremas</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s5_2" onclick="checkRadio('s5_2','fb_s5_2')">Verificar</button>
+    <div class="feedback-box" id="fb_s5_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3a — Traducción (afectaciones físicas)</div>
+    <p class="question-text">Traduce la siguiente frase. Preserva todos los detalles específicos de las afectaciones físicas:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"Durante un periodo de cinco años, bajé alrededor de 20 libras, tenía dolores de cabeza constantes y tensión muscular. Mi pelo se comenzó a caer y mis uñas se terminaron."</div>
+    <textarea class="text-input-area" id="s5_3_input" placeholder="Escribe tu traducción aquí..."></textarea>
+    <button class="btn btn-primary" id="btn_check_s5_3" onclick="checkPhrase('s5_3','fb_s5_3')">Verificar</button>
+    <div class="feedback-box" id="fb_s5_3"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3b — Traducción (presencia física y recuperación)</div>
+    <p class="question-text">Traduce la siguiente frase. Esta frase conecta directamente la presencia en EE.UU. con la recuperación de salud — es una frase legal clave:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"Por eso, quedarme en el país me ayudó a recuperar mi salud, ya que en Ecuador no hubiera podido tener la misma atención médica que recibí aquí."</div>
+    <textarea class="text-input-area" id="s5_4_input" placeholder="Escribe tu traducción aquí..."></textarea>
+    <button class="btn btn-primary" id="btn_check_s5_4" onclick="checkPhrase('s5_4','fb_s5_4')">Verificar</button>
+    <div class="feedback-box" id="fb_s5_4"></div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 12: SECCIÓN 6 – COOPERACIÓN ══ -->
+<div class="screen" id="screen_12">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Sección 6 de 7 — Cooperación con Autoridades <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress">
+    <div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div>
+  </div>
+  <p class="question-text" style="margin-bottom:10px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">
+    Aunque en el pasado no levanté ningún reporte ante las autoridades por el miedo que me daba que Manuel se enterara y me hiciera algo, actualmente he cooperado con ellas y estoy dispuesta a seguir haciéndolo para poder obtener justicia por lo que viví. Por eso, estoy dispuesta a seguir cooperando con las autoridades para que nadie más viva lo mismo que yo.
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — Tono del fragmento</div>
+    <p class="question-text">¿Qué tono predomina en este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s6_1" value="determinacion"> Determinación / Disposición a cooperar</label>
+      <label class="radio-item"><input type="radio" name="s6_1" value="temeroso"> Temeroso</label>
+      <label class="radio-item"><input type="radio" name="s6_1" value="formal"> Formal / Legal</label>
+      <label class="radio-item"><input type="radio" name="s6_1" value="nostalgico"> Nostálgico</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s6_1" onclick="checkRadio('s6_1','fb_s6_1')">Verificar</button>
+    <div class="feedback-box" id="fb_s6_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Elemento legal</div>
+    <p class="question-text">¿Qué elemento de la Visa T demuestra principalmente esta sección?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s6_2" value="reclutamiento"> Esquema de trata</label>
+      <label class="radio-item"><input type="radio" name="s6_2" value="medios"> Medios</label>
+      <label class="radio-item"><input type="radio" name="s6_2" value="fines"> Fines</label>
+      <label class="radio-item"><input type="radio" name="s6_2" value="cooperacion"> Cooperación con autoridades</label>
+      <label class="radio-item"><input type="radio" name="s6_2" value="presencia"> Presencia física</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s6_2" onclick="checkRadio('s6_2','fb_s6_2')">Verificar</button>
+    <div class="feedback-box" id="fb_s6_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3 — Traducción</div>
+    <p class="question-text">Traduce el fragmento completo al inglés. Preserva tanto el reconocimiento del miedo pasado como la determinación presente de cooperar:</p>
+    <textarea class="text-input-area" id="s6_3_input" placeholder="Escribe tu traducción aquí..." style="min-height:90px;"></textarea>
+    <button class="btn btn-primary" id="btn_check_s6_3" onclick="checkPhrase('s6_3','fb_s6_3')">Verificar</button>
+    <div class="feedback-box" id="fb_s6_3"></div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 13: SECCIÓN 7 – DIFICULTADES ══ -->
+<div class="screen" id="screen_13">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Sección 7 de 7 — Dificultades Extremas <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress">
+    <div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div>
+  </div>
+  <p class="question-text" style="margin-bottom:10px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">
+    Si yo regresara a Ecuador correría mucho peligro. Manuel sabe dónde vivía allá, sabría dónde encontrarme y eso me pondría en un riesgo muy grande. Desde que él se fue de la casa no lo he visto. Ahora vivo en paz, me siento más tranquila, mi salud ha mejorado y poco a poco he ido recuperando la normalidad en mi vida. Si me encontrara con Manuel de vuelta en mi país, todo lo que he progresado no valdría para nada. Por eso necesito quedarme en los Estados Unidos, porque en Ecuador, Manuel podría intentar hacerme regresar con él y me daría mucho miedo volver a verlo.<br><br>
+    En mi país, tampoco tendría la oportunidad de poder salir adelante. En mi región, los únicos trabajos que hay son en el campo, en los sembradíos, los cuales son trabajos pesados y mal pagados. Por mi anemia no puedo hacer mucho esfuerzo, por lo cual no podría trabajar ahí. Además, después de la operación que tuve, no puedo cargar cosas pesadas, por lo cual no tendría oportunidad de trabajar en el campo. De esta forma, me quedaría sin un ingreso, lo que me impediría continuar con el tratamiento médico que aún necesito. En Ecuador no hay seguros médicos ni programas de gobierno, por lo cual el acceso a un sistema de salud digno es muy complicado y muy caro, a diferencia del que he podido recibir aquí en los Estados Unidos.<br><br>
+    No puedo regresar a Ecuador. Si regresara a Ecuador, no tendría la protección y el apoyo que tengo en los Estados Unidos. Solicito que los Estados Unidos de América me permita permanecer aquí y reconstruir mi vida.
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 1 — Tono del fragmento</div>
+    <p class="question-text">¿Qué tono predomina en este fragmento?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s7_1" value="urgente"> Urgente / Temeroso / Suplicante</label>
+      <label class="radio-item"><input type="radio" name="s7_1" value="formal"> Formal / Legal</label>
+      <label class="radio-item"><input type="radio" name="s7_1" value="confiado"> Confiado</label>
+      <label class="radio-item"><input type="radio" name="s7_1" value="nostalgico"> Nostálgico</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s7_1" onclick="checkRadio('s7_1','fb_s7_1')">Verificar</button>
+    <div class="feedback-box" id="fb_s7_1"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 2 — Elemento legal</div>
+    <p class="question-text">¿Qué elemento complementario de la Visa T demuestra principalmente esta sección?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="s7_2" value="reclutamiento"> Esquema de trata</label>
+      <label class="radio-item"><input type="radio" name="s7_2" value="medios"> Medios</label>
+      <label class="radio-item"><input type="radio" name="s7_2" value="fines"> Fines</label>
+      <label class="radio-item"><input type="radio" name="s7_2" value="cooperacion"> Cooperación</label>
+      <label class="radio-item"><input type="radio" name="s7_2" value="dificultades"> Dificultades extremas (hardship) / Razones para permanecer</label>
+    </div>
+    <button class="btn btn-primary" id="btn_s7_2" onclick="checkRadio('s7_2','fb_s7_2')">Verificar</button>
+    <div class="feedback-box" id="fb_s7_2"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3a — Traducción (peligro de regresar)</div>
+    <p class="question-text">Traduce la siguiente frase. Preserva el condicional y la urgencia del riesgo:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"Si yo regresara a Ecuador correría mucho peligro. Manuel sabe dónde vivía allá, sabría dónde encontrarme y eso me pondría en un riesgo muy grande."</div>
+    <textarea class="text-input-area" id="s7_3_input" placeholder="Escribe tu traducción aquí..."></textarea>
+    <button class="btn btn-primary" id="btn_check_s7_3" onclick="checkPhrase('s7_3','fb_s7_3')">Verificar</button>
+    <div class="feedback-box" id="fb_s7_3"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3b — Traducción (falta de acceso a salud)</div>
+    <p class="question-text">Traduce la siguiente frase. Es una frase legal clave — preserva la comparación entre Ecuador y EE.UU.:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"De esta forma, me quedaría sin un ingreso, lo que me impediría continuar con el tratamiento médico que aún necesito. En Ecuador no hay seguros médicos ni programas de gobierno, por lo cual el acceso a un sistema de salud digno es muy complicado y muy caro, a diferencia del que he podido recibir aquí en los Estados Unidos."</div>
+    <textarea class="text-input-area" id="s7_4_input" placeholder="Escribe tu traducción aquí..." style="min-height:90px;"></textarea>
+    <button class="btn btn-primary" id="btn_check_s7_4" onclick="checkPhrase('s7_4','fb_s7_4')">Verificar</button>
+    <div class="feedback-box" id="fb_s7_4"></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">Parte 3c — Traducción (solicitud final)</div>
+    <p class="question-text">Traduce la frase de cierre. Mantén el tono suplicante y formal de la petición:</p>
+    <div style="background:#f8f7fd;border-left:3px solid #9094df;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:.88rem;color:#444;font-style:italic;">"Solicito que los Estados Unidos de América me permita permanecer aquí y reconstruir mi vida."</div>
+    <textarea class="text-input-area" id="s7_5_input" placeholder="Escribe tu traducción aquí..."></textarea>
+    <button class="btn btn-primary" id="btn_check_s7_5" onclick="checkPhrase('s7_5','fb_s7_5')">Verificar</button>
+    <div class="feedback-box" id="fb_s7_5"></div>
+  </div>
+</div>
+
+<!-- ══ PANTALLA 14: RESULTADOS ══ -->
+<div class="screen results-screen" id="screen_results">
+  <span class="cover-badge">Módulo 7 completado</span>
+  <div class="score-circle">
+    <span class="score-num" id="score_circle_num">--%</span>
+    <span class="score-label" id="score_label">Calculando...</span>
+  </div>
+  <div style="font-size:.88rem;color:#666;max-width:520px;text-align:center;">
+    Calificación mínima para aprobar: <strong>85%</strong> (23/27 preguntas correctas)
+  </div>
+  <div class="results-breakdown" id="results_breakdown"></div>
+  <div style="width:100%;max-width:600px;background:#fafafa;border:1px solid #e0ddf5;border-radius:10px;padding:20px;margin-top:8px;text-align:left;">
+    <div style="font-weight:700;font-size:.92rem;color:var(--color-primary-dark);margin-bottom:10px;">💡 Áreas a reforzar</div>
+    <div id="results_tips" style="font-size:.87rem;color:#555;line-height:1.6;"></div>
+  </div>
+  <div class="info-box" style="max-width:580px;text-align:left;">
+    <div class="box-title">📌 Recuerda siempre</div>
+    <p style="font-size:.87rem;line-height:1.6;">Las 6 reglas de oro: <strong>No inventes · No suavices · No exageres · Mantén la voz · Consulta · Cuida el registro.</strong> El objetivo es que el oficial de USCIS lea tu traducción y crea en la historia del cliente.</p>
+  </div>
+  <button class="btn btn-success" id="btn_complete">Finalizar y registrar calificación ✅</button>
+</div>
+
+</div><!-- end #main-content -->
+</div><!-- end #outer-layout -->
+
+<div class="nav-bar">
+  <button class="btn btn-secondary" id="btn_prev">← Anterior</button>
+  <div style="text-align:center;">
+    <div id="advance_warning">⚠️ Responde y verifica todas las partes antes de continuar.</div>
+    <span class="page-indicator" id="page_indicator">Pantalla 1 de 15</span>
+  </div>
+  <button class="btn btn-primary" id="btn_next">Siguiente →</button>
+</div>
+
+<script>
+/**
+ * scorm.js – Comunicación SCORM 1.2 con Moodle
+ * Mendoza Learning Center – Módulo 1 VAWA
+ */
+
+var SCORM = (function () {
+  var API = null;
+  var initialized = false;
+  var finished = false;
+
+  // ─── Buscar la API SCORM ───
+  function findAPI(win) {
+    var attempts = 0;
+    while (win.API == null && win.parent != null && win.parent != win) {
+      attempts++;
+      if (attempts > 7) return null;
+      win = win.parent;
+    }
+    return win.API;
+  }
+
+  function getAPI() {
+    var win = window;
+    var api = findAPI(win);
+    if (api == null && win.opener != null) {
+      api = findAPI(win.opener);
+    }
+    return api;
+  }
+
+  // ─── Inicializar ───
+  function initialize() {
+    API = getAPI();
+    if (API == null) {
+      console.warn("[SCORM] API no encontrada – modo standalone");
+      initialized = true; // Continuar en modo local
+      return true;
+    }
+    var result = API.LMSInitialize("");
+    if (result === "true" || result === true) {
+      initialized = true;
+      setValue("cmi.core.lesson_status", "incomplete");
+      return true;
+    }
+    console.error("[SCORM] Error al inicializar:", API.LMSGetLastError());
+    return false;
+  }
+
+  // ─── Leer valor ───
+  function getValue(element) {
+    if (!initialized || API == null) return "";
+    return API.LMSGetValue(element);
+  }
+
+  // ─── Escribir valor ───
+  function setValue(element, value) {
+    if (!initialized) return false;
+    if (API == null) return true; // standalone, ignorar
+    var result = API.LMSSetValue(element, value);
+    if (result === "false" || result === false) {
+      console.error("[SCORM] Error al setear " + element + ":", API.LMSGetLastError());
+      return false;
+    }
+    return true;
+  }
+
+  // ─── Commit ───
+  function commit() {
+    if (!initialized || API == null) return;
+    API.LMSCommit("");
+  }
+
+  // ─── Finalizar ───
+  function finish() {
+    if (!initialized || finished) return;
+    finished = true;
+    if (API != null) {
+      API.LMSFinish("");
+    }
+  }
+
+  // ─── Reportar calificación del módulo ───
+  function setScore(raw, min, max) {
+    min = min || 0;
+    max = max || 100;
+    setValue("cmi.core.score.raw", raw);
+    setValue("cmi.core.score.min", min);
+    setValue("cmi.core.score.max", max);
+    commit();
+  }
+
+  // ─── Reportar estado de completado ───
+  function setCompleted(passed) {
+    setValue("cmi.core.lesson_status", passed ? "passed" : "failed");
+    commit();
+  }
+
+  // ─── Reportar interacción individual ───
+  var interactionIndex = 0;
+  function recordInteraction(id, type, response, correct, result, latency) {
+    var prefix = "cmi.interactions." + interactionIndex + ".";
+    setValue(prefix + "id", id);
+    setValue(prefix + "type", type || "fill-in");
+    setValue(prefix + "student_response", response || "");
+    setValue(prefix + "correct_responses.0.pattern", correct || "");
+    setValue(prefix + "result", result || "neutral");
+    if (latency) setValue(prefix + "latency", latency);
+    interactionIndex++;
+    commit();
+  }
+
+  // ─── Marcar progreso (location) ───
+  function setLocation(screenIndex) {
+    setValue("cmi.core.lesson_location", String(screenIndex));
+    commit();
+  }
+
+  return {
+    initialize: initialize,
+    getValue: getValue,
+    setValue: setValue,
+    commit: commit,
+    finish: finish,
+    setScore: setScore,
+    setCompleted: setCompleted,
+    recordInteraction: recordInteraction,
+    setLocation: setLocation
+  };
+})();
+
+// ─── Inicializar automáticamente ───
+window.addEventListener("load", function () {
+  SCORM.initialize();
+});
+
+window.addEventListener("beforeunload", function () {
+  SCORM.finish();
+});
+
+</script>
+<script>
+/**
+ * interactions.js – Módulo 7: Redacción y Traducción
+ * Mendoza Learning Center v1.0
+ * Patrón: todo feedback en RADIO_CONFIG / CHECKBOX_CONFIG, nunca en atributos HTML.
+ */
+var AppState={currentScreen:0,totalScreens:0,scores:{},answered:{},startTime:Date.now()};
+function lockQuestion(id){AppState.answered[id]=true;}
+function isLocked(id){return !!AppState.answered[id];}
+
+// ─── Normalización de texto ───
+function normalizeText(t){
+  return t.toLowerCase().trim()
+    .replace(/[áàäâ]/g,"a").replace(/[éèëê]/g,"e").replace(/[íìïî]/g,"i")
+    .replace(/[óòöô]/g,"o").replace(/[úùüû]/g,"u").replace(/ñ/g,"n")
+    .replace(/[.,;:!?¿¡"'"'«»\-–—]/g,"").replace(/\s+/g," ");
+}
+
+var STOPS=["that","this","with","from","they","them","have","been","were","will","would","could","should",
+  "also","very","just","when","what","which","here","there","para","como","pero","sino","todo","toda",
+  "todos","estas","estos","esta","este","cada","algo","mas","por","que","una","uno","los","las","del","con",
+  "and","the","was","had","him","her","his","she","who","into","onto","over","then","pues","bien","solo","nos",
+  "not","did","but","she","her","have","been","that","this","from","they","with","could","would","should"];
+
+function flexibleMatch(user,correct){
+  var uN=normalizeText(user), cN=normalizeText(correct);
+  if(uN===cN)return true;
+  if(uN.length<6)return false;
+  var cW=cN.split(" ").filter(function(w){return w.length>3&&STOPS.indexOf(w)===-1;});
+  if(!cW.length)return uN.length>=6;
+  var m=0; cW.forEach(function(w){if(uN.indexOf(w)!==-1)m++;});
+  return(m/cW.length)>=0.65;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RADIO CONFIG – tono e elemento legal por sección
+// ═══════════════════════════════════════════════════════════
+var RADIO_CONFIG={
+  // Sección 1
+  "s1_1":{correct:"narrativo",
+    msgOk:"✅ <strong>¡Correcto!</strong> El tono es narrativo y descriptivo. La cliente cuenta su historia con honestidad y nostalgia, sin dramatismos excesivos.",
+    msgFail:"❌ <strong>Revisa.</strong> El tono predominante es narrativo y descriptivo: la cliente cuenta su infancia con honestidad y frases sencillas como «Mi papá era buena persona»."
+  },
+  "s1_2":{correct:"vulnerabilidad",
+    msgOk:"✅ <strong>¡Correcto!</strong> Esta sección establece el contexto de vulnerabilidad: pobreza extrema, falta de recursos básicos y la muerte del padre que la obligó a trabajar desde joven.",
+    msgFail:"❌ <strong>Revisa.</strong> Esta sección establece la vulnerabilidad previa de la cliente — pobreza extrema y circunstancias que la hicieron propensa al reclutamiento."
+  },
+  // Sección 2
+  "s2_1":{correct:"confiado",
+    msgOk:"✅ <strong>¡Correcto!</strong> El tono es confiado y esperanzador. La cliente describe cómo el tratante la cortejó con promesas y muestras de afecto, y ella confió en él.",
+    msgFail:"❌ <strong>Revisa.</strong> El tono es confiado y esperanzado. Frases como «yo sentía que Manuel me apoyaría» y «era cariñoso y atento» reflejan la ilusión inicial."
+  },
+  "s2_2":{correct:"reclutamiento",
+    msgOk:"✅ <strong>¡Correcto!</strong> Esta sección demuestra el reclutamiento: el tratante usó promesas falsas para ganarse la confianza de la cliente.",
+    msgFail:"❌ <strong>Revisa.</strong> Esta sección demuestra el reclutamiento mediante promesas falsas: «sería como un padre», «comprar una casa», «salir adelante juntos»."
+  },
+  // Sección 3
+  "s3_1":{correct:"temeroso",
+    msgOk:"✅ <strong>¡Correcto!</strong> El tono es temeroso y desesperado. La cliente describe cómo se sentía atrapada sin opciones, repitiendo frases como «sentía que no tenía otra opción».",
+    msgFail:"❌ <strong>Revisa.</strong> El tono es temeroso y desesperado. Frases como «le tenía mucho miedo» y «mi única opción era seguir obedeciendo» son clave."
+  },
+  // Sección 4
+  "s4_1":{correct:"determinacion",
+    msgOk:"✅ <strong>¡Correcto!</strong> El tono combina determinación y agotamiento: «tomé el coraje para enfrentarlo» después de estar «estresada» y «cansada».",
+    msgFail:"❌ <strong>Revisa.</strong> El tono combina determinación («tomé el coraje») y agotamiento («ya estaba cansada»), con alivio al final pero también indignación por el robo."
+  },
+  "s4_2":{correct:"escape",
+    msgOk:"✅ <strong>¡Correcto!</strong> Esta sección demuestra el fin de la explotación y el intento de escape, describiendo múltiples intentos previos hasta lograr que el tratante se vaya.",
+    msgFail:"❌ <strong>Revisa.</strong> Esta sección demuestra el intento de escape y el fin de la explotación."
+  },
+  // Sección 5
+  "s5_1":{correct:"sufrimiento",
+    msgOk:"✅ <strong>¡Correcto!</strong> El tono combina descripción del sufrimiento físico con recuperación y gratitud hacia el final.",
+    msgFail:"❌ <strong>Revisa.</strong> El tono combina sufrimiento físico detallado con recuperación y gratitud: «gracias al tratamiento», «poco a poco he ido recuperando»."
+  },
+  "s5_2":{correct:"presencia",
+    msgOk:"✅ <strong>¡Correcto!</strong> Esta sección demuestra la presencia física continuada en EE.UU. y cómo la estancia permitió a la cliente recuperar su salud.",
+    msgFail:"❌ <strong>Revisa.</strong> Esta sección demuestra la presencia física en EE.UU., conectando directamente la estancia con la recuperación de salud."
+  },
+  // Sección 6
+  "s6_1":{correct:"determinacion",
+    msgOk:"✅ <strong>¡Correcto!</strong> El tono es de determinación y disposición a cooperar: «estoy dispuesta a seguir haciéndolo» y «estoy dispuesta a seguir cooperando».",
+    msgFail:"❌ <strong>Revisa.</strong> El tono es de determinación y disposición a cooperar con las autoridades."
+  },
+  "s6_2":{correct:"cooperacion",
+    msgOk:"✅ <strong>¡Correcto!</strong> Esta sección demuestra explícitamente el elemento de cooperación con autoridades, un requisito fundamental para la Visa T.",
+    msgFail:"❌ <strong>Revisa.</strong> Esta sección demuestra el elemento de cooperación con autoridades, requisito fundamental de la Visa T."
+  },
+  // Sección 7
+  "s7_1":{correct:"urgente",
+    msgOk:"✅ <strong>¡Correcto!</strong> El tono es urgente y temeroso, combinado con un tono suplicante al final: «correría mucho peligro», «necesito quedarme», «solicito que me permita permanecer».",
+    msgFail:"❌ <strong>Revisa.</strong> El tono es urgente y temeroso, con un componente suplicante al final."
+  },
+  "s7_2":{correct:"dificultades",
+    msgOk:"✅ <strong>¡Correcto!</strong> Esta sección demuestra las dificultades extremas que enfrentaría la víctima al regresar, lo que fortalece el caso.",
+    msgFail:"❌ <strong>Revisa.</strong> Esta sección demuestra las dificultades extremas (hardship) que enfrentaría la cliente si regresara a Ecuador."
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+//  CHECKBOX CONFIG – elementos múltiples (Sección 3)
+// ═══════════════════════════════════════════════════════════
+var CHECKBOX_CONFIG={
+  "s3_2":{
+    correct:["trabajo_forzado","explotacion_sexual","violencia","amenazas"],
+    msgOk:"✅ <strong>¡Correcto!</strong> Esta sección demuestra múltiples elementos: trabajo doméstico forzado, explotación sexual, violencia física y amenazas de deportación.",
+    msgFail:"❌ <strong>Revisa.</strong> Esta sección demuestra cuatro elementos: fines (trabajo forzado y explotación sexual) y medios (violencia física y amenazas de deportación). Las respuestas correctas están resaltadas en verde."
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+//  PHRASE CONFIG – traducciones aceptadas
+// ═══════════════════════════════════════════════════════════
+var PHRASE_CONFIG={
+  // Sección 3 – frases individuales
+  "s3_3":{ref:"If I refused, Manuel would violently push me from behind and pressure me until I obeyed him.",variants:[
+    "if i refused manuel would violently push me from behind and pressure me until i obeyed him",
+    "if i refused manuel would push me violently from behind and pressure me until i obeyed",
+    "if i refused manuel would push me from behind violently and pressure me until i obeyed him",
+    "if i refused he would violently push me from behind and pressure me until i obeyed him",
+    "whenever i refused manuel would violently push me from behind and pressure me until i obeyed",
+    "if i said no manuel would push me from behind and pressure me until i obeyed",
+    "if i refused manuel would shove me from behind and pressure me until i obeyed",
+    "when i refused manuel would push me hard from behind and keep pushing me until i obeyed",
+    "if i said no he would push me from behind and pressure me until i did what he said"
+  ]},
+  "s3_4":{ref:"Manuel also forced me to have sex with him. He would grab me by force and rape me, saying that it was my obligation to have sex with him.",variants:[
+    "manuel also forced me to have sex with him he would grab me by force and rape me saying that it was my obligation to have sex with him",
+    "manuel also forced me to have sex with him he used to grab me by force and rape me saying it was my obligation to have sex with him",
+    "manuel also forced me to have sex with him he would grab me forcibly and rape me saying that having sex with him was my obligation",
+    "manuel also forced me to have sex with him he would grab me by force and rape me saying that was my obligation",
+    "manuel also made me have sex with him he would grab me by force and rape me saying it was my obligation",
+    "manuel also forced me to sleep with him he would grab me by force and rape me saying that it was my obligation",
+    "manuel also made me have sex with him he would take me by force and rape me saying that was my obligation to have sex with him",
+    "manuel also forced me to have sex he would grab me by force and rape me telling me it was my obligation"
+  ]},
+  "s3_5":{ref:"I was so scared that my only option was to keep obeying all his orders.",variants:[
+    "i was so scared that my only option was to keep obeying all his orders",
+    "i was so afraid that my only option was to keep obeying all his orders",
+    "i was so terrified that my only option was to keep obeying all his orders",
+    "i was so scared that my only choice was to keep obeying all his orders",
+    "i had so much fear that my only option was to continue obeying all his orders",
+    "i was so scared that the only thing i could do was obey all his orders",
+    "i was so scared that all i could do was keep doing what he said",
+    "i was so afraid that i had no choice but to keep obeying him",
+    "i was so scared that i felt my only option was to keep following his orders",
+    "i had so much fear that i had no other option but to obey him"
+  ]},
+  // Sección 4 – frases individuales
+  "s4_3":{ref:"After several attempts to end my relationship with Manuel, one day I gathered the courage to confront him.",variants:[
+    "after several attempts to end my relationship with manuel one day i gathered the courage to confront him",
+    "after several attempts to end my relationship with manuel one day i found the courage to confront him",
+    "after several attempts to leave manuel one day i gathered the courage to confront him",
+    "after many attempts to end my relationship with manuel one day i gathered the courage to face him",
+    "after trying many times to end things with manuel one day i got the courage to confront him",
+    "after several tries to leave manuel one day i found the courage to face him",
+    "after many failed attempts to end my relationship with manuel one day i built up the courage to confront him",
+    "after trying several times to leave manuel one day i got brave enough to confront him",
+    "after several attempts to end it with manuel one day i finally had the courage to face him"
+  ]},
+  "s4_4":{ref:"Manuel left the house, but not before stealing all the money I had in his account, which I had earned with my work and effort. In total, it was about $80,000 that Manuel stole from me.",variants:[
+    "manuel left the house but not before stealing all the money i had in his account which i had earned with my work and effort in total it was about 80000 that manuel stole from me",
+    "manuel left the house but not before stealing all the money i had saved in his account which i had earned with my work and effort in total manuel stole about 80000 from me",
+    "manuel left the house but not before stealing all the money which i had earned with my work and effort in total it was around 80000 dollars that manuel stole from me",
+    "manuel left the house but first he stole all the money i had in his account money i had earned with my work and effort in total he stole about 80000 dollars from me",
+    "manuel moved out but not before stealing all the money i had earned in his account in total it was about 80000 dollars",
+    "manuel left but not before taking all the money i had earned in his account which was about 80000 dollars",
+    "manuel left the house but he stole all my money first all the money i had earned with my work about 80000 dollars in total"
+  ]},
+  // Sección 5 – frases individuales
+  "s5_3":{ref:"Over a period of five years, I lost about 20 pounds, had constant headaches and muscle tension. My hair started to fall out and my nails were destroyed.",variants:[
+    "over a period of five years i lost about 20 pounds had constant headaches and muscle tension my hair started to fall out and my nails were destroyed",
+    "over five years i lost about 20 pounds i had constant headaches and muscle tension my hair began to fall out and my nails were gone",
+    "during a period of five years i lost about 20 pounds i had constant headaches and muscle tension my hair started falling out and my nails were destroyed",
+    "for five years i lost about 20 pounds had constant headaches and muscle tension my hair started to fall out and my nails fell off",
+    "over five years i lost around 20 pounds i had headaches all the time and muscle tension my hair started falling out and my nails broke off",
+    "during those five years i lost about 20 pounds i had constant headaches and tension in my muscles my hair started falling out and i lost my nails",
+    "over a period of five years i lost about 20 pounds i had constant headaches and muscle pain my hair fell out and my nails were gone",
+    "for five years i lost around 20 pounds had constant headaches and muscle tension my hair began to fall out and my nails gave out"
+  ]},
+  "s5_4":{ref:"That is why staying in the country helped me recover my health, since in Ecuador I would not have been able to receive the same medical care I received here.",variants:[
+    "that is why staying in the country helped me recover my health since in ecuador i would not have been able to receive the same medical care i received here",
+    "that is why remaining in the country helped me recover my health since in ecuador i would not have been able to get the same medical care i received here",
+    "that is why staying in this country helped me recover my health because in ecuador i would not have been able to receive the same medical attention i received here",
+    "this is why staying in the country helped me recover my health since in ecuador i would not have had the same medical care i received here",
+    "that is why staying here helped me get my health back because in ecuador i would not have been able to get the same medical care",
+    "staying in the country helped me recover my health because in ecuador i would not have been able to get the same medical treatment i got here",
+    "that is why staying in the united states helped me recover my health in ecuador i would not have had access to the same medical care",
+    "because i stayed in the country i was able to recover my health in ecuador i would not have been able to receive the same medical attention"
+  ]},
+  // Sección 7 – frases individuales
+  "s7_3":{ref:"If I returned to Ecuador, I would be in great danger. Manuel knows where I used to live there; he would know where to find me and that would put me at great risk.",variants:[
+    "if i returned to ecuador i would be in great danger manuel knows where i used to live there he would know where to find me and that would put me at great risk",
+    "if i went back to ecuador i would be in great danger manuel knows where i lived there he would know where to find me and that would put me at great risk",
+    "if i returned to ecuador i would face great danger manuel knows where i lived there he would know where to find me putting me at great risk",
+    "if i went back to ecuador i would be in a lot of danger manuel knows where i used to live and he would know where to find me",
+    "if i returned to ecuador i would be in danger manuel knows where i lived there he would find me and that would be very risky for me",
+    "going back to ecuador would put me in great danger manuel knows where i used to live and would know how to find me",
+    "if i had to return to ecuador i would be in danger because manuel knows where i lived and would know where to find me"
+  ]},
+  "s7_4":{ref:"In this way, I would be left without income, which would prevent me from continuing with the medical treatment I still need. In Ecuador, there is no health insurance or government programs, so access to a dignified health system is very complicated and very expensive, unlike the care I have been able to receive here in the United States.",variants:[
+    "in this way i would be left without income which would prevent me from continuing with the medical treatment i still need in ecuador there is no health insurance or government programs so access to a dignified health system is very complicated and very expensive unlike the care i have been able to receive here in the united states",
+    "this way i would be left without income which would prevent me from continuing the medical treatment i still need in ecuador there is no health insurance or government programs so access to decent healthcare is very complicated and expensive unlike what i have received here in the united states",
+    "in this way i would have no income which would prevent me from continuing with the medical treatment i still need in ecuador there is no health insurance or government programs making access to a dignified health system very complicated and expensive unlike the care i have received here",
+    "this means i would have no money coming in and i would not be able to keep up with my medical treatment in ecuador there is no health insurance or government help so getting good medical care is very hard and expensive not like what i have been able to get here",
+    "without income i would not be able to continue my medical treatment in ecuador there is no health insurance or government programs so getting medical care is very difficult and expensive unlike here in the united states",
+    "i would have no income which would stop me from continuing my medical treatment in ecuador there is no health insurance or government programs so access to healthcare is very complicated and expensive unlike what i receive here"
+  ]},
+  "s7_5":{ref:"I request that the United States of America allow me to remain here and rebuild my life.",variants:[
+    "i request that the united states of america allow me to remain here and rebuild my life",
+    "i ask that the united states of america allow me to remain here and rebuild my life",
+    "i request that the united states allow me to remain here and rebuild my life",
+    "i am requesting that the united states of america allow me to stay here and rebuild my life",
+    "i ask the united states of america to let me stay here and rebuild my life",
+    "i request that the united states let me stay here and rebuild my life",
+    "i am asking the united states of america to allow me to remain here and start my life over",
+    "i request permission from the united states of america to remain here and rebuild my life"
+  ]},
+  // Secciones 1, 2, 6 – traducción de fragmento completo (evaluación laxa)
+  "s1_3":{ref:"As a child, I lived with my parents and my three siblings.",variants:[
+    "as a child i lived with my parents and my three siblings",
+    "when i was a child i lived with my parents and my three siblings",
+    "growing up i lived with my parents and my three siblings",
+    "as a little girl i lived with my parents and my three siblings",
+    "when i was little i lived with my parents and my three brothers and sisters",
+    "i grew up with my parents and my three siblings",
+    "as a child i grew up with my parents and three siblings",
+    "when i was young i lived with my parents and my three brothers or sisters"
+  ]},
+  "s2_3":{ref:"In late 2018, Manuel Alvarez Yupa sent me a message on social media and started reaching out to talk to me.",variants:[
+    "in late 2018 manuel alvarez yupa sent me a message on social media and started reaching out to talk to me",
+    "at the end of 2018 manuel alvarez yupa sent me a message on social media and started looking for me to talk",
+    "in late 2018 manuel sent me a message on a social network and started looking for me to talk",
+    "at the end of 2018 manuel alvarez yupa messaged me on social media and started contacting me",
+    "in late 2018 manuel sent me a message on social media and started trying to talk to me",
+    "toward the end of 2018 manuel alvarez yupa sent me a message on social media and started reaching out",
+    "in late 2018 manuel messaged me through social media and started looking for me to talk",
+    "at the end of 2018 manuel contacted me through social media and started trying to talk with me"
+  ]},
+  "s6_3":{ref:"Although in the past I did not file any report with the authorities because I was afraid that Manuel would find out and do something to me, currently I have cooperated with them and I am willing to continue doing so in order to obtain justice for what I lived through.",variants:[
+    "although in the past i did not file any report with the authorities because i was afraid that manuel would find out and do something to me currently i have cooperated with them and i am willing to continue doing so in order to obtain justice for what i lived through",
+    "although in the past i did not report to the authorities because i was afraid that manuel would find out and hurt me i have now cooperated with them and i am willing to continue doing so to obtain justice",
+    "even though in the past i did not file any report with authorities because i feared manuel would find out i have now cooperated with them and am willing to continue to obtain justice for what i experienced",
+    "even though i did not report to the authorities in the past because i was scared that manuel would find out and do something to me i have now cooperated with them and i am willing to keep doing so to get justice for what i went through",
+    "although i did not file any reports in the past because i was afraid manuel would find out and hurt me i have cooperated with authorities and i am willing to continue to seek justice",
+    "in the past i did not report anything to the authorities because i was afraid manuel would find out and do something to me but now i have cooperated with them and i am willing to keep cooperating to get justice for what i lived",
+    "although i never reported to the authorities before because i was scared of what manuel might do i have now cooperated with them and i am ready to continue doing so to get justice for everything i went through"
+  ]}
+};
+
+function checkPhraseAnswer(qId,user){
+  var cfg=PHRASE_CONFIG[qId]; if(!cfg)return false;
+  var uN=normalizeText(user);
+  for(var i=0;i<cfg.variants.length;i++){
+    if(flexibleMatch(uN,normalizeText(cfg.variants[i])))return true;
+  }
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RADIO – llamada simple desde HTML
+// ═══════════════════════════════════════════════════════════
+function checkRadio(qId,feedbackId){
+  if(isLocked(qId))return;
+  var cfg=RADIO_CONFIG[qId];
+  if(!cfg){console.error("No RADIO_CONFIG for "+qId);return;}
+  var radios=document.querySelectorAll('input[name="'+qId+'"]');
+  var sel=null;
+  radios.forEach(function(r){if(r.checked)sel=r.value;});
+  if(!sel){alert("Selecciona una opción antes de verificar.");return;}
+  var isCorrect=(sel===cfg.correct);
+  radios.forEach(function(r){
+    r.disabled=true;
+    var item=r.closest(".radio-item");
+    if(item){
+      if(r.value===cfg.correct)item.classList.add("selected-correct");
+      else if(r.value===sel&&!isCorrect)item.classList.add("selected-wrong");
+    }
+  });
+  var fb=document.getElementById(feedbackId);
+  if(fb){fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");fb.innerHTML=isCorrect?cfg.msgOk:cfg.msgFail;}
+  AppState.scores[qId]=isCorrect; lockQuestion(qId);
+  var btn=document.getElementById("btn_"+qId); if(btn)btn.disabled=true;
+  SCORM.recordInteraction(qId,"choice",sel,cfg.correct,isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CHECKBOXES
+// ═══════════════════════════════════════════════════════════
+function checkCheckboxes(groupId,feedbackId){
+  if(isLocked(groupId))return;
+  var cfg=CHECKBOX_CONFIG[groupId]; if(!cfg)return;
+  var cbs=document.querySelectorAll('input[data-group="'+groupId+'"]');
+  var selected=[];
+  cbs.forEach(function(cb){if(cb.checked)selected.push(cb.value);});
+  if(!selected.length){alert("Selecciona al menos una opción.");return;}
+  var correctSet=cfg.correct.slice().sort();
+  var selectedSet=selected.slice().sort();
+  cbs.forEach(function(cb){
+    cb.disabled=true;
+    var item=cb.closest(".checkbox-item"); if(!item)return;
+    var inCorrect=(cfg.correct.indexOf(cb.value)!==-1);
+    var inSelected=(selected.indexOf(cb.value)!==-1);
+    if(inCorrect)item.classList.add("selected-correct");
+    else if(inSelected&&!inCorrect)item.classList.add("selected-wrong");
+  });
+  var isCorrect=(correctSet.join("|")===selectedSet.join("|"));
+  var fb=document.getElementById(feedbackId);
+  if(fb){fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");fb.innerHTML=isCorrect?cfg.msgOk:cfg.msgFail;}
+  AppState.scores[groupId]=isCorrect; lockQuestion(groupId);
+  var btn=document.getElementById("btn_cb_"+groupId); if(btn)btn.disabled=true;
+  SCORM.recordInteraction(groupId,"choice",selected.join("|"),cfg.correct.join("|"),isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TEXTO LIBRE
+// ═══════════════════════════════════════════════════════════
+function checkPhrase(qId,feedbackId){
+  if(isLocked(qId))return;
+  var input=document.getElementById(qId+"_input"); if(!input)return;
+  var user=input.value.trim();
+  if(user.length<8){alert("Escribe tu traducción antes de verificar.");return;}
+  var isCorrect=checkPhraseAnswer(qId,user);
+  var cfg=PHRASE_CONFIG[qId]||{}; var ref=(cfg.variants||[""])[0];
+  input.className="text-input-area "+(isCorrect?"correct":"incorrect");
+  input.readOnly=true;
+  var fb=document.getElementById(feedbackId);
+  if(fb){fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");
+    fb.innerHTML=isCorrect?
+      "✅ <strong>¡Correcto!</strong> Tu traducción preserva el tono y el elemento legal.":
+      "❌ <strong>Revisa.</strong><div class='correct-answer-reveal'>Traducción de referencia: <em>«"+cfg.ref+"»</em></div>";}
+  AppState.scores[qId]=isCorrect; lockQuestion(qId);
+  var btn=document.getElementById("btn_check_"+qId); if(btn)btn.disabled=true;
+  SCORM.recordInteraction(qId,"fill-in",user,ref,isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VALIDACIÓN ANTES DE AVANZAR
+// ═══════════════════════════════════════════════════════════
+var SCREEN_REQS={
+  7: ["s1_1","s1_2","s1_3"],
+  8: ["s2_1","s2_2","s2_3"],
+  9: ["s3_1","s3_2","s3_3","s3_4","s3_5"],
+  10:["s4_1","s4_2","s4_3","s4_4"],
+  11:["s5_1","s5_2","s5_3","s5_4"],
+  12:["s6_1","s6_2","s6_3"],
+  13:["s7_1","s7_2","s7_3","s7_4","s7_5"]
+};
+
+function canAdvance(idx){
+  var reqs=SCREEN_REQS[idx]; if(!reqs)return true;
+  for(var i=0;i<reqs.length;i++){if(!AppState.answered[reqs[i]])return false;}
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PUNTUACIÓN FINAL
+// ═══════════════════════════════════════════════════════════
+function calcScore(){
+  var allQ=["s1_1","s1_2","s1_3",
+            "s2_1","s2_2","s2_3",
+            "s3_1","s3_2","s3_3","s3_4","s3_5",
+            "s4_1","s4_2","s4_3","s4_4",
+            "s5_1","s5_2","s5_3","s5_4",
+            "s6_1","s6_2","s6_3",
+            "s7_1","s7_2","s7_3","s7_4","s7_5"];
+  var c=0; allQ.forEach(function(id){if(AppState.scores[id]===true)c++;});
+  return{correct:c,total:allQ.length};
+}
+
+function renderResults(){
+  var s=calcScore();
+  var pct=Math.round((s.correct/s.total)*100); var passed=(pct>=85);
+  var sc=document.getElementById("score_circle_num"); if(sc)sc.textContent=pct+"%";
+  var sl=document.getElementById("score_label"); if(sl)sl.textContent=passed?"¡Aprobado!":"Necesitas repasar";
+
+  var secs=[
+    {label:"Sección 1 – Antecedentes",     qs:["s1_1","s1_2","s1_3"]},
+    {label:"Sección 2 – Reclutamiento",    qs:["s2_1","s2_2","s2_3"]},
+    {label:"Sección 3 – Servidumbre",      qs:["s3_1","s3_2","s3_3","s3_4","s3_5"]},
+    {label:"Sección 4 – Fin de la trata",  qs:["s4_1","s4_2","s4_3","s4_4"]},
+    {label:"Sección 5 – Presencia física", qs:["s5_1","s5_2","s5_3","s5_4"]},
+    {label:"Sección 6 – Cooperación",      qs:["s6_1","s6_2","s6_3"]},
+    {label:"Sección 7 – Dificultades",     qs:["s7_1","s7_2","s7_3","s7_4","s7_5"]}
+  ];
+  var html="";
+  secs.forEach(function(sec){
+    var fc=0; sec.qs.forEach(function(q){if(AppState.scores[q]===true)fc++;});
+    var tot=sec.qs.length;
+    var icon=fc===tot?"✅":fc>=tot/2?"⚠️":"❌";
+    html+='<div class="rb-row"><span class="rb-label">'+icon+' '+sec.label+'</span><span class="rb-score">'+fc+' / '+tot+'</span></div>';
+  });
+  html+='<div class="rb-row" style="font-weight:700;background:var(--color-secondary)"><span class="rb-label">TOTAL</span><span class="rb-score">'+s.correct+' / '+s.total+' ('+pct+'%)</span></div>';
+  var rb=document.getElementById("results_breakdown"); if(rb)rb.innerHTML=html;
+
+  var tipsEl=document.getElementById("results_tips");
+  if(tipsEl){
+    var tips=[];
+    var tonoFails=["s1_1","s2_1","s3_1","s4_1","s5_1","s6_1","s7_1"].filter(function(q){return AppState.scores[q]!==true;});
+    var legalFails=["s1_2","s2_2","s3_2","s4_2","s5_2","s6_2","s7_2"].filter(function(q){return AppState.scores[q]!==true;});
+    var tradFails=["s1_3","s2_3","s3_3","s3_4","s3_5","s4_3","s4_4","s5_3","s5_4","s6_3","s7_3","s7_4","s7_5"].filter(function(q){return AppState.scores[q]!==true;});
+    if(tonoFails.length)tips.push("<li><strong>Identificación del tono:</strong> Practica leer el fragmento buscando el estado emocional predominante antes de elegir. Frases como «sentía que no tenía otra opción» o «tomé el coraje» son pistas directas.</li>");
+    if(legalFails.length)tips.push("<li><strong>Elementos legales:</strong> Recuerda los elementos de la Visa T: reclutamiento, medios (violencia/amenazas), fines (trabajo forzado/explotación sexual), cooperación, presencia física y dificultades extremas.</li>");
+    if(tradFails.length)tips.push("<li><strong>Traducciones:</strong> Aplica las reglas de oro: mantén la voz del cliente, no suavices el abuso, no añadas ni quites detalles. Usa verbos precisos («rape» en lugar de «abuse», «slapped» en lugar de «hit»).</li>");
+    if(!tips.length)tips.push("<li>¡Excelente trabajo! Identificaste correctamente todos los tonos, elementos legales y produjiste traducciones fieles.</li>");
+    tipsEl.innerHTML="<ul style='padding-left:20px;line-height:1.9;'>"+tips.join("")+"</ul>";
+  }
+  SCORM.setScore(pct,0,100); SCORM.setCompleted(passed);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SIDEBAR / NAVEGACIÓN
+// ═══════════════════════════════════════════════════════════
+function updateSidebar(idx){
+  document.querySelectorAll('.sidebar-item').forEach(function(item){
+    var t=parseInt(item.getAttribute('data-target'));
+    item.classList.remove('active','completed');
+    if(t===idx)item.classList.add('active');
+    else if(t<idx)item.classList.add('completed');
+  });
+}
+function goToScreenFromSidebar(index){
+  if(index>AppState.currentScreen){
+    for(var s=AppState.currentScreen;s<index;s++){if(!canAdvance(s)){showAdvanceWarning();return;}}
+  }
+  goToScreen(index);
+}
+function showAdvanceWarning(){
+  var w=document.getElementById("advance_warning");
+  if(w){w.style.display="block";setTimeout(function(){w.style.display="none";},4000);}
+}
+function initNavigation(){
+  var screens=document.querySelectorAll(".screen"); AppState.totalScreens=screens.length;
+  updateNavButtons(); updateProgressBar(); updateSidebar(0);
+  var btnNext=document.getElementById("btn_next");
+  var btnPrev=document.getElementById("btn_prev");
+  if(btnNext)btnNext.addEventListener("click",function(){
+    if(AppState.currentScreen<AppState.totalScreens-1){
+      if(!canAdvance(AppState.currentScreen)){showAdvanceWarning();return;}
+      goToScreen(AppState.currentScreen+1);
+    }
+  });
+  if(btnPrev)btnPrev.addEventListener("click",function(){if(AppState.currentScreen>0)goToScreen(AppState.currentScreen-1);});
+}
+function goToScreen(index){
+  var screens=document.querySelectorAll(".screen");
+  screens[AppState.currentScreen].classList.remove("active");
+  AppState.currentScreen=index; screens[index].classList.add("active");
+  window.scrollTo(0,0);
+  updateNavButtons(); updateProgressBar(); updateSidebar(index); SCORM.setLocation(index);
+  if(screens[index].id==="screen_results")renderResults();
+}
+function updateNavButtons(){
+  var btnPrev=document.getElementById("btn_prev");
+  var btnNext=document.getElementById("btn_next");
+  var indicator=document.getElementById("page_indicator");
+  var screens=document.querySelectorAll(".screen");
+  if(btnPrev)btnPrev.disabled=(AppState.currentScreen===0);
+  if(btnNext){
+    btnNext.disabled=(AppState.currentScreen===AppState.totalScreens-1);
+    btnNext.style.display=(screens[AppState.currentScreen]&&screens[AppState.currentScreen].id==="screen_results")?"none":"";
+  }
+  if(indicator)indicator.textContent="Pantalla "+(AppState.currentScreen+1)+" de "+AppState.totalScreens;
+}
+function updateProgressBar(){
+  var fill=document.getElementById("progress_fill");
+  var label=document.getElementById("progress_label");
+  var pct=Math.round(((AppState.currentScreen+1)/AppState.totalScreens)*100);
+  if(fill)fill.style.width=pct+"%"; if(label)label.textContent=pct+"% completado";
+}
+document.addEventListener("DOMContentLoaded",function(){
+  initNavigation();
+  var btnStart=document.getElementById("btn_start");
+  if(btnStart)btnStart.addEventListener("click",function(){goToScreen(1);});
+  var btnComplete=document.getElementById("btn_complete");
+  if(btnComplete)btnComplete.addEventListener("click",function(){
+    renderResults(); SCORM.finish();
+    btnComplete.textContent="✅ Módulo completado"; btnComplete.disabled=true;
+  });
+});
+
+</script>
+</body>
+</html>
