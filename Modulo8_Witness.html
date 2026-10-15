@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Módulo 8: Witness Letters y Reference Letters | TMLF Training</title>
+<style>
+/* ============================================================
+   MENDOZA LAW FIRM – MENDOZA LEARNING CENTER
+   Módulo 1: VAWA – Declaración Legal del Cliente
+   Paleta institucional: #9094df | #e5e2f6 | #333333
+   ============================================================ */
+
+:root {
+  --color-primary: #9094df;
+  --color-primary-dark: #7176c8;
+  --color-secondary: #e5e2f6;
+  --color-secondary-dark: #d0ccf0;
+  --text-dark: #333333;
+  --text-white: #ffffff;
+  --color-success: #4caf50;
+  --color-error: #e53935;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fffbeb;
+  --border-radius: 8px;
+  --shadow: 0 2px 8px rgba(144, 148, 223, 0.18);
+  --shadow-lg: 0 4px 20px rgba(144, 148, 223, 0.28);
+  --font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: #f4f3fb;
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── LAYOUT PRINCIPAL ─── */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  background: #fff;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── HEADER ─── */
+.module-header {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.module-header .module-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  opacity: 0.95;
+  letter-spacing: 0.01em;
+}
+
+
+
+.logo-placeholder {
+  width: 120px;
+  height: 38px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 0 8px;
+}
+
+/* ─── BARRA DE PROGRESO ─── */
+.progress-bar-container {
+  background: var(--color-secondary);
+  height: 6px;
+  width: 100%;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  font-size: 0.72rem;
+  color: #888;
+  text-align: right;
+  padding: 3px 28px 0;
+  background: var(--color-secondary);
+}
+
+/* ─── CONTENIDO DE PANTALLA ─── */
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  padding: 36px 40px 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── PORTADA ─── */
+.cover-screen {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+  background: linear-gradient(160deg, #f7f6ff 0%, #edeafb 100%);
+  padding: 60px 48px;
+}
+
+.cover-badge {
+  background: var(--color-primary);
+  color: var(--text-white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.cover-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  line-height: 1.25;
+  max-width: 700px;
+}
+
+.cover-subtitle {
+  font-size: 1rem;
+  color: #666;
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.cover-objective-box {
+  background: var(--color-secondary);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 20px 24px;
+  max-width: 640px;
+  text-align: left;
+}
+
+.cover-objective-box .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary-dark);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cover-objective-box p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-dark);
+}
+
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.cover-meta .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── TÍTULOS DE SECCIÓN ─── */
+.section-title {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 14px 20px;
+  border-radius: var(--border-radius);
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.screen-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ─── CONTENIDO TEÓRICO ─── */
+.content-block {
+  margin-bottom: 20px;
+  line-height: 1.7;
+  font-size: 0.93rem;
+}
+
+.content-block p {
+  margin-bottom: 10px;
+}
+
+.bullet-list {
+  list-style: none;
+  padding-left: 4px;
+  margin: 12px 0;
+}
+
+.bullet-list li {
+  padding: 5px 0 5px 26px;
+  position: relative;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.bullet-list li::before {
+  content: "▸";
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  position: absolute;
+  left: 6px;
+  top: 6px;
+}
+
+/* ─── RECUADROS DESTACADOS ─── */
+.info-box {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.info-box .box-title {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.warning-box {
+  background: var(--color-warning-bg);
+  border: 1.5px solid var(--color-warning);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.91rem;
+}
+
+.warning-box .box-title {
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+/* ─── TABLAS ─── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+
+.data-table th {
+  background: var(--color-primary);
+  color: var(--text-white);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #e8e6f8;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.data-table tr:nth-child(even) td {
+  background: var(--color-secondary);
+}
+
+.data-table tr:hover td {
+  background: #ededfa;
+}
+
+/* ─── EJEMPLOS COMPARATIVOS ─── */
+.example-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.example-card {
+  border-radius: var(--border-radius);
+  padding: 14px 16px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.example-card.correct {
+  background: #f0faf0;
+  border: 1.5px solid var(--color-success);
+}
+
+.example-card.incorrect {
+  background: #fdf4f4;
+  border: 1.5px solid var(--color-error);
+}
+
+.example-card .card-label {
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.example-card.correct .card-label { color: #2e7d32; }
+.example-card.incorrect .card-label { color: #c62828; }
+
+.example-card .card-explain {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 0.82rem;
+  opacity: 0.8;
+}
+
+/* ─── EJERCICIOS INTERACTIVOS ─── */
+.exercise-section {
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.exercise-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+.exercise-header .ex-badge {
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.exercise-header h3 {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.question-block {
+  margin-bottom: 24px;
+}
+
+.question-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  color: var(--text-dark);
+}
+
+.question-number {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  margin-right: 6px;
+}
+
+/* Fragmentos de texto (citas) */
+.fragment-quote {
+  background: var(--color-secondary);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  padding: 14px 18px;
+  margin: 10px 0 16px;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  font-style: italic;
+  color: #444;
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.checkbox-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.checkbox-item.selected {
+  border-color: var(--color-primary);
+  background: #f0effe;
+}
+
+.checkbox-item.correct-answer {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.checkbox-item.wrong-answer {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Radio buttons */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.radio-item:hover {
+  border-color: var(--color-primary);
+  background: #f5f4ff;
+}
+
+.radio-item input[type="radio"] {
+  margin-top: 2px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.radio-item.selected-correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.radio-item.selected-wrong {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+/* Campos de texto */
+.text-input-area {
+  width: 100%;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 12px 14px;
+  font-family: var(--font-family);
+  font-size: 0.91rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.15s;
+  min-height: 80px;
+  color: var(--text-dark);
+}
+
+.text-input-area:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(144,148,223,0.12);
+}
+
+.text-input-area.correct {
+  border-color: var(--color-success);
+  background: #f0faf0;
+}
+
+.text-input-area.incorrect {
+  border-color: var(--color-error);
+  background: #fdf4f4;
+}
+
+textarea.text-translation {
+  min-height: 140px;
+}
+
+/* Dropdown/select */
+.inline-select {
+  padding: 3px 8px;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  accent-color: var(--color-primary);
+  background: #fff;
+  cursor: pointer;
+  color: var(--text-dark);
+  font-family: var(--font-family);
+}
+
+.fill-blank-text {
+  font-size: 0.92rem;
+  line-height: 2;
+  background: var(--color-secondary);
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+  margin: 10px 0;
+}
+
+/* Retroalimentación */
+.feedback-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px 18px;
+  border-radius: var(--border-radius);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.feedback-box.correct {
+  background: #f0faf0;
+  border: 1px solid #a5d6a7;
+  color: #2e7d32;
+}
+
+.feedback-box.incorrect {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  color: #c62828;
+}
+
+.feedback-box.info {
+  background: var(--color-secondary);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.feedback-box.visible {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.correct-answer-reveal {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(76,175,80,0.1);
+  border-radius: 4px;
+  font-style: italic;
+}
+
+/* Botón de verificar */
+.btn-check {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  margin-top: 12px;
+}
+
+.btn-check:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-check:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── PANTALLA DE RESUMEN EJECUTIVO ─── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.summary-card {
+  background: var(--color-secondary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 16px 18px;
+}
+
+.summary-card .card-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.summary-card .card-concept {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.summary-card .card-detail {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ─── PANTALLA DE RESULTADOS ─── */
+.results-screen {
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.score-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto;
+}
+
+.score-circle .score-num {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-circle .score-label {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.results-breakdown {
+  width: 100%;
+  max-width: 600px;
+  background: #fafafa;
+  border: 1px solid #e0ddf5;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.results-breakdown .rb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: 0.88rem;
+  border-bottom: 1px solid #e8e6f8;
+}
+
+.results-breakdown .rb-row:last-child { border-bottom: none; }
+.results-breakdown .rb-row .rb-label { color: #555; }
+.results-breakdown .rb-row .rb-score { font-weight: 700; color: var(--color-primary-dark); }
+
+.incorrect-list {
+  width: 100%;
+  max-width: 640px;
+  text-align: left;
+}
+
+.incorrect-item {
+  background: #fdf4f4;
+  border: 1px solid #ef9a9a;
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  font-size: 0.87rem;
+}
+
+.incorrect-item .ii-label {
+  font-weight: 600;
+  color: #c62828;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.incorrect-item .ii-yours {
+  color: #c62828;
+  margin-bottom: 4px;
+}
+
+.incorrect-item .ii-correct {
+  color: #2e7d32;
+  font-style: italic;
+}
+
+/* ─── NAVEGACIÓN ─── */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  border-top: 1px solid #e8e6f8;
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 220px;
+  right: 0;
+  z-index: 90;
+  box-shadow: 0 -2px 8px rgba(0,0,0,.06);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary-dark);
+  border: 1.5px solid var(--color-primary);
+}
+
+.btn-secondary:hover { background: var(--color-secondary); }
+
+.btn-large {
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+.btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-success {
+  background: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover { background: #388e3c; }
+
+.page-indicator {
+  font-size: 0.82rem;
+  color: #888;
+}
+
+/* ─── DRAG AND DROP ─── */
+.drag-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.drag-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px;
+  background: var(--color-secondary);
+  border-radius: var(--border-radius);
+  min-height: 60px;
+}
+
+.drag-option {
+  background: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: grab;
+  user-select: none;
+  transition: all 0.15s;
+  border: 2px solid transparent;
+}
+
+.drag-option:active { cursor: grabbing; transform: scale(1.05); }
+
+.drag-target {
+  background: #fff;
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: 14px 18px;
+  min-height: 52px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s;
+}
+
+.drag-target.drag-over {
+  background: var(--color-secondary);
+  border-color: var(--color-primary-dark);
+}
+
+.drag-target .target-label {
+  font-size: 0.8rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.drag-target .dropped-item {
+  background: var(--color-primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+  .screen { padding: 24px 18px 16px; }
+  .cover-screen { padding: 36px 20px; }
+  .cover-title { font-size: 1.5rem; }
+  .example-grid, .summary-grid { grid-template-columns: 1fr; }
+  .module-header { padding: 12px 18px; }
+  .nav-bar { padding: 12px 18px; }
+  .btn { padding: 10px 16px; font-size: 0.85rem; }
+}
+
+/* ─── UTILIDADES ─── */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
+.bold { font-weight: 700; }
+.highlight { background: var(--color-secondary); padding: 2px 6px; border-radius: 3px; }
+.emoji { font-style: normal; }
+
+.note-tag {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 4px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.section-divider {
+  border: none;
+  border-top: 2px solid var(--color-secondary);
+  margin: 24px 0;
+}
+
+/* Estilos score badge */
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-primary);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+.logo-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+</style>
+<style>
+#outer-layout{display:flex;align-items:flex-start;max-width:1100px;margin:0 auto;}
+#sidebar{width:220px;min-width:220px;background:#f7f6fd;border-right:2px solid #e5e2f6;padding:16px 0 40px 0;position:sticky;top:70px;height:calc(100vh - 70px);overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;font-family:"Segoe UI",system-ui,sans-serif;}
+#sidebar-title{font-size:.72rem;font-weight:700;letter-spacing:.12em;color:#9094df;text-transform:uppercase;padding:0 14px 12px 14px;border-bottom:1px solid #e5e2f6;margin-bottom:8px;}
+.sidebar-group{margin-bottom:4px;}
+.sidebar-group-label{font-size:.65rem;font-weight:700;color:#b0adcc;text-transform:uppercase;letter-spacing:.1em;padding:10px 14px 4px 14px;}
+.sidebar-item{display:flex;align-items:center;gap:9px;margin:2px 8px;padding:8px 10px;font-size:.82rem;color:#5a5a7a;cursor:pointer;border-radius:8px;border:1px solid transparent;transition:background .15s,border-color .15s,color .15s;line-height:1.3;text-align:left;background:transparent;}
+.sidebar-item:hover{background:#ebe9f8;color:#4a4d9e;border-color:#d4d0f0;}
+.sidebar-item.active{background:#9094df;color:#fff;border-color:#7a7ec8;font-weight:600;box-shadow:0 2px 6px rgba(144,148,223,.35);}
+.sidebar-item.active .si-dot{background:rgba(255,255,255,.8);}
+.sidebar-item.completed{color:#48bb78;background:#f0fff4;border-color:#c6f6d5;}
+.sidebar-item.completed .si-dot{background:#48bb78;}
+.si-dot{width:7px;height:7px;border-radius:50%;background:#ccc8e8;flex-shrink:0;transition:background .2s;}
+#main-content{flex:1;min-width:0;padding-bottom:72px;}
+@media(max-width:680px){#sidebar{display:none;}}
+#advance_warning{display:none;background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:8px 14px;font-size:.85rem;color:#856404;margin-bottom:6px;}
+/* ── Comparison table ── */
+.compare-table{width:100%;border-collapse:collapse;font-size:.87rem;margin:12px 0;}
+.compare-table th{background:var(--color-primary);color:#fff;padding:9px 14px;text-align:left;}
+.compare-table td{padding:9px 14px;border-bottom:1px solid #e8e6f8;vertical-align:top;}
+.compare-table tr:nth-child(even) td{background:#f8f7fe;}
+/* ── Risk cards ── */
+.risk-item{background:#fff;border:1.5px solid #e5e2f6;border-radius:10px;padding:14px 18px;margin-bottom:10px;border-left:4px solid var(--color-warning);}
+.risk-item .risk-name{font-weight:700;font-size:.9rem;color:#92400e;margin-bottom:6px;}
+.risk-item p{font-size:.87rem;color:#555;line-height:1.6;margin:0;}
+/* ── Elements list ── */
+.element-card{display:flex;gap:14px;background:#fff;border:1.5px solid #e5e2f6;border-radius:10px;padding:14px 18px;margin-bottom:10px;border-left:4px solid var(--color-primary);}
+.element-num{background:var(--color-primary);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;}
+.element-body strong{font-size:.9rem;color:var(--color-primary-dark);}
+.element-body p{font-size:.84rem;color:#555;margin-top:4px;line-height:1.5;}
+.element-body em{font-size:.82rem;color:#777;}
+/* ── Fragment box ── */
+.fragment-box{background:#f8f7fd;border-left:4px solid var(--color-primary);border-radius:0 10px 10px 0;padding:16px 20px;margin:14px 0;font-size:.9rem;line-height:1.8;color:#333;font-style:italic;}
+/* ── Questions ── */
+.question-block{margin-top:20px;}
+.question-label{font-size:.8rem;font-weight:700;color:#7176c8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.question-text{font-size:.93rem;color:#333;margin-bottom:10px;line-height:1.5;}
+.radio-group{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.radio-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid #e5e2f6;border-radius:8px;cursor:pointer;font-size:.88rem;line-height:1.4;transition:background .15s;}
+.radio-item:hover{background:#ebe9f8;}
+.radio-item.selected-correct{background:#f0fff4;border-color:#48bb78;color:#276749;}
+.radio-item.selected-wrong{background:#fff5f5;border-color:#ef9a9a;color:#c53030;}
+.checkbox-group{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.checkbox-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid #e5e2f6;border-radius:8px;cursor:pointer;font-size:.88rem;line-height:1.4;transition:background .15s;}
+.checkbox-item:hover{background:#ebe9f8;}
+.checkbox-item.selected-correct{background:#f0fff4;border-color:#48bb78;color:#276749;}
+.checkbox-item.selected-wrong{background:#fff5f5;border-color:#ef9a9a;color:#c53030;}
+.feedback-box{display:none;padding:12px 16px;border-radius:8px;font-size:.88rem;margin-top:8px;}
+.feedback-box.visible{display:block;}
+.feedback-box.correct{background:#f0fff4;border:1px solid #48bb78;color:#276749;}
+.feedback-box.incorrect{background:#fff5f5;border:1px solid #ef9a9a;color:#c53030;}
+.feedback-box.info{background:#fffbeb;border:1px solid #f59e0b;color:#92400e;}
+.score-badge{display:inline-flex;align-items:center;gap:4px;background:var(--color-primary);color:white;padding:3px 10px;border-radius:12px;font-size:.8rem;font-weight:700;}
+.ex-badge{display:inline-block;background:var(--color-secondary);color:var(--color-primary-dark);padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700;margin-bottom:6px;}
+.exercise-header h3{font-size:1rem;color:var(--color-primary-dark);display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.frag-progress{display:flex;gap:6px;margin-bottom:16px;}
+.fp-dot{width:28px;height:6px;border-radius:3px;background:#e5e2f6;}
+.fp-dot.active{background:var(--color-primary);}
+.fp-dot.done{background:#48bb78;}
+/* ── Dropdown table ── */
+.dropdown-table{width:100%;border-collapse:collapse;font-size:.87rem;margin:14px 0;}
+.dropdown-table th{background:var(--color-primary);color:#fff;padding:10px 14px;text-align:left;}
+.dropdown-table td{padding:10px 14px;border-bottom:1px solid #e8e6f8;vertical-align:middle;}
+.dropdown-table tr:nth-child(even) td{background:#f8f7fe;}
+.dropdown-table select{padding:6px 10px;border:1.5px solid #ccc8e8;border-radius:6px;font-size:.85rem;background:#fff;cursor:pointer;min-width:90px;}
+/* ── Prohibited box ── */
+.prohibited-item{background:#fff;border:1.5px solid #ef9a9a;border-radius:10px;padding:14px 18px;margin-bottom:10px;}
+.prohibited-item .pr-label{font-weight:700;font-size:.8rem;color:#c62828;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.prohibited-item .pr-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:.85rem;}
+.pr-orig{background:#f0fff4;border-radius:6px;padding:8px 12px;color:#276749;}
+.pr-wrong{background:#fff5f5;border-radius:6px;padding:8px 12px;color:#c53030;}
+</style>
+</head>
+<body>
+<header class="module-header">
+  <span class="module-title">Módulo 8: Witness Letters y Reference Letters</span>
+  <div class="logo-area">
+    <img src="data:image/png;base64,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" alt="Training TMLF" class="logo-img">
+    <div class="logo-label">TRAINING</div>
+  </div>
+</header>
+<div class="progress-bar-container"><div class="progress-bar-fill" id="progress_fill" style="width:6%"></div></div>
+<div class="progress-label" id="progress_label">6% completado</div>
+
+<div id="outer-layout">
+<div id="sidebar">
+  <div id="sidebar-title">Índice del módulo</div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Inicio</div>
+    <div class="sidebar-item" data-target="0" onclick="goToScreenFromSidebar(0)"><span class="si-dot"></span>Portada</div>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Teoría</div>
+    <div class="sidebar-item" data-target="1" onclick="goToScreenFromSidebar(1)"><span class="si-dot"></span>Introducción</div>
+    <div class="sidebar-item" data-target="2" onclick="goToScreenFromSidebar(2)"><span class="si-dot"></span>Elementos clave</div>
+    <div class="sidebar-item" data-target="3" onclick="goToScreenFromSidebar(3)"><span class="si-dot"></span>Riesgos específicos</div>
+    <div class="sidebar-item" data-target="4" onclick="goToScreenFromSidebar(4)"><span class="si-dot"></span>Reference Letters</div>
+    <div class="sidebar-item" data-target="5" onclick="goToScreenFromSidebar(5)"><span class="si-dot"></span>Correcciones y límites</div>
+    <div class="sidebar-item" data-target="6" onclick="goToScreenFromSidebar(6)"><span class="si-dot"></span>Resumen</div>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Ejercicio práctico</div>
+    <div class="sidebar-item" data-target="7" onclick="goToScreenFromSidebar(7)"><span class="si-dot"></span>Instrucciones</div>
+    <div class="sidebar-item" data-target="8" onclick="goToScreenFromSidebar(8)"><span class="si-dot"></span>Fragmento 1</div>
+    <div class="sidebar-item" data-target="9" onclick="goToScreenFromSidebar(9)"><span class="si-dot"></span>Fragmento 2</div>
+    <div class="sidebar-item" data-target="10" onclick="goToScreenFromSidebar(10)"><span class="si-dot"></span>Fragmento 3</div>
+    <div class="sidebar-item" data-target="11" onclick="goToScreenFromSidebar(11)"><span class="si-dot"></span>Fragmento 4</div>
+    <div class="sidebar-item" data-target="12" onclick="goToScreenFromSidebar(12)"><span class="si-dot"></span>Fragmento 5</div>
+    <div class="sidebar-item" data-target="13" onclick="goToScreenFromSidebar(13)"><span class="si-dot"></span>Fragmento 6</div>
+    <div class="sidebar-item" data-target="14" onclick="goToScreenFromSidebar(14)"><span class="si-dot"></span>Tabla de elementos</div>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Cierre</div>
+    <div class="sidebar-item" data-target="15" onclick="goToScreenFromSidebar(15)"><span class="si-dot"></span>Resultados</div>
+  </div>
+</div>
+<div id="main-content">
+
+<!-- SCREEN 0: PORTADA -->
+<div class="screen cover-screen active" id="screen_0">
+  <span class="cover-badge">TMLF Training · Serie Capacitación Legal</span>
+  <h1 class="cover-title">Módulo 8: Witness Letters<br>y Reference Letters</h1>
+  <p class="cover-subtitle">Traduce cartas de testigos y referencias preservando la voz del declarante, identifica los elementos clave que debe contener una carta efectiva, y detecta riesgos para reportarlos al supervisor.</p>
+  <div style="background:linear-gradient(135deg,#f0eeff 0%,#e8f5e9 100%);border:1.5px solid var(--color-primary);border-radius:12px;padding:20px 24px;margin:10px 0 16px 0;max-width:620px;text-align:center;">
+    <div style="font-size:.75rem;font-weight:700;color:#9094df;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">💡 Idea fuerza del módulo</div>
+    <p style="font-size:.97rem;font-weight:600;color:#333;line-height:1.6;font-style:italic;">"Las cartas de testigos y referencias son la prueba social del caso. Tu traducción debe transmitir esa credibilidad sin añadir ni restar fuerza al testimonio original."</p>
+  </div>
+  <div class="cover-objective-box">
+    <div class="label">🎯 Objetivo del módulo</div>
+    <p>Al finalizar, serás capaz de traducir cartas de testigos y referencias preservando la voz del declarante, identificar los elementos clave de una carta efectiva, y detectar riesgos específicos para reportarlos al supervisor.</p>
+  </div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:12px;padding:22px 28px;margin:0 0 20px 0;max-width:620px;text-align:left;">
+    <div style="font-weight:700;font-size:.95rem;color:var(--color-primary-dark);margin-bottom:14px;">📌 Antes de comenzar</div>
+    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">①</span><span><strong>Lee cada fragmento completo</strong> antes de responder. El tono y los riesgos se perciben en el texto completo.</span></li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">②</span><span><strong>Responde las tres partes</strong> de cada fragmento antes de avanzar.</span></li>
+      <li style="display:flex;gap:10px;font-size:.87rem;line-height:1.5;"><span style="flex-shrink:0;color:#9094df;font-weight:700;">③</span><span><strong>Intentos limitados a 1.</strong> Calificación mínima para aprobar: 85%.</span></li>
+    </ul>
+  </div>
+  <div class="cover-meta">
+    <span class="meta-item">⏱️ Duración estimada: 60-70 minutos</span>
+    <span class="meta-item">📋 Versión 1.0 · TMLF Training</span>
+  </div>
+  <button class="btn btn-primary btn-large" id="btn_start">Comenzar módulo →</button>
+</div>
+
+<!-- SCREEN 1: INTRODUCCIÓN -->
+<div class="screen" id="screen_1">
+  <span class="screen-label">Introducción</span>
+  <div class="section-title">📜 ¿Qué son las Witness Letters y Reference Letters?</div>
+  <div class="content-block">
+    <p>En casos VAWA, Visa U, Visa T y otros, estas cartas cumplen una función crucial: <strong>corroborar la narrativa del cliente desde la perspectiva de terceros</strong>.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;">
+    <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:10px;padding:18px;border-top:4px solid var(--color-primary);">
+      <div style="font-weight:700;font-size:.95rem;color:var(--color-primary-dark);margin-bottom:10px;">📄 Witness Letters</div>
+      <p style="font-size:.86rem;color:#555;line-height:1.7;margin:0;">Provienen de personas que han <strong>presenciado directamente</strong> el abuso o sus consecuencias. Respaldan los elementos de elegibilidad: relación, abuso, residencia conjunta.</p>
+      <div style="margin-top:10px;font-size:.82rem;color:#777;">Vecinos · Familiares · Amigos</div>
+    </div>
+    <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:10px;padding:18px;border-top:4px solid #48bb78;">
+      <div style="font-weight:700;font-size:.95rem;color:#276749;margin-bottom:10px;">📋 Reference Letters</div>
+      <p style="font-size:.86rem;color:#555;line-height:1.7;margin:0;">Provienen de organizaciones, empleadores o líderes comunitarios. Su objetivo es apoyar el <strong>Buen Carácter Moral (GMC)</strong> y la integración comunitaria.</p>
+      <div style="margin-top:10px;font-size:.82rem;color:#777;">Empleadores · Iglesias · Médicos · Maestros</div>
+    </div>
+  </div>
+  <table class="compare-table">
+    <thead><tr><th>Witness Letters</th><th>Reference Letters</th></tr></thead>
+    <tbody>
+      <tr><td>Testigos directos del abuso</td><td>Conocen al cliente en otros contextos</td></tr>
+      <tr><td>Vecinos, familiares, amigos</td><td>Empleadores, líderes religiosos, médicos</td></tr>
+      <tr><td>Corroboran la narrativa de abuso</td><td>Apoyan el GMC y la integración comunitaria</td></tr>
+    </tbody>
+  </table>
+  <div class="info-box" style="border-left-color:var(--color-warning);background:#fffbeb;">
+    <div class="box-title" style="color:#92400e;">Tu rol como traductor</div>
+    <p style="font-size:.88rem;line-height:1.6;">Traduce preservando la voz del declarante. <strong>No añadas fuerza ni la restes.</strong> Si identificas un riesgo, repórtalo — no lo corrijas.</p>
+  </div>
+</div>
+
+<!-- SCREEN 2: ELEMENTOS CLAVE -->
+<div class="screen" id="screen_2">
+  <span class="screen-label">Elementos clave</span>
+  <div class="section-title">🔑 Elementos de una Witness Letter Efectiva</div>
+  <div class="content-block">
+    <p>No todas las cartas son igualmente útiles. Como traductor, debes <strong>identificar estos elementos y preservarlos</strong>. Si alguno falta, no lo inventes — pero puedes notarlo si es relevante.</p>
+  </div>
+  <div class="element-card">
+    <div class="element-num">1</div>
+    <div class="element-body">
+      <strong>Relación del testigo con el cliente</strong>
+      <p>¿Cómo lo conoce, desde cuándo, en qué contexto? Un vecino de 10 años tiene más peso que un conocido ocasional.</p>
+      <em>Ej: "Somos vecinos desde hace 10 años" · "Somos amigas desde 2015 y nuestros hijos van a la misma escuela"</em>
+    </div>
+  </div>
+  <div class="element-card">
+    <div class="element-num">2</div>
+    <div class="element-body">
+      <strong>Observaciones directas</strong>
+      <p>Descripciones concretas de lo que el testigo <em>presenció o escuchó</em> directamente. El testimonio de oídas tiene menos peso.</p>
+      <em>Ej: "Vi a Marta con el ojo morado" · "Escuché golpes y gritos todas las noches"</em>
+    </div>
+  </div>
+  <div class="element-card">
+    <div class="element-num">3</div>
+    <div class="element-body">
+      <strong>Tiempo y contexto de las observaciones</strong>
+      <p>¿Cuándo ocurrieron? ¿Con qué frecuencia? Establece un patrón, no hechos aislados.</p>
+      <em>Ej: "Durante el año 2022, al menos una vez por semana" · "Desde que se mudaron juntos en 2018"</em>
+    </div>
+  </div>
+  <div class="element-card">
+    <div class="element-num">4</div>
+    <div class="element-body">
+      <strong>Declaración bajo perjurio</strong>
+      <p>Requisito legal para que la carta sea considerada evidencia. Si falta, el abogado puede necesitar agregarlo.</p>
+      <em>Ej: "Declaro bajo pena de perjurio que esto es verdad" · "Entiendo que esto se presenta ante un tribunal"</em>
+    </div>
+  </div>
+  <div class="element-card" style="border-left-color:#ccc;">
+    <div class="element-num" style="background:#aaa;">5</div>
+    <div class="element-body">
+      <strong>Firma y datos de contacto</strong>
+      <p style="color:#666;">Nombre completo, dirección, teléfono. Permite a USCIS verificar si lo considera necesario. No siempre está presente.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 3: RIESGOS ESPECÍFICOS -->
+<div class="screen" id="screen_3">
+  <span class="screen-label">Riesgos específicos</span>
+  <div class="section-title">⚠️ Riesgos Específicos en Witness Letters</div>
+  <div class="content-block">
+    <p>Estos riesgos son particulares de las cartas de testigos. Tu trabajo es <strong>detectarlos y reportarlos, no corregirlos</strong>.</p>
+  </div>
+  <div class="risk-item">
+    <div class="risk-name">🚩 Riesgo 1 – Frases contraproducentes</div>
+    <p>Frases que debilitan el testimonio porque admiten falta de conocimiento directo o se basan en rumores.</p>
+    <div style="background:#fffbeb;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:.85rem;">
+      <div style="font-weight:600;margin-bottom:4px;color:#92400e;">Ejemplos:</div>
+      «Aunque no vi el abuso directamente» · «escuché rumores en el vecindario» · «no sé si era cierto»
+    </div>
+  </div>
+  <div class="risk-item">
+    <div class="risk-name">🚩 Riesgo 2 – Tono dubitativo excesivo</div>
+    <p>«Creo que», «me parece», «no estoy seguro/a» son honestos, pero si aparecen en exceso hacen que el testimonio parezca poco confiable. Tradúcelos tal como están — no los conviertas en afirmaciones categóricas.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;font-size:.84rem;">
+      <div style="background:#fff5f5;border-radius:6px;padding:8px 12px;color:#c53030;"><strong>Dubitativo (traducir así):</strong><br>«I think I saw a bruise»</div>
+      <div style="background:#fde8e8;border-radius:6px;padding:8px 12px;color:#c62828;"><strong>❌ NO cambiar a:</strong><br>«I saw a bruise»</div>
+    </div>
+  </div>
+  <div class="risk-item">
+    <div class="risk-name">🚩 Riesgo 3 – Contradicciones con la DCL</div>
+    <p>Si el testigo menciona fechas o eventos que no coinciden con la declaración del cliente, esto puede ser un problema. No intentes «armonizar» las fechas — traduce fielmente y reporta.</p>
+    <div style="background:#fffbeb;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:.85rem;color:#555;">
+      <strong>Ejemplo:</strong> Cliente dice: «Vivimos juntos hasta 2022» · Testigo dice: «Se separaron en 2021»<br>
+      <span style="color:#92400e;font-weight:600;">→ Traduce ambas fechas como están y reporta la contradicción.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 4: REFERENCE LETTERS -->
+<div class="screen" id="screen_4">
+  <span class="screen-label">Reference Letters</span>
+  <div class="section-title">📋 Reference Letters – Características Especiales</div>
+  <div class="content-block">
+    <p>Las Reference Letters tienen un propósito diferente: apoyar el <strong>Buen Carácter Moral</strong> y demostrar la integración del cliente en la comunidad.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;">
+    <div style="background:var(--color-secondary);border-radius:10px;padding:16px 18px;">
+      <div style="font-weight:700;font-size:.88rem;color:var(--color-primary-dark);margin-bottom:10px;">¿Quiénes las escriben?</div>
+      <ul style="padding-left:18px;font-size:.86rem;color:#555;line-height:1.9;margin:0;">
+        <li>Organizaciones comunitarias</li>
+        <li>Iglesias / líderes religiosos</li>
+        <li>Empleadores actuales o pasados</li>
+        <li>Profesionales de salud</li>
+        <li>Maestros / profesores</li>
+      </ul>
+    </div>
+    <div style="background:var(--color-secondary);border-radius:10px;padding:16px 18px;">
+      <div style="font-weight:700;font-size:.88rem;color:var(--color-primary-dark);margin-bottom:10px;">¿Qué deben reflejar?</div>
+      <ul style="padding-left:18px;font-size:.86rem;color:#555;line-height:1.9;margin:0;">
+        <li>Que el cliente es honesto y trabajador</li>
+        <li>Que contribuye a su comunidad</li>
+        <li>Que es querido y respetado</li>
+        <li>Que merece una oportunidad</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box">
+    <div class="box-title">🎨 Desafío de traducción: el registro varía enormemente</div>
+    <p style="font-size:.88rem;line-height:1.6;">Una carta formal de una organización tiene un tono muy diferente a una nota escrita a mano por un pastor. Aplica las mismas reglas de «voz del declarante»: si el firmante es formal, mantenlo formal; si es cálido y personal, mantenlo así.</p>
+  </div>
+  <div class="info-box" style="border-left-color:#48bb78;background:#f0fff4;">
+    <div class="box-title" style="color:#276749;">✅ Mismas reglas, diferente propósito</div>
+    <p style="font-size:.88rem;line-height:1.6;">Las Reference Letters <strong>no corroboran el abuso</strong> — eso no es su función. Su función es mostrar que el cliente tiene buen carácter y está integrado en la comunidad. Traduce preservando ese tono positivo, sin exagerarlo.</p>
+  </div>
+</div>
+
+<!-- SCREEN 5: CORRECCIONES Y LÍMITES -->
+<div class="screen" id="screen_5">
+  <span class="screen-label">Correcciones y límites</span>
+  <div class="section-title">✏️ Correcciones Permitidas (Con Aprobación)</div>
+  <div class="content-block">
+    <p>Hay un tipo de intervención que <strong>sí puede hacer el traductor</strong>, pero siempre con aprobación del supervisor.</p>
+  </div>
+  <div style="background:#f0fff4;border:1.5px solid #48bb78;border-radius:10px;padding:16px 20px;margin:14px 0;">
+    <div style="font-weight:700;color:#276749;margin-bottom:10px;font-size:.9rem;">✅ ¿Qué se puede corregir?</div>
+    <p style="font-size:.87rem;color:#444;margin-bottom:10px;">Errores ortográficos o gramaticales obvios en una carta <strong>en inglés</strong> que será firmada por el testigo. Nunca se corrigen directamente — se reportan al supervisor.</p>
+    <div style="background:#fff;border-radius:8px;padding:10px 14px;font-size:.85rem;">
+      <strong>Ejemplo:</strong> «I have known her for 10 <span style="color:#c62828;text-decoration:line-through;">year</span>» → reportar que falta la «s»<br>
+      «I have <span style="color:#c62828;text-decoration:line-through;">see</span> her cry» → reportar que debería ser «seen»
+    </div>
+  </div>
+  <div style="background:#fde8e8;border:1.5px solid #ef9a9a;border-radius:10px;padding:16px 20px;margin:14px 0;">
+    <div style="font-weight:700;color:#c62828;margin-bottom:10px;font-size:.9rem;">❌ ¿Qué NO se puede corregir?</div>
+    <ul style="padding-left:18px;font-size:.87rem;color:#555;line-height:1.9;margin:0;">
+      <li>Errores de contenido (fechas, lugares, hechos)</li>
+      <li>El tono del testigo (aunque sea dubitativo)</li>
+      <li>Opiniones del testigo</li>
+      <li>Reemplazar palabras de contenido (ej: «violent» por «abusive»)</li>
+    </ul>
+  </div>
+  <div class="info-box">
+    <div class="box-title">📌 Cartas en español</div>
+    <p style="font-size:.88rem;line-height:1.6;">Si la carta está en español y necesita traducción certificada, aplican todas las reglas de los módulos anteriores: la traducción debe ser fiel al original, errores incluidos.</p>
+  </div>
+
+  <div class="section-title" style="margin-top:24px;">🚫 Lo que el Traductor NUNCA Debe Hacer</div>
+  <div class="prohibited-item">
+    <div class="pr-label">❌ No agregues hechos que el testigo no mencionó</div>
+    <div class="pr-compare">
+      <div class="pr-orig">✅ Original: «Escuchaba gritos»</div>
+      <div class="pr-wrong">❌ Inventado: «Escuchaba gritos y sonidos de golpes»</div>
+    </div>
+  </div>
+  <div class="prohibited-item">
+    <div class="pr-label">❌ No cambies tono dubitativo a categórico</div>
+    <div class="pr-compare">
+      <div class="pr-orig">✅ Original: «Creo que él era violento»<br>→ «I think he was violent»</div>
+      <div class="pr-wrong">❌ Alterado: «He was violent»</div>
+    </div>
+  </div>
+  <div class="prohibited-item">
+    <div class="pr-label">❌ No armonices contradicciones</div>
+    <div style="font-size:.85rem;color:#555;margin-top:6px;">Si el testigo dice «2021» y el cliente dice «2022», traduce ambas fechas como están. Las contradicciones menores son humanas y esperables. El abogado evaluará si son materiales.</div>
+  </div>
+</div>
+
+<!-- SCREEN 6: RESUMEN -->
+<div class="screen" id="screen_6">
+  <span class="screen-label">Resumen</span>
+  <div class="section-title">📋 Resumen del Módulo 8</div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:12px;padding:20px 24px;margin:16px 0;">
+    <div style="font-weight:700;font-size:.95rem;color:var(--color-primary-dark);margin-bottom:14px;">🔑 Ideas fuerza</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">1</span><span><strong>Elementos clave de una Witness Letter efectiva:</strong> Relación, observaciones directas, tiempo y contexto, declaración bajo perjurio.</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">2</span><span><strong>Riesgos específicos:</strong> Frases contraproducentes, tono dubitativo excesivo, contradicciones con la DCL.</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">3</span><span><strong>Reference Letters:</strong> Apoyan el GMC. Aplican las mismas reglas de voz del declarante.</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">4</span><span><strong>Correcciones permitidas:</strong> Solo errores gramaticales obvios, siempre reportando al supervisor.</span></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;"><span style="background:var(--color-primary);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.82rem;">5</span><span><strong>Nunca:</strong> Agregar hechos, cambiar tono dubitativo a categórico, armonizar contradicciones.</span></div>
+    </div>
+  </div>
+  <table class="compare-table">
+    <thead><tr><th>Riesgo</th><th>Acción correcta</th></tr></thead>
+    <tbody>
+      <tr><td>Frase contraproducente («no vi directamente»)</td><td>Traducir fielmente y reportar</td></tr>
+      <tr><td>Tono dubitativo excesivo</td><td>Preservar el tono y reportar si es excesivo</td></tr>
+      <tr><td>Contradicción con la DCL</td><td>Traducir fielmente y reportar</td></tr>
+      <tr><td>Relación débil con el cliente</td><td>Traducir fielmente y reportar</td></tr>
+      <tr><td>Testimonio de oídas</td><td>Traducir fielmente y reportar</td></tr>
+    </tbody>
+  </table>
+  <div class="info-box" style="text-align:center;margin-top:14px;">
+    <div class="box-title">🚀 A continuación: Ejercicio práctico</div>
+    <p>Analizarás 6 fragmentos reales de Witness Letters y Reference Letters. Para cada uno identificarás riesgos, clasificarás el tipo y elegirás la acción correcta.</p>
+  </div>
+</div>
+
+<!-- SCREEN 7: INSTRUCCIONES -->
+<div class="screen" id="screen_7">
+  <span class="screen-label">Ejercicio práctico</span>
+  <div class="section-title">📝 Análisis de Witness Letters y Reference Letters</div>
+  <div class="content-block"><p>A continuación se te presentarán <strong>6 fragmentos</strong> de cartas reales. Para cada fragmento deberás completar tres partes:</p></div>
+  <div style="background:#fff;border:1.5px solid var(--color-primary);border-radius:12px;padding:20px 24px;margin:16px 0;display:flex;flex-direction:column;gap:10px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;padding:10px 12px;background:var(--color-secondary);border-radius:8px;"><span style="background:var(--color-primary);color:#fff;border-radius:4px;padding:2px 8px;font-weight:700;font-size:.82rem;flex-shrink:0;">Parte 1</span><span>¿El fragmento contiene <strong>riesgos que deben ser reportados</strong>?</span></div>
+    <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;padding:10px 12px;background:var(--color-secondary);border-radius:8px;"><span style="background:var(--color-primary);color:#fff;border-radius:4px;padding:2px 8px;font-weight:700;font-size:.82rem;flex-shrink:0;">Parte 2</span><span>Identificar el <strong>tipo de riesgo</strong> o los <strong>elementos presentes</strong></span></div>
+    <div style="display:flex;gap:12px;align-items:flex-start;font-size:.88rem;line-height:1.5;padding:10px 12px;background:var(--color-secondary);border-radius:8px;"><span style="background:var(--color-primary);color:#fff;border-radius:4px;padding:2px 8px;font-weight:700;font-size:.82rem;flex-shrink:0;">Parte 3</span><span>¿Cuál es la <strong>acción correcta</strong> del traductor?</span></div>
+  </div>
+  <div class="info-box" style="border-left-color:var(--color-warning);background:#fffbeb;">
+    <div class="box-title" style="color:#92400e;">📌 Recuerda</div>
+    <p style="font-size:.87rem;line-height:1.6;">La acción correcta ante un riesgo es siempre <strong>traducir fielmente y reportar al supervisor</strong>. Nunca eliminar, suavizar ni «mejorar» una carta que parece débil.</p>
+  </div>
+</div>
+<!-- SCREEN 8: FRAGMENTO 1 -->
+<div class="screen" id="screen_8">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Fragmento 1 de 6 — Witness Letter con múltiples riesgos <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div></div>
+  <p class="question-text" style="margin-bottom:6px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">Yo no vi directamente cuando él le pegaba, pero ella me contaba que siempre llegaba golpeada. La verdad, no sé si era cierto, pero ella lloraba mucho. La conozco desde hace como 10 años porque somos vecinas, pero no éramos amigas íntimas. Solo la veía cuando salía a la calle. Una vez escuché unos gritos fuertes, pero no sé si era él o era otra cosa. Creo que ella sufría, pero no estoy segura.</div>
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgos?</div>
+    <p class="question-text">¿Este fragmento contiene riesgos que deben ser reportados al supervisor?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="f1_1" value="si"> Sí</label>
+      <label class="radio-item"><input type="radio" name="f1_1" value="no"> No</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f1_1" onclick="checkRadio('f1_1','fb_f1_1')">Verificar</button>
+    <div class="feedback-box" id="fb_f1_1"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 2 — ¿Qué tipo(s) de riesgo(s) están presentes? (Selecciona todos)</div>
+    <p class="question-text"><em>(Selecciona todas las que correspondan)</em></p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="f1_2" value="contraproducente"> Frase contraproducente (admite que no tiene conocimiento directo)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f1_2" value="dubitativo"> Tono dubitativo excesivo («no sé», «creo», «no estoy segura»)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f1_2" value="contradiccion"> Contradicción con la DCL</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f1_2" value="relacion_debil"> Relación débil con la cliente («no éramos amigas íntimas»)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f1_2" value="perjurio"> Falta de declaración bajo perjurio</label>
+    </div>
+    <button class="btn btn-primary" id="btn_cb_f1_2" onclick="checkCheckboxes('f1_2','fb_f1_2')">Verificar</button>
+    <div class="feedback-box" id="fb_f1_2"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta del traductor en este caso?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f1_3" value="a1" style="margin-top:3px;flex-shrink:0;"> Traducir fielmente todas las frases, incluyendo las contraproducentes, y reportar al supervisor</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f1_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Eliminar las frases «no vi directamente» y «no sé si era cierto» para fortalecer la carta</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f1_3" value="a3" style="margin-top:3px;flex-shrink:0;"> Cambiar el tono dubitativo a afirmaciones para que suene más convincente</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f1_3" value="a4" style="margin-top:3px;flex-shrink:0;"> Preguntar a la testigo si está segura antes de traducir</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f1_3" onclick="checkRadio('f1_3','fb_f1_3')">Verificar</button>
+    <div class="feedback-box" id="fb_f1_3"></div>
+  </div>
+</div>
+
+<!-- SCREEN 9: FRAGMENTO 2 -->
+<div class="screen" id="screen_9">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Fragmento 2 de 6 — Witness Letter efectiva <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div></div>
+  <p class="question-text" style="margin-bottom:6px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">Vivíamos en la misma calle desde el 2018 hasta el 2022. Escuchaba discusiones casi todas las noches. Una vez vi a María con un moretón en el brazo. Ella me dijo que se había caído, pero yo sé que no fue así. También vi cuando su esposo la empujó en el jardín. La conozco bien porque somos amigas desde hace 15 años y nuestras hijas van a la misma escuela.</div>
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgos?</div>
+    <p class="question-text">¿Este fragmento contiene riesgos que deben ser reportados al supervisor?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="f2_1" value="si"> Sí</label>
+      <label class="radio-item"><input type="radio" name="f2_1" value="no"> No</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f2_1" onclick="checkRadio('f2_1','fb_f2_1')">Verificar</button>
+    <div class="feedback-box" id="fb_f2_1"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 2 — ¿Qué elementos de una Witness Letter efectiva están presentes?</div>
+    <p class="question-text"><em>(Selecciona todas las que correspondan)</em></p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="f2_2" value="relacion"> Relación del testigo con la cliente («amigas desde hace 15 años»)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f2_2" value="observaciones"> Observaciones directas («vi a María con un moretón», «vi cuando la empujó»)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f2_2" value="tiempo"> Tiempo y contexto («desde 2018 hasta 2022», «casi todas las noches»)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f2_2" value="perjurio"> Declaración bajo perjurio (presente en este fragmento)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f2_2" value="contacto"> Firma y datos de contacto (presentes en este fragmento)</label>
+    </div>
+    <button class="btn btn-primary" id="btn_cb_f2_2" onclick="checkCheckboxes('f2_2','fb_f2_2')">Verificar</button>
+    <div class="feedback-box" id="fb_f2_2"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta del traductor en este caso?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f2_3" value="a1" style="margin-top:3px;flex-shrink:0;"> Reportar riesgos al supervisor antes de traducir</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f2_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Traducir normalmente preservando la voz de la testigo. Si acaso, notar al supervisor que falta la declaración bajo perjurio</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f2_3" value="a3" style="margin-top:3px;flex-shrink:0;"> Agregar la declaración bajo perjurio directamente a la traducción</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f2_3" value="a4" style="margin-top:3px;flex-shrink:0;"> Solicitar a la testigo que reescriba la carta añadiendo más detalles</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f2_3" onclick="checkRadio('f2_3','fb_f2_3')">Verificar</button>
+    <div class="feedback-box" id="fb_f2_3"></div>
+  </div>
+</div>
+
+<!-- SCREEN 10: FRAGMENTO 3 -->
+<div class="screen" id="screen_10">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Fragmento 3 de 6 — Witness Letter con tono dubitativo extremo <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div><div class="fp-dot"></div></div>
+  <p class="question-text" style="margin-bottom:6px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">Creo que fue en el 2020 o 2021, no recuerdo bien, cuando escuché un escándalo en su casa. Me parece que ella gritaba, pero no estoy seguro. Tal vez fue otra cosa. No sé si era abuso o solo una discusión normal. Yo vivo al lado desde hace 5 años, pero casi no hablo con ellos. Mi esposo dice que una vez vio a la policía, pero yo no estaba.</div>
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgos?</div>
+    <p class="question-text">¿Este fragmento contiene riesgos que deben ser reportados al supervisor?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="f3_1" value="si"> Sí</label>
+      <label class="radio-item"><input type="radio" name="f3_1" value="no"> No</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f3_1" onclick="checkRadio('f3_1','fb_f3_1')">Verificar</button>
+    <div class="feedback-box" id="fb_f3_1"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 2 — ¿Qué tipo(s) de riesgo(s) están presentes? (Selecciona todos)</div>
+    <p class="question-text"><em>(Selecciona todas las que correspondan)</em></p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="f3_2" value="dubitativo"> Tono dubitativo excesivo («creo», «me parece», «no estoy seguro», «tal vez»)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f3_2" value="fechas"> Falta de certeza en fechas («2020 o 2021, no recuerdo bien»)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f3_2" value="oidas"> Testimonio de oídas («mi esposo dice que... pero yo no estaba»)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f3_2" value="relacion_debil"> Relación débil con el cliente («casi no hablo con ellos»)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f3_2" value="contradiccion"> Contradicción directa con la DCL</label>
+    </div>
+    <button class="btn btn-primary" id="btn_cb_f3_2" onclick="checkCheckboxes('f3_2','fb_f3_2')">Verificar</button>
+    <div class="feedback-box" id="fb_f3_2"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta del traductor en este caso?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f3_3" value="a1" style="margin-top:3px;flex-shrink:0;"> Convertir cada «creo» y «me parece» en afirmaciones para que el testimonio suene más sólido</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f3_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Omitir la parte del esposo porque es testimonio de oídas</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f3_3" value="a3" style="margin-top:3px;flex-shrink:0;"> Traducir fielmente preservando cada calificador dubitativo y reportar al supervisor para que evalúe el valor de la carta</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f3_3" value="a4" style="margin-top:3px;flex-shrink:0;"> Combinar el testimonio del testigo con el del esposo para fortalecer la carta</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f3_3" onclick="checkRadio('f3_3','fb_f3_3')">Verificar</button>
+    <div class="feedback-box" id="fb_f3_3"></div>
+  </div>
+</div>
+
+<!-- SCREEN 11: FRAGMENTO 4 -->
+<div class="screen" id="screen_11">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Fragmento 4 de 6 — Reference Letter de empleador <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div><div class="fp-dot"></div></div>
+  <p class="question-text" style="margin-bottom:6px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">Carlos trabajó en mi restaurante durante 2 años, de 2021 a 2023. Fue un empleado puntual, honesto y responsable. Nunca tuve problemas con él. Los clientes lo querían y sus compañeros lo respetaban. Lamento mucho que tenga que pasar por esta situación migratoria. Lo recomiendo ampliamente como persona de buen carácter. Si necesita más información, puede contactarme al teléfono que adjunto.</div>
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgos?</div>
+    <p class="question-text">¿Este fragmento contiene riesgos que deben ser reportados al supervisor?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="f4_1" value="si"> Sí</label>
+      <label class="radio-item"><input type="radio" name="f4_1" value="no"> No</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f4_1" onclick="checkRadio('f4_1','fb_f4_1')">Verificar</button>
+    <div class="feedback-box" id="fb_f4_1"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 2 — ¿Qué tipo de carta es esta?</div>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="f4_2" value="reference"> Reference Letter – apoya el Buen Carácter Moral (GMC) del cliente</label>
+      <label class="radio-item"><input type="radio" name="f4_2" value="witness"> Witness Letter – corrobora la narrativa de abuso</label>
+      <label class="radio-item"><input type="radio" name="f4_2" value="medica"> Carta médica – documenta condiciones de salud</label>
+      <label class="radio-item"><input type="radio" name="f4_2" value="comunitaria"> Carta comunitaria – apoya integración social</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f4_2" onclick="checkRadio('f4_2','fb_f4_2')">Verificar</button>
+    <div class="feedback-box" id="fb_f4_2"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta del traductor en este caso?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f4_3" value="a1" style="margin-top:3px;flex-shrink:0;"> Reportar como riesgo porque el empleador menciona la situación migratoria</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f4_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Agregar detalles sobre el carácter del cliente que el empleador no mencionó</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f4_3" value="a3" style="margin-top:3px;flex-shrink:0;"> Omitir «Lamento mucho que tenga que pasar por esta situación migratoria» porque no aporta al caso</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f4_3" value="a4" style="margin-top:3px;flex-shrink:0;"> Traducir manteniendo el tono profesional del empleador, sin añadir ni quitar contenido</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f4_3" onclick="checkRadio('f4_3','fb_f4_3')">Verificar</button>
+    <div class="feedback-box" id="fb_f4_3"></div>
+  </div>
+</div>
+
+<!-- SCREEN 12: FRAGMENTO 5 -->
+<div class="screen" id="screen_12">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Fragmento 5 de 6 — Witness Letter con errores gramaticales (inglés) <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div><div class="fp-dot"></div></div>
+  <p class="question-text" style="margin-bottom:6px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box" style="font-style:normal;background:#f0fff4;border-left-color:#48bb78;"><div style="font-size:.75rem;font-weight:700;color:#276749;text-transform:uppercase;margin-bottom:8px;">Texto en inglés (original del testigo)</div>I have known Mrs. Maria for 10 year. She is a good mother and a hardworking woman. I have see her cry many times because of her husband. He is very violent. I hope she can stay in this country and live in peace.</div>
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgos?</div>
+    <p class="question-text">¿Esta carta contiene errores que podrían corregirse con aprobación del supervisor?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="f5_1" value="si"> Sí</label>
+      <label class="radio-item"><input type="radio" name="f5_1" value="no"> No</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f5_1" onclick="checkRadio('f5_1','fb_f5_1')">Verificar</button>
+    <div class="feedback-box" id="fb_f5_1"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 2 — ¿Qué correcciones se pueden sugerir?</div>
+    <p class="question-text"><em>(Selecciona todas las que correspondan)</em></p>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="checkbox" data-group="f5_3" value="years"> Corregir «10 year» → «10 years» (error gramatical)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f5_3" value="seen"> Corregir «have see» → «have seen» (error gramatical)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f5_3" value="violent"> Cambiar «violent» → «abusive» (cambio de contenido — NO permitido)</label>
+      <label class="checkbox-item"><input type="checkbox" data-group="f5_3" value="details"> Agregar más detalles de abuso (cambio de contenido — NO permitido)</label>
+    </div>
+    <button class="btn btn-primary" id="btn_cb_f5_3" onclick="checkCheckboxes('f5_3','fb_f5_3')">Verificar</button>
+    <div class="feedback-box" id="fb_f5_3"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta del traductor en este caso?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f5_2" value="a1" style="margin-top:3px;flex-shrink:0;"> Corregir directamente los errores en el documento y enviarlo sin más</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f5_2" value="a2" style="margin-top:3px;flex-shrink:0;"> No hacer nada porque los errores no afectan el significado</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f5_2" value="a3" style="margin-top:3px;flex-shrink:0;"> Cambiar «violent» por «abusive» porque es más preciso legalmente</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f5_2" value="a5" style="margin-top:3px;flex-shrink:0;"> Reportar los errores gramaticales al supervisor para que evalúe si contacta al testigo para corregirlos y refirmar</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f5_2" onclick="checkRadio('f5_2','fb_f5_2')">Verificar</button>
+    <div class="feedback-box" id="fb_f5_2"></div>
+  </div>
+</div>
+
+<!-- SCREEN 13: FRAGMENTO 6 -->
+<div class="screen" id="screen_13">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Fragmento 6 de 6 — Witness Letter con frase contraproducente <span class="score-badge">Calificado</span></h3>
+  </div>
+  <div class="frag-progress"><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot done"></div><div class="fp-dot active"></div></div>
+  <p class="question-text" style="margin-bottom:6px;"><strong>Lee el siguiente fragmento:</strong></p>
+  <div class="fragment-box">Aunque no vi el abuso directamente, escuché rumores en el vecindario de que él le pegaba. No sé si era verdad, pero ella siempre estaba triste. Una vez, creo que la vi con un moretón, pero no estoy segura porque estaba oscuro.</div>
+  <div class="question-block">
+    <div class="question-label">Parte 1 — ¿Hay riesgos?</div>
+    <p class="question-text">¿Este fragmento contiene riesgos que deben ser reportados al supervisor?</p>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="f6_1" value="si"> Sí</label>
+      <label class="radio-item"><input type="radio" name="f6_1" value="no"> No</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f6_1" onclick="checkRadio('f6_1','fb_f6_1')">Verificar</button>
+    <div class="feedback-box" id="fb_f6_1"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 2 — ¿Qué tipo de riesgo es el principal?</div>
+    <div class="radio-group">
+      <label class="radio-item"><input type="radio" name="f6_2" value="contraproducente"> Frases contraproducentes (admite falta de conocimiento directo, testimonio de rumores)</label>
+      <label class="radio-item"><input type="radio" name="f6_2" value="dubitativo"> Solo tono dubitativo excesivo, sin frases contraproducentes</label>
+      <label class="radio-item"><input type="radio" name="f6_2" value="contradiccion"> Contradicción con la DCL</label>
+      <label class="radio-item"><input type="radio" name="f6_2" value="ninguno"> No hay riesgos significativos</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f6_2" onclick="checkRadio('f6_2','fb_f6_2')">Verificar</button>
+    <div class="feedback-box" id="fb_f6_2"></div>
+  </div>
+    <div class="question-block">
+    <div class="question-label">Parte 3 — Acción correcta</div>
+    <p class="question-text">¿Cuál es la acción correcta del traductor en este caso?</p>
+    <div class="radio-group">
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f6_3" value="a1" style="margin-top:3px;flex-shrink:0;"> Eliminar «escuché rumores» y «aunque no vi el abuso directamente» para fortalecer la carta</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f6_3" value="a2" style="margin-top:3px;flex-shrink:0;"> Cambiar «rumores» por «conversaciones» porque suena menos débil</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f6_3" value="a3" style="margin-top:3px;flex-shrink:0;"> Traducir solo las partes fuertes y omitir las frases contraproducentes</label>
+      <label class="radio-item" style="align-items:flex-start;"><input type="radio" name="f6_3" value="a6" style="margin-top:3px;flex-shrink:0;"> Traducir fielmente incluyendo «rumors» y reportar al supervisor para que evalúe el valor de la carta</label>
+    </div>
+    <button class="btn btn-primary" id="btn_f6_3" onclick="checkRadio('f6_3','fb_f6_3')">Verificar</button>
+    <div class="feedback-box" id="fb_f6_3"></div>
+  </div>
+</div>
+
+<!-- SCREEN 14: TABLA FINAL -->
+<div class="screen" id="screen_14">
+  <div class="exercise-header">
+    <span class="ex-badge">Ejercicio práctico</span>
+    <h3>Tabla de Elementos Clave de una Witness Letter <span class="score-badge">Calificado</span></h3>
+  </div>
+  <p class="question-text">Completa la tabla seleccionando la <strong>descripción</strong> y el <strong>ejemplo correcto</strong> para cada elemento.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;font-size:.84rem;">
+    <div style="background:#f8f7fd;border-radius:8px;padding:14px;">
+      <div style="font-weight:700;color:var(--color-primary-dark);margin-bottom:8px;">Opciones — Descripción</div>
+      <div style="display:flex;flex-direction:column;gap:6px;color:#555;">
+        <div><strong>A:</strong> Cómo conoce al cliente, desde cuándo, en qué contexto</div>
+        <div><strong>B:</strong> Descripciones concretas de lo que presenció o escuchó directamente</div>
+        <div><strong>C:</strong> Cuándo ocurrieron las observaciones y con qué frecuencia</div>
+        <div><strong>D:</strong> Frase que indica que el testimonio es verdad bajo pena de perjurio</div>
+      </div>
+    </div>
+    <div style="background:#f8f7fd;border-radius:8px;padding:14px;">
+      <div style="font-weight:700;color:var(--color-primary-dark);margin-bottom:8px;">Opciones — Ejemplo correcto</div>
+      <div style="display:flex;flex-direction:column;gap:6px;color:#555;">
+        <div><strong>1:</strong> «Somos vecinos desde hace 10 años y nuestras hijas van a la misma escuela»</div>
+        <div><strong>2:</strong> «Vi a Marta con un moretón en el brazo. Escuché golpes y gritos»</div>
+        <div><strong>3:</strong> «Durante el año 2022, escuchaba discusiones al menos una vez por semana»</div>
+        <div><strong>4:</strong> «Declaro bajo pena de perjurio que esto es verdad y correcto»</div>
+      </div>
+    </div>
+  </div>
+  <table class="dropdown-table">
+    <thead><tr><th>Elemento</th><th>Descripción</th><th>Ejemplo correcto</th></tr></thead>
+    <tbody>
+      <tr><td>1. Relación con el cliente</td>
+        <td><select id="dd_desc_1"><option value="">— Seleccionar —</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></td>
+        <td><select id="dd_ej_1"><option value="">— Seleccionar —</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td>
+      </tr>
+      <tr><td>2. Observaciones directas</td>
+        <td><select id="dd_desc_2"><option value="">— Seleccionar —</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></td>
+        <td><select id="dd_ej_2"><option value="">— Seleccionar —</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td>
+      </tr>
+      <tr><td>3. Tiempo y contexto</td>
+        <td><select id="dd_desc_3"><option value="">— Seleccionar —</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></td>
+        <td><select id="dd_ej_3"><option value="">— Seleccionar —</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td>
+      </tr>
+      <tr><td>4. Declaración bajo perjurio</td>
+        <td><select id="dd_desc_4"><option value="">— Seleccionar —</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></td>
+        <td><select id="dd_ej_4"><option value="">— Seleccionar —</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-primary" id="btn_check_tabla" onclick="checkTabla()">Verificar tabla</button>
+  <div class="feedback-box" id="fb_tabla"></div>
+</div>
+
+<!-- SCREEN 15: RESULTADOS -->
+<div class="screen results-screen" id="screen_results">
+  <span class="cover-badge">Módulo 8 completado</span>
+  <div class="score-circle">
+    <span class="score-num" id="score_circle_num">--%</span>
+    <span class="score-label" id="score_label">Calculando...</span>
+  </div>
+  <div style="font-size:.88rem;color:#666;max-width:520px;text-align:center;">Calificación mínima para aprobar: <strong>85%</strong> (22/26 preguntas correctas)</div>
+  <div class="results-breakdown" id="results_breakdown"></div>
+  <div style="width:100%;max-width:600px;background:#fafafa;border:1px solid #e0ddf5;border-radius:10px;padding:20px;margin-top:8px;text-align:left;">
+    <div style="font-weight:700;font-size:.92rem;color:var(--color-primary-dark);margin-bottom:10px;">💡 Áreas a reforzar</div>
+    <div id="results_tips" style="font-size:.87rem;color:#555;line-height:1.6;"></div>
+  </div>
+  <div class="info-box" style="max-width:580px;text-align:left;">
+    <div class="box-title">📌 Recuerda siempre</div>
+    <p style="font-size:.87rem;line-height:1.6;">Ante cualquier riesgo en una Witness Letter o Reference Letter: <strong>traduce fielmente y reporta</strong>. Nunca agregues, nunca suavices, nunca armonices.</p>
+  </div>
+  <button class="btn btn-success" id="btn_complete">Finalizar y registrar calificación ✅</button>
+</div>
+
+</div><!-- end #main-content -->
+</div><!-- end #outer-layout -->
+
+<div class="nav-bar">
+  <button class="btn btn-secondary" id="btn_prev">← Anterior</button>
+  <div style="text-align:center;">
+    <div id="advance_warning">⚠️ Responde y verifica todas las partes antes de continuar.</div>
+    <span class="page-indicator" id="page_indicator">Pantalla 1 de 16</span>
+  </div>
+  <button class="btn btn-primary" id="btn_next">Siguiente →</button>
+</div>
+
+<script>
+/**
+ * scorm.js – Comunicación SCORM 1.2 con Moodle
+ * Mendoza Learning Center – Módulo 1 VAWA
+ */
+
+var SCORM = (function () {
+  var API = null;
+  var initialized = false;
+  var finished = false;
+
+  // ─── Buscar la API SCORM ───
+  function findAPI(win) {
+    var attempts = 0;
+    while (win.API == null && win.parent != null && win.parent != win) {
+      attempts++;
+      if (attempts > 7) return null;
+      win = win.parent;
+    }
+    return win.API;
+  }
+
+  function getAPI() {
+    var win = window;
+    var api = findAPI(win);
+    if (api == null && win.opener != null) {
+      api = findAPI(win.opener);
+    }
+    return api;
+  }
+
+  // ─── Inicializar ───
+  function initialize() {
+    API = getAPI();
+    if (API == null) {
+      console.warn("[SCORM] API no encontrada – modo standalone");
+      initialized = true; // Continuar en modo local
+      return true;
+    }
+    var result = API.LMSInitialize("");
+    if (result === "true" || result === true) {
+      initialized = true;
+      setValue("cmi.core.lesson_status", "incomplete");
+      return true;
+    }
+    console.error("[SCORM] Error al inicializar:", API.LMSGetLastError());
+    return false;
+  }
+
+  // ─── Leer valor ───
+  function getValue(element) {
+    if (!initialized || API == null) return "";
+    return API.LMSGetValue(element);
+  }
+
+  // ─── Escribir valor ───
+  function setValue(element, value) {
+    if (!initialized) return false;
+    if (API == null) return true; // standalone, ignorar
+    var result = API.LMSSetValue(element, value);
+    if (result === "false" || result === false) {
+      console.error("[SCORM] Error al setear " + element + ":", API.LMSGetLastError());
+      return false;
+    }
+    return true;
+  }
+
+  // ─── Commit ───
+  function commit() {
+    if (!initialized || API == null) return;
+    API.LMSCommit("");
+  }
+
+  // ─── Finalizar ───
+  function finish() {
+    if (!initialized || finished) return;
+    finished = true;
+    if (API != null) {
+      API.LMSFinish("");
+    }
+  }
+
+  // ─── Reportar calificación del módulo ───
+  function setScore(raw, min, max) {
+    min = min || 0;
+    max = max || 100;
+    setValue("cmi.core.score.raw", raw);
+    setValue("cmi.core.score.min", min);
+    setValue("cmi.core.score.max", max);
+    commit();
+  }
+
+  // ─── Reportar estado de completado ───
+  function setCompleted(passed) {
+    setValue("cmi.core.lesson_status", passed ? "passed" : "failed");
+    commit();
+  }
+
+  // ─── Reportar interacción individual ───
+  var interactionIndex = 0;
+  function recordInteraction(id, type, response, correct, result, latency) {
+    var prefix = "cmi.interactions." + interactionIndex + ".";
+    setValue(prefix + "id", id);
+    setValue(prefix + "type", type || "fill-in");
+    setValue(prefix + "student_response", response || "");
+    setValue(prefix + "correct_responses.0.pattern", correct || "");
+    setValue(prefix + "result", result || "neutral");
+    if (latency) setValue(prefix + "latency", latency);
+    interactionIndex++;
+    commit();
+  }
+
+  // ─── Marcar progreso (location) ───
+  function setLocation(screenIndex) {
+    setValue("cmi.core.lesson_location", String(screenIndex));
+    commit();
+  }
+
+  return {
+    initialize: initialize,
+    getValue: getValue,
+    setValue: setValue,
+    commit: commit,
+    finish: finish,
+    setScore: setScore,
+    setCompleted: setCompleted,
+    recordInteraction: recordInteraction,
+    setLocation: setLocation
+  };
+})();
+
+// ─── Inicializar automáticamente ───
+window.addEventListener("load", function () {
+  SCORM.initialize();
+});
+
+window.addEventListener("beforeunload", function () {
+  SCORM.finish();
+});
+
+</script>
+<script>
+/**
+ * interactions.js – Módulo 8: Witness Letters y Reference Letters
+ * Mendoza Learning Center v1.0
+ * Patrón estándar: todo feedback en config JS, nunca strings en onclick HTML.
+ * 3 preguntas por fragmento (sin reporte de texto). 85% para aprobar.
+ */
+var AppState={currentScreen:0,totalScreens:0,scores:{},answered:{},startTime:Date.now()};
+function lockQuestion(id){AppState.answered[id]=true;}
+function isLocked(id){return !!AppState.answered[id];}
+
+// ═══════════════════════════════════════════════════════════
+//  RADIO CONFIG
+// ═══════════════════════════════════════════════════════════
+var RADIO_CONFIG={
+  // Fragmento 1 – Witness Letter con múltiples riesgos
+  "f1_1":{correct:"si",
+    msgOk:"✅ <strong>¡Correcto!</strong> La carta contiene múltiples riesgos: falta de conocimiento directo, tono dubitativo excesivo y relación débil con la cliente.",
+    msgFail:"❌ <strong>Revisa.</strong> Sí hay riesgos. La testigo admite no haber visto el abuso directamente, usa lenguaje dubitativo en exceso y su relación con la cliente es distante."
+  },
+  "f1_3":{correct:"a1",
+    msgOk:"✅ <strong>¡Correcto!</strong> Traducir fielmente y reportar al supervisor es siempre la acción correcta cuando hay riesgos. No se eliminan ni suavizan las frases problemáticas.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es traducir fielmente y reportar. Nunca se eliminan ni suavizan frases del testigo, aunque debiliten la carta."
+  },
+  // Fragmento 2 – Witness Letter efectiva
+  "f2_1":{correct:"no",
+    msgOk:"✅ <strong>¡Correcto!</strong> Esta carta es sólida: tiene relación clara, observaciones directas, contexto temporal y no contiene tono dubitativo.",
+    msgFail:"❌ <strong>Revisa.</strong> No hay riesgos que reportar. Esta es una carta efectiva con todos los elementos clave presentes."
+  },
+  "f2_3":{correct:"a2",
+    msgOk:"✅ <strong>¡Correcto!</strong> La carta es sólida. La única sugerencia es notar al supervisor que falta la declaración bajo perjurio, para que el abogado la agregue si la considera necesaria.",
+    msgFail:"❌ <strong>Revisa.</strong> No hay riesgos que reportar. Si acaso, se puede notar que falta la declaración bajo perjurio, pero eso no es un riesgo sino un elemento a agregar con instrucción del abogado."
+  },
+  // Fragmento 3 – Tono dubitativo extremo
+  "f3_1":{correct:"si",
+    msgOk:"✅ <strong>¡Correcto!</strong> El fragmento tiene múltiples problemas: tono dubitativo en cada oración, incertidumbre en fechas, relación débil y testimonio de oídas.",
+    msgFail:"❌ <strong>Revisa.</strong> Sí hay riesgos graves. Prácticamente cada oración tiene un calificador dubitativo y hay testimonio de oídas."
+  },
+  "f3_3":{correct:"a3",
+    msgOk:"✅ <strong>¡Correcto!</strong> Traducir fielmente (preservando cada «creo que», «me parece», «no estoy seguro») y reportar al supervisor para que evalúe si la carta aporta valor al caso.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es traducir fielmente todos los calificadores dubitativos y reportar. No se pueden convertir en afirmaciones categóricas."
+  },
+  // Fragmento 4 – Reference Letter limpia
+  "f4_1":{correct:"no",
+    msgOk:"✅ <strong>¡Correcto!</strong> Es una Reference Letter sólida que apoya el GMC. No hay riesgos que reportar.",
+    msgFail:"❌ <strong>Revisa.</strong> No hay riesgos. Es una carta de referencia de empleador que apoya efectivamente el Buen Carácter Moral del cliente."
+  },
+  "f4_2":{correct:"reference",
+    msgOk:"✅ <strong>¡Correcto!</strong> Es una Reference Letter de empleador. Su función es apoyar el Buen Carácter Moral (GMC) del cliente, no corroborar la narrativa de abuso.",
+    msgFail:"❌ <strong>Revisa.</strong> Es una Reference Letter, no una Witness Letter. Las Reference Letters apoyan el GMC del cliente a través de personas que lo conocen en otros contextos (laboral, comunitario, religioso)."
+  },
+  "f4_3":{correct:"a4",
+    msgOk:"✅ <strong>¡Correcto!</strong> Traducir manteniendo el tono profesional del empleador. Si acaso, se puede notar al supervisor que falta la declaración bajo perjurio.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es traducir manteniendo el tono profesional y, opcionalmente, notar que falta la declaración bajo perjurio."
+  },
+  // Fragmento 5 – Correcciones ortográficas en inglés
+  "f5_1":{correct:"si",
+    msgOk:"✅ <strong>¡Correcto!</strong> La carta tiene errores gramaticales que se pueden sugerir corregir: «10 year» y «have see».",
+    msgFail:"❌ <strong>Revisa.</strong> Sí hay errores gramaticales corregibles: «10 year» (falta la s) y «have see» (debería ser «have seen»)."
+  },
+  "f5_2":{correct:"a5",
+    msgOk:"✅ <strong>¡Correcto!</strong> Reportar los errores gramaticales al supervisor para que evalúe si contacta al testigo para corregirlos y refirmar. Nunca se corrigen directamente sin aprobación.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es reportar los errores al supervisor — no corregirlos directamente. El supervisor evaluará si vale la pena contactar al testigo."
+  },
+  // Fragmento 6 – Frase contraproducente (rumores)
+  "f6_1":{correct:"si",
+    msgOk:"✅ <strong>¡Correcto!</strong> La testigo admite no haber visto el abuso directamente y basa su testimonio en rumores del vecindario. Eso debilita significativamente la carta.",
+    msgFail:"❌ <strong>Revisa.</strong> Sí hay riesgos: la testigo admite falta de conocimiento directo y usa rumores como base de su testimonio."
+  },
+  "f6_2":{correct:"contraproducente",
+    msgOk:"✅ <strong>¡Correcto!</strong> Son frases contraproducentes: «aunque no vi el abuso directamente» y «escuché rumores» debilitan el testimonio.",
+    msgFail:"❌ <strong>Revisa.</strong> Son frases contraproducentes. «No vi el abuso directamente» y «escuché rumores» son admisiones de que no hay conocimiento directo."
+  },
+  "f6_3":{correct:"a6",
+    msgOk:"✅ <strong>¡Correcto!</strong> Traducir fielmente incluyendo «rumors» — nunca reemplazarlo por «conversations» o «comments». Reportar al supervisor para que evalúe el valor de la carta.",
+    msgFail:"❌ <strong>Revisa.</strong> La acción correcta es traducir fielmente (incluyendo la palabra «rumors») y reportar al supervisor. No se suaviza ni se elimina."
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+//  CHECKBOX CONFIG – riesgos múltiples (fragmentos 1, 2, 3)
+// ═══════════════════════════════════════════════════════════
+var CHECKBOX_CONFIG={
+  "f1_2":{
+    correct:["contraproducente","dubitativo","relacion_debil"],
+    msgOk:"✅ <strong>¡Correcto!</strong> Los tres riesgos están presentes: frase contraproducente (no vi directamente), tono dubitativo excesivo y relación débil con la cliente.",
+    msgFail:"❌ <strong>Revisa.</strong> Los tres riesgos están presentes: frase contraproducente («no vi directamente»), tono dubitativo excesivo («no sé», «creo», «no estoy segura») y relación débil («no éramos amigas íntimas»). Las respuestas correctas están en verde."
+  },
+  "f2_2":{
+    correct:["relacion","observaciones","tiempo"],
+    msgOk:"✅ <strong>¡Correcto!</strong> La carta tiene relación clara (15 años de amistad), observaciones directas (vio el moretón, vio el empujón) y contexto temporal (2018-2022).",
+    msgFail:"❌ <strong>Revisa.</strong> Los elementos presentes son: relación con el cliente, observaciones directas y tiempo/contexto. La declaración bajo perjurio y los datos de contacto no están en este fragmento."
+  },
+  "f3_2":{
+    correct:["dubitativo","fechas","oidas","relacion_debil"],
+    msgOk:"✅ <strong>¡Correcto!</strong> Los cuatro riesgos: tono dubitativo en cada oración, incertidumbre en fechas, testimonio de oídas (lo que su esposo vio) y relación débil («casi no hablo con ellos»).",
+    msgFail:"❌ <strong>Revisa.</strong> Los cuatro riesgos están presentes: tono dubitativo, falta de certeza en fechas, testimonio de oídas y relación débil. Las respuestas correctas están en verde."
+  },
+  "f5_3":{
+    correct:["years","seen"],
+    msgOk:"✅ <strong>¡Correcto!</strong> Solo los errores gramaticales: «10 year» → «10 years» y «have see» → «have seen». Nada de contenido se toca.",
+    msgFail:"❌ <strong>Revisa.</strong> Solo se pueden sugerir los errores gramaticales: «10 year» → «10 years» y «have see» → «have seen». No se cambia «violent» ni se agrega contenido."
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+//  TABLA FINAL – dropdowns
+// ═══════════════════════════════════════════════════════════
+var TABLA_CORRECTA={
+  "desc_1":"A","desc_2":"B","desc_3":"C","desc_4":"D",
+  "ej_1":"1","ej_2":"2","ej_3":"3","ej_4":"4"
+};
+
+function checkTabla(){
+  if(isLocked("tabla_final"))return;
+  var total=0,correct=0;
+  Object.keys(TABLA_CORRECTA).forEach(function(key){
+    var sel=document.getElementById("dd_"+key); if(!sel)return;
+    total++;
+    var ok=(sel.value===TABLA_CORRECTA[key]);
+    if(ok)correct++;
+    sel.style.borderColor=ok?"var(--color-success)":"var(--color-error)";
+    sel.style.background=ok?"#f0fff4":"#fff5f5";
+    sel.disabled=true;
+  });
+  var isCorrect=(correct===total);
+  var fb=document.getElementById("fb_tabla");
+  if(fb){
+    fb.className="feedback-box visible "+(isCorrect?"correct":(correct>=6?"info":"incorrect"));
+    fb.innerHTML=isCorrect?
+      "✅ <strong>¡Perfecto!</strong> Tabla completa y correcta. Dominas los cuatro elementos clave de una Witness Letter efectiva.":
+      "⚠️ <strong>"+correct+"/"+total+" correctas.</strong> Las celdas en rojo necesitan revisión.";
+  }
+  AppState.scores["tabla_final"]=correct;
+  AppState.scores["tabla_total"]=total;
+  lockQuestion("tabla_final");
+  var btn=document.getElementById("btn_check_tabla"); if(btn)btn.disabled=true;
+  SCORM.recordInteraction("tabla_final","matching",correct+"/"+total,total+"/"+total,isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  HANDLERS
+// ═══════════════════════════════════════════════════════════
+function checkRadio(qId,feedbackId){
+  if(isLocked(qId))return;
+  var cfg=RADIO_CONFIG[qId]; if(!cfg){console.error("No config for "+qId);return;}
+  var radios=document.querySelectorAll('input[name="'+qId+'"]');
+  var sel=null; radios.forEach(function(r){if(r.checked)sel=r.value;});
+  if(!sel){alert("Selecciona una opción antes de verificar.");return;}
+  var isCorrect=(sel===cfg.correct);
+  radios.forEach(function(r){
+    r.disabled=true;
+    var item=r.closest(".radio-item");
+    if(item){
+      if(r.value===cfg.correct)item.classList.add("selected-correct");
+      else if(r.value===sel&&!isCorrect)item.classList.add("selected-wrong");
+    }
+  });
+  var fb=document.getElementById(feedbackId);
+  if(fb){fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");fb.innerHTML=isCorrect?cfg.msgOk:cfg.msgFail;}
+  AppState.scores[qId]=isCorrect; lockQuestion(qId);
+  var btn=document.getElementById("btn_"+qId); if(btn)btn.disabled=true;
+  SCORM.recordInteraction(qId,"choice",sel,cfg.correct,isCorrect?"correct":"wrong");
+}
+
+function checkCheckboxes(groupId,feedbackId){
+  if(isLocked(groupId))return;
+  var cfg=CHECKBOX_CONFIG[groupId]; if(!cfg)return;
+  var cbs=document.querySelectorAll('input[data-group="'+groupId+'"]');
+  var selected=[]; cbs.forEach(function(cb){if(cb.checked)selected.push(cb.value);});
+  if(!selected.length){alert("Selecciona al menos una opción.");return;}
+  var correctSet=cfg.correct.slice().sort(); var selectedSet=selected.slice().sort();
+  cbs.forEach(function(cb){
+    cb.disabled=true;
+    var item=cb.closest(".checkbox-item"); if(!item)return;
+    var inC=(cfg.correct.indexOf(cb.value)!==-1); var inS=(selected.indexOf(cb.value)!==-1);
+    if(inC)item.classList.add("selected-correct");
+    else if(inS&&!inC)item.classList.add("selected-wrong");
+  });
+  var isCorrect=(correctSet.join("|")===selectedSet.join("|"));
+  var fb=document.getElementById(feedbackId);
+  if(fb){fb.className="feedback-box visible "+(isCorrect?"correct":"incorrect");fb.innerHTML=isCorrect?cfg.msgOk:cfg.msgFail;}
+  AppState.scores[groupId]=isCorrect; lockQuestion(groupId);
+  var btn=document.getElementById("btn_cb_"+groupId); if(btn)btn.disabled=true;
+  SCORM.recordInteraction(groupId,"choice",selected.join("|"),cfg.correct.join("|"),isCorrect?"correct":"wrong");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VALIDACIÓN ANTES DE AVANZAR
+// ═══════════════════════════════════════════════════════════
+var SCREEN_REQS={
+  8: ["f1_1","f1_2","f1_3"],
+  9: ["f2_1","f2_2","f2_3"],
+  10:["f3_1","f3_2","f3_3"],
+  11:["f4_1","f4_2","f4_3"],
+  12:["f5_1","f5_2","f5_3"],
+  13:["f6_1","f6_2","f6_3"],
+  14:["tabla_final"]
+};
+
+function canAdvance(idx){
+  var reqs=SCREEN_REQS[idx]; if(!reqs)return true;
+  for(var i=0;i<reqs.length;i++){if(!AppState.answered[reqs[i]])return false;}
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PUNTUACIÓN FINAL
+// ═══════════════════════════════════════════════════════════
+function calcScore(){
+  var autoQ=["f1_1","f1_2","f1_3","f2_1","f2_2","f2_3","f3_1","f3_2","f3_3",
+             "f4_1","f4_2","f4_3","f5_1","f5_2","f5_3","f6_1","f6_2","f6_3"];
+  var c=0; autoQ.forEach(function(id){if(AppState.scores[id]===true)c++;});
+  var tablaC=AppState.scores["tabla_final"]||0;
+  var tablaT=AppState.scores["tabla_total"]||8;
+  return{auto:{correct:c,total:autoQ.length},tabla:{correct:tablaC,total:tablaT}};
+}
+
+function renderResults(){
+  var s=calcScore();
+  var total=s.auto.correct+s.tabla.correct;
+  var max=s.auto.total+s.tabla.total;
+  var pct=Math.round((total/max)*100); var passed=(pct>=85);
+  var sc=document.getElementById("score_circle_num"); if(sc)sc.textContent=pct+"%";
+  var sl=document.getElementById("score_label"); if(sl)sl.textContent=passed?"¡Aprobado!":"Necesitas repasar";
+
+  var frags=[
+    {label:"Fragmento 1 – Carta con múltiples riesgos",qs:["f1_1","f1_2","f1_3"]},
+    {label:"Fragmento 2 – Carta efectiva",             qs:["f2_1","f2_2","f2_3"]},
+    {label:"Fragmento 3 – Tono dubitativo extremo",    qs:["f3_1","f3_2","f3_3"]},
+    {label:"Fragmento 4 – Reference Letter",           qs:["f4_1","f4_2","f4_3"]},
+    {label:"Fragmento 5 – Correcciones ortográficas",  qs:["f5_1","f5_2","f5_3"]},
+    {label:"Fragmento 6 – Frase contraproducente",     qs:["f6_1","f6_2","f6_3"]}
+  ];
+  var html="";
+  frags.forEach(function(f){
+    var fc=0; f.qs.forEach(function(q){if(AppState.scores[q]===true)fc++;});
+    var icon=fc===3?"✅":fc===2?"⚠️":"❌";
+    html+='<div class="rb-row"><span class="rb-label">'+icon+' '+f.label+'</span><span class="rb-score">'+fc+' / 3</span></div>';
+  });
+  html+='<div class="rb-row"><span class="rb-label">📋 Tabla de elementos clave</span><span class="rb-score">'+s.tabla.correct+' / '+s.tabla.total+'</span></div>';
+  html+='<div class="rb-row" style="font-weight:700;background:var(--color-secondary)"><span class="rb-label">TOTAL</span><span class="rb-score">'+total+' / '+max+' ('+pct+'%)</span></div>';
+  var rb=document.getElementById("results_breakdown"); if(rb)rb.innerHTML=html;
+
+  var tipsEl=document.getElementById("results_tips");
+  if(tipsEl){
+    var tips=[];
+    var conFail=(AppState.scores["f1_2"]!==true||AppState.scores["f6_2"]!==true||AppState.scores["f6_3"]!==true);
+    var dubFail=(AppState.scores["f3_2"]!==true||AppState.scores["f3_3"]!==true);
+    var refFail=(AppState.scores["f4_2"]!==true);
+    var corrFail=(AppState.scores["f5_2"]!==true||AppState.scores["f5_3"]!==true);
+    var efectFail=(AppState.scores["f2_2"]!==true);
+    if(conFail)tips.push("<li><strong>Frases contraproducentes:</strong> Frases como «no vi directamente» o «escuché rumores» debilitan el testimonio. Tradúcelas fielmente y repórtalas — nunca las suavices ni las elimines.</li>");
+    if(dubFail)tips.push("<li><strong>Tono dubitativo:</strong> Cada «creo que», «me parece», «no estoy seguro» debe preservarse tal como está. Convertirlos en afirmaciones categóricas es alterar el testimonio del declarante.</li>");
+    if(refFail)tips.push("<li><strong>Reference Letters:</strong> Apoyan el Buen Carácter Moral (GMC) del cliente. Son distintas a las Witness Letters: no corroboran el abuso, sino la integración y el carácter del cliente.</li>");
+    if(corrFail)tips.push("<li><strong>Correcciones ortográficas:</strong> Solo se pueden sugerir correcciones de errores gramaticales obvios, y siempre reportándolas al supervisor. Nunca se corrige contenido ni tono.</li>");
+    if(efectFail)tips.push("<li><strong>Elementos de una carta efectiva:</strong> Relación con el cliente, observaciones directas, tiempo y contexto, declaración bajo perjurio. Si alguno falta, se puede notar — pero no se inventa.</li>");
+    if(!tips.length&&passed)tips.push("<li>¡Excelente trabajo! Identificaste correctamente todos los riesgos, tipos de carta y acciones adecuadas.</li>");
+    else if(!tips.length&&!passed)tips.push("<li>Repasa las secciones de teoría correspondientes a los fragmentos donde no obtuviste el puntaje completo.</li>");
+    tipsEl.innerHTML="<ul style='padding-left:20px;line-height:1.9;'>"+tips.join("")+"</ul>";
+  }
+  SCORM.setScore(pct,0,100); SCORM.setCompleted(passed);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SIDEBAR / NAVEGACIÓN
+// ═══════════════════════════════════════════════════════════
+function updateSidebar(idx){
+  document.querySelectorAll('.sidebar-item').forEach(function(item){
+    var t=parseInt(item.getAttribute('data-target'));
+    item.classList.remove('active','completed');
+    if(t===idx)item.classList.add('active');
+    else if(t<idx)item.classList.add('completed');
+  });
+}
+function goToScreenFromSidebar(index){
+  if(index>AppState.currentScreen){
+    for(var s=AppState.currentScreen;s<index;s++){if(!canAdvance(s)){showAdvanceWarning();return;}}
+  }
+  goToScreen(index);
+}
+function showAdvanceWarning(){
+  var w=document.getElementById("advance_warning");
+  if(w){w.style.display="block";setTimeout(function(){w.style.display="none";},4000);}
+}
+function initNavigation(){
+  var screens=document.querySelectorAll(".screen"); AppState.totalScreens=screens.length;
+  updateNavButtons(); updateProgressBar(); updateSidebar(0);
+  document.getElementById("btn_next").addEventListener("click",function(){
+    if(AppState.currentScreen<AppState.totalScreens-1){
+      if(!canAdvance(AppState.currentScreen)){showAdvanceWarning();return;}
+      goToScreen(AppState.currentScreen+1);
+    }
+  });
+  document.getElementById("btn_prev").addEventListener("click",function(){
+    if(AppState.currentScreen>0)goToScreen(AppState.currentScreen-1);
+  });
+}
+function goToScreen(index){
+  var screens=document.querySelectorAll(".screen");
+  screens[AppState.currentScreen].classList.remove("active");
+  AppState.currentScreen=index; screens[index].classList.add("active");
+  window.scrollTo(0,0);
+  updateNavButtons(); updateProgressBar(); updateSidebar(index); SCORM.setLocation(index);
+  if(screens[index].id==="screen_results")renderResults();
+}
+function updateNavButtons(){
+  var btnPrev=document.getElementById("btn_prev"); var btnNext=document.getElementById("btn_next");
+  var indicator=document.getElementById("page_indicator"); var screens=document.querySelectorAll(".screen");
+  if(btnPrev)btnPrev.disabled=(AppState.currentScreen===0);
+  if(btnNext){btnNext.disabled=(AppState.currentScreen===AppState.totalScreens-1);btnNext.style.display=(screens[AppState.currentScreen]&&screens[AppState.currentScreen].id==="screen_results")?"none":"";}
+  if(indicator)indicator.textContent="Pantalla "+(AppState.currentScreen+1)+" de "+AppState.totalScreens;
+}
+function updateProgressBar(){
+  var fill=document.getElementById("progress_fill"); var label=document.getElementById("progress_label");
+  var pct=Math.round(((AppState.currentScreen+1)/AppState.totalScreens)*100);
+  if(fill)fill.style.width=pct+"%"; if(label)label.textContent=pct+"% completado";
+}
+document.addEventListener("DOMContentLoaded",function(){
+  initNavigation();
+  var btnStart=document.getElementById("btn_start");
+  if(btnStart)btnStart.addEventListener("click",function(){goToScreen(1);});
+  var btnComplete=document.getElementById("btn_complete");
+  if(btnComplete)btnComplete.addEventListener("click",function(){
+    renderResults(); SCORM.finish();
+    btnComplete.textContent="✅ Módulo completado"; btnComplete.disabled=true;
+  });
+});
+
+</script>
+</body>
+</html>
