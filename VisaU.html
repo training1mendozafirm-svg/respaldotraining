@@ -1,0 +1,2230 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Visa U: De la Introducción al Caso | TMLF Learning Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════
+   DESIGN SYSTEM — TMLF Learning Center
+   Paleta, tipografía y variables base. No modificar sin autorización.
+   ════════════════════════════════════════════════════════════════════ */
+:root{
+  --ink:#0f1923;--slate:#5a6a7a;--steel:#6b8fa8;--ice:#8db8d8;
+  --gold:#c9a84c;--gold-bg:rgba(201,168,76,.09);
+  --white:#fff;--bg:#eef1f5;--shadow:0 8px 28px rgba(15,25,35,.11);--radius:16px;
+  --nav-h:56px;--sidebar-w:272px;
+  --green:#1e6641;--green-bg:rgba(30,102,65,.08);
+  --red:#8b2c2c;--red-bg:rgba(180,50,50,.08);
+  --amber:#7a5200;--amber-bg:rgba(180,130,0,.09);
+  --accent:#1a3a5c;--accent2:#2e5c8a;
+  --sidebar-bg:#0d1e2e;
+  --purple:#7c3aed;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+
+/* ══ TOP NAV ══ */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav-h);background:rgba(10,18,28,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);display:flex;align-items:center;padding:0 18px;gap:10px}
+.topnav .brand{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;white-space:nowrap;letter-spacing:.3px;display:flex;align-items:center;gap:10px}
+.topnav .brand .seal{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.08));border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.topnav .brand span{color:var(--gold)}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topnav-pill{padding:5px 14px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.28);color:rgba(201,168,76,.9)}
+.sidebar-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px}
+@media(max-width:900px){.sidebar-toggle{display:block}}
+
+/* ══ SHELL ══ */
+.app-shell{display:flex;min-height:100vh;padding-top:var(--nav-h)}
+
+/* ══ SIDEBAR ══ */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);position:fixed;top:var(--nav-h);bottom:0;left:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;border-right:1px solid rgba(201,168,76,.07);z-index:200;transition:transform .3s ease}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:3px}
+.sidebar-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sidebar-header .sh-label{font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px}
+.sidebar-header .sh-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.88);font-weight:600;line-height:1.3}
+.sb-group{padding:8px 0}
+.sb-group-label{padding:6px 16px 3px;font-size:8.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.sb-divider{margin:4px 14px 6px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.18),transparent)}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:all .18s;position:relative;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.045)}
+.sb-item.active{background:rgba(141,184,216,.09)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.sb-item.locked{opacity:.42;cursor:not-allowed}
+.sb-item.locked:hover{background:none}
+.sb-item.completed .sb-num{background:var(--green)!important;color:#fff!important}
+.sb-num{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);transition:all .18s}
+.sb-item.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item:hover:not(.locked) .sb-num{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+.sb-text{flex:1;min-width:0}
+.sb-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);line-height:1.3;transition:color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item.active .sb-name{color:rgba(255,255,255,.92)}
+.sb-item:hover:not(.locked) .sb-name{color:rgba(255,255,255,.82)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.sb-item.overview .sb-num{background:rgba(141,184,216,.13);color:var(--ice)}
+.sb-item.overview.active .sb-num{background:var(--ice);color:var(--ink)}
+.sb-spec-banner{margin:6px 12px 2px;padding:7px 11px;border-radius:9px;background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.03));border:1px solid rgba(201,168,76,.16);display:flex;align-items:center;gap:7px}
+.sb-spec-banner .sbb-text{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(201,168,76,.75)}
+.sb-item.exam .sb-num{background:rgba(201,168,76,.14);color:var(--gold)}
+.sb-item.exam.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item.exam .sb-name{color:rgba(255,210,80,.55)}
+.sb-item.exam.active .sb-name{color:rgba(255,210,80,.92)}
+.sb-item.practice .sb-num{background:rgba(30,102,65,.14);color:#4ade80}
+.sb-item.practice.active .sb-num{background:var(--green);color:#fff}
+.sb-item.practice .sb-name{color:rgba(74,222,128,.55)}
+.sb-item.practice.active .sb-name{color:rgba(74,222,128,.92)}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.45)}
+  .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+  .sb-overlay.show{display:block}
+}
+
+/* ══ PROGRESS BAR GLOBAL ══ */
+.progress-bar-wrap{position:fixed;top:var(--nav-h);left:0;right:0;z-index:299;height:3px;background:rgba(255,255,255,.06)}
+.progress-bar-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--ice));transition:width .5s ease;width:0%}
+
+/* ══ MAIN ══ */
+.main{margin-left:var(--sidebar-w);flex:1;padding:26px 26px 60px;max-width:100%}
+@media(max-width:900px){.main{margin-left:0;padding:18px 14px 50px}}
+
+/* ══ HEADER ══ */
+.header{background:linear-gradient(135deg,#0b1f35 0%,#0e2540 45%,#1a3a5c 100%);color:#fff;border-radius:20px;padding:42px 38px 36px;box-shadow:0 16px 40px rgba(10,20,35,.22);position:relative;overflow:hidden;margin-bottom:22px}
+.header::before{content:'';position:absolute;top:-60px;right:-40px;width:270px;height:270px;border:1.5px solid rgba(201,168,76,.1);border-radius:50%;animation:pulse 5s ease-in-out infinite}
+.header::after{content:'';position:absolute;bottom:-70px;right:90px;width:180px;height:180px;border:1.5px solid rgba(37,99,235,.08);border-radius:50%;animation:pulse 6s ease-in-out infinite .8s}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:.85}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.header-seal{position:absolute;top:26px;right:34px;width:62px;height:62px;border:1.5px solid rgba(201,168,76,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;opacity:.5;animation:pulse 4s ease-in-out infinite}
+.header-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:12px}
+.header-badge .dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+h1{font-family:'Cormorant Garamond',serif;font-size:36px;letter-spacing:.4px;position:relative;z-index:1;font-weight:700;line-height:1.15}
+.subtitle{font-size:14px;opacity:.76;max-width:52ch;position:relative;z-index:1;margin-top:6px}
+.header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.header-meta-item{display:flex;align-items:center;gap:6px;padding:5px 13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:11.5px}
+.header-meta-item span:first-child{opacity:.58}
+.header-meta-item strong{font-weight:700}
+
+/* ══ PANELS ══ */
+.panel{display:none;animation:fadeUp .28s ease both}
+.panel.active{display:block}
+
+/* ══ DISTRIBUCIÓN 20/70/10 ══ */
+.dist-bar{display:flex;border-radius:10px;overflow:hidden;height:36px;margin:14px 0}
+.dist-seg{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.dist-seg.theory{background:linear-gradient(135deg,#1a3a5c,#2e5c8a);color:#fff;flex:20}
+.dist-seg.practice{background:linear-gradient(135deg,#1e6641,#2d9d62);color:#fff;flex:70}
+.dist-seg.eval{background:linear-gradient(135deg,var(--gold),#a07828);color:#fff;flex:10}
+.dist-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.dist-lg-item{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--slate)}
+.dist-lg-dot{width:10px;height:10px;border-radius:3px}
+
+/* ══ STAT CARDS ══ */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:9px;margin-bottom:18px}
+.stat-card{background:var(--white);border-radius:13px;padding:15px;border:1px solid rgba(107,143,168,.16);text-align:center}
+.stat-card .stat-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--accent);line-height:1}
+.stat-card .stat-label{font-size:11px;color:var(--slate);margin-top:4px;font-weight:600}
+
+/* ══ BLOCKS ══ */
+.block{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(107,143,168,.15);overflow:hidden;margin-bottom:14px}
+.block:last-child{margin-bottom:0}
+.block .btitle{display:flex;align-items:center;gap:10px;padding:15px 18px;background:linear-gradient(180deg,rgba(141,184,216,.16),rgba(141,184,216,.02));border-bottom:1px solid rgba(107,143,168,.13)}
+.block .btitle .bicon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.block .btitle h3{font-size:15.5px;color:var(--ink);font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.2px;flex:1}
+.block .btitle .mod-badge{margin-left:auto;padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;flex-shrink:0}
+.badge-core{background:rgba(26,58,92,.09);color:#1a3a5c;border:1px solid rgba(26,58,92,.17)}
+.badge-warn{background:rgba(139,44,44,.08);color:#8b2c2c;border:1px solid rgba(139,44,44,.17)}
+.badge-green{background:rgba(30,102,65,.08);color:#1e6641;border:1px solid rgba(30,102,65,.17)}
+.badge-gold{background:rgba(201,168,76,.09);color:#7a5200;border:1px solid rgba(201,168,76,.2)}
+.badge-exam{background:linear-gradient(135deg,rgba(201,168,76,.16),rgba(201,168,76,.05));color:#7a5200;border:1px solid rgba(201,168,76,.28)}
+.badge-practice{background:rgba(30,102,65,.08);color:#1e6641;border:1px solid rgba(30,102,65,.17)}
+.badge-template{background:rgba(124,58,237,.08);color:#7c3aed;border:1px solid rgba(124,58,237,.2)}
+.block .bbody{padding:18px}
+.block .bbody p{margin:0 0 10px;font-size:13.5px}
+.block .bbody p:last-child{margin-bottom:0}
+
+/* ══ DIVIDERS ══ */
+.sdiv{display:flex;align-items:center;gap:11px;margin:20px 0 13px}
+.sdiv .l{flex:1;height:1px;background:linear-gradient(90deg,rgba(107,143,168,.28),transparent)}
+.sdiv .l:last-child{background:linear-gradient(270deg,rgba(107,143,168,.28),transparent)}
+.sdiv .t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--slate);white-space:nowrap}
+
+/* ══ LO CALLOUT ══ */
+.lo-callout{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.13);margin-bottom:13px}
+.lo-callout .lo-icon{font-size:17px;flex-shrink:0;margin-top:1px}
+.lo-callout .lo-text{font-size:12.5px;color:var(--slate);line-height:1.55}
+.lo-callout .lo-text strong{color:var(--ink);display:block;margin-bottom:2px;font-size:13px}
+
+/* ══ ACCORDIONS ══ */
+details.block-accordion{border:none;background:none;padding:0;margin:8px 0 0}
+details.block-accordion+details.block-accordion{margin-top:7px}
+.block-accordion-header{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.04),rgba(107,143,168,.08));border:1px solid rgba(107,143,168,.15);transition:all .2s;user-select:none}
+.block-accordion-header::-webkit-details-marker{display:none}
+details.block-accordion[open] .block-accordion-header{border-radius:11px 11px 0 0;border-bottom-color:transparent;background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.12))}
+.block-accordion-header:hover{background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.13))}
+.bac-left{display:flex;align-items:center;gap:11px}
+.bac-num{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bac-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.bac-title{font-size:13.5px;font-weight:700;color:var(--ink)}
+.bac-arrow{font-size:11px;color:var(--slate);transition:transform .2s;flex-shrink:0}
+details.block-accordion[open] .bac-arrow{transform:rotate(90deg)}
+.bac-body{padding:14px 16px 16px;border:1px solid rgba(107,143,168,.15);border-top:none;border-radius:0 0 11px 11px;background:rgba(242,244,247,.45)}
+.ev-list{margin:8px 0 0;padding:0 0 0 15px;font-size:13px;line-height:1.7}
+.ev-list li{margin-bottom:6px}
+
+/* ══ CHIPS ══ */
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chip{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:600;background:rgba(141,184,216,.13);border:1px solid rgba(107,143,168,.17);color:var(--ink)}
+.chip.green{background:var(--green-bg);border-color:rgba(30,102,65,.17);color:var(--green)}
+.chip.amber{background:var(--amber-bg);border-color:rgba(180,130,0,.19);color:var(--amber)}
+.chip.dark{background:rgba(15,25,35,.07);border-color:rgba(15,25,35,.12);color:var(--ink)}
+.chip.gold{background:var(--gold-bg);border-color:rgba(201,168,76,.2);color:#7a5200}
+.chip.red{background:rgba(180,50,50,.08);border-color:rgba(180,50,50,.18);color:#8b2c2c}
+.chip.blue{background:rgba(37,99,235,.09);border-color:rgba(37,99,235,.18);color:#1a3a5c}
+.chip.purple{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.2);color:#7c3aed}
+
+/* ══ ALERTS ══ */
+.alert{margin-top:10px;padding:10px 13px;border-radius:10px;font-size:12.5px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.alert.warn{background:var(--amber-bg);border:1px solid rgba(180,130,0,.19);color:var(--amber)}
+.alert.danger{background:var(--red-bg);border:1px solid rgba(180,50,50,.17);color:var(--red)}
+.alert.success{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.alert.info{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.18);color:var(--ink)}
+.alert.blue{background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);color:#1a3a5c}
+.alert.purple{background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);color:#7c3aed}
+.alert-icon{flex-shrink:0;margin-top:1px}
+.alert strong{font-weight:700}
+
+/* ══ PRINCIPLE ══ */
+.principle{margin-top:13px;padding:14px 17px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.03),rgba(141,184,216,.06));border:1px solid rgba(107,143,168,.17);border-left:3px solid var(--accent)}
+.principle p{margin:0;font-size:14px;font-weight:600;font-style:italic;font-family:'Cormorant Garamond',serif;line-height:1.55;color:var(--ink)}
+.principle .principle-sub{font-weight:500;color:var(--slate);margin-top:4px;font-style:normal;font-family:'DM Sans',sans-serif;font-size:12px}
+
+/* ══ OB LIST ══ */
+.ob-list{display:grid;grid-template-columns:1fr;gap:6px;margin-top:9px}
+@media(min-width:600px){.ob-list{grid-template-columns:1fr 1fr}}
+.ob-item{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:10px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.16);transition:all .2s}
+.ob-item:hover{transform:translateX(3px);background:rgba(141,184,216,.16)}
+.ob-num{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px}
+.ob-item span{font-size:12.5px;font-weight:600;line-height:1.4}
+
+/* ══ TWO COL ══ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px}
+@media(max-width:700px){.three-col{grid-template-columns:1fr}}
+@media(max-width:600px){.two-col{grid-template-columns:1fr}}
+.mini-card{padding:13px;border-radius:11px;border:1px solid rgba(107,143,168,.15);background:rgba(107,143,168,.04)}
+.mini-card h4{font-size:12.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px;color:var(--ink);font-weight:700}
+.mini-card p,.mini-card li{font-size:12px;color:var(--slate);line-height:1.6}
+.mini-card ul{padding-left:15px}
+
+/* ══ INFO TABLE ══ */
+.info-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.5px;border-radius:11px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.info-table th{background:var(--accent);color:#fff;padding:11px 14px;text-align:left;font-weight:700;font-size:11.5px}
+.info-table td{padding:10px 14px;border-bottom:1px solid rgba(107,143,168,.12)}
+.info-table tr:nth-child(even) td{background:rgba(107,143,168,.04)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:hover td{background:rgba(141,184,216,.08)}
+
+/* ══ MOD META ══ */
+.mod-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:6px;margin-bottom:13px}
+.mod-meta-item{padding:8px 12px;border-radius:9px;background:rgba(107,143,168,.055);border:1px solid rgba(107,143,168,.13)}
+.mod-meta-item .label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.mod-meta-item .value{font-size:12.5px;font-weight:700;color:var(--ink)}
+
+/* ══ OVERVIEW GRID ══ */
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:2px}
+.ov-card{background:var(--white);border-radius:12px;padding:14px;border:1px solid rgba(107,143,168,.15);cursor:pointer;transition:all .22s;display:flex;flex-direction:column;gap:4px;position:relative}
+.ov-card:hover{transform:translateY(-3px);box-shadow:0 7px 20px rgba(15,25,35,.1);border-color:var(--ice)}
+.ov-card.locked-card{opacity:.5;cursor:not-allowed;filter:grayscale(.5)}
+.ov-card.locked-card:hover{transform:none;box-shadow:none}
+.ov-card .ov-icon{font-size:22px;margin-bottom:3px}
+.ov-card strong{font-size:12px;font-weight:700;color:var(--ink);line-height:1.3}
+.ov-card small{font-size:10.5px;color:var(--slate)}
+.ov-card .lock-badge{position:absolute;top:8px;right:8px;font-size:11px;opacity:.6}
+.ov-card.exam-card{background:linear-gradient(135deg,rgba(201,168,76,.05),rgba(201,168,76,.02));border-color:rgba(201,168,76,.18)}
+.ov-card.practice-card{background:linear-gradient(135deg,rgba(30,102,65,.05),rgba(30,102,65,.02));border-color:rgba(30,102,65,.18)}
+.ov-card.completed-card{border-color:rgba(30,102,65,.3);background:rgba(30,102,65,.03)}
+
+/* ══ PROGRESS TRACKER ══ */
+.progress-section{background:var(--white);border-radius:12px;padding:16px;border:1px solid rgba(107,143,168,.15);margin-bottom:14px}
+.progress-section h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:12px}
+.prog-track{display:flex;flex-direction:column;gap:8px}
+.prog-row{display:flex;align-items:center;gap:12px}
+.prog-label{font-size:11.5px;font-weight:600;color:var(--ink);min-width:110px}
+.prog-bar-outer{flex:1;height:7px;background:rgba(107,143,168,.14);border-radius:4px;overflow:hidden}
+.prog-bar-inner{height:7px;border-radius:4px;transition:width .8s ease}
+.prog-bar-inner.theory{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.prog-bar-inner.practice{background:linear-gradient(90deg,var(--green),#2d9d62)}
+.prog-bar-inner.eval{background:linear-gradient(90deg,var(--gold),#a07828)}
+.prog-pct{font-size:11px;font-weight:700;color:var(--slate);min-width:32px;text-align:right}
+
+/* ══ EXERCISE TYPES (CK) ══ */
+/* Multiple choice */
+.ck2-question{background:rgba(242,244,247,.6);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.ck2-qtext{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px}
+.ck2-opts{display:flex;flex-direction:column;gap:7px}
+.ck2-opt{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:8px;border:1.5px solid rgba(107,143,168,.18);background:var(--white);cursor:pointer;font-size:12.5px;transition:all .18s}
+.ck2-opt:hover{border-color:var(--purple);background:rgba(124,58,237,.05)}
+.ck2-opt.selected{border-color:var(--purple);background:rgba(124,58,237,.07)}
+.ck2-opt.correct{border-color:#1e6641;background:#d1fae5;pointer-events:none}
+.ck2-opt.incorrect{border-color:#8b2c2c;background:#fee2e2;pointer-events:none}
+.ck2-opt.disabled{pointer-events:none;opacity:.7}
+.ck2-radio{width:18px;height:18px;border-radius:50%;border:2px solid rgba(107,143,168,.3);flex-shrink:0;transition:all .18s}
+.ck2-opt.selected .ck2-radio{border-color:var(--purple);background:var(--purple)}
+/* True/False */
+.ck4-question{background:rgba(242,244,247,.6);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.ck4-stmt{font-size:13px;color:var(--ink);margin-bottom:12px;padding:12px;background:var(--white);border-radius:8px;border-left:3px solid var(--purple);line-height:1.5}
+.ck4-btns{display:flex;gap:10px}
+.ck4-btn{flex:1;padding:11px 16px;border:1.5px solid rgba(107,143,168,.2);border-radius:9px;background:var(--white);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.ck4-btn:hover{border-color:var(--purple)}
+.ck4-btn.selected{border-color:var(--purple);background:rgba(124,58,237,.07);color:var(--purple)}
+.ck4-btn.correct{border-color:#1e6641;background:#d1fae5;color:#1e6641;pointer-events:none}
+.ck4-btn.incorrect{border-color:#8b2c2c;background:#fee2e2;color:#8b2c2c;pointer-events:none}
+.ck4-btn.disabled{pointer-events:none;opacity:.6}
+/* Matching */
+.ck-matching{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0}
+@media(max-width:580px){.ck-matching{grid-template-columns:1fr}}
+.ck-col-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(107,143,168,.2)}
+.ck-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:9px;border:1.5px solid rgba(107,143,168,.2);background:var(--white);cursor:pointer;transition:all .18s;margin-bottom:7px;font-size:13px;font-weight:600}
+.ck-item:hover{border-color:var(--purple);background:rgba(124,58,237,.05)}
+.ck-item.selected{border-color:var(--purple);background:rgba(124,58,237,.08)}
+.ck-badge{width:24px;height:24px;border-radius:6px;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.ck-drop{padding:11px 14px;border-radius:9px;border:1.5px dashed rgba(107,143,168,.25);background:rgba(107,143,168,.04);cursor:pointer;transition:all .18s;margin-bottom:7px;min-height:46px}
+.ck-drop:hover{border-color:var(--purple);background:rgba(124,58,237,.05)}
+.ck-drop.filled{border-style:solid;border-color:var(--purple);background:var(--white)}
+.ck-drop.correct{border-color:#1e6641!important;background:#d1fae5!important}
+.ck-drop.incorrect{border-color:#8b2c2c!important;background:#fee2e2!important}
+.ck-drop-label{font-size:12.5px;color:var(--slate)}
+/* Ordering */
+.ck3-list{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.ck3-item{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:9px;border:1.5px solid rgba(107,143,168,.2);background:var(--white);cursor:pointer;transition:all .18s;user-select:none}
+.ck3-item:hover{border-color:var(--purple);background:rgba(124,58,237,.05)}
+.ck3-item.ordered{border-color:var(--purple);background:rgba(124,58,237,.07)}
+.ck3-num{width:30px;height:30px;border-radius:7px;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;min-width:30px}
+.ck3-text{font-size:12.5px;font-weight:600;color:var(--ink)}
+/* Feedback & Buttons */
+.ck-feedback{margin-top:10px;padding:10px 13px;border-radius:9px;font-size:12.5px;display:none;line-height:1.5}
+.ck-feedback.show{display:block;animation:fadeUp .25s ease}
+.ck-feedback.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.ck-feedback.fail{background:var(--red-bg);border:1px solid rgba(139,44,44,.17);color:var(--red)}
+.ck-result-summary{margin-top:12px;padding:14px 16px;border-radius:10px;background:var(--white);border:1px solid rgba(107,143,168,.18);text-align:center;font-size:15px;font-weight:700;display:none}
+.ck-result-summary.ok{color:var(--green)}.ck-result-summary.warn{color:var(--amber)}.ck-result-summary.fail{color:var(--red)}
+.ck-actions{display:flex;gap:10px;justify-content:center;margin-top:16px}
+.ck-btn{padding:10px 24px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.ck-verify{background:var(--purple);color:#fff}
+.ck-verify:hover{background:#6d28d9;box-shadow:0 4px 12px rgba(124,58,237,.35)}
+.ck-retry{background:rgba(107,143,168,.12);color:var(--slate);border:1px solid rgba(107,143,168,.2)}
+.ck-retry:hover{background:rgba(107,143,168,.22)}
+.ck-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.ck-next:hover{box-shadow:0 4px 14px rgba(26,58,92,.35);transform:translateY(-1px)}
+.ck-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--purple);margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid rgba(124,58,237,.15)}
+
+/* ══ FINAL EXAM ══ */
+.q-item{background:rgba(242,244,247,.7);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.q-stem{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.5}
+.q-opts{display:flex;flex-direction:column;gap:7px}
+.q-opt{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:8px;border:1.5px solid rgba(107,143,168,.18);background:var(--white);cursor:pointer;font-size:12.5px;transition:all .18s}
+.q-opt:hover{border-color:var(--accent2);background:rgba(26,58,92,.04)}
+.q-opt.selected{border-color:var(--accent2);background:rgba(26,58,92,.06)}
+.q-opt.correct{border-color:#1e6641;background:#d1fae5;pointer-events:none}
+.q-opt.incorrect{border-color:#8b2c2c;background:#fee2e2;pointer-events:none}
+.q-opt.disabled{pointer-events:none;opacity:.7}
+.q-letter{width:22px;height:22px;border-radius:5px;background:rgba(107,143,168,.13);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;flex-shrink:0}
+.q-feedback{display:none;margin-top:10px;padding:9px 12px;border-radius:8px;font-size:12px;line-height:1.5}
+.q-feedback.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.q-feedback.fail{background:var(--red-bg);border:1px solid rgba(139,44,44,.17);color:var(--red)}
+.q-feedback.show{display:block}
+.eval-footer{padding:14px 16px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid rgba(107,143,168,.12)}
+.btn-retry,.btn-submit{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.btn-retry{background:rgba(107,143,168,.12);color:var(--slate);display:none}
+.btn-retry:hover{background:rgba(107,143,168,.22)}
+.btn-submit{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.btn-submit:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(26,58,92,.35)}
+.btn-submit:disabled{opacity:.45;cursor:not-allowed}
+.result-card{display:none;margin:0 16px 16px;padding:22px;border-radius:13px;background:linear-gradient(135deg,rgba(26,58,92,.04),rgba(141,184,216,.06));border:1px solid rgba(107,143,168,.18);text-align:center}
+.result-card.show{display:block;animation:fadeUp .3s ease}
+.result-score{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1}
+.result-score.pass{color:var(--green)}.result-score.warn{color:var(--amber)}.result-score.fail{color:var(--red)}
+.result-label{font-size:13px;font-weight:700;color:var(--ink);margin:6px 0 8px}
+.result-msg{font-size:12px;color:var(--slate);line-height:1.6;max-width:50ch;margin:0 auto 14px}
+.result-breakdown{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.rb-item{padding:10px 18px;border-radius:10px;text-align:center;min-width:80px}
+.rb-ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17)}
+.rb-bad{background:var(--red-bg);border:1px solid rgba(139,44,44,.17)}
+.rb-mod{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.17)}
+.rb-n{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1}
+.rb-ok .rb-n{color:var(--green)}.rb-bad .rb-n{color:var(--red)}.rb-mod .rb-n{color:var(--slate)}
+.rb-l{font-size:10px;font-weight:700;color:var(--slate);margin-top:2px}
+
+/* ══ PRACTICE/SIMULATOR ══ */
+.sim-card{background:linear-gradient(135deg,rgba(30,102,65,.04),rgba(30,102,65,.01));border:1.5px dashed rgba(30,102,65,.25);border-radius:14px;padding:24px;text-align:center;margin-bottom:12px}
+.sim-card .sim-icon{font-size:38px;margin-bottom:10px;opacity:.7}
+.sim-card h4{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.sim-card p{font-size:12.5px;color:var(--slate);max-width:40ch;margin:0 auto 14px;line-height:1.6}
+.sim-card .sim-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;background:rgba(30,102,65,.08);border:1px solid rgba(30,102,65,.2);font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:10px}
+.sim-item{background:var(--white);border-radius:11px;padding:16px;border:1px solid rgba(107,143,168,.15);display:flex;flex-direction:column;gap:6px;opacity:.75}
+.sim-item .si-icon{font-size:24px}
+.sim-item h5{font-size:13px;font-weight:700;color:var(--ink)}
+.sim-item p{font-size:11.5px;color:var(--slate);line-height:1.5;margin:0}
+.sim-item .si-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--green);margin-top:4px}
+
+/* ══ TEMPLATE NOTE ══ */
+.template-note{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:10px;background:rgba(124,58,237,.06);border:1px dashed rgba(124,58,237,.25);margin-bottom:12px;font-size:12px;color:var(--purple);line-height:1.55}
+.template-note .tn-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.template-note strong{font-weight:700;display:block;margin-bottom:2px}
+
+/* ══ SECTION PAGE TITLE ══ */
+.page-title{margin-bottom:16px}
+.page-title .pt-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate);margin-bottom:4px}
+.page-title h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.page-title .pt-sub{font-size:13px;color:var(--slate);margin-top:3px}
+
+/* ══ ROADMAP ══ */
+.roadmap{display:flex;flex-direction:column;gap:0;margin-top:11px;position:relative}
+.roadmap::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2),var(--ice));border-radius:2px}
+.rm-item{display:flex;gap:15px;padding:0 0 16px;position:relative}
+.rm-dot{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;box-shadow:0 3px 9px rgba(26,58,92,.25)}
+.rm-dot.locked{background:rgba(107,143,168,.2)!important;box-shadow:none;color:rgba(107,143,168,.5)!important}
+.rm-dot.done{background:linear-gradient(135deg,var(--green),#2d9d62)!important}
+.rm-content{padding:8px 12px;background:var(--white);border-radius:10px;border:1px solid rgba(107,143,168,.15);flex:1;transition:all .2s}
+.rm-content:hover{border-color:var(--ice);transform:translateX(3px)}
+.rm-level{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px}
+.rm-level.intro{color:var(--green)}.rm-level.inter{color:var(--amber)}.rm-level.avanz{color:#1a3a5c}
+.rm-content h4{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 2px}
+.rm-content p{font-size:11.5px;color:var(--slate);margin:0}
+
+/* ════════════════════════════════════════════════════════════════════
+   SISTEMA EXTENDIDO — BLOQUES CON COLOR
+   Fuente: TMLF_Criterio_VisaT_Abogados
+   Uso: Agrega la clase al .block para aplicar la variante de color
+   ════════════════════════════════════════════════════════════════════ */
+/* 🔵 Ejercicio / práctica — azul */
+.block.b-ejercicio{border-color:rgba(37,99,235,.18);background:#f0f6ff}
+.block.b-ejercicio .btitle{background:rgba(37,99,235,.07);border-bottom-color:rgba(37,99,235,.12)}
+.block.b-ejercicio .btitle h3,.block.b-ejercicio .btitle h2{color:#1a3a8f}
+.block.b-ejercicio .mod-badge{background:rgba(37,99,235,.1);color:#1e40af;border-color:rgba(37,99,235,.25)}
+/* 🟡 Concepto / teoría — dorado */
+.block.b-concepto{border-color:rgba(201,168,76,.22);background:#fffdf0}
+.block.b-concepto .btitle{background:rgba(201,168,76,.08);border-bottom-color:rgba(201,168,76,.15)}
+.block.b-concepto .btitle h3,.block.b-concepto .btitle h2{color:#7a5200}
+.block.b-concepto .mod-badge{background:rgba(201,168,76,.14);color:#7a5200;border-color:rgba(201,168,76,.3)}
+/* 🟢 Caso práctico / ejemplo — verde */
+.block.b-caso{border-color:rgba(30,102,65,.18);background:#f0fbf5}
+.block.b-caso .btitle{background:rgba(30,102,65,.07);border-bottom-color:rgba(30,102,65,.12)}
+.block.b-caso .btitle h3,.block.b-caso .btitle h2{color:#1e5c3a}
+.block.b-caso .mod-badge{background:rgba(30,102,65,.1);color:#1a5234;border-color:rgba(30,102,65,.25)}
+/* 🟣 Flujo / herramienta / proceso — violeta */
+.block.b-flujo{border-color:rgba(109,40,217,.16);background:#faf5ff}
+.block.b-flujo .btitle{background:rgba(109,40,217,.06);border-bottom-color:rgba(109,40,217,.12)}
+.block.b-flujo .btitle h3,.block.b-flujo .btitle h2{color:#5b21b6}
+.block.b-flujo .mod-badge{background:rgba(109,40,217,.09);color:#5b21b6;border-color:rgba(109,40,217,.22)}
+/* 🔴 Error / advertencia crítica — rojo */
+.block.b-error{border-color:rgba(139,44,44,.18);background:#fff5f5}
+.block.b-error .btitle{background:rgba(139,44,44,.06);border-bottom-color:rgba(139,44,44,.12)}
+.block.b-error .btitle h3,.block.b-error .btitle h2{color:#8b2c2c}
+.block.b-error .mod-badge{background:rgba(139,44,44,.1);color:#8b2c2c;border-color:rgba(139,44,44,.22)}
+/* ⭐ Evaluación / cierre especial — dorado oscuro */
+.block.b-eval{border-color:rgba(201,168,76,.35);background:linear-gradient(135deg,#fffdf0 0%,#fff8e1 100%)}
+.block.b-eval .btitle{background:rgba(201,168,76,.13);border-bottom-color:rgba(201,168,76,.22)}
+.block.b-eval .btitle h3,.block.b-eval .btitle h2{color:#7a5200}
+
+/* ════════════════════════════════════════════════════════════════════
+   HIGHLIGHTS INLINE — TEXTO RESALTADO
+   Uso: <mark class="hi">texto</mark> dentro de párrafos
+   ════════════════════════════════════════════════════════════════════ */
+mark.hi{background:rgba(201,168,76,.22);color:#5a3e00;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(201,168,76,.5)}
+mark.hi-red{background:rgba(180,40,40,.12);color:#7a1a1a;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(180,40,40,.4)}
+mark.hi-blue{background:rgba(37,99,235,.1);color:#1a3a8f;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(37,99,235,.35)}
+mark.hi-green{background:rgba(30,102,65,.1);color:#1a5234;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(30,102,65,.35)}
+
+/* ════════════════════════════════════════════════════════════════════
+   CRITICAL RULE — BLOQUE DE REGLA CRÍTICA / PREMISA CLAVE
+   Uso: Reemplaza lo-callout cuando el punto es de máxima importancia
+   ════════════════════════════════════════════════════════════════════ */
+.critical-rule{background:linear-gradient(135deg,rgba(15,25,35,.96) 0%,rgba(26,58,92,.97) 100%);border-radius:14px;padding:18px 22px;margin:16px 0;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(15,25,35,.18)}
+.critical-rule::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.critical-rule-label{font-size:9px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:rgba(201,168,76,.7);margin-bottom:8px}
+.critical-rule-text{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:#fff;line-height:1.3;letter-spacing:.1px;text-transform:uppercase}
+.critical-rule-text em{font-style:normal;color:rgba(201,168,76,.95)}
+.critical-rule-sub{font-size:12px;color:rgba(255,255,255,.58);margin-top:8px;line-height:1.55}
+.critical-rule-sub strong{color:rgba(255,255,255,.82)}
+
+/* ════════════════════════════════════════════════════════════════════
+   CRITICAL VARIANTS — RESALTAR ELEMENTOS CLAVE
+   ════════════════════════════════════════════════════════════════════ */
+/* Fila crítica en tabla */
+tr.tr-critical{background:rgba(201,168,76,.08)!important}
+tr.tr-critical td{font-weight:700;color:var(--ink)}
+tr.tr-critical td:first-child{border-left:3px solid var(--gold)}
+/* Tarjeta ov-card resaltada */
+.ov-card.ov-critical{border:2px solid rgba(201,168,76,.45)!important;background:rgba(201,168,76,.06)!important;box-shadow:0 0 0 3px rgba(201,168,76,.08)}
+/* mini-card resaltada */
+.mini-card.mc-critical{border:2px solid rgba(37,99,235,.3)!important;background:rgba(37,99,235,.05)!important}
+/* Error item crítico */
+.error-item.ei-critical{border:1.5px solid rgba(139,44,44,.3)!important;background:rgba(139,44,44,.04)!important}
+
+/* ════════════════════════════════════════════════════════════════════
+   CASE BOX — CAJA DE CASO PRÁCTICO / NARRATIVA
+   Uso: Para presentar un caso o situación real como punto de partida
+   ════════════════════════════════════════════════════════════════════ */
+.case-box{background:linear-gradient(135deg,#f8f9fb,#f2f4f8);border:1px solid rgba(15,25,35,.1);border-radius:14px;padding:20px 22px;margin-bottom:16px;position:relative}
+.case-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold);border-radius:14px 0 0 14px}
+.case-label{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.case-narrative{font-size:14px;color:var(--ink);line-height:1.7;font-style:italic}
+
+/* ════════════════════════════════════════════════════════════════════
+   SCENARIO CARD — TARJETA DE ESCENARIO PARA EJERCICIOS
+   Uso: Presentar situaciones en ejercicios de análisis
+   ════════════════════════════════════════════════════════════════════ */
+.scenario-card{background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:14px;padding:20px 22px;margin-bottom:14px;box-shadow:0 2px 8px rgba(15,25,35,.05)}
+.scenario-num{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--slate);margin-bottom:8px}
+.scenario-text{font-size:14px;color:var(--ink);line-height:1.65;margin-bottom:14px;padding:12px 16px;background:rgba(15,25,35,.025);border-radius:9px;border-left:3px solid var(--gold)}
+.scenario-q{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px}
+/* Botones de opción para escenarios */
+.opt-btn{display:block;width:100%;text-align:left;padding:11px 16px;margin-bottom:7px;border-radius:10px;border:1.5px solid rgba(15,25,35,.1);background:var(--white);font-size:13.5px;cursor:pointer;transition:all .18s;color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.45}
+.opt-btn:hover{border-color:rgba(37,99,235,.35);background:rgba(37,99,235,.04);color:var(--accent)}
+.opt-btn.correct{border-color:rgba(30,102,65,.5);background:var(--green-bg);color:var(--green);pointer-events:none}
+.opt-btn.wrong{border-color:rgba(139,44,44,.4);background:var(--red-bg);color:var(--red);pointer-events:none}
+
+/* ════════════════════════════════════════════════════════════════════
+   STRENGTH METER — BARRA DE FORTALEZA / NIVEL
+   Uso: Indicar visualmente la fortaleza de un elemento o argumento
+   ════════════════════════════════════════════════════════════════════ */
+.strength-bar{height:6px;border-radius:999px;background:rgba(15,25,35,.08);margin-top:8px;overflow:hidden}
+.strength-fill{height:100%;border-radius:999px;transition:width .5s ease}
+.strength-fill.strong{background:var(--green);width:85%}
+.strength-fill.medium{background:var(--gold);width:55%}
+.strength-fill.weak{background:var(--red);width:25%}
+.strength-label{font-size:10.5px;font-weight:700;letter-spacing:.4px;margin-top:4px}
+.strength-label.strong{color:var(--green)}.strength-label.medium{color:var(--amber)}.strength-label.weak{color:var(--red)}
+
+/* ════════════════════════════════════════════════════════════════════
+   OVERVIEW GRID HORIZONTAL — TARJETAS CON ÍCONO + TEXTO
+   Uso: Presentar principios, pasos o conceptos clave con iconos
+   ════════════════════════════════════════════════════════════════════ */
+.overview-grid-h{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px}
+.ov-card-h{background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:12px;padding:16px;display:flex;gap:12px;align-items:flex-start;transition:all .2s}
+.ov-card-h:hover{border-color:var(--ice);box-shadow:0 4px 12px rgba(15,25,35,.07)}
+.ov-card-h .ov-icon-h{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ov-card-h .ov-label-h{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);margin-bottom:3px}
+.ov-card-h .ov-title-h{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.3}
+.ov-card-h .ov-desc-h{font-size:12px;color:var(--slate);line-height:1.45}
+.ov-card-h.ov-h-critical{border:2px solid rgba(201,168,76,.45);background:rgba(201,168,76,.04)}
+
+/* ════════════════════════════════════════════════════════════════════
+   FLOW DIAGRAM — DIAGRAMA DE FLUJO INTERACTIVO
+   Uso: Presentar flujos de decisión o procesos secuenciales
+   ════════════════════════════════════════════════════════════════════ */
+.flow-container{padding:8px 0}
+.flow-node{background:var(--white);border:1.5px solid rgba(15,25,35,.1);border-radius:12px;padding:12px 18px;margin:0 auto 8px;max-width:480px;text-align:center;font-size:13px;cursor:pointer;transition:all .22s;color:var(--ink)}
+.flow-node:hover{border-color:rgba(37,99,235,.4);background:rgba(37,99,235,.04);transform:translateY(-1px);box-shadow:0 4px 14px rgba(37,99,235,.1)}
+.flow-node.active{border-color:var(--gold);background:var(--gold-bg);color:var(--amber)}
+.flow-node.result-ok{border-color:rgba(30,102,65,.5);background:var(--green-bg);color:var(--green)}
+.flow-node.result-warn{border-color:rgba(201,168,76,.5);background:var(--gold-bg);color:var(--amber)}
+.flow-node.result-no{border-color:rgba(139,44,44,.4);background:var(--red-bg);color:var(--red)}
+.flow-node.result-info{border-color:rgba(141,184,216,.5);background:rgba(141,184,216,.1);color:var(--accent2)}
+.flow-arrow{text-align:center;font-size:18px;color:var(--slate);margin:3px 0;opacity:.5}
+.flow-branch{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:480px;margin:0 auto 8px}
+.flow-branch .flow-node{margin:0}
+.flow-question{font-weight:700;font-size:13.5px;color:var(--ink)}
+.flow-sub{font-size:11.5px;color:var(--slate);margin-top:3px}
+.flow-node.fn-disabled{opacity:.45;pointer-events:none}
+
+/* ════════════════════════════════════════════════════════════════════
+   MATRIX TABLE — TABLA DE MATRIZ CON INDICADORES DE FUERZA
+   Uso: Comparar múltiples elementos en filas/columnas con indicadores
+   ════════════════════════════════════════════════════════════════════ */
+.matrix-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.matrix-table th{padding:9px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);border-bottom:2px solid rgba(15,25,35,.1)}
+.matrix-table td{padding:10px 12px;border-bottom:1px solid rgba(15,25,35,.06);vertical-align:top;line-height:1.5}
+.matrix-table tr:last-child td{border-bottom:none}
+.dot-strong{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--green);margin-right:5px;vertical-align:middle}
+.dot-medium{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--gold);margin-right:5px;vertical-align:middle}
+.dot-weak{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--red);margin-right:5px;vertical-align:middle}
+
+/* ════════════════════════════════════════════════════════════════════
+   ERROR ITEM — TARJETA DE ERROR CON ÍCONO, TÍTULO Y SOLUCIÓN
+   Uso: Listar errores comunes con descripción y cómo corregirlos
+   ════════════════════════════════════════════════════════════════════ */
+.error-item{display:flex;gap:14px;padding:14px 16px;background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:12px;margin-bottom:10px}
+.ei-icon{width:36px;height:36px;border-radius:9px;background:var(--red-bg);border:1px solid rgba(139,44,44,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ei-body .ei-title{font-size:13.5px;font-weight:700;color:var(--red);margin-bottom:4px}
+.ei-body .ei-desc{font-size:13px;color:var(--slate);line-height:1.5}
+.ei-body .ei-fix{font-size:12px;color:var(--green);margin-top:6px;font-weight:600}
+
+/* ════════════════════════════════════════════════════════════════════
+   GAP CARD — TARJETA DE VACÍO O PUNTO PENDIENTE
+   Uso: Identificar información faltante o áreas de mejora
+   ════════════════════════════════════════════════════════════════════ */
+.gap-card{background:rgba(139,44,44,.04);border:1px solid rgba(139,44,44,.18);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.gap-card .gc-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.gap-card .gc-icon{font-size:16px}
+.gap-card .gc-label{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--red)}
+.gap-card .gc-body{font-size:13px;color:var(--ink);line-height:1.5}
+.gap-card .gc-action{font-size:12px;color:var(--green);font-weight:600;margin-top:8px}
+
+/* ════════════════════════════════════════════════════════════════════
+   BOOK CAROUSEL — CARRUSEL DE PÁGINAS CON PROGRESO
+   Uso: Presentar contenido largo en páginas navegables
+   ════════════════════════════════════════════════════════════════════ */
+.book-wrap{position:relative}
+.book-pages{overflow:hidden}
+.book-page{display:none}
+.book-page.bp-active{display:block;animation:fadeUp .25s ease}
+.book-progress{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;background:var(--accent);border-radius:10px}
+.book-prog-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.book-prog-track{flex:1;height:4px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden}
+.book-prog-fill{height:100%;background:var(--gold);border-radius:4px;transition:width .35s ease}
+.book-prog-count{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);flex-shrink:0}
+.book-nav{display:flex;align-items:center;justify-content:space-between;margin-top:16px;gap:10px}
+.book-btn{display:flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.book-btn-prev{background:var(--bg);color:var(--slate);border:1.5px solid rgba(90,106,122,.2)}
+.book-btn-prev:hover{background:#e2e6eb;color:var(--ink)}
+.book-btn-prev:disabled{opacity:.3;cursor:default}
+.book-btn-next{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(26,58,92,.25)}
+.book-btn-next:hover{background:var(--accent2)}
+.book-btn-next:disabled{opacity:.4;cursor:default}
+.book-btn-next.bp-done{background:var(--green)}
+.book-dots{display:flex;gap:5px;align-items:center}
+.book-dot{width:7px;height:7px;border-radius:50%;background:rgba(90,106,122,.25);cursor:pointer;transition:all .2s;border:none;padding:0}
+.book-dot.bd-active{background:var(--accent);width:18px;border-radius:4px}
+
+/* ════════════════════════════════════════════════════════════════════
+   SECTION HEAD — ENCABEZADO DE SECCIÓN CON BADGE
+   Uso: Separar visualmente secciones dentro de un módulo
+   ════════════════════════════════════════════════════════════════════ */
+.section-head{margin-bottom:18px}
+.section-head h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--ink);line-height:1.2}
+.section-head p{font-size:14px;color:var(--slate);margin-top:5px;max-width:60ch}
+.section-head .sh-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;background:var(--gold-bg);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+
+/* ════════════════════════════════════════════════════════════════════
+   MOD NAV BAR — BARRA DE NAVEGACIÓN ENTRE MÓDULOS
+   Uso: Al final de cada módulo para ir al siguiente
+   ════════════════════════════════════════════════════════════════════ */
+.mod-nav-bar{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid rgba(107,143,168,.15)}
+.mod-nav-btn{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.mod-nav-prev{background:rgba(107,143,168,.1);color:var(--slate);border:1px solid rgba(107,143,168,.2)}
+.mod-nav-prev:hover{background:rgba(107,143,168,.2)}
+.mod-nav-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(26,58,92,.2)}
+.mod-nav-next:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,58,92,.3)}
+
+/* ════════════════════════════════════════════════════════════════════
+   ALERT EXTRA — VARIANTE GOLD
+   ════════════════════════════════════════════════════════════════════ */
+.alert.gold{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);color:var(--amber)}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   EXTENSIÓN VISA U — Componentes propios recoloreados con el
+   sistema de variables de TMLF_BaseMaestra_v2
+   ════════════════════════════════════════════════════════════════════ */
+:root{
+  --u-green-bg:rgba(30,102,65,.08);
+  --u-red-bg:rgba(180,50,50,.08);
+}
+
+/* Objetivo de módulo (usa look de lo-callout pero reutilizable como bloque suelto) */
+.module-objective{font-size:13.5px;color:var(--slate);line-height:1.6;margin:0 0 4px}
+
+/* Info / warning cards */
+.info-card,.warning-card{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:12px;margin:14px 0}
+.info-card{background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.16);border-left:4px solid var(--accent2)}
+.warning-card{background:var(--amber-bg);border:1px solid rgba(180,130,0,.19);border-left:4px solid var(--gold)}
+.info-card .info-icon,.warning-card .info-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.info-card strong,.warning-card strong{display:block;color:var(--ink);font-size:13.5px;margin-bottom:3px}
+.info-card p,.warning-card p{margin:0;font-size:13px;color:var(--slate);line-height:1.55}
+.info-card ul,.warning-card ul{margin:6px 0 0;padding-left:16px;font-size:13px;color:var(--slate);line-height:1.7}
+
+/* Key concept */
+.key-concept{background:linear-gradient(135deg,rgba(201,168,76,.09),rgba(201,168,76,.02));border:1px solid rgba(201,168,76,.22);border-left:4px solid var(--gold);border-radius:12px;padding:14px 16px;margin:14px 0}
+.key-label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--amber);margin-bottom:5px}
+.key-concept p{margin:0;font-size:13.5px;color:var(--ink);line-height:1.55}
+
+/* Benefits grid */
+.benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:12px 0}
+.benefit-card{background:var(--white);border:1px solid rgba(107,143,168,.15);border-radius:12px;padding:14px;transition:all .2s}
+.benefit-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(15,25,35,.08);border-color:var(--ice)}
+.benefit-card .benefit-icon{font-size:20px;margin-bottom:6px}
+.benefit-card h4{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.benefit-card p{font-size:11.5px;color:var(--slate);line-height:1.5;margin:0}
+
+/* Criteria list (Módulo 2) */
+.criteria-list{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.criterion-item{display:flex;gap:13px;background:var(--white);border:1px solid rgba(107,143,168,.15);border-radius:12px;padding:14px 16px}
+.criterion-num{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.criterion-body h4{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.criterion-body p{font-size:12.5px;color:var(--slate);line-height:1.55;margin:0 0 4px}
+.criterion-example{font-size:11.5px!important;color:#6b7686!important;font-style:italic;margin-top:6px!important;padding-top:6px;border-top:1px dashed rgba(107,143,168,.25)}
+.criterion-example strong{color:var(--accent2)!important;font-style:normal}
+
+/* Certification grid */
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:12px 0}
+.cert-item{background:rgba(107,143,168,.06);border:1px solid rgba(107,143,168,.15);border-radius:10px;padding:10px 13px;font-size:12px;font-weight:600;color:var(--ink)}
+
+/* Victim cards (Módulo 3) */
+.victim-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}
+.victim-card{background:var(--white);border-radius:13px;padding:16px;border:1px solid rgba(107,143,168,.15)}
+.victim-card.direct{border-left:4px solid var(--accent2)}
+.victim-card.indirect{border-left:4px solid var(--gold)}
+.victim-card .victim-icon{font-size:22px;margin-bottom:6px}
+.victim-card h4{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.victim-card p{font-size:12.5px;color:var(--slate);line-height:1.55;margin:0 0 6px}
+.victim-card ul{margin:0;padding-left:16px;font-size:12.5px;color:var(--slate);line-height:1.7}
+
+/* Comparison table (used as 2-column cards) */
+.comparison-table{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media(max-width:600px){.comparison-table{grid-template-columns:1fr}}
+.compare-col{background:var(--white);border:1px solid rgba(107,143,168,.15);border-radius:12px;padding:15px 17px}
+.compare-col.alt{background:rgba(201,168,76,.04);border-color:rgba(201,168,76,.2)}
+.compare-col h4{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.compare-col ul{margin:0;padding-left:0;list-style:none;font-size:12.5px;color:var(--slate);line-height:1.9}
+
+/* Requirement mini cards */
+.req-cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:12px 0}
+.req-mini{background:rgba(107,143,168,.05);border:1px solid rgba(107,143,168,.15);border-radius:11px;padding:13px}
+.req-mini strong{display:block;font-size:12.5px;color:var(--ink);margin-bottom:4px}
+.req-mini p{font-size:11.5px;color:var(--slate);line-height:1.5;margin:0}
+
+/* Step blocks (Módulo 6 — 5 secciones DCL) */
+.step-block{display:flex;gap:14px;margin-bottom:10px}
+.step-num{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.step-content{flex:1;background:var(--white);border:1px solid rgba(107,143,168,.15);border-radius:11px;padding:12px 15px}
+.step-content h4{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.step-content ul{margin:0;padding-left:16px;font-size:12px;color:var(--slate);line-height:1.7}
+.step-content p{font-size:12.5px;color:var(--slate);line-height:1.6;margin:0}
+
+/* Crimes grid (Módulo 5) */
+.hint-text{font-size:11.5px;color:var(--slate);margin:2px 0 10px}
+.crimes-grid{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.crime-tag{background:var(--accent);color:#fff;border:2px solid var(--accent);padding:5px 12px;border-radius:20px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s}
+.crime-tag:hover{background:var(--accent2);transform:translateY(-1px)}
+.crime-tag.active{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.crimes-source-link{margin:6px 0 14px}
+.crimes-source-link a{font-size:12.5px;font-weight:700;color:var(--accent2);text-decoration:none}
+.crimes-source-link a:hover{text-decoration:underline}
+.crime-detail{background:var(--white);border:1px solid var(--gold);border-left:5px solid var(--gold);border-radius:12px;padding:14px 17px;margin:8px 0 16px;box-shadow:var(--shadow)}
+.crime-detail-title{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--ink);font-size:16px;margin-bottom:7px}
+.crime-detail-def,.crime-detail-example{font-size:12.5px;color:var(--slate);line-height:1.55;margin-bottom:5px}
+.crime-detail-def strong,.crime-detail-example strong{color:var(--ink)}
+
+/* Template / documento externo link */
+.doc-template-link{display:inline-block;margin-top:6px;padding:9px 18px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff!important;border-radius:9px;font-weight:700;font-size:13px;text-decoration:none!important;box-shadow:0 4px 14px rgba(26,58,92,.2);transition:all .2s}
+.doc-template-link:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,58,92,.3)}
+
+/* ══ EJERCICIOS DE MÓDULO — variantes propias sobre el sistema CK ══ */
+.ck2-opt.ck2-multi.selected{border-color:var(--accent2);background:rgba(26,58,92,.06)}
+.ck2-opt .ck2-radio.ck2-check{border-radius:5px}
+.ck2-opt.ck2-multi .ck2-radio.ck2-check{border-radius:5px}
+.ck2-opt.ck2-multi.selected .ck2-radio{background:var(--accent2);border-color:var(--accent2)}
+
+.ckf-group{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px}
+.ckf-input{padding:9px 12px;border-radius:8px;border:1.5px solid rgba(107,143,168,.25);font-family:'DM Sans',sans-serif;font-size:13px;max-width:130px}
+.ckf-input:focus{outline:none;border-color:var(--accent2)}
+.ckf-sep{font-size:12.5px;color:var(--slate)}
+
+.ck3-item.disabled-ord{pointer-events:none;opacity:.85}
+
+/* ══ EXAMEN FINAL — PAGINACIÓN TIPO EBOOK (reutiliza .book-wrap) ══ */
+.exam-book .q-item{margin-bottom:0}
+.exam-tabs-row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.exam-tab-dot{min-width:32px;height:32px;padding:0 4px;border-radius:8px;border:2px solid rgba(107,143,168,.2);background:var(--white);color:var(--ink);font-weight:700;font-size:12px;cursor:pointer;transition:all .18s}
+.exam-tab-dot:hover{border-color:var(--accent2)}
+.exam-tab-dot.answered{border-color:var(--gold);background:rgba(201,168,76,.08)}
+.exam-tab-dot.current{background:var(--accent);border-color:var(--accent);color:#fff}
+.exam-tab-dot.current.answered{background:var(--accent);border-color:var(--gold)}
+
+/* ══ PANEL DE ADMINISTRADOR ══ */
+.admin-lock-btn{background:transparent;border:1.5px solid rgba(201,168,76,.4);color:rgba(255,255,255,.85);width:32px;height:32px;border-radius:50%;font-size:14px;cursor:pointer;margin-left:8px;transition:all .18s}
+.admin-lock-btn:hover{background:var(--gold);color:var(--ink)}
+.admin-modal-overlay{position:fixed;inset:0;background:rgba(10,18,28,.6);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+.admin-modal-card{background:var(--white);border-radius:var(--radius);padding:28px 26px;max-width:330px;width:100%;box-shadow:var(--shadow);text-align:center}
+.admin-modal-card h3{font-family:'Cormorant Garamond',serif;color:var(--ink);font-size:18px;margin-bottom:5px}
+.admin-modal-card p{font-size:12px;color:var(--slate);margin-bottom:12px}
+.admin-pass-input{width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1.5px solid rgba(107,143,168,.25);text-align:center;font-size:14px;margin-bottom:8px}
+.admin-modal-error{color:var(--red);font-size:11.5px;font-weight:600;margin-bottom:8px}
+.admin-modal-actions{display:flex;gap:8px;justify-content:center;margin-top:6px}
+.admin-raw{background:#0d1e2e;color:#c9d3e8;padding:14px 16px;border-radius:11px;font-size:11.5px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;margin:10px 0 4px}
+.admin-table-wrap{overflow-x:auto;margin:10px 0 20px;border-radius:11px;border:1px solid rgba(107,143,168,.15)}
+.admin-table{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
+.admin-table th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left;font-weight:700;font-size:10.5px}
+.admin-table td{padding:8px 12px;border-top:1px solid rgba(107,143,168,.12);vertical-align:top}
+.admin-table tr.row-correct td:last-child{color:var(--green);font-weight:700}
+.admin-table tr.row-incorrect td:last-child{color:var(--red);font-weight:700}
+.admin-table tr:nth-child(even){background:rgba(107,143,168,.04)}
+
+</style>
+</head>
+<body>
+
+<!-- ════ TOP NAV ════ -->
+<nav class="topnav">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <div class="seal">🎓</div>
+    TMLF <span>Learning Center</span>
+  </div>
+  <div class="topnav-right">
+    <div class="topnav-pill">Visa U</div>
+    <button class="admin-lock-btn" id="admin-lock-btn" title="Panel de administrador">🔒</button>
+  </div>
+</nav>
+
+<!-- ════ PROGRESS BAR GLOBAL ════ -->
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="globalProgress"></div></div>
+
+<!-- ════ SIDEBAR OVERLAY (mobile) ════ -->
+<div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
+
+<!-- ════ APP SHELL ════ -->
+<div class="app-shell">
+
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sh-label">TMLF Learning Center</div>
+      <div class="sh-title">Visa U: De la Introducción al Caso</div>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Inicio</div>
+      <div class="sb-item overview active" id="nav-intro" data-id="intro" onclick="_navigateTo('intro')">
+        <div class="sb-num">📋</div>
+        <div class="sb-text"><div class="sb-name">Introducción</div><div class="sb-sub">Cómo usar este training</div></div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Módulos del Training</div>
+      <div class="sb-item" id="nav-mod1" data-id="mod1" onclick="_navigateTo('mod1')">
+        <div class="sb-num">1</div><div class="sb-text"><div class="sb-name">Generalidades</div><div class="sb-sub">Teoría · Ejercicios</div></div>
+      </div>
+      <div class="sb-item" id="nav-mod2" data-id="mod2" onclick="_navigateTo('mod2')">
+        <div class="sb-num">2</div><div class="sb-text"><div class="sb-name">Elegibilidad</div><div class="sb-sub">Teoría · Ejercicios</div></div>
+      </div>
+      <div class="sb-item" id="nav-mod3" data-id="mod3" onclick="_navigateTo('mod3')">
+        <div class="sb-num">3</div><div class="sb-text"><div class="sb-name">Tipos de víctima</div><div class="sb-sub">Teoría · Ejercicios</div></div>
+      </div>
+      <div class="sb-item" id="nav-mod4" data-id="mod4" onclick="_navigateTo('mod4')">
+        <div class="sb-num">4</div><div class="sb-text"><div class="sb-name">Visa U vs. Visa T</div><div class="sb-sub">Teoría · Ejercicios</div></div>
+      </div>
+      <div class="sb-item" id="nav-mod5" data-id="mod5" onclick="_navigateTo('mod5')">
+        <div class="sb-num">5</div><div class="sb-text"><div class="sb-name">Crímenes calificados</div><div class="sb-sub">Teoría · Ejercicios</div></div>
+      </div>
+      <div class="sb-item" id="nav-mod6" data-id="mod6" onclick="_navigateTo('mod6')">
+        <div class="sb-num">6</div><div class="sb-text"><div class="sb-name">Template DCL</div><div class="sb-sub">Teoría · Ejercicios</div></div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+    <div class="sb-spec-banner"><span style="font-size:14px">⭐</span><div class="sbb-text">Cierre del Training</div></div>
+
+    <div class="sb-group">
+      <div class="sb-item exam" id="nav-evaluacion" data-id="evaluacion" onclick="_navigateTo('evaluacion')">
+        <div class="sb-num">✦</div><div class="sb-text"><div class="sb-name">Evaluación Final</div><div class="sb-sub">9 preguntas · 85% aprobatorio</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN CONTENT ════ -->
+  <main class="main">
+
+    <div class="header">
+      <div class="header-seal">🎓</div>
+      <div class="header-badge"><div class="dot"></div>TMLF Learning Center · Área de Visas Humanitarias</div>
+      <h1>Visa U: De la Introducción al Caso</h1>
+      <p class="subtitle">Fundamentos de la Visa U y análisis de la Template de la Declaración (DCL), para trabajar casos de forma eficiente y analítica.</p>
+      <div class="header-meta">
+        <div class="header-meta-item"><span>📚</span><strong>6 Módulos</strong></div>
+        <div class="header-meta-item"><span>📊</span><strong>Nivel: Básico–Intermedio</strong></div>
+        <div class="header-meta-item"><span>⏱️</span><strong>~1.5 horas estimadas</strong></div>
+        <div class="header-meta-item"><span>🖥️</span><strong>Virtual</strong></div>
+        <div class="header-meta-item"><span>📅</span><strong>v2.0 · 2026</strong></div>
+      </div>
+    </div>
+
+    <div class="panel active" id="content-panel"></div>
+
+  </main>
+</div>
+
+<!-- ════ MODAL DE ACCESO ADMIN ════ -->
+<div id="admin-modal" class="admin-modal-overlay" style="display:none;">
+  <div class="admin-modal-card">
+    <h3>Acceso de administrador</h3>
+    <p>Ingresa la contraseña para ver el registro de respuestas.</p>
+    <input type="password" id="admin-pass-input" class="admin-pass-input" placeholder="Contraseña" autocomplete="off">
+    <p id="admin-modal-error" class="admin-modal-error" style="display:none;">Contraseña incorrecta. Inténtalo de nuevo.</p>
+    <div class="admin-modal-actions">
+      <button class="mod-nav-btn mod-nav-prev" id="admin-modal-cancel">Cancelar</button>
+      <button class="mod-nav-btn mod-nav-next" id="admin-modal-submit">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/**
+ * scorm_api.js
+ * TMLF Training Team — Visa K-1 SCORM 1.2
+ * Wrapper para la API SCORM 1.2 del LMS (Moodle)
+ */
+
+var SCORM_API = (function () {
+  var _api = null;
+  var _initialized = false;
+  var _debug = false; // Cambiar a true para depuración en consola
+
+  /** Localiza la API SCORM en el árbol de ventanas */
+  function _findAPI(win) {
+    var attempts = 0;
+    while (win.API == null && win.parent != null && win.parent != win) {
+      attempts++;
+      if (attempts > 7) return null;
+      win = win.parent;
+    }
+    return win.API || null;
+  }
+
+  function _getAPI() {
+    if (_api) return _api;
+    _api = _findAPI(window);
+    if (!_api && window.opener) _api = _findAPI(window.opener);
+    if (_debug && !_api) console.warn("SCORM API: No se encontró la API del LMS.");
+    return _api;
+  }
+
+  /** Inicializa la sesión SCORM */
+  function initialize() {
+    var api = _getAPI();
+    if (!api) return false;
+    var result = api.LMSInitialize("");
+    _initialized = (result === "true" || result === true);
+    if (_debug) console.log("SCORM Initialize:", _initialized);
+    return _initialized;
+  }
+
+  /** Obtiene un valor CMI del LMS */
+  function getValue(element) {
+    var api = _getAPI();
+    if (!api || !_initialized) return "";
+    var val = api.LMSGetValue(element);
+    if (_debug) console.log("SCORM GetValue [" + element + "]:", val);
+    return val;
+  }
+
+  /** Establece un valor CMI en el LMS */
+  function setValue(element, value) {
+    var api = _getAPI();
+    if (!api || !_initialized) return false;
+    var result = api.LMSSetValue(element, value);
+    if (_debug) console.log("SCORM SetValue [" + element + "] =", value, "->", result);
+    return (result === "true" || result === true);
+  }
+
+  /** Confirma los datos enviados al LMS */
+  function commit() {
+    var api = _getAPI();
+    if (!api || !_initialized) return false;
+    var result = api.LMSCommit("");
+    if (_debug) console.log("SCORM Commit:", result);
+    return (result === "true" || result === true);
+  }
+
+  /** Finaliza la sesión SCORM */
+  function finish() {
+    var api = _getAPI();
+    if (!api || !_initialized) return false;
+    setValue("cmi.core.exit", "suspend");
+    commit();
+    var result = api.LMSFinish("");
+    _initialized = false;
+    if (_debug) console.log("SCORM Finish:", result);
+    return (result === "true" || result === true);
+  }
+
+  /**
+   * Envía la calificación y estado al LMS
+   * @param {number} score - Calificación de 0 a 100
+   * @param {boolean} passed - Si el aprendiz aprobó (>= 70)
+   */
+  function sendScore(score, passed) {
+    if (!_initialized) initialize();
+    setValue("cmi.core.score.raw", Math.round(score).toString());
+    setValue("cmi.core.score.min", "0");
+    setValue("cmi.core.score.max", "100");
+    setValue("cmi.core.lesson_status", passed ? "passed" : "failed");
+    commit();
+  }
+
+  /**
+   * Guarda la ubicación actual (módulo activo) y datos de progreso serializados
+   * @param {string} location - Identificador de módulo, ej: "module_2"
+   * @param {string} suspendData - JSON serializado del estado del curso
+   */
+  function saveProgress(location, suspendData) {
+    if (!_initialized) return;
+    setValue("cmi.core.lesson_location", location);
+    setValue("cmi.suspend_data", suspendData);
+    commit();
+  }
+
+  /** Recupera la ubicación guardada */
+  function getLocation() {
+    return getValue("cmi.core.lesson_location");
+  }
+
+  /** Recupera los datos suspendidos */
+  function getSuspendData() {
+    return getValue("cmi.suspend_data");
+  }
+
+  /** Marca el curso como incompleto (en progreso) */
+  function setInProgress() {
+    setValue("cmi.core.lesson_status", "incomplete");
+    commit();
+  }
+
+  return {
+    initialize: initialize,
+    getValue: getValue,
+    setValue: setValue,
+    commit: commit,
+    finish: finish,
+    sendScore: sendScore,
+    saveProgress: saveProgress,
+    getLocation: getLocation,
+    getSuspendData: getSuspendData,
+    setInProgress: setInProgress
+  };
+})();
+
+</script>
+<script>
+/**
+ * course.js — Visa U: De la Introducción al Caso
+ * TMLF Learning Center — construido sobre TMLF_BaseMaestra_v2
+ * SCORM 1.2 | Navegación, ejercicios, evaluación final y persistencia
+ */
+
+/* ============================================================
+   DEFINICIONES DE CRÍMENES CALIFICADOS (Módulo 5)
+   Definiciones adaptadas al español con base en Merriam-Webster
+   ============================================================ */
+
+var CRIME_DEFS = {
+  "Stalking": { def: "Acto o delito de seguir o acosar repetidamente y de forma deliberada a otra persona, en circunstancias que harían que una persona razonable temiera sufrir una lesión o incluso la muerte, especialmente por amenazas expresas o implícitas.", example: "Un hombre sigue a su expareja todos los días, se presenta sin avisar en su trabajo y le envía mensajes amenazantes de forma constante." },
+  "Assault with a weapon": { def: "Agresión penal cometida con la intención de causar, o que efectivamente causa, una lesión corporal grave, especialmente mediante el uso de un arma peligrosa (definición basada en 'aggravated assault').", example: "Durante una discusión, una persona amenaza y golpea a otra con un bate de béisbol." },
+  "Sexual assault": { def: "Contacto sexual ilegal que por lo general involucra el uso de la fuerza sin el consentimiento de la persona, o que se comete contra alguien incapaz de dar su consentimiento por razones de edad o incapacidad física o mental.", example: "Un supervisor obliga a un empleado a tener contacto sexual bajo la amenaza de despedirlo." },
+  "Murder": { def: "Delito de matar a otra persona de manera ilegal e injustificada, bajo las circunstancias que define la ley.", example: "Una persona planea y ejecuta la muerte de otra por venganza." },
+  "Blackmail": { def: "Extorsión o coacción mediante amenazas, especialmente de exposición pública o de un proceso penal, con el fin de obligar a alguien a pagar dinero o entregar algo de valor.", example: "Alguien amenaza con revelar fotos privadas de la víctima a menos que le pague una suma de dinero." },
+  "Abusive sexual content": { def: "Contacto sexual no consentido cometido mediante fuerza, amenazas o abuso de una posición de autoridad o confianza, sin llegar necesariamente a la penetración.", example: "Un jefe toca de forma sexual y no consentida a un empleado, aprovechándose de su posición de poder." },
+  "Illegal detention": { def: "Retención o confinamiento ilegal de una persona en contra de su voluntad, sin autoridad legal para hacerlo.", example: "Un empleador encierra a un trabajador en una bodega para impedir que salga después de su turno." },
+  "Sexual exploitation": { def: "Acto de aprovecharse de una persona con fines sexuales, incluyendo obligarla a participar en actos sexuales para beneficio económico o de otro tipo de un tercero.", example: "Un empleador obliga a una trabajadora doméstica a tener relaciones sexuales con clientes a cambio de dinero, del cual él se queda con la mayor parte." },
+  "Extortion": { def: "Acto o práctica de obtener dinero u otra propiedad especialmente mediante el uso de la fuerza, la intimidación o amenazas.", example: "Un contratista amenaza con reportar a un trabajador ante inmigración si no le paga una cuota mensual." },
+  "Fraud in hiring foreign labor": { def: "Engaño o tergiversación de las condiciones, el salario o la naturaleza de un empleo para reclutar trabajadores extranjeros, quienes terminan en condiciones distintas —y a menudo abusivas— a las prometidas.", example: "A un trabajador le prometen $15 la hora en una granja, pero al llegar lo obligan a trabajar por mucho menos y bajo amenazas." },
+  "Involuntary manslaughter": { def: "Homicidio no premeditado, causado por negligencia grave o por la comisión de un acto ilegal sin intención de matar.", example: "Una persona muere tras un altercado en el que el agresor no tenía intención de causar la muerte, pero actuó con negligencia extrema." },
+  "Incest": { def: "Relación sexual entre personas que tienen un parentesco cercano que la ley prohíbe para el matrimonio o el contacto sexual.", example: "Un padre abusa sexualmente de su hija menor de edad." },
+  "Witness tampering": { def: "Acto de intentar influir, alterar o impedir de manera ilegal el testimonio de un testigo, mediante amenazas, sobornos o intimidación.", example: "Un acusado amenaza a un testigo para que no declare en su contra ante la policía." },
+  "Female genital mutilation": { def: "Procedimiento que implica la remoción o lesión parcial o total de los órganos genitales femeninos externos por razones no médicas.", example: "A una niña se le practica este procedimiento en contra de su voluntad como parte de una tradición familiar." },
+  "Obstruction of justice": { def: "Delito de interferir de manera intencional con el trabajo de la policía, los fiscales o los tribunales, por ejemplo, ocultando evidencia o mintiendo a las autoridades.", example: "Una persona destruye documentos para impedir que la policía investigue un crimen." },
+  "Perjury": { def: "Delito de mentir bajo juramento, ya sea de manera oral o escrita, dentro de un procedimiento legal.", example: "Un testigo declara bajo juramento que no vio nada, sabiendo que sí presenció el crimen." },
+  "Prostitution": { def: "Acto de ofrecer o realizar actos sexuales a cambio de dinero u otro tipo de pago.", example: "Una persona es obligada por su pareja a tener relaciones sexuales con extraños a cambio de dinero que luego le es arrebatado." },
+  "Rape": { def: "Penetración sexual no consentida, obtenida mediante el uso de la fuerza física, amenazas, o cuando la víctima es incapaz de dar su consentimiento.", example: "Un desconocido agrede sexualmente a una persona mediante el uso de la fuerza física." },
+  "Criminal illegal restraint": { def: "Acto de restringir ilegalmente la libertad de movimiento de una persona sin su consentimiento y sin autoridad legal para hacerlo (definición basada en 'unlawful restraint').", example: "Un agresor ata a su pareja para impedir que salga de la casa durante horas." },
+  "Kidnapping": { def: "Acto, instancia o delito de tomar, confinar, engañar, secuestrar o llevarse a una persona por la fuerza o el fraude, frecuentemente con una demanda de rescate o en apoyo de otro delito.", example: "Un grupo criminal secuestra a un migrante recién llegado para exigirle dinero a su familia." },
+  "Involuntary servitude": { def: "Condición en la que una persona es obligada a trabajar en contra de su voluntad mediante el uso de la fuerza, amenazas o coerción física o legal.", example: "Un trabajador es obligado a seguir laborando bajo amenazas después de haber intentado renunciar." },
+  "Hostage taking": { def: "Acto de retener ilegalmente a una persona con el fin de exigir algo —como dinero, un favor o una acción— a cambio de su liberación.", example: "Un grupo retiene a un migrante y exige que su familia pague una suma de dinero para liberarlo." },
+  "Torture": { def: "Acto de infligir dolor o sufrimiento físico o mental severo de manera intencional, frecuentemente con el fin de castigar, intimidar u obtener información.", example: "Un secuestrador golpea repetidamente a su víctima para obligarla a dar información sobre su familia." },
+  "Forced labor": { def: "Trabajo o servicio que una persona es obligada a realizar bajo amenaza de un castigo, sin haberse ofrecido a hacerlo voluntariamente.", example: "Un grupo de trabajadores agrícolas es obligado a trabajar largas jornadas sin paga, bajo amenaza de violencia." },
+  "Slave trade": { def: "Comercio o tráfico de personas tratadas como propiedad, compradas, vendidas o intercambiadas con fines de explotación.", example: "Una red criminal compra y vende personas para explotarlas laboralmente en distintas ciudades." },
+  "Human trafficking": { def: "Reclutamiento, transporte, traslado, alojamiento o recepción de personas mediante el uso de la fuerza, el fraude o la coerción, con fines de explotación laboral o sexual.", example: "Una persona es engañada con una falsa oferta de empleo y, al llegar, es obligada a trabajar sin paga bajo amenazas." },
+  "Domestic violence": { def: "Violencia o abuso físico, emocional o psicológico cometido por una persona contra su pareja, cónyuge o un miembro de su hogar.", example: "Una persona golpea repetidamente a su pareja y la amenaza para que no lo denuncie." },
+  "Other related crimes*": { def: "Categoría que agrupa otros delitos calificados reconocidos por USCIS cuyos elementos son sustancialmente similares a los crímenes de esta lista (por ejemplo, intento, conspiración o complicidad en alguno de estos delitos). No corresponde a un término único del diccionario, por lo que no tiene una entrada individual en Merriam-Webster.", example: "El intento o la conspiración para cometer alguno de los crímenes de esta lista también puede calificar, aunque el delito no se haya consumado." }
+};
+
+/* ============================================================
+   DATOS DEL CURSO
+   ============================================================ */
+
+var COURSE = {
+  modules: [
+    {
+      id: "mod1", icon: "🛡️",
+      title: "Generalidades de la Visa U",
+      shortTitle: "Generalidades",
+      tagline: "Qué es la Visa U, a quién protege y cuáles son sus beneficios principales.",
+      content: `
+        <div class="lo-callout">
+          <div class="lo-icon">🎯</div>
+          <div class="lo-text"><strong>Objetivo de aprendizaje</strong>Al finalizar este módulo, comprenderás qué es la Visa U, cuáles son sus beneficios principales y por qué es una herramienta clave para víctimas de crímenes en EE.UU.</div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">¿Qué es la Visa U?</h3>
+        <p>Es la <strong>Visa de No Inmigrante</strong> que permite a los extranjeros que fueron víctimas de una actividad criminal cometida en EE.UU. o algún territorio protegido por sus leyes.</p>
+        <p>Adicionalmente, <strong>fortalece la capacidad de las agencias del orden público</strong> para investigar y procesar los casos de crímenes, ya que requiere la cooperación activa de la víctima.</p>
+
+        <div class="info-card">
+          <div class="info-icon">🛡️</div>
+          <div><strong>¿A quiénes protege?</strong><p>A extranjeros que hayan sido víctimas de crímenes calificados ocurridos dentro del territorio estadounidense o sus posesiones, independientemente de su estatus migratorio.</p></div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Beneficios de la Visa U</h3>
+        <div class="benefits-grid">
+          <div class="benefit-card"><div class="benefit-icon">🇺🇸</div><h4>Esperar en EE.UU.</h4><p>Permite esperar la aprobación de la visa dentro de los Estados Unidos, no en el país de origen.</p></div>
+          <div class="benefit-card"><div class="benefit-icon">📅</div><h4>Estadía de 4 años</h4><p>Permite vivir legalmente en EE.UU. por un período de <strong>4 años</strong>.</p></div>
+          <div class="benefit-card"><div class="benefit-icon">🏠</div><h4>Green Card</h4><p>Después de <strong>3 años</strong>, la persona puede solicitar la residencia permanente. El tiempo mínimo de espera es de 3 a 4 años.</p></div>
+          <div class="benefit-card"><div class="benefit-icon">💼</div><h4>Permiso de trabajo</h4><p>Se otorga un permiso de trabajo (<em>Employment Authorization Document</em>).</p></div>
+          <div class="benefit-card"><div class="benefit-icon">👨‍👩‍👧</div><h4>Visa derivada</h4><p>Los familiares calificados del solicitante principal pueden solicitar una <strong>visa derivada</strong>.</p></div>
+        </div>
+
+        <div class="key-concept">
+          <span class="key-label">Concepto clave</span>
+          <p>La Visa U no es solo una protección migratoria: es también un mecanismo para fortalecer el sistema de justicia, al incentivar a las víctimas a colaborar con las autoridades sin temor a la deportación.</p>
+        </div>
+      `,
+      exercises: [
+        { type: "multiple_choice", question: "¿Cuál es uno de los beneficios de la Visa U?",
+          options: [{ id: "a", text: "Permiso de trabajo" },{ id: "b", text: "Ciudadanía inmediata" },{ id: "c", text: "Viajar sin restricciones a cualquier país" },{ id: "d", text: "Exención de impuestos federales" }],
+          answer: "a",
+          feedbackCorrect: "✅ ¡Correcto! La Visa U otorga, entre otros beneficios, un permiso de trabajo (EAD) al beneficiario.",
+          feedbackIncorrect: "❌ Incorrecto. Uno de los beneficios principales de la Visa U es el permiso de trabajo. No otorga ciudadanía inmediata ni exención de impuestos." },
+        { type: "true_false", question: "La Visa U únicamente protege a extranjeros que ya cuentan con un estatus migratorio legal en EE.UU.",
+          answer: "false",
+          feedbackCorrect: "✅ ¡Correcto! La Visa U protege a víctimas de crímenes calificados independientemente de su estatus migratorio.",
+          feedbackIncorrect: "❌ Incorrecto. La Visa U protege a extranjeros víctimas de crímenes calificados sin importar su estatus migratorio al momento del crimen." },
+        { type: "multiple_choice", question: "¿Después de cuántos años de tener la Visa U se puede solicitar la residencia permanente (green card)?",
+          options: [{ id: "a", text: "1 año" },{ id: "b", text: "2 años" },{ id: "c", text: "3 años" },{ id: "d", text: "5 años" }],
+          answer: "c",
+          feedbackCorrect: "✅ ¡Correcto! Después de 3 años con Visa U, la persona puede solicitar la residencia permanente.",
+          feedbackIncorrect: "❌ Incorrecto. La residencia permanente puede solicitarse después de 3 años de tener la Visa U." }
+      ]
+    },
+
+    {
+      id: "mod2", icon: "✅",
+      title: "Criterios de Elegibilidad",
+      shortTitle: "Elegibilidad",
+      tagline: "Los cinco criterios obligatorios y quiénes pueden emitir la certificación.",
+      content: `
+        <div class="lo-callout">
+          <div class="lo-icon">🎯</div>
+          <div class="lo-text"><strong>Objetivo de aprendizaje</strong>Conocerás los cinco criterios que debe cumplir una persona para ser elegible a la Visa U, y quiénes pueden emitir la certificación necesaria.</div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Cinco criterios de elegibilidad</h3>
+        <p>Para calificar a la Visa U, el solicitante debe cumplir <strong>todos</strong> los criterios siguientes:</p>
+
+        <div class="criteria-list">
+          <div class="criterion-item"><div class="criterion-num">I</div><div class="criterion-body"><h4>Daño directo e inmediato</h4><p>La víctima es un extranjero que ha sufrido un <strong>daño directo e inmediato</strong> como resultado de una actividad delictiva calificada.</p><p class="criterion-example"><strong>Ejemplo:</strong> Una persona es asaltada a mano armada en su trabajo y sufre una lesión física durante el robo; ese daño físico directo es resultado inmediato del crimen calificado.</p></div></div>
+          <div class="criterion-item"><div class="criterion-num">II</div><div class="criterion-body"><h4>Abuso físico o mental sustancial</h4><p>Ha sufrido <strong>abuso físico o mental sustancial</strong> como resultado de haber sido víctima de un acto criminal.</p><p class="criterion-example"><strong>Ejemplo:</strong> Una víctima de violencia doméstica presenta lesiones físicas visibles y, además, un diagnóstico de estrés postraumático (PTSD) confirmado por un profesional de salud mental.</p></div></div>
+          <div class="criterion-item"><div class="criterion-num">III</div><div class="criterion-body"><h4>Información sobre el crimen</h4><p>Tiene <strong>información fidedigna y confiable</strong> acerca de la actividad criminal.</p><p class="criterion-example"><strong>Ejemplo:</strong> La víctima puede describir con precisión la fecha, el lugar y las circunstancias en que ocurrió el secuestro (kidnapping) del que fue objeto.</p></div></div>
+          <div class="criterion-item"><div class="criterion-num">IV</div><div class="criterion-body"><h4>Cooperación con autoridades (LEAs)</h4><p>Fue de ayuda o <strong>está ayudando a las entidades policiales</strong> en la investigación o procesamiento penal del crimen. Si la víctima tiene menos de 16 años o presenta una incapacidad, su padre, tutor o representante legal puede ayudar en su nombre.</p><p class="criterion-example"><strong>Ejemplo:</strong> La víctima rindió declaración ante la policía, aportó pruebas y aceptó testificar en el juicio contra su agresor.</p></div></div>
+          <div class="criterion-item"><div class="criterion-num">V</div><div class="criterion-body"><h4>Admisibilidad en EE.UU.</h4><p>Es <strong>admisible en Estados Unidos</strong> o puede solicitar una exención de inadmisibilidad.</p><p class="criterion-example"><strong>Ejemplo:</strong> La víctima no tiene antecedentes penales que la hagan inadmisible, o bien, siendo inadmisible por una causa específica, califica para solicitar una exención (waiver) ante USCIS.</p></div></div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Certificación de las autoridades</h3>
+        <div class="info-card">
+          <div class="info-icon">📋</div>
+          <div><strong>Formulario I-918, Suplemento B</strong><p>Para probar que se fue víctima del crimen, se requiere una certificación de las agencias que hacen cumplir la ley. Esta certificación puede ser emitida aunque la policía nunca haya arrestado a un sospechoso, o aunque el sospechoso haya sido encontrado no culpable.</p></div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">¿Quién puede firmar la certificación?</h3>
+        <div class="cert-grid">
+          <div class="cert-item">🏛️ Agencias federales, estatales o locales</div>
+          <div class="cert-item">⚖️ Fiscales</div>
+          <div class="cert-item">🔨 Jueces/zas</div>
+          <div class="cert-item">👶 Child Protective Services (CPS)</div>
+          <div class="cert-item">💼 Departamentos del Trabajo</div>
+          <div class="cert-item">🏢 Agencia de Igualdad de Oportunidades en el Empleo</div>
+        </div>
+
+        <div class="warning-card">
+          <div class="info-icon">⚠️</div>
+          <div><strong>La certificación es obligatoria</strong><p>Sin el Formulario I-918 Suplemento B debidamente firmado por una autoridad competente, la solicitud de Visa U no puede proceder.</p></div>
+        </div>
+      `,
+      exercises: [
+        { type: "true_false", question: "La certificación de las autoridades (Formulario I-918, Suplemento B) es opcional para solicitar la Visa U.",
+          answer: "false",
+          feedbackCorrect: "✅ ¡Correcto! La certificación es un requisito obligatorio e indispensable para la Visa U.",
+          feedbackIncorrect: "❌ Incorrecto. La certificación mediante el Formulario I-918, Suplemento B es obligatoria. Sin ella, no puede presentarse la solicitud." },
+        { type: "multiple_choice", question: "¿Cuál de los siguientes es uno de los cinco criterios de elegibilidad para la Visa U?",
+          options: [{ id: "a", text: "Tener residencia legal previa" },{ id: "b", text: "Haber sufrido abuso físico o mental sustancial" },{ id: "c", text: "Ser mayor de 21 años" },{ id: "d", text: "Hablar inglés fluido" }],
+          answer: "b",
+          feedbackCorrect: "✅ ¡Correcto! Haber sufrido abuso físico o mental sustancial es uno de los cinco criterios de elegibilidad.",
+          feedbackIncorrect: "❌ Incorrecto. Uno de los cinco criterios es haber sufrido abuso físico o mental sustancial. La edad, el idioma o una residencia previa no son criterios." },
+        { type: "true_false", question: "Un padre, tutor o representante legal puede cooperar con las autoridades en nombre de una víctima menor de 16 años o con una incapacidad.",
+          answer: "true",
+          feedbackCorrect: "✅ ¡Correcto! Cuando la víctima es menor de 16 años o presenta una incapacidad, su padre, tutor o representante legal puede ayudar en su nombre.",
+          feedbackIncorrect: "❌ Incorrecto. La ley sí permite que el padre, tutor o representante legal coopere en nombre de la víctima cuando esta es menor de 16 años o tiene una incapacidad." }
+      ]
+    },
+
+    {
+      id: "mod3", icon: "👥",
+      title: "Víctima Directa, Indirecta y Derivados",
+      shortTitle: "Tipos de víctima",
+      tagline: "Diferencias entre víctima directa, indirecta y familiares derivados según la edad del solicitante.",
+      content: `
+        <div class="lo-callout">
+          <div class="lo-icon">🎯</div>
+          <div class="lo-text"><strong>Objetivo de aprendizaje</strong>Distinguirás entre víctima directa, víctima indirecta y familiares derivados, y comprenderás qué familiares pueden calificar en cada categoría.</div>
+        </div>
+
+        <div class="victim-cards">
+          <div class="victim-card direct"><div class="victim-icon">👤</div><h4>Víctima Directa</h4><p>Quien sufrió el <strong>daño directo e inmediato</strong> del crimen calificado. Es el solicitante principal de la Visa U.</p></div>
+          <div class="victim-card indirect"><div class="victim-icon">👥</div><h4>Víctima Indirecta</h4><p>Familiar cercano de una víctima directa que esté:</p><ul><li>Muerta por <strong>asesinato u homicidio</strong>, o</li><li><strong>Incompetente o incapacitada</strong> y no puede dar información del crimen</li></ul></div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Familiares cercanos calificados como víctimas indirectas</h3>
+        <div class="info-card">
+          <div class="info-icon">👨‍👩‍👧‍👦</div>
+          <div><p><strong>"Familiares cercanos"</strong> que pueden calificar como víctimas indirectas:</p><ul><li>El/la <strong>esposo/a</strong> de la víctima directa</li><li>Los/as <strong>hijos/as no casados/as, menores de 21 años</strong>, de la víctima directa</li><li>Si la víctima directa es <strong>menor de 21 años</strong>: también sus <strong>padres</strong> y <strong>hermanos/as menores de 18 años</strong></li></ul></div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Derivados (familiares del solicitante principal)</h3>
+        <div class="comparison-table">
+          <div class="compare-col"><h4>Principal menor de 21 años</h4><ul><li>✓ Cónyuge</li><li>✓ Hijos menores de 21 años</li><li>✓ Padres</li><li>✓ Hermanos/as menores de 18 años</li></ul></div>
+          <div class="compare-col alt"><h4>Principal de 21 años o más</h4><ul><li>✓ Cónyuge</li><li>✓ Hijos menores de 21 años</li><li>✗ Padres (no aplica)</li><li>✗ Hermanos/as (no aplica)</li></ul></div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Requisitos para los derivados</h3>
+        <div class="req-cards-row">
+          <div class="req-mini"><strong>Relación familiar comprobada</strong><p>Deben presentarse certificados de matrimonio, nacimiento o adopción.</p></div>
+          <div class="req-mini"><strong>Conexión con el proceso</strong><p>No es necesario que el derivado sea víctima del crimen, pero su relación debe ser válida y verificable.</p></div>
+          <div class="req-mini"><strong>Requisitos generales</strong><p>Sin antecedentes penales significativos ni amenaza para la seguridad nacional.</p></div>
+        </div>
+      `,
+      exercises: [
+        { type: "multiple_choice", question: "Si el solicitante principal de Visa U tiene 25 años, ¿qué familiares pueden ser considerados derivados?",
+          options: [{ id: "a", text: "Padres y hermanos menores de 18 años" },{ id: "b", text: "Cónyuge e hijos menores de 21 años" },{ id: "c", text: "Todos los familiares sin restricción de edad" },{ id: "d", text: "Solo hijos mayores de 21 años" }],
+          answer: "b",
+          feedbackCorrect: "✅ ¡Correcto! Cuando el solicitante principal tiene 21 años o más, solo pueden ser derivados el cónyuge y los hijos menores de 21 años.",
+          feedbackIncorrect: "❌ Incorrecto. Para un solicitante de 21 años o más, los derivados se limitan a cónyuge e hijos menores de 21 años." },
+        { type: "true_false", question: "Si la víctima directa es menor de 21 años, sus padres y hermanos/as menores de 18 años pueden calificar como víctimas indirectas.",
+          answer: "true",
+          feedbackCorrect: "✅ ¡Correcto! Cuando la víctima directa es menor de 21 años, sus padres y hermanos/as menores de 18 años también pueden calificar como víctimas indirectas.",
+          feedbackIncorrect: "❌ Incorrecto. Cuando la víctima directa es menor de 21 años, sus padres y hermanos/as menores de 18 años sí pueden calificar como víctimas indirectas." },
+        { type: "multiple_choice", question: "¿Qué documentos se requieren para comprobar la relación familiar de un derivado?",
+          options: [{ id: "a", text: "Certificados de matrimonio, nacimiento o adopción" },{ id: "b", text: "Solo una declaración jurada del solicitante" },{ id: "c", text: "Nada, basta con el parentesco verbal" },{ id: "d", text: "Comprobante de domicilio" }],
+          answer: "a",
+          feedbackCorrect: "✅ ¡Correcto! Se deben presentar certificados de matrimonio, nacimiento o adopción.",
+          feedbackIncorrect: "❌ Incorrecto. La relación familiar comprobada se demuestra con certificados de matrimonio, nacimiento o adopción." }
+      ]
+    },
+
+    {
+      id: "mod4", icon: "⚖️",
+      title: "Visa U vs. Visa T",
+      shortTitle: "Visa U vs. Visa T",
+      tagline: "Diferencias clave en tiempos de aprobación y requisitos de colaboración.",
+      content: `
+        <div class="lo-callout">
+          <div class="lo-icon">🎯</div>
+          <div class="lo-text"><strong>Objetivo de aprendizaje</strong>Comprenderás las diferencias clave entre la Visa U y la Visa T, incluyendo sus tiempos de aprobación y los requisitos de colaboración con las autoridades.</div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Comparativa: Visa U vs. Visa T</h3>
+        <div class="comparison-table">
+          <div class="compare-col"><h4>Visa U</h4><ul><li><strong>Mayor colaboración</strong> requerida con las LEAs</li><li>La información aportada <strong>debe ser realmente útil</strong> para la investigación</li><li>Proceso más largo: <strong>hasta 50 meses</strong> (aprox. 4-5 años)</li><li>Enfocada en víctimas de <strong>crímenes calificados</strong></li></ul></div>
+          <div class="compare-col alt"><h4>Visa T</h4><ul><li>No es necesario que la información sea <strong>tan útil</strong></li><li>Menor grado de colaboración requerida</li><li>Proceso más rápido: <strong>1-2 años</strong></li><li>Enfocada específicamente en víctimas de <strong>trata de personas</strong></li></ul></div>
+        </div>
+
+        <div class="key-concept">
+          <span class="key-label">Diferencia fundamental</span>
+          <p>La Visa U exige un nivel de cooperación más alto y demostrable con las autoridades. Aunque esto hace el proceso más exigente, también ofrece una vía de regularización a víctimas de una gama más amplia de crímenes calificados.</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">⏱️</div>
+          <div><strong>Tiempos de espera a considerar</strong><p>Dado que la Visa U puede tardar hasta <strong>50 meses</strong>, es importante preparar bien el caso desde el inicio y mantener la cooperación con las autoridades durante todo el proceso.</p></div>
+        </div>
+      `,
+      exercises: [
+        { type: "fill_blank_double", question: "La Visa U tarda hasta ___ meses en aprobarse, mientras que la Visa T tarda ___ años.",
+          placeholders: ["meses", "años (ej: 1-2)"], answers: ["50", "1-2"],
+          feedbackCorrect: "✅ ¡Correcto! La Visa U tarda hasta 50 meses, y la Visa T tarda 1-2 años.",
+          feedbackIncorrect: "❌ Incorrecto. La Visa U tarda hasta 50 meses en aprobarse, y la Visa T tarda entre 1 y 2 años." },
+        { type: "true_false", question: "La Visa T requiere un mayor grado de colaboración con las autoridades que la Visa U.",
+          answer: "false",
+          feedbackCorrect: "✅ ¡Correcto! Es la Visa U la que exige mayor colaboración con las LEAs; la Visa T requiere un menor grado.",
+          feedbackIncorrect: "❌ Incorrecto. Es la Visa U la que exige un mayor grado de colaboración. La Visa T requiere menor colaboración." },
+        { type: "multiple_choice", question: "¿En qué se enfoca específicamente la Visa T?",
+          options: [{ id: "a", text: "Víctimas de cualquier crimen calificado" },{ id: "b", text: "Víctimas de trata de personas" },{ id: "c", text: "Víctimas de fraude fiscal" },{ id: "d", text: "Empleados con visa de trabajo" }],
+          answer: "b",
+          feedbackCorrect: "✅ ¡Correcto! La Visa T está enfocada específicamente en víctimas de trata de personas.",
+          feedbackIncorrect: "❌ Incorrecto. La Visa T está enfocada específicamente en víctimas de trata de personas." }
+      ]
+    },
+
+    {
+      id: "mod5", icon: "📋",
+      title: "Actividades Criminales Calificadas",
+      shortTitle: "Crímenes calificados",
+      tagline: "Qué crímenes califican para la Visa U y el requisito jurisdiccional que deben cumplir.",
+      content: `
+        <div class="lo-callout">
+          <div class="lo-icon">🎯</div>
+          <div class="lo-text"><strong>Objetivo de aprendizaje</strong>Identificarás cuáles actividades criminales califican para la Visa U y el requisito jurisdiccional que deben cumplir.</div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Requisito jurisdiccional</h3>
+        <div class="warning-card">
+          <div class="info-icon">⚠️</div>
+          <div><p>Para que una actividad criminal pueda ser calificada, <strong>DEBE HABER OCURRIDO</strong> en los EE.UU., sus territorios o posesiones; o <strong>HABER VIOLADO</strong> una ley federal con jurisdicción de los tribunales estadounidenses.</p></div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Lista de crímenes elegibles</h3>
+        <p class="hint-text">Haz clic en cualquier crimen para ver su definición y un ejemplo corto.</p>
+        <div class="crimes-grid" id="crimes-grid">
+          <button type="button" class="crime-tag" data-crime="Stalking">Stalking</button>
+          <button type="button" class="crime-tag" data-crime="Assault with a weapon">Assault with a weapon</button>
+          <button type="button" class="crime-tag" data-crime="Sexual assault">Sexual assault</button>
+          <button type="button" class="crime-tag" data-crime="Murder">Murder</button>
+          <button type="button" class="crime-tag" data-crime="Blackmail">Blackmail</button>
+          <button type="button" class="crime-tag" data-crime="Abusive sexual content">Abusive sexual content</button>
+          <button type="button" class="crime-tag" data-crime="Illegal detention">Illegal detention</button>
+          <button type="button" class="crime-tag" data-crime="Sexual exploitation">Sexual exploitation</button>
+          <button type="button" class="crime-tag" data-crime="Extortion">Extortion</button>
+          <button type="button" class="crime-tag" data-crime="Fraud in hiring foreign labor">Fraud in hiring foreign labor</button>
+          <button type="button" class="crime-tag" data-crime="Involuntary manslaughter">Involuntary manslaughter</button>
+          <button type="button" class="crime-tag" data-crime="Incest">Incest</button>
+          <button type="button" class="crime-tag" data-crime="Witness tampering">Witness tampering</button>
+          <button type="button" class="crime-tag" data-crime="Female genital mutilation">Female genital mutilation</button>
+          <button type="button" class="crime-tag" data-crime="Obstruction of justice">Obstruction of justice</button>
+          <button type="button" class="crime-tag" data-crime="Perjury">Perjury</button>
+          <button type="button" class="crime-tag" data-crime="Prostitution">Prostitution</button>
+          <button type="button" class="crime-tag" data-crime="Rape">Rape</button>
+          <button type="button" class="crime-tag" data-crime="Criminal illegal restraint">Criminal illegal restraint</button>
+          <button type="button" class="crime-tag" data-crime="Kidnapping">Kidnapping</button>
+          <button type="button" class="crime-tag" data-crime="Involuntary servitude">Involuntary servitude</button>
+          <button type="button" class="crime-tag" data-crime="Hostage taking">Hostage taking</button>
+          <button type="button" class="crime-tag" data-crime="Torture">Torture</button>
+          <button type="button" class="crime-tag" data-crime="Forced labor">Forced labor</button>
+          <button type="button" class="crime-tag" data-crime="Slave trade">Slave trade</button>
+          <button type="button" class="crime-tag" data-crime="Human trafficking">Human trafficking</button>
+          <button type="button" class="crime-tag" data-crime="Domestic violence">Domestic violence</button>
+          <button type="button" class="crime-tag" data-crime="Other related crimes*">Other related crimes*</button>
+        </div>
+        <div class="crime-detail" id="crime-detail" style="display:none;"></div>
+        <p class="crimes-source-link"><a href="https://www.uscis.gov/es/programas-humanitarios/victimas-de-actos-criminales-estatus-u-de-no-inmigrante" target="_blank" rel="noopener">📄 Ver la lista oficial de crímenes calificados en USCIS.gov →</a></p>
+
+        <div class="key-concept">
+          <span class="key-label">Crímenes NO calificados</span>
+          <p>Delitos menores o de bajo impacto como <em>petty theft</em> (robo menor), <em>disrespecting authority</em> o <em>hateful speech</em> (discurso de odio sin acto criminal) <strong>no califican</strong> para la Visa U.</p>
+        </div>
+      `,
+      exercises: [
+        { type: "multiple_select_fixed", question: "Selecciona exactamente 3 crímenes que SÍ califican para la Visa U.",
+          options: ["Stalking", "Disrespecting authority", "Domestic violence", "Petty theft", "Kidnapping", "Hateful speech"],
+          answer: ["Stalking", "Domestic violence", "Kidnapping"], requiredCount: 3,
+          feedbackCorrect: "✅ ¡Correcto! Stalking, Domestic violence y Kidnapping están en la lista de crímenes calificados.",
+          feedbackIncorrect: "❌ Incorrecto. Los crímenes calificados son: Stalking, Domestic violence y Kidnapping." },
+        { type: "true_false", question: "Para que una actividad criminal califique para la Visa U, debe haber ocurrido en EE.UU. o haber violado una ley federal con jurisdicción de los tribunales estadounidenses.",
+          answer: "true",
+          feedbackCorrect: "✅ ¡Correcto! Este es el requisito jurisdiccional indispensable para que un crimen califique.",
+          feedbackIncorrect: "❌ Incorrecto. El crimen SÍ debe haber ocurrido en EE.UU. o haber violado una ley federal con jurisdicción estadounidense." },
+        { type: "multiple_choice", question: "¿Cuál de los siguientes delitos NO califica para la Visa U?",
+          options: [{ id: "a", text: "Kidnapping" },{ id: "b", text: "Domestic violence" },{ id: "c", text: "Petty theft" },{ id: "d", text: "Sexual assault" }],
+          answer: "c",
+          feedbackCorrect: "✅ ¡Correcto! Petty theft (robo menor) no está en la lista de crímenes calificados.",
+          feedbackIncorrect: "❌ Incorrecto. Petty theft (robo menor) no califica para la Visa U." }
+      ]
+    },
+
+    {
+      id: "mod6", icon: "📝",
+      title: "Template DCL – Análisis y Edición",
+      shortTitle: "Template DCL",
+      tagline: "Estructura de la Declaración (DCL) para Visa U y sus elementos clave.",
+      content: `
+        <div class="lo-callout">
+          <div class="lo-icon">🎯</div>
+          <div class="lo-text"><strong>Objetivo de aprendizaje</strong>Conocerás la estructura de la Declaración (DCL) para Visa U y los elementos que debe incluir cada sección para construir un caso sólido.</div>
+        </div>
+
+        <div class="block b-flujo" style="margin:14px 0">
+          <div class="btitle"><div class="bicon">📄</div><h3>Declaración VISA U</h3></div>
+          <div class="bbody">
+            <p>Consulta y descarga la <strong>Template oficial de la Declaración (DCL) para Visa U</strong>:</p>
+            <a href="https://docs.google.com/document/d/1kG8jHePEXXYFNBz-FpRGJUx7U_U_YYK7/edit?usp=sharing&ouid=112012095423834811010&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-template-link">📎 Abrir Template de la Declaración VISA U →</a>
+          </div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Estructura de la Declaración K-1 vs. Declaración Visa U</h3>
+        <div class="info-card">
+          <div class="info-icon">📝</div>
+          <div><p>A diferencia de la DCL K-1 (centrada en el matrimonio de buena fe), la <strong>DCL Visa U</strong> se centra en el crimen sufrido, el daño ocasionado y la cooperación con las autoridades.</p></div>
+        </div>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:18px;margin:16px 0 8px;color:var(--ink)">Las 5 secciones de la DCL Visa U</h3>
+        <div class="step-block"><div class="step-num">1</div><div class="step-content"><h4>Datos Clave y Background</h4><ul><li>Nombre completo</li><li>Fecha y lugar de nacimiento</li><li>Llegada a los Estados Unidos</li><li>Razones por las que está en EE.UU.</li></ul></div></div>
+        <div class="step-block"><div class="step-num">2</div><div class="step-content"><h4>Crimen</h4><ul><li>Tipo de crimen cometido</li><li>Persona que lo realizó (agresor)</li><li>Frecuencia (¿una vez, reiteradamente?)</li><li>¿Cuándo? ¿Cómo? ¿Dónde?</li><li>Testigos presentes</li></ul></div></div>
+        <div class="step-block"><div class="step-num">3</div><div class="step-content"><h4>Consecuencias</h4><ul><li>Daño físico sufrido</li><li>Daño mental y emocional</li><li>Gravedad del abuso</li><li>Si el crimen agravó una condición previa</li><li>Medicamentos tomados y asistencia médica</li><li>Testigos del daño</li><li>Si fue violencia doméstica: duración del abuso</li></ul></div></div>
+        <div class="step-block"><div class="step-num">4</div><div class="step-content"><h4>Autoridades</h4><ul><li>Cooperación con la policía u otras autoridades</li><li>¿Llegaron al lugar del crimen?</li><li>¿Tomaron algún testimonio?</li><li>Miedos y barreras para reportar</li><li>¿La persona que cometió el crimen tuvo algún cargo penal?</li><li>Formas en las que se ayudó a la policía</li><li>Arrestos / juicios realizados</li><li>¿Qué pasó finalmente con el agresor?</li></ul></div></div>
+        <div class="step-block"><div class="step-num">5</div><div class="step-content"><h4>Conclusión</h4><p>Resumen del caso, necesidad de la visa y cómo esta beneficiará a la víctima y su familia. Es el cierre narrativo de la declaración.</p></div></div>
+
+        <div class="key-concept">
+          <span class="key-label">Los 3 pilares de una DCL Visa U sólida</span>
+          <p>Toda declaración debe evidenciar claramente: el <strong>Crimen</strong> (que sea calificado), el <strong>LEA Report</strong> (cooperación con autoridades), y la <strong>Helpfulness</strong> (utilidad real de la víctima para la investigación).</p>
+        </div>
+      `,
+      exercises: [
+        { type: "ordering", question: "Ordena correctamente las 5 secciones de la DCL Visa U (haz clic en cada una en el orden correcto).",
+          items: [
+            { id: "datos", text: "Datos Clave y Background" },
+            { id: "crimen", text: "Crimen" },
+            { id: "consecuencias", text: "Consecuencias" },
+            { id: "autoridades", text: "Autoridades" },
+            { id: "conclusion", text: "Conclusión" }
+          ],
+          correctOrder: ["datos", "crimen", "consecuencias", "autoridades", "conclusion"],
+          feedbackCorrect: "✅ ¡Perfecto! El orden correcto es: Datos Clave → Crimen → Consecuencias → Autoridades → Conclusión.",
+          feedbackIncorrect: "❌ El orden no es correcto. La estructura correcta es: Datos Clave → Crimen → Consecuencias → Autoridades → Conclusión." },
+        { type: "multiple_choice", question: "¿Cuáles son los 3 pilares de una DCL Visa U sólida?",
+          options: [{ id: "a", text: "Crimen, Nacionalidad, Testigos" },{ id: "b", text: "Crimen, LEA Report, Helpfulness" },{ id: "c", text: "Antecedentes, Ingresos, Domicilio" },{ id: "d", text: "Edad, Estado civil, Ocupación" }],
+          answer: "b",
+          feedbackCorrect: "✅ ¡Correcto! Los 3 pilares son: Crimen, LEA Report y Helpfulness.",
+          feedbackIncorrect: "❌ Incorrecto. Los 3 pilares son: Crimen, LEA Report y Helpfulness." },
+        { type: "true_false", question: "La sección de 'Consecuencias' en la DCL Visa U debe incluir el daño físico y mental sufrido por la víctima.",
+          answer: "true",
+          feedbackCorrect: "✅ ¡Correcto! La sección de Consecuencias debe detallar el daño físico y mental, la gravedad del abuso y la atención médica recibida.",
+          feedbackIncorrect: "❌ Incorrecto. La sección de Consecuencias sí debe incluir el daño físico y mental sufrido por la víctima." }
+      ]
+    }
+  ],
+
+  finalExam: {
+    id: "exam",
+    title: "Evaluación Integradora del Training",
+    minScore: 85,
+    questions: [
+      { id: "q1", type: "multiple_select", text: "¿Cuáles son los tres criterios que debes encontrar en una DCL Visa U? (Selecciona exactamente 3)",
+        options: ["Immigration Status", "Crime", "LEA Report", "Helpfulness", "Harm", "Mental and Physical Pain", "Need for Visa"],
+        answer: ["Crime", "LEA Report", "Helpfulness"], points: 3 },
+      { id: "q2", type: "true_false", text: "El abuso mental derivado de un crimen, aunque sea sustancial, no es suficiente para solicitar una Visa U.",
+        answer: "false", points: 1 },
+      { id: "q3", type: "multiple_select", text: "La clienta Rosalinda Guerrero está aplicando para Visa U por el crimen que vivió su hija menor de edad, aplicando como víctima indirecta. Necesita comprobar que está cooperando con las autoridades. ¿Con qué instancias se puede acercar? (Selecciona 3)",
+        options: ["Autoridades fiscales", "Testigos del crimen", "Juezas y jueces", "Child Protective Services", "Investigadoras/es privados"],
+        answer: ["Autoridades fiscales", "Juezas y jueces", "Child Protective Services"], points: 3 },
+      { id: "q4", type: "true_false", text: "Los informes de la policía, expedientes médicos y evidencia de otros sistemas resultan inútiles si no testifican frente a una corte.",
+        answer: "false", points: 1 },
+      { id: "q5", type: "single_choice", text: "Selecciona el documento que una fuerza de la ley debe firmar para que un inmigrante sea elegible a Visa U.",
+        options: ["Certificado de Good Moral Character", "Certificado de utilidad (I-918, Suplemento B)", "Certificado de denuncia formal"],
+        answer: "Certificado de utilidad (I-918, Suplemento B)", points: 1 },
+      { id: "q6", type: "single_choice", text: "¿Qué familiares cercanos NO pueden aplicar como víctimas indirectas?",
+        options: ["Los/as hijos/as no casados/as, menores de 21 años, de la víctima directa", "Los familiares de la 3ra edad de la víctima directa mayor de 21 años", "Si la víctima directa es menor de 21 años, sus padres y hermanos/as menores de 18 años"],
+        answer: "Los familiares de la 3ra edad de la víctima directa mayor de 21 años", points: 1 },
+      { id: "q7", type: "multiple_select", text: "¿Cuáles de los siguientes crímenes NO son calificados para Visa U? (Selecciona 3)",
+        options: ["Witness tampering", "Disrespecting authority", "Female genital mutilation", "Petty theft", "Hateful speech", "Obstruction of justice"],
+        answer: ["Disrespecting authority", "Petty theft", "Hateful speech"], points: 3 },
+      { id: "q8", type: "true_false", text: "¿El abuso sustancial físico o mental derivado de una actividad criminal hacia la víctima es requisito indispensable para todos los casos de Visa U?",
+        answer: "true", points: 1 },
+      { id: "q9", type: "single_choice", text: "¿Cuánto tiempo toma obtener una Visa U?",
+        options: ["1-2 años", "6 meses", "4-5 años (aproximadamente 50 meses)"],
+        answer: "4-5 años (aproximadamente 50 meses)", points: 1 }
+    ]
+  }
+};
+
+var TOTAL_EXAM_POINTS = COURSE.finalExam.questions.reduce(function (s, q) { return s + q.points; }, 0);
+
+/* ============================================================
+   ESTADO GLOBAL
+   ============================================================ */
+
+var STATE = {
+  currentSection: "intro",
+  moduleScores: {},
+  exerciseAnswers: {},
+  examSubmitted: false,
+  examScore: 0,
+  examAnswers: {},
+  examDraft: {},
+  examCurrentQ: 0,
+  adminAuthenticated: false,
+  _preAdminSection: "intro"
+};
+
+var MODULE_DRAFT = {}; // respuestas en curso (antes de "Verificar") por módulo
+
+/* ============================================================
+   PERSISTENCIA (SCORM 1.2 / Moodle)
+   ============================================================ */
+
+var ATTEMPT_LOG_KEY = "tmlf_visau_scorm_attempt_log";
+var ADMIN_PASSWORD = "MLF2026+";
+
+function _logAttempt(record) {
+  record.ts = new Date().toISOString();
+  var log = _getAttemptLog();
+  log.push(record);
+  if (log.length > 1000) log = log.slice(log.length - 1000);
+  try { localStorage.setItem(ATTEMPT_LOG_KEY, JSON.stringify(log)); } catch (e) {}
+}
+function _getAttemptLog() {
+  try { return JSON.parse(localStorage.getItem(ATTEMPT_LOG_KEY) || "[]"); } catch (e) { return []; }
+}
+function _escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
+function _saveState() {
+  SCORM_API.saveProgress(
+    STATE.currentSection,
+    JSON.stringify({
+      moduleScores: STATE.moduleScores,
+      exerciseAnswers: STATE.exerciseAnswers,
+      examSubmitted: STATE.examSubmitted,
+      examScore: STATE.examScore,
+      examAnswers: STATE.examAnswers
+    })
+  );
+  if (STATE.examSubmitted) {
+    var total = _computeTotalScore();
+    SCORM_API.sendScore(total, total >= COURSE.finalExam.minScore);
+  }
+}
+
+function _loadState() {
+  var loc = SCORM_API.getLocation();
+  var raw = SCORM_API.getSuspendData();
+  if (raw) {
+    try {
+      var saved = JSON.parse(raw);
+      STATE.moduleScores    = saved.moduleScores    || {};
+      STATE.exerciseAnswers = saved.exerciseAnswers || {};
+      STATE.examSubmitted   = saved.examSubmitted   || false;
+      STATE.examScore       = saved.examScore       || 0;
+      STATE.examAnswers     = saved.examAnswers     || {};
+    } catch (e) {}
+  }
+  if (loc && loc !== "admin") STATE.currentSection = loc;
+}
+
+function _computeTotalScore() {
+  var modulesPassed = Object.keys(STATE.moduleScores).filter(function (k) { return STATE.moduleScores[k]; }).length;
+  var modulePct = (modulesPassed / COURSE.modules.length) * 40;
+  var examPct   = STATE.examSubmitted ? (STATE.examScore / 100) * 60 : 0;
+  return Math.round(modulePct + examPct);
+}
+
+/* ============================================================
+   NAVEGACIÓN
+   ============================================================ */
+
+var SECTION_IDS = ["intro"].concat(COURSE.modules.map(function (m) { return m.id; })).concat(["evaluacion"]);
+
+function showPanel(id) { _navigateTo(id); }
+
+function _navigateTo(sectionId, skipSave) {
+  if (sectionId !== "admin") {
+    STATE.currentSection = sectionId;
+    if (!skipSave) _saveState();
+  }
+
+  document.querySelectorAll(".sb-item[data-id]").forEach(function (el) {
+    el.classList.toggle("active", el.getAttribute("data-id") === sectionId);
+  });
+
+  var panel = document.getElementById("content-panel");
+  if (sectionId === "intro") {
+    _renderIntro(panel);
+  } else if (sectionId === "evaluacion") {
+    _renderExam(panel);
+  } else if (sectionId === "admin") {
+    _renderAdmin(panel);
+  } else {
+    var idx = COURSE.modules.findIndex(function (m) { return m.id === sectionId; });
+    if (idx !== -1) _renderModule(panel, COURSE.modules[idx], idx);
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (window.innerWidth <= 900) {
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("sbOverlay").classList.remove("show");
+  }
+  updateProgress();
+}
+
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("sbOverlay").classList.toggle("show");
+}
+
+function updateProgress() {
+  var pct = _computeTotalScore();
+  var bar = document.getElementById("globalProgress");
+  if (bar) bar.style.width = pct + "%";
+}
+
+/* ============================================================
+   PANEL: INTRODUCCIÓN
+   ============================================================ */
+
+function _renderIntro(container) {
+  var html = '';
+  html += '<div class="page-title"><div class="pt-label">Inicio obligatorio</div><h2>Visa U: Introducción</h2><p class="pt-sub">Lee esta sección antes de comenzar cualquier módulo.</p></div>';
+
+  html += '<div class="block">';
+  html += '<div class="btitle"><div class="bicon">🎯</div><h3>Objetivo del curso</h3><div class="mod-badge badge-core">Propósito</div></div>';
+  html += '<div class="bbody"><div class="principle"><p>"Al finalizar este curso, las y los participantes podrán identificar los fundamentos de la Visa U, así como conocer y analizar la Template de la DCL, con el propósito de que los equipos completos puedan trabajar casos Visa U de forma eficiente y analítica."</p></div></div>';
+  html += '</div>';
+
+  html += '<div class="block">';
+  html += '<div class="btitle"><div class="bicon">🗺️</div><h3>Contenidos del curso</h3><div class="mod-badge badge-gold">Mapa</div></div>';
+  html += '<div class="bbody"><div class="overview-grid">';
+  COURSE.modules.forEach(function (m, i) {
+    html += '<div class="ov-card" onclick="_navigateTo(\'' + m.id + '\')"><div class="ov-icon">' + m.icon + '</div><strong>Módulo ' + (i + 1) + '</strong><small>' + m.shortTitle + '</small></div>';
+  });
+  html += '<div class="ov-card exam-card" onclick="_navigateTo(\'evaluacion\')"><div class="ov-icon">✦</div><strong>Evaluación Final</strong><small>9 preguntas</small></div>';
+  html += '</div></div>';
+  html += '</div>';
+
+  html += '<div class="block">';
+  html += '<div class="btitle"><div class="bicon">📌</div><h3>Antes de comenzar</h3><div class="mod-badge badge-warn">Importante</div></div>';
+  html += '<div class="bbody"><div class="ob-list">';
+  html += '<div class="ob-item"><div class="ob-num">1</div><span><strong>Lee con atención cada pantalla</strong> antes de avanzar. La teoría y los ejercicios están conectados.</span></div>';
+  html += '<div class="ob-item"><div class="ob-num">2</div><span><strong>Contesta con cuidado.</strong> La evaluación final <strong>solo puede responderse una vez</strong>.</span></div>';
+  html += '<div class="ob-item"><div class="ob-num">3</div><span><strong>Intentos limitados a 1.</strong> Tu calificación queda registrada al finalizar.</span></div>';
+  html += '<div class="ob-item"><div class="ob-num">4</div><span><strong>¿Problema técnico?</strong> Toma una captura de pantalla y comunícate con el equipo de Training.</span></div>';
+  html += '</div></div>';
+  html += '</div>';
+
+  html += '<div style="text-align:center;margin-top:22px"><button class="mod-nav-btn mod-nav-next" style="padding:12px 30px;font-size:14px" onclick="_navigateTo(\'' + COURSE.modules[0].id + '\')">Comenzar curso →</button></div>';
+
+  container.innerHTML = html;
+}
+
+/* ============================================================
+   PANEL: MÓDULO
+   ============================================================ */
+
+function _renderModule(container, mod, idx) {
+  var hasPrev = idx > 0;
+  var hasNext = idx < COURSE.modules.length - 1;
+  var prevId = hasPrev ? COURSE.modules[idx - 1].id : "intro";
+  var nextId = hasNext ? COURSE.modules[idx + 1].id : "evaluacion";
+
+  var html = '';
+  html += '<div class="page-title"><div class="pt-label">Módulo ' + (idx + 1) + ' de ' + COURSE.modules.length + '</div><h2>' + mod.title + '</h2><p class="pt-sub">' + mod.tagline + '</p></div>';
+
+  html += '<div class="sdiv"><div class="l"></div><div class="t">📚 Contenido Teórico</div><div class="l"></div></div>';
+  html += '<div class="block"><div class="btitle"><div class="bicon">' + mod.icon + '</div><h3>' + mod.shortTitle + '</h3><div class="mod-badge badge-core">Teoría</div></div><div class="bbody">' + mod.content + '</div></div>';
+
+  html += '<div class="sdiv"><div class="l"></div><div class="t">🧪 Ejercicios de Comprobación</div><div class="l"></div></div>';
+  html += '<div class="block b-ejercicio"><div class="btitle"><div class="bicon">🧪</div><h3>Refuerzo del módulo</h3><div class="mod-badge badge-template">3 preguntas</div></div>';
+  html += '<div class="bbody" id="' + mod.id + '-exbody">' + _buildModuleExerciseHTML(mod) + '</div></div>';
+
+  html += '<div class="mod-nav-bar"><button class="mod-nav-btn mod-nav-prev" onclick="_navigateTo(\'' + prevId + '\')">← Anterior</button>';
+  html += '<button class="mod-nav-btn mod-nav-next" onclick="_navigateTo(\'' + nextId + '\')">' + (hasNext ? "Siguiente módulo →" : "Ir a Evaluación Final →") + '</button></div>';
+
+  container.innerHTML = html;
+
+  if (mod.id === "mod5") _initCrimeTags();
+
+  if (STATE.exerciseAnswers[mod.id]) {
+    _renderModuleAnsweredState(mod);
+  } else {
+    MODULE_DRAFT[mod.id] = {};
+    _attachModuleExerciseHandlers(mod);
+  }
+}
+
+/* ============================================================
+   EJERCICIOS DE MÓDULO — construcción y calificación
+   ============================================================ */
+
+function _buildModuleExerciseHTML(mod) {
+  var html = "";
+  mod.exercises.forEach(function (ex, i) {
+    if (ex.type === "multiple_choice" || ex.type === "multiple_select_fixed") {
+      var multi = ex.type === "multiple_select_fixed";
+      html += '<div class="ck2-question" id="' + mod.id + '-q' + i + '">';
+      html += '<div class="ck2-qtext"><strong>P' + (i + 1) + '.</strong> ' + ex.question + (multi ? ' <em style="font-weight:400;color:var(--slate)">(elige ' + ex.requiredCount + ')</em>' : '') + '</div>';
+      html += '<div class="ck2-opts">';
+      var opts = multi ? ex.options.map(function (o) { return { id: o, text: o }; }) : ex.options;
+      opts.forEach(function (opt, oi) {
+        html += '<div class="ck2-opt' + (multi ? ' ck2-multi' : '') + '" data-val="' + opt.id + '" onclick="_moduleOptSel(this,\'' + mod.id + '\',' + i + ',' + multi + ')"><div class="ck2-radio' + (multi ? ' ck2-check' : '') + '"></div>' + opt.text + '</div>';
+      });
+      html += '</div><div class="ck-feedback" id="' + mod.id + '-fb' + i + '"></div></div>';
+
+    } else if (ex.type === "true_false") {
+      html += '<div class="ck4-question" id="' + mod.id + '-q' + i + '">';
+      html += '<div class="ck4-stmt"><strong>P' + (i + 1) + '.</strong> ' + ex.question + '</div>';
+      html += '<div class="ck4-btns">';
+      html += '<button class="ck4-btn" data-val="true" onclick="_moduleTFSel(this,\'' + mod.id + '\',' + i + ')">✅ Verdadero</button>';
+      html += '<button class="ck4-btn" data-val="false" onclick="_moduleTFSel(this,\'' + mod.id + '\',' + i + ')">❌ Falso</button>';
+      html += '</div><div class="ck-feedback" id="' + mod.id + '-fb' + i + '"></div></div>';
+
+    } else if (ex.type === "fill_blank_double") {
+      html += '<div class="ck2-question" id="' + mod.id + '-q' + i + '">';
+      html += '<div class="ck2-qtext"><strong>P' + (i + 1) + '.</strong> ' + ex.question + '</div>';
+      html += '<div class="ckf-group">';
+      html += '<input type="text" class="ckf-input" id="' + mod.id + '-fb1-' + i + '" placeholder="' + ex.placeholders[0] + '">';
+      html += '<span class="ckf-sep">/</span>';
+      html += '<input type="text" class="ckf-input" id="' + mod.id + '-fb2-' + i + '" placeholder="' + ex.placeholders[1] + '">';
+      html += '</div><div class="ck-feedback" id="' + mod.id + '-fb' + i + '"></div></div>';
+
+    } else if (ex.type === "ordering") {
+      html += '<div class="ck2-question" id="' + mod.id + '-q' + i + '">';
+      html += '<div class="ck2-qtext"><strong>P' + (i + 1) + '.</strong> ' + ex.question + '</div>';
+      html += '<div class="ck3-list" id="' + mod.id + '-ord' + i + '">';
+      ex.items.forEach(function (item) {
+        html += '<div class="ck3-item" data-step="' + item.id + '" onclick="_moduleOrderSel(this,\'' + mod.id + '\',' + i + ')"><div class="ck3-num">?</div><div class="ck3-text">' + item.text + '</div></div>';
+      });
+      html += '</div><div class="ck-feedback" id="' + mod.id + '-fb' + i + '"></div></div>';
+    }
+  });
+
+  html += '<div class="ck-actions">';
+  html += '<button class="ck-btn ck-verify" id="' + mod.id + '-verify" onclick="_verifyModule(\'' + mod.id + '\')">Verificar respuestas</button>';
+  html += '<button class="ck-btn ck-retry" id="' + mod.id + '-retry" style="display:none" onclick="_resetModuleExercise(\'' + mod.id + '\')">Reintentar</button>';
+  html += '</div><div class="ck-result-summary" id="' + mod.id + '-summary"></div>';
+  return html;
+}
+
+function _moduleOptSel(el, modId, i, multi) {
+  if (el.classList.contains("disabled")) return;
+  MODULE_DRAFT[modId] = MODULE_DRAFT[modId] || {};
+  if (multi) {
+    el.classList.toggle("selected");
+    var picked = Array.from(document.querySelectorAll('#' + modId + '-q' + i + ' .ck2-opt.selected')).map(function (o) { return o.getAttribute("data-val"); });
+    MODULE_DRAFT[modId][i] = picked;
+  } else {
+    document.querySelectorAll('#' + modId + '-q' + i + ' .ck2-opt').forEach(function (o) { o.classList.remove("selected"); });
+    el.classList.add("selected");
+    MODULE_DRAFT[modId][i] = el.getAttribute("data-val");
+  }
+}
+
+function _moduleTFSel(btn, modId, i) {
+  if (btn.classList.contains("disabled")) return;
+  MODULE_DRAFT[modId] = MODULE_DRAFT[modId] || {};
+  document.querySelectorAll('#' + modId + '-q' + i + ' .ck4-btn').forEach(function (b) { b.classList.remove("selected"); });
+  btn.classList.add("selected");
+  MODULE_DRAFT[modId][i] = btn.getAttribute("data-val");
+}
+
+function _moduleOrderSel(el, modId, i) {
+  if (el.classList.contains("ordered") || el.classList.contains("disabled-ord")) return;
+  MODULE_DRAFT[modId] = MODULE_DRAFT[modId] || {};
+  var seq = MODULE_DRAFT[modId][i] || [];
+  seq.push(el.getAttribute("data-step"));
+  MODULE_DRAFT[modId][i] = seq;
+  el.classList.add("ordered");
+  el.querySelector(".ck3-num").textContent = seq.length;
+}
+
+function _attachModuleExerciseHandlers(mod) {
+  // Los handlers están inline (onclick) en el HTML generado; nada adicional que enlazar aquí.
+}
+
+function _readModuleAnswer(mod, ex, i) {
+  var draft = MODULE_DRAFT[mod.id] || {};
+  if (ex.type === "fill_blank_double") {
+    var v1 = (document.getElementById(mod.id + "-fb1-" + i) || {}).value || "";
+    var v2 = (document.getElementById(mod.id + "-fb2-" + i) || {}).value || "";
+    return [v1.trim(), v2.trim()];
+  }
+  return draft[i];
+}
+
+function _gradeModuleAnswer(ex, userAnswer) {
+  if (userAnswer === undefined || userAnswer === null) return false;
+  if (ex.type === "multiple_choice") return userAnswer === ex.answer;
+  if (ex.type === "true_false") return userAnswer === ex.answer;
+  if (ex.type === "multiple_select_fixed") {
+    if (!Array.isArray(userAnswer) || userAnswer.length === 0) return false;
+    return JSON.stringify(userAnswer.slice().sort()) === JSON.stringify(ex.answer.slice().sort());
+  }
+  if (ex.type === "fill_blank_double") {
+    var a0 = (userAnswer[0] || "").replace(/\s/g, "").toLowerCase();
+    var a1 = (userAnswer[1] || "").replace(/\s/g, "").toLowerCase();
+    return a0 === "50" && (a1 === "1-2" || a1 === "1a2" || a1 === "1y2" || a1 === "12");
+  }
+  if (ex.type === "ordering") {
+    if (!Array.isArray(userAnswer)) return false;
+    return JSON.stringify(userAnswer) === JSON.stringify(ex.correctOrder);
+  }
+  return false;
+}
+
+function _verifyModule(modId) {
+  var mod = COURSE.modules.find(function (m) { return m.id === modId; });
+  var total = mod.exercises.length;
+  var correctCount = 0;
+  var answers = {};
+
+  mod.exercises.forEach(function (ex, i) {
+    var userAnswer = _readModuleAnswer(mod, ex, i);
+    var correct = _gradeModuleAnswer(ex, userAnswer);
+    answers[i] = { answer: userAnswer, correct: correct };
+    if (correct) correctCount++;
+
+    _logAttempt({
+      type: "exercise", moduleId: mod.id, moduleTitle: mod.shortTitle, question: ex.question,
+      answer: Array.isArray(userAnswer) ? userAnswer.join(", ") : String(userAnswer),
+      correct: correct
+    });
+
+    var fb = document.getElementById(mod.id + "-fb" + i);
+    if (fb) {
+      fb.className = "ck-feedback show " + (correct ? "ok" : "fail");
+      fb.textContent = correct ? ex.feedbackCorrect : ex.feedbackIncorrect;
+    }
+    _disableModuleQuestion(mod.id, i, ex, userAnswer, correct);
+  });
+
+  STATE.exerciseAnswers[mod.id] = answers;
+  STATE.moduleScores[mod.id] = (correctCount === total);
+  _saveState();
+  updateProgress();
+  _markSidebarCompleted(mod.id, STATE.moduleScores[mod.id]);
+
+  var pct = Math.round((correctCount / total) * 100);
+  var sum = document.getElementById(mod.id + "-summary");
+  sum.style.display = "block";
+  sum.className = "ck-result-summary " + (pct >= 80 ? "ok" : pct >= 50 ? "warn" : "fail");
+  sum.textContent = correctCount + "/" + total + " correctas (" + pct + "%) — " + (pct >= 80 ? "¡Excelente! Puedes avanzar al siguiente módulo." : pct >= 50 ? "Buen avance. Repasa los errores antes de continuar." : "Regresa al contenido del módulo e inténtalo de nuevo.");
+
+  document.getElementById(mod.id + "-verify").style.display = "none";
+  document.getElementById(mod.id + "-retry").style.display = "inline-block";
+}
+
+function _disableModuleQuestion(modId, i, ex, userAnswer, correct) {
+  var qBlock = document.getElementById(modId + "-q" + i);
+  if (!qBlock) return;
+  if (ex.type === "multiple_choice" || ex.type === "multiple_select_fixed") {
+    var multi = ex.type === "multiple_select_fixed";
+    qBlock.querySelectorAll(".ck2-opt").forEach(function (o) {
+      o.classList.add("disabled");
+      var v = o.getAttribute("data-val");
+      var isCorrectVal = multi ? ex.answer.indexOf(v) !== -1 : v === ex.answer;
+      var wasPicked = multi ? (Array.isArray(userAnswer) && userAnswer.indexOf(v) !== -1) : v === userAnswer;
+      if (isCorrectVal) o.classList.add("correct");
+      else if (wasPicked) o.classList.add("incorrect");
+    });
+  } else if (ex.type === "true_false") {
+    qBlock.querySelectorAll(".ck4-btn").forEach(function (b) {
+      b.classList.add("disabled");
+      var v = b.getAttribute("data-val");
+      if (v === ex.answer) b.classList.add("correct");
+      else if (v === userAnswer) b.classList.add("incorrect");
+    });
+  } else if (ex.type === "fill_blank_double") {
+    var i1 = document.getElementById(modId + "-fb1-" + i);
+    var i2 = document.getElementById(modId + "-fb2-" + i);
+    if (i1) i1.disabled = true;
+    if (i2) i2.disabled = true;
+  } else if (ex.type === "ordering") {
+    qBlock.querySelectorAll(".ck3-item").forEach(function (el) { el.classList.add("disabled-ord"); });
+  }
+}
+
+function _resetModuleExercise(modId) {
+  var mod = COURSE.modules.find(function (m) { return m.id === modId; });
+  MODULE_DRAFT[modId] = {};
+  document.getElementById(modId + "-exbody").innerHTML = _buildModuleExerciseHTML(mod);
+  document.getElementById(modId + "-summary").style.display = "none";
+}
+
+function _renderModuleAnsweredState(mod) {
+  var saved = STATE.exerciseAnswers[mod.id];
+  var total = mod.exercises.length;
+  var correctCount = 0;
+  mod.exercises.forEach(function (ex, i) {
+    var rec = saved[i];
+    if (!rec) return;
+    if (rec.correct) correctCount++;
+    var fb = document.getElementById(mod.id + "-fb" + i);
+    if (fb) {
+      fb.className = "ck-feedback show " + (rec.correct ? "ok" : "fail");
+      fb.textContent = rec.correct ? ex.feedbackCorrect : ex.feedbackIncorrect;
+    }
+    if (ex.type === "ordering" && Array.isArray(rec.answer)) {
+      var list = document.getElementById(mod.id + "-ord" + i);
+      rec.answer.forEach(function (stepId, pos) {
+        var el = list ? list.querySelector('[data-step="' + stepId + '"]') : null;
+        if (el) { el.classList.add("ordered"); el.querySelector(".ck3-num").textContent = pos + 1; }
+      });
+    }
+    if (ex.type === "fill_blank_double" && Array.isArray(rec.answer)) {
+      var i1 = document.getElementById(mod.id + "-fb1-" + i), i2 = document.getElementById(mod.id + "-fb2-" + i);
+      if (i1) i1.value = rec.answer[0];
+      if (i2) i2.value = rec.answer[1];
+    }
+    _disableModuleQuestion(mod.id, i, ex, rec.answer, rec.correct);
+  });
+  var pct = Math.round((correctCount / total) * 100);
+  var sum = document.getElementById(mod.id + "-summary");
+  sum.style.display = "block";
+  sum.className = "ck-result-summary " + (pct >= 80 ? "ok" : pct >= 50 ? "warn" : "fail");
+  sum.textContent = correctCount + "/" + total + " correctas (" + pct + "%)";
+  document.getElementById(mod.id + "-verify").style.display = "none";
+  document.getElementById(mod.id + "-retry").style.display = "inline-block";
+}
+
+function _markSidebarCompleted(modId, passed) {
+  var nav = document.getElementById("nav-" + modId);
+  if (nav) nav.classList.toggle("completed", !!passed);
+}
+
+/* ============================================================
+   CRÍMENES CALIFICADOS: TARJETAS DESPLEGABLES (Módulo 5)
+   ============================================================ */
+
+function _initCrimeTags() {
+  var grid = document.getElementById("crimes-grid");
+  var panel = document.getElementById("crime-detail");
+  if (!grid || !panel) return;
+  var activeBtn = null;
+
+  grid.querySelectorAll(".crime-tag").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var name = btn.getAttribute("data-crime");
+      var data = CRIME_DEFS[name];
+      if (activeBtn === btn) {
+        panel.style.display = "none"; panel.innerHTML = ""; btn.classList.remove("active"); activeBtn = null; return;
+      }
+      if (activeBtn) activeBtn.classList.remove("active");
+      btn.classList.add("active"); activeBtn = btn;
+      var html = '<div class="crime-detail-title">' + name + '</div>';
+      if (data) {
+        html += '<p class="crime-detail-def"><strong>Definición:</strong> ' + data.def + '</p>';
+        html += '<p class="crime-detail-example"><strong>Ejemplo:</strong> ' + data.example + '</p>';
+      } else {
+        html += '<p class="crime-detail-def">Definición no disponible.</p>';
+      }
+      panel.innerHTML = html;
+      panel.style.display = "block";
+      panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  });
+}
+
+/* ============================================================
+   EVALUACIÓN FINAL — PAGINACIÓN TIPO EBOOK (book-wrap)
+   ============================================================ */
+
+function _renderExam(container) {
+  var total = COURSE.finalExam.questions.length;
+  if (STATE.examCurrentQ === undefined || STATE.examCurrentQ === null) STATE.examCurrentQ = 0;
+  if (STATE.examCurrentQ > total - 1) STATE.examCurrentQ = total - 1;
+  if (STATE.examCurrentQ < 0) STATE.examCurrentQ = 0;
+  var idx = STATE.examCurrentQ;
+  var q = COURSE.finalExam.questions[idx];
+
+  var html = '';
+  html += '<div class="page-title"><div class="pt-label">Cierre del training</div><h2>' + COURSE.finalExam.title + '</h2><p class="pt-sub">9 preguntas, presentadas una a la vez. Un solo intento. Calificación mínima: ' + COURSE.finalExam.minScore + '%.</p></div>';
+
+  if (STATE.examSubmitted) {
+    html += _buildExamResultCardHTML();
+  }
+
+  html += '<div class="block">';
+  html += '<div class="btitle"><div class="bicon">✦</div><h3>Evaluación Integradora</h3><div class="mod-badge badge-exam">' + total + ' Preguntas</div></div>';
+  html += '<div class="bbody exam-book">';
+
+  html += '<div class="exam-tabs-row">';
+  COURSE.finalExam.questions.forEach(function (qq, i) {
+    var answered = STATE.examSubmitted ? (STATE.examAnswers[qq.id] !== undefined) : (STATE.examDraft && STATE.examDraft[qq.id] !== undefined);
+    var cls = "exam-tab-dot" + (i === idx ? " current" : "") + (answered ? " answered" : "");
+    html += '<button type="button" class="' + cls + '" data-qidx="' + i + '" onclick="_examJump(' + i + ')">' + (i + 1) + '</button>';
+  });
+  html += '</div>';
+
+  html += '<div class="book-wrap"><div class="book-pages"><div class="book-page bp-active">' + _buildExamQuestionHTML(q, idx, total) + '</div></div>';
+  html += '<div class="book-nav">';
+  html += '<button class="book-btn book-btn-prev" id="exam-prev"' + (idx === 0 ? " disabled" : "") + ' onclick="_examPrev()">← Anterior</button>';
+  if (idx === total - 1 && !STATE.examSubmitted) {
+    html += '<button class="btn-submit" id="exam-submit-final" onclick="_submitExam()" style="padding:9px 22px;border-radius:8px">Calificar Evaluación</button>';
+  } else if (idx < total - 1) {
+    html += '<button class="book-btn book-btn-next" id="exam-next" onclick="_examNext()">Siguiente →</button>';
+  } else {
+    html += '<span></span>';
+  }
+  html += '</div></div>';
+
+  html += '</div></div>'; // /bbody /block
+
+  container.innerHTML = html;
+  _wireExamPage(q, idx, total);
+}
+
+function _buildExamResultCardHTML() {
+  var pct = STATE.examScore;
+  var pass = pct >= COURSE.finalExam.minScore;
+  var correct = COURSE.finalExam.questions.filter(function (q) {
+    var ua = STATE.examAnswers[q.id];
+    if (q.type === "multiple_select") return JSON.stringify((ua || []).slice().sort()) === JSON.stringify(q.answer.slice().sort());
+    return ua === q.answer || ua === q.answer.toString();
+  }).length;
+  var total = COURSE.finalExam.questions.length;
+  var html = '<div class="result-card show">';
+  html += '<div class="result-score ' + (pass ? "pass" : pct >= 60 ? "warn" : "fail") + '">' + pct + '%</div>';
+  html += '<div class="result-label">' + (pass ? "✅ APROBADO" : "❌ NO APROBADO") + '</div>';
+  html += '<div class="result-msg">' + (pass ? "¡Felicidades! Has superado la evaluación final con " + pct + "%." : "Tu puntaje es " + pct + "%. Necesitas al menos " + COURSE.finalExam.minScore + "% para aprobar.") + '</div>';
+  html += '<div class="result-breakdown">';
+  html += '<div class="rb-item rb-ok"><div class="rb-n">' + correct + '</div><div class="rb-l">Correctas</div></div>';
+  html += '<div class="rb-item rb-bad"><div class="rb-n">' + (total - correct) + '</div><div class="rb-l">Incorrectas</div></div>';
+  html += '<div class="rb-item rb-mod"><div class="rb-n">' + total + '</div><div class="rb-l">Total</div></div>';
+  html += '</div></div>';
+  return html;
+}
+
+function _buildExamQuestionHTML(q, idx, total) {
+  var savedVal = STATE.examSubmitted ? STATE.examAnswers[q.id] : (STATE.examDraft ? STATE.examDraft[q.id] : undefined);
+  var extraClass = "";
+  if (STATE.examSubmitted) {
+    var isCorrect = q.type === "multiple_select"
+      ? JSON.stringify((savedVal || []).slice().sort()) === JSON.stringify(q.answer.slice().sort())
+      : (savedVal === q.answer || savedVal === q.answer.toString());
+    extraClass = "";
+  }
+  var html = '<div class="q-item" id="exam-q-' + q.id + '">';
+  html += '<div class="q-stem"><strong>P' + (idx + 1) + ' de ' + total + '</strong> (' + q.points + ' pt' + (q.points > 1 ? "s" : "") + ') — ' + q.text + '</div>';
+  html += '<div class="q-opts">';
+
+  if (q.type === "true_false") {
+    ["true", "false"].forEach(function (v, oi) {
+      var selected = savedVal === v ? " selected" : "";
+      html += '<div class="q-opt' + selected + '" data-val="' + v + '" onclick="_examSel(this,\'' + q.id + '\',false)"><div class="q-letter">' + (v === "true" ? "V" : "F") + '</div>' + (v === "true" ? "Verdadero" : "Falso") + '</div>';
+    });
+  } else if (q.type === "single_choice") {
+    q.options.forEach(function (opt, oi) {
+      var selected = savedVal === opt ? " selected" : "";
+      html += '<div class="q-opt' + selected + '" data-val="' + _escapeHtml(opt) + '" onclick="_examSel(this,\'' + q.id + '\',false)"><div class="q-letter">' + String.fromCharCode(65 + oi) + '</div>' + opt + '</div>';
+    });
+  } else if (q.type === "multiple_select") {
+    q.options.forEach(function (opt, oi) {
+      var selected = Array.isArray(savedVal) && savedVal.indexOf(opt) !== -1 ? " selected" : "";
+      html += '<div class="q-opt' + selected + '" data-val="' + _escapeHtml(opt) + '" onclick="_examSel(this,\'' + q.id + '\',true)"><div class="q-letter">' + String.fromCharCode(65 + oi) + '</div>' + opt + '</div>';
+    });
+  }
+  html += '</div><div class="q-feedback" id="exam-fb-' + q.id + '"></div></div>';
+  return html;
+}
+
+function _wireExamPage(q, idx, total) {
+  if (STATE.examSubmitted) {
+    var qBlock = document.getElementById("exam-q-" + q.id);
+    if (qBlock) {
+      var userAnswer = STATE.examAnswers[q.id];
+      var isCorrect = q.type === "multiple_select"
+        ? JSON.stringify((userAnswer || []).slice().sort()) === JSON.stringify(q.answer.slice().sort())
+        : (userAnswer === q.answer || userAnswer === q.answer.toString());
+      qBlock.querySelectorAll(".q-opt").forEach(function (o) {
+        o.classList.add("disabled");
+        var v = o.getAttribute("data-val");
+        var isCorrectVal = q.type === "multiple_select" ? q.answer.indexOf(v) !== -1 : v === q.answer.toString();
+        if (isCorrectVal) o.classList.add("correct");
+        else if (o.classList.contains("selected")) o.classList.add("incorrect");
+      });
+      var fb = document.getElementById("exam-fb-" + q.id);
+      if (fb) {
+        fb.className = "q-feedback show " + (isCorrect ? "ok" : "fail");
+        fb.textContent = isCorrect ? "✅ Correcto." : "❌ Incorrecto.";
+      }
+    }
+  }
+}
+
+function _examSel(el, qId, multi) {
+  if (el.classList.contains("disabled")) return;
+  if (!STATE.examDraft) STATE.examDraft = {};
+  if (multi) {
+    el.classList.toggle("selected");
+    var picked = Array.from(el.parentNode.querySelectorAll(".q-opt.selected")).map(function (o) { return o.getAttribute("data-val"); });
+    STATE.examDraft[qId] = picked;
+  } else {
+    el.parentNode.querySelectorAll(".q-opt").forEach(function (o) { o.classList.remove("selected"); });
+    el.classList.add("selected");
+    STATE.examDraft[qId] = el.getAttribute("data-val");
+  }
+  var idx = COURSE.finalExam.questions.findIndex(function (q) { return q.id === qId; });
+  var dot = document.querySelector('.exam-tab-dot[data-qidx="' + idx + '"]');
+  if (dot) dot.classList.add("answered");
+}
+
+function _examJump(i) { STATE.examCurrentQ = i; _navigateTo("evaluacion", true); }
+function _examPrev() { STATE.examCurrentQ = Math.max(0, STATE.examCurrentQ - 1); _navigateTo("evaluacion", true); }
+function _examNext() { STATE.examCurrentQ = Math.min(COURSE.finalExam.questions.length - 1, STATE.examCurrentQ + 1); _navigateTo("evaluacion", true); }
+
+function _submitExam() {
+  var totalEarned = 0, allAnswered = true, firstUnanswered = -1;
+  var answers = {};
+
+  COURSE.finalExam.questions.forEach(function (q, i) {
+    var val = STATE.examDraft ? STATE.examDraft[q.id] : undefined;
+    if (q.type === "true_false" || q.type === "single_choice") {
+      if (val === undefined || val === null) { allAnswered = false; if (firstUnanswered === -1) firstUnanswered = i; return; }
+      answers[q.id] = val;
+      var ok1 = (val === q.answer || val === q.answer.toString());
+      if (ok1) totalEarned += q.points;
+      _logAttempt({ type: "exam", moduleTitle: "Evaluación final", question: q.text, answer: val, correct: ok1 });
+    } else if (q.type === "multiple_select") {
+      if (!val || val.length === 0) { allAnswered = false; if (firstUnanswered === -1) firstUnanswered = i; return; }
+      answers[q.id] = val;
+      var ok2 = JSON.stringify(val.slice().sort()) === JSON.stringify(q.answer.slice().sort());
+      if (ok2) totalEarned += q.points;
+      _logAttempt({ type: "exam", moduleTitle: "Evaluación final", question: q.text, answer: val.join(", "), correct: ok2 });
+    }
+  });
+
+  if (!allAnswered) {
+    alert("Por favor responde todas las preguntas antes de enviar.");
+    STATE.examCurrentQ = firstUnanswered;
+    _navigateTo("evaluacion", true);
+    return;
+  }
+
+  STATE.examAnswers = answers;
+  STATE.examSubmitted = true;
+  STATE.examScore = Math.round((totalEarned / TOTAL_EXAM_POINTS) * 100);
+  STATE.examCurrentQ = 0;
+
+  _logAttempt({ type: "exam_summary", moduleTitle: "Evaluación final — Resumen", question: "Calificación total del intento", answer: STATE.examScore + "%", correct: STATE.examScore >= COURSE.finalExam.minScore });
+
+  var navExam = document.getElementById("nav-evaluacion");
+  if (navExam && STATE.examScore >= COURSE.finalExam.minScore) navExam.classList.add("completed");
+
+  _saveState();
+  updateProgress();
+  _navigateTo("evaluacion", true);
+}
+
+/* ============================================================
+   PANEL DE ADMINISTRADOR
+   ============================================================ */
+
+function _openAdminModal() {
+  var modal = document.getElementById("admin-modal");
+  var input = document.getElementById("admin-pass-input");
+  var error = document.getElementById("admin-modal-error");
+  error.style.display = "none";
+  input.value = "";
+  modal.style.display = "flex";
+  input.focus();
+}
+function _closeAdminModal() { document.getElementById("admin-modal").style.display = "none"; }
+function _tryAdminLogin() {
+  var input = document.getElementById("admin-pass-input");
+  var error = document.getElementById("admin-modal-error");
+  if (input.value === ADMIN_PASSWORD) {
+    STATE.adminAuthenticated = true;
+    STATE._preAdminSection = STATE.currentSection;
+    _closeAdminModal();
+    _navigateTo("admin", true);
+  } else {
+    error.style.display = "block";
+  }
+}
+
+function _renderAdmin(container) {
+  if (!STATE.adminAuthenticated) {
+    _openAdminModal();
+    container.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--slate)"><p>Acceso restringido. Ingresa la contraseña de administrador.</p></div>';
+    return;
+  }
+
+  var log = _getAttemptLog();
+  var modulesPassed = Object.keys(STATE.moduleScores).filter(function (k) { return STATE.moduleScores[k]; }).length;
+
+  var html = '<div class="page-title"><div class="pt-label">Solo administradores</div><h2>🔒 Panel de administrador</h2><p class="pt-sub">Registro de respuestas de ejercicios y evaluación final.</p></div>';
+
+  html += '<div class="stat-row">';
+  html += '<div class="stat-card"><div class="stat-val">' + log.length + '</div><div class="stat-label">Respuestas registradas</div></div>';
+  html += '<div class="stat-card"><div class="stat-val">' + (STATE.examSubmitted ? STATE.examScore + "%" : "—") + '</div><div class="stat-label">Examen (sesión actual)</div></div>';
+  html += '<div class="stat-card"><div class="stat-val">' + modulesPassed + ' / ' + COURSE.modules.length + '</div><div class="stat-label">Módulos aprobados</div></div>';
+  html += '</div>';
+
+  html += '<div class="block"><div class="btitle"><div class="bicon">⚙️</div><h3>Acciones</h3></div><div class="bbody">';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap">';
+  html += '<button class="mod-nav-btn mod-nav-prev" id="admin-clear-log">🗑️ Vaciar registro</button>';
+  html += '<button class="mod-nav-btn mod-nav-prev" id="admin-export-log">⬇️ Exportar JSON</button>';
+  html += '<button class="mod-nav-btn mod-nav-next" id="admin-close">Salir del panel</button>';
+  html += '</div></div></div>';
+
+  html += '<div class="block"><div class="btitle"><div class="bicon">📋</div><h3>Registro de intentos</h3><div class="mod-badge badge-core">Más reciente primero</div></div><div class="bbody">';
+  if (log.length === 0) {
+    html += '<p class="hint-text">Aún no hay respuestas registradas en este navegador.</p>';
+  } else {
+    html += '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Fecha y hora</th><th>Tipo</th><th>Módulo / Examen</th><th>Pregunta</th><th>Respuesta registrada</th><th>Resultado</th></tr></thead><tbody>';
+    log.slice().reverse().forEach(function (r) {
+      var tipoLabel = r.type === "exam" ? "Evaluación final" : (r.type === "exam_summary" ? "Resumen de examen" : "Ejercicio de módulo");
+      html += '<tr class="' + (r.correct ? "row-correct" : "row-incorrect") + '">';
+      html += "<td>" + new Date(r.ts).toLocaleString("es-MX") + "</td>";
+      html += "<td>" + tipoLabel + "</td>";
+      html += "<td>" + _escapeHtml(r.moduleTitle || "") + "</td>";
+      html += "<td>" + _escapeHtml(r.question || "") + "</td>";
+      html += "<td>" + _escapeHtml(r.answer || "") + "</td>";
+      html += "<td>" + (r.correct ? "✓ Correcta" : "✗ Incorrecta") + "</td>";
+      html += "</tr>";
+    });
+    html += "</tbody></table></div>";
+  }
+  html += "</div></div>";
+
+  html += '<div class="block"><div class="btitle"><div class="bicon">💾</div><h3>Datos guardados en Moodle</h3><div class="mod-badge badge-green">cmi.suspend_data</div></div><div class="bbody">';
+  html += '<p class="hint-text">Contenido exacto que el curso envía y guarda en el LMS para esta sesión.</p>';
+  var raw = SCORM_API.getSuspendData();
+  html += '<pre class="admin-raw">' + _escapeHtml(raw || "(sin datos — el LMS no respondió o aún no hay avance guardado)") + "</pre>";
+  html += "</div></div>";
+
+  container.innerHTML = html;
+
+  document.getElementById("admin-close").addEventListener("click", function () {
+    STATE.adminAuthenticated = false;
+    _navigateTo(STATE._preAdminSection || "intro", true);
+  });
+  document.getElementById("admin-clear-log").addEventListener("click", function () {
+    if (confirm("¿Vaciar todo el registro de respuestas guardado en este navegador? Esta acción no se puede deshacer.")) {
+      try { localStorage.removeItem(ATTEMPT_LOG_KEY); } catch (e) {}
+      _renderAdmin(container);
+    }
+  });
+  document.getElementById("admin-export-log").addEventListener("click", function () {
+    var blob = new Blob([JSON.stringify(log, null, 2)], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = "visa_u_respuestas.json"; a.click();
+    URL.revokeObjectURL(url);
+  });
+}
+
+/* ============================================================
+   INICIALIZACIÓN
+   ============================================================ */
+
+window.addEventListener("DOMContentLoaded", function () {
+  SCORM_API.initialize();
+  SCORM_API.setInProgress();
+  _loadState();
+
+  _navigateTo(STATE.currentSection || "intro", true);
+  updateProgress();
+
+  document.getElementById("admin-lock-btn").addEventListener("click", _openAdminModal);
+  document.getElementById("admin-modal-cancel").addEventListener("click", _closeAdminModal);
+  document.getElementById("admin-modal-submit").addEventListener("click", _tryAdminLogin);
+  document.getElementById("admin-pass-input").addEventListener("keydown", function (e) { if (e.key === "Enter") _tryAdminLogin(); });
+  document.getElementById("admin-modal").addEventListener("click", function (e) { if (e.target.id === "admin-modal") _closeAdminModal(); });
+
+  window.addEventListener("beforeunload", function () {
+    _saveState();
+    SCORM_API.finish();
+  });
+});
+
+</script>
+</body>
+</html>
