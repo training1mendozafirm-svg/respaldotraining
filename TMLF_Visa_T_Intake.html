@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preguntas de Intake Visa T | Mendoza Law Firm</title>
+<style>
+/* ============================================================
+   MÓDULO DE CAPACITACIÓN — PREGUNTAS DE INTAKE VISA T
+   The Mendoza Law Firm | Compliance Monitors Unit
+   Archivo único, sin dependencias externas.
+   ============================================================ */
+
+/* ---------- 1. TOKENS DE MARCA ---------- */
+:root{
+  --navy:#0A192F;
+  --navy-700:#132B4A;
+  --navy-500:#1E3E63;
+  --gold:#C5A059;
+  --gold-soft:#E8D8B4;
+  --grey:#F8F9FA;
+  --grey-line:#E3E6EA;
+  --white:#FFFFFF;
+  --ink:#24303F;
+  --ink-soft:#5A6675;
+  --ok:#1F7A4C;
+  --ok-bg:#EAF6EF;
+  --alert:#A8322D;
+  --alert-bg:#FBEDEC;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:"Segoe UI",Roboto,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --radius:4px;
+  --shadow:0 1px 2px rgba(10,25,47,.08), 0 8px 24px rgba(10,25,47,.06);
+}
+
+/* ---------- 2. BASE ---------- */
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--grey);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--serif);color:var(--navy);margin:0 0 .5em;line-height:1.25;font-weight:600;}
+h1{font-size:2rem;letter-spacing:-.01em;}
+h2{font-size:1.5rem;}
+h3{font-size:1.15rem;}
+p{margin:0 0 1em;max-width:72ch;}
+a{color:var(--navy-500);}
+button{font-family:inherit;font-size:1rem;cursor:pointer;}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+
+/* ---------- 3. ENCABEZADO / MARCA ---------- */
+.site-header{
+  background:var(--navy);
+  color:var(--white);
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  position:sticky;top:0;z-index:60;
+  border-bottom:2px solid var(--gold);
+}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand svg{display:block;}
+.header-tools{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.header-meta{
+  font-size:.78rem;letter-spacing:.06em;color:var(--gold-soft);
+  text-align:right;line-height:1.4;
+}
+.header-meta strong{display:block;color:var(--white);font-weight:600;letter-spacing:.02em;}
+/* Botón que abre el cajón de definiciones legales */
+.btn-glosario{
+  background:transparent;border:1px solid var(--gold);color:var(--gold-soft);
+  padding:9px 16px;border-radius:var(--radius);font-size:.88rem;font-weight:600;
+  display:flex;align-items:center;gap:8px;transition:background .18s,color .18s;
+}
+.btn-glosario:hover{background:var(--gold);color:var(--navy);}
+.btn-glosario.on{background:var(--gold);color:var(--navy);}
+
+/* ---------- 4. MENÚ DE PANTALLAS (NAVEGABLE) ---------- */
+.stepbar{
+  background:var(--navy-700);
+  display:flex;flex-wrap:wrap;gap:2px;
+  padding:0 8px;
+  position:sticky;top:78px;z-index:55;
+}
+.stepbar button{
+  flex:1 1 92px;
+  text-align:center;
+  font-size:.75rem;
+  letter-spacing:.04em;
+  color:rgba(255,255,255,.55);
+  background:transparent;border:0;
+  padding:10px 4px;
+  border-bottom:3px solid transparent;
+  transition:color .2s, border-color .2s, background .2s;
+}
+.stepbar button:hover{color:var(--white);background:rgba(255,255,255,.06);}
+.stepbar button.active{color:var(--navy);background:var(--gold);border-bottom-color:var(--gold);font-weight:700;}
+.stepbar button.done{color:var(--gold-soft);border-bottom-color:rgba(197,160,89,.45);}
+
+/* ---------- 5. CONTENEDOR DE PANTALLAS ---------- */
+main{max-width:980px;margin:0 auto;padding:28px 20px 72px;}
+.screen{display:none;animation:fade .25s ease-out;}
+.screen.visible{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion:reduce){.screen{animation:none;}*{transition:none!important;}}
+
+.card{
+  background:var(--white);
+  border:1px solid var(--grey-line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:30px;
+}
+.card + .card{margin-top:18px;}
+.eyebrow{
+  font-size:.8rem;color:var(--gold);letter-spacing:.14em;
+  font-weight:600;margin-bottom:6px;
+}
+.lead{font-size:1.05rem;color:var(--ink-soft);}
+.rule{height:1px;background:var(--grey-line);margin:24px 0;border:0;}
+
+/* Recuadro de objetivo por pantalla */
+.objetivo{
+  background:var(--navy);color:var(--white);
+  border-radius:var(--radius);border-left:5px solid var(--gold);
+  padding:20px 24px;margin-bottom:18px;
+}
+.objetivo h3{color:var(--gold);margin:0 0 .35em;font-size:1rem;letter-spacing:.06em;}
+.objetivo p{color:rgba(255,255,255,.88);margin:0;max-width:78ch;}
+
+/* ---------- 6. BOTONES ---------- */
+.btn{
+  background:var(--navy);color:var(--white);border:1px solid var(--navy);
+  padding:12px 26px;border-radius:var(--radius);font-weight:600;
+  transition:background .18s,border-color .18s,color .18s;
+}
+.btn:hover:not(:disabled){background:var(--navy-500);border-color:var(--navy-500);}
+.btn:disabled{background:#B9C0C9;border-color:#B9C0C9;cursor:not-allowed;}
+.btn-gold{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+.btn-gold:hover:not(:disabled){background:#B08E45;border-color:#B08E45;color:var(--white);}
+.btn-ghost{background:transparent;color:var(--navy);border:1px solid var(--grey-line);}
+.btn-ghost:hover:not(:disabled){border-color:var(--navy);background:var(--grey);}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;align-items:center;}
+.btn-row.spread{justify-content:space-between;}
+
+/* ---------- 7. PANTALLA 1: REGISTRO ---------- */
+.hero{
+  background:var(--navy);
+  color:var(--white);
+  border-radius:var(--radius);
+  padding:48px 34px;
+  position:relative;overflow:hidden;
+  border:1px solid var(--navy);
+}
+.hero::after{
+  content:"";position:absolute;right:-70px;top:-70px;
+  width:260px;height:260px;border:1px solid rgba(197,160,89,.28);
+  transform:rotate(45deg);
+}
+.hero h1{color:var(--white);font-size:2.4rem;margin-bottom:.25em;}
+.hero .sub{color:var(--gold-soft);font-size:1.05rem;max-width:56ch;margin:0;}
+.hero .divider{width:64px;height:3px;background:var(--gold);margin:22px 0;}
+.field{margin-top:30px;max-width:460px;position:relative;z-index:2;}
+.field label{display:block;font-size:.9rem;color:var(--gold-soft);margin-bottom:8px;}
+.field input{
+  width:100%;padding:13px 14px;font-size:1rem;font-family:inherit;
+  border:1px solid rgba(255,255,255,.25);border-radius:var(--radius);
+  background:rgba(255,255,255,.06);color:var(--white);
+}
+.field input::placeholder{color:rgba(255,255,255,.4);}
+.field input:focus{border-color:var(--gold);background:rgba(255,255,255,.1);outline:none;}
+.field input.warn{border-color:var(--gold);box-shadow:0 0 0 3px rgba(197,160,89,.28);}
+.hint{font-size:.85rem;color:rgba(255,255,255,.55);margin-top:10px;}
+
+/* ---------- 8. LISTAS E INSTRUCCIONES ---------- */
+.steps{list-style:none;padding:0;margin:0;counter-reset:s;}
+.steps li{
+  counter-increment:s;position:relative;padding:14px 0 14px 54px;
+  border-bottom:1px solid var(--grey-line);
+}
+.steps li:last-child{border-bottom:0;}
+.steps li::before{
+  content:counter(s);position:absolute;left:0;top:14px;
+  width:34px;height:34px;border-radius:50%;
+  background:var(--navy);border:1px solid var(--gold);color:var(--gold-soft);
+  font-family:var(--serif);font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.steps li strong{display:block;color:var(--navy);}
+.bullets{margin:0 0 1em;padding-left:1.15em;}
+.bullets li{margin-bottom:.45em;}
+
+.callout{
+  background:var(--grey);border-left:3px solid var(--gold);
+  padding:16px 18px;border-radius:0 var(--radius) var(--radius) 0;
+}
+.callout p:last-child{margin-bottom:0;}
+
+/* ---------- 9. PESTAÑAS INTERNAS (PANTALLA 3) ---------- */
+.tabs{display:flex;gap:4px;flex-wrap:wrap;background:var(--navy);border-radius:var(--radius);padding:5px;margin-bottom:8px;}
+.tab{
+  flex:1 1 180px;
+  background:transparent;border:0;border-radius:var(--radius);
+  padding:12px 14px;color:rgba(255,255,255,.7);font-weight:600;font-size:.93rem;
+  transition:background .18s,color .18s;
+}
+.tab:hover{background:rgba(255,255,255,.1);color:var(--white);}
+.tab.active{background:var(--gold);color:var(--navy);}
+.tabnav{display:flex;justify-content:space-between;gap:10px;margin-bottom:22px;}
+.tabnav button{
+  background:transparent;border:1px solid var(--grey-line);color:var(--navy);
+  padding:7px 14px;border-radius:var(--radius);font-size:.85rem;
+}
+.tabnav button:hover:not(:disabled){border-color:var(--navy);background:var(--grey);}
+.tabnav button:disabled{color:#B9C0C9;cursor:not-allowed;}
+.tabpane{display:none;}
+.tabpane.visible{display:block;}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.panel{
+  border:1px solid var(--grey-line);border-radius:var(--radius);
+  padding:20px;background:var(--grey);
+}
+.panel h3{margin-top:0;}
+.tag{
+  display:inline-block;font-size:.72rem;letter-spacing:.08em;font-weight:700;
+  color:var(--white);background:var(--navy);padding:4px 11px;border-radius:20px;
+  margin-bottom:10px;
+}
+
+/* ---------- 10. ACORDEONES: CABECERA OSCURA / CUERPO CLARO ---------- */
+.acc{border-radius:var(--radius);overflow:hidden;}
+.acc + .acc{margin-top:8px;}
+.acc-head{
+  width:100%;text-align:left;
+  background:var(--navy);color:var(--white);
+  border:0;border-left:4px solid var(--navy-500);
+  padding:15px 52px 15px 18px;position:relative;
+  font-weight:600;font-size:1rem;line-height:1.4;
+  transition:background .18s,border-color .18s;
+}
+.acc-head:hover{background:var(--navy-500);}
+.acc-head::after{
+  content:"+";position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  color:var(--gold);font-size:1.4rem;font-weight:400;line-height:1;
+}
+.acc.open .acc-head{background:var(--navy-500);border-left-color:var(--gold);}
+.acc.open .acc-head::after{content:"–";}
+.acc-body{
+  display:none;
+  background:var(--white);
+  border:1px solid var(--grey-line);border-top:0;border-left:4px solid var(--gold);
+  padding:18px 20px;
+  color:var(--ink);
+}
+.acc.open .acc-body{display:block;}
+.acc-body p:last-child,.acc-body ul:last-child{margin-bottom:0;}
+.acc-head .qcount{font-weight:400;font-size:.82rem;color:var(--gold-soft);}
+
+/* ---------- 11. BATERÍA DE PREGUNTAS (PANTALLA 4) ---------- */
+.cat-head{
+  display:flex;align-items:center;gap:14px;
+  background:var(--navy);color:var(--white);padding:18px;
+  border-radius:var(--radius) var(--radius) 0 0;
+  border-bottom:2px solid var(--gold);
+}
+.cat-head .ico{font-size:1.6rem;line-height:1;}
+.cat-head h3{color:var(--white);margin:0;font-size:1.2rem;}
+.cat-head span{display:block;font-family:var(--sans);font-size:.85rem;color:var(--gold-soft);font-weight:400;}
+.cat-block{margin-bottom:26px;border:1px solid var(--grey-line);border-radius:var(--radius);overflow:hidden;background:var(--white);}
+.cat-body{padding:14px;background:var(--grey);}
+.qlist{margin:0;padding-left:1.1em;}
+.qlist li{margin-bottom:.6em;color:var(--ink);}
+.qlist li::marker{color:var(--gold);}
+
+/* ---------- 12. CAJÓN DE DEFINICIONES LEGALES (SEGUNDO PLANO) ---------- */
+.drawer{
+  position:fixed;top:0;right:0;height:100vh;width:430px;max-width:92vw;
+  background:var(--grey);border-left:3px solid var(--gold);
+  box-shadow:-16px 0 40px rgba(10,25,47,.22);
+  transform:translateX(102%);transition:transform .28s ease;
+  z-index:70;display:flex;flex-direction:column;
+}
+.drawer.open{transform:translateX(0);}
+.drawer-head{
+  background:var(--navy);color:var(--white);padding:18px 20px;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
+  border-bottom:2px solid var(--gold);
+}
+.drawer-head h2{color:var(--white);margin:0;font-size:1.15rem;}
+.drawer-head p{margin:4px 0 0;font-size:.82rem;color:var(--gold-soft);max-width:34ch;}
+.drawer-close{
+  background:transparent;border:1px solid rgba(255,255,255,.35);color:var(--white);
+  width:34px;height:34px;border-radius:var(--radius);font-size:1.1rem;line-height:1;
+  flex:0 0 auto;
+}
+.drawer-close:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+.drawer-search{padding:14px 20px 0;}
+.drawer-search input{
+  width:100%;padding:10px 12px;font-family:inherit;font-size:.92rem;
+  border:1px solid var(--grey-line);border-radius:var(--radius);background:var(--white);color:var(--ink);
+}
+.drawer-search input:focus{border-color:var(--gold);outline:none;}
+.drawer-body{overflow-y:auto;padding:14px 20px 28px;flex:1;}
+.gl-item + .gl-item{margin-top:7px;}
+.gl-term{
+  width:100%;text-align:left;background:var(--navy);color:var(--white);
+  border:0;border-left:4px solid var(--navy-500);border-radius:var(--radius);
+  padding:11px 40px 11px 14px;position:relative;font-size:.95rem;font-weight:600;
+}
+.gl-term:hover{background:var(--navy-500);}
+.gl-term::after{content:"+";position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:1.2rem;}
+.gl-item.open .gl-term{background:var(--navy-500);border-left-color:var(--gold);border-radius:var(--radius) var(--radius) 0 0;}
+.gl-item.open .gl-term::after{content:"–";}
+.gl-def{
+  display:none;background:var(--white);color:var(--ink);
+  border:1px solid var(--grey-line);border-top:0;border-left:4px solid var(--gold);
+  border-radius:0 0 var(--radius) var(--radius);
+  padding:13px 15px;font-size:.92rem;line-height:1.55;
+}
+.gl-item.open .gl-def{display:block;}
+.gl-def p{margin:0;max-width:none;}
+.gl-empty{color:var(--ink-soft);font-size:.9rem;font-style:italic;padding:10px 2px;}
+.gl-group{
+  font-family:var(--serif);font-size:.86rem;letter-spacing:.06em;
+  color:var(--navy);border-bottom:2px solid var(--gold);
+  padding-bottom:5px;margin:20px 0 9px;
+}
+.gl-group:first-child{margin-top:2px;}
+.gl-source{
+  font-size:.76rem;color:var(--ink-soft);line-height:1.45;
+  border-top:1px solid var(--grey-line);margin-top:22px;padding-top:12px;
+}
+
+/* ---------- 13. QUIZ (PANTALLA 5) ---------- */
+.progress-wrap{margin-bottom:22px;}
+.progress-meta{display:flex;justify-content:space-between;font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;}
+.progress-track{height:8px;background:var(--grey-line);border-radius:20px;overflow:hidden;}
+.progress-fill{height:100%;width:0;background:var(--gold);border-radius:20px;transition:width .3s ease;}
+
+.q-topic{font-size:.78rem;letter-spacing:.08em;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.q-text{font-family:var(--serif);font-size:1.3rem;color:var(--navy);margin:0 0 22px;line-height:1.4;max-width:68ch;}
+.options{display:flex;flex-direction:column;gap:10px;}
+.opt{
+  display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;
+  background:var(--white);border:1px solid var(--grey-line);border-radius:var(--radius);
+  padding:14px 16px;color:var(--ink);line-height:1.45;
+  transition:border-color .15s,background .15s;
+}
+.opt:hover{border-color:var(--navy-500);background:var(--grey);}
+.opt .key{
+  flex:0 0 28px;height:28px;border-radius:50%;
+  border:1px solid var(--grey-line);background:var(--grey);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.85rem;color:var(--ink-soft);
+}
+.opt.selected{border-color:var(--gold);background:#FCF8F0;}
+.opt.selected .key{background:var(--navy);border-color:var(--navy);color:var(--gold-soft);}
+.quiz-note{font-size:.85rem;color:var(--ink-soft);margin-top:18px;}
+.nav-dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:22px;}
+.dot{
+  width:30px;height:30px;border-radius:var(--radius);border:1px solid var(--grey-line);
+  background:var(--white);font-size:.8rem;color:var(--ink-soft);
+}
+.dot.answered{background:var(--navy);border-color:var(--navy);color:var(--white);}
+.dot.current{outline:2px solid var(--gold);outline-offset:1px;}
+
+/* ---------- 14. RESULTADOS (PANTALLA 6) ---------- */
+.score-panel{display:grid;grid-template-columns:200px 1fr;gap:28px;align-items:center;}
+.score-ring{
+  width:200px;height:200px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--navy);color:var(--white);border:4px solid var(--gold);
+}
+.score-ring .pct{font-family:var(--serif);font-size:3rem;line-height:1;}
+.score-ring .lbl{font-size:.8rem;color:var(--gold-soft);letter-spacing:.08em;margin-top:6px;}
+.verdict{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:700;font-size:.85rem;}
+.verdict.pass{background:var(--ok-bg);color:var(--ok);}
+.verdict.fail{background:var(--alert-bg);color:var(--alert);}
+
+.diag{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px;}
+.diag-col{border-radius:var(--radius);overflow:hidden;border:1px solid var(--grey-line);}
+.diag-col h3{margin:0;padding:14px 18px;font-size:1.02rem;color:var(--white);background:var(--navy);border-left:4px solid var(--gold);}
+.diag-col .diag-body{padding:16px 18px;}
+.diag-col.ok .diag-body{background:var(--ok-bg);}
+.diag-col.bad .diag-body{background:var(--alert-bg);}
+.diag-col ul{margin:0;padding-left:1.1em;}
+.diag-col li{margin-bottom:.5em;}
+.diag-col .empty{color:var(--ink-soft);font-style:italic;}
+
+.review{margin-top:24px;}
+.review-item{border:1px solid var(--grey-line);border-left:4px solid var(--ok);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;background:var(--white);}
+.review-item.wrong{border-left-color:var(--alert);}
+.review-item .qn{font-weight:700;color:var(--navy);}
+.review-item .ans{font-size:.92rem;margin:6px 0 0;}
+.review-item .ans b{color:var(--ok);}
+.review-item.wrong .ans b.given{color:var(--alert);}
+.review-item .why{font-size:.88rem;color:var(--ink-soft);margin:8px 0 0;}
+
+/* ---------- 15. RESPONSIVO ---------- */
+@media (max-width:760px){
+  .hero{padding:34px 22px;}
+  .hero h1{font-size:1.75rem;}
+  .card{padding:20px;}
+  .split,.diag{grid-template-columns:1fr;}
+  .score-panel{grid-template-columns:1fr;justify-items:center;text-align:center;}
+  .header-meta{display:none;}
+  .stepbar{top:70px;}
+  .stepbar button{font-size:.66rem;flex-basis:60px;}
+  .q-text{font-size:1.1rem;}
+  .drawer{width:100%;}
+}
+
+/* ---------- 16. IMPRESIÓN DEL REPORTE ---------- */
+@media print{
+  body{background:var(--white);}
+  .site-header,.stepbar,.btn-row,.no-print,.drawer{display:none!important;}
+  main{max-width:100%;padding:0;}
+  .card{box-shadow:none;border:0;padding:0;}
+  .diag{grid-template-columns:1fr 1fr;}
+  .screen{display:none!important;}
+  .screen.visible{display:block!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ ENCABEZADO CON ISOTIPO SVG MENDOZA ============ -->
+<header class="site-header">
+  <div class="brand">
+    <!-- Isotipo vectorial: columnas y frontón (arquitectura jurídica) formando la "M" -->
+    <svg width="46" height="46" viewBox="0 0 64 64" role="img" aria-label="Isotipo Mendoza">
+      <circle cx="32" cy="32" r="30.5" fill="none" stroke="#C5A059" stroke-width="1.5"/>
+      <path d="M16 20 L32 12 L48 20" fill="none" stroke="#C5A059" stroke-width="2.2" stroke-linejoin="round"/>
+      <rect x="15" y="23" width="34" height="2.4" fill="#C5A059"/>
+      <path d="M18 28 V46 M26 28 V46 M32 28 V38 M38 28 V46 M46 28 V46"
+            stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      <path d="M18 28 L32 40 L46 28" fill="none" stroke="#FFFFFF" stroke-width="2.4"
+            stroke-linejoin="round" stroke-linecap="round"/>
+      <rect x="14" y="48" width="36" height="2.6" fill="#C5A059"/>
+    </svg>
+    <svg width="168" height="40" viewBox="0 0 210 50" role="img" aria-label="Mendoza Law Firm">
+      <text x="0" y="26" font-family="Palatino, Georgia, serif" font-size="25"
+            letter-spacing="4.2" fill="#FFFFFF">MENDOZA</text>
+      <line x1="1" y1="33" x2="199" y2="33" stroke="#C5A059" stroke-width="1"/>
+      <text x="1" y="45" font-family="Segoe UI, Arial, sans-serif" font-size="8.5"
+            letter-spacing="4.6" fill="#C5A059">L A W   F I R M</text>
+    </svg>
+  </div>
+  <div class="header-tools">
+    <button class="btn-glosario" id="btnGlosario" aria-expanded="false" aria-controls="drawer">
+      <span aria-hidden="true">📖</span> Definiciones legales clave
+    </button>
+    <div class="header-meta">
+      <strong>Módulo de capacitación interna</strong>
+      Compliance · Quality Assurance &amp; Operations
+    </div>
+  </div>
+</header>
+
+<!-- ============ MENÚ DE PANTALLAS (NAVEGABLE POR CLIC) ============ -->
+<nav class="stepbar" id="stepbar" aria-label="Pantallas del módulo">
+  <button type="button" data-step="1">Registro</button>
+  <button type="button" data-step="2">Objetivo</button>
+  <button type="button" data-step="3">Fundamentos</button>
+  <button type="button" data-step="4">Preguntas</button>
+  <button type="button" data-step="5">Evaluación</button>
+  <button type="button" data-step="6">Resultados</button>
+</nav>
+
+<!-- ============ CAJÓN LATERAL: DEFINICIONES LEGALES CLAVE ============ -->
+<aside class="drawer" id="drawer" aria-label="Definiciones legales clave">
+  <div class="drawer-head">
+    <div>
+      <h2>Definiciones legales clave</h2>
+      <p>Consúltelas en cualquier momento. El módulo sigue disponible detrás de este panel.</p>
+    </div>
+    <button class="drawer-close" id="drawerClose" aria-label="Cerrar definiciones">✕</button>
+  </div>
+  <div class="drawer-search">
+    <input type="search" id="glSearch" placeholder="Buscar un término…" autocomplete="off">
+  </div>
+  <div class="drawer-body" id="glosarioBody"></div>
+</aside>
+
+<main>
+
+<!-- ======================================================
+     PANTALLA 1 — INICIO / REGISTRO DE COLABORADOR
+     ====================================================== -->
+<section class="screen visible" id="screen1" aria-labelledby="t1">
+  <div class="hero">
+    <p class="eyebrow">The Mendoza Law Firm</p>
+    <h1 id="t1">Preguntas de Intake Visa T</h1>
+    <div class="divider"></div>
+    <p class="sub">Capacitación y evaluación de capacidades de entrevista</p>
+    <div class="field">
+      <label for="colaborador">Nombre completo del colaborador</label>
+      <input type="text" id="colaborador" placeholder="Escriba su nombre y apellidos" autocomplete="name">
+      <p class="hint">Su nombre aparecerá en el reporte de diagnóstico al terminar la evaluación.</p>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-gold" id="btnStart" disabled>Comenzar módulo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     PANTALLA 2 — OBJETIVO E INSTRUCCIONES
+     ====================================================== -->
+<section class="screen" id="screen2" aria-labelledby="t2">
+  <div class="card">
+    <p class="eyebrow">Pantalla 2 de 6</p>
+    <h2 id="t2">Objetivo del módulo</h2>
+    <p class="lead">
+      Al terminar esta capacitación usted será capaz de identificar los elementos constitutivos
+      del tráfico humano —sexual y laboral—, aplicar la batería de preguntas de intake según el
+      escenario que presente el cliente (empleador, violencia doméstica y coyotes) y evaluar
+      preliminarmente la elegibilidad del cliente ante USCIS.
+    </p>
+    <div class="callout">
+      <p><strong>Antes de empezar.</strong> Las preguntas que verá en la pantalla de Preguntas
+      provienen de casos reales trabajados por la firma. Úselas como guía de entrevista: primero
+      el filtro inicial y, sólo si el cliente responde afirmativamente, profundice con las
+      preguntas de seguimiento que documentan el medio empleado (fuerza, fraude o coerción).</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Cómo recorrer el módulo</h2>
+    <ol class="steps">
+      <li><strong>Navegue con el menú superior</strong>
+        Puede saltar a cualquier pantalla dando clic en Registro, Objetivo, Fundamentos,
+        Preguntas, Evaluación o Resultados, y regresar cuando lo necesite.</li>
+      <li><strong>Consulte las definiciones legales clave</strong>
+        El botón del encabezado abre un panel lateral con el glosario. Queda abierto en segundo
+        plano mientras usted sigue leyendo o respondiendo.</li>
+      <li><strong>Revise los fundamentos legales</strong>
+        Tres pestañas: definición de trata bajo la TVPA, beneficios de la Visa T y los cuatro
+        criterios de elegibilidad de USCIS.</li>
+      <li><strong>Explore las tres baterías de intake</strong>
+        Empleador, violencia doméstica y coyotes. Cada bloque se despliega por tema: filtro
+        inicial, pagos, horarios, medios de coerción y mecanismos de retención.</li>
+      <li><strong>Realice la evaluación final</strong>
+        Veinte preguntas de opción múltiple. Puede cambiar o quitar su respuesta y navegar entre
+        preguntas antes de enviar.</li>
+      <li><strong>Lea su diagnóstico</strong>
+        El reporte señala los temas dominados y los que requieren refuerzo, con el fundamento de
+        cada respuesta. Puede reintentar o imprimir el resultado.</li>
+    </ol>
+    <div class="btn-row spread">
+      <button class="btn btn-ghost" data-go="1">Regresar</button>
+      <button class="btn" data-go="3">Ir a fundamentos legales</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     PANTALLA 3 — FUNDAMENTOS LEGALES Y ELEGIBILIDAD
+     ====================================================== -->
+<section class="screen" id="screen3" aria-labelledby="t3">
+  <div class="objetivo">
+    <h3>Objetivo de esta pantalla</h3>
+    <p>Que el colaborador distinga el tráfico sexual del tráfico laboral conforme a la TVPA,
+    reconozca los beneficios y obligaciones que genera la Visa T, y sepa cuáles son los cuatro
+    criterios que USCIS exige acreditar para que un caso sea elegible.</p>
+  </div>
+
+  <div class="card">
+    <p class="eyebrow">Pantalla 3 de 6</p>
+    <h2 id="t3">Fundamentos legales y elegibilidad</h2>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" role="tab" data-pane="paneA">Definición de trata (TVPA)</button>
+      <button class="tab" role="tab" data-pane="paneB">Fundamentos y beneficios</button>
+      <button class="tab" role="tab" data-pane="paneC">Criterios de elegibilidad</button>
+    </div>
+    <div class="tabnav">
+      <button type="button" id="tabPrev">‹ Sección anterior</button>
+      <button type="button" id="tabNext">Sección siguiente ›</button>
+    </div>
+
+    <!-- ---- Pestaña A ---- -->
+    <div class="tabpane visible" id="paneA" role="tabpanel">
+      <div class="split">
+        <div class="panel">
+          <span class="tag">Tráfico sexual</span>
+          <h3>Acto sexual comercial mediante fuerza, fraude o coerción</h3>
+          <p>Implica inducir a una persona a realizar actos sexuales comerciales contra su
+          voluntad mediante fuerza, fraude o coerción.</p>
+          <p><strong>Menores de 18 años:</strong> no es necesario probar fuerza, fraude ni
+          coerción. La sola inducción al acto sexual comercial configura tráfico sexual.</p>
+        </div>
+        <div class="panel">
+          <span class="tag">Tráfico laboral</span>
+          <h3>Reclutamiento, transporte, provisión u obtención</h3>
+          <p>Captar, trasladar, proveer u obtener a una persona para trabajos o servicios mediante
+          fuerza, fraude o coerción, con el propósito de someterla a servidumbre involuntaria,
+          peonaje, deuda forzada o esclavitud.</p>
+        </div>
+      </div>
+      <hr class="rule">
+      <div class="callout">
+        <p><strong>Definiciones legales clave.</strong> El glosario del panel lateral sigue el
+        esquema de trata: proceso (reclutar, albergar, transportar, proveer, obtener), medios
+        (fuerza, fraude, coerción) y fin (servidumbre involuntaria, peonaje, deuda vinculante,
+        esclavitud).
+        <button class="btn btn-ghost" style="padding:6px 14px;font-size:.88rem;margin-left:6px"
+                data-open-glosario>Abrir definiciones</button></p>
+      </div>
+    </div>
+
+    <!-- ---- Pestaña B ---- -->
+    <div class="tabpane" id="paneB" role="tabpanel">
+      <h3>Qué es la Visa T y para qué sirve</h3>
+      <p>Es una visa <strong>no inmigrante</strong> que permite a las víctimas de tráfico humano
+      permanecer temporalmente en los Estados Unidos para ayudar en la investigación o
+      enjuiciamiento de los tratantes. Su doble propósito es proteger a la víctima y fortalecer la
+      capacidad del gobierno para procesar estos casos.</p>
+
+      <div class="split">
+        <div class="panel">
+          <span class="tag">Beneficios</span>
+          <ul class="bullets">
+            <li>Estancia legal por un máximo de <strong>cuatro años</strong>, extensible en
+            ciertos supuestos.</li>
+            <li>Autorización de empleo (EAD) para la víctima y familiares elegibles.</li>
+            <li>Acceso a ciertos beneficios públicos y servicios de apoyo, como asistencia médica
+            y vivienda.</li>
+            <li>Ajuste de estatus a residencia permanente tras <strong>tres años</strong> de
+            presencia continua, o al concluir la investigación o el enjuiciamiento.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <span class="tag">Obligaciones y derechos</span>
+          <p style="margin-bottom:.4em"><strong>Obligaciones</strong></p>
+          <ul class="bullets">
+            <li>Cooperar con las autoridades en la investigación y el enjuiciamiento, salvo las
+            excepciones de minoría de edad o trauma severo.</li>
+            <li>Mantener buena conducta moral durante la estancia.</li>
+            <li>Cumplir los requisitos de renovación y extensión cuando apliquen.</li>
+          </ul>
+          <p style="margin-bottom:.4em"><strong>Derechos</strong></p>
+          <ul class="bullets">
+            <li>Permanecer y trabajar legalmente durante el período autorizado.</li>
+            <li>Solicitar ciertos beneficios y servicios públicos.</li>
+            <li>Solicitar el ajuste de estatus a residencia permanente.</li>
+            <li>Protección contra la deportación mientras se mantengan las condiciones.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---- Pestaña C ---- -->
+    <div class="tabpane" id="paneC" role="tabpanel">
+      <h3>Los cuatro criterios de USCIS</h3>
+      <p class="lead">Los cuatro deben acreditarse. Abra cada uno para ver qué debe documentarse
+      durante el intake.</p>
+      <div id="critAcc"></div>
+    </div>
+
+    <div class="btn-row spread">
+      <button class="btn btn-ghost" data-go="2">Regresar</button>
+      <button class="btn" data-go="4">Ir a la batería de preguntas</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     PANTALLA 4 — BATERÍA DE PREGUNTAS DE INTAKE
+     ====================================================== -->
+<section class="screen" id="screen4" aria-labelledby="t4">
+  <div class="objetivo">
+    <h3>Objetivo de esta pantalla</h3>
+    <p>Que el colaborador aplique la batería correcta según el escenario del cliente —empleador,
+    violencia doméstica o coyote—, inicie siempre por el filtro y profundice con las preguntas de
+    seguimiento que documentan el medio empleado y los mecanismos de retención y control.</p>
+  </div>
+
+  <div class="card">
+    <p class="eyebrow">Pantalla 4 de 6</p>
+    <h2 id="t4">Batería de preguntas de intake por categoría</h2>
+    <p class="lead">Preguntas reales de entrevista organizadas en tres escenarios. Comience
+    siempre por el filtro inicial; si la respuesta es afirmativa, profundice con los bloques
+    siguientes para documentar el medio (fuerza, fraude o coerción) y los mecanismos de
+    retención.</p>
+  </div>
+
+  <div id="intakeWrap"></div>
+
+  <div class="card">
+    <div class="btn-row spread">
+      <button class="btn btn-ghost" data-go="3">Regresar</button>
+      <button class="btn btn-gold" id="btnQuiz">Comenzar evaluación final</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     PANTALLA 5 — EVALUACIÓN FINAL (QUIZ)
+     ====================================================== -->
+<section class="screen" id="screen5" aria-labelledby="t5">
+  <div class="card">
+    <p class="eyebrow">Pantalla 5 de 6</p>
+    <h2 id="t5">Evaluación final</h2>
+
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progLabel">Pregunta 1 de 20</span>
+        <span id="progCount">0 respondidas</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+    </div>
+
+    <hr class="rule">
+
+    <p class="q-topic" id="qTopic"></p>
+    <p class="q-text" id="qText"></p>
+    <div class="options" id="qOptions"></div>
+    <p class="quiz-note">Puede volver a hacer clic en una opción para deseleccionarla, o cambiarla
+    en cualquier momento antes de enviar.</p>
+
+    <div class="nav-dots" id="navDots"></div>
+
+    <div class="btn-row spread">
+      <button class="btn btn-ghost" id="btnPrev">Anterior</button>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-ghost" id="btnNext">Siguiente</button>
+        <button class="btn btn-gold" id="btnSubmit">Enviar evaluación</button>
+      </div>
+    </div>
+    <p id="submitWarn" style="color:var(--alert);font-size:.9rem;margin-top:12px;display:none"></p>
+  </div>
+</section>
+
+<!-- ======================================================
+     PANTALLA 6 — DIAGNÓSTICO DE RESULTADOS
+     ====================================================== -->
+<section class="screen" id="screen6" aria-labelledby="t6">
+  <div class="card">
+    <p class="eyebrow">Reporte de diagnóstico · The Mendoza Law Firm</p>
+    <h2 id="t6">Resultados de la evaluación</h2>
+    <p class="lead" id="resName">Aún no se ha enviado la evaluación.</p>
+    <hr class="rule">
+    <div class="score-panel">
+      <div class="score-ring">
+        <span class="pct" id="resPct">—</span>
+        <span class="lbl" id="resRaw">0 de 20</span>
+      </div>
+      <div>
+        <span class="verdict" id="resVerdict"></span>
+        <p id="resMsg" style="margin-top:14px">Complete la evaluación final para generar su
+        diagnóstico de desempeño.</p>
+        <p style="font-size:.88rem;color:var(--ink-soft);margin:0" id="resDate"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Desglose de desempeño</h2>
+    <div class="diag">
+      <div class="diag-col ok">
+        <h3>Áreas de dominio correcto</h3>
+        <div class="diag-body"><ul id="resOk"><li class="empty">Pendiente de evaluación.</li></ul></div>
+      </div>
+      <div class="diag-col bad">
+        <h3>Necesidad de refuerzo</h3>
+        <div class="diag-body"><ul id="resBad"><li class="empty">Pendiente de evaluación.</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Revisión pregunta por pregunta</h2>
+    <div class="review" id="resReview"></div>
+    <div class="btn-row spread no-print">
+      <button class="btn btn-ghost" id="btnRetry">Reintentar evaluación</button>
+      <button class="btn btn-gold" id="btnPrint">Exportar / imprimir reporte</button>
+    </div>
+  </div>
+</section>
+
+</main>
+<script>
+/* ============================================================
+   DATOS DEL MÓDULO
+   Contenido tomado del documento fuente "Preguntas Visa T"
+   de The Mendoza Law Firm.
+   ============================================================ */
+
+/* ---- GLOSARIO: definiciones legales clave (panel lateral) ----
+   Fuente: Glosario Visa T 3.0 de The Mendoza Law Firm (feb. 2024),
+   elaborado por Compliance Attorneys con Legal Intelligence sobre el
+   USCIS Policy Manual. Definiciones parafraseadas en lenguaje simple
+   y resumidas; se conserva el término técnico. */
+const GLOSARIO = [
+  /* === MARCO GENERAL === */
+  { gr:"Marco general", t:"Esquema de trata (Ends-Means-Process)",
+    d:"Es la condición indispensable para demostrar que una persona es o fue víctima de una forma severa de trata. Sólo se cumple si hay hechos materiales y pruebas suficientes que sostengan los tres elementos: proceso, medios y fin." },
+  { gr:"Marco general", t:"Tratante",
+    d:"Persona que ejecuta el esquema de trata sobre la víctima. Puede ser una persona física o una empresa, y puede haber varios tratantes en un mismo caso (quien recluta, quien abastece y quien cumple el fin)." },
+  { gr:"Marco general", t:"Forma severa de trata",
+    d:"Nivel de gravedad que exige la ley para la Visa T. Se acredita cuando están presentes y probados el proceso, los medios y el fin." },
+
+  /* === A) PROCESO === */
+  { gr:"A) Proceso (Process)", t:"Proceso (Process)",
+    d:"Acciones intencionales del tratante para introducir a la víctima al esquema de trata: reclutar, albergar, transportar, obtener y proveer." },
+  { gr:"A) Proceso (Process)", t:"Recruiting (Reclutar)",
+    d:"Seleccionar y captar a la víctima aprovechando su vulnerabilidad, mediante grooming o preparación, promesas, engaños, manipulación o simulación. Incluye la planeación logística y de convencimiento, y el entrenamiento de la víctima para que el fin se cumpla, se concrete o no. Cuando se le capta creyendo que recibiría condiciones que después resultan falsas o inexistentes, se trata de reclutamiento fraudulento." },
+  { gr:"A) Proceso (Process)", t:"Harboring (Albergar)",
+    d:"Mantener a la víctima dentro de un inmueble bajo el control directo del tratante, con aislamiento, confinamiento o vigilancia constante, sin poder entrar y salir libremente. Hay represalias o amenaza de ellas si actúa sin permiso, y el tratante controla su manutención, higiene y alimentación. Suele ocurrir en casas de seguridad, departamentos, sótanos, cuartos, bodegas o casas rodantes." },
+  { gr:"A) Proceso (Process)", t:"Transporting (Transportar)",
+    d:"Mover a la víctima a distintas locaciones, dentro o fuera del país, incluida la organización del traslado o los viajes, sin que el esquema de trata se interrumpa. Puede iniciar en otro país y continuar en EE.UU., sus archipiélagos o estados afiliados, e incluso cambiar el tipo de trata (de sexual a laboral o al revés) mientras la víctima sigue sometida." },
+  { gr:"A) Proceso (Process)", t:"Providing (Proveer)",
+    d:"Entregar físicamente a la víctima al control de otra persona, o convencerla de prestar servicios a un tercero: se le considera una mercancía. Quien la provee no necesariamente es quien cumple el fin, pero la entrega para que ese tercero la someta. Incluye promoverla ante terceros como prestadora de servicios o fungir como intermediario." },
+  { gr:"A) Proceso (Process)", t:"Obtaining (Obtener)",
+    d:"Hacerse del control o la posesión de la víctima por la fuerza o con engaños, o extrayéndole algo de valor para someterla. El 'valor' no se limita a cosas: puede ser retener a un familiar para controlarla de forma indirecta. Incluye secuestro, compra, extorsión, chantaje con el estatus migratorio y sustraer sus documentos, ahorros o pertenencias con la promesa de devolverlos." },
+  { gr:"A) Proceso (Process)", t:"Soliciting (Solicitar) — sólo trata sexual",
+    d:"Ofrecer algo de valor a cambio de actividades sexuales. No tiene que ser dinero: cualquier beneficio cuenta. También ocurre cuando la víctima ofrece servicios sexuales porque, de no hacerlo, sufriría consecuencias graves, y a cambio el tratante ofrece devolverle sus documentos." },
+  { gr:"A) Proceso (Process)", t:"Patronizing (Patrocinar) — sólo trata sexual",
+    d:"Lo contrario de solicitar: el tratante recibe algo de valor, material o no, como producto de la explotación sexual de la víctima. Por ejemplo, quedarse con todo el dinero que terceros le pagan, controlando sus ingresos y su libertad sexual y personal." },
+
+  /* === B) MEDIOS === */
+  { gr:"B) Medios (Means)", t:"Medios (Means)",
+    d:"Mecanismos que usa el tratante para asegurar que la víctima preste los servicios sometida, en contra de su voluntad o por intimidación. Son fuerza, fraude o coerción (8 CFR 214.11) y están presentes en todo el esquema, del proceso al fin." },
+  { gr:"B) Medios (Means)", t:"Force (Fuerza)",
+    d:"Obligar a la víctima mediante violencia o superioridad física para influir en su conducta: lesiones, golpes, tortura, mutilación, asalto sexual, restricción o confinamiento." },
+  { gr:"B) Medios (Means)", t:"Fraud (Fraude)",
+    d:"Engaño inducido por el tratante para obtener un beneficio de la víctima: mentiras, manipulación o promesas falsas sobre las condiciones de trabajo o de vida. Incluye dar información falsa para que la víctima consienta ciertas funciones que después cambian, prometer que va a cambiar de conducta o reclutarla ofreciéndole una vida mejor o arreglarle los papeles. Importante: el fraude nunca involucra violencia; ahí se distingue de la coerción." },
+  { gr:"B) Medios (Means)", t:"Coerción (Coacción)",
+    d:"Amenazar con causar un daño grave o con restringir físicamente a una persona, incluido el abuso o la amenaza de deportación. Comprende cualquier plan o patrón destinado a hacer creer que un acto tendría una consecuencia grave, así como las amenazas indirectas: dañar a un tercero de interés para la víctima para que obedezca. El daño puede ser físico, moral, económico, legal o psicológico, y también cuenta la presión sobre sus bienes." },
+
+  /* === C) FIN === */
+  { gr:"C) Fin (End)", t:"Fin (End)",
+    d:"Servicios específicos a los que se somete a la víctima. Se clasifican en trata sexual y trata laboral; esta última se subdivide en servidumbre involuntaria, peonaje, deuda vinculante y esclavitud." },
+  { gr:"C) Fin (End)", t:"Sex Trafficking (trata sexual)",
+    d:"Proveer, obtener, reclutar, albergar, transportar, patrocinar o solicitar a una persona con fines de actos sexuales comerciales, por medio de fuerza, fraude o coerción." },
+  { gr:"C) Fin (End)", t:"Commercial sex act (acto sexual comercial)",
+    d:"Actividad de carácter sexual a cambio de algo de valor, dado o recibido, entre la víctima y el tratante. El valor no tiene que ser dinero: puede ser cualquier cosa, conducta, derecho o beneficio aparente a cambio de una satisfacción sexual." },
+  { gr:"C) Fin (End)", t:"Labor Trafficking (trata laboral)",
+    d:"Proveer, obtener, reclutar, albergar, transportar, patrocinar o solicitar a una persona para someterla a servidumbre involuntaria, peonaje, deuda vinculante o esclavitud, mediante fuerza, fraude o coerción. También se entiende como el trabajo realizado de forma involuntaria y bajo amenaza de una pena, ya sea por violencia o por medios más sutiles como una deuda manipulada, la retención de documentos o la amenaza de denuncia a inmigración." },
+  { gr:"C) Fin (End)", t:"Involuntary servitude (servidumbre involuntaria)",
+    d:"Condición de sumisión provocada por un plan, esquema o patrón que hace creer a la persona que, si no se sujeta a esa condición o si sale de ella, ella u otra sufrirá daños graves o restricciones físicas. Incluye el abuso o la amenaza de abuso del proceso legal. La víctima no tiene más opción que sujetarse a la voluntad del tratante, ya sea en actividades domésticas, laborales o comerciales." },
+  { gr:"C) Fin (End)", t:"Peonage (peonaje)",
+    d:"Servicio basado en un endeudamiento real o supuesto: existe una deuda que la víctima 'debe' pagar trabajando para el tratante o para un tercero, sin recibir remuneración. La particularidad es que la deuda es imposible de saldar y la víctima no eligió libremente endeudarse: lo determinó el tratante." },
+  { gr:"C) Fin (End)", t:"Debt bondage (deuda vinculante)",
+    d:"Situación en que la víctima se coloca voluntariamente como deudora y ofrece su trabajo como garantía, pero el valor de ese trabajo no se aplica al pago y ni el plazo ni la naturaleza de los servicios están definidos. La deuda crece con el tiempo y perpetúa el ciclo de explotación. Ejemplo típico: el tratante le vende a sobreprecio cascos, arneses o herramientas y luego infla el cobro para retenerla." },
+  { gr:"C) Fin (End)", t:"Slavery (esclavitud)",
+    d:"Estado en que la víctima se encuentra bajo la propiedad o el control de otra persona, con restricción total de su libertad, autonomía e independencia. Trabaja sin pago o con una paga mínima, no decide sobre la naturaleza ni el lugar del trabajo y tiene dificultad extrema para escapar. Puede coexistir con el peonaje o la deuda vinculante y también darse con fines sexuales. En casos supuestos de esclavitud se consulta a Legal Intelligence o a un Certified T Visa Attorney." },
+
+  /* === TÉRMINOS DEL TRÁMITE Y DEL INTAKE === */
+  { gr:"Trámite e intake", t:"Visa T",
+    d:"Visa no inmigrante para víctimas de trata. Permite permanecer legalmente hasta cuatro años, trabajar, acceder a ciertos beneficios públicos y después solicitar la residencia permanente." },
+  { gr:"Trámite e intake", t:"TVPA",
+    d:"Ley federal contra la trata de personas. Define qué conductas la constituyen y crea las protecciones para las víctimas, entre ellas la Visa T." },
+  { gr:"Trámite e intake", t:"USCIS",
+    d:"Oficina del gobierno de EE.UU. que recibe y resuelve las solicitudes de inmigración, incluida la Visa T. Su Policy Manual es la referencia obligada del caso." },
+  { gr:"Trámite e intake", t:"Presencia física",
+    d:"Requisito de encontrarse en EE.UU., Samoa Americana, las Islas Marianas del Norte o en un puerto de entrada, y que esa presencia se deba al tráfico sufrido." },
+  { gr:"Trámite e intake", t:"Cooperación razonable",
+    d:"Ayudar a las autoridades en la investigación o el enjuiciamiento de los tratantes, por ejemplo aportando testimonio y evidencia. Se exceptúa a los menores de edad y a quienes tienen un trauma severo." },
+  { gr:"Trámite e intake", t:"Trauma severo",
+    d:"Daño psicológico o físico grave que impide a la víctima cooperar con las autoridades. Justifica la excepción al requisito de cooperación." },
+  { gr:"Trámite e intake", t:"Dificultad extrema (extreme hardship)",
+    d:"Daño inusual y severo que la persona enfrentaría si fuera deportada, como persecución, represalias o abuso en su país por haber sido víctima de trata." },
+  { gr:"Trámite e intake", t:"EAD (permiso de trabajo)",
+    d:"Documento que autoriza a la víctima y a sus familiares elegibles a trabajar legalmente en los Estados Unidos." },
+  { gr:"Trámite e intake", t:"Ajuste de estatus",
+    d:"Trámite para pasar de la Visa T a la residencia permanente. Procede tras tres años de presencia continua o al concluir la investigación o el enjuiciamiento." },
+  { gr:"Trámite e intake", t:"Buena conducta moral",
+    d:"Obligación del beneficiario de no incurrir en conductas delictivas ni faltas graves mientras mantenga el estatus." },
+  { gr:"Trámite e intake", t:"Coyote",
+    d:"Persona que cobra por cruzar a alguien a EE.UU. Hay trata cuando, además, la retiene, la obliga a trabajar o le exige más dinero mediante amenazas." },
+  { gr:"Trámite e intake", t:"Casa de seguridad",
+    d:"Inmueble donde se mantiene a la víctima a su llegada: casa, departamento, sótano, cuarto o bodega. Es relevante cuando la retienen más tiempo del acordado o la obligan a trabajar ahí. Corresponde al elemento de albergar." },
+  { gr:"Trámite e intake", t:"Retención de documentos",
+    d:"Quedarse con el pasaporte, la identificación u otros papeles de la persona —o de sus hijos o padres— para impedir que se vaya o pida ayuda. Puede configurar obtención o coerción." },
+  { gr:"Trámite e intake", t:"Filtro inicial",
+    d:"Primera pregunta amplia de cada batería de intake. Si la persona responde que sí, se profundiza con el resto de las preguntas del bloque." },
+  { gr:"Trámite e intake", t:"Salario mínimo",
+    d:"Pago por hora más bajo que permite la ley del estado. Pagar por debajo de ese monto es un indicador de abuso laboral que se documenta con fechas y cifras." },
+  { gr:"Trámite e intake", t:"Horas extras",
+    d:"Tiempo trabajado por encima de la jornada legal. En intake se indaga si pasaba de 40 horas a la semana o de 240 al mes y si se pagaba o no ese tiempo." }
+];
+
+/* ---- Criterios de elegibilidad USCIS (acordeón) ---- */
+const CRITERIOS = [
+  { t:"1. Ser víctima de una forma grave de tráfico humano",
+    b:"La persona debe haber sido objeto de tráfico sexual o laboral en los términos que define la ley. Durante el intake se documenta el acto (reclutamiento, transporte, provisión u obtención), el medio (fuerza, fraude o coerción) y el fin (servidumbre involuntaria, peonaje, deuda forzada, esclavitud o acto sexual comercial).",
+    ex:"Tratándose de menores de 18 años en tráfico sexual, no se requiere acreditar fuerza, fraude ni coerción." },
+  { t:"2. Presencia física por causa del tráfico",
+    b:"La víctima debe encontrarse físicamente en los Estados Unidos, Samoa Americana, las Islas Marianas del Norte o en un puerto de entrada, y esa presencia debe derivar del tráfico sufrido.",
+    ex:"Una persona llevada a EE.UU. bajo falsas promesas de empleo y luego obligada a trabajar en condiciones de esclavitud doméstica." },
+  { t:"3. Cooperación con solicitudes razonables de investigación",
+    b:"La víctima debe haber cumplido con cualquier solicitud razonable de ayuda en la investigación o el enjuiciamiento de los tratantes, por ejemplo aportando testimonio y evidencia.",
+    ex:"Excepciones: víctimas menores de edad y personas que han sufrido un trauma severo que les impide cooperar." },
+  { t:"4. Dificultad extrema en caso de repatriación",
+    b:"Debe demostrarse que la persona sufriría un daño inusual y severo si fuera removida de los Estados Unidos.",
+    ex:"La persona acredita que, de ser deportada, enfrentaría persecución o abuso en su país de origen por su condición de víctima de tráfico." }
+];
+
+/* ---- Batería de preguntas de intake por categoría ---- */
+const INTAKE = [
+  {
+    ico:"🏢", nombre:"Categoría 1 · Empleador",
+    sub:"Abuso y tráfico laboral en el centro de trabajo",
+    grupos:[
+      { g:"Filtro inicial", qs:[
+        "¿DESPUÉS DE SU ÚLTIMA ENTRADA a los Estados Unidos ha trabajado para algún patrón o para una compañía que le pagara muy poco, no le pagara las horas completas, que lo hiciera trabajar más de 40 horas sin pagar horas extras, o lo hiciera trabajar sin equipo de protección y en condiciones peligrosas?",
+        "¿Esto ocurrió después de su última entrada a los Estados Unidos? (si aplica más de una entrada)",
+        "¿Qué tipo de trabajo realizaba y en qué tipo de empresa trabajaba?",
+        "¿En qué año inició a trabajar para esa empresa o patrón y por cuánto tiempo trabajó?"
+      ]},
+      { g:"Pagos y salarios", qs:[
+        "¿Tenía un contrato donde se especificaba su sueldo, horarios y condiciones laborales?",
+        "¿De cuánto le llegaba el cheque a la semana o a la quincena?",
+        "¿Cuánto era el salario mínimo estatal en ese entonces? ¿Le pagaban menos del salario mínimo vigente en esa época?",
+        "¿Cuánto le pagaban por hora?",
+        "¿A qué hora entraba a trabajar y a qué hora salía? ¿A qué hora entraba y salía los fines de semana?",
+        "¿Le pagaban menos de lo acordado originalmente? ¿Cuánto le habían prometido pagarle inicialmente?",
+        "¿Con qué frecuencia se atrasaban, o cuánto tiempo tenía que esperar a que le pagaran su cheque?",
+        "¿Cómo reaccionaba su jefe si le pedía que le pagara el salario prometido o que le subiera el sueldo: le gritaba, lo amenazaba, lo empujaba?",
+        "¿Qué le gritaba? ¿Esos gritos lo hacían sentir atemorizado o amenazado y por eso continuaba trabajando a pesar de que no cumplían con el salario acordado?",
+        "¿Le hacía falsas promesas para que usted continuara trabajando a pesar de que no le cumplía el salario acordado? ¿Qué le prometía?",
+        "¿Trabajó sin que le pagaran nada, o que se atrasaran en pagarle 2 meses o más y usted siguiera trabajando todo ese tiempo sin pago?",
+        "¿Le pagaban sus horas trabajadas incompletas, se atrasaban en pagarle, o le pagaban con cheques sin fondos de manera habitual? ¿Qué pasaba, cuénteme por favor?",
+        "¿Si usted le pedía a su patrón que le pagara sus horas completas o lo que le debía, lo amenazaba, le gritaba, o le hacía falsas promesas para que siguiera trabajando?",
+        "¿Trabajaba horas extras y no se las pagaban, o se las pagaban como horas regulares? ¿Cuántas horas extras trabajaba a la semana y cuánto le pagaban por cada una?",
+        "¿Si usted se negaba a trabajar horas extras o pedía que se las pagaran, cómo reaccionaba su patrón: le gritaba, lo amenazaba?",
+        "¿Le hacían descuentos en su pago cuando accidentalmente se dañaban o perdían productos, maquinaria o equipo, o descuentos injustos por uniformes o equipo de protección?",
+        "¿Por qué le hacían descuentos en su cheque y cuánto le descontaban? ¿Cada quincena, cada mes, con qué frecuencia?"
+      ]},
+      { g:"Horarios y días de descanso", qs:[
+        "¿Lo obligaban a trabajar más de 40 horas a la semana de forma habitual?",
+        "¿Cuántas horas trabajaba a la semana? ¿Trabajaba más de 240 horas al mes? ¿Cuántas horas trabajaba al mes?",
+        "¿Qué hacía su patrón para obligarlo a trabajar más de 40 horas: le gritaba, lo amenazaba, lo golpeaba o amenazaba con golpearlo?",
+        "¿Qué le gritaba? ¿Esos gritos lo hacían sentir atemorizado o amenazado y se sentía forzado a trabajar más de 40 horas a la semana?",
+        "¿Lo obligaban a trabajar 7 días a la semana sin día de descanso, o a trabajar en su día de descanso frecuentemente?",
+        "¿Si pedía un día de descanso, o se negaba a trabajarlo, su patrón reaccionaba de forma agresiva: lo amenazaba, le gritaba, lo empujaba?",
+        "¿Le hacía falsas promesas para que trabajara su día de descanso y luego no se las cumplía? ¿Qué le prometía?",
+        "¿Lo obligaba a trabajar sin parar, por ejemplo sin permitirle tiempo para tomar alimentos o agua, o sin darle lunch break?",
+        "¿Qué le decía su patrón si usted pedía permiso para tomar un break o para comer: se enojaba, lo amenazaba, le gritaba para que siguiera trabajando?",
+        "¿Cuántos breaks tenía al día y cuánto tiempo duraba cada uno?"
+      ]},
+      { g:"Condiciones laborales y riesgo", qs:[
+        "¿Lo obligaba a realizar tareas diferentes a las acordadas sin pago adicional? ¿Qué cosas le obligaban a hacer que no eran parte de lo que le dijeron al contratarlo?",
+        "¿Qué hacía su patrón para obligarlo a hacer esas tareas: le gritaba, lo amenazaba?",
+        "¿Qué pasaba si usted se negaba a hacer lo que le pedía: lo amenazaba, lo insultaba, le gritaba, lo empujaba?",
+        "¿Lo obligaban a realizar tareas riesgosas sin proporcionarle equipo de protección? ¿Qué tipo de tareas riesgosas?",
+        "¿Le proporcionaban capacitación o entrenamiento de manera clara y comprensible para realizar esas tareas riesgosas?",
+        "¿Cómo reaccionaba su patrón cuando usted pedía equipo de protección y capacitación: le gritaba, se burlaba, lo amenazaba?",
+        "¿Lo obligaron a trabajar enfermo o lastimado? ¿Su patrón lo amenazaba, le gritaba o lo forzaba de alguna manera para que se presentara así?",
+        "¿Alguna vez tuvo un accidente en el trabajo y no le proporcionaron ayuda o asistencia médica, o no lo dejaron ir al doctor? ¿Qué fue lo que pasó?",
+        "¿Qué le dijo su patrón cuando usted pidió ayuda o permiso para salir a recibir atención médica?"
+      ]},
+      { g:"El medio: fuerza, coerción, engaños o fraude", qs:[
+        "¿Su patrón le gritaba, le decía cosas ofensivas o insultos para obligarlo a trabajar o para que no se quejara de los abusos laborales?",
+        "¿Qué le gritaba? ¿Esos gritos lo hacían sentir amenazado o con miedo? ¿Ocurría cada semana, en varias ocasiones?",
+        "¿Su patrón lo amenazaba con llamar a la policía o a inmigración si usted no realizaba las tareas o si se quejaba de las condiciones o de los pagos? ¿Qué le decía?",
+        "¿Alguna vez su patrón llegó a empujarl@, golpearl@, amenazarl@ con golpearl@ o con un arma para forzarlo a hacer lo que le pedía?",
+        "¿Su patrón l@ amenazaba de alguna forma para evitar que usted l@ reportara o se quejara con alguna oficina de gobierno? ¿Qué le decía?",
+        "¿Su patrón le amenazaba con echarle a la migra o a la policía para atemorizarlo y evitar que renunciara?",
+        "¿Alguna vez su patrón intentó propasarse con usted, l@ acosó o abusó sexualmente, o l@ agredió sexualmente? ¿Me podría contar qué sucedió?"
+      ]},
+      { g:"Mecanismos de retención y control", qs:[
+        "¿Su patrón amenazaba con lastimarl@ o dañarl@ de alguna forma si usted dejaba ese trabajo y se iba? ¿Qué le decía?",
+        "¿Si usted le decía que ya estaba cansado por los malos tratos y que se quería ir, lo amenazaba con echarle a la migra o a la policía, o con algo más, para evitar que dejara el trabajo?",
+        "¿Su patrón l@ amenazaba con llamar a otros empleadores y hablar mal de usted para que nadie más l@ contratara?",
+        "¿Su patrón le amenazaba con acusarl@ falsamente de robo o de algo que usted no hizo para causarle temor y retenerlo en ese trabajo?",
+        "¿Su patrón le amenazaba con no pagarle el dinero que le debía, o su fondo de ahorro, si usted renunciaba o se iba?",
+        "¿Su patrón le decía que si dejaba ese trabajo nadie lo iba a contratar sin papeles, o que no servía para nada, con la intención de que siguiera trabajando para él?",
+        "¿Su patrón le hacía falsas promesas de ayudarl@ a arreglar sus papeles para que no dejara ese trabajo?",
+        "¿Le hacía falsas promesas de ascenderlo, subirle el sueldo o darle vacaciones con la intención de que no renunciara?",
+        "¿Su patrón le retuvo algún documento o hizo algo para evitar que usted dejara ese empleo? ¿Qué fue lo que le retuvo?",
+        "¿Siente que su patrón l@ controlaba o l@ intimidaba de alguna forma para que aceptara esas condiciones y no renunciara? ¿Por qué sentía eso?",
+        "¿Alguna vez reportó algo de lo que ocurrió a alguna autoridad dentro de los Estados Unidos?"
+      ]}
+    ]
+  },
+  {
+    ico:"🏠", nombre:"Categoría 2 · Violencia doméstica",
+    sub:"Explotación y servidumbre en el hogar",
+    grupos:[
+      { g:"El proceso: cómo el agresor obtuvo a la víctima", qs:[
+        "¿Su espos@/pareja/familiar l@ trajo desde su país de origen a los Estados Unidos por medio de promesas de una mejor vida, de prosperar y salir adelante juntos? ¿Qué fue lo que le dijo?",
+        "¿Su espos@/pareja/familiar l@ convenció de vivir juntos o de iniciar una relación diciéndole que iban a vivir felices y que l@ iba a tratar muy bien? ¿Qué le dijo para convencerl@?"
+      ]},
+      { g:"Filtro inicial", qs:[
+        "¿DESPUÉS DE SU ÚLTIMA ENTRADA a los Estados Unidos ha sufrido VIOLENCIA DOMÉSTICA, es decir, que una pareja o familiar l@ jaloneara, empujara, cacheteara, golpeara, o que l@ forzara a tener relaciones o actos sexuales que usted no deseaba?",
+        "¿Esto ocurrió después de su última entrada a los Estados Unidos? (si aplica más de una entrada)",
+        "¿Por quién sufrió esta violencia? (esposo, ex esposo, pareja, ex pareja, padres, hermanos, etc.)",
+        "¿Cuándo ocurrió y por cuánto tiempo vivió con esta persona?",
+        "¿Qué fue lo que le hacía, me puede contar un poco por favor?",
+        "¿Alguna vez las cosas se pusieron muy difíciles y tuvo que llamar a la policía? ¿Tiene un reporte de policía por esto?"
+      ]},
+      { g:"Servidumbre involuntaria: trabajo doméstico forzado", qs:[
+        "¿Su pareja (o familiar) le impedía trabajar fuera para que usted se quedara haciendo todo el trabajo de la casa?",
+        "¿Su pareja la forzó a hacer cosas en casa, por ejemplo sentirse como la sirvienta: pasar todo el día cocinando y limpiando, haciéndose cargo de niños que no eran suyos o cuidando a familiares de su pareja, sin pago, y si no lo hacía le gritaba, insultaba, amenazaba con inmigración o incluso la golpeaba?",
+        "¿Qué es lo que tenía que hacer (preparar desayuno, comida, cena, limpiar pisos, baños, lavar, planchar)? ¿Tenía que hacerlo todo el día o por mucho tiempo?",
+        "¿Se sentía estresad@ y terminaba agotad@ por tanto trabajo? ¿Tenía que hacerlo a pesar de estar muy cansad@?",
+        "¿Si estaba cansad@, podía decidir no cocinar o limpiar y tomarse unas horas o un día libre?",
+        "¿Si se sentía mal, o le dolía la cabeza o el estómago, podía descansar, o tenía que cocinar, limpiar y cuidar a los niños sin importar cómo se sentía?",
+        "¿Cómo l@ obligaba a hacer esas tareas: l@ amenazaba, le gritaba, l@ empujaba, l@ golpeaba?",
+        "¿Qué le gritaba? ¿Esos gritos l@ hacían sentir amenazad@ o con miedo y por eso hacía lo que le pedía?",
+        "¿L@ amenazaba con echarle a la migra o a la policía, o con quitarle a sus hijos, si usted no tenía la comida lista o la casa y la ropa limpias? ¿Qué le decía?",
+        "¿Amenazaba con golpearl@ a usted o a sus hijos si se negaba a hacer las tareas de la casa?",
+        "¿Amenazaba con matarl@ o dañarl@ a usted o a su familia para obligarl@ a quedarse en casa cocinando y limpiando todo el día?",
+        "¿L@ golpeaban, empujaban o agredían de alguna manera si usted no tenía la comida lista y la casa limpia?",
+        "¿Qué pasaba, o qué hubiese pasado, si usted se negaba a cocinar, limpiar o lavar la ropa?",
+        "¿Sentía miedo de que si no hacía las tareas de la casa l@ podrían lastimar y por eso prefería obedecer? ¿Por qué tenía miedo?",
+        "(Hombre) ¿Su pareja lo forzó a hacer cosas en casa, que se sintiera casi como su esclavo: que al llegar de trabajar no le permitiera descansar y lo obligara a pasar el resto del día en mantenimiento, limpieza y otras actividades sin pago, y si no lo hacía le gritara, insultara, amenazara con inmigración o lo golpeara?"
+      ]},
+      { g:"Explotación financiera: entregar el sueldo al agresor", qs:[
+        "¿Usted trabajaba fuera de casa? ¿Su pareja (o familiar) le exigió que trabajara fuera para después quitarle el dinero que ganaba?",
+        "¿Usted tenía que entregarle su dinero o depositarle su cheque en su cuenta, y después ya no le dejaba usar su propio dinero?",
+        "¿Usted tenía el control del dinero que ganaba, o tenía que entregarlo y luego ya no le dejaba gastarlo?",
+        "¿Cómo le obligaba a entregarle su cheque o el dinero que ganaba: l@ amenazaba, le gritaba, l@ empujaba, l@ golpeaba?",
+        "¿L@ amenazaba con echarle a la migra o a la policía, o con quitarle a sus hijos, si usted no le entregaba su cheque? ¿Qué le decía?",
+        "¿Amenazaba con golpearl@ a usted o a sus hijos si se negaba a darle el dinero que ganaba?",
+        "¿Amenazaba con matarl@ o dañarl@ a usted o a su familia para obligarl@ a entregarle su cheque?",
+        "¿Qué pasaba, o qué hubiese pasado, si usted se negaba a darle su cheque o su dinero? ¿Por qué tenía miedo?"
+      ]},
+      { g:"Trabajo forzado para el agresor sin pago", qs:[
+        "¿Su pareja (o familiar) l@ forzó a trabajar PARA ÉL/ELLA sin recibir ningún pago, o pagándole menos del salario mínimo?",
+        "(Hombre) ¿Su pareja le forzó a trabajar PARA ELLA fuera de casa, por ejemplo en construcción, mantenimiento o un negocio propio, ayudando en distintas labores, limpiando o preparando comida, sin pagarle por su trabajo?",
+        "¿Cómo le obligaba a trabajar para él/ella sin pago: l@ amenazaba, le gritaba, l@ empujaba, l@ golpeaba?",
+        "¿L@ amenazaba con echarle a la migra o a la policía, o con quitarle a sus hijos, si usted se negaba a ir a trabajar o si le pedía que le pagara?",
+        "¿Amenazaba con golpearl@ o matarl@ a usted o a su familia para obligarl@ a ir a trabajar sin pago?",
+        "¿Qué pasaba, o qué hubiese pasado, si usted se negaba a trabajar para él/ella o si le pedía que le pagara? ¿Por qué tenía miedo?"
+      ]},
+      { g:"Servidumbre y abuso sexual", qs:[
+        "¿Su pareja la forzaba a tener relaciones sexuales cuando usted no quería?",
+        "(Hombre) ¿Su pareja le forzaba a tener relaciones cuando usted llegaba cansado, enfermo o no quería, o a realizar actos sexuales que no le gustaban, gritándole, amenazándolo o golpeándolo si no accedía?",
+        "¿Esto ocurrió durante la mayor parte del tiempo que vivieron juntos o por cuánto tiempo ocurrió? ¿Cuántas veces a la semana pasaba aproximadamente?",
+        "¿La forzaba amenazándola con no darle comida o dinero para comprarla si se negaba, o con golpearla, lastimarla o matarla a usted o a sus hijos?",
+        "¿Cómo la amenazaba o qué hacía para forzarla a tener relaciones? ¿Qué hubiese pasado si usted no accedía?",
+        "¿Sentía miedo de que si se negaba l@ podría lastimar o dañar a usted o a sus hijos? ¿Por qué tenía miedo?"
+      ]},
+      { g:"Agresiones físicas y verbales", qs:[
+        "¿Qué tipo de agresiones físicas sufría por parte de su pareja o familiar: l@ empujaba, le jalaba el cabello, l@ arañaba, l@ mordía, le daba cachetadas, l@ golpeaba, le tiraba cosas?",
+        "¿Esto ocurría frecuentemente? ¿Ocurría cada semana? ¿Ocurrió varias veces?",
+        "¿Su pareja le gritaba, le insultaba, se burlaba de usted o le decía cosas hirientes para humillarl@? ¿Qué le decía?",
+        "¿Golpeaba cosas, paredes, aventaba o rompía cosas, o destruía sus pertenencias para intimidarl@?",
+        "¿Le amenazaba con echarle a la policía o a la migra, con quitarle a sus hijos o algo parecido? ¿Con qué l@ amenazaba?"
+      ]},
+      { g:"Mecanismos de control extremos", qs:[
+        "¿Su pareja l@ amenazaba con quitarle a sus hijos, con echarle a la migra o a la policía, para evitar que usted l@ dejara?",
+        "¿Su pareja l@ golpeó, o amenazó con golpearl@, dañarl@ o matarl@ si usted le decía que ya no quería continuar con la relación o que se quería ir?",
+        "¿Su pareja l@ encerraba y usted no podía salir, para evitar que escapara de esa situación? ¿La encerraba bajo llave, la mantenía vigilada, la amenazaba si salía?",
+        "¿Su pareja l@ aislaba con la intención de que usted no pudiera pedir ayuda y no pudiera salir de esa relación?",
+        "¿Su pareja le puso un GPS, cámaras de video o alguna aplicación para saber todos sus movimientos, o l@ vigilaba para mantenerl@ controlad@?",
+        "¿Su pareja le escondió o destruyó sus documentos o identificaciones con la intención de que usted no se pudiera ir? ¿Qué hizo?",
+        "¿Su pareja l@ manipulaba haciéndole falsas promesas de que iba a cambiar y ya no volvería a maltratarl@ para que no terminara la relación?",
+        "¿Su pareja hizo alguna otra cosa para evitar que usted l@ dejara y hacerl@ sentir atrapad@ o sin salida?",
+        "¿Usted tenía miedo de que le hiciera algún daño a usted o a su familia si decidía terminar la relación? ¿Por qué tenía miedo?",
+        "¿Qué hubiese pasado si usted se hubiese negado a obedecerl@ y hubiese intentado irse? ¿Por qué piensa eso?"
+      ]}
+    ]
+  },
+  {
+    ico:"🌵", nombre:"Categoría 3 · Coyotes",
+    sub:"Retención y explotación durante el cruce y a la llegada",
+    grupos:[
+      { g:"Filtro inicial", qs:[
+        "¿LA ÚLTIMA VEZ que entró a los Estados Unidos entró con coyote?",
+        "¿Cuando llegó a los Estados Unidos con los coyotes le forzaron a quedarse en un cuarto, bodega, casa u otro lugar por más tiempo del acordado, o lo forzaron a trabajar y entregarles el dinero de su trabajo por medio de amenazas?",
+        "¿Por cuánto tiempo lo retuvieron en contra de su voluntad o lo obligaron a trabajar, ya estando dentro de los Estados Unidos?",
+        "¿Cuál fue el trato original con los coyotes? ¿Cuánto le dijeron que le iban a cobrar?",
+        "¿Le quisieron cobrar más de lo acordado inicialmente? ¿Cuánto le dijeron que tenía que pagar?"
+      ]},
+      { g:"Servidumbre por deuda", qs:[
+        "¿Lo obligaron a trabajar para pagarles con su trabajo el dinero que les debía?",
+        "¿Qué trabajos le obligaron a hacer para pagar la supuesta deuda? ¿Durante cuántos días tuvo que hacerlos?",
+        "¿Usted hacía estas tareas por muchas horas, como si fuera una jornada laboral de 8 horas o más?",
+        "¿Cuánto tiempo aproximadamente le llevaba hacer cada tarea, para calcular las horas trabajadas al día?",
+        "¿Le gritaban, lo insultaban, lo amenazaban o lo agredían físicamente para que hiciera los trabajos?",
+        "¿Qué le gritaban? ¿Cuándo le gritaban sentía miedo de que lo pudieran dañar si no los obedecía?"
+      ]},
+      { g:"Trabajo forzado ya dentro de EE.UU.", qs:[
+        "¿Estando ya dentro de los Estados Unidos, lo obligaron a trabajar para ellos limpiando, cocinando, o ayudándoles a hacer cosas ilegales como traficar drogas, o lo llevaron a la casa o negocio de alguien más para forzarl@ a trabajar sin pago?",
+        "¿Qué trabajos lo obligaban a hacer? ¿Para cuántas personas tenía que cocinar, limpiar o lavar la ropa?",
+        "¿Durante cuántos días tuvo que hacer esos trabajos? ¿Le pagaron por ellos?",
+        "¿Cuánto tiempo le tomaba preparar los ingredientes, cocinar, lavar platos y ollas, limpiar la cocina, lavar los baños, barrer?",
+        "¿Lo amenazaban o intimidaban para que hiciera el trabajo que le obligaban a hacer?",
+        "¿Le gritaban, lo insultaban, lo amenazaban, lo agredían físicamente o lo golpeaban para que hiciera los trabajos? ¿Qué insultos le decían?",
+        "¿Lo amenazaban con echarle a la migra, a la policía, o con entregarlo a inmigración si no hacía los trabajos? ¿Qué le decían?",
+        "¿Lo amenazaban con golpearlo o dañarlo a usted o a su familia si se negaba a trabajar? ¿Lo amenazaban con matarlo a usted o a su familia?",
+        "¿Qué pasaba, o qué hubiera pasado, si usted se negaba a hacer los trabajos? ¿Por qué tenía miedo?"
+      ]},
+      { g:"Trata sexual y servidumbre sexual", qs:[
+        "¿Alguna vez los coyotes se propasaron con usted, o l@ tocaron de forma inapropiada mientras estaba encerrad@ con ellos ya dentro de los Estados Unidos?",
+        "¿Los coyotes l@ obligaron a tener relaciones sexuales o a realizar algún acto sexual con alguno de ellos o con alguien más?",
+        "¿Esto pasó más de una vez? ¿Cuántas veces ocurrió?",
+        "¿Qué pasaba, o qué hubiese pasado, si usted se negaba a hacer lo que le pedían? ¿Tenía miedo de que l@ pudieran dañar o matar? Cuénteme por qué tenía miedo."
+      ]},
+      { g:"Mecanismos de retención y control", qs:[
+        "¿Ya estando en los Estados Unidos, los coyotes lo mantuvieron encerrado bajo llave, con candados, o pusieron guardias para evitar que escapara? ¿Cómo lo mantenían encerrado?",
+        "¿Cómo lo obligaban a trabajar y a darles el dinero que ganaba para pagar la supuesta deuda: amenazaban con golpearlo, matarlo, o dañar a su familia en su país de origen?",
+        "¿Los coyotes hicieron algo para intimidarlo o amenazarlo, de modo que usted temiera por su seguridad o su vida y no intentara huir?",
+        "¿Los coyotes amenazaron con golpearlo o matarlo, lo empujaron o lo golpearon para evitar que escapara?",
+        "¿Los coyotes lo amenazaron con echarle a inmigración o a la policía para evitar que intentara huir?",
+        "¿Cuando lo tenían encerrado, le gritaban para atemorizarlo y que no intentara escapar? ¿Qué le gritaban?",
+        "¿Los coyotes tenían armas? ¿Qué tipos de armas tenían? ¿Lo amenazaron con armas ya estando dentro de los Estados Unidos?",
+        "¿Le quitaron algún documento, como pasaporte o identificación? ¿Le quitaron el celular para que no pudiera pedir ayuda?",
+        "¿Le quitaron la ropa o los zapatos para que no pudiera huir?",
+        "¿Lo forzaron a tomar drogas, pastillas, alcohol o alguna sustancia para mantenerlo encerrado y que no intentara huir?"
+      ]},
+      { g:"Dificultades (hardship) y reporte", qs:[
+        "¿Cuántas horas le permitían dormir al día? ¿Lo dejaban asearse?",
+        "¿Qué le daban de comer y cuántas veces al día le daban de comer?",
+        "¿Cuando estaba cruzando a los Estados Unidos con los coyotes, lo maltrataron, le gritaron, lo amenazaron, lo empujaron o golpearon? ¿Qué le hicieron?",
+        "¿Lo forzaron o presionaron a acarrear agua, comida, mochilas o drogas para ellos durante el camino? ¿Qué tuvo que hacer?",
+        "¿Cómo se veían los coyotes: tenían tatuajes, parecían pandilleros, narcos, usaban drogas?",
+        "¿Reportó algo de lo que ocurrió a alguna autoridad dentro de los Estados Unidos?"
+      ]}
+    ]
+  }
+];
+</script>
+
+<script>
+/* ---- Banco de la evaluación final ----
+   20 reactivos. Opciones de longitud pareja y distribución
+   homogénea de la respuesta correcta: 5 en A, 5 en B, 5 en C y 5 en D. */
+const QUIZ = [
+ {tema:"Definición de trata: menores de edad",
+  q:"En casos de tráfico sexual con víctimas menores de 18 años, ¿qué debe acreditarse?",
+  o:["Debe probarse el uso de fuerza, fraude o coerción del tratante.",
+     "Debe probarse únicamente la coerción psicológica sostenida.",
+     "Basta la inducción al acto sexual comercial, sin esos medios.",
+     "Debe probarse el traslado del menor entre dos o más estados."],
+  c:2, w:"Tratándose de menores de 18 años no es necesario probar fuerza, fraude ni coerción: la sola inducción al acto sexual comercial configura tráfico sexual."},
+
+ {tema:"Definición de tráfico laboral (TVPA)",
+  q:"¿Cuál es la finalidad que define legalmente al tráfico laboral?",
+  o:["Someter a la persona a servidumbre, peonaje, deuda o esclavitud.",
+     "Obtener un lucro económico superior al salario mínimo estatal.",
+     "Trasladar a la persona sin documentos migratorios hacia EE.UU.",
+     "Emplear a la persona en jornadas mayores a la ley del estado."],
+  c:0, w:"El tráfico laboral se define por el fin: someter a la persona a servidumbre involuntaria, peonaje, deuda forzada o esclavitud mediante fuerza, fraude o coerción."},
+
+ {tema:"Definiciones legales: reclutamiento",
+  q:"Atraer, contratar o inscribir a una persona para realizar un trabajo corresponde a:",
+  o:["Provisión, porque se pone al trabajador a disposición del patrón.",
+     "Reclutamiento, porque se capta a la persona para prestar servicio.",
+     "Transporte, porque se moviliza a la persona al centro de trabajo.",
+     "Obtención, porque se adquiere el control laboral de la persona."],
+  c:1, w:"Reclutamiento es el acto de atraer, contratar o inscribir a una persona para que realice un trabajo o servicio."},
+
+ {tema:"Definiciones legales: fraude",
+  q:"Prometer un empleo legítimo y bien pagado que en realidad no existe constituye:",
+  o:["Uso de fuerza, porque se violenta la voluntad de la persona.",
+     "Coerción, porque se genera un temor grave y continuo en ella.",
+     "Transporte, porque la promesa motiva el traslado de la persona.",
+     "Fraude, porque se usan mentiras y falsas promesas para captarla."],
+  c:3, w:"El fraude es el uso de mentiras, engaños o falsas promesas para convencer a una persona de realizar trabajos o servicios."},
+
+ {tema:"Beneficios de la Visa T: vigencia",
+  q:"¿Cuál es la vigencia ordinaria del estatus que otorga la Visa T?",
+  o:["Cuatro años, con posibilidad de extensión en ciertos supuestos.",
+     "Dos años, con posibilidad de extensión en ciertos supuestos.",
+     "Seis años, con posibilidad de extensión en ciertos supuestos.",
+     "Diez años, con posibilidad de extensión en ciertos supuestos."],
+  c:0, w:"La Visa T permite permanecer en EE.UU. por un máximo de cuatro años, con posibilidad de extensión en ciertos casos."},
+
+ {tema:"Beneficios de la Visa T: ajuste de estatus",
+  q:"¿Tras cuánto tiempo de presencia continua puede solicitarse la residencia permanente?",
+  o:["Un año de presencia continua dentro de los Estados Unidos.",
+     "Cinco años de presencia continua dentro de los Estados Unidos.",
+     "Tres años de presencia continua dentro de los Estados Unidos.",
+     "Siete años de presencia continua dentro de los Estados Unidos."],
+  c:2, w:"El ajuste de estatus procede tras tres años de presencia continua, o bien al concluir la investigación o el enjuiciamiento."},
+
+ {tema:"Beneficios de la Visa T: alcance",
+  q:"Además de la estancia legal, la Visa T otorga a la víctima:",
+  o:["La ciudadanía estadounidense de forma inmediata y automática.",
+     "Autorización de empleo y acceso a ciertos beneficios públicos.",
+     "Un subsidio económico mensual otorgado directamente por USCIS.",
+     "La exención definitiva de toda obligación de cooperación legal."],
+  c:1, w:"La víctima y sus familiares elegibles pueden obtener autorización de empleo, además de acceso a ciertos beneficios públicos y servicios de apoyo."},
+
+ {tema:"Criterios de elegibilidad USCIS",
+  q:"¿Cuál de los siguientes NO es un criterio de elegibilidad establecido por USCIS?",
+  o:["Haber sido víctima de una forma grave de tráfico de personas.",
+     "Estar físicamente presente en EE.UU. a causa del tráfico sufrido.",
+     "Demostrar dificultad extrema ante una eventual repatriación.",
+     "Contar con un contrato de trabajo vigente dentro de los EE.UU."],
+  c:3, w:"Los cuatro criterios son: ser víctima de una forma grave de trata, presencia física por causa del tráfico, cooperación razonable y dificultad extrema. Un contrato laboral no es requisito."},
+
+ {tema:"Criterios de elegibilidad: presencia física",
+  q:"El requisito de presencia física se cumple estando la víctima en:",
+  o:["Cualquier país donde exista un consulado de los Estados Unidos.",
+     "EE.UU., Samoa Americana, Islas Marianas o un puerto de entrada.",
+     "Únicamente los estados que hacen frontera con México o Canadá.",
+     "Únicamente el estado donde ocurrieron los hechos de tráfico."],
+  c:1, w:"La víctima debe estar físicamente presente en EE.UU., Samoa Americana, las Islas Marianas del Norte o en un puerto de entrada, a causa del tráfico."},
+
+ {tema:"Excepciones de cooperación por trauma o edad",
+  q:"La cooperación con la investigación admite excepción cuando la víctima:",
+  o:["Es menor de edad o presenta un trauma severo documentado.",
+     "Reside en un estado distinto al de la agencia investigadora.",
+     "Carece de representación legal al momento de la solicitud.",
+     "Ya recibió autorización de empleo por parte de la agencia."],
+  c:0, w:"La ley exceptúa del deber de cooperación a las víctimas menores de edad y a quienes han sufrido un trauma severo."},
+
+ {tema:"Dificultad extrema (extreme hardship)",
+  q:"La dificultad extrema en caso de repatriación se acredita demostrando:",
+  o:["Que la víctima carece de documentos vigentes de su país natal.",
+     "Que la víctima tiene familiares residentes en los Estados Unidos.",
+     "Un daño inusual y severo que enfrentaría al ser deportada.",
+     "Un ingreso económico menor al promedio de su país de origen."],
+  c:2, w:"Debe demostrarse un daño inusual y severo, como persecución o abuso en el país de origen por su condición de víctima de tráfico."},
+
+ {tema:"Obligaciones del beneficiario",
+  q:"Entre las obligaciones del beneficiario de la Visa T se encuentra:",
+  o:["Renunciar a la nacionalidad de su país de origen al recibirla.",
+     "Reportarse cada mes ante la corte de inmigración que le toque.",
+     "Permanecer en el mismo empleo durante la vigencia del estatus.",
+     "Mantener buena conducta moral durante su estancia en el país."],
+  c:3, w:"Son obligaciones cooperar con las autoridades (salvo excepciones), mantener buena conducta moral y cumplir los requisitos de renovación o extensión."},
+
+ {tema:"Intake Empleador: horarios",
+  q:"En intake de empleador, ¿qué umbral mensual de horas conviene indagar?",
+  o:["Más de 120 horas al mes sin pago de tiempo extraordinario.",
+     "Más de 160 horas al mes sin pago de tiempo extraordinario.",
+     "Más de 200 horas al mes sin pago de tiempo extraordinario.",
+     "Más de 240 horas al mes sin pago de tiempo extraordinario."],
+  c:3, w:"La batería pregunta expresamente si la persona trabajaba más de 240 horas al mes, además de más de 40 horas semanales sin pago de horas extras."},
+
+ {tema:"Intake Empleador: coerción",
+  q:"La amenaza del patrón de llamar a inmigración o a la policía se documenta como:",
+  o:["Un mecanismo de coerción para retener a la persona en el empleo.",
+     "Un acto administrativo lícito que el patrón ejerce libremente.",
+     "Un elemento de fraude, pues implica una promesa nunca cumplida.",
+     "Un dato irrelevante si la persona conservó su documentación."],
+  c:0, w:"Amenazar con inmigración o la policía es un mecanismo de coerción: atemoriza a la persona para que no se queje, no renuncie y siga trabajando."},
+
+ {tema:"Intake Empleador: fraude y falsas promesas",
+  q:"Prometer arreglar los papeles para que la persona no renuncie constituye:",
+  o:["Fuerza, ya que existe violencia física directa sobre la persona.",
+     "Cooperación, ya que el patrón apoya el trámite migratorio.",
+     "Fraude, pues es una falsa promesa que la retiene en el empleo.",
+     "Hardship, ya que la persona sufre un daño severo e inusual."],
+  c:2, w:"Las falsas promesas de regularización migratoria son fraude cuando se emplean para que la persona no abandone el empleo abusivo."},
+
+ {tema:"Intake Violencia doméstica: servidumbre",
+  q:"¿Qué hecho apunta a servidumbre doméstica involuntaria dentro del hogar?",
+  o:["Que la pareja y la víctima repartan las tareas de la casa.",
+     "Cocinar y limpiar todo el día sin pago y bajo amenazas o golpes.",
+     "Que la víctima decida quedarse en casa cuidando a sus propios hijos.",
+     "Que la pareja pida ayuda ocasional con las labores del hogar."],
+  c:1, w:"La servidumbre doméstica se configura cuando la persona realiza el trabajo del hogar sin pago, sin posibilidad de descanso y bajo gritos, amenazas o violencia."},
+
+ {tema:"Intake Violencia doméstica: explotación financiera",
+  q:"Obligar a la víctima a entregar su cheque completo se documenta como:",
+  o:["Un acuerdo familiar de administración conjunta del ingreso.",
+     "Una forma de transporte dentro de la definición de la TVPA.",
+     "Una obligación normal derivada de la convivencia en pareja.",
+     "Explotación financiera dentro del patrón de trabajo forzado."],
+  c:3, w:"Exigir que la víctima trabaje fuera y entregue su sueldo, sin dejarla usar su propio dinero, es explotación financiera y parte del patrón de control."},
+
+ {tema:"Intake Violencia doméstica: mecanismos de control",
+  q:"El uso de GPS, cámaras y la retención de documentos por la pareja indica:",
+  o:["Control y aislamiento ejercidos para impedir que la víctima se vaya.",
+     "Medidas de seguridad del hogar sin relevancia para el caso.",
+     "Un elemento de dificultad extrema al momento de la repatriación.",
+     "Un indicio exclusivo de los casos de tráfico cometidos por coyotes."],
+  c:0, w:"La vigilancia electrónica, el aislamiento y esconder o destruir documentos son mecanismos de retención y control que impiden salir de la relación."},
+
+ {tema:"Intake Coyotes: servidumbre por deuda",
+  q:"Retener a la persona en una casa de seguridad y hacerla trabajar por una deuda inflada es:",
+  o:["Un cobro lícito por el servicio de cruce previamente pactado.",
+     "Un caso de fraude simple, sin elementos de trabajo forzado.",
+     "Servidumbre por deuda, si ocurre ya dentro de los Estados Unidos.",
+     "Un hecho fuera del alcance de la Visa T por ocurrir en tránsito."],
+  c:2, w:"Retener a la persona más tiempo del acordado y obligarla a trabajar para pagar una deuda inflada configura servidumbre por deuda; el intake confirma que ocurrió ya dentro de EE.UU."},
+
+ {tema:"Intake Coyotes: retención e inmovilización",
+  q:"Quitar el celular, los zapatos o la ropa a la persona retenida busca:",
+  o:["Resguardar sus pertenencias mientras dura el traslado pactado.",
+     "Impedir su huida, lo que constituye un mecanismo de retención.",
+     "Cobrar la deuda mediante la venta de los objetos retenidos.",
+     "Acreditar su identidad ante las autoridades de inmigración."],
+  c:1, w:"Quitar celular, zapatos o ropa, o forzar el consumo de drogas o alcohol, son formas de inmovilizar a la víctima para que no pueda pedir ayuda ni escapar."}
+];
+
+/* ============================================================
+   SCORM 1.2 — Conexión con Moodle
+   Busca el API del LMS en la ventana/frames padre, inicializa la
+   sesión y expone funciones para registrar el puntaje y el
+   estatus (passed/failed) de la Evaluación final.
+   ============================================================ */
+var SCORM_API = null;
+var SCORM_READY = false;
+
+function scormFindAPI(win){
+  var attempts = 0;
+  while (win.API == null && win.parent != null && win.parent !== win){
+    attempts++;
+    if (attempts > 500) return null;
+    win = win.parent;
+  }
+  return win.API || null;
+}
+
+function scormGetAPI(){
+  var api = scormFindAPI(window);
+  if (!api && window.opener && typeof window.opener !== "undefined"){
+    api = scormFindAPI(window.opener);
+  }
+  return api;
+}
+
+function scormInit(){
+  SCORM_API = scormGetAPI();
+  if (!SCORM_API){ SCORM_READY = false; return false; }
+  var ok = SCORM_API.LMSInitialize("");
+  if (ok === "false" || ok === false){
+    SCORM_API = null;
+    SCORM_READY = false;
+    return false;
+  }
+  SCORM_READY = true;
+  var status = SCORM_API.LMSGetValue("cmi.core.lesson_status");
+  if (status === "not attempted" || status === ""){
+    SCORM_API.LMSSetValue("cmi.core.lesson_status", "incomplete");
+    SCORM_API.LMSCommit("");
+  }
+  return true;
+}
+
+/* Registra en Moodle el puntaje (0-100) y el estatus de la
+   Evaluación final. pct ya viene calculado sobre 100. */
+function scormSetScore(pct, aprobado){
+  if (!SCORM_READY || !SCORM_API) return;
+  SCORM_API.LMSSetValue("cmi.core.score.raw", String(pct));
+  SCORM_API.LMSSetValue("cmi.core.score.min", "0");
+  SCORM_API.LMSSetValue("cmi.core.score.max", "100");
+  SCORM_API.LMSSetValue("cmi.core.lesson_status", aprobado ? "passed" : "failed");
+  SCORM_API.LMSCommit("");
+}
+
+/* Vuelve a poner el intento en "incomplete" cuando el
+   colaborador decide reintentar la evaluación. */
+function scormResetIntento(){
+  if (!SCORM_READY || !SCORM_API) return;
+  SCORM_API.LMSSetValue("cmi.core.lesson_status", "incomplete");
+  SCORM_API.LMSCommit("");
+}
+
+function scormFinish(){
+  if (!SCORM_READY || !SCORM_API) return;
+  SCORM_API.LMSCommit("");
+  SCORM_API.LMSFinish("");
+  SCORM_READY = false;
+  SCORM_API = null;
+}
+
+window.addEventListener("load", scormInit);
+window.addEventListener("beforeunload", scormFinish);
+window.addEventListener("unload", scormFinish);
+
+/* ============================================================
+   LÓGICA DE LA APLICACIÓN (SPA)
+   ============================================================ */
+const $  = (s, ctx) => (ctx || document).querySelector(s);
+const $$ = (s, ctx) => Array.from((ctx || document).querySelectorAll(s));
+
+const state = {
+  nombre: "",
+  pantalla: 1,
+  actual: 0,
+  respuestas: new Array(QUIZ.length).fill(null),
+  calificado: false
+};
+
+function esc(t){
+  return String(t).replace(/[&<>"']/g, c => (
+    {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]
+  ));
+}
+
+/* ---------- 1. NAVEGACIÓN LIBRE ENTRE PANTALLAS ---------- */
+function irA(n){
+  state.pantalla = n;
+  $$(".screen").forEach(s => s.classList.remove("visible"));
+  $("#screen" + n).classList.add("visible");
+  $$("#stepbar button").forEach(b => {
+    const p = Number(b.dataset.step);
+    b.classList.toggle("active", p === n);
+    b.classList.toggle("done", p < n);
+  });
+  if (n === 5) pintarPregunta();
+  window.scrollTo(0, 0);
+}
+/* El menú superior permite saltar a cualquier pantalla */
+$$("#stepbar button").forEach(b => {
+  b.addEventListener("click", () => {
+    const destino = Number(b.dataset.step);
+    // Si aún no hay nombre, se pide antes de avanzar
+    if (destino > 1 && !state.nombre){
+      irA(1);
+      inputNombre.classList.add("warn");
+      inputNombre.focus();
+      setTimeout(() => inputNombre.classList.remove("warn"), 1600);
+      return;
+    }
+    irA(destino);
+  });
+});
+$$("[data-go]").forEach(b => b.addEventListener("click", () => irA(Number(b.dataset.go))));
+
+/* ---------- 2. PANTALLA 1: REGISTRO ---------- */
+const inputNombre = $("#colaborador");
+const btnStart = $("#btnStart");
+inputNombre.addEventListener("input", () => {
+  btnStart.disabled = inputNombre.value.trim().length < 3;
+  state.nombre = inputNombre.value.trim().length >= 3 ? inputNombre.value.trim() : "";
+});
+inputNombre.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !btnStart.disabled) btnStart.click();
+});
+btnStart.addEventListener("click", () => {
+  state.nombre = inputNombre.value.trim();
+  irA(2);
+});
+
+/* ---------- 3. CAJÓN DE DEFINICIONES LEGALES ----------
+   Panel lateral no modal: permanece abierto en segundo plano
+   mientras el colaborador sigue navegando el módulo. */
+const drawer = $("#drawer"), btnGlosario = $("#btnGlosario");
+function abrirGlosario(abrir){
+  drawer.classList.toggle("open", abrir);
+  btnGlosario.classList.toggle("on", abrir);
+  btnGlosario.setAttribute("aria-expanded", abrir ? "true" : "false");
+  if (abrir) $("#glSearch").focus();
+}
+btnGlosario.addEventListener("click", () => abrirGlosario(!drawer.classList.contains("open")));
+$("#drawerClose").addEventListener("click", () => abrirGlosario(false));
+$$("[data-open-glosario]").forEach(b => b.addEventListener("click", () => abrirGlosario(true)));
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && drawer.classList.contains("open")) abrirGlosario(false);
+});
+
+/* Cada concepto despliega su definición al dar clic */
+const glosarioBody = $("#glosarioBody");
+function pintarGlosario(filtro){
+  const f = (filtro || "").trim().toLowerCase();
+  const lista = GLOSARIO.filter(g =>
+    !f || g.t.toLowerCase().includes(f) || g.d.toLowerCase().includes(f));
+  glosarioBody.innerHTML = "";
+  if (!lista.length){
+    glosarioBody.innerHTML = '<p class="gl-empty">Ningun termino coincide con la busqueda.</p>';
+    return;
+  }
+  let grupoActual = null;
+  lista.forEach(g => {
+    // Encabezado de grupo: Marco general, Proceso, Medios, Fin, Tramite e intake
+    if (g.gr !== grupoActual){
+      grupoActual = g.gr;
+      const h4 = document.createElement("p");
+      h4.className = "gl-group";
+      h4.textContent = g.gr;
+      glosarioBody.appendChild(h4);
+    }
+    const item = document.createElement("div");
+    item.className = "gl-item";
+    item.innerHTML =
+      '<button class="gl-term" type="button" aria-expanded="false">' + esc(g.t) + "</button>" +
+      '<div class="gl-def"><p>' + esc(g.d) + "</p></div>";
+    const btn = $(".gl-term", item);
+    btn.addEventListener("click", () => {
+      const abierto = item.classList.toggle("open");
+      btn.setAttribute("aria-expanded", abierto ? "true" : "false");
+    });
+    glosarioBody.appendChild(item);
+  });
+  const src = document.createElement("p");
+  src.className = "gl-source";
+  src.textContent = "Fuente: Glosario Visa T 3.0, The Mendoza Law Firm (febrero 2024). " +
+    "Elaborado por Compliance Attorneys con Legal Intelligence, con base en el USCIS Policy Manual. " +
+    "Definiciones resumidas para capacitacion; para especificidades del visado consulte el Policy Manual.";
+  glosarioBody.appendChild(src);
+}
+pintarGlosario("");
+$("#glSearch").addEventListener("input", e => pintarGlosario(e.target.value));
+
+/* ---------- 4. ACORDEONES (CABECERA OSCURA / CUERPO CLARO) ---------- */
+function acordeon(titulo, cuerpoHTML){
+  const wrap = document.createElement("div");
+  wrap.className = "acc";
+  wrap.innerHTML =
+    '<button class="acc-head" type="button" aria-expanded="false">' + titulo + '</button>' +
+    '<div class="acc-body">' + cuerpoHTML + '</div>';
+  const head = $(".acc-head", wrap);
+  head.addEventListener("click", () => {
+    const abierto = wrap.classList.toggle("open");
+    head.setAttribute("aria-expanded", abierto ? "true" : "false");
+  });
+  return wrap;
+}
+
+/* Criterios de elegibilidad USCIS */
+const critAcc = $("#critAcc");
+CRITERIOS.forEach(c => {
+  critAcc.appendChild(acordeon(
+    esc(c.t),
+    "<p>" + esc(c.b) + "</p>" +
+    '<div class="callout"><p>' + esc(c.ex) + "</p></div>"
+  ));
+});
+
+/* ---------- 5. PESTAÑAS NAVEGABLES DE FUNDAMENTOS ---------- */
+const tabs = $$(".tab");
+function activarTab(idx){
+  tabs.forEach((t, i) => {
+    t.classList.toggle("active", i === idx);
+    $("#" + t.dataset.pane).classList.toggle("visible", i === idx);
+  });
+  $("#tabPrev").disabled = idx === 0;
+  $("#tabNext").disabled = idx === tabs.length - 1;
+}
+tabs.forEach((t, i) => t.addEventListener("click", () => activarTab(i)));
+$("#tabPrev").addEventListener("click", () => {
+  const i = tabs.findIndex(t => t.classList.contains("active"));
+  if (i > 0) activarTab(i - 1);
+});
+$("#tabNext").addEventListener("click", () => {
+  const i = tabs.findIndex(t => t.classList.contains("active"));
+  if (i < tabs.length - 1) activarTab(i + 1);
+});
+activarTab(0);
+
+/* ---------- 6. BATERÍA DE PREGUNTAS DE INTAKE ---------- */
+const intakeWrap = $("#intakeWrap");
+INTAKE.forEach(cat => {
+  const total = cat.grupos.reduce((n, g) => n + g.qs.length, 0);
+  const bloque = document.createElement("div");
+  bloque.className = "cat-block";
+  bloque.innerHTML =
+    '<div class="cat-head"><span class="ico">' + cat.ico + '</span>' +
+    "<div><h3>" + esc(cat.nombre) + "</h3><span>" + esc(cat.sub) +
+    " · " + total + " preguntas</span></div></div>" +
+    '<div class="cat-body"></div>';
+  const body = $(".cat-body", bloque);
+  cat.grupos.forEach(g => {
+    const lista = "<ul class='qlist'>" +
+      g.qs.map(q => "<li>" + esc(q) + "</li>").join("") + "</ul>";
+    body.appendChild(acordeon(
+      esc(g.g) + ' <span class="qcount">(' + g.qs.length + ")</span>",
+      lista
+    ));
+  });
+  intakeWrap.appendChild(bloque);
+});
+
+/* ---------- 7. EVALUACIÓN FINAL ---------- */
+const LETRAS = ["A", "B", "C", "D"];
+const qTopic = $("#qTopic"), qText = $("#qText"), qOptions = $("#qOptions");
+const progFill = $("#progFill"), progLabel = $("#progLabel"), progCount = $("#progCount");
+const navDots = $("#navDots"), submitWarn = $("#submitWarn");
+
+$("#btnQuiz").addEventListener("click", () => irA(5));
+
+function pintarPregunta(){
+  const i = state.actual, q = QUIZ[i];
+  qTopic.textContent = q.tema;
+  qText.textContent = (i + 1) + ". " + q.q;
+
+  qOptions.innerHTML = "";
+  q.o.forEach((texto, j) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "opt" + (state.respuestas[i] === j ? " selected" : "");
+    b.setAttribute("aria-pressed", state.respuestas[i] === j ? "true" : "false");
+    b.innerHTML = '<span class="key">' + LETRAS[j] + "</span><span>" + esc(texto) + "</span>";
+    b.addEventListener("click", () => {
+      // Clic sobre la opción ya elegida la deselecciona
+      state.respuestas[i] = (state.respuestas[i] === j) ? null : j;
+      pintarPregunta();
+    });
+    qOptions.appendChild(b);
+  });
+
+  const respondidas = state.respuestas.filter(r => r !== null).length;
+  progLabel.textContent = "Pregunta " + (i + 1) + " de " + QUIZ.length;
+  progCount.textContent = respondidas + " de " + QUIZ.length + " respondidas";
+  progFill.style.width = (respondidas / QUIZ.length * 100) + "%";
+
+  navDots.innerHTML = "";
+  QUIZ.forEach((_, k) => {
+    const d = document.createElement("button");
+    d.type = "button";
+    d.className = "dot" + (state.respuestas[k] !== null ? " answered" : "") + (k === i ? " current" : "");
+    d.textContent = k + 1;
+    d.setAttribute("aria-label", "Ir a la pregunta " + (k + 1));
+    d.addEventListener("click", () => { state.actual = k; pintarPregunta(); });
+    navDots.appendChild(d);
+  });
+
+  $("#btnPrev").disabled = i === 0;
+  $("#btnNext").disabled = i === QUIZ.length - 1;
+  submitWarn.style.display = "none";
+}
+
+$("#btnPrev").addEventListener("click", () => {
+  if (state.actual > 0){ state.actual--; pintarPregunta(); }
+});
+$("#btnNext").addEventListener("click", () => {
+  if (state.actual < QUIZ.length - 1){ state.actual++; pintarPregunta(); }
+});
+
+/* ---------- 8. ENVÍO Y DIAGNÓSTICO ---------- */
+$("#btnSubmit").addEventListener("click", () => {
+  const faltan = [];
+  state.respuestas.forEach((r, k) => { if (r === null) faltan.push(k + 1); });
+  if (faltan.length){
+    state.actual = faltan[0] - 1;
+    pintarPregunta();
+    submitWarn.style.display = "block";
+    submitWarn.textContent = "Falta responder " + faltan.length +
+      (faltan.length === 1 ? " pregunta: la " : " preguntas: ") + faltan.join(", ") + ".";
+    return;
+  }
+  calificar();
+  irA(6);
+});
+
+function calificar(){
+  let aciertos = 0;
+  const dominio = [], refuerzo = [];
+  const review = $("#resReview");
+  review.innerHTML = "";
+
+  QUIZ.forEach((q, i) => {
+    const dada = state.respuestas[i];
+    const bien = dada === q.c;
+    if (bien){ aciertos++; if (!dominio.includes(q.tema)) dominio.push(q.tema); }
+    else if (!refuerzo.includes(q.tema)) refuerzo.push(q.tema);
+
+    const item = document.createElement("div");
+    item.className = "review-item" + (bien ? "" : " wrong");
+    item.innerHTML =
+      '<p class="qn">' + (i + 1) + ". " + esc(q.q) + "</p>" +
+      '<p class="ans">Su respuesta: <b class="given">' + LETRAS[dada] + ") " + esc(q.o[dada]) + "</b></p>" +
+      (bien ? "" : '<p class="ans">Respuesta correcta: <b>' + LETRAS[q.c] + ") " + esc(q.o[q.c]) + "</b></p>") +
+      '<p class="why">' + esc(q.w) + "</p>";
+    review.appendChild(item);
+  });
+
+  // Un tema se reporta como dominado sólo si no tuvo ningún error
+  const dominioFinal = dominio.filter(t => !refuerzo.includes(t));
+  const pct = Math.round(aciertos / QUIZ.length * 100);
+
+  $("#resName").textContent = "Colaborador: " + state.nombre;
+  $("#resPct").textContent = pct + "%";
+  $("#resRaw").textContent = aciertos + " de " + QUIZ.length;
+  $("#resDate").textContent = "Evaluación aplicada el " +
+    new Date().toLocaleDateString("es-MX", { day:"2-digit", month:"long", year:"numeric" }) + ".";
+
+  const v = $("#resVerdict");
+  if (pct >= 80){
+    v.className = "verdict pass"; v.textContent = "Aprobado";
+    $("#resMsg").textContent = "Domina los criterios de elegibilidad y la clasificación de las preguntas de intake. Revise abajo los reactivos fallados antes de aplicar la batería en entrevista real.";
+  } else {
+    v.className = "verdict fail"; v.textContent = "Requiere refuerzo";
+    $("#resMsg").textContent = "El resultado está por debajo del 80% requerido. Repase los temas señalados en la columna de refuerzo y vuelva a presentar la evaluación.";
+  }
+
+  const ul = (lista, vacio) => lista.length
+    ? lista.map(t => "<li>" + esc(t) + "</li>").join("")
+    : '<li class="empty">' + vacio + "</li>";
+
+  $("#resOk").innerHTML  = ul(dominioFinal, "Sin temas dominados por completo en este intento.");
+  $("#resBad").innerHTML = ul(refuerzo, "Sin errores. Todos los temas quedaron acreditados.");
+  state.calificado = true;
+
+  // Registra el resultado en Moodle (SCORM 1.2)
+  scormSetScore(pct, pct >= 80);
+}
+
+/* ---------- 9. REINTENTAR E IMPRIMIR ---------- */
+$("#btnRetry").addEventListener("click", () => {
+  state.respuestas = new Array(QUIZ.length).fill(null);
+  state.actual = 0;
+  state.calificado = false;
+  scormResetIntento();
+  irA(5);
+});
+$("#btnPrint").addEventListener("click", () => window.print());
+
+/* ---------- 10. ARRANQUE ---------- */
+irA(1);
+</script>
+
+</body>
+</html>
