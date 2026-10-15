@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Roles — Compliance Normativo</title>
+<script>
+// ══════════════════════════════════════════════════════════
+// SCORM 1.2 API — Registro de respuestas e interacciones
+// ══════════════════════════════════════════════════════════
+var SCORM = (function () {
+  var api = null;
+  var initialized = false;
+  var finished = false;
+  var interactionCount = 0;
+  var sessionStart = Date.now();
+
+  function findAPI(win) {
+    var attempts = 0;
+    while (!win.API && win.parent && win.parent !== win && attempts < 10) {
+      win = win.parent;
+      attempts++;
+    }
+    return win.API || null;
+  }
+
+  function getAPI() {
+    if (api) return api;
+    api = findAPI(window);
+    if (!api && window.opener) api = findAPI(window.opener);
+    return api;
+  }
+
+  function lmsCall(fn, args) {
+    var a = getAPI();
+    if (!a) return '';
+    try { return a[fn].apply(a, args || []); } catch (e) { return ''; }
+  }
+
+  function init() {
+    if (initialized) return true;
+    var r = lmsCall('LMSInitialize', ['']);
+    initialized = (r === 'true' || r === true);
+    if (initialized) {
+      lmsCall('LMSSetValue', ['cmi.core.lesson_status', 'incomplete']);
+      lmsCall('LMSSetValue', ['cmi.core.lesson_location', '0']);
+      lmsCall('LMSCommit', ['']);
+    }
+    return initialized;
+  }
+
+  function set(key, val) {
+    if (!initialized) return;
+    lmsCall('LMSSetValue', [key, val]);
+  }
+
+  function commit() {
+    if (!initialized) return;
+    lmsCall('LMSCommit', ['']);
+  }
+
+  function finish() {
+    if (finished || !initialized) return;
+    lmsCall('LMSCommit', ['']);
+    lmsCall('LMSFinish', ['']);
+    finished = true;
+  }
+
+  // Format elapsed time as SCORM timespan PT#H#M#S (or HH:MM:SS for SCORM 1.2)
+  function elapsed() {
+    var secs = Math.round((Date.now() - sessionStart) / 1000);
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor((secs % 3600) / 60);
+    var s = secs % 60;
+    return pad(h) + ':' + pad(m) + ':' + pad(s);
+  }
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+  // Report a single interaction to cmi.interactions
+  function reportInteraction(id, type, userResponse, correctResponse, isCorrect, description) {
+    if (!initialized) return;
+    var n = interactionCount;
+    try {
+      set('cmi.interactions.' + n + '.id',                             String(id));
+      set('cmi.interactions.' + n + '.type',                           type);       // 'choice' | 'matching' | 'fill-in'
+      set('cmi.interactions.' + n + '.student_response',               String(userResponse));
+      set('cmi.interactions.' + n + '.correct_responses.0.pattern',    String(correctResponse));
+      set('cmi.interactions.' + n + '.result',                         isCorrect ? 'correct' : 'wrong');
+      set('cmi.interactions.' + n + '.latency',                        elapsed());
+      if (description) set('cmi.interactions.' + n + '.description',   description);
+      interactionCount++;
+      commit();
+    } catch (e) {}
+  }
+
+  // Report final score and mark passed/failed
+  function reportScore(raw, max) {
+    if (!initialized) return;
+    var pct = max > 0 ? Math.round((raw / max) * 100) : 0;
+    set('cmi.core.score.raw',  String(raw));
+    set('cmi.core.score.min',  '0');
+    set('cmi.core.score.max',  String(max));
+    // Masteryscore set to 70 in manifest; passing = raw/max >= 0.70
+    var status = pct >= 70 ? 'passed' : 'failed';
+    set('cmi.core.lesson_status', status);
+    set('cmi.core.session_time',  elapsed());
+    commit();
+  }
+
+  // Auto init + cleanup
+  window.addEventListener('load', init);
+  window.addEventListener('beforeunload', function () {
+    set('cmi.core.session_time', elapsed());
+    finish();
+  });
+
+  return { init: init, reportInteraction: reportInteraction, reportScore: reportScore, finish: finish };
+})();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Epilogue:wght@300;400;500;600;700&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1612;
+  --paper: #f5f0e8;
+  --paper-dark: #ede8dc;
+  --rust: #9b3a1a;
+  --rust-light: #c24e28;
+  --rust-pale: #f5ddd4;
+  --teal: #1a5952;
+  --teal-light: #2a7a6e;
+  --teal-pale: #d4edea;
+  --gold: #b8860b;
+  --gold-pale: #fdf6dc;
+  --border: #c8bfaa;
+  --muted: #7a6e5e;
+  --white: #ffffff;
+  --green-ok: #1a5c32;
+  --green-pale: #d4eddc;
+  --red-err: #7a1a1a;
+  --red-pale: #fdd4d4;
+  --purple: #4a1a7a;
+  --purple-pale: #ede0f8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  font-family: 'Epilogue', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.book {
+  width: 100%;
+  max-width: 860px;
+  background: var(--paper);
+  border-radius: 4px 18px 18px 4px;
+  box-shadow:
+    -8px 0 0 #2a2420,
+    -12px 4px 24px rgba(0,0,0,0.6),
+    4px 4px 32px rgba(0,0,0,0.4),
+    inset -3px 0 8px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-spine {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 48px;
+  background: linear-gradient(135deg, #2a1a10 0%, #4a2a18 50%, #2a1a10 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.book-spine-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Libre Baskerville', serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(184,134,11,0.7);
+}
+
+.page {
+  margin-left: 48px;
+  min-height: 560px;
+  display: none;
+  animation: pageIn 0.35s ease;
+}
+.page.active { display: block; }
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* COVER */
+.cover {
+  background: linear-gradient(160deg, #1a1612 0%, #2e1e10 60%, #1a1612 100%);
+  min-height: 560px;
+  padding: 60px 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(184,134,11,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.cover-label {
+  font-family: 'Fira Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border-bottom: 1px solid rgba(184,134,11,0.3);
+  padding-bottom: 14px;
+  margin-bottom: 40px;
+}
+.cover h1 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--paper);
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+.cover h1 em { color: var(--gold); font-style: italic; }
+.cover-desc {
+  color: rgba(245,240,232,0.6);
+  font-size: 14px;
+  max-width: 480px;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+.cover-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+.cover-pill {
+  font-family: 'Fira Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: rgba(184,134,11,0.15);
+  border: 1px solid rgba(184,134,11,0.3);
+  color: var(--gold);
+  padding: 5px 14px;
+  border-radius: 20px;
+}
+.cover-start-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-family: 'Epilogue', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 36px;
+}
+.cover-start-btn:hover { background: #d4a012; transform: translateY(-1px); }
+
+/* INNER PAGES */
+.page-inner { padding: 44px 56px 36px; }
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1.5px solid var(--border);
+}
+.page-chapter {
+  font-family: 'Fira Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 6px;
+}
+.page-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  max-width: 500px;
+}
+.page-num {
+  font-family: 'Fira Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  margin-top: 4px;
+}
+
+/* SCENARIO */
+.scenario {
+  background: var(--paper-dark);
+  border-left: 4px solid var(--rust);
+  border-radius: 0 8px 8px 0;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+}
+.scenario-label {
+  font-family: 'Fira Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scenario p { font-size: 14px; color: var(--ink); line-height: 1.75; }
+.scenario .risk-tag {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: 'Fira Mono', monospace;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.risk-high { background: var(--rust-pale); color: var(--rust); border: 1px solid var(--rust); }
+.risk-med  { background: var(--gold-pale);  color: var(--gold);  border: 1px solid var(--gold); }
+.risk-low  { background: var(--teal-pale);  color: var(--teal);  border: 1px solid var(--teal); }
+
+/* INSTRUCTION */
+.instruction {
+  background: var(--gold-pale);
+  border: 1px solid rgba(184,134,11,0.3);
+  border-radius: 8px;
+  padding: 13px 18px;
+  font-size: 13.5px;
+  color: #5a4208;
+  margin-bottom: 22px;
+  font-style: italic;
+}
+
+/* DRAG DROP */
+.drag-zone {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+@media (max-width: 600px) { .drag-zone { grid-template-columns: 1fr; } }
+
+.drag-col-label {
+  font-family: 'Fira Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.role-chip {
+  background: var(--teal);
+  color: var(--white);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: grab;
+  margin-bottom: 8px;
+  transition: all 0.15s;
+  border: 2px solid transparent;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.role-chip:hover { background: var(--teal-light); transform: translateY(-1px); }
+.role-chip.dragging { opacity: 0.5; cursor: grabbing; }
+.role-chip.matched { background: var(--green-ok); border-color: var(--green-ok); cursor: default; }
+.role-chip.wrong-match { background: var(--red-err); border-color: var(--red-err); animation: shake 0.3s; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.action-drop {
+  background: var(--white);
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  min-height: 52px;
+  color: var(--ink);
+  transition: all 0.2s;
+  line-height: 1.5;
+  position: relative;
+}
+.action-drop.drag-over { border-color: var(--teal); background: var(--teal-pale); }
+.action-drop.matched-drop { border-color: var(--green-ok); border-style: solid; background: var(--green-pale); }
+.action-drop.wrong-drop  { border-color: var(--red-err); border-style: solid; background: var(--red-pale); }
+.action-drop .drop-role-badge {
+  display: inline-block;
+  font-family: 'Fira Mono', monospace;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--green-ok);
+  color: var(--white);
+  margin-right: 6px;
+}
+
+/* MCQ */
+.mcq-options { margin-bottom: 18px; }
+.mcq-opt {
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--white);
+  color: var(--ink);
+}
+.mcq-opt:hover { border-color: var(--teal); background: var(--teal-pale); }
+.mcq-opt.selected { border-color: var(--teal); background: var(--teal-pale); }
+.mcq-opt.correct { border-color: var(--green-ok); background: var(--green-pale); color: var(--green-ok); }
+.mcq-opt.incorrect { border-color: var(--red-err); background: var(--red-pale); color: var(--red-err); }
+.mcq-opt .opt-letter {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--paper-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fira Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.mcq-opt.correct .opt-letter { background: var(--green-ok); color: var(--white); }
+.mcq-opt.incorrect .opt-letter { background: var(--red-err); color: var(--white); }
+.mcq-opt.selected .opt-letter { background: var(--teal); color: var(--white); }
+
+/* FEEDBACK */
+.feedback-panel {
+  display: none;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 16px;
+  border: 1px solid var(--border);
+}
+.feedback-panel.show { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+.feedback-correct-header {
+  background: var(--green-ok);
+  color: var(--white);
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex; align-items: center; gap: 8px;
+}
+.feedback-incorrect-header {
+  background: var(--red-err);
+  color: var(--white);
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex; align-items: center; gap: 8px;
+}
+.feedback-body {
+  background: var(--white);
+  padding: 16px 18px;
+}
+.feedback-body p { font-size: 13.5px; line-height: 1.7; color: var(--ink); margin-bottom: 8px; }
+.feedback-body p:last-child { margin-bottom: 0; }
+.feedback-body strong { color: var(--teal); }
+.feedback-body .why-wrong {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.feedback-body .why-wrong p { color: var(--muted); font-size: 13px; }
+.feedback-body .why-wrong strong { color: var(--rust); }
+
+/* BUTTONS */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 7px;
+  padding: 10px 20px;
+  font-family: 'Epilogue', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-primary { background: var(--teal); color: var(--white); }
+.btn-primary:hover { background: var(--teal-light); }
+.btn-secondary { background: var(--paper-dark); color: var(--ink); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+.btn-next { background: var(--rust); color: var(--white); }
+.btn-next:hover { background: var(--rust-light); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* PROGRESS */
+.progress-bar-wrap {
+  height: 3px;
+  background: var(--border);
+  position: absolute;
+  bottom: 0; left: 48px; right: 0;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--rust);
+  transition: width 0.4s ease;
+}
+
+/* NAV */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 10px 16px;
+  background: var(--paper-dark);
+  border-top: 1px solid var(--border);
+}
+.nav-dots { display: flex; gap: 6px; align-items: center; }
+.nav-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.nav-dot.active { background: var(--rust); transform: scale(1.2); }
+.nav-dot.done { background: var(--teal); }
+
+/* RESULT PAGE */
+.result-page {
+  background: linear-gradient(160deg, #1a2e1a 0%, #0e1e10 100%);
+  min-height: 520px;
+  padding: 40px 56px 40px;
+  position: relative;
+}
+.result-page::before {
+  content: '';
+  position: absolute;
+  bottom: -60px; right: -60px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(26,89,82,0.25) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.result-icon { font-size: 2.5rem; margin-bottom: 16px; }
+.result-page h2 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.8rem;
+  color: var(--paper);
+  margin-bottom: 10px;
+}
+.score-display {
+  font-family: 'Fira Mono', monospace;
+  font-size: 3rem;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.score-label {
+  font-family: 'Fira Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(184,134,11,0.6);
+  margin-bottom: 20px;
+}
+.result-msg-box {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
+}
+.result-msg-box p {
+  color: rgba(245,240,232,0.85);
+  font-size: 14px;
+  line-height: 1.75;
+  margin-bottom: 0;
+}
+
+/* ROLE CARDS on result page */
+.role-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+}
+@media (max-width:600px) { .role-cards-grid { grid-template-columns: 1fr; } }
+.role-card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 16px;
+}
+.role-card-title {
+  font-family: 'Fira Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.role-card-title.monitor { color: #6ec4c0; }
+.role-card-title.especialista { color: #c4a06e; }
+.role-card-title.habilitador { color: #a06ec4; }
+.role-card p {
+  font-size: 12px;
+  color: rgba(245,240,232,0.7);
+  line-height: 1.6;
+}
+
+/* REFUERZO SECTION */
+.refuerzo-section {
+  margin-top: 20px;
+}
+.refuerzo-title {
+  font-family: 'Fira Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(184,134,11,0.3);
+}
+.refuerzo-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(155,58,26,0.2);
+  border: 1px solid rgba(155,58,26,0.4);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+.refuerzo-item-ok {
+  background: rgba(26,92,50,0.2);
+  border-color: rgba(26,92,50,0.4);
+}
+.refuerzo-item .ri-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+.refuerzo-item .ri-body { font-size: 13px; color: rgba(245,240,232,0.85); line-height: 1.6; }
+.refuerzo-item .ri-body strong { color: var(--paper); }
+
+.restart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: 'Epilogue', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 20px;
+}
+.restart-btn:hover { background: #d4a012; transform: translateY(-1px); }
+
+.checklist-note {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.checklist-note .flag { flex-shrink: 0; }
+
+/* Exercise page scroll area for large content */
+.page-inner-scroll {
+  padding: 44px 56px 36px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+</style>
+</head>
+<body>
+
+<div class="book" id="book">
+  <div class="book-spine">
+    <span class="book-spine-text">Compliance · Roles & Responsabilidades</span>
+  </div>
+
+  <!-- PÁGINA 0 — PORTADA -->
+  <div class="page active cover" id="page-0">
+    <div>
+      <div class="cover-label">The Mendoza Law Firm · Compliance Enablement Unit</div>
+      <h1>Simulador de <em>Roles</em><br>en Compliance</h1>
+      <p class="cover-desc">Capacitación práctica para Monitores, Especialistas y Analistas de Habilitación. Cada ejercicio presenta un caso real anonimizado con señales de riesgo documentadas.</p>
+      <div class="cover-meta">
+        <span class="cover-pill">8 ejercicios</span>
+        <span class="cover-pill">Drag & Drop</span>
+        <span class="cover-pill">Opción múltiple</span>
+        <span class="cover-pill">Feedback por rol</span>
+      </div>
+    </div>
+    <div>
+      <button class="cover-start-btn" onclick="goTo(1)">
+        Comenzar simulación →
+      </button>
+    </div>
+  </div>
+
+  <!-- PÁGINA 1 — DRAG & DROP #1 -->
+  <div class="page" id="page-1">
+    <div class="page-inner">
+      <div class="page-header">
+        <div>
+          <div class="page-chapter">Ejercicio 1 · Drag & Drop · Asignación de Roles</div>
+          <div class="page-title">Intervención de tercero con representación legal externa</div>
+        </div>
+        <div class="page-num">1 / 8</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-label">🗂 Caso hipotético — Riesgo Medio-Alto</div>
+        <p>Una cliente con caso de Visa T activo (16 meses) comienza a solicitar su expediente completo de manera reiterada. El equipo de atención descubre que contrató a una abogada externa (identificada en el CRM) para representarla en un proceso de corte de inmigración paralelo. La última nota del CRM registra: <em>"assisted client in sharing the email containing the filed copy with her external attorney."</em> No se ha generado ningún reporte de señal ni hay comunicación del Monitor al equipo de Especialistas.</p>
+        <span class="risk-tag risk-high">🚩 Red Flag: TER-01 · DOC-01 — Intervención de Tercero + File Request</span>
+      </div>
+      <div class="instruction">
+        Arrastra cada <strong>Rol</strong> hacia la <strong>Acción que le corresponde</strong> según el Protocolo de Compliance. Cada rol tiene exactamente una acción asignada.
+      </div>
+      <div class="drag-zone">
+        <div>
+          <div class="drag-col-label">Roles (arrastra)</div>
+          <div id="roles-1"></div>
+        </div>
+        <div>
+          <div class="drag-col-label">Acciones (suelta aquí)</div>
+          <div id="drops-1"></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkDragDrop('1')">Verificar respuestas</button>
+        <button class="btn btn-next" id="next-1" onclick="goTo(2)" disabled>Siguiente →</button>
+      </div>
+      <div class="feedback-panel" id="fb-1">
+        <div class="feedback-correct-header">✓ Retroalimentación</div>
+        <div class="feedback-body">
+          <p><strong>Monitor:</strong> Su rol es exactamente observar, registrar y canalizar señales operativas sin determinar si constituyen una infracción. Detectar TER-01 (abogada externa) y DOC-01 (File Request reiterado) es la señal que debe documentarse y escalarse de inmediato.</p>
+          <p><strong>Especialista:</strong> Una vez recibida la señal, realiza la revisión analítica estructurada. La doble representación es un riesgo de desvinculación que requiere evaluación de relevancia y documentación de la justificación, no una decisión legal autónoma.</p>
+          <p><strong>Analista de Habilitación:</strong> Su función es mantener los paneles y sistemas de seguimiento operativos. Asegurar que TER-01 esté activo en el sistema es su responsabilidad de infraestructura, no apoyo administrativo genérico.</p>
+          <div class="why-wrong">
+            <p><strong>¿Por qué el Monitor NO puede hacer la revisión analítica?</strong> Los Monitores "no pueden determinar de forma independiente si un asunto constituye una infracción" ni "emitir conclusiones institucionales". La revisión analítica estructurada es competencia exclusiva del Especialista.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:12.5%"></div></div>
+  </div>
+
+  <!-- PÁGINA 2 — MCQ #1 -->
+  <div class="page" id="page-2">
+    <div class="page-inner">
+      <div class="page-header">
+        <div>
+          <div class="page-chapter">Ejercicio 2 · Opción Múltiple · ¿Qué debe hacer?</div>
+          <div class="page-title">Amenaza de Bar Complaint sin escalamiento previo</div>
+        </div>
+        <div class="page-num">2 / 8</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-label">🗂 Caso hipotético — Riesgo Alto</div>
+        <p>Un cliente de VAWA AOS con 5 años de antigüedad en la firma llama furioso. Su hija (Kelsy) amenaza con presentar una queja formal ante la Barra de Abogados si la firma no entrega resultados en los próximos días. Afirma que el cliente "está grabando las llamadas" y que contratarán a otro abogado. El Monitor de turno recibe la llamada, toma nota y no hace nada más porque "no quiere meterse en problemas". La señal nunca llega al sistema de Compliance.</p>
+        <span class="risk-tag risk-high">🚩 Red Flags: Bar Complaint Threat · Intervención de tercero · Cancelación implícita</span>
+      </div>
+      <div class="instruction">
+        Selecciona la respuesta que describe correctamente lo que debió hacer el Monitor al recibir esta señal.
+      </div>
+      <div class="mcq-options" id="mcq-2"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="check-2" onclick="checkMCQ(2, 'b')" disabled>Verificar</button>
+        <button class="btn btn-next" id="next-2" onclick="goTo(3)" disabled>Siguiente →</button>
+      </div>
+      <div class="feedback-panel" id="fb-2"></div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:25%"></div></div>
+  </div>
+
+  <!-- PÁGINA 3 — DRAG & DROP #2 -->
+  <div class="page" id="page-3">
+    <div class="page-inner">
+      <div class="page-header">
+        <div>
+          <div class="page-chapter">Ejercicio 3 · Drag & Drop · Checklist Triage</div>
+          <div class="page-title">Resultado del Triage: ¿quién actúa y cómo?</div>
+        </div>
+        <div class="page-num">3 / 8</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-label">🗂 Caso hipotético — Triage Checklist aplicado</div>
+        <p>El Monitor Victor G. completa el Potential Bar Complaint Triage Checklist para un caso de VAWA DA. Resultado: <strong>Score 82 pts — Medium Risk</strong>. Se detectaron 3 Red Flags: (1) el cliente dejó de pagar y pidió cancelación, (2) su esposa gestiona todas las llamadas, (3) el Suplemento B fue enviado a la oficina incorrecta por error del staff. El sistema arroja que el caso <em>sí debe escalarse</em> al Especialista. Sin embargo, el Monitor decide esperar "a que el cliente vuelva a llamar" antes de generar el reporte.</p>
+        <span class="risk-tag risk-med">📋 Medium Risk: 61–120 pts · Requiere Escalamiento a Especialista</span>
+      </div>
+      <div class="instruction">
+        Arrastra cada rol hacia la acción que le corresponde en este momento del proceso. Considera que el Triage ya determinó que se debe escalar.
+      </div>
+      <div class="drag-zone">
+        <div>
+          <div class="drag-col-label">Roles</div>
+          <div id="roles-3"></div>
+        </div>
+        <div>
+          <div class="drag-col-label">Acciones</div>
+          <div id="drops-3"></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkDragDrop('3')">Verificar respuestas</button>
+        <button class="btn btn-next" id="next-3" onclick="goTo(4)" disabled>Siguiente →</button>
+      </div>
+      <div class="feedback-panel" id="fb-3">
+        <div class="feedback-correct-header">✓ Retroalimentación</div>
+        <div class="feedback-body">
+          <p><strong>Monitor:</strong> La falla fue no actuar una vez que el Triage arrojó un resultado de escalamiento. El Monitor no puede discrecionalmente "esperar"; el Checklist es su herramienta de decisión y su resultado es vinculante para el escalamiento.</p>
+          <p><strong>Especialista:</strong> Recibe el caso ya con un score documentado y tres Red Flags activas. Su rol es la revisión analítica estructurada de las señales, no resolver el conflicto legalmente ni tomar decisiones operativas sobre el caso.</p>
+          <p><strong>Analista de Habilitación:</strong> La trazabilidad del Triage Score en el panel permite que cualquier nivel jerárquico pueda auditar la actividad de Compliance. Esto es memoria institucional, no trabajo administrativo genérico.</p>
+          <div class="why-wrong">
+            <p><strong>Error detectado:</strong> El Monitor que decide esperar al cliente está ejerciendo discreción más allá de los límites de su función asignada, lo cual está expresamente prohibido en las Normas de Compliance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:37.5%"></div></div>
+  </div>
+
+  <!-- PÁGINA 4 — MCQ #2 -->
+  <div class="page" id="page-4">
+    <div class="page-inner">
+      <div class="page-header">
+        <div>
+          <div class="page-chapter">Ejercicio 4 · Opción Múltiple · Normas de Producto de Trabajo</div>
+          <div class="page-title">¿Qué estándar viola este informe de revisión?</div>
+        </div>
+        <div class="page-num">4 / 8</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-label">🗂 Caso hipotético — Producto de trabajo deficiente</div>
+        <p>Una Especialista de Compliance redacta el siguiente informe tras revisar un caso de Visa T con doble representación legal: <em>"Este cliente es claramente problemático y seguramente presentará una bar complaint pronto. El equipo legal lleva mal el caso y los abogados no están respondiendo. Mi recomendación es cancelar el contrato antes de que sea tarde."</em> El informe no cita ninguna nota del CRM, no menciona indicadores específicos y emite una conclusión sobre la estrategia legal del caso.</p>
+        <span class="risk-tag risk-high">⚠️ Producto de Trabajo con múltiples violaciones de norma</span>
+      </div>
+      <div class="instruction">
+        Selecciona la opción que identifica correctamente <strong>todas</strong> las normas de producto de trabajo que este informe viola.
+      </div>
+      <div class="mcq-options" id="mcq-4"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="check-4" onclick="checkMCQ(4, 'b')" disabled>Verificar</button>
+        <button class="btn btn-next" id="next-4" onclick="goTo(5)" disabled>Siguiente →</button>
+      </div>
+      <div class="feedback-panel" id="fb-4"></div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:50%"></div></div>
+  </div>
+
+  <!-- PÁGINA 5 — DRAG & DROP #3 -->
+  <div class="page" id="page-5">
+    <div class="page-inner">
+      <div class="page-header">
+        <div>
+          <div class="page-chapter">Ejercicio 5 · Drag & Drop · Manejo de Crisis Escalonada</div>
+          <div class="page-title">EAD con errores reiterados y amenaza de Bar Complaint activa</div>
+        </div>
+        <div class="page-num">5 / 8</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-label">🗂 Caso hipotético — Riesgo Crítico (Score: 106 pts)</div>
+        <p>Una cliente de VAWA AOS recibió dos EAD consecutivos con su nombre incorrecto (nombre de soltera). En cada ocasión, el equipo de atención brindó contención inmediata pero no hubo seguimiento a mediano plazo. La cliente amenazó con demandar, con poner una reseña negativa en redes sociales y con presentar un bar complaint. Actualmente dejó de contestar llamadas desde hace 3 meses. El caso no tiene reporte de Compliance activo. Score Triage: 106 pts.</p>
+        <span class="risk-tag risk-high">🚩 Red Flags: Bar Complaint Threat · Error operativo reiterado · Silencio total</span>
+      </div>
+      <div class="instruction">
+        Arrastra cada rol a la acción que le corresponde en este momento de crisis escalonada.
+      </div>
+      <div class="drag-zone">
+        <div>
+          <div class="drag-col-label">Roles</div>
+          <div id="roles-5"></div>
+        </div>
+        <div>
+          <div class="drag-col-label">Acciones</div>
+          <div id="drops-5"></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkDragDrop('5')">Verificar respuestas</button>
+        <button class="btn btn-next" id="next-5" onclick="goTo(6)" disabled>Siguiente →</button>
+      </div>
+      <div class="feedback-panel" id="fb-5">
+        <div class="feedback-correct-header">✓ Retroalimentación</div>
+        <div class="feedback-body">
+          <p><strong>Monitor:</strong> El silencio prolongado de un cliente que hizo amenazas explícitas es una señal operativa activa, no una "pausa natural". El Monitor debe documentar el patrón de comunicación interrumpida como parte de su función de observación disciplinada.</p>
+          <p><strong>Especialista:</strong> Un historial de errores operativos reiterados con amenazas explícitas de bar complaint requiere una revisión analítica completa que documente la cadena de eventos. El Especialista no puede ordenar medidas correctivas, pero sí puede recomendar el escalamiento con justificación documentada.</p>
+          <p><strong>Analista de Habilitación:</strong> Cuando un caso de Score 106 no tiene reporte activo, la falla es también de infraestructura de seguimiento. El Analista debe verificar que el sistema registre el silencio del cliente como señal y que el panel refleje la ausencia de trazabilidad.</p>
+          <div class="why-wrong">
+            <p><strong>Error sistémico:</strong> La "contención inmediata sin seguimiento a mediano plazo" es precisamente la conducta que el sistema de Compliance debe detectar y corregir. Cada vez que se cierra una interacción sin documentación estructurada, se pierde trazabilidad institucional.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:62.5%"></div></div>
+  </div>
+
+  <!-- PÁGINA 6 — MCQ #3 -->
+  <div class="page" id="page-6">
+    <div class="page-inner">
+      <div class="page-header">
+        <div>
+          <div class="page-chapter">Ejercicio 6 · Opción Múltiple · Límites de Autoridad</div>
+          <div class="page-title">¿Cuál de estas acciones está dentro de los límites del rol?</div>
+        </div>
+        <div class="page-num">6 / 8</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-label">🗂 Caso hipotético — Revisión de señales significativas</div>
+        <p>Una Especialista de Compliance revisa un caso de Visa U con Score Triage de 82 pts. Detecta que el cliente dejó de comunicarse tras haber amenazado con cancelar, que la esposa gestiona todas las llamadas y que el Suplemento B fue enviado a la oficina incorrecta. El Analista de Habilitación nota que el panel no muestra este score porque el campo de triage no se actualizó en el sistema. Ahora cada quien debe decidir qué acción tomar dentro del límite de su autoridad.</p>
+        <span class="risk-tag risk-med">Score: 82 pts · Medium Risk · Múltiples roles activos</span>
+      </div>
+      <div class="instruction">
+        Selecciona la acción que está <strong>dentro</strong> de los límites de autoridad del <strong>Analista de Habilitación</strong> de Compliance.
+      </div>
+      <div class="mcq-options" id="mcq-6"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="check-6" onclick="checkMCQ(6, 'c')" disabled>Verificar</button>
+        <button class="btn btn-next" id="next-6" onclick="goTo(7)" disabled>Siguiente →</button>
+      </div>
+      <div class="feedback-panel" id="fb-6"></div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:75%"></div></div>
+  </div>
+
+  <!-- PÁGINA 7 — DRAG & DROP #4 -->
+  <div class="page" id="page-7">
+    <div class="page-inner">
+      <div class="page-header">
+        <div>
+          <div class="page-chapter">Ejercicio 7 · Drag & Drop · Revisión Sistémica Post-Mortem</div>
+          <div class="page-title">Análisis de fallas: Monitor, Especialista y Habilitador ante el sistema</div>
+        </div>
+        <div class="page-num">7 / 8</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-label">🗂 Caso hipotético — Análisis post-mortem de Bar Complaint</div>
+        <p>La firma procesó 18 checklists de Triage en el mes. El análisis muestra que 6 de ellos fueron calificados con "Score incorrecto" por inconsistencias en el RDA automatizado. Además, 3 Monitores no escalaron señales Medium Risk de manera oportuna, y un Especialista emitió una conclusión legal en su informe de revisión. El análisis también revela que el panel del Analista de Habilitación no registró 4 señales activas por un fallo de sincronización de datos.</p>
+        <span class="risk-tag risk-med">📊 Revisión sistémica · Mejora de infraestructura · Accountability por rol</span>
+      </div>
+      <div class="instruction">
+        Arrastra cada rol a la acción correctiva que le corresponde en este análisis post-mortem.
+      </div>
+      <div class="drag-zone">
+        <div>
+          <div class="drag-col-label">Roles</div>
+          <div id="roles-7"></div>
+        </div>
+        <div>
+          <div class="drag-col-label">Acciones correctivas</div>
+          <div id="drops-7"></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkDragDrop('7')">Verificar respuestas</button>
+        <button class="btn btn-next" id="next-7" onclick="goTo(8)" disabled>Siguiente →</button>
+      </div>
+      <div class="feedback-panel" id="fb-7">
+        <div class="feedback-correct-header">✓ Retroalimentación</div>
+        <div class="feedback-body">
+          <p><strong>Monitor:</strong> Las fallas de escalamiento de señales Medium Risk son un problema de disciplina de observación y protocolo. El Monitor debe revisar los casos no escalados, identificar por qué no se canalizaron y corregir el registro retroactivamente dentro de lo posible.</p>
+          <p><strong>Especialista:</strong> Emitir una conclusión legal excede los límites de autoridad del Especialista de forma explícita. La corrección requiere documentar que la conclusión fue revocada y sustituirla por una nota analítica adecuada al rol.</p>
+          <p><strong>Analista de Habilitación:</strong> Los errores en el scoring del RDA y el fallo de sincronización del panel son exactamente su responsabilidad. "La integridad de los datos, la lógica de los informes y la disciplina de los sistemas" son su función principal, no apoyo administrativo genérico.</p>
+          <div class="why-wrong">
+            <p><strong>Nota importante:</strong> La acumulación de estas tres fallas en un solo mes indica un problema de disciplina de ejecución en todos los niveles operativos de Compliance, no solo en uno.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:87.5%"></div></div>
+  </div>
+
+  <!-- PÁGINA 8 — MCQ #4 -->
+  <div class="page" id="page-8">
+    <div class="page-inner">
+      <div class="page-header">
+        <div>
+          <div class="page-chapter">Ejercicio 8 · Opción Múltiple · Raising Concerns</div>
+          <div class="page-title">Señal interna: ¿quién actúa y cómo?</div>
+        </div>
+        <div class="page-num">8 / 8</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-label">🗂 Caso hipotético — Señal operativa interna</div>
+        <p>Una colaboradora del equipo de atención al cliente detecta que, en varios casos de clientes en estado "Silent but Deadly", el staff registró las llamadas como "Calm" en el CRM cuando el cliente en realidad expresó molestia durante la llamada. También nota que ninguno de estos casos tiene checklist de Triage completado. Quiere reportar esto al equipo de Compliance pero no sabe a quién acudir ni si debe hacerlo.</p>
+        <span class="risk-tag risk-high">⚠️ Señal interna: documentación incorrecta + ausencia de Triage</span>
+      </div>
+      <div class="instruction">
+        Selecciona la respuesta que describe correctamente cómo debe gestionarse esta situación dentro del sistema de Compliance.
+      </div>
+      <div class="mcq-options" id="mcq-8"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="check-8" onclick="checkMCQ(8, 'b')" disabled>Verificar</button>
+        <button class="btn btn-next" id="next-8" onclick="showResult()" disabled>Ver resultado →</button>
+      </div>
+      <div class="feedback-panel" id="fb-8"></div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:100%"></div></div>
+  </div>
+
+  <!-- PÁGINA RESULTADO FINAL -->
+  <div class="page" id="page-result">
+    <div class="result-page">
+      <div class="result-icon">🏛</div>
+      <h2>Simulación completada</h2>
+      <div class="score-display" id="final-score">— / 8</div>
+      <div class="score-label">Ejercicios completados correctamente</div>
+
+      <div class="result-msg-box">
+        <p id="result-msg"></p>
+      </div>
+
+      <!-- ROLE REFERENCE CARDS -->
+      <div style="font-family:'Fira Mono',monospace; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(184,134,11,0.7); margin-bottom:12px;">Referencia de roles operativos</div>
+      <div class="role-cards-grid">
+        <div class="role-card">
+          <div class="role-card-title monitor">🔍 Monitor</div>
+          <p>Identifica, documenta y canaliza señales operativas. No puede determinar si un asunto constituye infracción ni emitir conclusiones institucionales. Su herramienta principal es el Triage Checklist.</p>
+        </div>
+        <div class="role-card">
+          <div class="role-card-title especialista">⚖️ Especialista</div>
+          <p>Realiza revisiones estructuradas de señales significativas, evalúa relevancia del riesgo, documenta justificación del manejo y apoya la escalada. No puede emitir dictámenes jurídicos ni dirigir equipos operativos.</p>
+        </div>
+        <div class="role-card">
+          <div class="role-card-title habilitador">📊 Analista de Habilitación</div>
+          <p>Mantiene paneles, sistemas de seguimiento, estructuras de informes y herramientas analíticas que soportan la función de Compliance. Garantiza integridad de datos, lógica de reportes y memoria institucional.</p>
+        </div>
+      </div>
+
+      <!-- TEMAS DE REFUERZO -->
+      <div class="refuerzo-section" id="refuerzo-section"></div>
+
+      <button class="restart-btn" onclick="restart()">↩ Reiniciar simulador</button>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:100%"></div></div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-bar">
+    <div style="display:flex; gap:8px;">
+      <button class="btn btn-secondary" style="padding:7px 14px; font-size:12px;" onclick="goBack()">← Anterior</button>
+    </div>
+    <div class="nav-dots" id="nav-dots"></div>
+    <div style="font-family:'Fira Mono',monospace; font-size:10px; color:var(--muted);" id="nav-label">Portada</div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let currentPage = 0;
+const totalExercises = 8;
+let scores = {};
+let dragState = {};
+let mcqSelected = {};
+
+// ── DRAG DROP DATA ──
+// Each exercise: { roles: [{role, label}], drops: [{key, answer, text}] }
+const DD_CONFIG = {
+  '1': {
+    roles: [
+      { role: 'monitor',    label: '🔍 Monitor' },
+      { role: 'especialista', label: '⚖️ Especialista' },
+      { role: 'habilitador', label: '📊 Analista de Habilitación' },
+    ],
+    drops: [
+      { key: 'a', answer: 'monitor',
+        text: 'Identificar la señal TER-01 y DOC-01 en el CRM, documentarla en el registro de observación y canalizar el asunto al Especialista sin emitir ninguna conclusión sobre el caso legal.' },
+      { key: 'b', answer: 'especialista',
+        text: 'Realizar una revisión estructurada del caso, evaluar el riesgo de desvinculación por doble representación, documentar la justificación de manejo y recomendar un protocolo de conciliación con el abogado externo.' },
+      { key: 'c', answer: 'habilitador',
+        text: 'Asegurar que el indicador TER-01 esté activo en el panel de seguimiento y que el sistema registre automáticamente el File Request como señal de riesgo para este perfil de caso.' },
+    ]
+  },
+  '3': {
+    roles: [
+      { role: 'monitor',     label: '🔍 Monitor' },
+      { role: 'especialista', label: '⚖️ Especialista' },
+      { role: 'habilitador', label: '📊 Analista de Habilitación' },
+    ],
+    drops: [
+      { key: 'a', answer: 'monitor',
+        text: 'Generar de inmediato el reporte de señal con los 3 indicadores detectados y enviarlo al canal de escalamiento autorizado. No puede esperar a que el cliente vuelva a llamar; el Triage ya determinó que se escala.' },
+      { key: 'b', answer: 'especialista',
+        text: 'Recibir el escalamiento, revisar estructuradamente las 3 Red Flags, evaluar el riesgo de desvinculación y el error operativo, y documentar la justificación del manejo o recomendar intervención institucional.' },
+      { key: 'c', answer: 'habilitador',
+        text: 'Actualizar el panel de seguimiento con el score del Triage (82 pts) y los indicadores activos, asegurando que la trazabilidad del caso sea rastreable para una revisión institucional futura.' },
+    ]
+  },
+  '5': {
+    roles: [
+      { role: 'monitor',     label: '🔍 Monitor' },
+      { role: 'especialista', label: '⚖️ Especialista' },
+      { role: 'habilitador', label: '📊 Analista de Habilitación' },
+    ],
+    drops: [
+      { key: 'a', answer: 'monitor',
+        text: 'Registrar el silencio de 3 meses como señal activa (patrón de comunicación interrumpida), documentarlo en el sistema y confirmar si el caso tiene reporte de Compliance abierto.' },
+      { key: 'b', answer: 'especialista',
+        text: 'Abrir una revisión estructurada con el historial completo del caso, documentar la cadena de errores operativos y las amenazas activas, y generar una recomendación de escalamiento debidamente justificada.' },
+      { key: 'c', answer: 'habilitador',
+        text: 'Verificar por qué un caso con Score 106 no tiene reporte activo en el panel. Detectar la falla de sincronización o registro, corregirla y asegurar que el sistema refleje la ausencia de seguimiento como alerta.' },
+    ]
+  },
+  '7': {
+    roles: [
+      { role: 'monitor',     label: '🔍 Monitor' },
+      { role: 'especialista', label: '⚖️ Especialista' },
+      { role: 'habilitador', label: '📊 Analista de Habilitación' },
+    ],
+    drops: [
+      { key: 'a', answer: 'habilitador',
+        text: 'Auditar la lógica del RDA automatizado, identificar los errores en el scoring y corregir el fallo de sincronización del panel para que las 4 señales activas no omitidas se reflejen en el sistema.' },
+      { key: 'b', answer: 'monitor',
+        text: 'Revisar los 3 casos donde no se escalaron señales Medium Risk, documentar la omisión, y generar retroactivamente los reportes de señal con la justificación de por qué no se canalizaron a tiempo.' },
+      { key: 'c', answer: 'especialista',
+        text: 'Corregir el informe de revisión que emitió una conclusión legal, revocar la conclusión fuera de autoridad y sustituirla por una nota analítica vinculada a evidencia, dentro de los límites del rol.' },
+    ]
+  }
+};
+
+// ── MCQ DATA ──
+const MCQ_CONFIG = {
+  2: {
+    correctKey: 'b',
+    options: [
+      { key: 'a', text: 'Escuchar al cliente con empatía, intentar contentar su molestia y prometer que alguien lo llamará. No registrar la llamada en el sistema para no generar alarmas innecesarias en el área.' },
+      { key: 'b', text: 'Registrar objetivamente la señal (amenaza de bar complaint + intervención de tercero) en el sistema de monitoreo, documentar el incidente conforme al protocolo y canalizarlo al Especialista, sin emitir conclusiones sobre si la amenaza es real o no.' },
+      { key: 'c', text: 'Contactar directamente al equipo legal para advertirles de la situación y pedirles que llamen al cliente, saltándose el flujo de Compliance porque el tiempo apremia y hay urgencia.' },
+      { key: 'd', text: 'Determinar por su cuenta si la amenaza es lo suficientemente grave para escalarse y, si considera que no lo es, archivar la nota sin enviarla al Especialista de Compliance del área.' },
+    ],
+    feedback: {
+      correct: { title: '✓ Correcto — Opción B', body: `<p><strong>¿Por qué es correcta?</strong> El documento de Roles establece que los Monitores están autorizados a "identificar, documentar y canalizar las señales operativas a través de los mecanismos de supervisión y escalamiento aprobados". Una amenaza de bar complaint con intervención de tercero es exactamente el tipo de señal que debe registrarse objetivamente y canalizarse, sin especular sobre si la amenaza es real.</p><div class="why-wrong"><p><strong>Por qué las otras son incorrectas:</strong></p><p><strong>A:</strong> No registrar la llamada viola la norma de "Grabación oportuna" y la de "Trazabilidad". Los Monitores no tienen autoridad para decidir qué señales son "necesarias".</p><p><strong>C:</strong> Contactar directamente al equipo legal saltándose el flujo de Compliance es exactamente lo que los Monitores no pueden hacer: "Dirigir de forma independiente equipos operativos fuera de los canales de escalamiento autorizados".</p><p><strong>D:</strong> Determinar por su cuenta si la señal es grave para escalar es ejercer "discreción más allá de los límites de su función asignada", prohibición explícita para Monitores.</p></div>` },
+      wrong: { title: '✗ Respuesta incorrecta', body: `<p>La respuesta correcta era la <strong>Opción B</strong>. El Monitor debe registrar y canalizar objetivamente la señal, sin emitir juicios sobre su gravedad ni actuar fuera de los canales autorizados.</p><div class="why-wrong"><p>Revisa la sección de <strong>Monitores de Compliance</strong> en el documento de Roles: su función es observar, documentar y escalar. Nada más, nada menos.</p></div>` }
+    }
+  },
+  4: {
+    correctKey: 'b',
+    options: [
+      { key: 'a', text: 'Solo viola la norma de claridad, porque el lenguaje es poco técnico e impreciso para un informe formal de Compliance con valor institucional.' },
+      { key: 'b', text: 'Viola Objetividad (lenguaje prejuicioso), Vinculación de Evidencia (no cita CRM), Documentación Vinculada al Rol (emite conclusión legal fuera de su autoridad) y Exactitud (afirmaciones sin respaldo verificable).' },
+      { key: 'c', text: 'Solo viola la documentación vinculada al rol, porque recomienda cancelar el contrato, que es una decisión gerencial. Las demás normas están bien cumplidas en el documento.' },
+      { key: 'd', text: 'No viola ninguna norma porque el Especialista tiene autoridad para evaluar el riesgo y documentar su justificación, incluyendo recomendaciones de acción sobre el manejo del caso.' },
+    ],
+    feedback: {
+      correct: { title: '✓ Correcto — Opción B', body: `<p><strong>¿Por qué es correcta?</strong> El informe viola cuatro normas simultáneamente:</p><p><strong>Objetividad:</strong> Usar términos como "claramente problemático" o "el equipo lleva mal el caso" introduce lenguaje prejuicioso no basado en hechos.</p><p><strong>Vinculación de Evidencia:</strong> No cita ninguna nota del CRM ni fuente verificable. Toda afirmación debe estar vinculada a registros identificables.</p><p><strong>Documentación Vinculada a Roles:</strong> Recomendar "cancelar el contrato" excede la autoridad del Especialista, quien no puede "anular el criterio legal del abogado" ni imponer medidas que excedan su función.</p><p><strong>Exactitud:</strong> Afirmar que el cliente "seguramente presentará" una bar complaint es especulación sin fundamento verificable.</p><div class="why-wrong"><p><strong>Por qué las otras son incorrectas:</strong><br><strong>A y C:</strong> Identifican solo una violación cuando hay cuatro simultáneas.<br><strong>D:</strong> El Especialista sí tiene autoridad para evaluar relevancia y documentar justificación, pero NO para emitir conclusiones legales sobre elegibilidad ni para recomendar acciones de gestión de contratos.</p></div>` },
+      wrong: { title: '✗ Respuesta incorrecta', body: `<p>La respuesta correcta era la <strong>Opción B</strong>. El informe viola múltiples normas de producto de trabajo de Compliance, no solo una.</p><div class="why-wrong"><p>Revisa las normas de <strong>Exactitud, Objetividad, Vinculación de Evidencia y Documentación Vinculada a Roles</strong>. Un producto de trabajo de Compliance debe cumplir todas simultáneamente.</p></div>` }
+    }
+  },
+  6: {
+    correctKey: 'c',
+    options: [
+      { key: 'a', text: 'Determinar que los errores de score del panel no son su responsabilidad directa, ya que el sistema fue configurado por el equipo de TI y el Analista solo lo opera sin poder modificarlo.' },
+      { key: 'b', text: 'Ordenar al equipo de atención al cliente que actualice manualmente todos los registros del Triage en el CRM, dirigiendo de forma independiente el trabajo operativo del equipo.' },
+      { key: 'c', text: 'Auditar el campo de triage en el sistema de seguimiento, identificar el motivo por el que el panel no está registrando el score, corregir el error de integridad de datos y documentar la falla para su trazabilidad institucional.' },
+      { key: 'd', text: 'Contactar directamente al abogado del caso para informarle que el panel muestra una inconsistencia y pedirle que él determine si el score es correcto, ya que el abogado tiene más contexto legal del expediente.' },
+    ],
+    feedback: {
+      correct: { title: '✓ Correcto — Opción C', body: `<p><strong>¿Por qué es correcta?</strong> La Opción C describe exactamente la competencia del Analista de Habilitación según el documento de Roles: "mantener paneles de control, sistemas de seguimiento, estructuras de informes, herramientas analíticas y recursos de conocimiento que respalden la función de Compliance". La integridad de los datos del panel es su responsabilidad principal.</p><div class="why-wrong"><p><strong>Por qué las otras son incorrectas:</strong><br><strong>A:</strong> El Analista es responsable de la integridad del sistema que opera. Atribuir la falla a TI sin actuar es una omisión de su función.<br><strong>B:</strong> Ordenar trabajo operativo a otros equipos es "dirigir de forma independiente equipos operativos fuera de los procedimientos aprobados", prohibido para el Analista.<br><strong>D:</strong> El abogado no tiene función en el sistema de seguimiento de Compliance. Involucrarlos en una tarea técnica de infraestructura excede los canales institucionales correctos.</p></div>` },
+      wrong: { title: '✗ Respuesta incorrecta', body: `<p>La respuesta correcta era la <strong>Opción C</strong>. El Analista de Habilitación es directamente responsable de la integridad de los datos, la lógica de los informes y la disciplina de los sistemas de Compliance.</p><div class="why-wrong"><p>Recuerda: "Un analista de habilitación competente fortalece la capacidad de la empresa para operar una función de Compliance medible, rastreable y escalable, en lugar de brindar apoyo administrativo generalizado."</p></div>` }
+    }
+  },
+  8: {
+    correctKey: 'b',
+    options: [
+      { key: 'a', text: 'La colaboradora no debe reportar nada porque no forma parte del equipo de Compliance y podría generar conflictos con sus compañeros; este tipo de observaciones no son su responsabilidad directa.' },
+      { key: 'b', text: 'Debe usar el Raising Concerns Mechanism para reportar la señal operativa. El Monitor registra la observación como desviación de procedimiento y la canaliza al Especialista según el nivel de riesgo, sin que la colaboradora necesite ser parte de Compliance.' },
+      { key: 'c', text: 'Debe corregir ella misma los registros del CRM para que reflejen el comportamiento real del cliente, ya que tiene información directa de las llamadas y nadie más tiene acceso a ese contexto de primera mano.' },
+      { key: 'd', text: 'Debe hablar con los compañeros que documentaron incorrectamente y pedirles que corrijan sus registros; si no lo hacen, escalar directamente al abogado del caso para que ordene la corrección del expediente.' },
+    ],
+    feedback: {
+      correct: { title: '✓ Correcto — Opción B', body: `<p><strong>¿Por qué es correcta?</strong> El Raising Concerns Mechanism existe precisamente para que cualquier persona de la organización pueda reportar señales operativas de riesgo. La documentación incorrecta del estado emocional del cliente ("Calm" cuando expresó molestia) es una desviación de procedimiento que afecta la trazabilidad del sistema de Compliance. El Monitor registra la observación sin juzgar intenciones, y el Coordinador o Especialista evalúan la relevancia.</p><div class="why-wrong"><p><strong>Por qué las otras son incorrectas:</strong><br><strong>A:</strong> El silencio ante una señal operativa conocida contradice los principios de trazabilidad e integridad institucional del sistema.<br><strong>C:</strong> Modificar registros del CRM sin autorización podría comprometer la integridad de la evidencia y excede las funciones del personal de atención.<br><strong>D:</strong> Pedir correcciones directas a compañeros sin pasar por Compliance elimina la trazabilidad del incidente y evita que el sistema aprenda sistémicamente del error.</p></div>` },
+      wrong: { title: '✗ Respuesta incorrecta', body: `<p>La respuesta correcta era la <strong>Opción B</strong>. El canal de Raising Concerns está diseñado para que cualquier persona pueda reportar señales operativas al sistema de Compliance.</p><div class="why-wrong"><p>La documentación incorrecta del comportamiento del cliente no es un error menor: afecta el Triage, el Score de Riesgo y potencialmente la detección de casos Silent but Deadly antes de que escalen a Bar Complaint.</p></div>` }
+    }
+  }
+};
+
+// Topic tags for each exercise
+const EXERCISE_TOPICS = {
+  1: { label: 'Ejercicio 1', topic: 'Asignación de roles: Monitor, Especialista y Analista de Habilitación', role: 'todos' },
+  2: { label: 'Ejercicio 2', topic: 'Límites del Monitor: registrar y escalar sin emitir juicios', role: 'monitor' },
+  3: { label: 'Ejercicio 3', topic: 'Protocolo Triage: el resultado es vinculante para el escalamiento', role: 'todos' },
+  4: { label: 'Ejercicio 4', topic: 'Normas de producto de trabajo: Objetividad, Evidencia, Rol y Exactitud', role: 'especialista' },
+  5: { label: 'Ejercicio 5', topic: 'Crisis escalonada: silencio del cliente como señal activa de Compliance', role: 'todos' },
+  6: { label: 'Ejercicio 6', topic: 'Autoridad del Analista de Habilitación: integridad de datos y sistemas', role: 'habilitador' },
+  7: { label: 'Ejercicio 7', topic: 'Revisión post-mortem: accountability por fallas en cada nivel operativo', role: 'todos' },
+  8: { label: 'Ejercicio 8', topic: 'Raising Concerns: cualquier persona puede activar el mecanismo de reporte', role: 'monitor' },
+};
+
+// ── SHUFFLE ──
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── BUILD DRAG-DROP EXERCISE ──
+function buildDragDrop(exId) {
+  const config = DD_CONFIG[exId];
+  if (!config) return;
+
+  const rolesContainer = document.getElementById(`roles-${exId}`);
+  const dropsContainer = document.getElementById(`drops-${exId}`);
+  if (!rolesContainer || !dropsContainer) return;
+
+  rolesContainer.innerHTML = '';
+  dropsContainer.innerHTML = '';
+
+  // Shuffle roles
+  const shuffledRoles = shuffle(config.roles);
+  shuffledRoles.forEach(r => {
+    const chip = document.createElement('div');
+    chip.className = 'role-chip';
+    chip.draggable = true;
+    chip.dataset.role = r.role;
+    chip.id = `chip-${exId}-${r.role}`;
+    chip.textContent = r.label;
+    rolesContainer.appendChild(chip);
+  });
+
+  // Shuffle drops
+  const shuffledDrops = shuffle(config.drops);
+  shuffledDrops.forEach(d => {
+    const drop = document.createElement('div');
+    drop.className = 'action-drop';
+    drop.dataset.answer = d.answer;
+    drop.id = `drop-${exId}-${d.key}`;
+    drop.textContent = d.text;
+    drop.ondragover = (e) => { e.preventDefault(); drop.classList.add('drag-over'); };
+    drop.ondragleave = () => drop.classList.remove('drag-over');
+    drop.ondrop = (e) => handleDrop(e, exId, d.key);
+    dropsContainer.appendChild(drop);
+  });
+
+  // Re-attach drag events
+  rolesContainer.querySelectorAll('.role-chip').forEach(chip => {
+    chip.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('role', chip.dataset.role);
+      e.dataTransfer.setData('chipId', chip.id);
+      chip.classList.add('dragging');
+    });
+    chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+  });
+}
+
+// ── BUILD MCQ ──
+function buildMCQ(qId) {
+  const config = MCQ_CONFIG[qId];
+  if (!config) return;
+  const container = document.getElementById(`mcq-${qId}`);
+  if (!container) return;
+
+  container.innerHTML = '';
+  const shuffled = shuffle(config.options);
+  const letters = ['A','B','C','D'];
+
+  shuffled.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'mcq-opt';
+    div.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt.text}</span>`;
+    div.onclick = () => selectMCQ(qId, opt.key, div, shuffled, letters);
+    container.appendChild(div);
+  });
+}
+
+// ── NAV ──
+function buildNav() {
+  const dots = document.getElementById('nav-dots');
+  dots.innerHTML = '';
+  for (let i = 0; i <= totalExercises; i++) {
+    const d = document.createElement('div');
+    d.className = 'nav-dot' + (i === currentPage ? ' active' : '') + (scores[i] !== undefined ? ' done' : '');
+    d.onclick = () => { if (i <= currentPage) goTo(i); };
+    dots.appendChild(d);
+  }
+}
+
+function goTo(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + n);
+  if (target) { target.classList.add('active'); currentPage = n; }
+  buildNav();
+  const labels = ['Portada','Ejercicio 1','Ejercicio 2','Ejercicio 3','Ejercicio 4','Ejercicio 5','Ejercicio 6','Ejercicio 7','Ejercicio 8','Resultados'];
+  document.getElementById('nav-label').textContent = labels[n] || '';
+  window.scrollTo(0, 0);
+
+  // Build exercises on demand
+  if ([1,3,5,7].includes(n)) buildDragDrop(String(n));
+  if ([2,4,6,8].includes(n)) buildMCQ(n);
+}
+
+function goBack() {
+  if (currentPage > 0) goTo(currentPage - 1);
+}
+
+// ── RESULT PAGE ──
+function showResult() {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-result').classList.add('active');
+
+  const correctCount = Object.values(scores).filter(Boolean).length;
+  const total = totalExercises;
+  document.getElementById('final-score').textContent = `${correctCount} / ${total}`;
+
+  // ── SCORM: report final score ──
+  try { SCORM.reportScore(correctCount, total); } catch (e) {}
+
+  const pct = correctCount / total;
+  let msg;
+  if (pct >= 0.875) {
+    msg = '¡Excelente dominio de roles y límites de autoridad! Demuestras comprensión sólida de las funciones del Monitor, el Especialista y el Analista de Habilitación. Estás lista/o para aplicar estos principios en casos reales.';
+  } else if (pct >= 0.625) {
+    msg = 'Buen desempeño general. Hay áreas específicas que conviene reforzar antes de operar de manera autónoma. Revisa los temas marcados a continuación.';
+  } else if (pct >= 0.375) {
+    msg = 'Desempeño moderado. Te recomendamos releer el documento de Roles y Responsabilidades de Compliance, especialmente las secciones de autoridad diferenciada por rol y normas de producto de trabajo.';
+  } else {
+    msg = 'Es necesario reforzar los fundamentos antes de continuar. Revisa con atención el documento de Roles y vuelve a realizar el simulador. Presta especial atención a qué acciones están prohibidas para cada rol.';
+  }
+  document.getElementById('result-msg').textContent = msg;
+
+  // Build refuerzo section
+  const section = document.getElementById('refuerzo-section');
+  section.innerHTML = '';
+
+  const incorrectExercises = [];
+  const correctExercises = [];
+  for (let i = 1; i <= total; i++) {
+    if (scores[i] === false || scores[i] === undefined) {
+      incorrectExercises.push(i);
+    } else if (scores[i] === true) {
+      correctExercises.push(i);
+    }
+  }
+
+  if (incorrectExercises.length > 0) {
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'refuerzo-title';
+    titleDiv.textContent = '⚠ Temas para reforzar';
+    section.appendChild(titleDiv);
+
+    incorrectExercises.forEach(i => {
+      const t = EXERCISE_TOPICS[i];
+      const item = document.createElement('div');
+      item.className = 'refuerzo-item';
+      item.innerHTML = `<span class="ri-icon">📌</span><div class="ri-body"><strong>${t.label}:</strong> ${t.topic}</div>`;
+      section.appendChild(item);
+    });
+  }
+
+  if (correctExercises.length > 0) {
+    const titleDiv2 = document.createElement('div');
+    titleDiv2.className = 'refuerzo-title';
+    titleDiv2.style.marginTop = '18px';
+    titleDiv2.textContent = '✓ Temas dominados';
+    section.appendChild(titleDiv2);
+
+    correctExercises.forEach(i => {
+      const t = EXERCISE_TOPICS[i];
+      const item = document.createElement('div');
+      item.className = 'refuerzo-item refuerzo-item-ok';
+      item.innerHTML = `<span class="ri-icon">✅</span><div class="ri-body"><strong>${t.label}:</strong> ${t.topic}</div>`;
+      section.appendChild(item);
+    });
+  }
+}
+
+function restart() {
+  scores = {}; dragState = {}; mcqSelected = {};
+  document.querySelectorAll('.feedback-panel').forEach(f => { f.classList.remove('show'); f.innerHTML = ''; });
+  document.querySelectorAll('[id^="next-"]').forEach(b => b.disabled = true);
+  document.querySelectorAll('[id^="check-"]').forEach(b => b.disabled = true);
+  goTo(0);
+}
+
+// ── DRAG & DROP ──
+function handleDrop(event, exerciseId, dropKey) {
+  event.preventDefault();
+  const drop = event.currentTarget;
+  drop.classList.remove('drag-over');
+  const role = event.dataTransfer.getData('role');
+  const chipId = event.dataTransfer.getData('chipId');
+  const chip = document.getElementById(chipId);
+  if (!chip || chip.classList.contains('matched')) return;
+
+  if (!dragState[exerciseId]) dragState[exerciseId] = {};
+  dragState[exerciseId][dropKey] = role;
+
+  drop.classList.remove('matched-drop', 'wrong-drop');
+  const existing = drop.querySelector('.drop-role-badge');
+  if (existing) existing.remove();
+  const badge = document.createElement('span');
+  badge.className = 'drop-role-badge';
+  badge.textContent = roleLabel(role);
+  drop.insertBefore(badge, drop.firstChild);
+}
+
+function roleLabel(r) {
+  const m = {
+    monitor: 'Monitor',
+    especialista: 'Especialista',
+    habilitador: 'Habilitador',
+    coordinador: 'Coordinador'
+  };
+  return m[r] || r;
+}
+
+function checkDragDrop(id) {
+  const config = DD_CONFIG[id];
+  if (!config) return;
+  const userPairs = dragState[id] || {};
+
+  // Build answer map: dropKey -> correctRole from config
+  const answerMap = {};
+  config.drops.forEach(d => { answerMap[d.key] = d.answer; });
+
+  let allCorrect = true;
+  config.drops.forEach(d => {
+    const drop = document.getElementById(`drop-${id}-${d.key}`);
+    if (!drop) return;
+    const userRole = userPairs[d.key];
+    if (userRole === d.answer) {
+      drop.classList.add('matched-drop');
+      const chip = document.getElementById(`chip-${id}-${d.answer}`);
+      if (chip) chip.classList.add('matched');
+    } else {
+      drop.classList.add('wrong-drop');
+      allCorrect = false;
+    }
+  });
+
+  const fb = document.getElementById(`fb-${id}`);
+  if (fb) fb.classList.add('show');
+  scores[parseInt(id)] = allCorrect;
+
+  // ── SCORM: report drag-drop as matching interaction ──
+  try {
+    const userResponseStr = config.drops
+      .map(d => `${d.key}[.]${userPairs[d.key] || 'sin_respuesta'}`)
+      .join('[,]');
+    const correctResponseStr = config.drops
+      .map(d => `${d.key}[.]${d.answer}`)
+      .join('[,]');
+    const topic = EXERCISE_TOPICS[parseInt(id)];
+    SCORM.reportInteraction(
+      'ejercicio_' + id,
+      'matching',
+      userResponseStr,
+      correctResponseStr,
+      allCorrect,
+      topic ? topic.topic : 'Drag & Drop ejercicio ' + id
+    );
+  } catch (e) {}
+
+  const nextBtn = document.getElementById(`next-${id}`);
+  if (nextBtn) nextBtn.disabled = false;
+}
+
+// ── MCQ ──
+function selectMCQ(qId, optKey, el, shuffledOpts, letters) {
+  const container = document.getElementById(`mcq-${qId}`);
+  container.querySelectorAll('.mcq-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  mcqSelected[qId] = optKey;
+  const checkBtn = document.getElementById(`check-${qId}`);
+  if (checkBtn) checkBtn.disabled = false;
+}
+
+function checkMCQ(qId, correctOpt) {
+  const selected = mcqSelected[qId];
+  if (!selected) return;
+
+  const config = MCQ_CONFIG[qId];
+  const container = document.getElementById(`mcq-${qId}`);
+  const opts = container.querySelectorAll('.mcq-opt');
+
+  opts.forEach((opt, i) => {
+    opt.onclick = null;
+    const letters = opt.querySelector('.opt-letter').textContent;
+    // Find which key this option maps to (by position in rendered list)
+  });
+
+  // We need to find which rendered option corresponds to correct key
+  // Since we shuffled, we stored the key on each option via closure.
+  // But we need to re-identify them. Let's use data attributes approach:
+  // Re-examine: we attached onclick with optKey. Let's mark them.
+  // Actually we can iterate and check by matching the text to config options.
+  const isCorrect = selected === correctOpt;
+  scores[qId] = isCorrect;
+
+  // Color options
+  opts.forEach((opt) => {
+    opt.onclick = null;
+    // Find the text of this option in config
+    const spanText = opt.querySelector('span:last-child').textContent.trim();
+    const matchingOpt = config.options.find(o => o.text.trim() === spanText);
+    if (matchingOpt) {
+      if (matchingOpt.key === correctOpt) opt.classList.add('correct');
+      else if (matchingOpt.key === selected && selected !== correctOpt) opt.classList.add('incorrect');
+    }
+  });
+
+  const fb = document.getElementById(`fb-${qId}`);
+  const data = config.feedback[isCorrect ? 'correct' : 'wrong'];
+  fb.innerHTML = `<div class="${isCorrect ? 'feedback-correct-header' : 'feedback-incorrect-header'}">${data.title}</div><div class="feedback-body">${data.body}</div>`;
+  fb.classList.add('show');
+
+  // ── SCORM: report MCQ as choice interaction ──
+  try {
+    const topic = EXERCISE_TOPICS[qId];
+    SCORM.reportInteraction(
+      'ejercicio_' + qId,
+      'choice',
+      selected,
+      correctOpt,
+      isCorrect,
+      topic ? topic.topic : 'MCQ ejercicio ' + qId
+    );
+  } catch (e) {}
+
+  const checkBtn = document.getElementById(`check-${qId}`);
+  if (checkBtn) checkBtn.disabled = true;
+  const nextBtn = document.getElementById(`next-${qId}`);
+  if (nextBtn) nextBtn.disabled = false;
+}
+
+// ── INIT ──
+buildNav();
+</script>
+</body>
+</html>
