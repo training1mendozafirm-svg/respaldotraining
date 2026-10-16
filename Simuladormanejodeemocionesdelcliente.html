@@ -3,2135 +3,1486 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador: Estrategias de Comunicación - Call Backs</title>
-    <script>
-/**
- * SCORM 1.2 API Wrapper
- * Simulador de Atención al Cliente - TMLF
- */
-
-var SCORM = {
-    API: null,
-    initialized: false,
-    finishCalled: false,
-
-    findAPI: function(win) {
-        var findAttempts = 0;
-        var findAttemptLimit = 500;
-        
-        while ((win.API == null) && (win.parent != null) && (win.parent != win)) {
-            findAttempts++;
-            if (findAttempts > findAttemptLimit) {
-                return null;
-            }
-            win = win.parent;
-        }
-        return win.API;
-    },
-
-    getAPI: function() {
-        var theAPI = this.findAPI(window);
-        if ((theAPI == null) && (window.opener != null) && (typeof(window.opener) != "undefined")) {
-            theAPI = this.findAPI(window.opener);
-        }
-        if (theAPI == null) {
-            console.log("SCORM API no encontrada - modo standalone");
-        }
-        return theAPI;
-    },
-
-    init: function() {
-        if (this.initialized) return true;
-        
-        this.API = this.getAPI();
-        
-        if (this.API == null) {
-            console.log("Ejecutando en modo standalone (sin LMS)");
-            this.initialized = true;
-            return true;
-        }
-
-        var result = this.API.LMSInitialize("");
-        
-        if (result == "true" || result == true) {
-            this.initialized = true;
-            this.API.LMSSetValue("cmi.core.lesson_status", "incomplete");
-            this.API.LMSCommit("");
-            console.log("SCORM inicializado correctamente");
-            return true;
-        } else {
-            console.log("Error al inicializar SCORM");
-            return false;
-        }
-    },
-
-    setProgress: function(progress) {
-        if (this.API == null) {
-            console.log("Progreso (standalone): " + progress + "%");
-            return true;
-        }
-        
-        this.API.LMSSetValue("cmi.core.lesson_location", progress.toString());
-        this.API.LMSCommit("");
-        return true;
-    },
-
-    setScore: function(score) {
-        if (this.API == null) {
-            console.log("Puntuación (standalone): " + score + "%");
-            return true;
-        }
-
-        this.API.LMSSetValue("cmi.core.score.min", "0");
-        this.API.LMSSetValue("cmi.core.score.max", "100");
-        this.API.LMSSetValue("cmi.core.score.raw", score.toString());
-        
-        if (score >= 67) {
-            this.API.LMSSetValue("cmi.core.lesson_status", "passed");
-        } else {
-            this.API.LMSSetValue("cmi.core.lesson_status", "failed");
-        }
-        
-        this.API.LMSCommit("");
-        console.log("Puntuación guardada: " + score + "%");
-        return true;
-    },
-
-    complete: function() {
-        if (this.finishCalled) return true;
-        
-        if (this.API == null) {
-            console.log("Curso completado (standalone)");
-            this.finishCalled = true;
-            return true;
-        }
-
-        // No sobreescribimos lesson_status aquí — ya fue establecido como passed/failed por setScore()
-        // Solo marcamos exit y hacemos commit
-        this.API.LMSSetValue("cmi.core.exit", "");
-        this.API.LMSCommit("");
-        
-        var result = this.API.LMSFinish("");
-        this.finishCalled = true;
-        
-        console.log("Simulación completada y finalizada");
-        return (result == "true" || result == true);
-    },
-
-    setSuspendData: function(data) {
-        if (this.API == null) {
-            localStorage.setItem('scorm_roleplay_data', data);
-            return true;
-        }
-        
-        this.API.LMSSetValue("cmi.suspend_data", data);
-        this.API.LMSCommit("");
-        return true;
-    },
-
-    getSuspendData: function() {
-        if (this.API == null) {
-            return localStorage.getItem('scorm_roleplay_data') || "";
-        }
-        
-        return this.API.LMSGetValue("cmi.suspend_data");
-    },
-
-    getLastError: function() {
-        if (this.API == null) return "0";
-        return this.API.LMSGetLastError();
-    },
-
-    getErrorString: function(errorCode) {
-        if (this.API == null) return "";
-        return this.API.LMSGetErrorString(errorCode);
-    }
-};
-
-window.onbeforeunload = function() {
-    if (SCORM.initialized && !SCORM.finishCalled) {
-        if (SCORM.API != null) {
-            SCORM.API.LMSSetValue("cmi.core.exit", "suspend");
-            SCORM.API.LMSCommit("");
-            SCORM.API.LMSFinish("");
-        }
-    }
-};
-
-window.onunload = function() {
-    if (SCORM.initialized && !SCORM.finishCalled && SCORM.API != null) {
-        SCORM.API.LMSFinish("");
-    }
-};
-
-</script>
+    <title>Manejo Estratégico de Emociones del Cliente</title>
     <style>
-        /* =====================================================
-           PALETA: Azul marino profundo + Dorado institucional
-           Inspirada en Radar Estratégico – Análisis de Llamada
-           ===================================================== */
-
-        /* Reset y configuración base */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ===== VARIABLES ===== */
+        :root {
+            --navy-dark: #0a1929;
+            --navy-medium: #1a2942;
+            --navy-light: #2d3f5c;
+            --gold-primary: #d4af37;
+            --gold-light: #f4d03f;
+            --gold-dark: #b8941f;
+            --white: #ffffff;
+            --gray-light: #e8eaf0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.3);
+            --shadow-dark: 0 8px 32px rgba(10, 25, 41, 0.4);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(160deg, #07111f 0%, #0d1b3e 60%, #0a1628 100%);
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-medium) 100%);
+            color: var(--white);
             min-height: 100vh;
-            color: #dce8f5;
+            padding: 20px;
             line-height: 1.6;
         }
 
-        #scorm-container {
-            max-width: 1400px;
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #0d1b3e 0%, #112248 100%);
-            border-bottom: 2px solid rgba(240, 185, 40, 0.4);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-
-        .header-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            color: #f0b928;
-            margin-bottom: 10px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .header-subtitle {
-            color: #7a9cc4;
-            font-size: 1.1rem;
-        }
-
-        /* Dashboard de estadísticas */
-        .stats-dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: rgba(13, 27, 62, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid rgba(240, 185, 40, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(240, 185, 40, 0.6);
-            box-shadow: 0 10px 30px rgba(240, 185, 40, 0.15);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #f0b928;
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            color: #7a9cc4;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Progreso circular */
-        .circular-progress {
-            margin: 40px auto;
-            text-align: center;
-        }
-
-        .progress-ring {
-            transform: rotate(-90deg);
-        }
-
-        .progress-ring-circle {
-            stroke: rgba(240, 185, 40, 0.15);
-            fill: none;
-            stroke-width: 8;
-        }
-
-        .progress-ring-circle-fill {
-            stroke: #f0b928;
-            fill: none;
-            stroke-width: 8;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.5s ease;
-        }
-
-        .progress-text {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #f0b928;
-            margin-top: 20px;
-        }
-
-        .progress-label {
-            color: #7a9cc4;
-            font-size: 1.1rem;
-            margin-top: 10px;
-        }
-
-        /* Contenido principal */
-        main {
-            background: rgba(10, 22, 50, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 50px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            min-height: 500px;
-            border: 1px solid rgba(240, 185, 40, 0.12);
-        }
-
-        /* Pantalla de bienvenida */
-        .welcome-screen {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .welcome-icon {
-            font-size: 5rem;
-            margin-bottom: 30px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .welcome-title {
-            font-size: 2.5rem;
-            color: #f0b928;
-            margin-bottom: 20px;
-        }
-
-        .welcome-description {
-            color: #b0c8e8;
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            line-height: 1.8;
-        }
-
-        /* Instrucciones */
-        .instructions-box {
-            background: rgba(7, 17, 40, 0.7);
-            border-left: 4px solid #f0b928;
-            padding: 30px;
-            margin: 30px 0;
-            border-radius: 10px;
-            text-align: left;
-        }
-
-        .instructions-title {
-            color: #f0b928;
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .instructions-list {
-            list-style: none;
-            margin-left: 0;
-        }
-
-        .instructions-list li {
-            color: #b0c8e8;
-            padding: 12px 0;
-            padding-left: 35px;
-            position: relative;
-            font-size: 1.05rem;
-        }
-
-        .instructions-list li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #f0b928;
-            font-weight: bold;
-            font-size: 1.3rem;
-        }
-
-        /* Botón de comenzar principal */
-        .start-button {
-            background: linear-gradient(135deg, #f0b928 0%, #d4960e 100%);
-            color: #07111f;
-            border: none;
-            padding: 18px 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(240, 185, 40, 0.35);
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 30px;
-        }
-
-        .start-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(240, 185, 40, 0.55);
-        }
-
-        .start-button::before {
-            content: "📞";
-            font-size: 1.5rem;
-        }
-
-        /* Escena individual */
-        .scene-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .scene-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(240, 185, 40, 0.25);
-        }
-
-        .scene-title {
-            color: #f0b928;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .scene-subtitle {
-            color: #7a9cc4;
-            font-size: 1.1rem;
-        }
-
-        /* Cliente llamando */
-        .client-call-header {
-            background: linear-gradient(135deg, rgba(240, 185, 40, 0.08) 0%, rgba(212, 150, 14, 0.08) 100%);
-            border: 1px solid rgba(240, 185, 40, 0.25);
-            padding: 15px 25px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-style: italic;
-            color: #b0c8e8;
-        }
-
-        .client-call-header::before {
-            content: "📞";
-            font-size: 1.5rem;
-        }
-
-        /* Cajas de información */
-        .info-box {
-            background: rgba(7, 17, 40, 0.7);
-            border-left: 4px solid #4d90d4;
-            padding: 25px;
-            margin: 25px 0;
-            border-radius: 10px;
-        }
-
-        .info-box h3 {
-            color: #7ab8f5;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-
-        .info-box ul {
-            list-style: none;
-            margin-left: 0;
-        }
-
-        .info-box li {
-            color: #b0c8e8;
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .info-box li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #4d90d4;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-
-        /* Speech bubble del cliente */
-        .client-speech {
-            background: linear-gradient(135deg, rgba(240, 185, 40, 0.1) 0%, rgba(212, 150, 14, 0.1) 100%);
-            border: 2px solid rgba(240, 185, 40, 0.3);
-            padding: 20px 30px 30px 30px;
-            margin: 45px 0 30px 0;
-            border-radius: 15px;
-            position: relative;
-            font-style: italic;
-            color: #fde9a2;
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .client-speech::before {
-            content: "💬";
-            position: absolute;
-            top: -22px;
-            left: 25px;
-            font-size: 2rem;
-            line-height: 1;
-            background: #0d1b3e;
-            padding: 4px 8px;
-            border-radius: 50%;
-            display: block;
-            width: 42px;
-            height: 42px;
-            text-align: center;
-        }
-
-        /* Pregunta */
-        .question-box {
-            background: rgba(7, 17, 40, 0.85);
-            border: 2px solid rgba(240, 185, 40, 0.25);
-            padding: 30px;
-            margin: 40px 0;
-            border-radius: 15px;
-        }
-
-        .question-box h3 {
-            color: #f0b928;
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        /* Opciones de respuesta */
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .option-card {
-            background: rgba(13, 27, 62, 0.9);
-            border: 2px solid rgba(122, 156, 196, 0.25);
-            padding: 25px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .option-card:hover {
-            border-color: #f0b928;
-            background: rgba(240, 185, 40, 0.08);
-            transform: translateX(5px);
-        }
-
-        .option-card.selected {
-            border-color: #f0b928;
-            background: rgba(240, 185, 40, 0.12);
-            box-shadow: 0 0 20px rgba(240, 185, 40, 0.2);
-        }
-
-        .option-card.correct {
-            border-color: #22c55e;
-            background: rgba(34, 197, 94, 0.12);
-        }
-
-        .option-card.incorrect {
-            border-color: #ef4444;
-            background: rgba(239, 68, 68, 0.12);
-        }
-
-        .option-label {
-            font-weight: bold;
-            color: #f0b928;
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .option-text {
-            color: #b0c8e8;
-            line-height: 1.7;
-            font-size: 1.05rem;
-        }
-
-        /* Botón de enviar respuesta */
-        #submit-answer {
-            background: linear-gradient(135deg, #f0b928 0%, #d4960e 100%);
-            color: #07111f;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(240, 185, 40, 0.3);
-            width: 100%;
-            margin-top: 25px;
-        }
-
-        #submit-answer:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(240, 185, 40, 0.5);
-        }
-
-        #submit-answer:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Feedback */
-        .feedback-container {
-            background: rgba(7, 17, 40, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 30px;
-            display: none;
-            border: 2px solid rgba(240, 185, 40, 0.25);
-        }
-
-        .feedback-container.show {
-            display: block;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .feedback-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(240, 185, 40, 0.2);
-        }
-
-        .feedback-icon {
-            font-size: 3rem;
-        }
-
-        .feedback-title {
-            font-size: 1.6rem;
-            margin: 0;
-            color: #f0b928;
-            flex: 1;
-        }
-
-        .feedback-score {
-            font-size: 1.4rem;
-            font-weight: bold;
-            padding: 8px 20px;
-            border-radius: 25px;
-        }
-
-        .score-optimal {
-            background: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
-            border: 2px solid #22c55e;
-        }
-
-        .score-good {
-            background: rgba(77, 144, 212, 0.15);
-            color: #7ab8f5;
-            border: 2px solid #4d90d4;
-        }
-
-        .score-poor {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-            border: 2px solid #ef4444;
-        }
-
-        .feedback-section {
-            margin-bottom: 25px;
-        }
-
-        .feedback-section h4 {
-            color: #f0b928;
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-        }
-
-        .feedback-section p, .feedback-section ul {
-            color: #b0c8e8;
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
-        .feedback-section ul {
-            margin-left: 20px;
-        }
-
-        .feedback-list li {
-            margin-bottom: 10px;
-        }
-
-        .check-icon {
-            color: #22c55e;
-            margin-right: 8px;
-        }
-
-        .cross-icon {
-            color: #ef4444;
-            margin-right: 8px;
-        }
-
-        /* Resultados finales */
-        .results-container {
-            background: linear-gradient(135deg, rgba(240, 185, 40, 0.12) 0%, rgba(212, 150, 14, 0.12) 100%);
-            padding: 50px;
+            background: rgba(26, 41, 66, 0.95);
             border-radius: 20px;
-            text-align: center;
-            margin: 30px 0;
-            border: 2px solid rgba(240, 185, 40, 0.4);
+            box-shadow: var(--shadow-dark);
+            overflow: hidden;
+            border: 2px solid var(--gold-dark);
         }
 
-        .results-score {
-            font-size: 5rem;
-            font-weight: bold;
-            color: #f0b928;
-            margin: 30px 0;
-            text-shadow: 0 0 30px rgba(240, 185, 40, 0.5);
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, var(--navy-medium) 0%, var(--navy-light) 100%);
+            padding: 35px 40px;
+            position: relative;
+        }
+        .header::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold-primary), var(--gold-light), var(--gold-primary));
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer { 0%,100%{opacity:1} 50%{opacity:0.6} }
+        .header h1 {
+            font-size: 2em; font-weight: 700;
+            color: var(--gold-primary); margin-bottom: 12px;
+        }
+        .header .objective {
+            font-size: 1.05em; color: var(--gray-light); line-height: 1.6;
         }
 
-        .results-level {
-            font-size: 2.2rem;
-            margin: 25px 0;
-            padding: 20px;
-            background: rgba(7, 17, 40, 0.7);
-            border-radius: 15px;
-            color: #f0b928;
+        /* ===== SCORE PANEL ===== */
+        .score-panel {
+            position: fixed; top: 20px; right: 20px;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary));
+            padding: 18px 25px; border-radius: 15px;
+            box-shadow: var(--shadow-gold); text-align: center;
+            z-index: 1000; min-width: 160px;
+            border: 2px solid var(--gold-light);
+            animation: slideInRight 0.6s ease-out;
+        }
+        @keyframes slideInRight { from{transform:translateX(100px);opacity:0} to{transform:translateX(0);opacity:1} }
+        .score-panel .label { font-size: 0.85em; color: var(--navy-dark); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .score-panel .score-value { font-size: 2.8em; font-weight: 800; color: var(--navy-dark); line-height: 1; margin-bottom: 3px; transition: transform 0.3s; }
+        .score-panel .score-total { font-size: 0.9em; color: var(--navy-medium); font-weight: 600; }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-container { padding: 15px 40px; background: var(--navy-medium); }
+        .progress-bar-wrapper { background: var(--navy-dark); height: 10px; border-radius: 10px; overflow: hidden; }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary), var(--gold-light));
+            width: 0%; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+        }
+        .progress-text { text-align: center; margin-top: 8px; font-size: 0.85em; color: var(--gold-light); font-weight: 600; }
+
+        /* ===== STEP INDICATOR ===== */
+        .step-indicator {
+            display: flex; justify-content: center; gap: 8px;
+            padding: 15px 40px; background: rgba(10,25,41,0.3);
+        }
+        .step-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--navy-light); transition: all 0.4s;
+            border: 2px solid var(--navy-light);
+        }
+        .step-dot.active { background: var(--gold-primary); border-color: var(--gold-primary); transform: scale(1.3); box-shadow: 0 0 8px rgba(212,175,55,0.5); }
+        .step-dot.completed { background: var(--success); border-color: var(--success); }
+
+        /* ===== CONTENT ===== */
+        .content { padding: 35px 40px; }
+
+        /* ===== PAGES (each step is a page) ===== */
+        .page { display: none; animation: fadeIn 0.6s ease-out; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)} }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            font-size: 1.6em; color: var(--gold-primary);
+            margin-bottom: 20px; font-weight: 600;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-title::before {
+            content: ''; width: 5px; height: 30px;
+            background: linear-gradient(180deg, var(--gold-primary), var(--gold-light));
+            border-radius: 3px; flex-shrink: 0;
         }
 
-        .results-details {
-            background: rgba(13, 27, 62, 0.9);
-            padding: 40px;
-            border-radius: 15px;
-            margin-top: 40px;
-            text-align: left;
+        /* ===== VIDEO ===== */
+        .video-container {
+            background: var(--navy-dark); border-radius: 15px;
+            padding: 25px; margin-bottom: 25px;
+            border: 2px solid var(--navy-light);
         }
-
-        .results-details h3 {
-            color: #f0b928;
-            font-size: 1.8rem;
-            margin-bottom: 25px;
+        .video-wrapper {
+            position: relative; width: 100%; padding-bottom: 56.25%;
+            background: #000; border-radius: 10px; overflow: hidden;
         }
-
-        .scene-result {
-            background: rgba(7, 17, 40, 0.7);
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 12px;
-            border-left: 4px solid #f0b928;
+        .video-wrapper iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
         }
-
-        .scene-result h4 {
-            color: #f0b928;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
+        .video-placeholder {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%,-50%); text-align: center; color: var(--gray-light);
         }
-
-        .scene-result p {
-            color: #b0c8e8;
-            margin: 5px 0;
+        .video-placeholder::before { content: '▶'; display: block; font-size: 3.5em; color: var(--gold-primary); margin-bottom: 10px; opacity: 0.7; }
+        .video-info {
+            margin-top: 15px; padding: 15px;
+            background: rgba(212,175,55,0.1);
+            border-left: 4px solid var(--gold-primary);
+            border-radius: 5px;
         }
+        .video-info strong { color: var(--gold-primary); display: block; margin-bottom: 5px; }
 
-        .recommendations {
-            background: linear-gradient(135deg, rgba(240, 185, 40, 0.1) 0%, rgba(212, 150, 14, 0.1) 100%);
-            border-left: 4px solid #f0b928;
-            padding: 30px;
-            margin: 30px 0;
-            border-radius: 12px;
+        /* ===== STRATEGY CARDS ===== */
+        .strategies-intro {
+            background: rgba(212,175,55,0.1); border-left: 4px solid var(--gold-primary);
+            padding: 18px 22px; border-radius: 8px; margin-bottom: 25px;
+            font-size: 1.02em; color: var(--gray-light);
         }
-
-        .recommendations h3 {
-            color: #f0b928;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+        .strategies-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .strategy-card {
+            background: var(--navy-dark); border: 3px solid var(--navy-light);
+            border-radius: 12px; padding: 16px 20px;
+            cursor: pointer; transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 16px;
+            user-select: none; position: relative;
         }
-
-        .recommendations ul {
-            margin-left: 25px;
+        .strategy-card:hover { border-color: var(--gold-primary); transform: translateY(-3px); box-shadow: var(--shadow-gold); }
+        .strategy-card.selected {
+            background: rgba(76,175,80,0.12); border-color: var(--success);
+            box-shadow: 0 0 15px rgba(76,175,80,0.2);
         }
+        .strategy-card.selected .strategy-icon { transform: scale(1.15); filter: grayscale(0%); }
+        .strategy-card.locked { pointer-events: none; opacity: 0.8; }
+        .strategy-icon { font-size: 2.2em; flex-shrink: 0; width: 55px; text-align: center; transition: all 0.3s; filter: grayscale(50%); }
+        .strategy-content { flex: 1; }
+        .strategy-name { font-size: 1.1em; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+        .strategy-description { font-size: 0.88em; color: var(--gray-light); line-height: 1.5; }
+        .strategy-status { flex-shrink: 0; padding-left: 15px; border-left: 2px solid var(--navy-light); min-width: 120px; text-align: center; }
+        .status-indicator { font-size: 0.88em; color: var(--gray-light); font-weight: 500; transition: all 0.3s; }
+        .strategy-card.selected .status-indicator { color: var(--success); font-weight: 700; }
+        .strategy-card.selected .status-indicator::before { content: '✓ '; font-size: 1.1em; }
 
-        .recommendations li {
-            color: #fde9a2;
-            margin-bottom: 15px;
-            line-height: 1.7;
+        .strategy-feedback-box {
+            display: none; background: rgba(76,175,80,0.12);
+            border: 2px solid var(--success); border-radius: 12px;
+            padding: 18px 22px; margin-bottom: 20px;
+            animation: slideDown 0.4s ease-out;
         }
+        .strategy-feedback-box.show { display: block; }
+        .strategy-feedback-box .feedback-title { font-size: 1.05em; font-weight: 700; color: var(--success); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .strategy-feedback-box .feedback-text { font-size: 1em; color: #a5d6a7; line-height: 1.6; }
 
-        /* Footer de navegación */
-        footer {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            margin-top: 30px;
+        .strategies-summary {
+            background: var(--navy-dark); border: 2px solid var(--gold-primary);
+            border-radius: 12px; padding: 18px 25px; text-align: center; margin-top: 15px;
         }
+        .summary-content { font-size: 1.1em; color: var(--white); }
+        .summary-content strong { color: var(--gold-primary); }
+        #selectedCount { font-size: 1.3em; color: var(--gold-light); font-weight: 800; }
 
-        button {
-            background: rgba(13, 27, 62, 0.9);
-            color: #f0b928;
-            border: 2px solid rgba(240, 185, 40, 0.3);
-            padding: 15px 35px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
+        /* ===== BUTTONS ===== */
+        .btn-gold {
+            width: 100%;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary));
+            color: var(--navy-dark); border: none;
+            padding: 16px 35px; border-radius: 12px;
+            font-size: 1.1em; font-weight: 700;
+            cursor: pointer; transition: all 0.3s;
+            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: var(--shadow-gold); margin-top: 20px;
         }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(212,175,55,0.4); }
+        .btn-gold:active { transform: translateY(0); }
+        .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
 
-        button:hover:not(:disabled) {
-            background: rgba(240, 185, 40, 0.15);
-            border-color: #f0b928;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(240, 185, 40, 0.25);
+        /* ===== REFLECTION ===== */
+        .reflection-card {
+            background: var(--navy-dark); border-radius: 15px;
+            padding: 30px; border: 2px solid var(--navy-light);
         }
-
-        button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
+        .reflection-question { margin-bottom: 25px; }
+        .reflection-question label { display: block; margin-bottom: 10px; color: var(--white); font-size: 1.05em; }
+        .reflection-question label strong { color: var(--gold-primary); display: block; margin-bottom: 5px; font-size: 1.1em; }
+        .label-hint { display: block; font-size: 0.88em; color: var(--gray-light); font-weight: 400; font-style: italic; margin-top: 4px; }
+        .reflection-question textarea {
+            width: 100%; background: var(--navy-medium);
+            border: 2px solid var(--navy-light); border-radius: 10px;
+            padding: 14px 18px; color: var(--white);
+            font-size: 0.95em; font-family: inherit;
+            resize: vertical; transition: all 0.3s; line-height: 1.6;
         }
+        .reflection-question textarea:focus { outline: none; border-color: var(--gold-primary); box-shadow: var(--shadow-gold); }
+        .reflection-question textarea::placeholder { color: rgba(232,234,240,0.4); font-style: italic; }
 
-        #next-btn {
-            margin-left: auto;
+        .reflection-saved {
+            display: none; background: rgba(76,175,80,0.15);
+            border: 2px solid var(--success); border-radius: 12px;
+            padding: 18px 22px; margin-top: 15px; text-align: center;
+            color: #a5d6a7; font-size: 1.05em;
         }
+        .reflection-saved.show { display: block; animation: slideDown 0.4s ease-out; }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
 
-        /* Responsive */
+        /* ===== INTERMEDIATE RESULT ===== */
+        .intermediate-card {
+            background: linear-gradient(135deg, var(--navy-dark), var(--navy-medium));
+            border-radius: 20px; padding: 40px; text-align: center;
+            border: 3px solid var(--gold-primary); box-shadow: var(--shadow-gold);
+            position: relative; overflow: hidden;
+        }
+        .intermediate-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.1);opacity:0.5} }
+        .intermediate-content { position: relative; z-index: 1; }
+        .intermediate-score-display { padding: 25px; background: rgba(255,255,255,0.05); border-radius: 15px; margin-bottom: 25px; }
+        .intermediate-label { font-size: 1em; color: var(--gray-light); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .intermediate-score-value { font-size: 4.5em; font-weight: 800; color: var(--gold-primary); text-shadow: 0 0 20px rgba(212,175,55,0.5); }
+        .intermediate-score-detail { font-size: 1.1em; color: var(--gray-light); margin-top: 5px; }
+        .intermediate-percentage { font-size: 1.8em; font-weight: 700; color: var(--gold-light); margin-top: 8px; }
+        .intermediate-feedback {
+            background: rgba(255,255,255,0.05); border-left: 4px solid var(--gold-primary);
+            padding: 22px 25px; border-radius: 10px; margin-bottom: 25px;
+            line-height: 1.7; font-size: 1em; text-align: left;
+        }
+        .intermediate-feedback strong { color: var(--gold-primary); }
+
+        /* ===== QUESTION CARDS ===== */
+        .question-card {
+            background: var(--navy-dark); border-radius: 15px;
+            padding: 28px; margin-bottom: 22px;
+            border: 2px solid var(--navy-light); transition: all 0.3s;
+        }
+        .question-card.answered { border-color: var(--gold-primary); box-shadow: var(--shadow-gold); }
+        .question-number {
+            display: inline-block; background: var(--gold-primary);
+            color: var(--navy-dark); padding: 6px 18px;
+            border-radius: 25px; font-weight: 700; font-size: 0.85em;
+            margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .question-text { font-size: 1.2em; color: var(--white); margin-bottom: 20px; font-weight: 500; line-height: 1.5; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option {
+            background: var(--navy-medium); border: 2px solid var(--navy-light);
+            padding: 16px 20px; border-radius: 12px;
+            cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .option:hover { border-color: var(--gold-primary); box-shadow: var(--shadow-gold); transform: translateX(5px); }
+        .option.disabled { cursor: not-allowed; opacity: 0.6; pointer-events: none; }
+        .option.selected { background: rgba(212,175,55,0.2); border-color: var(--gold-primary); }
+        .option-letter {
+            background: var(--gold-primary); color: var(--navy-dark);
+            width: 38px; height: 38px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1em; flex-shrink: 0;
+        }
+        .option-text { flex: 1; font-size: 1em; color: var(--white); }
+
+        /* ===== FEEDBACK ===== */
+        .feedback {
+            display: none; margin-top: 18px; padding: 18px 22px;
+            border-radius: 10px; border-left: 5px solid;
+        }
+        .feedback.show { display: block; animation: slideDown 0.4s ease-out; }
+        .feedback.excellent { background: rgba(76,175,80,0.15); border-color: var(--success); color: #a5d6a7; }
+        .feedback.good { background: rgba(255,152,0,0.15); border-color: var(--warning); color: #ffcc80; }
+        .feedback.poor { background: rgba(244,67,54,0.15); border-color: var(--danger); color: #ef9a9a; }
+        .feedback strong { display: block; margin-bottom: 6px; font-size: 1.02em; }
+
+        /* ===== COMPARISON / MOMENTS ===== */
+        .comparison-intro {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary));
+            color: var(--navy-dark); padding: 22px 28px; border-radius: 12px;
+            margin-bottom: 25px; font-size: 1.15em; font-weight: 600;
+            text-align: center; box-shadow: var(--shadow-gold);
+        }
+        .moments-container { display: flex; flex-direction: column; gap: 18px; margin-top: 25px; }
+        .moment-card {
+            background: var(--navy-dark); border-radius: 12px;
+            padding: 22px; border: 2px solid var(--navy-light);
+            display: flex; gap: 18px; align-items: flex-start;
+            transition: all 0.3s; opacity: 0; transform: translateX(-20px);
+            animation: slideInLeft 0.5s ease-out forwards;
+        }
+        .moment-card:nth-child(1){animation-delay:.05s} .moment-card:nth-child(2){animation-delay:.1s}
+        .moment-card:nth-child(3){animation-delay:.15s} .moment-card:nth-child(4){animation-delay:.2s}
+        .moment-card:nth-child(5){animation-delay:.25s} .moment-card:nth-child(6){animation-delay:.3s}
+        .moment-card:nth-child(7){animation-delay:.35s} .moment-card:nth-child(8){animation-delay:.4s}
+        .moment-card:nth-child(9){animation-delay:.45s} .moment-card:nth-child(10){animation-delay:.5s}
+        .moment-card:nth-child(11){animation-delay:.55s}
+        @keyframes slideInLeft { to{opacity:1;transform:translateX(0)} }
+        .moment-card:hover { border-color: var(--gold-primary); transform: translateX(4px); }
+        .moment-number {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary));
+            color: var(--navy-dark); width: 45px; height: 45px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3em; font-weight: 800; flex-shrink: 0;
+        }
+        .moment-content { flex: 1; }
+        .moment-title { font-size: 1.1em; color: var(--gold-primary); margin-bottom: 10px; font-weight: 700; }
+        .moment-description { font-size: 0.95em; color: var(--gray-light); line-height: 1.7; }
+        .moment-description strong { color: var(--white); display: block; margin-bottom: 6px; }
+
+        /* ===== CHECKLIST ===== */
+        .strategies-checklist {
+            background: var(--navy-dark); border-radius: 15px;
+            padding: 30px; border: 2px solid var(--navy-light); margin-top: 25px;
+        }
+        .checklist-title { font-size: 1.4em; color: var(--gold-primary); margin-bottom: 20px; font-weight: 600; text-align: center; }
+        .checklist-items { display: grid; gap: 12px; }
+        .checklist-item {
+            background: var(--navy-medium); padding: 18px 22px;
+            border-radius: 10px; display: flex; align-items: center;
+            gap: 18px; border-left: 4px solid var(--gold-primary);
+            background: rgba(212,175,55,0.1);
+            opacity: 0; transform: translateX(-20px);
+            animation: slideInLeft 0.5s ease-out forwards;
+        }
+        .checklist-item:nth-child(1){animation-delay:.1s} .checklist-item:nth-child(2){animation-delay:.2s}
+        .checklist-item:nth-child(3){animation-delay:.3s} .checklist-item:nth-child(4){animation-delay:.4s}
+        .checklist-item:nth-child(5){animation-delay:.5s}
+        .check-icon {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--gold-primary); display: flex;
+            align-items: center; justify-content: center;
+            font-size: 1.2em; color: var(--navy-dark); font-weight: 700; flex-shrink: 0;
+        }
+        .check-text { flex: 1; font-size: 1em; color: var(--white); }
+
+        /* ===== RESULTS ===== */
+        .results-card {
+            background: linear-gradient(135deg, var(--navy-dark), var(--navy-medium));
+            border-radius: 20px; padding: 45px; text-align: center;
+            border: 3px solid var(--gold-primary); box-shadow: var(--shadow-gold);
+            position: relative; overflow: hidden;
+        }
+        .results-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        .results-content { position: relative; z-index: 1; }
+        .final-score { font-size: 4.5em; font-weight: 800; color: var(--gold-primary); margin-bottom: 8px; text-shadow: 0 0 20px rgba(212,175,55,0.5); }
+        .score-label { font-size: 1.2em; color: var(--gray-light); margin-bottom: 25px; }
+        .classification {
+            display: inline-block; background: var(--gold-primary);
+            color: var(--navy-dark); padding: 12px 35px;
+            border-radius: 50px; font-size: 1.3em; font-weight: 700;
+            margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px;
+        }
+        .final-feedback {
+            background: rgba(255,255,255,0.05); padding: 25px;
+            border-radius: 15px; margin-top: 25px;
+            border: 1px solid rgba(212,175,55,0.3);
+        }
+        .final-feedback h3 { color: var(--gold-primary); font-size: 1.2em; margin-bottom: 12px; }
+        .final-feedback p { font-size: 1.05em; line-height: 1.8; color: var(--gray-light); text-align: left; }
+
+        /* ===== MICROEXPRESSIONS ===== */
+        .micro-section { display: flex; flex-direction: column; gap: 18px; margin-bottom: 30px; }
+        .micro-card {
+            background: var(--navy-dark); border-radius: 14px;
+            border: 2px solid var(--navy-light); overflow: hidden;
+            transition: all 0.3s;
+        }
+        .micro-card:hover { border-color: var(--gold-primary); box-shadow: var(--shadow-gold); }
+        .micro-header {
+            display: flex; align-items: center; gap: 15px;
+            padding: 18px 22px; background: rgba(45,63,92,0.5);
+        }
+        .micro-icon { font-size: 2em; flex-shrink: 0; }
+        .micro-title { font-size: 1.15em; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+        .micro-badge {
+            display: inline-block; padding: 3px 12px; border-radius: 20px;
+            font-size: 0.78em; font-weight: 700; letter-spacing: 0.5px;
+        }
+        .micro-badge-warning { background: rgba(255,152,0,0.2); color: var(--warning); border: 1px solid rgba(255,152,0,0.4); }
+        .micro-badge-success { background: rgba(76,175,80,0.2); color: var(--success); border: 1px solid rgba(76,175,80,0.4); }
+        .micro-body { padding: 18px 22px; }
+        .micro-do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .micro-dont {
+            background: rgba(244,67,54,0.08); border: 1px solid rgba(244,67,54,0.25);
+            border-radius: 10px; padding: 15px;
+        }
+        .micro-do {
+            background: rgba(76,175,80,0.08); border: 1px solid rgba(76,175,80,0.25);
+            border-radius: 10px; padding: 15px;
+        }
+        .micro-dont p, .micro-do p { color: var(--gray-light); font-size: 0.92em; line-height: 1.6; margin: 0; }
+        .micro-label-bad { color: var(--danger); font-weight: 700; font-size: 0.88em; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .micro-label-good { color: var(--success); font-weight: 700; font-size: 0.88em; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .micro-tip {
+            background: rgba(212,175,55,0.1); border-left: 3px solid var(--gold-primary);
+            padding: 12px 16px; border-radius: 6px;
+            color: var(--gray-light); font-size: 0.92em; line-height: 1.6;
+        }
+        .micro-tip strong { color: var(--gold-primary); }
+        .micro-summary {
+            background: var(--navy-dark); border: 2px solid var(--gold-primary);
+            border-radius: 14px; padding: 25px; margin-bottom: 25px; text-align: center;
+        }
+        .micro-summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; }
+        .micro-summary-item {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(212,175,55,0.08); padding: 12px 16px;
+            border-radius: 10px; font-size: 0.95em; color: var(--white);
+        }
+        .micro-summary-icon { font-size: 1.4em; }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.5rem;
-            }
-            
-            main {
-                padding: 25px;
-            }
-            
-            .scene-title {
-                font-size: 1.5rem;
-            }
-            
-            .option-card {
-                padding: 18px;
-            }
-            
-            .results-score {
-                font-size: 3rem;
-            }
-            
-            .results-level {
-                font-size: 1.5rem;
-            }
-
-            .stats-dashboard {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Animación de fade in */
-        .fade-in {
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            .score-panel { position: static; margin: 15px auto; max-width: 250px; }
+            .header h1 { font-size: 1.5em; }
+            .content { padding: 20px; }
+            .section-title { font-size: 1.3em; }
+            .question-text { font-size: 1.05em; }
+            .final-score { font-size: 3em; }
+            .classification { font-size: 1em; padding: 10px 25px; }
+            .strategy-card { flex-wrap: wrap; }
+            .strategy-status { border-left: none; padding-left: 0; width: 100%; padding-top: 8px; border-top: 1px solid var(--navy-light); }
+            .intermediate-score-value { font-size: 3em; }
+            .micro-do-dont { grid-template-columns: 1fr; }
+            .micro-summary-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div id="scorm-container">
-        <header>
-            <div class="header-icon">🎯</div>
-            <h1>Simulador de Estrategias de Comunicación</h1>
-            <p class="header-subtitle">MENDOZA LAW FIRM - Call Backs con Clientes</p>
-        </header>
 
-        <!-- Dashboard de estadísticas -->
-        <div class="stats-dashboard">
-            <div class="stat-card">
-                <div class="stat-number" id="stat-escenario">0/5</div>
-                <div class="stat-label">ESCENARIO</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="stat-correctas">0</div>
-                <div class="stat-label">CORRECTAS</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="stat-puntuacion">0%</div>
-                <div class="stat-label">PUNTUACIÓN</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="stat-estandares">0</div>
-                <div class="stat-label">ESTÁNDARES</div>
+    <!-- SCORE PANEL -->
+    <div class="score-panel">
+        <div class="label">Puntuación</div>
+        <div class="score-value" id="currentScore">0</div>
+        <div class="score-total">/ 55 pts</div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>Manejo Estratégico de Emociones del Cliente</h1>
+            <div class="objective">
+                Evalúa tu capacidad para manejar emocionalmente a un cliente durante una llamada legal aplicando el Modelo MGM: Manejar la emoción, Guiar con neutralidad, Mover hacia solución/compromiso.
             </div>
         </div>
 
-        <main id="content-area">
-            <!-- El contenido se cargará dinámicamente aquí -->
-        </main>
-        
-        <footer>
-            <button id="prev-btn" style="display:none;">← Anterior</button>
-            <button id="next-btn" class="hidden">Siguiente →</button>
-        </footer>
-    </div>
+        <!-- PROGRESS -->
+        <div class="progress-container">
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">Progreso: 0%</div>
+        </div>
+
+        <!-- STEP INDICATOR -->
+        <div class="step-indicator" id="stepIndicator">
+            <div class="step-dot active" data-step="0"></div>
+            <div class="step-dot" data-step="1"></div>
+            <div class="step-dot" data-step="2"></div>
+            <div class="step-dot" data-step="3"></div>
+            <div class="step-dot" data-step="4"></div>
+            <div class="step-dot" data-step="5"></div>
+            <div class="step-dot" data-step="6"></div>
+            <div class="step-dot" data-step="7"></div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <!-- ========== PAGE 0: VIDEO 1 ========== -->
+            <div class="page active" id="page0">
+                <h2 class="section-title">Video 1: Cliente con Alta Carga Emocional</h2>
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <iframe loading="lazy"
+                            src="https://www.canva.com/design/DAHA2JdeB38/MIptcTDCCR73XDiT7CVHpA/watch?embed"
+                            allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
+                    </div>
+                    <div class="video-info">
+                        <strong>Instrucciones:</strong>
+                        Observa atentamente cómo el cliente expresa sus emociones. Presta atención a su estado emocional, lenguaje y necesidades subyacentes.
+                    </div>
+                </div>
+                <button class="btn-gold" onclick="APP.goToPage(1)">▶ Continuar a Selección de Estrategias</button>
+            </div>
+
+            <!-- ========== PAGE 1: STRATEGY SELECTION ========== -->
+            <div class="page" id="page1">
+                <h2 class="section-title">📋 Selecciona las Estrategias que Utilizarías</h2>
+                <p class="strategies-intro">Marca todas las estrategias de manejo de emociones que aplicarías en esta situación con el cliente.</p>
+
+                <div class="strategies-grid" id="strategiesGrid">
+                    <div class="strategy-card" data-strategy="escucha-activa" data-name="Escucha Activa Empática">
+                        <div class="strategy-icon">🎧</div>
+                        <div class="strategy-content">
+                            <div class="strategy-name">Escucha Activa Empática</div>
+                            <div class="strategy-description">Permite que los clientes expresen completamente su frustración, dolor o desesperación sin interrumpir prematuramente.</div>
+                        </div>
+                        <div class="strategy-status"><span class="status-indicator">No seleccionada</span></div>
+                    </div>
+
+                    <div class="strategy-card" data-strategy="validacion-inmediata" data-name="Validación Inmediata de Frustraciones y Emociones">
+                        <div class="strategy-icon">✓</div>
+                        <div class="strategy-content">
+                            <div class="strategy-name">Validación Inmediata de Frustraciones y Emociones</div>
+                            <div class="strategy-description">La abogada reconoce abiertamente cuando hay demoras o problemas sin minimizar la experiencia del cliente ("Lo siento", "Lo entiendo").</div>
+                        </div>
+                        <div class="strategy-status"><span class="status-indicator">No seleccionada</span></div>
+                    </div>
+
+                    <div class="strategy-card" data-strategy="balance-empatia" data-name="Balance entre Empatía y Acción">
+                        <div class="strategy-icon">⚖️</div>
+                        <div class="strategy-content">
+                            <div class="strategy-name">Balance entre Empatía y Acción</div>
+                            <div class="strategy-description">Después de validar emociones, pivota rápidamente hacia soluciones concretas con preguntas estratégicas (Déjame hacer algunas preguntas).</div>
+                        </div>
+                        <div class="strategy-status"><span class="status-indicator">No seleccionada</span></div>
+                    </div>
+
+                    <div class="strategy-card" data-strategy="lenguaje-emocional" data-name="Uso Estratégico de Lenguaje Emocional">
+                        <div class="strategy-icon">💬</div>
+                        <div class="strategy-content">
+                            <div class="strategy-name">Uso Estratégico de Lenguaje Emocional</div>
+                            <div class="strategy-description">En situaciones apropiadas, usa expresiones para conectar emocionalmente, reconociendo cuando podría no ser completamente profesional.</div>
+                        </div>
+                        <div class="strategy-status"><span class="status-indicator">No seleccionada</span></div>
+                    </div>
+
+                    <div class="strategy-card" data-strategy="cuidado-seguridad" data-name="Cuidar la Seguridad del Cliente">
+                        <div class="strategy-icon">🛡️</div>
+                        <div class="strategy-content">
+                            <div class="strategy-name">Cuidar la Seguridad del Cliente</div>
+                            <div class="strategy-description">Asegurarse al inicio y durante la llamada que ese encuentro en un lugar seguro ("Estás en un lugar seguro para hablar", "si va manejando, podemos hablar cuando llegues a casa").</div>
+                        </div>
+                        <div class="strategy-status"><span class="status-indicator">No seleccionada</span></div>
+                    </div>
+                </div>
+
+                <div class="strategy-feedback-box" id="strategyFeedbackBox"></div>
+
+                <div class="strategies-summary">
+                    <div class="summary-content">
+                        <strong>Estrategias seleccionadas:</strong> <span id="selectedCount">0</span> de 5
+                    </div>
+                </div>
+
+                <button class="btn-gold" id="confirmStrategiesBtn">✓ Confirmar Selección y Continuar</button>
+            </div>
+
+            <!-- ========== PAGE 2: REFLECTION ========== -->
+            <div class="page" id="page2">
+                <h2 class="section-title">📝 Tu Estrategia Personal</h2>
+                <p class="strategies-intro">Reflexiona por escrito sobre cómo manejarías esta situación. Esta reflexión es parte fundamental de tu evaluación y aprendizaje.</p>
+
+                <div class="reflection-card">
+                    <div class="reflection-question">
+                        <label for="whatWouldDo">
+                            <strong>1. ¿Qué harías en esta situación?</strong>
+                            <span class="label-hint">Describe las acciones concretas que tomarías</span>
+                        </label>
+                        <textarea id="whatWouldDo" rows="4"></textarea>
+                    </div>
+
+                    <div class="reflection-question">
+                        <label for="whatWouldSay">
+                            <strong>2. ¿Qué le dirías al cliente?</strong>
+                            <span class="label-hint">Escribe exactamente las frases o palabras que usarías</span>
+                        </label>
+                        <textarea id="whatWouldSay" rows="4"></textarea>
+                    </div>
+
+                    <div class="reflection-question">
+                        <label for="mgmImplementation">
+                            <strong>3. ¿Cómo implementarías el Modelo MGM paso a paso?</strong>
+                            <span class="label-hint">Describe cómo aplicarías cada fase: Manejar → Guiar → Mover</span>
+                        </label>
+                        <textarea id="mgmImplementation"
+                            placeholder="Ejemplo:&#10;M (Manejar): Validaría su emoción diciendo 'entiendo tu preocupación'&#10;G (Guiar): Le preguntaría detalles específicos con neutralidad&#10;M (Mover): Propondría un plan de acción concreto..."
+                            rows="6"></textarea>
+                    </div>
+
+                    <button class="btn-gold" id="saveReflectionBtn">💾 Guardar mis Respuestas y Continuar</button>
+
+                    <div class="reflection-saved" id="reflectionSaved">
+                        <strong>✓ Respuestas guardadas exitosamente.</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== PAGE 3: INTERMEDIATE RESULT ========== -->
+            <div class="page" id="page3">
+                <h2 class="section-title">📊 Resultado Sección 1: Estrategias</h2>
+                <div class="intermediate-card">
+                    <div class="intermediate-content">
+                        <div class="intermediate-score-display">
+                            <div class="intermediate-label">Tu Puntuación - Sección 1</div>
+                            <div class="intermediate-score-value" id="intermediateScoreValue">0</div>
+                            <div class="intermediate-score-detail" id="intermediateScoreDetail">de 15 puntos posibles</div>
+                            <div class="intermediate-percentage" id="intermediatePercentage">0%</div>
+                        </div>
+                        <div class="intermediate-feedback" id="intermediateFeedback"></div>
+                        <button class="btn-gold" onclick="APP.goToPage(4)">➡️ Continuar a Video de la Abogada</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== PAGE 4: LAWYER VIDEO ========== -->
+            <div class="page" id="page4">
+                <h2 class="section-title">🎬 Observa Cómo lo Manejó la Abogada</h2>
+                <div class="comparison-intro">
+                    Ahora verás cómo la abogada aplicó las estrategias del Modelo MGM en una situación real con el cliente.
+                </div>
+
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <iframe loading="lazy"
+                            src="https://www.canva.com/design/DAHBf6BR6_A/SRJxBYKf1xU0_b70UM9zyg/watch?embed"
+                            allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
+                    </div>
+                    <div class="video-info">
+                        <strong>Observa:</strong>
+                        Presta atención a cómo la abogada implementa cada fase del Modelo MGM y las 5 estrategias fundamentales durante la llamada.
+                    </div>
+                </div>
+
+                <h2 class="section-title" style="margin-top: 35px;">📊 Análisis Detallado por Momentos Clave</h2>
+
+                <div class="moments-container">
+                    <div class="moment-card">
+                        <div class="moment-number">1</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Validación Inmediata de Frustraciones y Emociones</h3>
+                            <p class="moment-description">
+                                <strong>Frase clave:</strong> "¡Lo siento mucho!"<br>
+                                La abogada comienza con una validación emocional inmediata, reconociendo el estado del cliente sin minimizar su experiencia.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-number">2</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Cuidar la Seguridad del Cliente</h3>
+                            <p class="moment-description">Asegurarse al inicio y durante la llamada que el cliente se encuentre en un lugar seguro. Prioriza el bienestar físico antes que los detalles legales.</p>
+                        </div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-number">3</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Escucha Activa Empática</h3>
+                            <p class="moment-description">Permite que el cliente exprese completamente su frustración, dolor o desesperación sin interrumpir prematuramente. Crea espacio seguro para la expresión emocional.</p>
+                        </div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-number">4</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Explicación del Retraso de los Recibos</h3>
+                            <p class="moment-description">Proporciona contexto claro sobre la situación sin evadir responsabilidad. Educa al cliente sobre los procesos mientras mantiene la transparencia.</p>
+                        </div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-number">5</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Validación con Experiencia Profesional</h3>
+                            <p class="moment-description">
+                                <strong>Frase clave:</strong> "A lo largo de mi carrera mi experiencia es..."<br>
+                                Usa su experiencia para validar que la preocupación es legítima.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-number">6</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Balance entre Empatía y Acción</h3>
+                            <p class="moment-description">Después de validar emociones, pivota rápidamente hacia soluciones concretas. Transforma elemento de miedo en herramienta legal empoderadora o a favor del cliente.</p>
+                        </div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-number">7</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Estrategia Legal con Ejemplo</h3>
+                            <p class="moment-description">Pone de ejemplo a otra clienta y habla de la carta de demanda a USCIS para que envíen el recibo. Usa casos similares para generar confianza.</p>
+                        </div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-number">8</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Uso Estratégico de Lenguaje Emocional</h3>
+                            <p class="moment-description">
+                                <strong>Frases clave:</strong> "Me imagino que estás pasando por mucho... estás en todo el derecho para sentir... Lo siento mucho por el miedo y el pánico"<br>
+                                Usa expresiones para conectar emocionalmente, reconociendo cuando podría no ser completamente profesional pero es necesario para la conexión humana.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-number">9</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Validación Continua</h3>
+                            <p class="moment-description">
+                                <strong>Frases clave:</strong> "Lo siento", "Lo entiendo totalmente"<br>
+                                Mantiene la validación emocional a lo largo de toda la conversación, no solo al inicio.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-number">10</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Gestión de Expectativas</h3>
+                            <p class="moment-description">
+                                <strong>Frase clave:</strong> "Te aseguro que metimos tu caso, los tiempos no es lo normal pero es algo que estamos viendo en la segunda administración de Trump"<br>
+                                Proporciona contexto realista sin generar falsas esperanzas.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-number">11</div>
+                        <div class="moment-content">
+                            <h3 class="moment-title">Recuperación de la Confianza y Compromiso Personal</h3>
+                            <p class="moment-description">
+                                <strong>Compromiso:</strong> "Déjame trabajar en la carta de amenaza"<br>
+                                Cierra con acción concreta, plazos específicos y expectativas realistas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="strategies-checklist" style="margin-top: 30px;">
+                    <h3 class="checklist-title">✅ Resumen: Estrategias del Modelo MGM Implementadas</h3>
+                    <div class="checklist-items">
+                        <div class="checklist-item">
+                            <div class="check-icon">✓</div>
+                            <div class="check-text"><strong>Escucha activa empática:</strong> Permitió expresión completa sin interrupciones</div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">✓</div>
+                            <div class="check-text"><strong>Validación inmediata:</strong> Reconoció emociones explícitamente múltiples veces</div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">✓</div>
+                            <div class="check-text"><strong>Balance empatía-acción:</strong> Pivotó hacia soluciones concretas tras validar</div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">✓</div>
+                            <div class="check-text"><strong>Lenguaje emocional estratégico:</strong> Conectó humanamente cuando fue apropiado</div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="check-icon">✓</div>
+                            <div class="check-text"><strong>Cuidado de seguridad:</strong> Verificó lugar seguro al inicio y durante la llamada</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-gold" onclick="APP.goToPage(5)">➡️ Continuar: Microexpresiones en Videollamadas</button>
+            </div>
+
+            <!-- ========== PAGE 5: MICROEXPRESSIONS ========== -->
+            <div class="page" id="page5">
+                <h2 class="section-title">🎭 Microexpresiones y su Importancia en Videollamadas</h2>
+
+                <p class="strategies-intro" style="margin-bottom: 30px;">
+                    En las videollamadas legales, las microexpresiones juegan un papel crucial. Aunque no tenemos contacto físico con el cliente, nuestra comunicación no verbal a través de la cámara puede <strong style="color: var(--gold-primary);">fortalecer la confianza o destruirla</strong> en cuestión de segundos.
+                </p>
+
+                <!-- MICRO: Contacto Visual -->
+                <div class="micro-section">
+                    <div class="micro-card">
+                        <div class="micro-header">
+                            <div class="micro-icon">👁️</div>
+                            <div>
+                                <h3 class="micro-title">Contacto Visual</h3>
+                                <span class="micro-badge micro-badge-warning">⚠ Cuidado</span>
+                            </div>
+                        </div>
+                        <div class="micro-body">
+                            <div class="micro-do-dont">
+                                <div class="micro-dont">
+                                    <div class="micro-label-bad">✗ Evitar</div>
+                                    <p>Mirar hacia otro lado, revisar el celular o leer documentos mientras el cliente habla. <strong>Se interpreta como desinterés o prisa.</strong></p>
+                                </div>
+                                <div class="micro-do">
+                                    <div class="micro-label-good">✓ Practicar</div>
+                                    <p>Mirar directamente a la cámara (no a la pantalla) cuando el cliente habla. Esto simula contacto visual directo y transmite atención plena.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MICRO: Expresión Facial -->
+                    <div class="micro-card">
+                        <div class="micro-header">
+                            <div class="micro-icon">😐</div>
+                            <div>
+                                <h3 class="micro-title">Expresión Facial</h3>
+                                <span class="micro-badge micro-badge-warning">⚠ Cuidado</span>
+                            </div>
+                        </div>
+                        <div class="micro-body">
+                            <div class="micro-do-dont">
+                                <div class="micro-dont">
+                                    <div class="micro-label-bad">✗ Evitar</div>
+                                    <p>Mantener un rostro rígido o neutro prolongado. <strong>Se percibe como frialdad</strong> y desconexión emocional, especialmente cuando el cliente está angustiado.</p>
+                                </div>
+                                <div class="micro-do">
+                                    <div class="micro-label-good">✓ Practicar</div>
+                                    <p>Reflejar las emociones del cliente con expresiones faciales sutiles: ceño ligeramente fruncido ante su dolor, suavizar la mirada al validar. La congruencia emocional genera confianza.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MICRO: Asentir -->
+                    <div class="micro-card">
+                        <div class="micro-header">
+                            <div class="micro-icon">✅</div>
+                            <div>
+                                <h3 class="micro-title">Asentir Suavemente</h3>
+                                <span class="micro-badge micro-badge-success">✓ Recomendado</span>
+                            </div>
+                        </div>
+                        <div class="micro-body">
+                            <p style="color: var(--gray-light); line-height: 1.7; margin-bottom: 12px;">Asentir con la cabeza mientras el cliente habla <strong style="color: var(--success);">refuerza la sensación de escucha activa</strong>. No es necesario hablar para demostrar que estás presente.</p>
+                            <div class="micro-tip">
+                                <strong>💡 Tip para videollamadas:</strong> En cámara, los movimientos deben ser ligeramente más pronunciados que en persona, ya que la imagen se comprime y los gestos sutiles pueden perderse.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MICRO: Silencios -->
+                    <div class="micro-card">
+                        <div class="micro-header">
+                            <div class="micro-icon">⏸️</div>
+                            <div>
+                                <h3 class="micro-title">Manejo de Silencios</h3>
+                                <span class="micro-badge micro-badge-success">✓ Recomendado</span>
+                            </div>
+                        </div>
+                        <div class="micro-body">
+                            <p style="color: var(--gray-light); line-height: 1.7; margin-bottom: 12px;">Cuando necesites revisar un expediente o tomar una pausa, <strong style="color: var(--white);">explica brevemente la acción</strong> para proteger la confianza del cliente.</p>
+                            <div class="micro-tip">
+                                <strong>💡 Ejemplo:</strong> "Le pido un segundo, estoy revisando su expediente para no equivocarme." Explicar brevemente la acción protege la confianza y evita que el silencio se interprete como desinterés.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen visual -->
+                <div class="micro-summary">
+                    <h3 style="color: var(--gold-primary); margin-bottom: 15px; font-size: 1.2em;">📋 Recuerda en cada Videollamada</h3>
+                    <div class="micro-summary-grid">
+                        <div class="micro-summary-item">
+                            <span class="micro-summary-icon">👁️</span>
+                            <span>Mira a la cámara, no a la pantalla</span>
+                        </div>
+                        <div class="micro-summary-item">
+                            <span class="micro-summary-icon">🪞</span>
+                            <span>Refleja las emociones del cliente</span>
+                        </div>
+                        <div class="micro-summary-item">
+                            <span class="micro-summary-icon">✅</span>
+                            <span>Asiente visiblemente al escuchar</span>
+                        </div>
+                        <div class="micro-summary-item">
+                            <span class="micro-summary-icon">🗣️</span>
+                            <span>Narra tus silencios breves</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-gold" onclick="APP.goToPage(6)">➡️ Continuar a la Evaluación</button>
+            </div>
+
+            <!-- ========== PAGE 6: EVALUATION QUESTIONS ========== -->
+            <div class="page" id="page6">
+                <h2 class="section-title">📝 Evaluación Estratégica</h2>
+                <p class="strategies-intro" style="margin-bottom: 30px;">Basándote en lo que observaste en el video de la abogada y el análisis por momentos, responde las siguientes preguntas.</p>
+
+                    <div class="question-card" id="question1">
+                        <span class="question-number">Pregunta 1 de 4</span>
+                        <div class="question-text">¿Cuál debe ser la primera intervención ante una cliente en pánico mientras maneja?</div>
+                        <div class="options">
+                            <div class="option" data-question="1" data-points="4">
+                                <div class="option-letter">A</div>
+                                <div class="option-text">Explicar el proceso legal inmediatamente</div>
+                            </div>
+                            <div class="option" data-question="1" data-points="5">
+                                <div class="option-letter">B</div>
+                                <div class="option-text">Pedir detalles específicos del caso</div>
+                            </div>
+                            <div class="option" data-question="1" data-points="10">
+                                <div class="option-letter">C</div>
+                                <div class="option-text">Verificar seguridad física y validar la emoción</div>
+                            </div>
+                            <div class="option" data-question="1" data-points="-2">
+                                <div class="option-letter">D</div>
+                                <div class="option-text">Decirle que debe calmarse para poder hablar</div>
+                            </div>
+                        </div>
+                        <div class="feedback" id="feedback1"></div>
+                    </div>
+
+                    <div class="question-card" id="question2">
+                        <span class="question-number">Pregunta 2 de 4</span>
+                        <div class="question-text">¿Qué herramienta emocional reduce la defensividad del cliente y facilita la conexión?</div>
+                        <div class="options">
+                            <div class="option" data-question="2" data-points="3">
+                                <div class="option-letter">A</div>
+                                <div class="option-text">Corrección inmediata de percepciones legales incorrectas</div>
+                            </div>
+                            <div class="option" data-question="2" data-points="10">
+                                <div class="option-letter">B</div>
+                                <div class="option-text">Validación inmediata de frustraciones y emociones</div>
+                            </div>
+                            <div class="option" data-question="2" data-points="2">
+                                <div class="option-letter">C</div>
+                                <div class="option-text">Cambio inmediato hacia soluciones prácticas</div>
+                            </div>
+                            <div class="option" data-question="2" data-points="-2">
+                                <div class="option-letter">D</div>
+                                <div class="option-text">Minimización del miedo para reducir ansiedad</div>
+                            </div>
+                        </div>
+                        <div class="feedback" id="feedback2"></div>
+                    </div>
+
+                    <div class="question-card" id="question3">
+                        <span class="question-number">Pregunta 3 de 4</span>
+                        <div class="question-text">Según el Modelo MGM, después de manejar la emoción y guiar con neutralidad, el siguiente paso es:</div>
+                        <div class="options">
+                            <div class="option" data-question="3" data-points="2">
+                                <div class="option-letter">A</div>
+                                <div class="option-text">Cerrar la llamada y agendar seguimiento</div>
+                            </div>
+                            <div class="option" data-question="3" data-points="10">
+                                <div class="option-letter">B</div>
+                                <div class="option-text">Mover hacia solución concreta o compromiso de acción</div>
+                            </div>
+                            <div class="option" data-question="3" data-points="-2">
+                                <div class="option-letter">C</div>
+                                <div class="option-text">Advertir sobre las consecuencias legales</div>
+                            </div>
+                            <div class="option" data-question="3" data-points="4">
+                                <div class="option-letter">D</div>
+                                <div class="option-text">Esperar a que el cliente proponga el siguiente paso</div>
+                            </div>
+                        </div>
+                        <div class="feedback" id="feedback3"></div>
+                    </div>
+
+                    <div class="question-card" id="question4">
+                        <span class="question-number">Pregunta 4 de 4</span>
+                        <div class="question-text">De las siguientes estrategias de manejo de emociones del cliente, ¿cuál NO forma parte de las 5 estrategias fundamentales?</div>
+                        <div class="options">
+                            <div class="option" data-question="4" data-points="10">
+                                <div class="option-letter">A</div>
+                                <div class="option-text">Confrontar directamente las percepciones incorrectas del cliente</div>
+                            </div>
+                            <div class="option" data-question="4" data-points="-2">
+                                <div class="option-letter">B</div>
+                                <div class="option-text">Escucha activa empática sin interrumpir</div>
+                            </div>
+                            <div class="option" data-question="4" data-points="-2">
+                                <div class="option-letter">C</div>
+                                <div class="option-text">Validación inmediata de frustraciones y emociones</div>
+                            </div>
+                            <div class="option" data-question="4" data-points="-2">
+                                <div class="option-letter">D</div>
+                                <div class="option-text">Cuidar la seguridad del cliente verificando su ubicación</div>
+                            </div>
+                        </div>
+                        <div class="feedback" id="feedback4"></div>
+                    </div>
+            </div>
+
+            <!-- ========== PAGE 7: FINAL RESULTS ========== -->
+            <div class="page" id="page7">
+                <h2 class="section-title">🏆 Resultado Final</h2>
+                <div class="results-card">
+                    <div class="results-content">
+                        <div class="final-score" id="finalScore">0</div>
+                        <div class="score-label" id="scoreLabel">Puntos sobre 55</div>
+                        <div class="classification" id="classification"></div>
+                        <div class="final-feedback">
+                            <h3>📊 Análisis de Desempeño</h3>
+                            <p id="finalFeedbackText"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- end .content -->
+    </div><!-- end .container -->
 
     <script>
-        // Initialize SCORM
-        window.addEventListener('load', function() {
-            SCORM.init();
-        });
+    // ============================================================
+    // SCORM 1.2 API - Proper LMS Communication
+    // ============================================================
+    var SCORM = (function() {
+        var api = null;
+        var initialized = false;
+        var finished = false;
 
-        // Simulator State
-        const simulatorState = {
-            currentScene: 0,
-            totalScore: 0,
-            maxScore: 75,
-            correctAnswers: 0,
-            decisions: [],
-            answered: false
+        function findAPI(win) {
+            var tries = 0;
+            while (win && tries < 500) {
+                if (win.API) return win.API;
+                if (win === win.parent) break;
+                win = win.parent;
+                tries++;
+            }
+            return null;
+        }
+
+        function getAPI() {
+            var theAPI = findAPI(window);
+            if (!theAPI && window.opener) {
+                theAPI = findAPI(window.opener);
+            }
+            return theAPI;
+        }
+
+        function init() {
+            api = getAPI();
+            if (api) {
+                try {
+                    var result = api.LMSInitialize("");
+                    initialized = (result === "true" || result === true || result === 1);
+                    if (initialized) {
+                        api.LMSSetValue("cmi.core.lesson_status", "incomplete");
+                        api.LMSSetValue("cmi.core.score.min", "0");
+                        api.LMSSetValue("cmi.core.score.max", "55");
+                        api.LMSCommit("");
+                    }
+                } catch(e) {
+                    console.warn("SCORM init error:", e);
+                }
+            } else {
+                console.log("SCORM API not found - running standalone");
+            }
+            return initialized;
+        }
+
+        function setValue(key, value) {
+            if (api && initialized && !finished) {
+                try {
+                    api.LMSSetValue(key, String(value));
+                    api.LMSCommit("");
+                } catch(e) { console.warn("SCORM set error:", e); }
+            }
+        }
+
+        function getValue(key) {
+            if (api && initialized) {
+                try { return api.LMSGetValue(key); } catch(e) { return ""; }
+            }
+            return "";
+        }
+
+        function finish(score, maxScore, passed) {
+            if (api && initialized && !finished) {
+                try {
+                    finished = true;
+                    api.LMSSetValue("cmi.core.score.raw", String(score));
+                    api.LMSSetValue("cmi.core.score.max", String(maxScore));
+                    api.LMSSetValue("cmi.core.score.min", "0");
+                    api.LMSSetValue("cmi.core.lesson_status", passed ? "passed" : "failed");
+                    api.LMSSetValue("cmi.core.lesson_location", "completed");
+                    api.LMSSetValue("cmi.core.exit", "");
+                    api.LMSCommit("");
+                    api.LMSFinish("");
+                } catch(e) { console.warn("SCORM finish error:", e); }
+            }
+        }
+
+        function saveProgress(score, data) {
+            if (api && initialized && !finished) {
+                try {
+                    api.LMSSetValue("cmi.core.score.raw", String(score));
+                    api.LMSSetValue("cmi.core.score.max", "55");
+                    api.LMSSetValue("cmi.core.lesson_location", "page_" + (data.currentPage || 0));
+                    try { api.LMSSetValue("cmi.suspend_data", JSON.stringify(data)); } catch(e) {}
+                    api.LMSCommit("");
+                } catch(e) { console.warn("SCORM save error:", e); }
+            }
+        }
+
+        return { init: init, setValue: setValue, getValue: getValue, finish: finish, saveProgress: saveProgress };
+    })();
+
+    // ============================================================
+    // MAIN APPLICATION
+    // ============================================================
+    var APP = (function() {
+        // --- State ---
+        var currentPage = 0;
+        var totalPages = 8; // 0..7
+        var currentScore = 0;
+        var selectedStrategies = new Set();
+        var strategiesLocked = false;
+        var questionsAnswered = {};
+        var totalQuestionsAnswered = 0;
+        var TOTAL_EVAL_QUESTIONS = 4;
+        var MAX_SCORE = 55;
+        var reflectionData = {};
+
+        // --- Strategy feedbacks ---
+        var strategyFeedbacks = {
+            'escucha-activa': '✓ Excelente elección. La escucha empática sin interrupciones es fundamental para que el cliente se sienta verdaderamente escuchado.',
+            'validacion-inmediata': '✓ Muy bien. Validar las emociones del cliente reduce su defensividad y crea conexión terapéutica.',
+            'balance-empatia': '✓ Correcto. El balance entre empatía y acción evita que la llamada se estanque en la emoción sin avanzar hacia soluciones.',
+            'lenguaje-emocional': '✓ Acertado. El lenguaje emocional apropiado humaniza la interacción y genera confianza.',
+            'cuidado-seguridad': '✓ Fundamental. La seguridad del cliente siempre debe ser lo primero, especialmente si está conduciendo o en situación de riesgo.'
         };
 
-        // Update dashboard stats
-        function updateDashboard() {
-            const totalScenes = 5;
-            const completedScenes = Math.min(simulatorState.currentScene, totalScenes);
-            const percentage = simulatorState.maxScore > 0 ? Math.round((simulatorState.totalScore / simulatorState.maxScore) * 100) : 0;
-            
-            document.getElementById('stat-escenario').textContent = `${completedScenes}/${totalScenes}`;
-            document.getElementById('stat-correctas').textContent = simulatorState.correctAnswers;
-            document.getElementById('stat-puntuacion').textContent = `${percentage}%`;
-            document.getElementById('stat-estandares').textContent = simulatorState.decisions.filter(d => d.points >= 15).length;
+        // --- Question feedbacks ---
+        var feedbackMessages = {
+            1: {
+                10:  { type: 'excellent', message: '<strong>✓ Excelente aplicación del Modelo MGM (Manejar emoción).</strong> La seguridad física es siempre prioridad. Validar la emoción sin interrumpir permite que el cliente se sienta escuchado antes de procesar información legal.' },
+                5:   { type: 'good', message: '<strong>⚠ Enfoque prematuro.</strong> Recopilar detalles es importante, pero primero debes asegurar que el cliente esté en condiciones emocionales seguras para proporcionarlos.' },
+                4:   { type: 'good', message: '<strong>⚠ Sobrecarga cognitiva.</strong> Explicar procesos a alguien emocionalmente activado puede aumentar su ansiedad. Primero maneja la emoción, luego informa.' },
+                '-2': { type: 'poor', message: '<strong>✗ Invalidación emocional.</strong> Ordenar que se calme invalida su experiencia y puede escalar la situación. La regulación emocional requiere validación, no instrucción.' }
+            },
+            2: {
+                10:  { type: 'excellent', message: '<strong>✓ Dominio del Modelo MGM (Manejar emoción).</strong> La validación inmediata de frustraciones desarma defensividad porque el cliente siente que su experiencia emocional es legítima y comprendida.' },
+                3:   { type: 'poor', message: '<strong>✗ Enfoque que aumenta resistencia.</strong> Corregir percepciones cuando el cliente está emocionalmente activado activa sus defensas psicológicas. Primero valida, luego clarifica.' },
+                2:   { type: 'poor', message: '<strong>✗ Salto prematuro a soluciones.</strong> Moverse hacia lo práctico sin validar primero puede hacer que el cliente sienta que sus emociones no importan.' },
+                '-2': { type: 'poor', message: '<strong>✗ Invalidación emocional grave.</strong> Minimizar el miedo bloquea la conexión terapéutica y puede hacer que el cliente se cierre emocionalmente.' }
+            },
+            3: {
+                10:  { type: 'excellent', message: '<strong>✓ Aplicación perfecta del Modelo MGM (Mover hacia solución).</strong> Ofrecer acción concreta devuelve sensación de control y empoderamiento al cliente.' },
+                4:   { type: 'good', message: '<strong>⚠ Enfoque pasivo.</strong> Esperar sin dirección puede hacer que el cliente se sienta desorientado. El profesional debe guiar hacia acción después de validar emocionalmente.' },
+                2:   { type: 'poor', message: '<strong>✗ Cierre prematuro.</strong> Terminar la llamada después de validar desperdicia la oportunidad de empoderar al cliente con pasos concretos.' },
+                '-2': { type: 'poor', message: '<strong>✗ Revictimización emocional.</strong> Advertir consecuencias cuando el cliente aún está emocionalmente vulnerable puede sentirse como amenaza.' }
+            },
+            4: {
+                10:  { type: 'excellent', message: '<strong>✓ Identificación correcta.</strong> Confrontar directamente NO es parte de las 5 estrategias. Las estrategias correctas son: escucha empática, validación inmediata, balance empatía-acción, lenguaje emocional estratégico, y cuidado de seguridad.' },
+                '-2': { type: 'poor', message: '<strong>✗ Esta SÍ es una estrategia fundamental.</strong> Revisa las 5 estrategias clave: 1) Escucha activa empática, 2) Validación inmediata, 3) Balance empatía-acción, 4) Lenguaje emocional estratégico, 5) Cuidado de seguridad del cliente.' }
+            }
+        };
+
+        // --- Classifications ---
+        var classifications = {
+            high:   { min: 44, label: 'Manejo Profesional del Cliente', feedback: 'Demuestras dominio avanzado del Modelo MGM (Manejar emoción → Guiar con neutralidad → Mover hacia solución). Identificaste correctamente las 5 estrategias fundamentales de manejo emocional, lo que refleja comprensión profunda del marco conceptual. Comprendes que la seguridad física y emocional del cliente es la base para cualquier intervención legal efectiva. Tu enfoque secuencial refleja sólida formación en comunicación centrada en el cliente. Continúa refinando tu capacidad para leer señales emocionales sutiles y adaptar tu respuesta en tiempo real.' },
+            medium: { min: 29, label: 'Intervención Adecuada con Áreas de Mejora', feedback: 'Tienes fundamentos sólidos en manejo emocional, pero aún hay oportunidades para profundizar en el Modelo MGM y las 5 estrategias clave. Recuerda que el orden es crucial: primero manejas la emoción validando sin interrumpir (escucha empática + validación inmediata), luego guías con neutralidad (balance empatía-acción + lenguaje emocional estratégico), y finalmente mueves hacia solución concreta. El cuidado de la seguridad del cliente debe ser transversal en todo momento. Practica identificar cuándo alguien necesita contención emocional antes que información.' },
+            low:    { min: 0, label: 'Necesita Desarrollo en Manejo Emocional', feedback: 'Tus respuestas sugieren que puedes estar priorizando procesos legales sobre el bienestar emocional del cliente. Es crítico que estudies las 5 estrategias fundamentales: (1) Escucha activa empática, (2) Validación inmediata, (3) Balance empatía-acción, (4) Lenguaje emocional estratégico, (5) Cuidado de seguridad. Desarrolla competencias en el Modelo MGM completo. Considera formación adicional en técnicas de comunicación empática centrada en el cliente.' }
+        };
+
+        // --- DOM refs ---
+        var scoreDisplay, progressBar, progressText;
+
+        // --- Init ---
+        function init() {
+            SCORM.init();
+            scoreDisplay = document.getElementById('currentScore');
+            progressBar = document.getElementById('progressBar');
+            progressText = document.getElementById('progressText');
+
+            // Strategy card clicks
+            document.querySelectorAll('.strategy-card').forEach(function(card) {
+                card.addEventListener('click', function(e) {
+                    if (strategiesLocked) return;
+                    toggleStrategy(card);
+                });
+            });
+
+            // Confirm strategies
+            document.getElementById('confirmStrategiesBtn').addEventListener('click', confirmStrategies);
+
+            // Save reflection
+            document.getElementById('saveReflectionBtn').addEventListener('click', saveReflection);
+
+            // Evaluation question clicks
+            document.querySelectorAll('.option').forEach(function(opt) {
+                opt.addEventListener('click', handleAnswer);
+            });
+
+            // Unload — ensure SCORM data is saved
+            window.addEventListener('beforeunload', function() {
+                if (totalQuestionsAnswered === TOTAL_EVAL_QUESTIONS) {
+                    SCORM.finish(currentScore, MAX_SCORE, currentScore >= 44);
+                } else {
+                    SCORM.saveProgress(currentScore, { currentPage: currentPage, partial: true });
+                }
+            });
+
+            updateUI();
         }
 
-        // Scene Data
-        const scenes = [
-            {
-                id: 'intro',
-                title: 'Bienvenida',
-                content: `
-                    <div class="welcome-screen">
-                        <div class="welcome-icon">🎯</div>
-                        <h2 class="welcome-title">Practica tus Habilidades</h2>
-                        <p class="welcome-description">
-                            Bienvenido al simulador de call backs de MENDOZA LAW FIRM.<br>
-                            Aquí pondrás en práctica las estrategias de comunicación aprendidas.
-                        </p>
+        // --- Page Navigation ---
+        function goToPage(pageNum) {
+            if (pageNum < 0 || pageNum >= totalPages) return;
 
-                        <div class="instructions-box">
-                            <h3 class="instructions-title">📋 Instrucciones</h3>
-                            <ul class="instructions-list">
-                                <li>Atenderás <strong>5 llamadas</strong> de clientes con diferentes situaciones reales</li>
-                                <li>En cada escena, selecciona la respuesta que mejor refleje los estándares de TMLF</li>
-                                <li>Recibirás retroalimentación detallada inmediata sobre tu elección</li>
-                                <li>Necesitas <strong>50 puntos (67%)</strong> para aprobar la evaluación</li>
-                            </ul>
+            // Hide current
+            var currentEl = document.getElementById('page' + currentPage);
+            if (currentEl) currentEl.classList.remove('active');
 
-                            <div style="margin-top: 25px; border-top: 1px solid rgba(94,234,212,0.2); padding-top: 20px;">
-                                <p style="color:#f0b928; font-weight:bold; margin-bottom:14px;">🎯 Sistema de Puntuación (por escena)</p>
-                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                                    <div style="background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.4); border-radius:8px; padding:12px; text-align:center;">
-                                        <div style="font-size:1.6rem; font-weight:bold; color:#22c55e;">15 pts</div>
-                                        <div style="color:#86efac; font-size:0.85rem; margin-top:4px;">🌟 Decisión Óptima</div>
-                                    </div>
-                                    <div style="background:rgba(234,179,8,0.12); border:1px solid rgba(234,179,8,0.4); border-radius:8px; padding:12px; text-align:center;">
-                                        <div style="font-size:1.6rem; font-weight:bold; color:#eab308;">8–12 pts</div>
-                                        <div style="color:#fde047; font-size:0.85rem; margin-top:4px;">⚠️ Decisión Parcial</div>
-                                    </div>
-                                    <div style="background:rgba(249,115,22,0.12); border:1px solid rgba(249,115,22,0.4); border-radius:8px; padding:12px; text-align:center;">
-                                        <div style="font-size:1.6rem; font-weight:bold; color:#f97316;">1–7 pts</div>
-                                        <div style="color:#fdba74; font-size:0.85rem; margin-top:4px;">⚠️ Error No Crítico</div>
-                                    </div>
-                                    <div style="background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.4); border-radius:8px; padding:12px; text-align:center;">
-                                        <div style="font-size:1.6rem; font-weight:bold; color:#ef4444;">0 pts</div>
-                                        <div style="color:#fca5a5; font-size:0.85rem; margin-top:4px;">❌ Error Crítico</div>
-                                    </div>
-                                </div>
-                                <div style="margin-top:14px; background:rgba(240,185,40,0.08); border-radius:8px; padding:12px; text-align:center;">
-                                    <span style="color:#94a3b8; font-size:0.9rem;">Puntaje máximo total: </span>
-                                    <strong style="color:#f0b928;">75 puntos</strong>
-                                    <span style="color:#94a3b8; font-size:0.9rem;"> · Aprobado: </span>
-                                    <strong style="color:#f0b928;">50 pts (67%)</strong>
-                                </div>
-                            </div>
-                        </div>
+            // Show new
+            currentPage = pageNum;
+            var newEl = document.getElementById('page' + currentPage);
+            if (newEl) newEl.classList.add('active');
 
-                        <button class="start-button" onclick="startSimulation()">Comenzar Simulación</button>
-                    </div>
-                `
-            },
-            // Escena 1
-            {
-                id: 'escena1',
-                title: 'Escena 1: La Cliente Impaciente',
-                hasOptions: true,
-                content: function() {
-                    return `
-                        <div class="scene-container">
-                            <div class="scene-header">
-                                <h2 class="scene-title">Escena 1: La Cliente Impaciente</h2>
-                                <p class="scene-subtitle">Caso: Caridad Cardona - VAWA con posible Visa T</p>
-                            </div>
+            // Update step dots
+            document.querySelectorAll('.step-dot').forEach(function(dot, i) {
+                dot.classList.remove('active', 'completed');
+                if (i < currentPage) dot.classList.add('completed');
+                if (i === currentPage) dot.classList.add('active');
+            });
 
-                            <div class="client-call-header">
-                                Nueva llamada: Caridad Cardona - Cliente desde hace 8 meses, caso VAWA en proceso
-                            </div>
-                            
-                            <div class="client-speech">
-                                <p>"Abogada, ya no sé qué pensar. Han pasado muchos meses y no he sabido nada de mi caso. Estoy pensando en abandonar todo esto de VAWA porque me dijeron que no tengo suficientes pruebas del abuso. Mi amiga me dijo que debería demandar a USCIS para que se apuren. ¿Usted cree que eso funcione? Ya no aguanto esta incertidumbre."</p>
-                            </div>
-                            
-                            <div class="info-box">
-                                <h3>Información del caso:</h3>
-                                <ul>
-                                    <li>Su caso VAWA está en proceso normal de espera</li>
-                                    <li>Los tiempos actuales de USCIS son de 2-3 años para VAWA</li>
-                                    <li>Ella tiene un historial que podría calificar para Visa T</li>
-                                    <li>No tiene evidencia física del abuso, pero hay patrones de control documentables</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="question-box">
-                                <h3>Selecciona tu respuesta:</h3>
-                                
-                                <div class="options-container" id="options-escena1">
-                                    <div class="option-card" data-option="A" data-points="8">
-                                        <span class="option-label">OPCIÓN A:</span>
-                                        <p class="option-text">"Caridad, entiendo perfectamente tu frustración. Ocho meses se sienten eternos cuando estás en la incertidumbre. Quiero que sepas que lo que estás sintiendo es completamente normal y tu caso no está abandonado. Antes de hablar de soluciones, cuéntame: ¿qué es lo que más te preocupa en este momento: los tiempos de espera o la falta de pruebas?"</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="B" data-points="0">
-                                        <span class="option-label">OPCIÓN B:</span>
-                                        <p class="option-text">"No debes abandonar tu caso VAWA. Demandar a USCIS puede ser contraproducente y tu amiga no tiene razón. Los tiempos de espera son normales y todos los casos tardan lo mismo. Debes ser paciente y confiar en el proceso. Te llamaré cuando haya novedades."</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="C" data-points="15">
-                                        <span class="option-label">OPCIÓN C:</span>
-                                        <p class="option-text">"Caridad, tu frustración es válida. Mira, tengo una propuesta estratégica para ti: vamos a mantener tu caso VAWA activo, pero quiero explorar un 'Plan B' contigo. He identificado que podrías calificar para una Visa T, que tiene un perdón más amplio y podría resolver el tema de las pruebas. ¿Te parece si revisamos esto juntas?"</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="D" data-points="3">
-                                        <span class="option-label">OPCIÓN D:</span>
-                                        <p class="option-text">"Entiendo tu preocupación. La realidad es que USCIS está muy atrasado y no podemos hacer nada al respecto. Sobre las pruebas, necesitamos conseguir más evidencia física del abuso, de lo contrario tu caso podría ser negado. ¿Tienes reportes policiales o médicos que no me hayas mostrado?"</p>
-                                    </div>
-                                </div>
-                                
-                                <button id="submit-answer" disabled>Enviar Respuesta</button>
-                            </div>
-                            
-                            <div id="feedback-escena1" class="feedback-container"></div>
-                        </div>
-                    `;
-                },
-                feedback: {
-                    A: {
-                        points: 8,
-                        title: 'Decisión Parcialmente Correcta',
-                        icon: '⚠️',
-                        scoreClass: 'score-good',
-                        content: `
-                            <div class="feedback-section">
-                                <h4>✅ Aspectos Positivos:</h4>
-                                <ul class="feedback-list">
-                                    <li><span class="check-icon">✓</span> Validas la emoción sin minimizarla</li>
-                                    <li><span class="check-icon">✓</span> Normalizas su experiencia</li>
-                                    <li><span class="check-icon">✓</span> Usas escucha activa para identificar la preocupación principal</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="feedback-section">
-                                <h4>❌ Áreas de Mejora:</h4>
-                                <ul class="feedback-list">
-                                    <li><span class="cross-icon">✗</span> No propones una solución o estrategia concreta</li>
-                                    <li><span class="cross-icon">✗</span> Podrías perder la oportunidad de presentar opciones legales viables</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="feedback-section">
-                                <h4>💡 Impacto en la Vida Real:</h4>
-                                <p>La cliente se sentirá escuchada, pero podría quedar con la sensación de que la llamada no avanzó hacia una solución. En call backs, es importante equilibrar la empatía con propuestas estratégicas concretas.</p>
-                            </div>
-                            
-                            <div class="feedback-section">
-                                <h4>📚 Estrategia Aplicada:</h4>
-                                <p><strong>Validación emocional + Escucha activa</strong></p>
-                                <p>Después de validar, transfiere rápidamente hacia opciones legales: "Entiendo tu ansiedad. Déjame proponerte dos caminos que podemos tomar juntas..."</p>
-                            </div>
-                        `
-                    },
-                    B: {
-                        points: 0,
-                        title: 'Error Crítico',
-                        icon: '❌',
-                        scoreClass: 'score-poor',
-                        content: `
-                            <div class="feedback-section">
-                                <h4>❌ Errores Críticos Identificados:</h4>
-                                <ul class="feedback-list">
-                                    <li><span class="cross-icon">✗</span> Minimizas las preocupaciones legítimas de la cliente ("debes ser paciente")</li>
-                                    <li><span class="cross-icon">✗</span> Desacreditas su red de apoyo sin explicación ("tu amiga no tiene razón")</li>
-                                    <li><span class="cross-icon">✗</span> No proporcionas alternativas ni estrategias</li>
-                                    <li><span class="cross-icon">✗</span> Cierras la comunicación ("te llamaré cuando haya novedades")</li>
-                                    <li><span class="cross-icon">✗</span> No corriges la creencia errónea sobre abandonar VAWA con empatía</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="feedback-section">
-                                <h4>⚠️ Impacto en la Vida Real:</h4>
-                                <p>La cliente se sentirá invalidada, ignorada y podría: (1) Buscar otro abogado, (2) Tomar decisiones precipitadas como abandonar el caso, (3) Perder confianza en el sistema legal. Esta respuesta rompe la relación de confianza y aumenta la ansiedad.</p>
-                            </div>
-                            
-                            <div class="feedback-section">
-                                <h4>🚨 Error Crítico:</h4>
-                                <p>En casos sensibles como VAWA, invalidar emociones puede retraumatizar a víctimas de abuso que ya experimentan falta de control.</p>
-                            </div>
-                        `
-                    },
-                    C: {
-                        points: 15,
-                        title: '¡Decisión Óptima!',
-                        icon: '🌟',
-                        scoreClass: 'score-optimal',
-                        content: `
-                            <div class="feedback-section">
-                                <h4>✅ Excelente Estrategia:</h4>
-                                <ul class="feedback-list">
-                                    <li><span class="check-icon">✓</span> Validas la emoción inmediatamente</li>
-                                    <li><span class="check-icon">✓</span> Propones una estrategia de "Plan A/Plan B" que reduce ansiedad</li>
-                                    <li><span class="check-icon">✓</span> Presentas una solución legal creativa (Visa T) basada en tu análisis del caso</li>
-                                    <li><span class="check-icon">✓</span> Abordas directamente la preocupación sobre pruebas</li>
-                                    <li><span class="check-icon">✓</span> Empoderas a la cliente invitándola a tomar la decisión contigo</li>
-                                    <li><span class="check-icon">✓</span> Mantienes el caso VAWA activo mientras exploras alternativas</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="feedback-section">
-                                <h4>💡 Impacto en la Vida Real:</h4>
-                                <p>La cliente se sentirá escuchada, aliviada al saber que hay opciones, y confiada en tu liderazgo estratégico. La propuesta de Visa T:</p>
-                                <ul>
-                                    <li>Ofrece un perdón más amplio que VAWA</li>
-                                    <li>Puede documentar el abuso de forma diferente (evaluación psicológica, patrones de control)</li>
-                                    <li>Reduce la ansiedad sobre "falta de pruebas"</li>
-                                    <li>Maximiza las posibilidades de obtener residencia</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="feedback-section">
-                                <h4>📚 Estrategia Aplicada:</h4>
-                                <p><strong>Doble vía legal (VAWA + Visa T) + Validación emocional + Transparencia estratégica + Empoderamiento del cliente</strong></p>
-                                <p>Has aplicado el enfoque proactivo multi-estratégico: en lugar de limitarte al caso original, exploraste activamente alternativas que pueden ser más favorables.</p>
-                            </div>
-                        `
-                    },
-                    D: {
-                        points: 3,
-                        title: 'Error No Crítico',
-                        icon: '⚠️',
-                        scoreClass: 'score-poor',
-                        content: `
-                            <div class="feedback-section">
-                                <h4>✅ Aspecto Positivo:</h4>
-                                <ul class="feedback-list">
-                                    <li><span class="check-icon">✓</span> Eres honesta sobre los retrasos de USCIS</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="feedback-section">
-                                <h4>❌ Errores Identificados:</h4>
-                                <ul class="feedback-list">
-                                    <li><span class="cross-icon">✗</span> Comunicas impotencia ("no podemos hacer nada")</li>
-                                    <li><span class="cross-icon">✗</span> Enfocas en lo que falta en lugar de lo que es posible</li>
-                                    <li><span class="cross-icon">✗</span> Pones presión sobre la cliente para conseguir evidencia que puede no existir</li>
-                                    <li><span class="cross-icon">✗</span> No ofreces métodos creativos de documentación del abuso</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="feedback-section">
-                                <h4>💡 Impacto en la Vida Real:</h4>
-                                <p>La cliente se sentirá desempoderada y ansiosa. En casos VAWA, muchas víctimas no tienen reportes policiales por miedo, vergüenza o porque el abuso fue psicológico. Pedir "más evidencia física" puede hacerla sentir que su experiencia no es válida.</p>
-                            </div>
-                            
-                            <div class="feedback-section">
-                                <h4>📚 Alternativa Mejor:</h4>
-                                <p>"Podemos documentar el abuso de otras formas: evaluaciones psicológicas, declaraciones juradas de testigos, análisis de patrones de control financiero o comunicaciones. No necesitas reportes policiales para tener un caso fuerte."</p>
-                            </div>
-                        `
-                    }
-                }
-            }
-        ];
-
-        // Add remaining condensed scenes (2-5) with same structure...
-        // Due to length, I'll add them in a condensed format
-
-        scenes.push(
-            {
-                id: 'escena2',
-                title: 'Escena 2: El Cliente Confundido',
-                hasOptions: true,
-                content: function() {
-                    return `
-                        <div class="scene-container">
-                            <div class="scene-header">
-                                <h2 class="scene-title">Escena 2: El Cliente Confundido</h2>
-                                <p class="scene-subtitle">Caso: VAWA con castigo permanente</p>
-                            </div>
-
-                            <div class="client-call-header">
-                                Nueva llamada: Cliente con caso VAWA - Consulta sobre hijo y castigo permanente
-                            </div>
-                            
-                            <div class="client-speech">
-                                <p>"Abogada, quería preguntarle sobre mi caso VAWA y cómo va a afectar a mi hijo. Mi hijo ya tiene su residencia, entonces no sé si el VAWA me va a servir. Además, me dijeron que tengo un castigo permanente por haber salido y entrado varias veces del país. ¿Eso es verdad? ¿Ya no puedo arreglar nada?"</p>
-                            </div>
-                            
-                            <div class="info-box">
-                                <h3>Información del caso:</h3>
-                                <ul>
-                                    <li>El hijo derivado ya tiene residencia</li>
-                                    <li>El cliente tiene castigo permanente por entradas/salidas</li>
-                                    <li>Mencionó que su expareja lo obligaba a trabajar sin pago</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="question-box">
-                                <h3>Selecciona tu respuesta:</h3>
-                                
-                                <div class="options-container" id="options-escena2">
-                                    <div class="option-card" data-option="A" data-points="0">
-                                        <span class="option-label">OPCIÓN A:</span>
-                                        <p class="option-text">"Mire, su caso es complicado. El castigo permanente limita sus opciones. Su hijo ya tiene residencia, así que el VAWA no le sirve para él. Deberíamos cancelar esta consulta y reagendar cuando tenga más claridad."</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="B" data-points="12">
-                                        <span class="option-label">OPCIÓN B:</span>
-                                        <p class="option-text">"Déjeme aclarar: su hijo ya tiene residencia, puede estar tranquilo por él. El VAWA es para USTED. Sobre el castigo permanente: sí existe, pero no significa que no podamos hacer nada. Cuénteme más sobre que su expareja lo obligaba a trabajar."</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="C" data-points="3">
-                                        <span class="option-label">OPCIÓN C:</span>
-                                        <p class="option-text">"Su hijo no tiene de qué preocuparse. Usted debe enfocarse en su propio caso. El castigo permanente es algo conocido y hay formas de manejarlo. Vamos a continuar con el VAWA."</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="D" data-points="15">
-                                        <span class="option-label">OPCIÓN D:</span>
-                                        <p class="option-text">"Vamos con Plan A y Plan B. Plan A: su caso VAWA es para USTED, su hijo ya está protegido. Plan B: el castigo permanente ES un obstáculo, pero hay opciones. Usted mencionó trabajo forzado. Eso podría abrirnos la Visa T para víctimas de trata laboral. ¿Su expareja controlaba su dinero o documentos?"</p>
-                                    </div>
-                                </div>
-                                
-                                <button id="submit-answer" disabled>Enviar Respuesta</button>
-                            </div>
-                            
-                            <div id="feedback-escena2" class="feedback-container"></div>
-                        </div>
-                    `;
-                },
-                feedback: {
-                    A: { points: 0, title: 'Error Crítico', icon: '❌', scoreClass: 'score-poor', content: `
-                        <div class="feedback-section">
-                            <h4>❌ Errores Críticos Identificados:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> Rechazas al cliente sin explorar sus opciones reales</li>
-                                <li><span class="cross-icon">✗</span> Pierdes la oportunidad de identificar una posible Visa T por trata laboral</li>
-                                <li><span class="cross-icon">✗</span> Sugieres cancelar la consulta en lugar de profundizar — proyectas abandono</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>⚠️ Impacto en la Vida Real:</h4>
-                            <p>El cliente saldrá sintiéndose sin salida. Un caso con castigo permanente + trabajo forzado tiene rutas legales reales que no fueron exploradas. Esta respuesta puede llevar al cliente a abandonar su proceso o buscar otro bufete.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Lo Correcto Sería:</h4>
-                            <p>Escuchar activamente, corregir la confusión sobre el hijo, y hacer preguntas de sondeo sobre el trabajo forzado para evaluar Visa T.</p>
-                        </div>
-                    ` },
-                    B: { points: 12, title: 'Buena Decisión', icon: '✅', scoreClass: 'score-good', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Aspectos Positivos:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Corriges inmediatamente la confusión sobre el hijo</li>
-                                <li><span class="check-icon">✓</span> Eres honesta sobre el castigo permanente sin cerrar puertas</li>
-                                <li><span class="check-icon">✓</span> Haces preguntas de sondeo sobre el trabajo forzado — señal clave de Visa T</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>❌ Área de Mejora:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> No nombras explícitamente la Visa T como alternativa estratégica</li>
-                                <li><span class="cross-icon">✗</span> El cliente podría quedarse sin entender por qué le preguntas sobre el trabajo</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>El cliente se sentirá más claro, pero podría necesitar otra llamada para entender la estrategia completa. Un pequeño paso adicional —nombrar la Visa T— convierte esta respuesta en óptima.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Estrategia Aplicada:</h4>
-                            <p><strong>Corrección de creencias erróneas + Escucha activa + Sondeo de indicadores de trata</strong></p>
-                        </div>
-                    ` },
-                    C: { points: 3, title: 'Error No Crítico', icon: '⚠️', scoreClass: 'score-poor', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Aspecto Positivo:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Tranquilizas al cliente sobre su hijo</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>❌ Errores Identificados:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> Minimizas el castigo permanente sin explicar qué significa realmente</li>
-                                <li><span class="cross-icon">✗</span> Ignoras completamente la mención de trabajo forzado — señal crítica de Visa T</li>
-                                <li><span class="cross-icon">✗</span> "Vamos a continuar con el VAWA" no es una estrategia completa ante esta situación</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>El cliente seguirá confundido sobre el castigo permanente y perderás la oportunidad de explorar Visa T. En casos de trata laboral, cada pregunta sin hacer puede significar meses de retraso en la estrategia correcta.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Alternativa Mejor:</h4>
-                            <p>"El castigo permanente existe, pero no cierra todas las puertas. Cuénteme más sobre cómo su expareja lo obligaba a trabajar — eso puede abrirnos una vía legal diferente con perdón más amplio."</p>
-                        </div>
-                    ` },
-                    D: { points: 15, title: '¡Decisión Óptima!', icon: '🌟', scoreClass: 'score-optimal', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Excelente Estrategia:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Aplicas Plan A/B con claridad: VAWA para el cliente, hijo ya protegido</li>
-                                <li><span class="check-icon">✓</span> Reconoces el castigo permanente como obstáculo real sin cerrarlo como definitivo</li>
-                                <li><span class="check-icon">✓</span> Identificas la señal de trata laboral (trabajo forzado) y la conectas directamente a Visa T</li>
-                                <li><span class="check-icon">✓</span> Haces preguntas de sondeo dirigidas (dinero, documentos) para documentar el patrón de control</li>
-                                <li><span class="check-icon">✓</span> Empoderas al cliente con una ruta clara sin generar falsas expectativas</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>El cliente comprende que tiene dos problemas distintos con dos soluciones potenciales. La Visa T, al tener un perdón más amplio, puede resolver tanto el castigo permanente como la falta de evidencia directa de abuso. Esta claridad reduce ansiedad y genera confianza en la estrategia.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Estrategia Aplicada:</h4>
-                            <p><strong>Plan A/B + Corrección de confusiones + Identificación de Visa T + Sondeo de indicadores de trata laboral</strong></p>
-                        </div>
-                    ` }
-                }
-            },
-            {
-                id: 'escena3',
-                title: 'Escena 3: La Cliente Enojada',
-                hasOptions: true,
-                content: function() {
-                    return `
-                        <div class="scene-container">
-                            <div class="scene-header">
-                                <h2 class="scene-title">Escena 3: La Cliente Enojada</h2>
-                                <p class="scene-subtitle">Caso: María Elena - Visa U con errores graves</p>
-                            </div>
-
-                            <div class="client-call-header">
-                                Nueva llamada: María Elena - Cliente molesta por errores y falta de comunicación
-                            </div>
-                            
-                            <div class="client-speech">
-                                <p>"¡Abogada, esto es INACEPTABLE! ¡Hace tres años que pago y nadie me llama! ¡El formulario tenía mi nombre MAL ESCRITO! ¡Violaron mi confidencialidad! Mi esposo está enfermo y necesito mi permiso YA!"</p>
-                            </div>
-                            
-                            <div class="info-box">
-                                <h3>Información del caso:</h3>
-                                <ul>
-                                    <li>Errores confirmados en el formulario</li>
-                                    <li>Podría calificar para Visa T además de Visa U</li>
-                                    <li>Writ of Mandamus podría acelerar el proceso</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="question-box">
-                                <h3>Selecciona tu respuesta:</h3>
-                                
-                                <div class="options-container" id="options-escena3">
-                                    <div class="option-card" data-option="A" data-points="15">
-                                        <span class="option-label">OPCIÓN A:</span>
-                                        <p class="option-text">"María Elena, tiene toda la razón de estar enojada. Los errores son inaceptables y asumo responsabilidad. Plan: corregir Visa U, explorar Visa T en paralelo (más rápida), y considerar demanda contra USCIS. ¿Agendamos reunión esta semana para revisar TODO?"</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="B" data-points="0">
-                                        <span class="option-label">OPCIÓN B:</span>
-                                        <p class="option-text">"Entiendo que está molesta, pero los tiempos de USCIS no están bajo nuestro control. Los errores fueron un malentendido. Vamos a reenviar la solicitud. Sea paciente."</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="C" data-points="0">
-                                        <span class="option-label">OPCIÓN C:</span>
-                                        <p class="option-text">"Lamento que se sienta así. Los errores ocurren en todos los bufetes. Vamos a corregirlo. Le aseguro que saldrá bien. No se preocupe por su esposo."</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="D" data-points="10">
-                                        <span class="option-label">OPCIÓN D:</span>
-                                        <p class="option-text">"Comprendo su frustración y tiene derecho a estar molesta. Lamento los errores. Necesito revisar su expediente antes de prometer. ¿Agendamos reunión esta semana? Voy a investigar."</p>
-                                    </div>
-                                </div>
-                                
-                                <button id="submit-answer" disabled>Enviar Respuesta</button>
-                            </div>
-                            
-                            <div id="feedback-escena3" class="feedback-container"></div>
-                        </div>
-                    `;
-                },
-                feedback: {
-                    A: { points: 15, title: '¡Decisión Óptima!', icon: '🌟', scoreClass: 'score-optimal', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Excelente Manejo de Crisis:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Validas la emoción sin minimizar ni defenderte</li>
-                                <li><span class="check-icon">✓</span> Asumes responsabilidad institucional de forma directa — esto desescala la tensión</li>
-                                <li><span class="check-icon">✓</span> Propones un plan concreto: corregir Visa U + explorar Visa T + Writ of Mandamus</li>
-                                <li><span class="check-icon">✓</span> Cierras con acción inmediata (reunión esta semana) en lugar de promesas vagas</li>
-                                <li><span class="check-icon">✓</span> No haces promesas que no puedes garantizar</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>María Elena pasará de la ira a la acción. Al sentir que su enojo fue escuchado y que existe un plan estructurado, la probabilidad de que busque otro bufete cae drásticamente. Asumir responsabilidad con un plan es la respuesta más profesional ante quejas legítimas.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Estrategia Aplicada:</h4>
-                            <p><strong>Validación de la queja + Responsabilidad institucional + Plan multiestratégico (Visa U + Visa T + Writ) + Cierre con acción concreta</strong></p>
-                        </div>
-                    ` },
-                    B: { points: 0, title: 'Error Crítico', icon: '❌', scoreClass: 'score-poor', content: `
-                        <div class="feedback-section">
-                            <h4>❌ Errores Críticos Identificados:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> Deflectas la responsabilidad hacia USCIS en lugar de asumir los errores del bufete</li>
-                                <li><span class="cross-icon">✗</span> Llamas "malentendido" a errores confirmados — esto invalida la queja legítima</li>
-                                <li><span class="cross-icon">✗</span> "Sea paciente" ante una cliente con tres años de espera y errores documentados es condescendiente</li>
-                                <li><span class="cross-icon">✗</span> No propones ninguna estrategia adicional ni alternativa</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>⚠️ Impacto en la Vida Real:</h4>
-                            <p>Esta respuesta escalará el conflicto. María Elena, al sentirse nuevamente ignorada, tiene alta probabilidad de: presentar una queja formal al bar, buscar otro abogado, o generar una reseña negativa. La minimización de errores reales es una de las causas más comunes de litigios por mala praxis.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>🚨 Riesgo Legal:</h4>
-                            <p>Minimizar errores documentados (nombre mal escrito, violación de confidencialidad) sin plan de remediación puede interpretarse como negligencia continuada.</p>
-                        </div>
-                    ` },
-                    C: { points: 0, title: 'Error Crítico', icon: '❌', scoreClass: 'score-poor', content: `
-                        <div class="feedback-section">
-                            <h4>❌ Errores Críticos Identificados:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> "Los errores ocurren en todos los bufetes" normaliza negligencia inaceptable</li>
-                                <li><span class="cross-icon">✗</span> "Le aseguro que saldrá bien" es una promesa que no puedes garantizar — riesgo legal</li>
-                                <li><span class="cross-icon">✗</span> "No se preocupe por su esposo" descarta una preocupación humana legítima</li>
-                                <li><span class="cross-icon">✗</span> No hay plan concreto, ni responsabilidad, ni alternativas legales</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>⚠️ Impacto en la Vida Real:</h4>
-                            <p>Esta respuesta puede constituir mala praxis: hacer promesas de resultados en casos legales es éticamente problemático y puede usarse en su contra si el caso tiene un desenlace negativo. La cliente no se sentirá tomada en serio.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Principio Clave:</h4>
-                            <p>En situaciones de queja, nunca prometas resultados. Promete acciones: "Voy a revisar todo tu expediente esta semana y te presento un plan de acción el jueves."</p>
-                        </div>
-                    ` },
-                    D: { points: 10, title: 'Buena Decisión', icon: '✅', scoreClass: 'score-good', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Aspectos Positivos:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Validas la emoción sin ponerte a la defensiva</li>
-                                <li><span class="check-icon">✓</span> Reconoces los errores con responsabilidad</li>
-                                <li><span class="check-icon">✓</span> Propones una reunión esta semana — acción concreta</li>
-                                <li><span class="check-icon">✓</span> No haces promesas que no puedes cumplir</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>❌ Área de Mejora:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> Es una respuesta reactiva, no proactiva — no mencionas las herramientas disponibles</li>
-                                <li><span class="cross-icon">✗</span> No propones explorar Visa T ni Writ of Mandamus como opciones que pueden acelerar el proceso</li>
-                                <li><span class="cross-icon">✗</span> La cliente sigue sin saber qué pasos concretos se tomarán</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>María Elena estará algo más calmada, pero seguirá con incertidumbre. Una respuesta óptima combina la responsabilidad con un esquema claro de las acciones a tomar, demostrando que ya estás pensando en soluciones.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Estrategia Aplicada:</h4>
-                            <p><strong>Validación + Responsabilidad + Acción inmediata</strong> — falta el componente de estrategia multicanal (Visa T + Writ).</p>
-                        </div>
-                    ` }
-                }
-            },
-            {
-                id: 'escena4',
-                title: 'Escena 4: La Cliente Ansiosa por Viajar',
-                hasOptions: true,
-                content: function() {
-                    return `
-                        <div class="scene-container">
-                            <div class="scene-header">
-                                <h2 class="scene-title">Escena 4: La Cliente Ansiosa por Viajar</h2>
-                                <p class="scene-subtitle">Caso: Victoria - 36 años en EE.UU., hermana con cáncer terminal</p>
-                            </div>
-
-                            <div class="client-call-header">
-                                Nueva llamada: Victoria Martínez - Urgencia familiar, desea viajar a México
-                            </div>
-                            
-                            <div class="client-speech">
-                                <p>"Abogada, mi hermana en México tiene cáncer terminal. Necesito verla antes que muera. ¿Puedo usar mi permiso de trabajo para viajar? No quiero perder mi caso pero tampoco que mi hermana muera sin verme. ¿Qué hago?"</p>
-                            </div>
-                            
-                            <div class="info-box">
-                                <h3>Información crítica:</h3>
-                                <ul>
-                                    <li>Caso fuerte de Visa T identificado</li>
-                                    <li>Viajar activaría castigo permanente</li>
-                                    <li>Podría no poder regresar a EE.UU.</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="question-box">
-                                <h3>Selecciona tu respuesta:</h3>
-                                
-                                <div class="options-container" id="options-escena4">
-                                    <div class="option-card" data-option="A" data-points="12">
-                                        <span class="option-label">OPCIÓN A:</span>
-                                        <p class="option-text">"Victoria, debo ser honesta: viajar ahora es extremadamente riesgoso. Tiene castigo permanente y podría no regresar. Perdería 36 años aquí y su caso de Visa T. Lamento la situación, pero mi deber es proteger su futuro legal."</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="B" data-points="0">
-                                        <span class="option-label">OPCIÓN B:</span>
-                                        <p class="option-text">"No se preocupe, podemos solicitar Advance Parole (permiso de viaje) para que vaya a ver a su hermana. Es la forma legal de viajar. Vamos a preparar la solicitud con carta de emergencia."</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="C" data-points="15">
-                                        <span class="option-label">OPCIÓN C:</span>
-                                        <p class="option-text">"Victoria, sé que esto es difícil. Lo bueno: tiene caso excelente de Visa T que incluye a su esposo. Lo difícil: viajar ahora sería tirar 36 años a la basura. No la dejarían regresar. Entiendo el dolor, pero ¿hay forma de conectar virtualmente mientras aseguramos su residencia?"</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="D" data-points="5">
-                                        <span class="option-label">OPCIÓN D:</span>
-                                        <p class="option-text">"La decisión es suya. Si viaja, hay riesgo de no regresar por castigo permanente. Si no viaja, pierde ver a su hermana. Es decisión personal que solo usted puede tomar. Piénselo."</p>
-                                    </div>
-                                </div>
-                                
-                                <button id="submit-answer" disabled>Enviar Respuesta</button>
-                            </div>
-                            
-                            <div id="feedback-escena4" class="feedback-container"></div>
-                        </div>
-                    `;
-                },
-                feedback: {
-                    A: { points: 12, title: 'Buena Decisión', icon: '✅', scoreClass: 'score-good', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Aspectos Positivos:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Eres completamente honesta sobre el riesgo real del viaje</li>
-                                <li><span class="check-icon">✓</span> Mencionas el castigo permanente y las consecuencias concretas</li>
-                                <li><span class="check-icon">✓</span> Priorizas la protección del caso legal de Victoria</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>❌ Área de Mejora:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> No ofreces alternativas emocionales o prácticas para su situación familiar</li>
-                                <li><span class="cross-icon">✗</span> No explicas el valor de la Visa T como la razón positiva para quedarse</li>
-                                <li><span class="cross-icon">✗</span> La respuesta puede sentirse como "no puedes hacer nada" sin salida emocional</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>Victoria entiende el riesgo, pero sigue con el peso emocional sin apoyo. En crisis familiares, la cliente necesita escuchar que su dolor es válido Y que hay una razón poderosa para proteger su futuro. Sin eso, puede tomar decisiones impulsivas.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Estrategia Aplicada:</h4>
-                            <p><strong>Honestidad total sobre riesgos</strong> — falta equilibrar con validación emocional y alternativas concretas (videollamadas, por qué vale la pena la Visa T que incluye a su esposo).</p>
-                        </div>
-                    ` },
-                    B: { points: 0, title: 'Error Crítico', icon: '❌', scoreClass: 'score-poor', content: `
-                        <div class="feedback-section">
-                            <h4>🚨 Error Legal Grave:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> El Advance Parole NO protege a personas con castigo permanente de 10 años</li>
-                                <li><span class="cross-icon">✗</span> Solicitar Advance Parole en este caso no resuelve la barra de inadmisibilidad</li>
-                                <li><span class="cross-icon">✗</span> Si Victoria sale con ese consejo y no puede regresar, el bufete enfrenta riesgo real de demanda por mala praxis</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>⚠️ Impacto en la Vida Real:</h4>
-                            <p>Esta es la respuesta más peligrosa del simulador. Victoria confía en tu consejo como abogado/a. Si viaja basándose en esta información incorrecta, perderá 36 años de vida en EE.UU., su caso de Visa T, y posiblemente la posibilidad de reunirse con su esposo. El daño sería irreversible.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Principio Clave:</h4>
-                            <p>Cuando no estés seguro/a sobre el impacto del Advance Parole en casos con castigos de inadmisibilidad, escala al abogado supervisor ANTES de dar cualquier consejo al cliente.</p>
-                        </div>
-                    ` },
-                    C: { points: 15, title: '¡Decisión Óptima!', icon: '🌟', scoreClass: 'score-optimal', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Equilibrio Perfecto:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Comienzas con lo bueno: presenta la Visa T como razón positiva y poderosa para quedarse</li>
-                                <li><span class="check-icon">✓</span> Explicas el riesgo del viaje con claridad y sin rodeos</li>
-                                <li><span class="check-icon">✓</span> Validas el dolor emocional de la situación ("sé que esto es difícil")</li>
-                                <li><span class="check-icon">✓</span> Ofreces una alternativa concreta (conexión virtual) que honra su necesidad de despedirse</li>
-                                <li><span class="check-icon">✓</span> No tomas la decisión por ella, pero sí le das toda la información para decidir bien</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>Victoria siente que fue escuchada como persona, no solo como caso. Al presentar la Visa T primero —con beneficio para ella y su esposo— la razón para quedarse tiene valor positivo, no solo miedo. La alternativa virtual le da un camino para acompañar a su hermana sin destruir su futuro.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Estrategia Aplicada:</h4>
-                            <p><strong>Validación emocional + Presentación positiva de Visa T + Honestidad sobre riesgo + Alternativa práctica</strong> — la fórmula completa para crisis de alto impacto emocional.</p>
-                        </div>
-                    ` },
-                    D: { points: 5, title: 'Error No Crítico', icon: '⚠️', scoreClass: 'score-poor', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Aspecto Positivo:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Presentas los dos escenarios con honestidad</li>
-                                <li><span class="check-icon">✓</span> Respetas la autonomía de la cliente</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>❌ Errores Identificados:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> La neutralidad en crisis emocional se siente como abandono profesional</li>
-                                <li><span class="cross-icon">✗</span> "Piénselo" sin herramientas ni alternativas no es orientación legal, es indiferencia</li>
-                                <li><span class="cross-icon">✗</span> No mencionas la Visa T, que es la razón estratégica más poderosa para no viajar</li>
-                                <li><span class="cross-icon">✗</span> No ofreces alternativas que reduzcan el costo emocional (videollamadas, cartas)</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>Victoria cuelga sin orientación y con el peso completo de la decisión. En ese estado emocional, es probable que tome la decisión más impulsiva (viajar) porque nadie le presentó una razón positiva para quedarse. El rol del abogado incluye guiar, no solo informar.</p>
-                        </div>
-                    ` }
-                }
-            },
-            {
-                id: 'escena5',
-                title: 'Escena 5: El Cliente Desesperado',
-                hasOptions: true,
-                content: function() {
-                    return `
-                        <div class="scene-container">
-                            <div class="scene-header">
-                                <h2 class="scene-title">Escena 5: El Cliente Desesperado</h2>
-                                <p class="scene-subtitle">Caso: Carlos - Permiso de trabajo pendiente, riesgo de despido</p>
-                            </div>
-
-                            <div class="client-call-header">
-                                Nueva llamada: Carlos - Urgencia laboral, fecha límite 12 de marzo
-                            </div>
-                            
-                            <div class="client-speech">
-                                <p>"Abogado, no sé qué hacer. Ya perdí dos años esperando. Mi jefe me dio hasta el 12 de marzo o me despide. Tengo dos niños pequeños. Pensé en ir a USCIS a exigirles. ¿Cree que funcione? ¿Ya perdí mi caso?"</p>
-                            </div>
-                            
-                            <div class="info-box">
-                                <h3>Información del caso:</h3>
-                                <ul>
-                                    <li>Demora de 2 años es irrazonable</li>
-                                    <li>Writ of Mandamus podría funcionar</li>
-                                    <li>Ir a oficinas USCIS NO sirve</li>
-                                    <li>Carta amenazando podría ser suficiente</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="question-box">
-                                <h3>Selecciona tu respuesta:</h3>
-                                
-                                <div class="options-container" id="options-escena5">
-                                    <div class="option-card" data-option="A" data-points="14">
-                                        <span class="option-label">OPCIÓN A:</span>
-                                        <p class="option-text">"Carlos, dos años es irrazonable. Ir a USCIS no funciona. PERO tengo estrategia: 'Writ of Mandamus', carta amenazando con demandar. En muchos casos, solo la carta es suficiente. Tenemos hasta el 12 de marzo. ¿Empezamos esta semana?"</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="B" data-points="6">
-                                        <span class="option-label">OPCIÓN B:</span>
-                                        <p class="option-text">"Ir a USCIS no servirá. El sistema está colapsado y no podemos hacer nada excepto esperar. Puede seguir trabajando con el recibo de renovación. Hable con su empleador."</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="C" data-points="8">
-                                        <span class="option-label">OPCIÓN C:</span>
-                                        <p class="option-text">"Su caso no está perdido pero necesitamos actuar con inteligencia. Dos años es inaceptable y hay acciones legales. Déjeme investigar esta semana y le propongo opciones el jueves. NO vaya a USCIS."</p>
-                                    </div>
-                                    
-                                    <div class="option-card" data-option="D" data-points="15">
-                                        <span class="option-label">OPCIÓN D:</span>
-                                        <p class="option-text">"Carlos, vamos a actuar rápido. Opción 1: Carta amenazando con Writ of Mandamus (menos costosa). Opción 2: Demanda formal (más agresiva). Recomiendo Opción 1 esta semana. Si para el 5 de marzo no hay respuesta, escalamos. Lo importante: NO pierda su trabajo. ¿Preguntas?"</p>
-                                    </div>
-                                </div>
-                                
-                                <button id="submit-answer" disabled>Enviar Respuesta</button>
-                            </div>
-                            
-                            <div id="feedback-escena5" class="feedback-container"></div>
-                        </div>
-                    `;
-                },
-                feedback: {
-                    A: { points: 14, title: 'Excelente Estrategia', icon: '🌟', scoreClass: 'score-optimal', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Aspectos Muy Positivos:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Descartas ir a USCIS con fundamento claro</li>
-                                <li><span class="check-icon">✓</span> Propones el Writ of Mandamus como estrategia concreta</li>
-                                <li><span class="check-icon">✓</span> Mencionas que a veces solo la carta amenazante es suficiente — gestión de expectativas realista</li>
-                                <li><span class="check-icon">✓</span> Anclas la urgencia a la fecha límite del 12 de marzo</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>❌ Área de Mejora:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> No ofreces orientación sobre qué hacer con el empleador mientras se resuelve el proceso</li>
-                                <li><span class="cross-icon">✗</span> No presentas las opciones en niveles (carta primero, demanda si no hay respuesta), lo que ayuda a Carlos a entender el plan escalonado</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>Carlos sabrá que hay una acción legal posible, lo que reduce el pánico. Sin embargo, sin orientación para su empleador, podría perder el trabajo antes de que el Writ surta efecto. Un plan completo cubre ambos frentes.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Estrategia Aplicada:</h4>
-                            <p><strong>Writ of Mandamus + Fecha límite anclada</strong> — falta el plan escalonado explícito y la orientación paralela al empleador.</p>
-                        </div>
-                    ` },
-                    B: { points: 6, title: 'Error No Crítico', icon: '⚠️', scoreClass: 'score-poor', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Aspecto Positivo:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Corriges correctamente que ir a USCIS no sirve</li>
-                                <li><span class="check-icon">✓</span> Mencionas el recibo de renovación como recurso temporal</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>❌ Errores Identificados:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> "No podemos hacer nada excepto esperar" proyecta impotencia total ante una demora de 2 años que es irrazonable</li>
-                                <li><span class="cross-icon">✗</span> No mencionas el Writ of Mandamus, que es la herramienta legal diseñada exactamente para esta situación</li>
-                                <li><span class="cross-icon">✗</span> "Hable con su empleador" sin herramientas ni argumentos no es orientación útil</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>Carlos cuelga sin esperanza real. Ante una emergencia laboral con fecha límite y dos hijos, decirle que espere puede llevar a que busque otro abogado, o peor, que pierda el trabajo por no tener información de cómo hablar con su empleador.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Alternativa Mejor:</h4>
-                            <p>"Dos años es irrazonable. Tenemos una herramienta: Writ of Mandamus. A veces solo la carta amenazando con demandar mueve el caso. Hablemos de cómo podemos también hablar con tu empleador sobre el recibo de renovación."</p>
-                        </div>
-                    ` },
-                    C: { points: 8, title: 'Decisión Parcial', icon: '⚠️', scoreClass: 'score-good', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Aspectos Positivos:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Corriges que ir a USCIS no es la solución</li>
-                                <li><span class="check-icon">✓</span> Reconoces que 2 años es inaceptable — validas la frustración</li>
-                                <li><span class="check-icon">✓</span> Propones actuar, no esperar</li>
-                                <li><span class="check-icon">✓</span> Estableces un plazo de respuesta (jueves)</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>❌ Área de Mejora:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="cross-icon">✗</span> Ante una emergencia con fecha límite del 12 de marzo, decir "investigo y te digo el jueves" puede ser demasiado lento</li>
-                                <li><span class="cross-icon">✗</span> Puedes dar orientación preliminar inmediata (Writ of Mandamus) sin esperar a investigar</li>
-                                <li><span class="cross-icon">✗</span> Carlos sigue sin saber qué decirle a su empleador hoy</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>Es una respuesta prudente, pero en urgencias laborales la prudencia excesiva puede costar el trabajo al cliente. Un abogado con experiencia puede dar orientación inmediata básica y confirmar detalles después.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Estrategia Aplicada:</h4>
-                            <p><strong>Reconocimiento de urgencia + Acción futura</strong> — falta el liderazgo estratégico inmediato que la situación requiere.</p>
-                        </div>
-                    ` },
-                    D: { points: 15, title: '¡Decisión Óptima!', icon: '🌟', scoreClass: 'score-optimal', content: `
-                        <div class="feedback-section">
-                            <h4>✅ Liderazgo Estratégico Completo:</h4>
-                            <ul class="feedback-list">
-                                <li><span class="check-icon">✓</span> Actúas de inmediato — no hay demoras en una emergencia con fecha límite</li>
-                                <li><span class="check-icon">✓</span> Presentas dos opciones claras y ordenadas por costo y agresividad</li>
-                                <li><span class="check-icon">✓</span> Haces una recomendación explícita (Opción 1 esta semana) — no dejas la decisión en el aire</li>
-                                <li><span class="check-icon">✓</span> Estableces un punto de escalamiento con fecha (5 de marzo) — plan escalonado claro</li>
-                                <li><span class="check-icon">✓</span> Priorizas mantener el empleo como objetivo central paralelo al proceso legal</li>
-                                <li><span class="check-icon">✓</span> Cierras con "¿Preguntas?" — abres el diálogo sin cortar la comunicación</li>
-                            </ul>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>💡 Impacto en la Vida Real:</h4>
-                            <p>Carlos pasa del pánico a la acción en segundos. Al tener un plan con opciones, fechas y una recomendación clara, puede: hablar con su empleador con confianza, entender exactamente qué pasará y cuándo, y confiar en que su abogado tiene el control de la situación.</p>
-                        </div>
-                        <div class="feedback-section">
-                            <h4>📚 Estrategia Aplicada:</h4>
-                            <p><strong>Writ of Mandamus + Plan escalonado con fechas + Recomendación explícita + Prioridad en el empleo + Cierre abierto</strong> — el modelo completo de liderazgo en crisis urgente.</p>
-                        </div>
-                    ` }
-                }
-            }
-        );
-
-        // Start simulation function
-        function startSimulation() {
-            simulatorState.currentScene = 1;
-            loadScene();
-            document.getElementById('next-btn').classList.remove('hidden');
-        }
-
-        // Load scene
-        function loadScene() {
-            const scene = scenes[simulatorState.currentScene];
-            const contentArea = document.getElementById('content-area');
-            
-            // Load content
-            if (typeof scene.content === 'function') {
-                contentArea.innerHTML = scene.content();
-            } else {
-                contentArea.innerHTML = scene.content;
-            }
-            
-            contentArea.classList.add('fade-in');
-            
-            // Initialize interactions if scene has options
-            if (scene.hasOptions) {
-                // Clonar botón submit para limpiar listeners acumulados de escenas anteriores
-                const oldSubmit = document.getElementById('submit-answer');
-                if (oldSubmit) {
-                    const newSubmit = oldSubmit.cloneNode(true);
-                    oldSubmit.parentNode.replaceChild(newSubmit, oldSubmit);
-                }
-                initializeSceneInteractions(scene);
-                simulatorState.answered = false;
-            } else {
-                simulatorState.answered = true;
-            }
-            
-            updateNavigationButtons();
-            updateDashboard();
-            
-            // Update SCORM progress
-            const progress = Math.round((simulatorState.currentScene / (scenes.length - 1)) * 100);
-            SCORM.setProgress(progress);
-            
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            updateProgress();
         }
 
-        // Initialize scene interactions
-        function initializeSceneInteractions(scene) {
-            const options = document.querySelectorAll(`#options-${scene.id} .option-card`);
-            const submitBtn = document.getElementById('submit-answer');
-            let selectedOption = null;
-            
-            options.forEach(option => {
-                option.addEventListener('click', () => {
-                    options.forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedOption = option;
-                    if (submitBtn) submitBtn.disabled = false;
-                });
-            });
-            
-            if (submitBtn) {
-                submitBtn.addEventListener('click', () => {
-                    if (selectedOption) {
-                        showFeedback(scene, selectedOption);
-                        submitBtn.disabled = true;
-                        options.forEach(opt => opt.style.pointerEvents = 'none');
-                        simulatorState.answered = true;
-                        document.getElementById('next-btn').disabled = false;
-                    }
-                });
+        // --- Strategy Toggle ---
+        function toggleStrategy(card) {
+            var id = card.dataset.strategy;
+            var name = card.dataset.name;
+            var indicator = card.querySelector('.status-indicator');
+            var feedbackBox = document.getElementById('strategyFeedbackBox');
+
+            if (selectedStrategies.has(id)) {
+                selectedStrategies.delete(id);
+                card.classList.remove('selected');
+                indicator.textContent = 'No seleccionada';
+                feedbackBox.classList.remove('show');
+            } else {
+                selectedStrategies.add(id);
+                card.classList.add('selected');
+                indicator.textContent = 'Seleccionada';
+
+                // Show feedback
+                feedbackBox.innerHTML = '<div class="feedback-title"><span>📌</span> ' + name + '</div><div class="feedback-text">' + strategyFeedbacks[id] + '</div>';
+                feedbackBox.classList.add('show');
+
+                setTimeout(function() {
+                    feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
             }
+
+            document.getElementById('selectedCount').textContent = selectedStrategies.size;
         }
 
-        // Show feedback
-        function showFeedback(scene, selectedOption) {
-            const optionValue = selectedOption.dataset.option;
-            const optionPoints = parseInt(selectedOption.dataset.points);
-            const feedback = scene.feedback[optionValue];
-            
+        // --- Confirm Strategies ---
+        function confirmStrategies() {
+            if (selectedStrategies.size === 0) {
+                alert('⚠️ Por favor, selecciona al menos una estrategia antes de continuar.');
+                return;
+            }
+
+            strategiesLocked = true;
+            var stratScore = selectedStrategies.size * 3;
+            currentScore += stratScore;
+
+            // Lock cards
+            document.querySelectorAll('.strategy-card').forEach(function(card) {
+                card.classList.add('locked');
+            });
+
+            var btn = document.getElementById('confirmStrategiesBtn');
+            btn.disabled = true;
+            btn.textContent = '✓ Estrategias Confirmadas';
+
+            // Show summary feedback
+            var feedbackBox = document.getElementById('strategyFeedbackBox');
+            var msg = '';
+            if (selectedStrategies.size === 5) {
+                msg = '<strong>¡Excelente!</strong> Seleccionaste las 5 estrategias fundamentales. Has obtenido <strong>' + stratScore + ' puntos</strong>. Esto demuestra comprensión integral del marco conceptual.';
+            } else if (selectedStrategies.size >= 3) {
+                msg = '<strong>Buen trabajo.</strong> Identificaste ' + selectedStrategies.size + ' de las 5 estrategias clave (+' + stratScore + ' pts). Considera revisar las estrategias no seleccionadas.';
+            } else {
+                msg = 'Has seleccionado ' + selectedStrategies.size + ' estrategia' + (selectedStrategies.size > 1 ? 's' : '') + ' (+' + stratScore + ' pts). Las 5 estrategias trabajan de forma complementaria.';
+            }
+            feedbackBox.innerHTML = '<div class="feedback-title"><span>🎯</span> Resumen de tu Selección</div><div class="feedback-text">' + msg + '</div>';
+            feedbackBox.classList.add('show');
+
+            updateUI();
+
+            SCORM.saveProgress(currentScore, { currentPage: currentPage, strategies: Array.from(selectedStrategies), stratScore: stratScore });
+
+            // Navigate to reflection after delay
+            setTimeout(function() {
+                goToPage(2);
+            }, 2000);
+        }
+
+        // --- Save Reflection ---
+        function saveReflection() {
+            reflectionData = {
+                whatWouldDo: document.getElementById('whatWouldDo').value.trim(),
+                whatWouldSay: document.getElementById('whatWouldSay').value.trim(),
+                mgmImplementation: document.getElementById('mgmImplementation').value.trim()
+            };
+
+            if (!reflectionData.whatWouldDo && !reflectionData.whatWouldSay && !reflectionData.mgmImplementation) {
+                alert('⚠️ Por favor, completa al menos uno de los campos de reflexión antes de continuar.');
+                return;
+            }
+
+            // Show saved
+            document.getElementById('reflectionSaved').classList.add('show');
+
+            // Disable
+            ['whatWouldDo', 'whatWouldSay', 'mgmImplementation'].forEach(function(id) {
+                document.getElementById(id).disabled = true;
+            });
+            var btn = document.getElementById('saveReflectionBtn');
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+
+            SCORM.saveProgress(currentScore, { currentPage: currentPage, strategies: Array.from(selectedStrategies), reflection: reflectionData });
+
+            // Show intermediate result
+            setTimeout(function() {
+                showIntermediateResult();
+                goToPage(3);
+            }, 1500);
+        }
+
+        // --- Intermediate Result ---
+        function showIntermediateResult() {
+            var section1Score = currentScore;
+            var pct = Math.round((section1Score / 15) * 100);
+            if (pct > 100) pct = 100;
+
+            document.getElementById('intermediateScoreValue').textContent = section1Score;
+            document.getElementById('intermediateScoreDetail').textContent = 'de 15 puntos posibles';
+            document.getElementById('intermediatePercentage').textContent = pct + '%';
+
+            var fb = '';
+            if (section1Score === 15) {
+                fb = '<strong>¡Excelente!</strong> Identificaste perfectamente las 5 estrategias fundamentales del Modelo de Manejo de Emociones. Has demostrado comprensión completa del marco conceptual.';
+            } else if (section1Score >= 9) {
+                fb = '<strong>Muy bien.</strong> Seleccionaste la mayoría de las estrategias clave. Observa en el siguiente video cómo la abogada aplica todas las estrategias en conjunto.';
+            } else if (section1Score >= 6) {
+                fb = '<strong>Buen inicio.</strong> Has identificado algunas estrategias importantes. El siguiente video te mostrará cómo se integran todas las estrategias en una llamada real.';
+            } else {
+                fb = '<strong>Continúa aprendiendo.</strong> El siguiente video te ayudará a comprender mejor cómo aplicar las estrategias fundamentales del modelo MGM.';
+            }
+            document.getElementById('intermediateFeedback').innerHTML = fb;
+        }
+
+        // --- Handle Answer ---
+        function handleAnswer(e) {
+            var option = e.currentTarget;
+            var qNum = option.dataset.question;
+            var pts = parseInt(option.dataset.points);
+
+            if (questionsAnswered[qNum]) return;
+
+            questionsAnswered[qNum] = true;
+            option.classList.add('selected');
+
+            // Disable all options for this question
+            var card = document.getElementById('question' + qNum);
+            card.querySelectorAll('.option').forEach(function(o) {
+                o.classList.add('disabled');
+            });
+            card.classList.add('answered');
+
             // Update score
-            simulatorState.totalScore += optionPoints;
-            if (optionPoints >= 15) simulatorState.correctAnswers++;
-            
-            // Calculate percentage for SCORM
-            const scorePercentage = Math.round((simulatorState.totalScore / simulatorState.maxScore) * 100);
-            SCORM.setScore(scorePercentage);
-            
-            // Record decision
-            simulatorState.decisions.push({
-                scene: scene.title,
-                option: optionValue,
-                points: optionPoints
-            });
-            
+            currentScore += pts;
+            if (currentScore < 0) currentScore = 0;
+
+            totalQuestionsAnswered++;
+            updateUI();
+
             // Show feedback
-            const feedbackContainer = document.getElementById(`feedback-${scene.id}`);
-            if (feedbackContainer && feedback) {
-                feedbackContainer.innerHTML = `
-                    <div class="feedback-header">
-                        <span class="feedback-icon">${feedback.icon}</span>
-                        <h3 class="feedback-title">${feedback.title}</h3>
-                        <span class="feedback-score ${feedback.scoreClass}">+${optionPoints} puntos</span>
-                    </div>
-                    ${feedback.content}
-                `;
-                feedbackContainer.classList.add('show');
-                feedbackContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            var fb = feedbackMessages[qNum][pts];
+            if (fb) {
+                var fbEl = document.getElementById('feedback' + qNum);
+                fbEl.className = 'feedback show ' + fb.type;
+                fbEl.innerHTML = fb.message;
             }
-            
-            // Mark option
-            if (optionPoints >= 15) {
-                selectedOption.classList.add('correct');
-            } else if (optionPoints === 0) {
-                selectedOption.classList.add('incorrect');
-            }
-            
-            updateDashboard();
-        }
 
-        // Update navigation buttons
-        function updateNavigationButtons() {
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            
-            if (simulatorState.currentScene === 0) {
-                prevBtn.style.display = 'none';
-                nextBtn.classList.add('hidden');
-            } else if (simulatorState.currentScene === scenes.length) {
-                prevBtn.style.display = 'none';
-                nextBtn.style.display = 'none';
-            } else {
-                prevBtn.style.display = 'block';
-                nextBtn.classList.remove('hidden');
-                
-                if (simulatorState.currentScene === scenes.length - 1) {
-                    nextBtn.textContent = 'Ver Resultados';
-                } else {
-                    nextBtn.textContent = 'Siguiente →';
-                }
-            }
-            
-            // Disable next if decision not made
-            if (scenes[simulatorState.currentScene] && scenes[simulatorState.currentScene].hasOptions && !simulatorState.answered) {
-                nextBtn.disabled = true;
-            } else {
-                nextBtn.disabled = false;
-            }
-        }
-
-        // Navigation functions
-        function nextScene() {
-            if (simulatorState.currentScene === scenes.length - 1) {
-                showResults();
-            } else if (simulatorState.currentScene < scenes.length - 1) {
-                simulatorState.currentScene++;
-                loadScene();
-            }
-        }
-
-        function prevScene() {
-            if (simulatorState.currentScene > 1) {
-                simulatorState.currentScene--;
-                loadScene();
-            }
-        }
-
-        // Show results
-        function showResults() {
-            const level = calculateLevel(simulatorState.totalScore);
-            const contentArea = document.getElementById('content-area');
-            const scorePercentage = Math.round((simulatorState.totalScore / simulatorState.maxScore) * 100);
-            
-            // Complete SCORM
-            SCORM.setScore(scorePercentage);
-            SCORM.complete();
-            
-            // Update final scene counter
-            simulatorState.currentScene = scenes.length;
-            
-            let html = `
-                <div class="results-container">
-                    <h2>¡Simulación Completada!</h2>
-                    <div class="circular-progress">
-                        <svg width="200" height="200">
-                            <circle class="progress-ring-circle" cx="100" cy="100" r="90" />
-                            <circle class="progress-ring-circle-fill" cx="100" cy="100" r="90" 
-                                    style="stroke-dasharray: 565.48; stroke-dashoffset: ${565.48 - (565.48 * scorePercentage / 100)};" />
-                        </svg>
-                        <div class="progress-text">${scorePercentage}%</div>
-                        <div class="progress-label">Progreso General</div>
-                    </div>
-                    <div class="results-score">${simulatorState.totalScore}/75 puntos</div>
-                    <div class="results-level">${level.title}</div>
-                    <p style="font-size: 1.2rem; color: #cbd5e1;">${level.description}</p>
-                </div>
-                
-                <div class="results-details">
-                    <h3>📊 Análisis de tu Desempeño</h3>
-                    ${generateSceneResults()}
-                    ${generateRecommendations(level)}
-                </div>
-            `;
-            
-            contentArea.innerHTML = html;
-            updateNavigationButtons();
-            updateDashboard();
-        }
-
-        function calculateLevel(score) {
-            if (score >= 70) {
-                return {
-                    title: '🌟 EXPERTO EN MANEJO DE CALL BACKS',
-                    description: 'Dominio excepcional de competencias críticas'
-                };
-            } else if (score >= 50) {
-                return {
-                    title: '✅ COMPETENTE CON ÁREAS DE MEJORA',
-                    description: 'Base sólida con oportunidades de crecimiento'
-                };
-            } else if (score >= 30) {
-                return {
-                    title: '⚠️ BÁSICO - REQUIERE ENTRENAMIENTO',
-                    description: 'Gaps significativos en competencias'
-                };
-            } else {
-                return {
-                    title: '❌ NECESITA DESARROLLO FUNDAMENTAL',
-                    description: 'Requiere entrenamiento formal inmediato'
-                };
-            }
-        }
-
-        function generateSceneResults() {
-            let html = '<h4 style="color: #f0b928; margin: 25px 0 15px 0;">Resultados por Escena:</h4>';
-            
-            simulatorState.decisions.forEach((decision) => {
-                html += `
-                    <div class="scene-result">
-                        <h4>${decision.scene}</h4>
-                        <p>Opción elegida: <strong>${decision.option}</strong></p>
-                        <p><strong style="color: #f0b928;">Puntos obtenidos: ${decision.points}/15</strong></p>
-                    </div>
-                `;
+            SCORM.saveProgress(currentScore, {
+                currentPage: currentPage,
+                strategies: Array.from(selectedStrategies),
+                reflection: reflectionData,
+                answers: questionsAnswered,
+                score: currentScore
             });
-            
-            return html;
-        }
 
-        function generateRecommendations(level) {
-            let recommendations = [];
-            
-            if (level.title.includes('EXPERTO')) {
-                recommendations = [
-                    'Considera mentorar a otros abogados en técnicas de comunicación',
-                    'Documenta tus mejores prácticas para materiales de entrenamiento',
-                    'Lidera workshops sobre manejo de casos VAWA y Visa T'
-                ];
-            } else if (level.title.includes('COMPETENTE')) {
-                recommendations = [
-                    'Practica el enfoque "Plan A/Plan B" en todas las consultas',
-                    'Valida siempre la emoción ANTES de dar soluciones legales',
-                    'Revisa casos de Visa T para identificar señales de trata',
-                    'Observa consultas de abogados senior'
-                ];
-            } else {
-                recommendations = [
-                    'Participa como oyente en consultas reales con supervisión',
-                    'Estudia los elementos legales de Visa T vs VAWA',
-                    'Practica role-plays de situaciones de crisis',
-                    'No realices call backs independientes hasta completar entrenamiento'
-                ];
+            // All questions answered? Show results
+            if (totalQuestionsAnswered === TOTAL_EVAL_QUESTIONS) {
+                setTimeout(function() {
+                    showFinalResults();
+                    goToPage(7);
+                }, 2000);
             }
-            
-            let html = `
-                <div class="recommendations">
-                    <h3>📋 Recomendaciones para tu Desarrollo</h3>
-                    <ul>
-            `;
-            
-            recommendations.forEach(rec => {
-                html += `<li>${rec}</li>`;
-            });
-            
-            html += `
-                    </ul>
-                </div>
-            `;
-            
-            return html;
         }
 
-        // Initialize on load
-        window.addEventListener('DOMContentLoaded', () => {
-            loadScene();
-            updateDashboard();
-            
-            document.getElementById('prev-btn').addEventListener('click', prevScene);
-            document.getElementById('next-btn').addEventListener('click', nextScene);
-        });
+        // --- Final Results ---
+        function showFinalResults() {
+            var pct = Math.round((currentScore / MAX_SCORE) * 100);
+
+            document.getElementById('finalScore').textContent = currentScore;
+            document.getElementById('scoreLabel').innerHTML = 'Puntos sobre 55 <span style="color:var(--gold-primary);font-size:0.8em;">(' + pct + '%)</span>';
+
+            var cls;
+            if (currentScore >= classifications.high.min) cls = classifications.high;
+            else if (currentScore >= classifications.medium.min) cls = classifications.medium;
+            else cls = classifications.low;
+
+            document.getElementById('classification').textContent = cls.label;
+            document.getElementById('finalFeedbackText').textContent = cls.feedback;
+
+            // SCORM Final
+            SCORM.finish(currentScore, MAX_SCORE, currentScore >= 44);
+        }
+
+        // --- UI Updates ---
+        function updateUI() {
+            scoreDisplay.textContent = currentScore;
+            scoreDisplay.style.transform = 'scale(1.3)';
+            setTimeout(function() { scoreDisplay.style.transform = 'scale(1)'; }, 300);
+            updateProgress();
+        }
+
+        function updateProgress() {
+            // Progress based on page completion milestones
+            var pageWeights = {0: 0, 1: 10, 2: 20, 3: 35, 4: 45, 5: 55, 6: 60, 7: 100};
+            var basePct = pageWeights[currentPage] || 0;
+            // Questions add progress within page 6 (60% to 95%)
+            if (currentPage === 6 && totalQuestionsAnswered > 0) {
+                basePct = 60 + Math.round((totalQuestionsAnswered / TOTAL_EVAL_QUESTIONS) * 35);
+            }
+            if (currentPage === 7) basePct = 100;
+            progressBar.style.width = basePct + '%';
+            progressText.textContent = 'Progreso: ' + basePct + '%';
+        }
+
+        return {
+            init: init,
+            goToPage: goToPage
+        };
+    })();
+
+    // --- Start ---
+    document.addEventListener('DOMContentLoaded', function() {
+        APP.init();
+    });
     </script>
 </body>
 </html>
