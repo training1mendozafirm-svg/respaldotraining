@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Litigación en Materia Migratoria - Mendoza Law Firm LLC</title>
+    <style>
+/* 
+ * Litigation Training - Styles
+ * Mendoza Law Firm LLC
+ * Color Palette: #DAD7CD, #A3B18A, #588157, #3A5A40, #344E41
+ */
+
+:root {
+    --color-lightest: #DAD7CD;
+    --color-light: #A3B18A;
+    --color-medium: #588157;
+    --color-dark: #3A5A40;
+    --color-darkest: #344E41;
+    --shadow: 0 4px 6px rgba(52, 78, 65, 0.1);
+    --shadow-lg: 0 10px 25px rgba(52, 78, 65, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--color-lightest) 0%, var(--color-light) 100%);
+    color: var(--color-darkest);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, var(--color-darkest) 0%, var(--color-dark) 100%);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 30px;
+    border-radius: 12px;
+}
+
+.header h1 {
+    font-size: 2.2em;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.header p {
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+/* Progress Bar */
+.progress-container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 30px;
+    background-color: var(--color-lightest);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-medium) 0%, var(--color-dark) 100%);
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9em;
+    min-width: 40px;
+}
+
+.progress-text {
+    margin-top: 10px;
+    text-align: center;
+    color: var(--color-dark);
+    font-weight: 600;
+}
+
+/* Content Sections */
+.module-section {
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.module-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.module-section h2 {
+    color: var(--color-darkest);
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--color-medium);
+    padding-bottom: 10px;
+}
+
+.module-section h3 {
+    color: var(--color-dark);
+    font-size: 1.4em;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.module-section p, .module-section ul, .module-section ol {
+    margin-bottom: 15px;
+    font-size: 1.05em;
+    color: #333;
+}
+
+.module-section ul, .module-section ol {
+    padding-left: 30px;
+}
+
+.module-section li {
+    margin-bottom: 10px;
+}
+
+/* Highlight Boxes */
+.highlight-box {
+    background: linear-gradient(135deg, var(--color-light) 0%, var(--color-lightest) 100%);
+    border-left: 5px solid var(--color-medium);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.highlight-box h4 {
+    color: var(--color-darkest);
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+/* Statistics Box */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.stat-card {
+    background: var(--color-lightest);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid var(--color-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--color-dark);
+    display: block;
+}
+
+.stat-label {
+    font-size: 1em;
+    color: var(--color-darkest);
+    margin-top: 10px;
+}
+
+/* Quiz Styles */
+.quiz-intro {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.quiz-intro h3 {
+    color: var(--color-darkest);
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.quiz-intro ul {
+    text-align: left;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.start-quiz-btn {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-darkest) 100%);
+    color: white;
+    padding: 20px 50px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    margin-top: 30px;
+    transition: all 0.3s ease;
+}
+
+.start-quiz-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Question Cards */
+.question-card {
+    background: white;
+    border: 2px solid var(--color-light);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+}
+
+.question-card.answered {
+    opacity: 0.7;
+}
+
+.question-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.question-number {
+    background: var(--color-dark);
+    color: white;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.question-text {
+    font-size: 1.15em;
+    color: var(--color-darkest);
+    font-weight: 600;
+    flex: 1;
+}
+
+.options {
+    margin-top: 15px;
+}
+
+.option {
+    background: var(--color-lightest);
+    border: 2px solid var(--color-light);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.option:hover:not(.disabled) {
+    background: var(--color-light);
+    transform: translateX(5px);
+}
+
+.option input[type="radio"] {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.option.selected {
+    background: var(--color-medium);
+    color: white;
+    border-color: var(--color-dark);
+}
+
+.option.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.option.correct-answer {
+    background: var(--color-medium);
+    color: white;
+    border-color: var(--color-dark);
+    font-weight: bold;
+}
+
+.option.incorrect-answer {
+    background: #fdd;
+    border-color: #c55;
+    color: #7a1f1f;
+}
+
+/* Feedback */
+.feedback {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.feedback.show {
+    display: block;
+}
+
+.feedback.correct {
+    background: linear-gradient(135deg, rgba(88, 129, 87, 0.15) 0%, rgba(163, 177, 138, 0.15) 100%);
+    border-left: 5px solid var(--color-medium);
+}
+
+.feedback.incorrect {
+    background: rgba(204, 85, 85, 0.1);
+    border-left: 5px solid #c55;
+}
+
+.feedback-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.feedback-icon {
+    margin-right: 10px;
+    font-size: 1.3em;
+}
+
+.feedback-text {
+    line-height: 1.7;
+}
+
+/* Navigation Buttons */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.btn {
+    padding: 15px 35px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-darkest) 100%);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: var(--color-light);
+    color: var(--color-darkest);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--color-medium);
+    color: white;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Results */
+.results-container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.score-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, var(--color-medium) 0%, var(--color-dark) 100%);
+    box-shadow: var(--shadow-lg);
+}
+
+.score-percentage {
+    font-size: 1em;
+}
+
+.score-label {
+    font-size: 0.3em;
+    margin-top: 5px;
+    opacity: 0.9;
+}
+
+.results-details {
+    max-width: 600px;
+    margin: 30px auto;
+    text-align: left;
+}
+
+.result-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: var(--color-lightest);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-label {
+    font-weight: 600;
+    color: var(--color-darkest);
+}
+
+.result-value {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--color-dark);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.status-badge.passed {
+    background: var(--color-medium);
+    color: white;
+}
+
+.status-badge.failed {
+    background: #c55;
+    color: white;
+}
+
+.recommendation-box {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.recommendation-box.passed {
+    background: rgba(88, 129, 87, 0.1);
+    border-left: 5px solid var(--color-medium);
+}
+
+.recommendation-box.failed {
+    background: rgba(204, 85, 85, 0.1);
+    border-left: 5px solid #c55;
+}
+
+/* Loading Animation */
+.loading {
+    display: none;
+    text-align: center;
+    padding: 40px;
+}
+
+.loading.show {
+    display: block;
+}
+
+.spinner {
+    border: 5px solid var(--color-lightest);
+    border-top: 5px solid var(--color-dark);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.6em;
+    }
+    
+    .module-section {
+        padding: 20px;
+    }
+    
+    .module-section h2 {
+        font-size: 1.4em;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .navigation {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .score-circle {
+        width: 150px;
+        height: 150px;
+        font-size: 2.5em;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navigation, .btn {
+        display: none;
+    }
+    
+    .module-section {
+        display: block !important;
+        page-break-after: always;
+    }
+}
+
+/* Hidden class */
+.hidden {
+    display: none !important;
+}
+    </style>
+    <script>
+    /* Guarda en este navegador la última sección visitada para continuar después. */
+    var PROGRESO = {
+        setLocation: function(v){ try{ localStorage.setItem('litigacion_migratoria_seccion', v); }catch(e){} },
+        getLocation: function(){ try{ return localStorage.getItem('litigacion_migratoria_seccion') || ''; }catch(e){ return ''; } }
+    };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📚 Litigación en Materia Migratoria</h1>
+            <p>Proceso de Litigación en Materia Migratoria en Estados Unidos</p>
+            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">Mendoza Law Firm LLC - Training Department</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">12.5%</div>
+            </div>
+            <div class="progress-text" id="progressText">Sección 1 de 8</div>
+        </div>
+
+        <!-- MÓDULO 1: Introducción -->
+        <section class="module-section active" id="section1">
+            <h2>I. Introducción: El Marco Único de la Litigación Migratoria</h2>
+            
+            <p>La litigación migratoria en Estados Unidos representa uno de los campos más complejos y dinámicos del derecho estadounidense. A diferencia de otras áreas legales, este sistema combina elementos de múltiples ramas del derecho, creando un marco único que requiere comprensión especializada.</p>
+
+            <h3>Componentes del Sistema Híbrido</h3>
+            
+            <div class="highlight-box">
+                <h4>🏛️ Campos Legales Integrados</h4>
+                <p>El sistema de litigación migratoria combina:</p>
+                <ul>
+                    <li><strong>Derecho Administrativo:</strong> Procedimientos ante agencias del Departamento de Seguridad Nacional (DHS), incluyendo USCIS, ICE y CBP</li>
+                    <li><strong>Derecho Procesal Civil Federal:</strong> Litigación ante tribunales de distrito federales bajo reglas de procedimiento civil</li>
+                    <li><strong>Derecho Constitucional:</strong> Protección de derechos procesales y debido proceso bajo la Quinta Enmienda</li>
+                    <li><strong>Derecho de Apelaciones Federales:</strong> Revisión judicial ante Cortes de Circuito y el Tribunal Supremo</li>
+                </ul>
+            </div>
+
+            <h3>La Característica Definitoria: Tribunales del Artículo I</h3>
+            
+            <p>Lo que distingue fundamentalmente al sistema de litigación migratoria es la existencia de los <strong>tribunales de inmigración del Artículo I</strong>. A diferencia de los tribunales federales tradicionales establecidos bajo el Artículo III de la Constitución, los tribunales de inmigración:</p>
+
+            <ul>
+                <li>No forman parte del poder judicial independiente</li>
+                <li>Son agencias administrativas dentro del Departamento de Justicia (DOJ)</li>
+                <li>Sus jueces son empleados del poder ejecutivo, no jueces con nombramiento vitalicio</li>
+                <li>Operan bajo la supervisión del Procurador General de Estados Unidos</li>
+                <li>Están sujetos a directivas y políticas del DOJ</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h4>⚖️ Implicaciones de la Estructura del Artículo I</h4>
+                <p>Esta estructura tiene consecuencias profundas:</p>
+                <ul>
+                    <li><strong>Independencia limitada:</strong> Los jueces pueden ser removidos y están sujetos a evaluaciones de desempeño basadas en productividad</li>
+                    <li><strong>Políticas cambiantes:</strong> Las administraciones presidenciales pueden influir en las prioridades y enfoques de adjudicación</li>
+                    <li><strong>Doble rol del DOJ:</strong> El mismo departamento supervisa tanto la aplicación de leyes migratorias como la adjudicación de casos</li>
+                    <li><strong>Debates sobre equidad:</strong> Preocupaciones sobre la imparcialidad real y percibida del sistema</li>
+                </ul>
+            </div>
+
+            <h3>Contexto Histórico</h3>
+            
+            <p>El sistema actual evolucionó a través de reformas legislativas clave:</p>
+            
+            <ul>
+                <li><strong>Immigration and Nationality Act (INA) de 1952:</strong> Estableció el marco legal fundamental</li>
+                <li><strong>Refugee Act de 1980:</strong> Incorporó protecciones de asilo y refugio</li>
+                <li><strong>Immigration Reform and Control Act (IRCA) de 1986:</strong> Reformó el sistema de aplicación</li>
+                <li><strong>Illegal Immigration Reform and Immigrant Responsibility Act (IIRIRA) de 1996:</strong> Impuso restricciones significativas a la revisión judicial y expandió los motivos de deportación</li>
+            </ul>
+
+            <p>Estas reformas, especialmente la IIRIRA de 1996, transformaron fundamentalmente el panorama de la litigación migratoria, creando el sistema complejo que conocemos hoy.</p>
+
+            <div class="navigation">
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- MÓDULO 2: Estructura Jerárquica -->
+        <section class="module-section" id="section2">
+            <h2>II. Estructura Jerárquica del Sistema de Litigación Migratoria</h2>
+            
+            <p>El sistema de litigación migratoria opera en dos niveles distintos: el nivel administrativo (poder ejecutivo) y el nivel judicial federal (poder judicial). Comprender esta jerarquía es esencial para navegar efectivamente el sistema.</p>
+
+            <h3>A. Nivel Administrativo (Poder Ejecutivo)</h3>
+
+            <div class="highlight-box">
+                <h4>1. Agencias Iniciales del DHS</h4>
+                <p>Las tres agencias principales del Departamento de Seguridad Nacional tienen roles distintos:</p>
+                
+                <p><strong>USCIS (Servicios de Ciudadanía e Inmigración):</strong></p>
+                <ul>
+                    <li>Adjudica solicitudes de beneficios migratorios (visas, residencias, naturalizaciones)</li>
+                    <li>Procesa peticiones basadas en familia y empleo</li>
+                    <li>Administra programas humanitarios como TPS y DACA</li>
+                    <li>Opera centros de servicio regionales y oficinas de campo</li>
+                </ul>
+
+                <p><strong>ICE (Control de Inmigración y Aduanas):</strong></p>
+                <ul>
+                    <li>Investiga violaciones de leyes migratorias</li>
+                    <li>Ejecuta arrestos y detenciones</li>
+                    <li>Inicia procedimientos de remoción ante tribunales de inmigración</li>
+                    <li>Supervisa la detención migratoria</li>
+                </ul>
+
+                <p><strong>CBP (Protección Fronteriza y Aduanas):</strong></p>
+                <ul>
+                    <li>Controla puertos de entrada y fronteras</li>
+                    <li>Determina admisibilidad en fronteras</li>
+                    <li>Procesa solicitudes de asilo en puertos de entrada</li>
+                    <li>Ejecuta remoción expedita ("expedited removal")</li>
+                </ul>
+            </div>
+
+            <h3>2. Procedimientos de Remoción (Departamento de Justicia)</h3>
+
+            <p>La jerarquía de adjudicación dentro del sistema de tribunales de inmigración:</p>
+
+            <div class="highlight-box">
+                <h4>⚖️ Jueces de Inmigración (EOIR)</h4>
+                <ul>
+                    <li><strong>Cantidad:</strong> Aproximadamente 650 jueces activos</li>
+                    <li><strong>Ubicaciones:</strong> 58 cortes de inmigración a través del país</li>
+                    <li><strong>Caseload:</strong> ~600,000 casos anuales (pre-pandemia)</li>
+                    <li><strong>Funciones:</strong> Conducen audiencias, determinan removibilidad, adjudican solicitudes de alivio</li>
+                    <li><strong>Autonomía limitada:</strong> Sujetos a directivas del DOJ y métricas de productividad</li>
+                </ul>
+
+                <h4>📋 Junta de Apelaciones de Inmigración (BIA)</h4>
+                <ul>
+                    <li><strong>Composición:</strong> Panel de hasta 23 miembros designados por el Procurador General</li>
+                    <li><strong>Función:</strong> Revisión de apelaciones de decisiones de jueces de inmigración</li>
+                    <li><strong>Caseload:</strong> ~30,000 apelaciones anuales</li>
+                    <li><strong>Procedimiento:</strong> Briefing escrito principalmente, argumentación oral limitada</li>
+                    <li><strong>Decisiones:</strong> Por un miembro (casos simples) o panel de tres miembros (casos complejos)</li>
+                    <li><strong>Autoridad:</strong> Establece precedentes vinculantes para jueces de inmigración</li>
+                </ul>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">2M+</span>
+                    <span class="stat-label">Casos Pendientes (2024)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">650</span>
+                    <span class="stat-label">Jueces de Inmigración</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">3-5</span>
+                    <span class="stat-label">Años para Audiencia</span>
+                </div>
+            </div>
+
+            <h3>B. Nivel Judicial Federal (Poder Judicial)</h3>
+
+            <h3>1. Revisión de Órdenes de Remoción Finales</h3>
+
+            <div class="highlight-box">
+                <h4>🏛️ Cortes de Apelaciones de Circuito</h4>
+                <p>Las Cortes de Circuito tienen <strong>jurisdicción directa</strong> sobre decisiones finales del BIA:</p>
+                <ul>
+                    <li><strong>Base legal:</strong> 8 U.S.C. § 1252</li>
+                    <li><strong>Plazo:</strong> 30 días desde la decisión final del BIA (jurisdiccional y estricto)</li>
+                    <li><strong>Procedimiento:</strong> Petición de Revisión, no apelación tradicional</li>
+                    <li><strong>Estándar de revisión:</strong>
+                        <ul>
+                            <li>Hechos: "Evidencia sustancial" (muy deferente)</li>
+                            <li>Cuestiones legales: Revisión <em>de novo</em></li>
+                            <li>Decisiones discrecionales: Abuso de discreción</li>
+                        </ul>
+                    </li>
+                    <li><strong>Caseload:</strong> ~12,000 peticiones anuales a través de todos los circuitos</li>
+                </ul>
+            </div>
+
+            <h3>2. Acciones Colaterales/Constitucionales</h3>
+
+            <p><strong>Tribunales de Distrito Federal:</strong></p>
+            <ul>
+                <li><strong>Habeas Corpus:</strong> Desafíos a detención migratoria ilegal o prolongada</li>
+                <li><strong>Mandamus:</strong> Compelir acción de agencia en demoras irrazonables</li>
+                <li><strong>APA (Administrative Procedure Act):</strong> Impugnar acciones de agencias como arbitrarias o caprichosas</li>
+                <li><strong>Limitaciones:</strong> IIRIRA restringe severamente la jurisdicción de tribunales de distrito</li>
+            </ul>
+
+            <h3>3. Tribunal Supremo de Estados Unidos</h3>
+
+            <ul>
+                <li><strong>Revisión discrecional:</strong> Mediante <em>writ of certiorari</em></li>
+                <li><strong>Volumen:</strong> 5-10 casos migratorios por término</li>
+                <li><strong>Criterios:</strong> Conflictos de circuito, cuestiones constitucionales importantes</li>
+                <li><strong>Impacto:</strong> Precedentes vinculantes para todo el país</li>
+            </ul>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- MÓDULO 3: Características Procesales -->
+        <section class="module-section" id="section3">
+            <h2>III. Características Procesales Únicas</h2>
+            
+            <p>El sistema de litigación migratoria tiene características procesales que lo distinguen significativamente de otros tipos de litigación en Estados Unidos.</p>
+
+            <h3>A. Limitaciones a la Revisión Judicial (IIRIRA de 1996)</h3>
+
+            <div class="highlight-box">
+                <h4>⚠️ "Strip Provisions" (Cláusulas de Exclusión)</h4>
+                <p>La IIRIRA de 1996 impuso restricciones dramáticas a la revisión judicial:</p>
+                
+                <p><strong>8 U.S.C. § 1252(a)(2)(B):</strong> Elimina revisión judicial de:</p>
+                <ul>
+                    <li>Decisiones discrecionales (cancelación de remoción, ajuste de estatus)</li>
+                    <li>Determinaciones sobre waivers de inadmisibilidad</li>
+                    <li>Otras decisiones especificadas como discrecionales</li>
+                </ul>
+
+                <p><strong>8 U.S.C. § 1252(a)(2)(C):</strong> Elimina revisión para extranjeros con ciertos antecedentes criminales</p>
+
+                <p><strong>Excepciones importantes:</strong></p>
+                <ul>
+                    <li>Cuestiones constitucionales y de derecho siguen siendo revisables</li>
+                    <li>La Corte Suprema ha interpretado estas restricciones de manera algo limitada (casos como <em>INS v. St. Cyr</em>)</li>
+                </ul>
+            </div>
+
+            <h3>Plazos Estrictos</h3>
+
+            <ul>
+                <li><strong>30 días para petición de revisión:</strong> Desde la decisión final del BIA (jurisdiccional - no puede extenderse)</li>
+                <li><strong>90 días para motion de reconsideración:</strong> Ante el BIA</li>
+                <li><strong>180 días para reapertura:</strong> Para presentar nueva evidencia</li>
+                <li><strong>1 año para asilo:</strong> Desde última entrada a EE.UU. (con excepciones)</li>
+            </ul>
+
+            <h3>Revisión Acelerada (Expedited Removal)</h3>
+
+            <p>Para extranjeros con antecedentes criminales graves:</p>
+            <ul>
+                <li>Proceso de apelación limitado o eliminado</li>
+                <li>Revisión judicial restringida bajo 8 U.S.C. § 1252(a)(2)(C)</li>
+                <li>Aplicable a personas con "aggravated felonies" según definición expansiva de INA</li>
+            </ul>
+
+            <h3>B. Carga de la Prueba</h3>
+
+            <div class="highlight-box">
+                <h4>⚖️ Sistema Bifurcado de Carga Probatoria</h4>
+                
+                <p><strong>1. En Procedimientos de Remoción (DHS tiene la carga):</strong></p>
+                <ul>
+                    <li>DHS debe probar por <strong>preponderancia de la evidencia</strong> que el extranjero es removible</li>
+                    <li>Elementos: Extranjería (no ciudadano), presencia en EE.UU., causal de removibilidad</li>
+                    <li>Burden of production: DHS debe presentar evidencia prima facie</li>
+                </ul>
+
+                <p><strong>2. Para Solicitudes de Alivio (Extranjero tiene la carga):</strong></p>
+                <ul>
+                    <li>El extranjero debe probar elegibilidad para alivio solicitado</li>
+                    <li>Estándar típico: Preponderancia de la evidencia</li>
+                    <li>Para asilo: Estándar puede ser más bajo (evidencia razonable de temor fundado)</li>
+                    <li>Para cancelación de remoción: Debe demostrar "exceptional and extremely unusual hardship"</li>
+                </ul>
+
+                <p><strong>3. Estándares Especiales:</strong></p>
+                <ul>
+                    <li><strong>"Clear and convincing evidence":</strong> Para waiver de ciertos motivos de inadmisibilidad</li>
+                    <li><strong>"Well-founded fear":</strong> Para asilo (más bajo que preponderancia)</li>
+                    <li><strong>"More likely than not":</strong> Para protección bajo CAT (Convención Contra la Tortura)</li>
+                </ul>
+            </div>
+
+            <h3>C. Representación Legal</h3>
+
+            <p>Una de las características más controvertidas del sistema:</p>
+
+            <div class="highlight-box">
+                <h4>👨‍⚖️ No Hay Derecho a Abogado Pagado por el Gobierno</h4>
+                
+                <p><strong>Situación actual:</strong></p>
+                <ul>
+                    <li>Solo hay derecho a representación <strong>a propia costa</strong></li>
+                    <li>No hay Sexta Enmienda en procedimientos civiles de inmigración</li>
+                    <li>~37% de respondentes no tienen representación</li>
+                    <li>Disparidad dramática en tasas de éxito</li>
+                </ul>
+
+                <p><strong>Impacto de la representación:</strong></p>
+                <ul>
+                    <li>Personas con abogado: <strong>5x más probabilidades de éxito</strong></li>
+                    <li>Particularmente crítico para solicitudes de asilo y alivio discrecional</li>
+                    <li>Diferencias significativas entre detenidos (menor representación) y no-detenidos</li>
+                </ul>
+
+                <p><strong>Programas pro bono y de interés público:</strong></p>
+                <ul>
+                    <li>Organizaciones sin fines de lucro llenan el vacío parcialmente</li>
+                    <li>Programas de clínicas legales en escuelas de derecho</li>
+                    <li>Iniciativas piloto de representación garantizada en algunas jurisdicciones</li>
+                </ul>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">37%</span>
+                    <span class="stat-label">Sin Representación</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">5x</span>
+                    <span class="stat-label">Mayor Éxito con Abogado</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">30</span>
+                    <span class="stat-label">Días para Apelar</span>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- MÓDULO 4: Tipos de Litigación - PRIMERA PARTE -->
+        <section class="module-section" id="section4">
+            <h2>IV. Tipos Principales de Litigación Migratoria</h2>
+            
+            <h3>A. Defensa en Procedimientos de Remoción</h3>
+
+            <p>Los procedimientos de remoción son la forma más común de litigación migratoria:</p>
+
+            <div class="highlight-box">
+                <h4>1. Desafío a la Removibilidad</h4>
+                <p>Estrategias para cuestionar que el extranjero sea removible:</p>
+                <ul>
+                    <li><strong>Ciudadanía derivada:</strong> Argumentar que el cliente adquirió ciudadanía estadounidense</li>
+                    <li><strong>Estatus de residente permanente:</strong> Demostrar que el cliente nunca perdió su LPR status</li>
+                    <li><strong>Cuestionamiento de cargos:</strong> Argumentar que los cargos no están sustentados</li>
+                    <li><strong>Defensa de convicción criminal:</strong> Argumentar que una convicción no califica bajo INA</li>
+                </ul>
+            </div>
+
+            <h3>2. Solicitud de Alivio Discrecional</h3>
+
+            <div class="highlight-box">
+                <h4>🛡️ Formas Principales de Alivio</h4>
+                
+                <p><strong>Cancelación de Remoción:</strong></p>
+                <ul>
+                    <li><strong>Para LPRs:</strong> 5 años de residencia, 7 años de presencia física continua</li>
+                    <li><strong>Para no-LPRs:</strong> 10 años de presencia física continua, "exceptional and extremely unusual hardship"</li>
+                    <li><strong>Tasa de aprobación:</strong> ~15% general</li>
+                    <li><strong>Limitación:</strong> 4,000 concesiones anuales para no-LPRs</li>
+                </ul>
+
+                <p><strong>Asilo y Protección bajo CAT:</strong></p>
+                <ul>
+                    <li><strong>Asilo:</strong> Persecución por raza, religión, nacionalidad, opinión política, o membresía en grupo social particular</li>
+                    <li><strong>Estándar:</strong> "Well-founded fear" de persecución futura</li>
+                    <li><strong>CAT:</strong> "More likely than not" que será torturado si removido</li>
+                    <li><strong>Plazo:</strong> 1 año desde última entrada (con excepciones)</li>
+                    <li><strong>Tasa de aprobación:</strong> ~35% en corte de inmigración</li>
+                </ul>
+
+                <p><strong>Ajuste de Estatus:</strong></p>
+                <ul>
+                    <li>Basado en petición familiar aprobada o visa de empleo</li>
+                    <li>Requiere elegibilidad y admisibilidad</li>
+                    <li>Sección 245(i) para ciertos solicitantes con entrada ilegal</li>
+                    <li>Limitado en procedimientos de remoción (8 CFR § 245.2)</li>
+                </ul>
+
+                <p><strong>Salida Voluntaria:</strong></p>
+                <ul>
+                    <li>Alternativa a orden de remoción</li>
+                    <li>Evita barras de reingreso de 10 años</li>
+                    <li>Puede ser concedida al inicio o conclusión de procedimientos</li>
+                    <li>Periodo típico: 60-120 días para salir</li>
+                </ul>
+            </div>
+
+            <h3>B. Litigio de Beneficios Migratorios</h3>
+
+            <h3>1. Contra USCIS</h3>
+
+            <ul>
+                <li><strong>Acciones bajo APA:</strong> Impugnar denegaciones arbitrarias o caprichosas de peticiones</li>
+                <li><strong>Mandamus:</strong> Compelir acción en casos de demoras irrazonables (típicamente >18-24 meses)</li>
+                <li><strong>Motions de Reconsideración:</strong> Presentar evidencia nueva o argumentar error legal</li>
+                <li><strong>Apelaciones Administrativas:</strong> Al Administrative Appeals Office (AAO)</li>
+            </ul>
+
+            <h3>2. Procesos Consulares</h3>
+
+            <div class="highlight-box">
+                <h4>🏛️ Doctrina de Revisión Consular</h4>
+                <p>La revisión de decisiones consulares es extremadamente limitada:</p>
+                <ul>
+                    <li><strong>Regla general:</strong> Decisiones consulares son no revisables judicialmente</li>
+                    <li><strong>Excepciones:</strong>
+                        <ul>
+                            <li>Ciudadanos estadounidenses sufren perjuicio directo</li>
+                            <li>Violaciones constitucionales claras</li>
+                            <li>Negación de procedimiento consular mínimo</li>
+                        </ul>
+                    </li>
+                    <li><strong>Remedios limitados:</strong> Típicamente limitados a Mandamus para procesar o APA para arbitrariedad</li>
+                </ul>
+            </div>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- MÓDULO 5: Tipos de Litigación - SEGUNDA PARTE -->
+        <section class="module-section" id="section5">
+            <h2>IV. Tipos Principales de Litigación Migratoria (continuación)</h2>
+
+            <h3>C. Litigio de Detención Migratoria</h3>
+
+            <div class="highlight-box">
+                <h4>🔒 Clases de Detención</h4>
+                
+                <p><strong>1. Detención Obligatoria (8 U.S.C. § 1226(c)):</strong></p>
+                <ul>
+                    <li>Extranjeros con "aggravated felonies"</li>
+                    <li>Ciertos delitos relacionados con drogas</li>
+                    <li>Delitos de violencia</li>
+                    <li>Sin derecho a audiencia de fianza</li>
+                </ul>
+
+                <p><strong>2. Detención Discrecional (8 U.S.C. § 1226(a)):</strong></p>
+                <ul>
+                    <li>Casos generales</li>
+                    <li>Derecho a audiencia de fianza ante juez de inmigración</li>
+                    <li>Factores: Peligrosidad y riesgo de fuga</li>
+                    <li>Puede solicitar redeterminación</li>
+                </ul>
+
+                <p><strong>3. Peticiones de Habeas Corpus:</strong></p>
+                <ul>
+                    <li>Ante tribunales federales de distrito</li>
+                    <li>Para detención prolongada sin proceso debido</li>
+                    <li>Casos clave: <em>Zadvydas v. Davis</em> (6 meses presumptivamente razonable post-orden)</li>
+                </ul>
+
+                <p><strong>4. Flores Settlement:</strong></p>
+                <ul>
+                    <li>Estándares para detención de menores</li>
+                    <li>Preferencia por liberación a patrocinadores</li>
+                    <li>Estándares de cuidado en instalaciones</li>
+                    <li>Límites de tiempo para detención (20 días generalmente)</li>
+                </ul>
+            </div>
+
+            <h3>D. Litigio Apelativo</h3>
+
+            <p><strong>1. Apelaciones Administrativas al BIA:</strong></p>
+            <ul>
+                <li>Brief de apertura (típicamente 50 páginas)</li>
+                <li>Brief de respuesta del gobierno</li>
+                <li>Reply brief opcional</li>
+                <li>Argumentación oral en casos limitados</li>
+                <li>Decisión por uno o tres miembros</li>
+            </ul>
+
+            <p><strong>2. Petición de Revisión ante Cortes de Circuito:</strong></p>
+            <ul>
+                <li>Notificación dentro de 30 días</li>
+                <li>Expediente administrativo del BIA</li>
+                <li>Briefing extenso con citas al récord</li>
+                <li>Argumentación oral frecuente</li>
+                <li>Decisión por panel de tres jueces</li>
+            </ul>
+
+            <h3>V. Tendencias y Estadísticas Actuales</h3>
+            
+            <h3>A. Volumen de Casos</h3>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">2M+</span>
+                    <span class="stat-label">Casos Pendientes en Tribunales (2024)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">30K</span>
+                    <span class="stat-label">Apelaciones Anuales al BIA</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">12K</span>
+                    <span class="stat-label">Peticiones a Cortes de Circuito</span>
+                </div>
+            </div>
+
+            <p>El sistema está experimentando una crisis de volumen sin precedentes:</p>
+
+            <ul>
+                <li><strong>Backlog histórico:</strong> Más de 2 millones de casos pendientes en tribunales de inmigración (2024)</li>
+                <li><strong>Crecimiento exponencial:</strong> El backlog se ha más que triplicado desde 2016</li>
+                <li><strong>Distribución desigual:</strong> Algunas cortes tienen backlogs de 5-8 años</li>
+                <li><strong>Impacto COVID-19:</strong> Suspensión de audiencias en persona aceleró el backlog</li>
+            </ul>
+
+            <h3>B. Tiempos de Procesamiento y Tasas de Éxito</h3>
+
+            <div class="highlight-box">
+                <h4>⏱️ Tiempos Promedio</h4>
+                <ul>
+                    <li><strong>USCIS:</strong> 6-36 meses para diferentes beneficios</li>
+                    <li><strong>Cortes de Inmigración:</strong> 3-5 años para audiencia final</li>
+                    <li><strong>BIA:</strong> 12-24 meses para decisión</li>
+                    <li><strong>Cortes de Circuito:</strong> 18-36 meses</li>
+                </ul>
+                
+                <h4>📊 Tasas de Éxito</h4>
+                <ul>
+                    <li><strong>Con representación:</strong> 5x más probabilidades de éxito</li>
+                    <li><strong>Asilo:</strong> ~35% en corte (varía por nacionalidad/juez)</li>
+                    <li><strong>Cancelación de Remoción:</strong> ~15%</li>
+                </ul>
+            </div>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- MÓDULO 6: Estrategias y Retos -->
+        <section class="module-section" id="section6">
+            <h2>VI. Estrategias de Litigación Efectivas</h2>
+            
+            <h3>A. Desarrollo del Récord Administrativo</h3>
+
+            <div class="highlight-box">
+                <h4>📋 Reglas Críticas del Récord</h4>
+                
+                <p><strong>1. Regla de Exhaustividad (Exhaustion Doctrine):</strong></p>
+                <ul>
+                    <li><strong>Principio:</strong> Todas las teorías legales y argumentos deben presentarse ante la agencia antes de revisión judicial</li>
+                    <li><strong>Consecuencia:</strong> Argumentos no presentados al juez de inmigración y BIA generalmente están "waived" (perdidos)</li>
+                    <li><strong>Práctica óptima:</strong> Presentar todos los argumentos posibles, incluso alternativos, ante el juez de inmigración</li>
+                    <li><strong>Excepciones limitadas:</strong> Cuestiones jurisdiccionales, cambios legales después de BIA</li>
+                </ul>
+
+                <p><strong>2. Regla de la Pérdida (Waiver Rule):</strong></p>
+                <ul>
+                    <li>No apelar al BIA generalmente significa perder el derecho a revisión judicial</li>
+                    <li>Apelar preserva todos los issues para revisión judicial posterior</li>
+                    <li><strong>Estrategia:</strong> Siempre considerar apelar al BIA, incluso si las probabilidades son bajas</li>
+                </ul>
+
+                <p><strong>3. Importancia del Récord para Revisión Judicial:</strong></p>
+                <ul>
+                    <li>Cortes de Circuito solo revisan lo que está en el récord administrativo</li>
+                    <li>No se permite evidencia nueva en revisión judicial</li>
+                    <li><strong>Práctica óptima:</strong> Crear récord completo y detallado desde el inicio</li>
+                </ul>
+            </div>
+
+            <h3>B. Selección del Foro y Coordinación</h3>
+
+            <div class="highlight-box">
+                <h4>🗺️ Consideraciones Estratégicas</h4>
+                
+                <p><strong>Elección de Circuito:</strong></p>
+                <ul>
+                    <li><strong>Ninth Circuit:</strong> Históricamente más favorable, pero ahora más conservador</li>
+                    <li><strong>Second Circuit:</strong> Bien desarrollado en derecho de asilo</li>
+                    <li><strong>Fifth Circuit:</strong> Tradicionalmente restrictivo</li>
+                    <li>Variaciones jurisprudenciales significativas entre circuitos</li>
+                </ul>
+
+                <p><strong>Estrategia Doble:</strong></p>
+                <ul>
+                    <li><strong>Track 1:</strong> Procedimientos administrativos normales (Juez → BIA)</li>
+                    <li><strong>Track 2:</strong> Acción en tribunal de distrito federal (Mandamus, APA, Habeas)</li>
+                    <li>Los dos tracks pueden informarse mutuamente</li>
+                </ul>
+            </div>
+
+            <h2>VII. Retos y Reformas Propuestas</h2>
+
+            <h3>A. Problemas Estructurales</h3>
+
+            <div class="highlight-box">
+                <h4>⚠️ Desafíos Sistémicos</h4>
+                
+                <p><strong>1. Independencia Judicial:</strong></p>
+                <ul>
+                    <li>Jueces de inmigración son empleados del DOJ, el mismo departamento que supervisa ICE</li>
+                    <li>Posible o percibida falta de imparcialidad</li>
+                    <li>Métricas de productividad (cuotas) afectan decisiones</li>
+                </ul>
+
+                <p><strong>2. Inconsistencia Entre Jueces:</strong></p>
+                <ul>
+                    <li>Tasas de concesión de asilo varían de <5% a >90% entre jueces</li>
+                    <li>"Lotería" de asignación de juez determina resultado</li>
+                </ul>
+
+                <p><strong>3. Acceso a Representación:</strong></p>
+                <ul>
+                    <li>~37% sin representación</li>
+                    <li>Desigualdad fundamental: Justicia depende de recursos económicos</li>
+                </ul>
+            </div>
+
+            <h3>B. Reformas en Debate</h3>
+
+            <div class="highlight-box">
+                <h4>🔧 Propuestas Principales</h4>
+                
+                <p><strong>1. Cortes de Inmigración Independientes:</strong></p>
+                <ul>
+                    <li>Crear cortes independientes del DOJ (Artículo I)</li>
+                    <li>Mayor imparcialidad y protección contra presión política</li>
+                    <li>Requiere legislación del Congreso</li>
+                </ul>
+
+                <p><strong>2. Representación Garantizada:</strong></p>
+                <ul>
+                    <li>Derecho a abogado pagado por el gobierno en casos de remoción</li>
+                    <li>Programas piloto en NYC han mostrado resultados dramáticos</li>
+                    <li>Obstáculo principal: Costo estimado $300M-$2B anuales</li>
+                </ul>
+
+                <p><strong>3. Expansión de Revisión Judicial:</strong></p>
+                <ul>
+                    <li>Revertir restricciones de IIRIRA de 1996</li>
+                    <li>Restaurar revisión de decisiones discrecionales</li>
+                </ul>
+            </div>
+
+            <h3>C. Innovaciones Recientes</h3>
+
+            <ul>
+                <li><strong>Videoconferencia:</strong> >50% de audiencias ahora virtuales</li>
+                <li><strong>Discreción procesal:</strong> Políticas para casos de baja prioridad</li>
+                <li><strong>Unificación familiar:</strong> Priorización de casos con peticiones familiares</li>
+            </ul>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- MÓDULO 7: Conclusión -->
+        <section class="module-section" id="section7">
+            <h2>VIII. Conclusión</h2>
+            
+            <p>La litigación migratoria en Estados Unidos representa una interfase única entre el poder ejecutivo y judicial, caracterizada por:</p>
+
+            <div class="highlight-box">
+                <h4>🎯 Características Fundamentales</h4>
+                <ol>
+                    <li><strong>Jerarquía Multi-Nivel:</strong> Proceso administrativo exhaustivo antes de revisión judicial</li>
+                    <li><strong>Restricciones Procesales:</strong> Limitaciones legislativas significativas a la revisión judicial</li>
+                    <li><strong>Discrecionalidad Amplia:</strong> Balance entre estandarización y flexibilidad</li>
+                    <li><strong>Impacto Humanitario Directo:</strong> Consecuencias inmediatas en vidas y familias</li>
+                </ol>
+            </div>
+
+            <h3>Estado Actual del Sistema</h3>
+
+            <p>El sistema actual enfrenta presiones significativas:</p>
+
+            <ul>
+                <li><strong>Volumen de casos:</strong> Más de 2 millones de casos pendientes</li>
+                <li><strong>Tiempos de procesamiento:</strong> Esperas de 3-5 años para audiencias finales</li>
+                <li><strong>Cuestionamientos sobre equidad procesal:</strong> Disparidades en representación y resultados</li>
+                <li><strong>Inconsistencias sistemáticas:</strong> Variación dramática en tasas de aprobación entre jueces</li>
+            </ul>
+
+            <h3>Consideraciones para Profesionales</h3>
+
+            <div class="highlight-box">
+                <h4>💼 Competencias Esenciales</h4>
+                <p>Las decisiones de litigación estratégica requieren comprensión de:</p>
+                <ul>
+                    <li>Derecho sustantivo migratorio (INA, regulaciones)</li>
+                    <li>Complejidades procesales únicas del sistema híbrido</li>
+                    <li>Variaciones entre circuitos judiciales</li>
+                    <li>Desarrollo estratégico del récord administrativo</li>
+                    <li>Coordinación de litigios paralelos</li>
+                    <li>Tendencias y estadísticas actuales</li>
+                </ul>
+            </div>
+
+            <h3>Perspectivas Futuras</h3>
+
+            <p>El futuro del sistema de litigación migratoria dependerá de:</p>
+
+            <ul>
+                <li>Voluntad política para reformas estructurales</li>
+                <li>Recursos adicionales para reducir el backlog</li>
+                <li>Mejoras en acceso a representación legal</li>
+                <li>Mayor consistencia en adjudicación</li>
+                <li>Balance entre eficiencia y debido proceso</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h4>📚 Fuentes de Autoridad</h4>
+                <ul>
+                    <li>Immigration and Nationality Act (INA)</li>
+                    <li>Administrative Procedure Act (APA)</li>
+                    <li>8 U.S.C. § 1252 (Revisión judicial)</li>
+                    <li>Estadísticas del Executive Office for Immigration Review (EOIR)</li>
+                    <li>Jurisprudencia del Supreme Court y Circuit Courts</li>
+                    <li>Informes del American Immigration Council y TRAC Immigration</li>
+                </ul>
+            </div>
+
+            <p style="margin-top: 30px; padding: 20px; background: var(--color-lightest); border-radius: 8px; text-align: center;">
+                <strong>Has completado el contenido del curso.</strong><br>
+                Ahora procede a la evaluación final para demostrar tu comprensión del material.
+            </p>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Ir a Evaluación →</button>
+            </div>
+        </section>
+
+        <!-- MÓDULO 8: Evaluación -->
+        <section class="module-section" id="section8">
+            <h2>Evaluación Final</h2>
+            
+            <!-- Quiz Intro -->
+            <div id="quizIntro" class="quiz-intro">
+                <h3>📝 Evaluación de Conocimientos</h3>
+                
+                <div class="highlight-box">
+                    <h4>Instrucciones</h4>
+                    <ul>
+                        <li><strong>Total de preguntas:</strong> 15</li>
+                        <li><strong>Calificación mínima para aprobar:</strong> 70% (11 respuestas correctas)</li>
+                        <li><strong>Tiempo recomendado:</strong> 30-45 minutos</li>
+                        <li><strong>Intentos:</strong> Un intento (respuestas no pueden modificarse una vez enviadas)</li>
+                        <li><strong>Feedback:</strong> Recibirás retroalimentación detallada para cada pregunta</li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: 30px; font-size: 1.1em;">
+                    Esta evaluación mide tu comprensión del proceso de litigación en materia migratoria en Estados Unidos.
+                    Lee cada pregunta cuidadosamente y selecciona la mejor respuesta.
+                </p>
+
+                <button class="start-quiz-btn" onclick="startQuiz()">Comenzar Evaluación</button>
+            </div>
+
+            <!-- Quiz Container (hidden initially) -->
+            <div id="quizContainer" class="hidden"></div>
+
+            <!-- Navigation for quiz -->
+            <div id="quizNav" class="navigation hidden">
+                <button class="btn btn-secondary" onclick="prevSection()">← Regresar al Curso</button>
+                <button class="btn btn-primary" id="submitQuizBtn" onclick="submitQuiz()">Enviar Evaluación</button>
+            </div>
+
+            <!-- Results Container (hidden initially) -->
+            <div id="resultsContainer" class="hidden"></div>
+        </section>
+    </div>
+
+    <script>
+    // ==================== VARIABLES GLOBALES ====================
+    var currentSection = 1;
+    var totalSections = 8;
+    var quizStarted = false;
+    var quizCompleted = false;
+    var userAnswers = [];
+    var startTime = null;
+    var endTime = null;
+
+    // ==================== PREGUNTAS DE EVALUACIÓN ====================
+    var questions = [
+        {
+            id: 1,
+            question: "¿Cuál es la característica definitoria del sistema de litigación migratoria en Estados Unidos?",
+            options: [
+                "Tribunales de inmigración del Artículo III del poder judicial",
+                "Tribunales de inmigración del Artículo I que son agencias administrativas dentro del DOJ",
+                "Tribunales estatales con jurisdicción migratoria",
+                "Tribunales militares especializados en inmigración"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! Los tribunales de inmigración son tribunales del Artículo I, que no forman parte del poder judicial del Artículo III, sino que son agencias administrativas dentro del Departamento de Justicia (DOJ). Esta característica los diferencia de los tribunales federales tradicionales y tiene implicaciones importantes sobre su independencia y funcionamiento.",
+                incorrect: "Incorrecto. La característica definitoria es que los tribunales de inmigración son del Artículo I y funcionan como agencias administrativas dentro del DOJ, no como parte del poder judicial del Artículo III. Esto tiene implicaciones importantes sobre su independencia y funcionamiento, ya que los jueces son empleados del poder ejecutivo."
+            }
+        },
+        {
+            id: 2,
+            question: "¿Cuántos jueces de inmigración aproximadamente trabajan en el sistema EOIR y cuántos casos están pendientes actualmente?",
+            options: [
+                "300 jueces y 500,000 casos pendientes",
+                "650 jueces y 2 millones de casos pendientes",
+                "1,000 jueces y 1 millón de casos pendientes",
+                "450 jueces y 750,000 casos pendientes"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! Actualmente hay aproximadamente 650 jueces de inmigración operando en 58 cortes a través del país, con más de 2 millones de casos pendientes (datos de 2024). Esta sobrecarga del sistema explica los largos tiempos de espera de 3-5 años para una audiencia final y es uno de los mayores desafíos del sistema actual.",
+                incorrect: "Incorrecto. El sistema cuenta con aproximadamente 650 jueces de inmigración en 58 cortes, enfrentando un backlog de más de 2 millones de casos pendientes. Esta carga extrema de casos es uno de los mayores desafíos del sistema actual y explica los tiempos de espera de 3-5 años para audiencias finales."
+            }
+        },
+        {
+            id: 3,
+            question: "¿Cuál es la jerarquía correcta para apelar una orden de remoción final?",
+            options: [
+                "Juez de Inmigración → Tribunal de Distrito → BIA → Corte de Circuito",
+                "Juez de Inmigración → BIA → Corte de Circuito → Tribunal Supremo",
+                "Juez de Inmigración → Corte de Circuito → BIA → Tribunal Supremo",
+                "BIA → Juez de Inmigración → Corte de Circuito"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Perfecto! La jerarquía es: Juez de Inmigración (EOIR) → Junta de Apelaciones de Inmigración (BIA) → Cortes de Apelaciones de Circuito → Tribunal Supremo (mediante certiorari). Esta estructura combina procesos administrativos (los primeros dos niveles) y judiciales (los últimos dos niveles).",
+                incorrect: "Incorrecto. La secuencia correcta es: Juez de Inmigración → BIA (apelación administrativa) → Corte de Apelaciones de Circuito (revisión judicial) → Tribunal Supremo (certiorari). Es crucial entender esta jerarquía para estrategias de litigación efectivas, ya que cada nivel tiene diferentes estándares de revisión y plazos."
+            }
+        },
+        {
+            id: 4,
+            question: "¿Cuál es el plazo para apelar una orden de remoción final ante las Cortes de Circuito?",
+            options: [
+                "60 días",
+                "90 días",
+                "30 días",
+                "45 días"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Correcto! El plazo es de 30 días para presentar una petición de revisión ante la Corte de Circuito correspondiente después de recibir una decisión final del BIA. Este plazo es estricto y jurisdiccional, lo que significa que perderlo generalmente resulta en la pérdida del derecho a apelar.",
+                incorrect: "Incorrecto. El plazo es de solo 30 días, no más. Este es un plazo jurisdiccional y estricto bajo 8 U.S.C. § 1252. Perder este plazo generalmente significa perder el derecho a revisión judicial, por lo que es fundamental calendrizarlo inmediatamente después de recibir la decisión del BIA."
+            }
+        },
+        {
+            id: 5,
+            question: "¿Qué limitaciones impuso la IIRIRA de 1996 sobre la revisión judicial en casos migratorios?",
+            options: [
+                "Eliminó completamente el derecho a revisión judicial",
+                "Impuso 'Strip Provisions' que limitan la revisión de ciertas decisiones discrecionales",
+                "Aumentó los plazos de apelación a 90 días",
+                "Creó un sistema de revisión automática para todos los casos"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! La IIRIRA de 1996 introdujo las 'Strip Provisions' (cláusulas de exclusión) que limitan significativamente la revisión judicial de ciertas decisiones discrecionales de agencias migratorias. Estas restricciones son uno de los aspectos más controvertidos del derecho migratorio moderno y afectan especialmente casos con antecedentes criminales.",
+                incorrect: "Incorrecto. La IIRIRA de 1996 impuso 'Strip Provisions' que limitan (no eliminan) la revisión judicial de ciertas decisiones discrecionales. También estableció plazos estrictos de 30 días (no 90) y creó procedimientos de revisión acelerada para ciertos extranjeros con antecedentes criminales."
+            }
+        },
+        {
+            id: 6,
+            question: "En procedimientos de remoción, ¿quién tiene la carga de la prueba sobre la removibilidad?",
+            options: [
+                "El extranjero debe probar que no es removible",
+                "El juez de inmigración debe determinar la removibilidad",
+                "El DHS debe probar que el extranjero es removible",
+                "La carga es compartida entre DHS y el extranjero"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Correcto! El DHS (Department of Homeland Security) tiene la carga inicial de probar por preponderancia de la evidencia que el extranjero es removible. Solo después de que DHS cumpla con esta carga, el extranjero debe probar su elegibilidad para cualquier forma de alivio. Este es un punto crucial del sistema bifurcado de carga probatoria.",
+                incorrect: "Incorrecto. El DHS tiene la carga de probar que el extranjero es removible. Sin embargo, una vez establecida la removibilidad, el extranjero tiene la carga de probar su elegibilidad para cualquier forma de alivio discrecional (asilo, cancelación de remoción, etc.). Este sistema bifurcado es fundamental para entender la dinámica de los procedimientos de remoción."
+            }
+        },
+        {
+            id: 7,
+            question: "¿Qué porcentaje aproximado de no ciudadanos en procedimientos de remoción no tienen representación legal?",
+            options: [
+                "15%",
+                "25%",
+                "37%",
+                "50%"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Correcto! Aproximadamente el 37% de no ciudadanos en procedimientos de remoción no tienen representación legal. Esto es significativo porque no existe un derecho constitucional a representación pagada por el gobierno en procedimientos administrativos de inmigración, solo el derecho a representación a propia costa.",
+                incorrect: "Incorrecto. El dato es 37%, lo cual es preocupante dado que las personas representadas tienen 5 veces más probabilidades de éxito que aquellas sin representación. Esta disparidad es uno de los mayores desafíos de equidad procesal en el sistema y ha llevado a propuestas de reforma para garantizar representación legal."
+            }
+        },
+        {
+            id: 8,
+            question: "¿Cuál de los siguientes NO es un tipo de alivio discrecional disponible en procedimientos de remoción?",
+            options: [
+                "Cancelación de Remoción",
+                "Asilo",
+                "Salida Voluntaria",
+                "Ciudadanía Inmediata"
+            ],
+            correct: 3,
+            feedback: {
+                correct: "¡Perfecto! La ciudadanía inmediata NO es una forma de alivio disponible en procedimientos de remoción. Las formas legítimas de alivio incluyen: Cancelación de Remoción, Asilo, Convención Contra la Tortura, Ajuste de Estatus (bajo ciertas circunstancias), y Salida Voluntaria.",
+                incorrect: "Incorrecto. La ciudadanía inmediata no está disponible como alivio en procedimientos de remoción. Las opciones reales incluyen Cancelación de Remoción (para residentes permanentes y no residentes), Asilo/CAT, Ajuste de Estatus en casos limitados, y Salida Voluntaria como alternativa a una orden de remoción."
+            }
+        },
+        {
+            id: 9,
+            question: "¿Qué herramienta legal se puede usar cuando USCIS demora irrazonablemente en procesar una solicitud?",
+            options: [
+                "Acción de Mandamus",
+                "Habeas Corpus",
+                "Certiorari",
+                "Injunction"
+            ],
+            correct: 0,
+            feedback: {
+                correct: "¡Excelente! Una acción de Mandamus ante un tribunal federal de distrito es el remedio apropiado cuando USCIS demora irrazonablemente en adjudicar una solicitud. El solicitante debe demostrar: (1) un deber claro de la agencia de actuar, (2) demora irrazonable, y (3) falta de otro remedio adecuado.",
+                incorrect: "Incorrecto. Mandamus es el remedio correcto para demoras irrazonables de USCIS. El Habeas Corpus se usa para desafiar detenciones, Certiorari es para revisión del Tribunal Supremo, e Injunction es para órdenes judiciales que requieren o prohíben acciones. Mandamus es específicamente para compelir a una agencia a actuar cuando tiene un deber claro de hacerlo."
+            }
+        },
+        {
+            id: 10,
+            question: "¿Qué establece el Flores Settlement respecto a menores no acompañados?",
+            options: [
+                "Derecho automático a residencia permanente",
+                "Estándares para condiciones de detención de menores",
+                "Eliminación de la detención de menores",
+                "Representación legal gratuita garantizada"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! El Flores Settlement establece estándares mínimos para las condiciones de detención de menores no acompañados, incluyendo requisitos sobre instalaciones, cuidado, liberación a patrocinadores, y límites de tiempo para la detención. Es un acuerdo judicial fundamental que protege los derechos de los menores en custodia migratoria.",
+                incorrect: "Incorrecto. Flores establece estándares para las condiciones de detención de menores, no garantiza residencia, no elimina la detención completamente, ni garantiza representación legal gratuita (aunque esto es una reforma propuesta). El acuerdo fue alcanzado en 1997 y modificado en 2015, estableciendo límites de tiempo (generalmente 20 días) y preferencia por liberación a patrocinadores."
+            }
+        },
+        {
+            id: 11,
+            question: "¿Cuánto tiempo aproximadamente toma actualmente el BIA para decidir una apelación?",
+            options: [
+                "3-6 meses",
+                "6-9 meses",
+                "12-24 meses",
+                "24-36 meses"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Correcto! El BIA actualmente toma entre 12-24 meses para decidir una apelación. Esto se suma al tiempo ya transcurrido en la corte de inmigración (3-5 años típicamente), creando procesos extremadamente largos que impactan significativamente las vidas de los solicitantes.",
+                incorrect: "Incorrecto. El BIA toma 12-24 meses en promedio. Considerando que las audiencias finales en la corte de inmigración toman 3-5 años, y agregando posibles apelaciones a las Cortes de Circuito (18-36 meses adicionales), un caso puede extenderse 5-8 años o más desde el inicio hasta la resolución final."
+            }
+        },
+        {
+            id: 12,
+            question: "¿Qué significa tener representación legal en términos de probabilidades de éxito en casos migratorios?",
+            options: [
+                "2 veces más probabilidades",
+                "3 veces más probabilidades",
+                "5 veces más probabilidades",
+                "No hay diferencia significativa"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Excelente! Las personas con representación legal tienen 5 veces más probabilidades de éxito en sus casos que aquellas sin representación. Esta disparidad dramática subraya la importancia crítica del acceso a representación legal de calidad y es un argumento central para reformas que garanticen representación.",
+                incorrect: "Incorrecto. La representación legal aumenta las probabilidades de éxito por un factor de 5. Esta es una de las estadísticas más impactantes del sistema y demuestra por qué el acceso a representación legal de calidad es fundamental para la justicia procesal. La disparidad es especialmente pronunciada en casos complejos como asilo y cancelación de remoción."
+            }
+        },
+        {
+            id: 13,
+            question: "¿Cuál es la tasa aproximada de aprobación para solicitudes de asilo en corte de inmigración?",
+            options: [
+                "65%",
+                "50%",
+                "35%",
+                "15%"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Correcto! La tasa de aprobación de asilo en corte de inmigración es aproximadamente 35%, aunque esta cifra varía significativamente por nacionalidad del solicitante, juez asignado, y corte específica. Algunos jueces aprueban menos del 5% de casos, mientras otros aprueban más del 90%.",
+                incorrect: "Incorrecto. La tasa es aproximadamente 35%, pero esta cifra oculta una variación dramática. Factores como la nacionalidad (ciertos países tienen tasas >70%, otros <10%), el juez específico (variación de 0% a >90%), y la ubicación geográfica afectan significativamente los resultados. Esta inconsistencia es uno de los problemas estructurales del sistema."
+            }
+        },
+        {
+            id: 14,
+            question: "¿Qué significa la 'Regla de Exhaustividad' en litigación migratoria?",
+            options: [
+                "Los casos deben completarse en un año",
+                "Todas las teorías legales deben presentarse ante la agencia administrativa antes de revisión judicial",
+                "Todos los testigos deben comparecer a audiencias",
+                "Toda la evidencia debe traducirse al inglés"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Perfecto! La Regla de Exhaustividad (Exhaustion Doctrine) requiere que todas las teorías legales y argumentos se presenten primero ante la agencia administrativa (Juez de Inmigración y BIA) antes de poder plantearlos en revisión judicial. No hacerlo generalmente resulta en la pérdida del argumento (doctrine of waiver).",
+                incorrect: "Incorrecto. La Regla de Exhaustividad requiere presentar todas las teorías legales ante las agencias administrativas antes de revisión judicial. Esto es crítico: un argumento no presentado al juez de inmigración y BIA generalmente no puede plantearse por primera vez ante la Corte de Circuito. Esta regla hace esencial el desarrollo completo del récord desde el principio."
+            }
+        },
+        {
+            id: 15,
+            question: "¿Cuál es uno de los problemas estructurales principales identificados en el sistema de litigación migratoria?",
+            options: [
+                "Demasiados jueces de inmigración",
+                "Falta de independencia judicial - los jueces son empleados del DOJ",
+                "Exceso de representación legal gratuita",
+                "Plazos de apelación demasiado largos"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! La falta de independencia judicial es un problema estructural fundamental. Los jueces de inmigración son empleados del Departamento de Justicia (parte del poder ejecutivo que también supervisa la aplicación de leyes migratorias), creando una aparente o real falta de imparcialidad. Las reformas proponen cortes de Artículo I independientes.",
+                incorrect: "Incorrecto. El problema estructural clave es la falta de independencia judicial: los jueces son empleados del DOJ (ejecutivo), el mismo departamento que supervisa su aplicación. Otros problemas incluyen muy pocos jueces (no demasiados), falta de representación (no exceso), y plazos muy cortos (30 días, no largos). Esta estructura compromete la imparcialidad real y percibida del sistema."
+            }
+        }
+    ];
+
+    // ==================== FUNCIONES DE NAVEGACIÓN ====================
+    function goToSection(sectionNum) {
+        // Ocultar todas las secciones
+        var sections = document.querySelectorAll('.module-section');
+        sections.forEach(function(section) {
+            section.classList.remove('active');
+        });
+        
+        // Mostrar la sección solicitada
+        var targetSection = document.getElementById('section' + sectionNum);
+        if (targetSection) {
+            targetSection.classList.add('active');
+            currentSection = sectionNum;
+            updateProgressBar();
+            
+            // Guardar ubicación
+            PROGRESO.setLocation('section_' + sectionNum);
+            
+            // Scroll al inicio
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function nextSection() {
+        if (currentSection < totalSections) {
+            goToSection(currentSection + 1);
+        }
+    }
+
+    function prevSection() {
+        if (currentSection > 1) {
+            goToSection(currentSection - 1);
+        }
+    }
+
+    function updateProgressBar() {
+        var progress = (currentSection / totalSections) * 100;
+        var progressFill = document.getElementById('progressFill');
+        var progressText = document.getElementById('progressText');
+        
+        if (progressFill) {
+            progressFill.style.width = progress + '%';
+            progressFill.textContent = Math.round(progress) + '%';
+        }
+        
+        if (progressText) {
+            progressText.textContent = 'Sección ' + currentSection + ' de ' + totalSections;
+        }
+    }
+
+    // ==================== FUNCIONES DEL QUIZ ====================
+    function startQuiz() {
+        quizStarted = true;
+        startTime = new Date();
+        
+        // Ocultar intro
+        document.getElementById('quizIntro').classList.add('hidden');
+        
+        // Mostrar quiz
+        var quizContainer = document.getElementById('quizContainer');
+        quizContainer.classList.remove('hidden');
+        
+        // Mostrar navegación
+        document.getElementById('quizNav').classList.remove('hidden');
+        
+        // Renderizar preguntas
+        renderQuiz();
+        
+        // Inicializar array de respuestas
+        userAnswers = new Array(questions.length).fill(-1);
+        
+        // Scroll al inicio
+        window.scrollTo(0, 0);
+    }
+
+    function renderQuiz() {
+        var container = document.getElementById('quizContainer');
+        container.innerHTML = '';
+        
+        questions.forEach(function(q, index) {
+            var card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = 'question-' + q.id;
+            
+            var header = document.createElement('div');
+            header.className = 'question-header';
+            
+            var number = document.createElement('div');
+            number.className = 'question-number';
+            number.textContent = (index + 1);
+            
+            var text = document.createElement('div');
+            text.className = 'question-text';
+            text.textContent = q.question;
+            
+            header.appendChild(number);
+            header.appendChild(text);
+            card.appendChild(header);
+            
+            var optionsContainer = document.createElement('div');
+            optionsContainer.className = 'options';
+            
+            q.options.forEach(function(option, optIndex) {
+                var optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.setAttribute('data-question', q.id);
+                optionDiv.setAttribute('data-option', optIndex);
+                
+                var radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'question-' + q.id;
+                radio.value = optIndex;
+                radio.id = 'q' + q.id + '-opt' + optIndex;
+                
+                radio.addEventListener('change', function() {
+                    selectAnswer(q.id, optIndex);
+                });
+                
+                var label = document.createElement('label');
+                label.htmlFor = radio.id;
+                label.textContent = option;
+                label.style.cursor = 'pointer';
+                label.style.flex = '1';
+                label.style.marginLeft = '0';
+                
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            card.appendChild(optionsContainer);
+            
+            // Contenedor de feedback (oculto inicialmente)
+            var feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback';
+            feedbackDiv.id = 'feedback-' + q.id;
+            card.appendChild(feedbackDiv);
+            
+            container.appendChild(card);
+        });
+    }
+
+    function selectAnswer(questionId, optionIndex) {
+        // Guardar respuesta
+        var qIndex = questions.findIndex(function(q) { return q.id === questionId; });
+        if (qIndex !== -1) {
+            userAnswers[qIndex] = optionIndex;
+        }
+        
+        // Actualizar UI - remover selected de todas las opciones de esta pregunta
+        var allOptions = document.querySelectorAll('[data-question="' + questionId + '"]');
+        allOptions.forEach(function(opt) {
+            opt.classList.remove('selected');
+        });
+        
+        // Agregar selected a la opción elegida
+        var selectedOption = document.querySelector('[data-question="' + questionId + '"][data-option="' + optionIndex + '"]');
+        if (selectedOption) {
+            selectedOption.classList.add('selected');
+        }
+    }
+
+    function submitQuiz() {
+        // Verificar que todas las preguntas estén respondidas
+        var unanswered = userAnswers.filter(function(a) { return a === -1; }).length;
+        
+        if (unanswered > 0) {
+            alert('Por favor responde todas las preguntas. Faltan ' + unanswered + ' pregunta(s).');
+            return;
+        }
+        
+        // Confirmar envío
+        if (!confirm('¿Estás seguro de que deseas enviar la evaluación? No podrás cambiar tus respuestas después.')) {
+            return;
+        }
+        
+        quizCompleted = true;
+        endTime = new Date();
+        
+        // Calcular calificación
+        var correct = 0;
+        questions.forEach(function(q, index) {
+            if (userAnswers[index] === q.correct) {
+                correct++;
+            }
+        });
+        
+        var scoreRaw = Math.round((correct / questions.length) * 100);
+        
+        // Mostrar feedback
+        showFeedback();
+        
+        // Deshabilitar botón de envío
+        var submitBtn = document.getElementById('submitQuizBtn');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Evaluación Enviada';
+        }
+        
+        // Mostrar resultados después de un breve delay
+        setTimeout(function() {
+            showResults(scoreRaw, correct);
+        }, 1000);
+    }
+
+    function showFeedback() {
+        questions.forEach(function(q, index) {
+            var card = document.getElementById('question-' + q.id);
+            var feedbackDiv = document.getElementById('feedback-' + q.id);
+            var options = card.querySelectorAll('.option');
+            
+            var userAnswer = userAnswers[index];
+            var isCorrect = userAnswer === q.correct;
+            
+            // Deshabilitar todas las opciones
+            options.forEach(function(opt) {
+                opt.classList.add('disabled');
+                var radio = opt.querySelector('input[type="radio"]');
+                if (radio) radio.disabled = true;
+            });
+            
+            // Resaltar respuesta correcta
+            var correctOption = card.querySelector('[data-option="' + q.correct + '"]');
+            if (correctOption) {
+                correctOption.classList.add('correct-answer');
+            }
+            
+            // Si la respuesta del usuario es incorrecta, resaltarla también
+            if (!isCorrect) {
+                var incorrectOption = card.querySelector('[data-option="' + userAnswer + '"]');
+                if (incorrectOption) {
+                    incorrectOption.classList.add('incorrect-answer');
+                }
+            }
+            
+            // Mostrar feedback
+            feedbackDiv.classList.add('show');
+            feedbackDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            var feedbackTitle = document.createElement('div');
+            feedbackTitle.className = 'feedback-title';
+            feedbackTitle.innerHTML = '<span class="feedback-icon">' + (isCorrect ? '✓' : '✗') + '</span>' +
+                                      (isCorrect ? 'Respuesta Correcta' : 'Respuesta Incorrecta');
+            
+            var feedbackText = document.createElement('div');
+            feedbackText.className = 'feedback-text';
+            feedbackText.textContent = isCorrect ? q.feedback.correct : q.feedback.incorrect;
+            
+            feedbackDiv.appendChild(feedbackTitle);
+            feedbackDiv.appendChild(feedbackText);
+        });
+    }
+
+    function showResults(scoreRaw, correct) {
+        var resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.classList.remove('hidden');
+        
+        var incorrect = questions.length - correct;
+        var duration = Math.round((endTime - startTime) / 1000 / 60);
+        var passed = scoreRaw >= 70;
+        
+        var html = '<div class="results-container">';
+        html += '<h2>Resultados de la Evaluación</h2>';
+        
+        html += '<div class="score-circle">';
+        html += '<div class="score-percentage">' + scoreRaw + '%</div>';
+        html += '<div class="score-label">CALIFICACIÓN</div>';
+        html += '</div>';
+        
+        html += '<div class="status-badge ' + (passed ? 'passed' : 'failed') + '">';
+        html += (passed ? '✓ ¡APROBADO!' : '✗ NO APROBADO');
+        html += '</div>';
+        
+        html += '<div class="results-details">';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Respuestas Correctas:</span>';
+        html += '<span class="result-value" style="color: var(--color-medium);">' + correct + ' / ' + questions.length + '</span>';
+        html += '</div>';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Respuestas Incorrectas:</span>';
+        html += '<span class="result-value" style="color: #c55;">' + incorrect + ' / ' + questions.length + '</span>';
+        html += '</div>';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Tiempo Empleado:</span>';
+        html += '<span class="result-value">' + duration + ' minutos</span>';
+        html += '</div>';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Calificación Mínima:</span>';
+        html += '<span class="result-value">70%</span>';
+        html += '</div>';
+        
+        html += '</div>'; // results-details
+        
+        if (passed) {
+            html += '<div class="recommendation-box passed">';
+            html += '<p style="margin: 0; color: var(--color-darkest);">';
+            html += '<strong>¡Felicitaciones!</strong> Has demostrado un excelente entendimiento del proceso de ';
+            html += 'litigación en materia migratoria en Estados Unidos. Tu calificación ha sido registrada en el sistema.';
+            html += '</p></div>';
+        } else {
+            html += '<div class="recommendation-box failed">';
+            html += '<p style="margin: 0; color: var(--color-darkest);">';
+            html += '<strong>Recomendación:</strong> Revisa el material del curso y las explicaciones de las preguntas incorrectas. ';
+            html += 'Presta especial atención a las áreas donde tuviste dificultad. Contacta al departamento de capacitación ';
+            html += 'si necesitas revisar nuevamente el material.';
+            html += '</p></div>';
+        }
+        
+        html += '<div class="navigation" style="justify-content: center; margin-top: 30px;">';
+        html += '<button class="btn btn-primary" onclick="window.print()">Imprimir Resultados</button>';
+        html += '</div>';
+        
+        html += '</div>'; // results-container
+        
+        resultsContainer.innerHTML = html;
+        
+        // Scroll a resultados
+        resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ==================== INICIALIZACIÓN ====================
+    window.addEventListener('load', function() {
+        updateProgressBar();
+        
+        // Recuperar ubicación guardada si existe
+        var savedLocation = PROGRESO.getLocation();
+        if (savedLocation && savedLocation.startsWith('section_')) {
+            var sectionNum = parseInt(savedLocation.replace('section_', ''));
+            if (sectionNum >= 1 && sectionNum <= totalSections) {
+                goToSection(sectionNum);
+            }
+        }
+    });
+    </script>
+</body>
+</html>
