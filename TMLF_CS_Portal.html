@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Service Operations Portal — TMLF</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0f11;--sf:#16181c;--sf2:#1d1f24;--sf3:#24272e;--bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.13);--tx:#e8e9eb;--tx2:#9b9da4;--tx3:#55575f;--gold:#c9a84c;--gl:#e8c96a;--gd:rgba(201,168,76,0.14);--gb:rgba(201,168,76,0.28);--red:#e05252;--rd:rgba(224,82,82,0.13);--rb:rgba(224,82,82,0.3);--amb:#d4853a;--ad:rgba(212,133,58,0.13);--tel:#3aada4;--td:rgba(58,173,164,0.11);--r:10px;--rl:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow:hidden}
+.hdr{background:var(--sf);border-bottom:1px solid var(--bd);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:52px;position:fixed;top:0;left:0;right:0;z-index:200}
+.hdr-l{display:flex;align-items:center;gap:10px}
+.logo{width:52px;height:52px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;background:#000}
+.htitle{font-family:'Playfair Display',serif;font-weight:700;font-size:22px;letter-spacing:0.01em}
+.hsub{font-size:11px;color:var(--tx3)}
+.hbadge{font-size:9px;background:var(--gd);color:var(--gold);border:1px solid var(--gb);padding:2px 7px;border-radius:20px;font-weight:500}
+.lay{display:grid;grid-template-columns:300px 1fr;height:calc(100vh - 52px);margin-top:52px}
+.side{background:var(--sf);border-right:1px solid var(--bd);overflow-y:auto;display:flex;flex-direction:column}
+.side::-webkit-scrollbar{width:3px}
+.side::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+.sw{padding:10px 12px;border-bottom:1px solid var(--bd)}
+.si{width:100%;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r);padding:7px 12px 7px 36px;color:var(--tx);font-size:15px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s}
+.si:focus{border-color:var(--bd2)}
+.si::placeholder{color:var(--tx3)}
+.sr{position:relative}
+.sic{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--tx3);pointer-events:none;display:flex;align-items:center}
+.sh{padding:10px 14px 5px;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);font-family:'Playfair Display',serif}
+.sdiv{height:1px;background:var(--bd);margin:4px 0}
+.tb{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:6px 14px;display:flex;align-items:flex-start;gap:8px;color:var(--tx2);transition:all .1s}
+.tb:hover{background:var(--sf2);color:var(--tx)}
+.tb.act{background:var(--gd);color:var(--gl)}
+.tb.emg .ti{color:var(--red)}
+.tb.emg:hover{color:#ff9090}
+.tb.emg.act{background:var(--rd);color:#ff9090}
+.ti{font-size:17px;flex-shrink:0;width:20px;text-align:center;margin-top:2px}
+.tl{font-size:16px;flex:1;line-height:1.4}
+.tb.act .tl{font-weight:500}
+.ta{font-size:12px;transition:transform .15s;color:var(--tx3);margin-top:3px;flex-shrink:0}
+.ta.op{transform:rotate(90deg)}
+.tc{display:none}
+.tc.op{display:block}
+.mn{overflow-y:auto;background:var(--bg)}
+.mn::-webkit-scrollbar{width:4px}
+.mn::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+.wlc{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;text-align:center;gap:14px;color:var(--tx3);padding:24px}
+.wlc-i{font-size:44px;opacity:.25}
+.wlc h2{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--tx2)}
+.wlc p{font-size:16px;max-width:400px;line-height:1.7}
+.cp{padding:24px 28px;animation:fi .15s ease}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.ph{display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--bd)}
+.pi{width:42px;height:42px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.pi.gold{background:var(--gd);color:var(--gold)}
+.pi.red{background:var(--rd);color:var(--red)}
+.pi.teal{background:var(--td);color:var(--tel)}
+.pi.amber{background:var(--ad);color:var(--amb)}
+.ptitle{font-family:'Playfair Display',serif;font-weight:700;font-size:28px;color:var(--tx);line-height:1.2}
+.psub{font-size:14px;color:var(--tx3);margin-top:3px}
+.eb{background:var(--rd);border:1px solid var(--rb);border-radius:var(--r);padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:18px;font-size:15px;color:#ff9090;font-weight:500}
+.sl{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx3);font-family:'Playfair Display',serif;margin:20px 0 10px}
+.sp{background:var(--sf);border:1px solid var(--gb);border-left:3px solid var(--gold);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;margin-bottom:18px}
+.spl{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:8px}
+.spt{font-size:16px;color:var(--tx2);font-style:italic;line-height:1.7}
+.spt strong{font-style:normal;color:var(--tx);font-weight:500}
+.sts{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.st{display:flex;gap:11px;align-items:flex-start;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:12px 14px;transition:border-color .1s}
+.st:hover{border-color:var(--bd2)}
+.sn{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;font-family:'Playfair Display',serif;margin-top:1px}
+.sn.blue{background:rgba(58,134,255,.15);color:#6ab4ff}
+.sn.red{background:var(--rd);color:var(--red)}
+.sn.amber{background:var(--ad);color:var(--amb)}
+.sn.teal{background:var(--td);color:var(--tel)}
+.sti{font-size:16px;font-weight:500;color:var(--tx);margin-bottom:3px}
+.sdi{font-size:15px;color:var(--tx2);line-height:1.6}
+.sdi strong{color:var(--tx);font-weight:500}
+.rb{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);padding:14px 16px;margin-bottom:18px}
+.rbt{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--tx3);font-family:'Playfair Display',serif;margin-bottom:10px}
+.ri{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--bd);font-size:15px;color:var(--tx2);line-height:1.6}
+.ri:last-child{border-bottom:none;padding-bottom:0}
+.rd{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px}
+.rd.red{background:var(--red)}
+.rd.teal{background:var(--tel)}
+.ac{margin-bottom:10px}
+.ab{width:100%;text-align:left;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r);padding:11px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:var(--tx);font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;transition:all .12s}
+.ab:hover{background:var(--sf3);border-color:var(--bd2)}
+.ab.op{border-color:var(--bd2);border-bottom-left-radius:0;border-bottom-right-radius:0}
+.atag{font-size:11px;padding:2px 8px;border-radius:12px;font-weight:600;font-family:'Playfair Display',serif;letter-spacing:.05em;flex-shrink:0}
+.atag.gold{background:var(--gd);color:var(--gold)}
+.atag.red{background:var(--rd);color:var(--red)}
+.atag.teal{background:var(--td);color:var(--tel)}
+.atag.amber{background:var(--ad);color:var(--amb)}
+.aarr{font-size:13px;color:var(--tx3);transition:transform .15s;flex-shrink:0;margin-left:8px}
+.ab.op .aarr{transform:rotate(180deg)}
+.aby{background:var(--sf);border:1px solid var(--bd2);border-top:none;border-bottom-left-radius:var(--r);border-bottom-right-radius:var(--r);padding:14px 16px;display:none}
+.aby.op{display:block}
+.asl{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--tx3);font-family:'Playfair Display',serif;margin:12px 0 7px}
+.asl:first-child{margin-top:0}
+.asp{background:var(--sf2);border-left:2px solid var(--gold);padding:10px 13px;border-radius:0 6px 6px 0;font-size:15px;color:var(--tx2);font-style:italic;line-height:1.65;margin-bottom:10px}
+.asp strong{font-style:normal;color:var(--tx);font-weight:500}
+.ari{display:flex;gap:9px;align-items:flex-start;padding:5px 0;font-size:15px;color:var(--tx2);line-height:1.55;border-bottom:1px solid var(--bd)}
+.ari:last-child{border-bottom:none}
+.ard{width:3px;height:3px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:8px}
+.astp{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--bd);font-size:15px}
+.astp:last-child{border-bottom:none}
+.asn{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;font-family:'Playfair Display',serif}
+.asn.blue{background:rgba(58,134,255,.15);color:#6ab4ff}
+.asn.red{background:var(--rd);color:var(--red)}
+.asn.amber{background:var(--ad);color:var(--amb)}
+.asn.teal{background:var(--td);color:var(--tel)}
+.ast .t{font-weight:500;color:var(--tx);display:block;margin-bottom:2px}
+.ast .d{color:var(--tx2);line-height:1.5}
+.nores{padding:20px 14px;font-size:15px;color:var(--tx3);text-align:center}
+.sh.sh-amb{background:rgba(201,168,76,0.15);border-radius:6px;margin:4px 8px 2px;padding:6px 10px;color:#c9a84c}
+.sh.sh-blu{background:rgba(58,134,255,0.13);border-radius:6px;margin:4px 8px 2px;padding:6px 10px;color:#6ab4ff}
+.sh.sh-red{background:rgba(224,82,82,0.13);border-radius:6px;margin:4px 8px 2px;padding:6px 10px;color:#e05252}
+.sh.sh-grn{background:rgba(76,175,130,0.13);border-radius:6px;margin:4px 8px 2px;padding:6px 10px;color:#4caf82}
+
+.tb.grn .ti{color:#4caf82}
+.tb.grn:hover{color:#4caf82}
+.tb.grn.act{background:rgba(76,175,130,.12);color:#4caf82}
+
+.tb.blu .ti{color:#6ab4ff}
+.tb.blu:hover{color:#6ab4ff}
+.tb.blu.act{background:rgba(58,134,255,.12);color:#6ab4ff}
+
+.tb.amb .ti{color:var(--gold)}
+.tb.amb:hover{color:#ffd97a}
+.tb.amb.act{background:var(--gd);color:var(--gl)}
+
+
+body.light{
+--bg:#f4f5f7;--sf:#ffffff;--sf2:#f0f1f3;--sf3:#e4e6ea;
+--bd:rgba(0,0,0,0.09);--bd2:rgba(0,0,0,0.18);
+--tx:#1a1c22;--tx2:#4a4d58;--tx3:#8a8d98;
+--gd:rgba(160,110,20,0.10);--gb:rgba(160,110,20,0.25);
+--rd:rgba(180,50,50,0.10);--rb:rgba(180,50,50,0.25);
+--ad:rgba(170,95,20,0.10);--td:rgba(30,140,130,0.10);
+}
+body.light .hdr{background:#ffffff;border-bottom:1px solid rgba(0,0,0,0.1)}
+body.light .side{background:#ffffff;border-right:1px solid rgba(0,0,0,0.09)}
+body.light .mn{background:#f4f5f7}
+body.light .sp{background:#fff8ec}
+body.light .rb{background:#ffffff}
+body.light .st{background:#ffffff}
+body.light .ab{background:#f0f1f3}
+body.light .ab:hover{background:#e4e6ea}
+body.light .aby{background:#ffffff}
+body.light .si{background:#f0f1f3;color:#1a1c22}
+
+/* Toggle button */
+.theme-toggle{background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:4px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--tx2);font-size:13px;font-family:'DM Sans',sans-serif;transition:all .15s}
+.theme-toggle:hover{border-color:var(--bd2);color:var(--tx)}
+.theme-toggle svg{flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="logo"><img src="data:image/png;base64,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" style="width:210%;height:210%;object-fit:cover;object-position:center center;" alt="TMLF"></div>
+    <div><div class="htitle">Customer Service Operations Portal</div><div class="hsub">The Mendoza Law Firm · Training</div></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="hbadge">v1.0 · 2026</div>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <span id="themeLbl">Claro</span>
+    </button>
+  </div>
+</div>
+<div class="lay">
+  <nav class="side">
+    <div class="sw"><div class="sr"><span class="sic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><input class="si" type="text" placeholder="Buscar protocolo, situación..." id="si" oninput="doSearch(this.value)"></div></div>
+    <div id="tree"></div>
+    <div id="sres" style="display:none"></div>
+  </nav>
+  <main class="mn" id="mn">
+    <div class="wlc" id="wlc">
+      <div class="wlc-i">⌥</div>
+      <h2>Selecciona un protocolo</h2>
+      <p>Navega por el menú lateral o usa el buscador para encontrar el speech, protocolo o recurso que necesitas durante la llamada.</p>
+    </div>
+  </main>
+</div>
+<script>
+const D=[
+{s:"Flujos de llamada",id:"flujos",icon:"☎",sc:"amb",ch:[
+{id:"fl_ib",amb:true,label:"Flujo base — llamada perfecta (inbound)",icon:"✓",color:"gold",sub:"11 pasos obligatorios",
+content:{title:"Flujo base — llamada perfecta",icon:"✓",color:"gold",
+intro:"Todo asesor de CS debe seguir este flujo en CADA llamada entrante sin omitir pasos. Cada paso tiene un propósito específico.",
+secs:[
+{type:"steps",label:"Los 11 pasos obligatorios",items:[
+{n:"1",c:"blue",t:"Saludo corporativo",d:"Decir exactamente: <strong>«Buenos días/tardes/noches, gracias por comunicarse a The Mendoza Law Firm, le atiende [tu nombre completo].»</strong><br>• Usar SIEMPRE el nombre completo de la firma: The Mendoza Law Firm.<br>• PROHIBIDO usar variantes como 'la firma de la abogada María Mendoza'.<br>• La temporalidad (buenos días/tardes) demuestra atención al detalle."},
+{n:"2",c:"blue",t:"Candados de seguridad (filtros de identidad)",d:"Solicitar y verificar los 3 filtros ANTES de dar cualquier información del caso:<br>1. <strong>Nombre completo</strong> del titular del caso<br>2. <strong>Número de cliente</strong> o fecha de nacimiento<br>3. <strong>Teléfono registrado</strong>, correo electrónico o dirección física<br><br>Si el cliente no pasa los filtros → Reason of Call: 'CI didn't pass security filters'. NO dar ninguna información.<br>Si llama alguien que no es el titular → ver protocolo de terceras personas."},
+{n:"3",c:"blue",t:"Motivo de la llamada",d:"Preguntar directamente: <strong>«¿En qué le puedo ayudar el día de hoy?»</strong><br>• Escuchar sin interrumpir.<br>• Tomar notas mentales de los puntos clave.<br>• No asumir el motivo antes de que el cliente lo diga."},
+{n:"4",c:"blue",t:"Parafraseo de confirmación",d:"Reformular lo que el cliente dijo para confirmar que entendiste correctamente.<br>Ejemplo: <strong>«Entonces, si he entendido bien, usted necesita… ¿es correcto?»</strong><br>• Esto evita resolver el problema equivocado.<br>• Genera confianza y hace sentir al cliente escuchado."},
+{n:"5",c:"blue",t:"Solicitar 3 minutos para verificar",d:"Decir: <strong>«Permítame un momento, voy a revisar su caso. ¿Puede darme unos 3 minutos?»</strong><br><br>Durante esos 3 minutos DEBES:<br>• Copiar y pegar el <strong>prompt de IA</strong> en TramCase (nota del cliente).<br>• Revisar notas internas previas del caso en TramCase.<br>• Verificar estatus, documentos, stage y tareas pendientes.<br>• Prellenar el Registro de llamadas con la info disponible.<br><br>⚠ El límite es por bloque. Si necesitas más tiempo, regresa antes de los 3 minutos y solicita otro bloque."},
+{n:"6",c:"blue",t:"Resolución de la duda",d:"Regresar antes de cumplirse los 3 minutos.<br>• Comenzar siempre con: <strong>«Gracias por su espera.»</strong><br>• Explicar de forma clara, sin jerga técnica.<br>• Consultar SIEMPRE la <a href=\"https://docs.google.com/spreadsheets/d/14D7SuFTI23quWq4GDPI7F4jgH7m7y6rxB91FI-B-PEg/edit?gid=625101483#gid=625101483\" target=\"_blank\" style=\"color:var(--gold)\">hoja de tiempos de procesamiento</a> antes de dar plazos — <strong>nunca informar de memoria</strong>.<br>• Adaptar la explicación al nivel de entendimiento del cliente."},
+{n:"7",c:"blue",t:"Asistencia adicional",d:"Preguntar obligatoriamente en cada llamada:<br><strong>«¿Hay algo más en lo que pueda servirle el día de hoy?»</strong><br>Variantes: «¿Hay algo más en lo que le pueda apoyar?» / «¿Tiene alguna otra pregunta sobre su caso?»<br>• No saltarse este paso aunque parezca que ya terminó la llamada."},
+{n:"8",c:"blue",t:"Solicitar 2 minutos para documentar",d:"Decir: <strong>«Permítame dos minutos para dejar registrada la llamada antes de finalizar.»</strong><br>Colocar al cliente en breve espera."},
+{n:"9",c:"blue",t:"Documentación en TramCase",d:"Durante esos 2 minutos completar:<br>• <strong>Nota en TramCase</strong>: título correcto (Incoming Call / Case status, Payment, Emergency o Documents).<br>• Cuerpo: Reason / Solution / Type of case / Behavior / CN (Confirmed or not) / Internal note si aplica.<br>• Apartado <strong>Case Sent to USCIS</strong> usando info del prompt de IA.<br>• <strong>Registro de llamadas</strong> completo.<br>• Si aplica: turnar el caso, dejar tareas para otros equipos."},
+{n:"10",c:"blue",t:"Verificación final",d:"Antes de regresar con el cliente confirmar:<br>• La nota de TramCase esté completa, clara y guardada.<br>• El Registro de llamadas esté terminado en su totalidad.<br>• No haya información faltante."},
+{n:"11",c:"blue",t:"Despedida corporativa",d:"Regresar: <strong>«Gracias por su espera, ya he dejado registrada toda la información.»</strong><br><br>Despedida: <strong>«Gracias por haberse comunicado a The Mendoza Law Firm, le atendió [tu nombre]. Que tenga un excelente día, Sr./Sra. [Apellido del cliente].»</strong><br><br>• Usar el apellido del cliente es un detalle de personalización y respeto."}
+]},
+{type:"rules",label:"Reglas innegociables",color:"gold",items:[
+"Usar SIEMPRE el nombre completo: The Mendoza Law Firm — nunca variantes",
+"Nunca proporcionar información de un caso sin validar los 3 filtros de seguridad",
+"Los tiempos de espera se gestionan en bloques máximos de 3 minutos",
+"Revisar SIEMPRE las notas en TramCase antes de informar sobre estatus del caso",
+"La oferta de asistencia adicional es obligatoria en cada llamada",
+"Para plazos: consultar siempre la <a href='https://docs.google.com/spreadsheets/d/14D7SuFTI23quWq4GDPI7F4jgH7m7y6rxB91FI-B-PEg/edit?gid=625101483#gid=625101483' target='_blank' style='color:var(--gold)'>Sheet de tiempos de procesamiento</a> vigente",
+"Verificar que el caso tenga número de cliente y fecha de nacimiento — si falta, completar"
+]}
+]}},
+{id:"fl_video",amb:true,label:"Videollamada de CS",icon:"▶",color:"teal",sub:"Flujo específico para video",
+content:{title:"Flujo — videollamada CS",icon:"▶",color:"teal",
+secs:[
+{type:"steps",label:"Flujo completo de videollamada",items:[
+{n:"1",c:"teal",t:"Saludo corporativo",d:"«Buenos días, gracias por comunicarse a The Mendoza Law Firm, le atiende [nombre].»"},
+{n:"2",c:"teal",t:"Verificación técnica inicial",d:"Confirmar:<br>• <strong>Audio</strong>: «¿Me escucha correctamente?»<br>• <strong>Video</strong>: «¿Me puede ver bien?»<br>• <strong>Conexión</strong>: «¿La conexión es clara o presenta algún problema?»<br><br>Aclaración al cliente: <em>«Durante la videollamada estaré revisando su caso y tomando anotaciones, por lo que en momentos podría desviar la mirada; sin embargo, continúo atendiendo su información.»</em><br><br>Si falla el sistema: informar al cliente y regresar la llamada."},
+{n:"3",c:"teal",t:"Compartir pantalla correctamente",d:"<strong>Preparación previa:</strong> Tener DOS ventanas abiertas.<br><br>• <strong>Ventana IZQUIERDA</strong> (NO se comparte): TramCase, Dropbox, tiempos de procesamiento, Registro de llamadas, ClickUp.<br>• <strong>Ventana DERECHA</strong> (SÍ se comparte): página de la abogada y lo que se quiera mostrar al cliente.<br><br><strong>En 8x8</strong>: clic en ícono compartir → 'Application Window' → seleccionar ventana derecha → 'Share'.<br>Se puede arrastrar contenido de la izquierda a la derecha para mostrárselo al cliente.<br><br><strong>⚠ INSTRUCCIÓN: La videollamada se realiza desde Google Meet.</strong> Conectarse desde el Meet de la cuenta support. Al ingresar, el sistema realizará automáticamente una grabación de la videollamada y del transcript — <strong>asegúrate de que ambos estén activos</strong>. Al finalizar, encontrarás el video y el transcriptor en tu Drive dentro de la carpeta de Meetings."},
+{n:"4",c:"teal",t:"Filtros de seguridad",d:"Nombre completo + Número de cliente o fecha de nacimiento + Teléfono, email o dirección registrada."},
+{n:"5",c:"teal",t:"Motivo y parafraseo — 3 minutos",d:"Preguntar motivo. Pedir 3 minutos para revisar el caso."},
+{n:"6",c:"teal",t:"Resolución con pantalla compartida",d:"Mostrar al cliente su estatus, proceso o documentos relevantes mientras se explica."},
+{n:"7",c:"teal",t:"Cierre operativo",d:"2 minutos para documentar. Notas en TramCase + Registro de llamadas. Despedida corporativa."}
+]}
+]}},
+{id:"fl_out",amb:true,label:"Llamada saliente (outbound)",icon:"→",color:"teal",ch:[
+{id:"fl_out_std",amb:true,label:"Outbound estándar",icon:"↗",color:"teal",
+content:{title:"Script — llamada saliente estándar",icon:"↗",color:"teal",
+secs:[
+{type:"steps",label:"Preparación previa a la llamada (asesores Chat/Textos — ClickUp)",items:[
+{n:"1",c:"blue",t:"Revisar contexto de la tarea",d:"Antes de marcar, leer completa la descripción de la tarea en ClickUp para entender qué solicita el cliente y qué área la originó."},
+{n:"2",c:"blue",t:"Verificar en TramCase si el cliente ya se contactó",d:"Revisar las últimas notas en TramCase.<br>• Si el cliente ya llamó por su cuenta a CS → <strong>marcar la tarea como COMPLETADO</strong> sin hacer la llamada. No tiene caso interrumpirlo de nuevo.<br>• Si no hay nota reciente → proceder con la llamada."},
+{n:"3",c:"blue",t:"Asignarse la tarea y cambiar estado",d:"Asignarse el propio nombre en la tarea de ClickUp y cambiar el estado:<br>• <strong>Pendiente → En curso</strong> al iniciar.<br>• <strong>En curso → Completado</strong> al resolver."},
+{n:"4",c:"amber",t:"Duda antes de llamar → escalar al TL primero",d:"Si después de revisar TramCase y la tarea no queda claro qué decirle al cliente o cómo manejar la situación, <strong>consultar al TL antes de marcar</strong>. No llamar al cliente con información incompleta."},
+{n:"5",c:"teal",t:"Nota en TramCase al concluir",d:"La nota de este tipo de llamada lleva un título diferente al outbound estándar:<br><strong>«Outgoing Call / Chat Request»</strong><br>No usar «Outgoing Call» genérico — este formato identifica que la llamada provino de una tarea de ClickUp."}
+]},
+{type:"speech",label:"Apertura",text:"«Buen día/tarde/noche, ¿es usted el Sr./Sra. <strong>[Nombre del cliente]</strong>?»"},
+{type:"steps",label:"Flujo completo",items:[
+{n:"1",c:"teal",t:"Identificar al cliente",d:"«Buen día, ¿es usted el Sr./Sra. [Nombre]?»"},
+{n:"2",c:"teal",t:"Presentarse",d:"«Le habla <strong>[tu nombre]</strong> de The Mendoza Law Firm. Por motivos de seguridad, le voy a confirmar sus filtros.»"},
+{n:"3",c:"teal",t:"Candados de seguridad",d:"Mismo proceso: nombre completo + número de cliente o fecha de nacimiento + teléfono/email/dirección."},
+{n:"4",c:"teal",t:"Motivo y resolución",d:"«El motivo de mi llamada es…» → flujo estándar con parafraseo y espera de 3 minutos."},
+{n:"5",c:"teal",t:"Cierre",d:"2 min para documentar, despedida corporativa con apellido del cliente."}
+]}
+]}},
+{id:"fl_rem",amb:true,label:"Remarcación automática",icon:"↺",color:"amber",
+content:{title:"Protocolo — llamadas de remarcación automática",icon:"↺",color:"amber",
+intro:"Ocurre cuando el sistema remarca una llamada entrante no contestada. Para el sistema es outbound pero el cliente la percibe como llamada de la firma.",
+secs:[
+{type:"speech",label:"Script de presentación obligatorio",text:"«Buen día/tarde/noche, me comunico de The Mendoza Law Firm, mi nombre es <strong>[tu nombre]</strong> y el motivo de esta llamada es por una solicitud que nos hizo para que lo contactáramos de vuelta.»"},
+{type:"steps",label:"3 escenarios posibles",items:[
+{n:"A",c:"teal",t:"Cliente no necesitaba ayuda",d:"1. Solicitar nombre. 2. Agradecer. 3. Nota informativa en TRAM + ClickUp. 4. Cambiar a <strong>COMPLETADO</strong> en ClickUp. 5. Despedida."},
+{n:"B",c:"teal",t:"Cliente sí llamó y tiene duda",d:"1. Filtros de seguridad. 2. Escuchar y parafrasear. 3. 3 minutos para revisar. 4. Resolver. 5. Asistencia adicional. 6. 2 minutos para registrar. 7. Cambiar a <strong>COMPLETADO</strong>. 8. Despedida."},
+{n:"C",c:"amber",t:"Cliente no contesta",d:"1. Tomar número del sistema 8x8. 2. Localizar tarea en ClickUp y caso en TRAM. 3. Nota de 'no contacto' en ClickUp. 4. Cambiar a <strong>EN CURSO</strong> (detiene remarcación, pasa a TEXTOS). 5. Nota TRAM con plantilla."}
+]},
+{type:"rules",label:"Reglas importantes",color:"amber",items:[
+"COMPLETADO = el sistema deja de remarcar permanentemente ese número",
+"EN CURSO = el sistema deja de remarcar y pasa al equipo de TEXTOS para seguimiento",
+"SIEMPRE asignarse el nombre propio en la tarea de ClickUp",
+"Plantilla TRAM (ES): 'Se intentó contactar al cliente para dar seguimiento a una llamada pendiente de CS. No se obtuvo respuesta. Si el cliente se comunica, favor de brindarle apoyo completo.'",
+"Plantilla TRAM (EN): 'An attempt was made to contact the client to follow up on a pending CS call. No response was received. If the client contacts the firm, please provide full assistance.'"
+]}
+]}}
+]}
+]},
+{s:"Motivos de llamada",id:"motivos",icon:"❓",sc:"blu",ch:[
+{id:"m_st_ok",blu:true,label:"Estatus — caso en tiempos normales",icon:"◉",color:"teal",
+content:{title:"Speech — caso dentro de tiempos USCIS",icon:"◉",color:"teal",
+secs:[
+{type:"speech",label:"Speech completo (partes 1 y 2)",text:"<strong>Agente:</strong> Entiendo lo que me comenta, Sr./Sra. [nombre]. Comprendo que el motivo de su llamada es porque tiene dudas sobre la razón por la cual USCIS aún no ha respondido. ¿Estoy en lo correcto?<br><br><strong>Cliente:</strong> Sí.<br><br><strong>Agente:</strong> Comprendo su sentir. Permítame revisar su caso con usted. [revisar en USCIS y TramCase]<br><br><strong>Agente (si el caso está en tiempo):</strong> En este momento, su caso aún se encuentra dentro de los tiempos de procesamiento que actualmente maneja USCIS. Entiendo perfectamente que la espera puede llegar a ser frustrante y la comprendo. Por el momento, el caso continúa avanzando dentro de los tiempos establecidos, por lo que debemos continuar en espera de nuevas notificaciones por parte de USCIS. Tenga la seguridad de que estaremos dando seguimiento a su caso y le mantendremos informado sobre cualquier actualización."},
+{type:"rules",label:"Qué verificar y qué hacer",color:"teal",items:[
+"Verificar tiempos vigentes en la <a href='https://docs.google.com/spreadsheets/d/14D7SuFTI23quWq4GDPI7F4jgH7m7y6rxB91FI-B-PEg/edit?gid=625101483#gid=625101483' target='_blank' style='color:var(--tel)'>hoja de tiempos</a> ANTES de informar — nunca de memoria",
+"Revisar: fecha de envío a USCIS, fecha de recibos iniciales y estatus en la página oficial de USCIS",
+"Si el cliente ha llamado más de 3 veces en 1 mes → marcarlo en el apartado de Control Operativo del Registro de llamadas",
+"Si expresa molestia → aplicar metodología VDPC completa",
+"Reason of Call en Registro: Case status → Regular status"
+]}
+]}},
+{id:"m_st_at",blu:true,label:"Estatus — caso con atraso",icon:"⚠",color:"amber",
+content:{title:"Speech — caso con atraso respecto a USCIS",icon:"⚠",color:"amber",
+secs:[
+{type:"speech",label:"Speech para caso con atraso",text:"<strong>Agente:</strong> Veo que su caso presenta un atraso respecto a los tiempos estimados por USCIS. Lo que podemos hacer es escalar la situación para una revisión más detallada y verificar si existe alguna otra opción o acción que pueda realizarse. Permítanos trabajar en la revisión de su caso y analizar la situación para brindarle el seguimiento correspondiente."},
+{type:"steps",label:"Acciones a tomar",items:[
+{n:"1",c:"amber",t:"Escalar a Back office",d:"Registro de llamadas → Case Status → <strong>Needs packet speed up</strong>."},
+{n:"2",c:"blue",t:"Nota en TramCase con contexto",d:"Documentar el atraso específico, fechas, qué se informó al cliente y su reacción."},
+{n:"3",c:"blue",t:"Verificar Missing Receipt o E-Request",d:"• ¿Falta algún recibo? → <strong>Missing Receipt</strong> → Back Office.<br>• ¿Error en tarjeta o EAD no recibido después de enviado por USCIS? → <strong>E-Request</strong> → Back Office.<br>• IMPORTANTE: E-requests prohibidos para Visa T y Visa U."}
+]},
+{type:"acc",label:"Diferencia: Missing Receipt vs E-Request",tag:"teal",tl:"Recurso",body:[
+{type:"rules",items:[
+"MISSING RECEIPT: solicitud para informar a migración que falta un recibo. Aplica para todos los casos EXCEPTO FOIA. Incluye recibos iniciales y de renovación. Turnar en Back Office → Missing Receipts.",
+"E-REQUEST: para requerimientos a USCIS: dato erróneo en tarjeta/recibo, EAD no recibido (ya aparece como enviado en USCIS), pasó el tiempo estimado sin respuesta.",
+"Para casos FOIA → turnar directamente al apartado de FOIA, no al de Missing Receipts.",
+"Si el EAD solo tiene un nombre y un apellido (falta uno) → es normal por tamaño de la tarjeta. NO turnar."
+]}
+]}
+]}},
+{id:"m_file",blu:true,label:"Solicitud de expediente (File Request)",icon:"⊞",color:"gold",
+content:{title:"Script completo — solicitud de expediente",icon:"⊞",color:"gold",
+secs:[
+{type:"speech",label:"Escenario base — solicitud simple",text:"<strong>Cliente:</strong> Quisiera solicitar una copia de mi expediente.<br><br><strong>Agente:</strong> Claro, Sr./Sra., solamente para confirmar, ¿lo que usted requiere es que le compartamos una copia del expediente o de la documentación relacionada con el caso que hemos estado trabajando, correcto?<br><br><strong>Cliente:</strong> Así es.<br><br><strong>Agente:</strong> Claro, entiendo que esta información es importante para usted. Para proteger la privacidad y confidencialidad de sus datos, nuestro proceso ante este tipo de solicitudes es reportar su petición para la verificación y envío del expediente. Para escalar correctamente su solicitud, ¿podría por favor proporcionarme más detalles sobre el motivo de su solicitud?<br><br><strong>Cliente:</strong> Solo quiero tener una copia para revisar mi caso.<br><br><strong>Agente:</strong> Entiendo, muchas gracias. Voy a reportar su solicitud para la verificación y envío del expediente con carácter prioritario. ¿Me podría confirmar el correo electrónico donde desea recibir información?<br><br><strong>Agente (cierre):</strong> Perfecto, muchas gracias. Su solicitud ha sido reportada para seguimiento y validación. Un Team Lead dará seguimiento según corresponda y nos pondremos en contacto con usted lo antes posible. ¿Hay algo más en lo que le pueda apoyar?"},
+{type:"acc",label:"Escenario — cliente tiene corte próxima",tag:"amber",tl:"Escenario",body:[
+{type:"speech",text:"<strong>Agente:</strong> Perfecto, gracias por informarnos. Vamos a reportar su solicitud de expediente para verificación y envío prioritario. Necesito recabar algunos datos adicionales.<br><br>¿Nos podría apoyar con los datos de su abogado?<br>• Nombre completo<br>• Número de teléfono + extensión (si aplica)<br>• Correo electrónico<br><br><strong>Agente:</strong> ¿Qué tipo de corte es? ¿Migratoria, penal u otra? ¿Qué día es su corte?<br><br><strong>Agente (cierre):</strong> Toda esta información será incluida en el reporte para la verificación y envío del expediente con carácter prioritario debido a la fecha de corte. Un Team Lead revisará el caso y nos pondremos en contacto pronto. ¿Hay algo más en lo que le pueda apoyar?"}
+]},
+{type:"acc",label:"Escenario — cliente molesto / quiere cambiar de abogado",tag:"red",tl:"Delicado",body:[
+{type:"speech",text:"<strong>Agente:</strong> Claro, Sr./Sra., entiendo su molestia y le agradezco que nos lo comparta. Lamento sinceramente la frustración que esta situación le pueda estar causando.<br><br>En este momento, lo que sí puedo hacer es reportar de inmediato su solicitud para la verificación y envío de su expediente, así como documentar su inconformidad para que el caso sea revisado con prioridad.<br><br>¿Me podría confirmar el correo electrónico donde desea recibir información?<br><br>[Si insiste: 'siempre me dicen lo mismo']:<br><strong>Agente:</strong> Entiendo su preocupación, y por eso en este momento estoy dejando documentada tanto su solicitud de expediente como su inconformidad para seguimiento prioritario. Un Team Lead revisará el caso y dará seguimiento a lo largo del día para proporcionarle una respuesta. ¿Hay algo más en lo que le pueda apoyar?"}
+]},
+{type:"rules",label:"Instrucciones obligatorias para el asesor",color:"gold",items:[
+"Confirmar el motivo de la solicitud",
+"Confirmar y documentar correo electrónico actualizado del cliente",
+"Reportar la solicitud para verificación y envío — siempre",
+"Escalar con Team Lead (TL) — siempre",
+"Documentar notas del caso en TramCase",
+"Si menciona Bar Number → emergencia crítica: Dirección + MGM + Atty escalation",
+"Si amenaza Bar Complaint → mismo nivel de emergencia, NO colgar la llamada",
+"Niveles: LOW = solicitud tranquila | MEDIUM = molesto o caso atrasado | HIGH = abogado externo | CRITICAL = Bar Complaint / Bar Number / amenaza de demanda"
+]}
+]}},
+{id:"m_pago",blu:true,label:"Pago de mensualidad",icon:"$",color:"teal",
+content:{title:"Protocolo — pago de mensualidad en LawPay",icon:"$",color:"teal",
+secs:[
+{type:"steps",label:"Proceso de cobro paso a paso",items:[
+{n:"1",c:"blue",t:"Verificar si tiene agente de Collections asignado",d:"Revisar en TramCase o preguntar.<br>• <strong>Sí tiene agente</strong>: preguntar si prefiere pagar con CS o con su agente. Si prefiere su agente → escalar en formulario de Collections del Registro de llamadas e informar que su agente lo contactará.<br>• <strong>No tiene agente</strong>: proceder directamente con el cobro en LawPay."},
+{n:"2",c:"blue",t:"Llenar la plataforma LawPay",d:"Ingresar datos del cliente: nombre, monto, concepto del pago.<br><a href=\"https://secure.lawpay.com/pages/mendozafirm/trust%2Fattyfees\" target=\"_blank\" style=\"color:var(--gold)\">https://secure.lawpay.com/pages/mendozafirm/trust/attyfees</a>"},
+{n:"3",c:"blue",t:"Fraseología de autorización (obligatoria)",d:"Decir exactamente: <strong>«¿Me autoriza realizar el cobro por el monto de $[monto] USD por concepto de pago mensual o mensualidad para el caso a nombre de [nombre completo del titular del caso]? ¿Lo autoriza?»</strong><br>Esperar confirmación verbal antes de procesar."},
+{n:"4",c:"teal",t:"Post-cobro — 3 acciones obligatorias",d:"1. Copiar el comprobante de pago.<br>2. Dejar el comprobante en las notas de TramCase.<br>3. Enviar el comprobante por mensaje de texto al cliente desde TramCase (esperar confirmación de recibido)."}
+]}
+]}},
+{id:"m_cancel",blu:true,label:"Cancelaciones y reembolsos",icon:"✕",color:"amber",
+content:{title:"Protocolo completo — cancelaciones y reembolsos",icon:"✕",color:"amber",
+secs:[
+{type:"rules",label:"Tipos de cancelación en TMLF",color:"amber",items:[
+"TIPO 1 — Solicitud del cliente: el cliente decide no continuar.",
+"TIPO 2 — Cancelación por Compliance (CAD): nota 'CANCELLATION DUE TO COMPLIANCE CDMX' en TramCase. El cliente no es elegible. Informar que el caso será revalorado."
+]},
+{type:"steps",label:"Cuando el cliente quiere cancelar",items:[
+{n:"1",c:"amber",t:"Contener primero (VDPC)",d:"Agotar la contención antes de escalar. Identificar motivo real de la molestia.<br><br><strong>⏱ Tiempo máximo de contención: 2 minutos.</strong><br>Si en ese tiempo el cliente no acepta o sigue insistiendo → escalar directamente, sin más intentos.<br>El área de Cancelaciones es quien se encarga de la contención profunda — no es función de CS prolongar esta etapa."},
+{n:"2",c:"amber",t:"Informar sobre el proceso",d:"«Tenemos un área que se encarga de este tipo de solicitudes. Un asesor se comunicará con usted para darle el detalle.»"},
+{n:"3",c:"amber",t:"Si pregunta por monto o tiempos",d:"«Esa información se le dará en la llamada que va a recibir.»<br><strong>NUNCA dar montos ni tiempos sin nota previa de 'CASE CANCELED' en TramCase.</strong>"},
+{n:"4",c:"blue",t:"Escalar al formulario de Cancelaciones",d:"Siempre desde el Registro de llamadas."}
+]},
+{type:"steps",label:"Cuando el cliente ya canceló y pregunta por reembolso",items:[
+{n:"1",c:"blue",t:"Verificar nota 'CASE CANCELED' en TramCase",d:"Buscar la nota antes de dar cualquier información."},
+{n:"2",c:"blue",t:"Con nota CASE CANCELED",d:"Reembolso: <strong>30 a 45 días hábiles</strong> a la misma tarjeta. Confirmar que conserve la cuenta."},
+{n:"3",c:"amber",t:"Si cambió de cuenta bancaria",d:"El reembolso será por <strong>cheque</strong> y puede demorar más de los 30-45 días."},
+{n:"4",c:"red",t:"Si el cliente está molesto por la demora",d:"Escalar con prioridad directamente al TL (Hangouts o 8x8). También escalar al formulario de Cancelaciones."},
+{n:"5",c:"red",t:"Si amenaza con redes sociales o menciona fecha prometida",d:"Escalar de inmediato al TL (Hangouts o 8x8). Riesgo reputacional."}
+]},
+{type:"acc",label:"Discovery Call — opciones cuando el cliente canceló",tag:"gold",tl:"Recurso",body:[
+{type:"rules",items:[
+"Discovery Call: cuando contactamos al cliente debido a que su cancelación es por una CAD se puede revalorar su caso y ver si puede continuar algún otro trámite. Mediante el formulario para que lo reciba Back office: <a href='https://forms.clickup.com/31633845/f/y5cdn-269314/64XWDTD7ZG7QQJM47J' target='_blank' style='color:var(--gold)'>forms.clickup.com/…64XWDTD7ZG7QQJM47J</a>",
+]}
+]}
+]}},
+{id:"m_reagenda",blu:true,label:"Reagendar INTAKE / Consulta",icon:"◫",color:"teal",
+content:{title:"Protocolo — reagendar citas",icon:"◫",color:"teal",
+secs:[
+{type:"rules",label:"Protocolo — reagendar citas",color:"teal",items:[
+"Para reagendar una cita (Intake o Consulta), se escala mediante el formulario: <a href='https://forms.clickup.com/31633845/f/y5cdn-269314/64XWDTD7ZG7QQJM47J' target='_blank' style='color:var(--tel)'>https://forms.clickup.com/…64XWDTD7ZG7QQJM47J</a> en la categoría de <strong>Reagendar Intake DVS</strong>.",
+"Al cliente se le informa que se va a estar realizando contacto con él para confirmar la nueva cita."
+]},
+{type:"rules",label:"Regla de las 12 horas",color:"teal",items:[
+"Toda reagenda debe hacerse con mínimo 12 horas de anticipación a la cita original",
+"Si el cliente necesita reagendar con menos de 12 horas → notificar al TL para que gestione con DVS",
+"Clientes: pueden reagendar por su cuenta solo 1 vez",
+"Agentes de CS: sin límite de reagendamientos cumpliendo la regla de 12 horas"
+]}
+]}},
+{id:"m_viaje",blu:true,label:"Cliente quiere viajar (Travel Call)",icon:"✈",color:"amber",
+content:{title:"Protocolo completo — Travel Call",icon:"✈",color:"amber",
+intro:"Recomendación actual: evitar viajar por la situación con la administración Trump, salvo emergencia real.",
+secs:[
+{type:"steps",label:"Preguntas obligatorias de viaje",items:[
+{n:"1",c:"amber",t:"Verificar en TramCase y preguntar al cliente",d:"• Tipo de VAWA en TramCase<br>• ¿Ha tenido algún contacto previo con USCIS?<br>• ¿Tiene alguna corte pendiente?<br>• <strong>¿Tiene EAD?</strong> Pedir foto por TramCase.<br>• <strong>Vigencia del EAD</strong> (mínimo 11 meses requeridos)<br>• ¿EAD tiene <strong>Advance Parole / Serves as I-512</strong>?<br>• ¿Tiene la aprobación de <strong>I-131</strong>?<br>• ¿Tiene la aprobación de <strong>I-360</strong>?<br>• ¿Tiene <strong>pasaporte vigente</strong>?<br>• ¿Tiene fecha programada del viaje?"}
+]},
+{type:"rules",label:"Casos en que el cliente NO puede viajar",color:"red",items:[
+"No tiene EAD o está en proceso de renovación",
+"EAD con vigencia menor a 11 meses",
+"EAD no tiene 'Serves as I-512 Advance Parole'",
+"No cuenta con aprobación de I-131",
+"Ya tiene aprobada la I-360",
+"No tiene pasaporte vigente",
+"Tiene EAD pero ha tenido contacto con USCIS → no cruzar checkpoints ni viajar, aunque tenga EAD",
+"Si NO cumple: no amerita llamada con abogada (salvo que el TL lo autorice expresamente)"
+]},
+{type:"steps",label:"Acción según resultado",items:[
+{n:"A",c:"amber",t:"No cumple requisitos",d:"Informar empáticamente: <em>«Entiendo que desea viajar y lamento mucho la situación. Por el momento y dado el contexto actual, no es recomendable realizar el viaje. Le recomendamos esperar a tener la documentación completa.»</em>"},
+{n:"B",c:"teal",t:"Sí cumple todos los requisitos",d:"1. Agendar Travel Call con autorización previa del TL.<br>2. Llenar el formulario en Registro de llamadas → <strong>Travel Atty Call Back</strong>.<br>3. Dejar nota en TramCase con las preguntas del Travel Call y respuestas del cliente."}
+]}
+]}},
+{id:"m_abuser",blu:true,label:"Llama abusador / tercera persona",icon:"⊘",color:"amber",
+content:{title:"Script completo — abuser o tercera persona no autorizada",icon:"⊘",color:"amber",
+secs:[
+{type:"speech",label:"Identificación inicial",text:"<strong>[Español]</strong> «Para poder asistirle adecuadamente, necesito confirmar algunos datos básicos. ¿Me podría decir su nombre completo? ¿Es usted el titular del caso? [Si dice No]: ¿Cuál es su relación con el cliente?»<br><br><strong>[English]</strong> «In order to assist you properly, I need to confirm some basic information. Could you please tell me your full name? Are you the case holder? [If No]: What is your relationship to the client?»"},
+{type:"speech",label:"Aviso de confidencialidad",text:"<strong>[Español]</strong> «Gracias por comunicarse con nosotros. Por razones de seguridad y confidencialidad, y conforme a nuestras políticas internas y regulaciones de inmigración, no podemos compartir ningún tipo de información sobre un caso con terceras personas, incluso si se trata de familiares.»<br><br><strong>[English]</strong> «Thank you for contacting us. For security and confidentiality reasons, and in accordance with our internal policies and immigration regulations, we cannot share any information about a case with third parties — even if they are family members.»"},
+{type:"speech",label:"Cierre sugerido",text:"<strong>[Español]</strong> «Le agradezco mucho su comprensión. Si el titular del caso desea comunicarse con nosotros directamente, con gusto podremos asistirle. En este momento no puedo continuar con esta llamada.»<br><br><strong>[English]</strong> «Thank you for your understanding. If the case holder wishes to contact us directly, we will be happy to assist them. At this time, I am unable to continue this call.»"},
+{type:"rules",label:"Puntos críticos",color:"amber",items:[
+"NO confirmar ni negar la existencia de ningún caso",
+"NO proporcionar ningún tipo de información aunque sea familiar directo",
+"Terminar la llamada lo antes posible después del aviso",
+"Internamente: si se identifica un caso → contactar al titular por canales autorizados SIN informarlo al llamante",
+"Si se torna agresivo, insiste, amenaza o se niega a terminar → escalar con TL de inmediato"
+]},
+{type:"acc",label:"Plantilla de nota obligatoria en TramCase",tag:"gold",tl:"Plantilla",body:[
+{type:"speech",text:"Título: THIRD-PARTY CALL / CASE INFORMATION REQUEST<br><br>Reason: A third party contacted the office regarding the case and requested information. No case information was provided, and the caller was advised that the case holder must contact the office directly for assistance.<br><br>Solution: The third party was informed that, for privacy and security reasons, no information could be disclosed. They were advised that the primary case holder must contact the office directly if assistance or case information is needed.<br><br>Behavior: Calm<br>CN and PN: Not Confirmed"}
+]}
+]}},
+{id:"m_trump",blu:true,label:"Preguntas sobre Trump / deportación / VAWA",icon:"◐",color:"teal",
+content:{title:"Speech — preguntas VAWA y cambios de administración",icon:"◐",color:"teal",
+secs:[
+{type:"speech",label:"Speech PARTE 1 — contención inicial",text:"<strong>Agente:</strong> Entiendo que me está preguntando qué pasará con los casos que están teniendo cambios, específicamente VAWA. ¿Estoy en lo correcto?<br><br><strong>Cliente:</strong> Sí.<br><br><strong>Agente:</strong> Comprendo lo que me dice. Si bien VAWA y otros procesos están teniendo cambios en esta administración de Trump, no hay que olvidar que en la primera administración de Trump también se usó esa misma NTA y aun así la abogada ganó casos porque tiene más de 14 años como abogada de migración resolviendo casos muy complicados que otros abogados no se animan a tocar. Confíe.<br><br>Afortunadamente [adaptar según el caso]:<br>• Antes de USCIS: «afortunadamente ya tiene un caso en la firma»<br>• Después de USCIS: «afortunadamente su caso ya fue enviado a migración»<br>• Ya tiene EAD: «afortunadamente ya cuenta con su permiso de trabajo»<br><br>Manténgase informado a través de las redes sociales de la abogada."},
+{type:"speech",label:"Speech PARTE 2 — si insiste: '¿qué pasa si no aprueban?'",text:"<strong>Agente:</strong> Entiendo lo que me dice. Hay que tomar en cuenta que existen muchas cosas que se pueden hacer. La abogada no los dejará solos y siempre se puede hacer una apelación. La abogada siempre velará por su beneficio. Confíe."},
+{type:"acc",label:"Contexto: ¿qué es el proceso de corte migratoria?",tag:"teal",tl:"Contexto",body:[
+{type:"rules",items:[
+"NTA (Notice to Appear, Formulario I-862): documento que instruye a comparecer ante un juez de inmigración. Es el inicio del proceso de remoción.",
+"Master Hearing: primera audiencia. Actualmente puede tardar 1 a 2 años dependiendo de la ciudad.",
+"Individual Hearing: audiencia donde se emite la decisión del caso. Puede tardar de 5 a 7 años.",
+"Llegar tan tarde al Individual Hearing puede ser beneficioso porque la decisión se toma posiblemente con otra administración.",
+"Video de referencia de la abogada: facebook.com/abogadamariamendoza/videos/659931203357866"
+]}
+]},
+{type:"rules",label:"Indicaciones operativas",color:"teal",items:[
+"Reason of Call en Registro: 'Trump questions' — no requiere apartado adicional",
+"Adaptar la frase de 'afortunadamente' según la etapa del caso",
+"Compartir video de la abogada en Facebook si el cliente lo requiere"
+]}
+]}},
+{id:"m_hc",blu:true,label:"Campaña Habeas Corpus / Mandamus",icon:"⊕",color:"gold",
+content:{title:"Protocolo — campaña HC/Mandamus",icon:"⊕",color:"gold",
+secs:[
+{type:"acc",label:"¿Qué son estos recursos? (contexto interno)",tag:"gold",tl:"Contexto",body:[
+{type:"rules",items:[
+"DEMANDA MANDAMUS: acción legal federal que busca OBLIGAR a USCIS a emitir una decisión en casos con demoras excesivas. No incluida en el contrato actual. Honorarios adicionales.",
+"PETICIÓN DE HABEAS CORPUS: para clientes detenidos por ICE. Permite solicitar audiencia de fianza mientras el caso continúa. Fuera del contrato. Honorarios adicionales.",
+"El área de Filtros/Psicología llama a los clientes para INFORMAR. NO para cobrar ni contratar."
+]}
+]},
+{type:"steps",label:"Cómo manejar llamadas sobre esta campaña",items:[
+{n:"1",c:"blue",t:"Verificar si ya fue informado",d:"«¿Le llamó alguien de nuestra firma recientemente para comentarle sobre opciones legales como Mandamus o Habeas Corpus?»"},
+{n:"2",c:"blue",t:"Si SÍ fue informado",d:"Usar el mini-FAQ. Responder en menos de 60 segundos. No escalar innecesariamente."},
+{n:"3",c:"amber",t:"Si NO fue informado o quiere detalle legal",d:"Escalar para que reciba el script completo del área de Litigation."}
+]},
+{type:"acc",label:"Mini-FAQ — respuestas rápidas",tag:"teal",tl:"Respuestas",body:[
+{type:"rules",items:[
+"«¿Me llamaron para cobrarme más?» → No. La llamada fue solo informativa. Su caso sigue en proceso y no se le cobra nada.",
+"«¿Van a cambiar mi contrato?» → No. El contrato no cambia. Cualquier servicio adicional se explica por separado y solo si usted lo solicita.",
+"«¿La Mandamus garantiza que me aprueben?» → No. Solo puede obligar a inmigración a emitir una decisión.",
+"«¿Por qué me hablan de esto?» → Para que usted conozca opciones y no decida bajo presión después.",
+"«¿Tengo que decidir algo ahora?» → No. La llamada fue únicamente informativa.",
+"«¿Es obligatorio?» → No. Es completamente opcional."
+]}
+]},
+{type:"rules",label:"Reglas obligatorias para CS",color:"gold",items:[
+"Informar, no persuadir",
+"No prometer resultados",
+"No ofrecer costos",
+"Escalar si el cliente quiere detalle legal adicional"
+]}
+]}}
+]},
+{s:"Emergencias — acción inmediata",id:"emgs",icon:"!",emg:true,sc:"red",ch:[
+{id:"e_det",label:"Cliente fue detenido (ICE / autoridad)",icon:"!",color:"red",emg:true,
+content:{title:"Emergencia — cliente detenido",icon:"!",color:"red",emg:true,
+secs:[
+{type:"speech",label:"Script mandatorio — decir al cliente",text:"«Lamento mucho saber que has sido detenido. Entiendo lo difícil que debe ser esta situación para ti. Voy a escalar su caso de inmediato a nuestro departamento de remociones para que puedan evaluarlo y determinar la mejor manera de ayudarte. Deberías recibir una respuesta formal dentro de un día hábil. Realmente esperamos poder asistirte, y nuestro equipo revisará tu situación con mucho cuidado. Gracias por tu paciencia durante este momento tan estresante.»"},
+{type:"steps",label:"Pasos — antes de terminar la llamada",items:[
+{n:"1",c:"red",t:"Notificar al TL DE INMEDIATO",d:"Máxima prioridad. El TL debe saberlo antes de que termine la llamada."},
+{n:"2",c:"red",t:"Verificar en TramCase",d:"• ¿Ya fue turnado este caso previamente?<br>• ¿En qué stage/etapa se encuentra?<br>• ¿Quién está notificando? (puede NO ser el titular)"},
+{n:"3",c:"red",t:"Recopilar información crítica",d:"• Nombre completo y parentesco de quien habla<br>• ¿Cuándo y a qué hora lo detuvieron?<br>• ¿Quién lo detuvo? (ICE, USCIS, Sheriff, FBI, Customs, DEA, otra agencia)<br>• ¿Cuál es la razón que creen que fue la detención?<br>• ¿A dónde se lo llevaron o dónde creen que está?<br>• Si hablaron con oficial: nombre completo, insignia/ID, número de caso, teléfono<br>• Número de teléfono adicional para futuros contactos"},
+{n:"4",c:"red",t:"Triple registro",d:"1. Nota en TramCase con toda la información.<br>2. Registro de llamadas → Emergencias → <strong>Detained</strong>.<br>3. Formulario de Back Office."},
+{n:"5",c:"amber",t:"Nota importante sobre representación",d:"NO asumir representación automáticamente. La firma evalúa cada caso individualmente. Puede requerir nuevo retainer y honorarios adicionales. No comprometer nada al cliente."}
+]},
+{type:"rules",label:"Puntos clave adicionales",color:"red",items:[
+"Quien llama puede NO ser el titular — pedir información sin confirmar que tenemos al cliente en el sistema",
+"Se puede pedir información al familiar sin confirmarle que tenemos al cliente",
+"Mantener control de la llamada con empatía constante (VDPC)",
+"Después de recopilar todo → pasarlo al TL quien lo reportará en el chat de emergencias de líderes"
+]}
+]}},
+{id:"e_cita",label:"Cliente informa cita con ICE / autoridad",icon:"◉",color:"red",emg:true,
+content:{title:"Emergencia — cita con ICE u otra autoridad",icon:"◉",color:"red",emg:true,
+secs:[
+{type:"speech",label:"Speech principal",text:"«Gracias por informarnos. En este tipo de situaciones es fundamental que un abogado revise su caso antes de que usted asista a la cita. Le pedimos, por favor, <strong>no presentarse hasta que un abogado de nuestro equipo le indique lo contrario</strong>. Su caso será canalizado al área correspondiente para que puedan revisar los detalles y brindarle la orientación legal adecuada lo antes posible.»"},
+{type:"steps",label:"Procedimiento obligatorio",items:[
+{n:"1",c:"red",t:"Notificar al TL de inmediato",d:"Es una emergencia. Aplica para TODO tipo de clientes y casos. El TL debe saberlo antes de terminar la llamada."},
+{n:"2",c:"red",t:"Indagación exhaustiva",d:"Preguntar y anotar:<br>• ¿Cuándo recibió el documento?<br>• ¿Cuál es la fecha de la cita?<br>• ¿De qué autoridad es? (ICE, USCIS, policía local, otra)<br>• ¿Qué menciona exactamente?<br>• ¿Cuántas hojas tiene?<br><br>Pedir fotografía del documento por TramCase."},
+{n:"3",c:"red",t:"Escalación doble",d:"1. Llenar formulario de Back Office.<br>2. Registro de llamadas → Emergencias → <strong>ICE Call / ICE Appointment</strong>."},
+{n:"4",c:"blue",t:"Canalizar a Courts and Removal",d:"Un abogado de la firma revisará la situación y dará orientación legal antes de la cita."}
+]},
+{type:"rules",label:"Reglas críticas",color:"red",items:[
+"El cliente NO debe presentarse a ninguna cita con ninguna autoridad sin consultar primero con la firma",
+"Mantener calma, transmitir seguridad y claridad al cliente",
+"Evitar conjeturas — nunca especular sobre consecuencias o resultados"
+]}
+]}},
+{id:"e_red",label:"Redadas / ICE en la puerta del cliente",icon:"◈",color:"red",emg:true,
+content:{title:"Protocolo — redadas e ICE",icon:"◈",color:"red",emg:true,
+secs:[
+{type:"acc",label:"Derechos si ICE está en su puerta ahora",tag:"red",tl:"URGENTE",body:[
+{type:"rules",items:[
+"Tiene derecho a NO abrir la puerta",
+"Tiene derecho a no responder",
+"Puede quedarse dentro de su casa sin contestar",
+"ÚNICA excepción: si presentan una 'judge's order' (orden de un juez) con su nombre y firma del juez. SOLO entonces debe responder.",
+"NO debe firmar ningún documento sin consultar con un abogado de migración",
+"Si tiene documentos migratorios: tenerlos impresos y a la mano siempre"
+]}
+]},
+{type:"acc",label:"Derechos si lo detienen en la calle / retén",tag:"amber",tl:"Derechos",body:[
+{type:"rules",items:[
+"Tiene derecho a permanecer en silencio",
+"Tiene derecho a pedir un abogado",
+"NO debe responder preguntas sin asesoría legal",
+"NO debe firmar ningún documento sin revisión de abogado",
+"En un retén: tiene derecho a no responder preguntas"
+]}
+]},
+{type:"rules",label:"Recursos a compartir con el cliente",color:"amber",items:[
+"Red Card (PDF de derechos ante ICE): drive.google.com/file/d/1OqJiWlDnvCobBC8s0rotPk5uOXrTsrV4/view",
+"Video de la abogada MGM sobre redadas: facebook.com/abogadamariamendoza/videos/en-vivo/1119346716172215",
+"Si ICE está en su puerta EN ESTE MOMENTO → notificar al TL de inmediato como emergencia máxima"
+]}
+]}},
+{id:"e_bar",label:"Bar Complaint / Amenaza legal / Social Media",icon:"⚖",color:"red",emg:true,
+content:{title:"Emergencia — amenaza legal o reputacional",icon:"⚖",color:"red",emg:true,
+secs:[
+{type:"rules",label:"Niveles de riesgo y escalación inmediata",color:"red",items:[
+"CRITICAL — Bar Number request → INMEDIATO: Dirección + MGM + Atty escalation. Mantener llamada activa.",
+"CRITICAL — Bar Complaint threat → INMEDIATO: Dirección + MGM + Atty escalation.",
+"CRITICAL — Amenaza formal de demanda → INMEDIATO: Dirección + MGM + Atty escalation.",
+"HIGH — Threatens to sue (verbal) → Escalar a Dirección + MGM.",
+"HIGH — Social Media + solicitud de MGM → Dirección + MGM + Atty escalation.",
+"HIGH — Abogado externo involucrado → Escalar a Dirección."
+]},
+{type:"steps",label:"Protocolo del asesor",items:[
+{n:"1",c:"red",t:"NO colgar la llamada",d:"Mantener activa mientras se coordina apoyo interno."},
+{n:"2",c:"red",t:"Escalar de inmediato al TL",d:"Notificar mientras se mantiene al cliente en línea."},
+{n:"3",c:"red",t:"Documentar en tiempo real",d:"Anotar: frases clave exactas del cliente, mood, amenaza específica realizada, hora de escalación, estatus del caso, acciones tomadas."},
+{n:"4",c:"red",t:"TL escala a Dirección / MGM",d:"El TL toma la llamada y escala a los niveles superiores."}
+]},
+{type:"rules",label:"NUNCA hacer en estas situaciones",color:"red",items:[
+"NUNCA admitir errores, negligencia o responsabilidad legal",
+"NUNCA colgar la llamada en escenarios críticos",
+"NUNCA minimizar o restar importancia a las amenazas",
+"NUNCA discutir emocionalmente con el cliente",
+"NUNCA ignorar menciones previas de Bar Complaint — antecedentes = riesgo activo",
+"NUNCA retrasar el reporte a Dirección o MGM"
+]},
+{type:"acc",label:"Indicadores de alerta — señales de riesgo en la llamada",tag:"red",tl:"Alertas",body:[
+{type:"rules",items:[
+"El cliente menciona 'fraude' o 'negligencia'",
+"El cliente habla de 'demandar' a la firma o al abogado",
+"El cliente solicita el Bar Number de la abogada",
+"El cliente menciona 'Bar Complaint'",
+"El cliente amenaza con comentarios en redes (Google, Facebook, TikTok, Instagram)",
+"El cliente menciona haber contratado o consultado a otro abogado",
+"El cliente solicita hablar con MGM",
+"El cliente indica haber perdido confianza en la firma"
+]}
+]}
+]}},
+{id:"e_est",label:"Cliente reporta posible estafa",icon:"⊗",color:"red",emg:true,
+content:{title:"Protocolo — posible intento de estafa",icon:"⊗",color:"red",
+secs:[
+{type:"speech",label:"Script inicial — apertura",text:"«Gracias por tomarse el tiempo de compartirnos esta información. Es raro que pase; sin embargo, le daremos seguimiento. Permítame hacerle unas preguntas.»"},
+{type:"steps",label:"Preguntas de indagación",items:[
+{n:"1",c:"blue",t:"Detalles del contacto",d:"• ¿En qué fecha sucedió?<br>• ¿Dónde tuvo el contacto? ¿Por qué canal?<br>  - Llamada telefónica, mensaje de texto, WhatsApp, correo electrónico, redes sociales (¿cuál y cuál cuenta exactamente?)"},
+{n:"2",c:"blue",t:"Evidencia",d:"¿Tiene capturas de pantalla? Pedir que las comparta."},
+{n:"3",c:"blue",t:"Solicitud del contacto",d:"¿Qué le solicitaron que hiciera? (pagar, dar datos, firmar, etc.)"},
+{n:"4",c:"amber",t:"¿Realizó algún pago?",d:"Si sí realizó un pago: <strong>NO asegurar que se le devolverá nada</strong>. Documentar monto y forma."},
+{n:"5",c:"red",t:"Cierre y escalación",d:"«Estaré notificando a mi supervisor. Le agradezco que nos llame. Le enviaré las redes oficiales de la abogada.»<br><br>Enviar mensaje de texto con redes oficiales. Registrar como <strong>Fraud</strong> en Registro de llamadas → Emergencias."}
+]},
+{type:"acc",label:"Redes y contacto oficial de la firma",tag:"gold",tl:"Enviar al cliente",body:[
+{type:"rules",items:[
+"Facebook: facebook.com/abogadamariamendoza",
+"Instagram: instagram.com/abogadamariamendoza/",
+"TikTok: tiktok.com/@abogadamaria",
+"Página web: mendozafirm.com",
+"Teléfono CS: (202) 869-0694",
+"Correo: abogada@mendozafirm.com"
+]}
+]}
+]}}
+]},
+{s:"Herramientas y referencia",id:"tools",icon:"⊡",sc:"grn",ch:[
+{id:"t_vdpc",grn:true,label:"Metodología VDPC — clientes molestos",icon:"◇",color:"gold",
+content:{title:"Metodología VDPC — contención de clientes molestos",icon:"◇",color:"gold",
+intro:"VDPC es el método OBLIGATORIO para clientes molestos. No es un guion rígido: es una secuencia lógica que guía desde la tensión hacia la resolución.",
+secs:[
+{type:"steps",label:"Las 4 etapas de VDPC",items:[
+{n:"V",c:"teal",t:"Validación — reconocer la emoción",d:"Reconocer verbalmente los sentimientos del cliente ANTES de dar información.<br><br><strong>Frases:</strong><br>• «Entiendo lo que me comenta.»<br>• «Tiene toda la razón en sentirse así.»<br>• «Sé que esta situación puede ser algo delicada.»<br><br><strong>Técnica de espejeo sensorial:</strong><br>• Cliente VISUAL ('no veo resultados'): «Entiendo lo que usted está viendo y cómo se percibe desde su lado.»<br>• Cliente AUDITIVO ('me dijeron', 'eso no suena bien'): «Lo que me está diciendo es totalmente válido.»<br>• Cliente KINESTÉSICO ('me siento frustrado', 'estoy cansado'): «Puedo sentir la carga que esto representa para usted.»<br><br>Tono: cálido y pausado, nunca mecánico."},
+{n:"D",c:"teal",t:"Disculpa — reconocer el inconveniente",d:"<strong>Frases:</strong><br>• «Lamento mucho la situación.»<br>• «Ofrezco una disculpa por la demora.»<br>• «Siento que esto le haya causado inconvenientes.»<br><br>⚠ Después de la disculpa es el momento ideal para <strong>indagar</strong> y descubrir la raíz real del problema.<br>Tono: sincero y breve, sin justificaciones excesivas."},
+{n:"P",c:"teal",t:"Puente — conectar con la solución",d:"<strong>Frases:</strong><br>• «Estoy aquí para ayudarle con este tema.»<br>• «Le comento el siguiente paso…»<br>• «Ahora bien, lo que podemos hacer es…»<br><br>⚠ REGLA: a mayor molestia → menor explicación, puente más rápido a la acción. No cargar de información a alguien muy enojado.<br>Tono: ritmo seguro, con pausas cortas."},
+{n:"C",c:"teal",t:"Cierre — orientar al futuro positivo",d:"<strong>Frases:</strong><br>• «Primeramente Dios todo saldrá bien, confíe…»<br>• «Cuando USCIS reciba su caso, le enviaremos un mensaje de texto.»<br>• «Ahora debemos esperar la respuesta, confíe, valdrá la pena.»<br><br>⚠ Promete ACOMPAÑAMIENTO, nunca resultados.<br>Tono: firme, cálido y seguro."}
+]},
+{type:"rules",label:"Errores que rompen la contención — EVITAR",color:"red",items:[
+"Interrumpir al cliente durante la fase de Validación",
+"Dar demasiada explicación cuando el cliente está muy molesto",
+"Justificar a la firma en lugar de validar al cliente",
+"Sonar mecánico o como si estuviera leyendo un guion",
+"Prometer resultados en lugar de prometer acompañamiento",
+"Olvidar la Asistencia Adicional al finalizar: «¿Hay algo más en lo que pueda servirle?»"
+]},
+{type:"acc",label:"¿Cuándo contener vs cuándo escalar?",tag:"gold",tl:"Decisión",body:[
+{type:"rules",items:[
+"SE CONTIENE: solicitudes de cancelación, pedir hablar con abogados, quejas por retrasos ordinarios (negociar más tiempo).",
+"SE TURNA / ESCALA: si tras la contención el cliente insiste, hay lenguaje agresivo o amenazas, riesgo de pérdida de confianza, o el caso superó el tiempo límite de su stage.",
+"HERRAMIENTA: 'Si el cliente se calma → vas bien. Si se acelera → ajusta el enfoque.'"
+]}
+]}
+]}},
+{id:"t_esc",grn:true,label:"Mapa de escalaciones",icon:"⊥",color:"gold",
+content:{title:"Los medios de escalación de CS",icon:"⊥",color:"gold",
+secs:[
+{type:"acc",label:"1 — Formulario de Llamadas (ClickUp) — MEDIO PRINCIPAL",tag:"gold",tl:"Principal",body:[
+{type:"rules",items:[
+"Es la forma más directa. Al rellenar ciertas opciones la tarea se envía automáticamente al área.",
+"En este link se realiza el <strong>registro de TODAS las llamadas con el cliente</strong>. Además sirve para hacer tres tipos de escalaciones: <strong>Cancelación, Back office, Call Backs y PCR</strong> (empujar el trabajo interno). El resto de escalaciones a otras áreas se realizan por Slack y escalación por medio del TL.",
+"Link: <a href='https://forms.clickup.com/31633845/f/y5cdn-269314/64XWDTD7ZG7QQJM47J' target='_blank' style='color:var(--gold)'>https://forms.clickup.com/31633845/f/y5cdn-269314/64XWDTD7ZG7QQJM47J</a>",
+
+]}
+]},
+{type:"acc",label:"2 — Slack — grupos activos",tag:"teal",tl:"Slack",body:[
+{type:"rules",items:[
+"<strong>rfe-comunications</strong>: cuando USCIS solicita información extra (RFE)",
+"<strong>cs-dvs</strong>: cuando el cliente quiere una consulta o tiene situaciones con la consulta",
+"<strong>cdmx-oficina</strong>: en este chat se reportan situaciones vinculadas con los horarios"
+]}
+]}
+]}},
+{id:"t_can",grn:true,label:"Guía de canalización por área (Case Review)",icon:"⊶",color:"teal",
+content:{title:"Canalización — validar siempre contra TramCase",icon:"⊶",color:"teal",
+intro:"SIEMPRE verificar las últimas notas de TramCase antes de informar al cliente. Esta guía describe las frases y reglas por tipo de área.",
+secs:[
+{type:"rules",label:"Áreas de proceso lineal — acción directa",color:"teal",items:[
+"Área 0 · SALES → Canalizar a PMO | «Su caso está en proceso de validación inicial. Pronto será contactado.»",
+"Área 2 · PSYCHOLOGY → Canalizar a PWI | «Su caso está en la etapa de recolección de documentos. Próximamente lo contactarán para guiarle.»",
+"Área 4 · WAE's → Canalizar a PWI_FU | «Se trabaja en el análisis de su declaración y redacción de documentos. Su caso está avanzando.»",
+"Área 6 · PACKETS → Canalizar a PCR | «Su caso está siendo ensamblado. El equipo integra la documentación necesaria para continuar.»",
+"Área 7 · CA's → Canalizar a CA's | «Su caso está en proceso de análisis y revisión por parte del equipo especializado.»",
+"Área 8 · FOLLOW UP → Canalizar a PWI | «Estamos en la etapa de recolección de documentos adicionales. Pronto será contactado.»"
+]},
+{type:"rules",label:"Seguimiento activo — acción directa",color:"teal",items:[
+"Área 9 · CS → Canalizar a PMO | «Su caso está en seguimiento activo. El equipo está al pendiente y en breve tendrá novedades.»",
+"Área ELP TX → Canalizar a PCR | «Su caso está en las etapas finales, próximo a ser enviado. ¡Ya casi!»"
+]},
+{type:"rules",label:"Áreas que requieren revisar TramCase primero",color:"amber",items:[
+"CANCUN → Canalizar a PMO — revisar TramCase: ¿No Contact Letter? ¿TL? ¿Unresponsive? ¿Retention? | «Permítame un momento para revisar el estado actual de su caso.»",
+"ON HOLD — Abuser YA cumplió 21a+3m → Escalar a PMO | «Vamos a dejar nota para que el equipo lo contacte a la brevedad.»",
+"ON HOLD — Abuser AÚN NO cumple → Solo informar, NO escalar | «Su caso está en espera hasta que el abusador cumpla 21 años y 3 meses.»",
+"ON HOLD — Compliance/Attys → Solo informar, verificar nota | «Su caso está siendo analizado por nuestro equipo legal.»",
+"UNRESPONSIVE → PMO de inmediato, recibir con calidez | «¡Qué gusto saludarle nuevamente! Hemos intentado contactarle. Permítame revisar su caso.»",
+"CASO CANCELADO — Tiene Callback → No escalar | «Su caso tiene una llamada de seguimiento programada. El equipo estará en contacto.»",
+"CASO CANCELADO — Tiene Discovery Call → No escalar | «Tiene una Discovery Call agendada. Pronto se comunicarán con usted.»",
+"CASO CANCELADO — Sin Callback ni Discovery → Discovery Call | «Voy a realizar la escalación para que el equipo coordine una llamada con usted.»"
+]}
+]}},
+{id:"t_noinfo",grn:true,label:"Información que NO se revela al cliente",icon:"⊘",color:"red",
+content:{title:"Información visible en TramCase que NO se comunica al cliente",icon:"⊘",color:"red",
+intro:"El asesor puede tener acceso visual a cierta información en TramCase, pero eso no significa que pueda compartirla. Todo lo que aparece en esta lista debe ser manejado internamente y escalado al área correspondiente.",
+secs:[
+{type:"rules",label:"Información confidencial — nunca revelar directamente",color:"red",items:[
+"<strong>Rejections</strong> — Si el caso tiene una negativa, CS no la informa. Se escala a Callbacks para que un abogado le notifique al cliente.",
+"<strong>Decisions</strong> — Aplica el mismo protocolo que Rejections. Un abogado debe informar al cliente.",
+"<strong>RFEs (Request for Evidence)</strong> — No se informa directamente. Se escala a Callbacks.",
+"<strong>NOIDs (Notice of Intent to Deny)</strong> — Mismo tratamiento que RFE y Decisions.",
+"<strong>NTA (Notice to Appear)</strong> — El asesor no puede decirle al cliente que tiene una NTA. Se escala a <strong>Removals</strong>, no a Callbacks. Si el cliente ya lo sabe y pide el documento, se trata como File Request.",
+"<strong>Información de Dropbox</strong> — Los asesores SÍ tienen acceso a Dropbox y lo usan para identificar recibos, estatus y documentos del caso. Que la información esté visible en Dropbox no significa que se pueda compartir con el cliente: cualquier documento negativo (rejection, decision, RFE, NOID, NTA) sigue sin poder comunicarse directamente."
+]},
+{type:"steps",label:"¿Qué hacer cuando el cliente pregunta o ya lo sabe?",items:[
+{n:"A",c:"amber",t:"El cliente NO sabe y el asesor lo ve en TramCase o Dropbox",d:"No mencionarlo. Ofrecer una callback con abogado: «Lo que podemos hacer es agendar una llamada con el área legal para que le den un estatus detallado de su caso.»<br>El asesor <strong>agenda la callback directamente</strong> en el portal de agendas (o escala a <strong>Removals</strong> si es NTA)."},
+{n:"B",c:"amber",t:"El cliente SÍ sabe (lo vio en la página de USCIS) y pide información",d:"No confirmar ni ampliar lo que vio. Usar el mismo speech: «Vamos a agendarle una llamada con nuestro equipo legal para darle el detalle correspondiente.»<br>El asesor <strong>agenda la callback directamente</strong>, sin necesidad de autorización previa del TL."},
+{n:"C",c:"red",t:"El cliente pide el documento (RFE, NTA, Decision, etc.)",d:"Tratar como <strong>File Request</strong> y agendar la callback correspondiente. Preguntar el motivo de manera discreta, no prometer envío ni dar fechas.<br>Si es para uso personal → TL puede gestionar el envío con autorización.<br>Si es para abogado externo → requiere aprobación de MGM/Wendy antes de cualquier acción."}
+]},
+{type:"rules",label:"Regla de oro",color:"red",items:[
+"Que el asesor pueda verlo en TramCase NO significa que pueda decírselo al cliente",
+"Nunca especular ni dar interpretaciones sobre documentos legales — siempre escalar al área legal",
+"Si el cliente ya lo sabe por la página de USCIS, no confirmar ni negar — escalar igual"
+]}
+]}},
+{id:"t_notas",grn:true,label:"Estructura de notas en TramCase",icon:"≣",color:"gold",
+content:{title:"Guía completa — notas en TramCase",icon:"≣",color:"gold",
+secs:[
+{type:"acc",label:"Estructura de notas inbound",tag:"gold",tl:"Inbound",body:[
+{type:"speech",text:"<strong>Título:</strong> Incoming Call / Case status<br>(o: Incoming Call / Payment | Emergency | Documents)<br><br><strong>Cuerpo:</strong><br>Reason: [motivo principal]<br>Solution: [lo que se hizo o indicó]<br>Type of case: [VAWA, Visa T, AOS, etc.]<br>Behavior: [Calm / Frustrated / Upset / etc.]<br>CN: [Confirmed o Not Confirmed]<br>Internal note: [solo si necesario]"}
+]},
+{type:"acc",label:"Estructura de notas outbound",tag:"teal",tl:"Outbound",body:[
+{type:"speech",text:"<strong>Título:</strong> Outgoing Call / Case status<br>(o: Outgoing / Payment | Emergency | Documents)<br><br>[Mismos campos: Reason / Solution / Type of case / Behavior / CN]"}
+]},
+{type:"acc",label:"Nota de texto proactivo (TXT)",tag:"teal",tl:"TXT",body:[
+{type:"speech",text:"<strong>Título:</strong> TEXT MSG UPDATE<br><br>The following message was sent to the client:<br>[pegar aquí el mensaje enviado al cliente en inglés]"}
+]},
+{type:"rules",label:"Reglas de documentación",color:"gold",items:[
+"Verificar número de cliente y fecha de nacimiento en cada caso — si faltan, completar antes de cerrar",
+"Las notas deben ser claras, completas y útiles para cualquier compañero",
+"Lo que no está documentado no existe — toda acción relevante va en notas",
+"Incluir el título correcto según el tipo de llamada y motivo"
+]}
+]}}
+,
+{id:"t_form_llamadas",grn:true,label:"Formulario de Llamadas (ClickUp)",icon:"⊞",color:"gold",
+content:{title:"Formulario de Llamadas — ClickUp",icon:"⊞",color:"gold",
+intro:"Este formulario es el medio principal para el registro de TODAS las llamadas con el cliente, y para realizar escalaciones clave.",
+secs:[
+{type:"rules",label:"Usos del formulario",color:"gold",items:[
+"<strong>Registro de todas las llamadas con el cliente</strong> — inbound y outbound.",
+"Escalaciones: <strong>Cancelación</strong>, <strong>Back office</strong>, <strong>Call Backs</strong> y <strong>PCR</strong> (empujar trabajo interno).",
+"El resto de escalaciones a otras áreas se realizan por Slack o por medio del TL."
+]},
+{type:"rules",label:"Callbacks — el agente agenda directamente (Antes vs. Ahora)",color:"amber",items:[
+"<strong>Antes</strong>, solo el Team Leader podía agendar una Callback. <strong>Ahora el agente de Customer Service puede agendarla directamente</strong>, sin autorización previa del TL.",
+"Se puede agendar cuando aplica alguno de estos 3 escenarios: <strong>A)</strong> el cliente NO sabe y el asesor lo ve en TramCase o Dropbox (Rejection, Decisión, NOID, RFE, NTA) — no se menciona, se ofrece callback con abogado y se agenda; <strong>B)</strong> el cliente YA sabe (lo vio en USCIS.gov) — no se confirma ni se amplía, se agenda igual; <strong>C)</strong> el cliente pide el documento — se trata como <strong>File Request</strong> y se agenda la callback.",
+"El paso a paso operativo para agendar la callback en el portal de agendas está en el apartado <strong>'Agenda de Callback — paso a paso'</strong> más abajo en Herramientas."
+]},
+{type:"acc",label:"Acceso al formulario",tag:"gold",tl:"Enlace",body:[
+{type:"rules",items:[
+"<a href='https://forms.clickup.com/31633845/f/y5cdn-269314/64XWDTD7ZG7QQJM47J' target='_blank' style='color:var(--gold)'>https://forms.clickup.com/31633845/f/y5cdn-269314/64XWDTD7ZG7QQJM47J</a>"
+]}
+]}
+]}},
+{id:"t_callback_pasos",grn:true,label:"Agenda de Callback — paso a paso",icon:"☏",color:"gold",sub:"Portal de agendas",
+content:{title:"Agenda de Callback — paso a paso",icon:"☏",color:"gold",
+intro:"El agente de Customer Service agenda la callback directamente en el portal de agendas, sin autorización previa del TL, cuando aplica alguno de los 3 escenarios (ver 'Formulario de Llamadas' arriba). Este es el procedimiento operativo completo.",
+secs:[
+{type:"steps",label:"Cómo agendar una callback en el portal de agendas",items:[
+{n:"1",c:"blue",t:"Entra al portal de agendas",d:"Abre el <a href='https://jmanuelbv.github.io/PORTAL-AGENDAS-CALLBACKS/#' target='_blank' style='color:var(--gold)'>portal de agendas de callbacks</a>. Verás la pantalla «Selecciona tu área» con 3 opciones: Callbacks, Customer Service y RFE. Como pertenecemos a Customer Service, damos clic ahí."},
+{n:"2",c:"blue",t:"Ubícate en el calendario del área",d:"Se despliega un calendario/agenda: cada columna es un abogado. Hay un mini-calendario a la izquierda para navegar entre días. El título en la parte superior muestra el día en el que te encuentras."},
+{n:"3",c:"blue",t:"Identifica los espacios disponibles",d:"Los espacios ya ocupados aparecen de color café clarito. Algunos abogados muestran su horario de entrada/salida, bloqueos por compromisos y breaks — esos tampoco cuentan como disponibles. Normalmente la disponibilidad real aparece entre 1 y 1.5 semanas adelante."},
+{n:"4",c:"amber",t:"Ten en cuenta la zona horaria del abogado",d:"Todos los abogados manejan horario de Puerto Rico, con una excepción: <strong>Mariana Álvarez</strong>, cuya zona horaria corresponde a Houston, TX."},
+{n:"5",c:"amber",t:"Usa la calculadora rápida de horario",d:"Debajo del título hay una barra «Calculadora rápida de horario» con un botón <strong>Abrir</strong>. Selecciona el estado/zona del cliente y automáticamente te muestra la hora equivalente del abogado, para comparar ambos horarios antes de agendar."},
+{n:"6",c:"teal",t:"Da clic en el espacio disponible",d:"Ya con la hora convertida y comparada, da clic en el espacio disponible dentro de la columna del abogado correspondiente. Esto abre la ventana emergente «Agendar callback»."},
+{n:"7",c:"teal",t:"Llena el formulario con los datos de TramCase",d:"Completa los campos con la información que ya tienes en TramCase. El campo <strong>Atty</strong> se autocompleta según la columna/abogado elegido. El campo <strong>PL / Quién agenda</strong> se llena con tu nombre."},
+{n:"8",c:"teal",t:"Guarda la callback",d:"Da clic en <strong>Guardar Callback</strong>. El evento aparece en la columna del abogado, en el horario agendado. Si vuelves a dar clic sobre ese evento, puedes ver de nuevo la ficha completa: cliente, área que la creó, fecha, hora de Puerto Rico y tipo de llamada."},
+{n:"9",c:"gold",t:"Envía el recordatorio al cliente",d:"Manda un mensaje de confirmación al cliente usando siempre <strong>su hora local</strong> (nunca la hora de Puerto Rico ni la del abogado). Ejemplo: «Buenas tardes, le envío la información de su cita con nuestros abogados: viernes 24 de julio 2026 a la 1:20 de su hora local.»"},
+{n:"10",c:"gold",t:"Deja la nota en TramCase",d:"Registra la nota con la estructura habitual, indicando la hora, el día y el motivo por el que se agendó la callback."}
+]},
+{type:"rules",label:"Recibos de USCIS — qué se puede compartir con el cliente",color:"teal",items:[
+"SÍ se pueden compartir: recibos iniciales, aprobaciones (I-797/A/B), envío de tarjeta o documento (I-797D), citas de biométricos, prima facie.",
+"NUNCA se pueden compartir bajo ninguna circunstancia: decisions, rejections, RFEs (I-797E), NOIDs — nada que sea negativo. Estos casos siempre disparan el flujo de agenda de callback descrito arriba.",
+"Un I-797C puede corresponder a varias acciones (recibo, transferencia, rechazo, cita). Antes de compartir su contenido con el cliente, verifica cuál es la acción específica indicada en el aviso."
+]}
+]}},
+{id:"t_uscis",grn:true,label:"Consulta de caso en USCIS",icon:"◎",color:"teal",
+content:{title:"Consulta de caso — Portal USCIS",icon:"◎",color:"teal",
+intro:"Utiliza este portal para verificar el estatus del caso del cliente directamente en la página oficial de USCIS.",
+secs:[
+{type:"acc",label:"Acceso al portal de USCIS",tag:"teal",tl:"Enlace",body:[
+{type:"rules",items:[
+"<a href='https://egov.uscis.gov/es' target='_blank' style='color:var(--tel)'>https://egov.uscis.gov/es</a> — Portal oficial en español para consulta de casos.",
+"Ingresar el número de recibo del caso (receipt number) para verificar estatus actual."
+]}
+]}
+]}}
+]}
+];
+
+function flat(arr,out=[]){arr.forEach(g=>{if(g.ch)g.ch.forEach(i=>{if(i.content)out.push(i);if(i.ch)flat([{ch:i.ch}],out)})});return out}
+const ALL=flat(D);
+
+function acc(s){
+  return`<div class="ac"><button class="ab" onclick="tAcc(this)"><span style="display:flex;align-items:center;gap:8px;flex:1"><span>${s.label}</span>${s.tag?`<span class="atag ${s.tag}">${s.tl}</span>`:''}</span><span class="aarr">▼</span></button><div class="aby">${s.body.map(b=>{
+    if(b.type==='speech')return`<div class="asp">${b.text}</div>`;
+    if(b.type==='rules')return b.items.map(r=>`<div class="ari"><div class="ard"></div><span>${r}</span></div>`).join('');
+    if(b.type==='steps')return b.items.map(s=>`<div class="astp"><div class="asn ${s.c||'blue'}">${s.n}</div><div class="ast"><span class="t">${s.t}</span><span class="d">${s.d}</span></div></div>`).join('');
+    return'';
+  }).join('')}</div></div>`;
+}
+
+function render(item){
+  const c=item.content,col=c.color||'gold';
+  let h=`<div class="cp" id="cp"><div class="ph"><div class="pi ${col}">${c.icon||'•'}</div><div><div class="ptitle">${c.title}</div>${item.sub?`<div class="psub">${item.sub}</div>`:''}</div></div>`;
+  if(c.emg)h+=`<div class="eb">⚠ Emergencia — Notificar al TL de inmediato antes de terminar la llamada.</div>`;
+  if(c.intro)h+=`<p style="font-size:16px;color:var(--tx2);margin-bottom:18px;line-height:1.65">${c.intro}</p>`;
+  c.secs.forEach(s=>{
+    if(s.type==='speech'){h+=`<div class="sl">${s.label}</div><div class="sp"><div class="spl">Speech</div><div class="spt">${s.text}</div></div>`;}
+    else if(s.type==='steps'){h+=`<div class="sl">${s.label}</div><div class="sts">`;s.items.forEach(i=>{h+=`<div class="st"><div class="sn ${i.c||'blue'}">${i.n}</div><div><div class="sti">${i.t}</div><div class="sdi">${i.d}</div></div></div>`;});h+=`</div>`;}
+    else if(s.type==='rules'){h+=`<div class="sl">${s.label}</div><div class="rb"><div class="rbt">A tener en cuenta</div>`;s.items.forEach(r=>{const neg=r.toLowerCase().startsWith('nunca')||r.toLowerCase().startsWith('no ')||r.toLowerCase().startsWith('critical');h+=`<div class="ri"><div class="rd ${neg?'red':s.color==='teal'?'teal':''}"></div><span>${r}</span></div>`;});h+=`</div>`;}
+    else if(s.type==='acc'){h+=`<div class="sl">${s.label}</div>${acc(s)}`;}
+  });
+  h+=`</div>`;return h;
+}
+
+function show(id){
+  const item=ALL.find(i=>i.id===id);if(!item||!item.content)return;
+  document.getElementById('wlc').style.display='none';
+  const old=document.getElementById('cp');if(old)old.remove();
+  document.getElementById('mn').insertAdjacentHTML('beforeend',render(item));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('act'));
+  const btn=document.querySelector(`[data-id="${id}"]`);if(btn)btn.classList.add('act');
+}
+
+function tAcc(btn){btn.classList.toggle('op');btn.nextElementSibling.classList.toggle('op');}
+
+function tNode(id){
+  const ch=document.getElementById('ch-'+id),arr=document.getElementById('a-'+id);
+  if(!ch)return;
+  const op=ch.classList.contains('op');
+  ch.classList.toggle('op',!op);if(arr)arr.classList.toggle('op',!op);
+}
+
+function mkTree(data){
+  let h='';
+  data.forEach(g=>{
+    h+=`<div class="sdiv"></div><div class="sh${g.sc?' sh-'+g.sc:''}">${g.s}</div>`;
+    g.ch.forEach(item=>{
+      const hasCh=item.ch&&item.ch.length>0;
+      const ec=item.emg?' emg':item.amb?' amb':item.blu?' blu':item.grn?' grn':'';
+      h+=`<div>
+        <button class="tb${ec}" data-id="${item.id}" onclick="${hasCh?`tNode('${item.id}')`:`show('${item.id}')`}">
+          <span class="ti">${item.icon||'•'}</span><span class="tl">${item.label}</span>
+          ${hasCh?`<span class="ta" id="a-${item.id}">›</span>`:''}
+        </button>
+        ${hasCh?`<div class="tc" id="ch-${item.id}">${item.ch.map(sub=>{
+          const hsc=sub.ch&&sub.ch.length>0;
+          const ec2=sub.emg?' emg':sub.amb?' amb':sub.blu?' blu':sub.grn?' grn':'';
+          return`<button class="tb${ec2}" data-id="${sub.id}" onclick="${hsc?`tNode('${sub.id}')`:`show('${sub.id}')`}" style="padding-left:30px">
+            <span class="ti">${sub.icon||'•'}</span><span class="tl">${sub.label}</span>
+            ${hsc?`<span class="ta" id="a-${sub.id}">›</span>`:''}
+          </button>
+          ${hsc?`<div class="tc" id="ch-${sub.id}">${sub.ch.map(ss=>`<button class="tb${ss.emg?' emg':''}" data-id="${ss.id}" onclick="show('${ss.id}')" style="padding-left:46px"><span class="ti">${ss.icon||'•'}</span><span class="tl">${ss.label}</span></button>`).join('')}</div>`:''}`;
+        }).join('')}</div>`:''}
+      </div>`;
+    });
+  });
+  return h;
+}
+
+document.getElementById('tree').innerHTML=mkTree(D);
+
+function doSearch(q){
+  const tree=document.getElementById('tree'),res=document.getElementById('sres');
+  if(!q.trim()){tree.style.display='block';res.style.display='none';return;}
+  tree.style.display='none';res.style.display='block';
+  const ql=q.toLowerCase();
+  const matches=ALL.filter(i=>(i.label+' '+(i.sub||'')+' '+JSON.stringify(i.content)).toLowerCase().includes(ql));
+  if(!matches.length){res.innerHTML='<div class="nores">Sin resultados para "'+q+'"</div>';return;}
+  res.innerHTML=matches.map(i=>`<button class="tb" data-id="${i.id}" onclick="show('${i.id}');document.getElementById('si').value='';doSearch('')"><span class="ti">${i.icon||'•'}</span><span class="tl">${i.label}</span></button>`).join('');
+}
+
+function toggleTheme(){
+  const body=document.body;
+  const btn=document.getElementById('themeLbl');
+  const icon=document.getElementById('themeBtn').querySelector('svg');
+  if(body.classList.contains('light')){
+    body.classList.remove('light');
+    btn.textContent='Claro';
+    icon.innerHTML='<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+  } else {
+    body.classList.add('light');
+    btn.textContent='Oscuro';
+    icon.innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+</script>
+</body>
+</html>
