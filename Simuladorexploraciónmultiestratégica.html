@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar Estratégico – Análisis de Llamada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2332 0%, #2d3e50 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(26, 35, 50, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .header-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.5));
+        }
+
+        .header h1 {
+            color: #d4af37;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: #b0b0b0;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .progress-bar {
+            background: rgba(45, 62, 80, 0.6);
+            border-radius: 10px;
+            padding: 15px 25px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-text {
+            color: #d4af37;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .progress-score {
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+
+        /* SECCIÓN FIJA DE VIDEO */
+        .video-section-fixed {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .video-section-fixed h3 {
+            color: #d4af37;
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .video-credit {
+            text-align: center;
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-top: 10px;
+        }
+
+        .video-credit a {
+            color: #d4af37;
+            text-decoration: none;
+        }
+
+        .video-credit a:hover {
+            text-decoration: underline;
+        }
+
+        /* SECCIÓN DINÁMICA DE ANÁLISIS */
+        .dynamic-analysis-section {
+            background: rgba(26, 35, 50, 0.6);
+            border-radius: 10px;
+            padding: 30px;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            min-height: 400px;
+        }
+
+        .moment-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .moment-number {
+            color: #d4af37;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .step-section {
+            margin-bottom: 35px;
+        }
+
+        .step-header {
+            color: #d4af37;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+            color: #1a2332;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .step-description {
+            color: #b0b0b0;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .strategies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .strategy-button {
+            background: rgba(45, 62, 80, 0.6);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50px;
+            padding: 15px 25px;
+            color: #e0e0e0;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .strategy-button:hover {
+            background: rgba(45, 62, 80, 0.9);
+            border-color: #d4af37;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .strategy-button.selected {
+            background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+            border-color: #d4af37;
+            color: #1a2332;
+            font-weight: 600;
+        }
+
+        .strategy-button::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .strategy-button.selected::before {
+            background: #1a2332;
+            box-shadow: 0 0 10px rgba(26, 35, 50, 0.5);
+        }
+
+        .evidence-field {
+            margin-top: 15px;
+            padding: 20px;
+            background: rgba(26, 35, 50, 0.8);
+            border-radius: 10px;
+            border-left: 4px solid #d4af37;
+        }
+
+        .evidence-field label {
+            display: block;
+            color: #d4af37;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .evidence-field textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            background: rgba(45, 62, 80, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .evidence-field textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .char-counter {
+            text-align: right;
+            color: #b0b0b0;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .char-counter.valid {
+            color: #4caf50;
+        }
+
+        .strategic-analysis-field {
+            background: rgba(26, 35, 50, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #2196f3;
+            margin-top: 20px;
+        }
+
+        .strategic-analysis-field h4 {
+            color: #2196f3;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .strategic-analysis-field textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            background: rgba(45, 62, 80, 0.6);
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .strategic-analysis-field textarea:focus {
+            outline: none;
+            border-color: #2196f3;
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.2);
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+            color: #1a2332;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .feedback-container {
+            background: rgba(26, 35, 50, 0.95);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 2px solid #d4af37;
+        }
+
+        .feedback-title {
+            color: #d4af37;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feedback-content {
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+
+        .correct-strategies {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .correct-strategies h4 {
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+
+        .example-phrase {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid #d4af37;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-style: italic;
+        }
+
+        .impact-note {
+            background: rgba(33, 150, 243, 0.1);
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .next-button {
+            background: rgba(45, 62, 80, 0.8);
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            border-radius: 50px;
+            padding: 12px 35px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        .next-button:hover {
+            background: #d4af37;
+            color: #1a2332;
+        }
+
+        .final-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .final-score {
+            font-size: 72px;
+            color: #d4af37;
+            font-weight: 700;
+            margin: 30px 0;
+            text-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .classification {
+            font-size: 28px;
+            color: #e0e0e0;
+            font-weight: 600;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(45, 62, 80, 0.6);
+            border-radius: 10px;
+            border: 2px solid #d4af37;
+        }
+
+        .finish-button {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 18px 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .finish-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .scroll-target {
+            scroll-margin-top: 20px;
+        }
+
+        /* PANTALLA DE INSTRUCCIONES INICIAL */
+        .instructions-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .instructions-content {
+            background: rgba(26, 35, 50, 0.8);
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            border: 2px solid rgba(33, 150, 243, 0.3);
+        }
+
+        .instructions-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .instructions-content h2 {
+            color: #2196f3;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .instructions-list {
+            text-align: left;
+            color: #e0e0e0;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .instructions-list ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .instructions-list li {
+            margin-bottom: 12px;
+        }
+
+        .instructions-list ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .instructions-list ol li {
+            margin-bottom: 8px;
+        }
+
+        .instructions-tip {
+            background: rgba(212, 175, 55, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #d4af37;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .instructions-tip strong {
+            color: #d4af37;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 18px 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+        }
+
+        .back-button {
+            background: rgba(45, 62, 80, 0.8);
+            color: #b0b0b0;
+            border: 2px solid rgba(176, 176, 176, 0.3);
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .back-button:hover {
+            background: rgba(45, 62, 80, 1);
+            border-color: #b0b0b0;
+            color: #e0e0e0;
+        }
+
+        .back-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla de Instrucciones Inicial -->
+        <div id="instructionsScreen" class="instructions-screen">
+            <div class="header">
+                <div class="header-icon">⚖️</div>
+                <h1>Radar Estratégico – Análisis de Llamada</h1>
+                <p>Módulo Evaluativo de Identificación de Estrategias de Comunicación Legal</p>
+            </div>
+
+            <div class="instructions-content fade-in">
+                <div class="instructions-icon">📋</div>
+                <h2>Instrucciones del Módulo</h2>
+
+                <div class="instructions-list">
+                    <p style="margin-bottom: 20px; font-size: 17px;">
+                        <strong style="color: #2196f3;">¿Cómo funciona este módulo?</strong>
+                    </p>
+
+                    <ul>
+                        <li>Verás un <strong>video completo</strong> de una llamada legal entre una abogada y su cliente.</li>
+                        <li><strong style="color: #d4af37;">Puedes pausar el video</strong> en cualquier momento para analizar cada momento con calma.</li>
+                        <li>El módulo está dividido en <strong>11 momentos clave</strong>, cada uno identificado con su minuto específico en el video.</li>
+                        <li>Para cada momento deberás completar <strong>3 pasos obligatorios</strong>:
+                            <ol>
+                                <li><strong>Paso 1:</strong> Seleccionar todas las estrategias de comunicación que identifiques (puedes elegir <strong>varias opciones</strong>)</li>
+                                <li><strong>Paso 2:</strong> Escribir la frase exacta que la abogada dijo para demostrar cada estrategia seleccionada</li>
+                                <li><strong>Paso 3:</strong> Analizar cuál fue el impacto estratégico de esa intervención en el desarrollo del caso</li>
+                            </ol>
+                        </li>
+                        <li>Al finalizar cada momento, recibirás <strong style="color: #4caf50;">feedback inmediato</strong> con:
+                            <ul style="margin-top: 8px;">
+                                <li>Las estrategias correctas del momento</li>
+                                <li>Análisis experto de la situación</li>
+                                <li>Ejemplos de frases modelo</li>
+                                <li>Explicación del impacto estratégico</li>
+                            </ul>
+                        </li>
+                        <li>Tu <strong>puntaje se acumula</strong> a medida que avanzas por los 11 momentos.</li>
+                        <li>Necesitas obtener <strong>75% o más</strong> para aprobar el módulo.</li>
+                    </ul>
+
+                    <div class="instructions-tip">
+                        <strong>💡 Consejo para el mejor aprendizaje:</strong><br>
+                        Reproduce el video hasta el minuto indicado en cada momento, <strong>pausa</strong>, analiza cuidadosamente lo que escuchaste, y luego responde. No hay límite de tiempo — tómate todo el tiempo que necesites para reflexionar sobre cada intervención.
+                    </div>
+
+                    <p style="text-align: center; color: #b0b0b0; font-size: 15px; margin-top: 25px;">
+                        El video permanecerá visible en todo momento y <strong>no se recargará</strong> al cambiar entre momentos.
+                    </p>
+                </div>
+
+                <button class="start-button" onclick="startModule()">
+                    Comenzar Módulo →
+                </button>
+            </div>
+        </div>
+
+        <!-- Pantalla de Momento -->
+        <div id="momentScreen" class="hidden">
+            <div class="header">
+                <div class="header-icon">⚖️</div>
+                <h1>Radar Estratégico – Análisis de Llamada</h1>
+                <p>Módulo Evaluativo de Identificación de Estrategias de Comunicación Legal</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-text" id="progressText">Momento 1 de 11</div>
+                <div class="progress-score" id="scoreDisplay">Puntaje: 0</div>
+            </div>
+
+            <!-- SECCIÓN FIJA: VIDEO -->
+            <div class="video-section-fixed">
+                <h3>📹 Video de Análisis Completo</h3>
+                <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+                 padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+                 border-radius: 8px; will-change: transform;">
+                  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+                    src="https://www.canva.com/design/DAHA8ddwbJY/CPRcX-T6CtYDm2zAdIEuTg/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+                  </iframe>
+                </div>
+                <div class="video-credit">
+                    <a href="https://www.canva.com/design/DAHA8ddwbJY/CPRcX-T6CtYDm2zAdIEuTg/watch?utm_content=DAHA8ddwbJY&utm_campaign=designshare&utm_medium=embeds&utm_source=link" 
+                       target="_blank" 
+                       rel="noopener">CB-MULTIESTRATEGIA</a> de Training TMLF
+                </div>
+            </div>
+
+            <!-- SECCIÓN DINÁMICA: ANÁLISIS DEL MOMENTO -->
+            <div id="dynamicAnalysisSection" class="dynamic-analysis-section scroll-target">
+                <!-- El contenido se renderiza dinámicamente aquí -->
+            </div>
+
+            <!-- CONTENEDOR DE FEEDBACK -->
+            <div id="feedbackContainer" class="hidden"></div>
+        </div>
+
+        <!-- Pantalla Final -->
+        <div id="finalScreen" class="hidden final-screen">
+            <div class="header">
+                <div class="header-icon">⚖️</div>
+                <h1>Análisis Completado</h1>
+            </div>
+
+            <div class="final-score" id="finalScore">0%</div>
+            <div class="classification" id="classification"></div>
+            
+            <p style="color: #b0b0b0; margin: 20px 0;">
+                Puntaje obtenido: <span id="finalRawScore" style="color: #d4af37; font-weight: 600;">0</span> puntos
+            </p>
+
+            <button class="finish-button" onclick="finishCourse()">
+                Finalizar y Enviar
+            </button>
+        </div>
+    </div>
+
+    <script>
+// scormdriver.js - SCORM 1.2 API Driver
+// Compatible con Moodle y otros LMS que soportan SCORM 1.2
+
+var API = null;
+
+/**
+ * Busca el objeto API del LMS en la jerarquía de ventanas
+ * @param {Window} win - Ventana donde buscar
+ * @returns {Object|null} - Objeto API o null si no se encuentra
+ */
+function findAPI(win) {
+    var findAttempts = 0;
+    var maxAttempts = 500;
+    
+    while ((win.API == null) && (win.parent != null) && (win.parent != win)) {
+        findAttempts++;
+        if (findAttempts > maxAttempts) {
+            console.warn("Se alcanzó el máximo de intentos buscando el API SCORM");
+            return null;
+        }
+        win = win.parent;
+    }
+    return win.API;
+}
+
+/**
+ * Obtiene el objeto API del LMS
+ * Busca en la ventana actual, ventanas padre y ventana opener
+ * @returns {Object} - Objeto API (real o simulado)
+ */
+function getAPI() {
+    if (API == null) {
+        API = findAPI(window);
+    }
+    
+    // Buscar en window.opener si existe
+    if ((API == null) && (window.opener != null) && (typeof(window.opener) != "undefined")) {
+        API = findAPI(window.opener);
+    }
+    
+    // Si no se encuentra API, crear una simulada para modo standalone
+    if (API == null) {
+        console.warn("No se encontró API SCORM. El módulo funcionará en modo standalone.");
+        console.info("Los datos se guardarán en localStorage para pruebas.");
+        
+        // Crear API simulada para desarrollo/pruebas
+        API = {
+            LMSInitialize: function(param) { 
+                console.log("SCORM: LMSInitialize(" + param + ")");
+                return "true"; 
+            },
+            
+            LMSFinish: function(param) { 
+                console.log("SCORM: LMSFinish(" + param + ")");
+                return "true"; 
+            },
+            
+            LMSGetValue: function(key) { 
+                var value = localStorage.getItem('scorm_' + key) || "not attempted";
+                console.log("SCORM: LMSGetValue(" + key + ") = " + value);
+                return value; 
+            },
+            
+            LMSSetValue: function(key, value) { 
+                console.log("SCORM: LMSSetValue(" + key + ", " + value + ")");
+                localStorage.setItem('scorm_' + key, value);
+                return "true"; 
+            },
+            
+            LMSCommit: function(param) { 
+                console.log("SCORM: LMSCommit(" + param + ")");
+                return "true"; 
+            },
+            
+            LMSGetLastError: function() { 
+                return "0"; 
+            },
+            
+            LMSGetErrorString: function(errorCode) { 
+                return "No error"; 
+            },
+            
+            LMSGetDiagnostic: function(errorCode) { 
+                return "No error"; 
+            }
+        };
+    }
+    
+    return API;
+}
+
+/**
+ * Función de ayuda para verificar el estado del API
+ * @returns {boolean} - true si el API está disponible
+ */
+function isAPIAvailable() {
+    return (API != null);
+}
+
+/**
+ * Función de ayuda para obtener el último error
+ * @returns {string} - Código del último error
+ */
+function getLastError() {
+    if (API != null) {
+        return API.LMSGetLastError();
+    }
+    return "-1";
+}
+
+/**
+ * Función de ayuda para obtener la descripción de un error
+ * @param {string} errorCode - Código de error
+ * @returns {string} - Descripción del error
+ */
+function getErrorString(errorCode) {
+    if (API != null) {
+        return API.LMSGetErrorString(errorCode);
+    }
+    return "API no disponible";
+}
+
+// Inicializa la API automáticamente cuando se carga el script
+window.API = getAPI();
+
+// Log de inicio
+if (window.API != null) {
+    console.log("SCORM Driver cargado exitosamente");
+} else {
+    console.error("Error al cargar SCORM Driver");
+}
+
+</script>
+    <script>
+        // ============================================
+        // CONFIGURACIÓN SCORM
+        // ============================================
+        let scormInitialized = false;
+
+        function initializeSCORM() {
+            if (typeof window.API !== 'undefined') {
+                const result = window.API.LMSInitialize("");
+                if (result === "true") {
+                    scormInitialized = true;
+                    const status = window.API.LMSGetValue("cmi.core.lesson_status");
+                    if (status === "not attempted") {
+                        window.API.LMSSetValue("cmi.core.lesson_status", "incomplete");
+                        window.API.LMSCommit("");
+                    }
+                }
+            }
+        }
+
+        function setSCORMScore(score, maxScore) {
+            if (scormInitialized) {
+                window.API.LMSSetValue("cmi.core.score.raw", score.toString());
+                window.API.LMSSetValue("cmi.core.score.max", maxScore.toString());
+                window.API.LMSSetValue("cmi.core.score.min", "0");
+                
+                const percentage = (score / maxScore) * 100;
+                const status = percentage >= 75 ? "passed" : "failed";
+                window.API.LMSSetValue("cmi.core.lesson_status", status);
+                window.API.LMSSetValue("cmi.core.score.scaled", (percentage / 100).toFixed(2));
+                
+                window.API.LMSCommit("");
+            }
+        }
+
+        function finishCourse() {
+            if (scormInitialized) {
+                window.API.LMSFinish("");
+            }
+        }
+
+        // ============================================
+        // DATOS DEL MÓDULO - ARRAY JSON INTERNO
+        // ============================================
+        
+        const allStrategies = [
+            "Refuerzo positivo",
+            "Manejo de ansiedad",
+            "Validación emocional",
+            "Uso de lenguaje claro",
+            "Desglose de concepto legal complejo",
+            "Permiso para hacer preguntas",
+            "Enfoque multi-estratégico (Plan A / Plan B)",
+            "Preguntas de cualificación estratégicas",
+            "Identificación de elementos clave",
+            "Profundización en miedo / coerción",
+            "No dejar nada a la interpretación",
+            "Parafraseo para confirmar",
+            "Transparencia estratégica",
+            "Manejo de expectativas",
+            "Comunicación de noticias difíciles",
+            "Uso estratégico de lenguaje emocional",
+            "Compromiso personal",
+            "Pivote hacia soluciones",
+            "Organización y siguiente paso estratégico"
+        ];
+
+        const momentsData = [
+            {
+                id: 1,
+                time: "01:10",
+                correctStrategies: ["Refuerzo positivo", "Manejo de ansiedad", "Compromiso personal"],
+                feedback: {
+                    explanation: "En el inicio de la llamada, la abogada establece una conexión emocional cálida y profesional, reduciendo la ansiedad inicial de la cliente y comprometiéndose personalmente con su caso.",
+                    example: "\"Mi compromiso es hacer todo posible para ganar su caso y no solamente ganar el caso de VAWA, hacer todo posible para llegar a la residencia con usted.\"",
+                    impact: "Este enfoque inicial genera confianza y establece una relación terapéutica-legal que facilita la apertura de la cliente sobre temas sensibles."
+                }
+            },
+            {
+                id: 2,
+                time: "01:43",
+                correctStrategies: ["Permiso para hacer preguntas", "Identificación de elementos clave"],
+                feedback: {
+                    explanation: "La abogada crea un espacio seguro para preguntas y comienza a identificar elementos legales clave del caso sin presionar a la cliente.",
+                    example: "\"Tienes un tema de ciertas entradas y salidas y tengo más o menos una idea de las fechas, pero no exactamente los meses. Entonces, ¿puedo hacer algunas preguntas?\"",
+                    impact: "Fomenta la participación activa de la cliente y comienza la recopilación estratégica de información relevante para el caso."
+                }
+            },
+            {
+                id: 3,
+                time: "04:36",
+                correctStrategies: ["Uso de lenguaje claro", "Desglose de concepto legal complejo"],
+                feedback: {
+                    explanation: "La abogada traduce conceptos legales complejos a lenguaje accesible, asegurando que la cliente comprenda las opciones disponibles.",
+                    example: "\"Tienes algo que se llama el castigo permanente. No es un castigo permanente, es el nombre del castigo, pero básicamente la forma que la ley trabaja es que si uno tiene un año de presencia ilegal después de una fecha muy importante, el primero de abril de 97, Si saliste de los Estados Unidos y regresaste de forma ilegal, la ley te pone un castigo de 10 años. Eso es la razón por la que quiero que estemos super correctas con la fecha.\"",
+                    impact: "Empodera a la cliente con conocimiento claro, reduciendo la intimidación del proceso legal y facilitando decisiones informadas."
+                }
+            },
+            {
+                id: 4,
+                time: "08:04",
+                correctStrategies: ["Enfoque multi-estratégico (Plan A / Plan B)", "Preguntas de cualificación estratégicas", "Identificación de elementos clave"],
+                feedback: {
+                    explanation: "La abogada hace preguntas estratégicas para explorar vías como Visa U y Visa T y determinar la mejor opción según las circunstancias específicas.",
+                    example: "\"Tenemos dos caminos principales: VAWA si hay violencia doméstica, o Visa T si hay tráfico laboral. Cuéntame, ¿tu pareja te controló económicamente o te impidió trabajar? ¿Entre usted y su esposo, ustedes en un punto ha llamado la policía por un delito?\"",
+                    impact: "Demuestra flexibilidad estratégica y utiliza preguntas de cualificación para identificar el camino legal óptimo."
+                }
+            },
+            {
+                id: 5,
+                time: "09:55",
+                correctStrategies: ["Preguntas de cualificación estratégicas", "Identificación de elementos clave"],
+                feedback: {
+                    explanation: "La abogada profundiza con preguntas específicas que revelan elementos de coerción y control necesarios para el caso.",
+                    example: "\"Después de la última entrada a los Estados Unidos en el 99 y has tenido un trabajo super pésimo donde a lo mejor el patrón no te paga todos sus horas, no te paga las horas extras, si tenias que trabajar horas extras, no te pagan en tiempo o a lo mejor te dan cheques que no puedes cambiar o has tenido un trabajo de un patrón que te amenaza con la policía o con la migra.\"",
+                    impact: "Recopila evidencia específica y ayuda a la cliente a reconocer patrones de abuso que puede no haber identificado como relevantes legalmente."
+                }
+            },
+            {
+                id: 6,
+                time: "14:57",
+                correctStrategies: ["Identificación de elementos clave", "Profundización en miedo / coerción"],
+                feedback: {
+                    explanation: "La abogada hace preguntas clave sobre días, horas y pago en el trabajo de la clienta para determinar información clave para la aplicación. Además explora sistemáticamente elementos de miedo extremo y coerción, fundamentales para casos de Visa T.",
+                    example: "\"¿Sentías que no podías irte? ¿Tenías miedo de lo que podría pasar si intentabas dejarlo? ¿A qué hora entrabas? ¿Cuántos días trabajabas? ¿Cómo era el pago? ¿De cuánto era el cheque?\"",
+                    impact: "Identifica componentes psicológicos del caso que fortalecen la narrativa legal y califican para protecciones específicas. Conocer la proporción del salario en horas y salario."
+                }
+            },
+            {
+                id: 7,
+                time: "20:09",
+                correctStrategies: ["No dejar nada a la interpretación", "Identificación de elementos clave"],
+                feedback: {
+                    explanation: "Detiene a la clienta para pedir detalles y aclarar.",
+                    example: "\"Hablame del miedo... ¿Cómo sabias que ellos le hicieron eso a tus llantas?\"",
+                    impact: "Reduce ansiedad mediante claridad procesal y establece expectativas realistas sobre tiempos y requisitos."
+                }
+            },
+            {
+                id: 8,
+                time: "22:40",
+                correctStrategies: ["Parafraseo para confirmar", "Transparencia estratégica", "Organización y siguiente paso estratégico"],
+                feedback: {
+                    explanation: "La abogada confirma comprensión mutua mediante parafraseo, comparte su estrategia abiertamente y organiza los siguientes pasos concretos.",
+                    example: "\"Básicamente usted en este trabajo ni siquiera podías ir al baño, tenías que ir a la hospital varias veces te ponchan las llantas, cómo que esto no es una amenaza. Una disculpa, estoy mirando la pantalla...\"",
+                    impact: "Garantiza alineación entre abogada y cliente, construye confianza mediante transparencia estratégica y establece accountability mutuo."
+                }
+            },
+            {
+                id: 9,
+                time: "25:21",
+                correctStrategies: ["Uso estratégico de lenguaje emocional", "Validación emocional", "Refuerzo positivo"],
+                feedback: {
+                    explanation: "La abogada utiliza lenguaje emocionalmente resonante para validar la experiencia de la cliente y reforzar su valentía.",
+                    example: "\"Lamento mucho lo que sufriste en está compañia y quiero hacer todo lo posibles... mi compromiso está con usted y su esposo\"",
+                    impact: "Eliminar la incertidumbre y el miedo de la cliente, reemplazándolos con una sensación de esperanza, un camino claro a seguir y seguridad financiera respecto al nuevo plan."
+                }
+            },
+            {
+                id: 10,
+                time: "25:44",
+                correctStrategies: ["Manejo de expectativas", "Comunicación de noticias difíciles", "Transparencia estratégica"],
+                feedback: {
+                    explanation: "La abogada comunica honestamente posibles desafíos del caso mientras mantiene expectativas realistas sobre tiempos y resultados.",
+                    example: "\"Desafortunadamente no te puedo recomendar que salgas de los Estados Unidos. Uno por la situación de Trump y que los permisos de viaje se puede poner en riesgo.\"",
+                    impact: "Construye confianza mediante honestidad, previene decepciones futuras y prepara a la cliente mentalmente para el proceso."
+                }
+            },
+            {
+                id: 11,
+                time: "26:40",
+                correctStrategies: ["Compromiso personal", "Pivote hacia soluciones", "Organización y siguiente paso estratégico"],
+                feedback: {
+                    explanation: "La abogada cierra con compromiso personal renovado, redirige hacia soluciones concretas y establece pasos inmediatos organizados.",
+                    example: "\"Mi compromiso se queda con usted y su esposo para hacer todo, todo, todo el posible para llegar a la residencia. Creo que si me puedes ayudar con el expediente médico, si tienes documentación o forma para conseguir documentos de la demanda... pero si usted tiene como más pruebas o formas para conseguir pruebas, eso es una ayuda.\"",
+                    impact: "Termina la llamada con orientación hacia la acción, compromiso emocional y estructura clara, reduciendo la sensación de desamparo de la cliente."
+                }
+            }
+        ];
+
+        // ============================================
+        // ESTADO DEL MÓDULO
+        // ============================================
+        
+        let currentMoment = 1;
+        let totalScore = 0;
+        let selectedStrategies = new Set();
+        let evidenceTexts = {};
+        let strategicAnalysis = "";
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSCORM();
+            // No renderizar contenido hasta que el usuario haga clic en "Comenzar"
+        });
+
+        function startModule() {
+            // Ocultar pantalla de instrucciones
+            document.getElementById('instructionsScreen').classList.add('hidden');
+            // Mostrar pantalla de momento
+            document.getElementById('momentScreen').classList.remove('hidden');
+            // Renderizar el primer momento
+            renderMomentContent();
+            updateProgressBar();
+        }
+
+        // ============================================
+        // RENDERIZADO DINÁMICO
+        // ============================================
+        
+        function renderMomentContent() {
+            const container = document.getElementById('dynamicAnalysisSection');
+            const momentData = momentsData[currentMoment - 1];
+            
+            container.innerHTML = `
+                <div class="moment-header fade-in">
+                    <div class="moment-number">Momento ${currentMoment} - ${momentData.time}</div>
+                </div>
+
+                <!-- PASO 1: Selección Estratégica -->
+                <div class="step-section fade-in-up">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <span>Selección Estratégica</span>
+                    </div>
+                    <p class="step-description">
+                        Selecciona todas las estrategias que identifiques en este momento del video.
+                    </p>
+                    <div class="strategies-grid" id="strategiesGrid"></div>
+                </div>
+
+                <!-- PASO 2: Evidencia por Estrategia -->
+                <div class="step-section fade-in-up">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <span>Evidencia Textual</span>
+                    </div>
+                    <p class="step-description">
+                        Para cada estrategia seleccionada, escribe la frase exacta que la demuestra.
+                    </p>
+                    <div id="evidenceContainer"></div>
+                </div>
+
+                <!-- PASO 3: Análisis Estratégico Adicional -->
+                <div class="step-section fade-in-up">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <span>Análisis del Impacto Estratégico</span>
+                    </div>
+                    <div class="strategic-analysis-field">
+                        <h4>¿Cuál fue el impacto estratégico de esta intervención en el desarrollo del caso?</h4>
+                        <textarea 
+                            id="strategicAnalysisText"
+                            placeholder="Escribe tu análisis del impacto estratégico (mínimo 30 caracteres)..."
+                            oninput="updateStrategicAnalysis(); checkSubmitButton();"
+                        ></textarea>
+                        <div class="char-counter" id="strategicCounter">0 / 30 caracteres mínimos</div>
+                    </div>
+                </div>
+
+                <button class="submit-button" id="submitButton" disabled>
+                    Enviar Análisis del Momento ${currentMoment}
+                </button>
+
+                <div class="navigation-buttons">
+                    <button class="back-button" id="backButton" onclick="previousMoment()" ${currentMoment === 1 ? 'disabled' : ''}>
+                        ← Momento Anterior
+                    </button>
+                </div>
+            `;
+
+            // Renderizar estrategias
+            renderStrategies();
+            
+            // Adjuntar evento al botón
+            document.getElementById('submitButton').addEventListener('click', evaluateMoment);
+            
+            // Scroll suave a la sección de análisis
+            setTimeout(() => {
+                document.querySelector('.scroll-target').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+
+        function renderStrategies() {
+            const grid = document.getElementById('strategiesGrid');
+            grid.innerHTML = '';
+            
+            allStrategies.forEach((strategy) => {
+                const button = document.createElement('button');
+                button.className = 'strategy-button';
+                button.textContent = strategy;
+                button.dataset.strategy = strategy;
+                
+                button.addEventListener('click', function() {
+                    toggleStrategy(this);
+                });
+                
+                grid.appendChild(button);
+            });
+        }
+
+        function toggleStrategy(button) {
+            const strategy = button.dataset.strategy;
+            
+            if (button.classList.contains('selected')) {
+                button.classList.remove('selected');
+                selectedStrategies.delete(strategy);
+                removeEvidenceField(strategy);
+            } else {
+                button.classList.add('selected');
+                selectedStrategies.add(strategy);
+                addEvidenceField(strategy);
+            }
+            
+            checkSubmitButton();
+        }
+
+        function addEvidenceField(strategy) {
+            const container = document.getElementById('evidenceContainer');
+            
+            const field = document.createElement('div');
+            field.className = 'evidence-field fade-in';
+            field.dataset.strategy = strategy;
+            
+            field.innerHTML = `
+                <label>${strategy}</label>
+                <p style="color: #b0b0b0; font-size: 13px; margin-bottom: 10px;">
+                    ¿Qué dijo exactamente la abogada que demuestra esta estrategia?
+                </p>
+                <textarea 
+                    data-strategy="${strategy}"
+                    placeholder="Escribe aquí la frase específica..."
+                    oninput="updateCharCounter(this); checkSubmitButton();"
+                ></textarea>
+                <div class="char-counter" data-counter="${strategy}">0 / 20 caracteres mínimos</div>
+            `;
+            
+            container.appendChild(field);
+        }
+
+        function removeEvidenceField(strategy) {
+            const field = document.querySelector(`.evidence-field[data-strategy="${strategy}"]`);
+            if (field) {
+                field.remove();
+            }
+            delete evidenceTexts[strategy];
+        }
+
+        function updateCharCounter(textarea) {
+            const strategy = textarea.dataset.strategy;
+            const length = textarea.value.length;
+            const counter = document.querySelector(`[data-counter="${strategy}"]`);
+            
+            counter.textContent = `${length} / 20 caracteres mínimos`;
+            
+            if (length >= 20) {
+                counter.classList.add('valid');
+                evidenceTexts[strategy] = textarea.value;
+            } else {
+                counter.classList.remove('valid');
+                delete evidenceTexts[strategy];
+            }
+        }
+
+        function updateStrategicAnalysis() {
+            const textarea = document.getElementById('strategicAnalysisText');
+            const counter = document.getElementById('strategicCounter');
+            const length = textarea.value.length;
+            
+            counter.textContent = `${length} / 30 caracteres mínimos`;
+            
+            if (length >= 30) {
+                counter.classList.add('valid');
+                strategicAnalysis = textarea.value;
+            } else {
+                counter.classList.remove('valid');
+                strategicAnalysis = "";
+            }
+        }
+
+        function checkSubmitButton() {
+            const button = document.getElementById('submitButton');
+            const hasStrategies = selectedStrategies.size > 0;
+            const allEvidencesValid = selectedStrategies.size === Object.keys(evidenceTexts).length;
+            const hasStrategicAnalysis = strategicAnalysis.length >= 30;
+            
+            button.disabled = !(hasStrategies && allEvidencesValid && hasStrategicAnalysis);
+        }
+
+        // ============================================
+        // EVALUACIÓN
+        // ============================================
+        
+        function evaluateMoment() {
+            const momentData = momentsData[currentMoment - 1];
+            const correct = momentData.correctStrategies;
+            let momentScore = 0;
+            let hasAtLeastOneCorrect = false;
+            
+            // Verificar si seleccionó al menos una estrategia correcta
+            selectedStrategies.forEach(strategy => {
+                if (correct.includes(strategy)) {
+                    hasAtLeastOneCorrect = true;
+                }
+            });
+            
+            // Puntuación: si tiene al menos 1 correcta, gana puntos base
+            if (hasAtLeastOneCorrect) {
+                momentScore += 10; // Punto base por identificar correctamente
+            }
+            
+            // Bonus por evidencias válidas
+            Object.keys(evidenceTexts).forEach(strategy => {
+                if (evidenceTexts[strategy].length >= 20) {
+                    momentScore += 5;
+                }
+            });
+            
+            // Bonus por análisis estratégico
+            if (strategicAnalysis.length >= 30) {
+                momentScore += 5;
+            }
+            
+            totalScore += Math.max(0, momentScore);
+            updateScore();
+            showFeedback(momentData);
+        }
+
+        function showFeedback(momentData) {
+            const container = document.getElementById('feedbackContainer');
+            const feedback = momentData.feedback;
+            const correct = momentData.correctStrategies;
+            
+            container.className = 'feedback-container fade-in';
+            container.innerHTML = `
+                <div class="feedback-title">
+                    ✓ Retroalimentación – Momento ${currentMoment}
+                </div>
+                
+                <div class="correct-strategies">
+                    <h4>Estrategias Correctas de este Momento:</h4>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        ${correct.map(s => `<li>${s}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="feedback-content">
+                    <p><strong>Análisis Experto:</strong></p>
+                    <p>${feedback.explanation}</p>
+                </div>
+                
+                <div class="example-phrase">
+                    <strong>Ejemplo de Frase:</strong><br>
+                    "${feedback.example}"
+                </div>
+                
+                <div class="impact-note">
+                    <strong>Impacto Estratégico:</strong><br>
+                    ${feedback.impact}
+                </div>
+                
+                ${currentMoment < 11 ? '<button class="next-button" onclick="nextMoment()">Continuar al Siguiente Momento →</button>' : 
+                '<button class="next-button" onclick="showFinalScreen()">Ver Resultados Finales →</button>'}
+            `;
+
+            // Scroll al feedback
+            setTimeout(() => {
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        // ============================================
+        // NAVEGACIÓN
+        // ============================================
+        
+        function nextMoment() {
+            currentMoment++;
+            
+            // Reset estado
+            selectedStrategies.clear();
+            evidenceTexts = {};
+            strategicAnalysis = "";
+            
+            // Limpiar feedback
+            document.getElementById('feedbackContainer').innerHTML = '';
+            document.getElementById('feedbackContainer').classList.add('hidden');
+            
+            // Actualizar UI
+            updateProgressBar();
+            renderMomentContent();
+        }
+
+        function previousMoment() {
+            if (currentMoment > 1) {
+                currentMoment--;
+                
+                // Reset estado
+                selectedStrategies.clear();
+                evidenceTexts = {};
+                strategicAnalysis = "";
+                
+                // Limpiar feedback
+                document.getElementById('feedbackContainer').innerHTML = '';
+                document.getElementById('feedbackContainer').classList.add('hidden');
+                
+                // Actualizar UI
+                updateProgressBar();
+                renderMomentContent();
+            }
+        }
+
+        function updateProgressBar() {
+            document.getElementById('progressText').textContent = `Momento ${currentMoment} de 11`;
+        }
+
+        function updateScore() {
+            document.getElementById('scoreDisplay').textContent = `Puntaje: ${totalScore}`;
+        }
+
+        // ============================================
+        // PANTALLA FINAL
+        // ============================================
+        
+        function showFinalScreen() {
+            // Nuevo cálculo: puntaje máximo por momento = 10 (base) + 5 (evidencias) + 5 (análisis) = 20 pts max
+            // Máximo total = 11 momentos × 20 pts = 220 puntos
+            const realMaxScore = 220;
+            const percentage = Math.round((totalScore / realMaxScore) * 100);
+            
+            let classification = '';
+            if (percentage >= 90) {
+                classification = '⭐ Perfil Estratégico Experto';
+            } else if (percentage >= 75) {
+                classification = '✓ Perfil Estratégico Competente';
+            } else if (percentage >= 60) {
+                classification = '◐ Perfil en Desarrollo';
+            } else {
+                classification = '◯ Requiere Reforzamiento Estratégico';
+            }
+            
+            document.getElementById('finalScore').textContent = percentage + '%';
+            document.getElementById('classification').textContent = classification;
+            document.getElementById('finalRawScore').textContent = `${totalScore} de ${realMaxScore}`;
+            
+            document.getElementById('momentScreen').classList.add('hidden');
+            document.getElementById('finalScreen').classList.remove('hidden');
+            
+            // Reportar a SCORM solo el porcentaje (0-100)
+            setSCORMScore(percentage, 100);
+        }
+    </script>
+</body>
+</html>
