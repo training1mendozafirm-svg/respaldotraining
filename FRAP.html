@@ -1,0 +1,2497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal Rules of Appellate Procedure (FRAP) - Curso de Capacitación</title>
+    <style>
+/* ============================================
+   FRAP - Federal Rules of Appellate Procedure
+   Curso de Capacitación
+   Estilos basados en paleta corporativa legal
+   v3.0 - Corregido y mejorado
+   ============================================ */
+
+/* Variables de color */
+:root {
+    --azul-oscuro: #1a365d;
+    --azul-medio: #2563eb;
+    --azul-claro: #60a5fa;
+    --azul-muy-claro: #dbeafe;
+    --blanco: #ffffff;
+    --dorado: #d4a53c;
+    --naranja: #c2410c;
+    --gris-claro: #f8fafc;
+    --gris-medio: #e2e8f0;
+    --texto-oscuro: #1e293b;
+    --texto-medio: #475569;
+    --verde-exito: #059669;
+    --rojo-error: #dc2626;
+    --morado: #7c3aed;
+    --morado-claro: #ede9fe;
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--azul-muy-claro) 0%, var(--blanco) 100%);
+    min-height: 100vh;
+    color: var(--texto-oscuro);
+    line-height: 1.6;
+}
+
+/* Container principal */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--azul-medio) 100%);
+    color: var(--blanco);
+    padding: 25px 30px;
+    border-radius: 16px 16px 0 0;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(26, 54, 93, 0.3);
+}
+
+.header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.header .subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 400;
+}
+
+.header-badge {
+    display: inline-block;
+    background: var(--dorado);
+    color: var(--azul-oscuro);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Barra de progreso */
+.progress-container {
+    background: var(--blanco);
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--gris-medio);
+}
+
+.progress-bar {
+    background: var(--gris-medio);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--azul-medio), var(--dorado));
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--texto-medio);
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding: 0 10px;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.step:hover {
+    transform: scale(1.05);
+}
+
+.step.locked {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.step.locked:hover {
+    transform: none;
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--gris-medio);
+    color: var(--texto-medio);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.step.clickable .step-number {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.step.active .step-number {
+    background: var(--azul-medio);
+    color: var(--blanco);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+}
+
+.step.completed .step-number {
+    background: var(--verde-exito);
+    color: var(--blanco);
+}
+
+.step.completed .step-number::after {
+    content: "✓";
+    font-size: 0.9rem;
+}
+
+.step.completed .step-number span {
+    display: none;
+}
+
+.step-label {
+    font-size: 0.7rem;
+    color: var(--texto-medio);
+    margin-top: 6px;
+    text-align: center;
+    max-width: 80px;
+}
+
+/* Contenido principal */
+.content {
+    background: var(--blanco);
+    padding: 30px;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Secciones/Módulos */
+.module-section {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.module-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Títulos de módulo */
+.module-title {
+    color: var(--azul-oscuro);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.module-title .icon {
+    font-size: 1.8rem;
+}
+
+.module-subtitle {
+    color: var(--texto-medio);
+    font-size: 1rem;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--azul-muy-claro);
+}
+
+/* Objetivo de aprendizaje */
+.learning-objective {
+    background: linear-gradient(135deg, var(--azul-muy-claro) 0%, #f0f9ff 100%);
+    border-left: 4px solid var(--azul-medio);
+    padding: 18px 22px;
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 25px;
+}
+
+.learning-objective h4 {
+    color: var(--azul-medio);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.learning-objective p {
+    color: var(--texto-oscuro);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Contenido de texto */
+.content-block {
+    margin-bottom: 25px;
+}
+
+.content-block h3 {
+    color: var(--azul-oscuro);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.content-block p {
+    color: var(--texto-oscuro);
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+/* Listas */
+.content-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.content-list li {
+    padding: 10px 15px 10px 35px;
+    position: relative;
+    margin-bottom: 8px;
+    background: var(--gris-claro);
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.content-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 12px;
+    color: var(--verde-exito);
+    font-weight: bold;
+}
+
+/* Cajas destacadas */
+.highlight-box {
+    background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
+    border: 1px solid var(--dorado);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.highlight-box.warning {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-color: var(--rojo-error);
+}
+
+.highlight-box.info {
+    background: linear-gradient(135deg, var(--azul-muy-claro) 0%, #eff6ff 100%);
+    border-color: var(--azul-medio);
+}
+
+.highlight-box h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.highlight-box.warning h4 { color: var(--rojo-error); }
+.highlight-box.info h4 { color: var(--azul-medio); }
+
+/* Tablas */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.info-table th {
+    background: var(--azul-oscuro);
+    color: var(--blanco);
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.info-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gris-medio);
+}
+
+.info-table tr:nth-child(even) {
+    background: var(--gris-claro);
+}
+
+.info-table tr:hover {
+    background: var(--azul-muy-claro);
+}
+
+/* Acordeones interactivos */
+.accordion {
+    border: 1px solid var(--gris-medio);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    background: var(--gris-claro);
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: var(--azul-oscuro);
+    transition: background 0.3s;
+}
+
+.accordion-header:hover {
+    background: var(--azul-muy-claro);
+}
+
+.accordion-header::after {
+    content: "▼";
+    font-size: 0.7rem;
+    transition: transform 0.3s;
+}
+
+.accordion.open .accordion-header::after {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    display: none;
+    padding: 20px;
+    background: var(--blanco);
+    border-top: 1px solid var(--gris-medio);
+}
+
+.accordion.open .accordion-content {
+    display: block;
+}
+
+/* Tarjetas */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-medio);
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.card-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.card h4 {
+    color: var(--azul-oscuro);
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.card p {
+    color: var(--texto-medio);
+    font-size: 0.85rem;
+}
+
+/* Citas y fuentes */
+.source-citation {
+    background: var(--gris-claro);
+    border-left: 3px solid var(--azul-claro);
+    padding: 12px 16px;
+    margin: 20px 0;
+    font-size: 0.8rem;
+    color: var(--texto-medio);
+    border-radius: 0 8px 8px 0;
+}
+
+.source-citation strong {
+    color: var(--azul-oscuro);
+}
+
+/* Navegación */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 2px solid var(--gris-medio);
+}
+
+.nav-btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-btn.primary {
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-oscuro));
+    color: var(--blanco);
+}
+
+.nav-btn.primary:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+.nav-btn.secondary {
+    background: var(--gris-claro);
+    color: var(--texto-oscuro);
+    border: 1px solid var(--gris-medio);
+}
+
+.nav-btn.secondary:hover {
+    background: var(--gris-medio);
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   KNOWLEDGE CHECK EXERCISES - NEW STYLES
+   ============================================ */
+
+/* Knowledge Check Container */
+.knowledge-check {
+    background: linear-gradient(135deg, var(--morado-claro) 0%, #f5f3ff 100%);
+    border: 2px solid var(--morado);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 20px 0;
+}
+
+.knowledge-check-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.knowledge-check-header .check-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--morado);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.knowledge-check-header h3 {
+    color: var(--morado);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.knowledge-check-header p {
+    color: var(--texto-medio);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.check-instructions {
+    background: white;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--morado);
+}
+
+.check-instructions p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--texto-oscuro);
+}
+
+/* Multiple Choice Exercise */
+.mc-question {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.mc-question-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--azul-oscuro);
+    margin-bottom: 15px;
+}
+
+.mc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mc-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--gris-claro);
+    border: 2px solid var(--gris-medio);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mc-option:hover {
+    border-color: var(--morado);
+    background: var(--morado-claro);
+}
+
+.mc-option.selected {
+    border-color: var(--morado);
+    background: var(--morado-claro);
+}
+
+.mc-option.correct {
+    border-color: var(--verde-exito);
+    background: #d1fae5;
+}
+
+.mc-option.incorrect {
+    border-color: var(--rojo-error);
+    background: #fee2e2;
+}
+
+.mc-option.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.mc-radio {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--gris-medio);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s;
+}
+
+.mc-option.selected .mc-radio {
+    border-color: var(--morado);
+    background: var(--morado);
+}
+
+.mc-option.selected .mc-radio::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+}
+
+.mc-option.correct .mc-radio {
+    border-color: var(--verde-exito);
+    background: var(--verde-exito);
+}
+
+.mc-option.correct .mc-radio::after {
+    content: "✓";
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.mc-option.incorrect .mc-radio {
+    border-color: var(--rojo-error);
+    background: var(--rojo-error);
+}
+
+.mc-option.incorrect .mc-radio::after {
+    content: "✗";
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.mc-option-text {
+    font-size: 0.9rem;
+    color: var(--texto-oscuro);
+}
+
+/* Drag and Drop / Matching Exercise */
+.matching-exercise {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.matching-column {
+    flex: 1;
+    min-width: 250px;
+}
+
+.matching-column h4 {
+    color: var(--azul-oscuro);
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--azul-muy-claro);
+}
+
+.matching-item {
+    background: white;
+    border: 2px solid var(--gris-medio);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    cursor: grab;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.matching-item:hover {
+    border-color: var(--morado);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+}
+
+.matching-item.dragging {
+    opacity: 0.5;
+    transform: scale(1.02);
+}
+
+.matching-item .item-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--morado);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.drop-zone {
+    background: var(--gris-claro);
+    border: 2px dashed var(--gris-medio);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    min-height: 52px;
+    transition: all 0.3s ease;
+}
+
+.drop-zone.drag-over {
+    border-color: var(--morado);
+    background: var(--morado-claro);
+}
+
+.drop-zone.filled {
+    border-style: solid;
+    border-color: var(--morado);
+    background: white;
+}
+
+.drop-zone.correct {
+    border-color: var(--verde-exito);
+    background: #d1fae5;
+}
+
+.drop-zone.incorrect {
+    border-color: var(--rojo-error);
+    background: #fee2e2;
+}
+
+.drop-zone-label {
+    color: var(--texto-medio);
+    font-size: 0.85rem;
+}
+
+/* Ordering Exercise */
+.ordering-exercise {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.ordering-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 20px;
+    background: var(--gris-claro);
+    border: 2px solid var(--gris-medio);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: grab;
+    transition: all 0.3s ease;
+}
+
+.ordering-item:hover {
+    border-color: var(--morado);
+    background: var(--morado-claro);
+}
+
+.ordering-item.dragging {
+    opacity: 0.5;
+}
+
+.ordering-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--morado);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.ordering-text {
+    font-size: 0.95rem;
+    color: var(--texto-oscuro);
+}
+
+.ordering-handle {
+    margin-left: auto;
+    color: var(--texto-medio);
+    font-size: 1.2rem;
+}
+
+/* True/False Exercise */
+.tf-question {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.tf-statement {
+    font-size: 1rem;
+    color: var(--texto-oscuro);
+    margin-bottom: 15px;
+    padding: 15px;
+    background: var(--gris-claro);
+    border-radius: 8px;
+    border-left: 4px solid var(--morado);
+}
+
+.tf-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.tf-btn {
+    flex: 1;
+    padding: 14px 20px;
+    border: 2px solid var(--gris-medio);
+    border-radius: 10px;
+    background: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tf-btn:hover {
+    border-color: var(--morado);
+}
+
+.tf-btn.selected {
+    border-color: var(--morado);
+    background: var(--morado-claro);
+    color: var(--morado);
+}
+
+.tf-btn.correct {
+    border-color: var(--verde-exito);
+    background: #d1fae5;
+    color: var(--verde-exito);
+}
+
+.tf-btn.incorrect {
+    border-color: var(--rojo-error);
+    background: #fee2e2;
+    color: var(--rojo-error);
+}
+
+.tf-btn.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* Feedback Messages */
+.check-feedback {
+    margin-top: 15px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: none;
+}
+
+.check-feedback.show {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.check-feedback.correct {
+    background: #d1fae5;
+    border: 1px solid var(--verde-exito);
+    color: #065f46;
+}
+
+.check-feedback.incorrect {
+    background: #fee2e2;
+    border: 1px solid var(--rojo-error);
+    color: #991b1b;
+}
+
+.check-feedback p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.check-feedback strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Check Exercise Buttons */
+.check-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.check-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.check-btn.verify {
+    background: var(--morado);
+    color: white;
+}
+
+.check-btn.verify:hover {
+    background: #6d28d9;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+}
+
+.check-btn.retry {
+    background: var(--gris-claro);
+    color: var(--texto-oscuro);
+    border: 1px solid var(--gris-medio);
+}
+
+.check-btn.retry:hover {
+    background: var(--gris-medio);
+}
+
+.check-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Check Results Summary */
+.check-results {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+    display: none;
+}
+
+.check-results.show {
+    display: block;
+}
+
+.check-score {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.check-score.excellent {
+    color: var(--verde-exito);
+}
+
+.check-score.good {
+    color: var(--dorado);
+}
+
+.check-score.needs-work {
+    color: var(--rojo-error);
+}
+
+.check-message {
+    font-size: 1rem;
+    color: var(--texto-medio);
+    margin-bottom: 15px;
+}
+
+/* Quiz Styles */
+.quiz-intro {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.quiz-intro h3 {
+    color: var(--azul-oscuro);
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+.quiz-intro p {
+    color: var(--texto-medio);
+    margin-bottom: 20px;
+}
+
+.quiz-rules {
+    background: var(--gris-claro);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    max-width: 500px;
+    margin: 0 auto 25px;
+}
+
+.quiz-rules li {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.start-quiz-btn {
+    background: linear-gradient(135deg, var(--verde-exito), #047857);
+    color: var(--blanco);
+    border: none;
+    padding: 15px 40px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.start-quiz-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+}
+
+/* Preguntas del quiz */
+.question-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.question-counter {
+    background: var(--azul-medio);
+    color: var(--blanco);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.question-text {
+    font-size: 1.15rem;
+    color: var(--azul-oscuro);
+    font-weight: 600;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option {
+    background: var(--gris-claro);
+    border: 2px solid var(--gris-medio);
+    border-radius: 10px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.option:hover {
+    border-color: var(--azul-claro);
+    background: var(--azul-muy-claro);
+}
+
+.option.selected {
+    border-color: var(--azul-medio);
+    background: var(--azul-muy-claro);
+}
+
+.option.correct {
+    border-color: var(--verde-exito);
+    background: #d1fae5;
+}
+
+.option.incorrect {
+    border-color: var(--rojo-error);
+    background: #fee2e2;
+}
+
+.option-letter {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--blanco);
+    border: 2px solid var(--gris-medio);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.option.selected .option-letter {
+    background: var(--azul-medio);
+    border-color: var(--azul-medio);
+    color: var(--blanco);
+}
+
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+/* Resultados del quiz */
+.results-container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.score-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    margin: 0 auto 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.score-circle.passed {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: var(--verde-exito);
+    border: 4px solid var(--verde-exito);
+}
+
+.score-circle.failed {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    color: var(--rojo-error);
+    border: 4px solid var(--rojo-error);
+}
+
+.score-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.result-message {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.result-message.passed { color: var(--verde-exito); }
+.result-message.failed { color: var(--rojo-error); }
+
+.result-details {
+    background: var(--gris-claro);
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto 25px;
+}
+
+.result-details p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+/* Feedback de respuestas */
+.feedback-section {
+    text-align: left;
+    max-width: 700px;
+    margin: 30px auto 0;
+}
+
+.feedback-item {
+    background: var(--blanco);
+    border: 1px solid var(--gris-medio);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.feedback-item.correct {
+    border-left: 4px solid var(--verde-exito);
+}
+
+.feedback-item.incorrect {
+    border-left: 4px solid var(--rojo-error);
+}
+
+.feedback-question {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.feedback-text {
+    font-size: 0.85rem;
+    color: var(--texto-medio);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .header {
+        padding: 20px;
+    }
+    
+    .header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .content {
+        padding: 20px;
+    }
+    
+    .progress-steps {
+        display: none;
+    }
+    
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .navigation {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .nav-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .matching-exercise {
+        flex-direction: column;
+    }
+    
+    .tf-buttons {
+        flex-direction: column;
+    }
+
+    .toc-sidebar {
+        display: none;
+    }
+
+    .toc-toggle {
+        display: flex;
+    }
+
+    .toc-sidebar.mobile-open {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 85%;
+        max-width: 320px;
+        height: 100vh;
+        z-index: 1000;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+        border-radius: 0;
+    }
+
+    .toc-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+    }
+}
+
+/* TOC Sidebar */
+.layout-wrapper {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+}
+
+.toc-sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: white;
+    border-radius: 0 0 0 16px;
+    border-right: 1px solid var(--gris-medio);
+    padding: 20px 0;
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+
+.toc-sidebar h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--texto-medio);
+    padding: 0 20px 12px;
+    border-bottom: 1px solid var(--gris-medio);
+    margin-bottom: 8px;
+}
+
+.toc-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    font-size: 0.88rem;
+    color: var(--texto-medio);
+}
+
+.toc-item:hover {
+    background: var(--gris-claro);
+    color: var(--azul-medio);
+}
+
+.toc-item.active {
+    background: var(--azul-muy-claro);
+    border-left-color: var(--azul-medio);
+    color: var(--azul-medio);
+    font-weight: 600;
+}
+
+.toc-item.completed {
+    color: var(--verde-exito);
+}
+
+.toc-item.completed::before {
+    content: "✓";
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    background: var(--verde-exito);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.toc-item:not(.completed)::before {
+    content: attr(data-num);
+    font-size: 0.75rem;
+    font-weight: 600;
+    width: 20px;
+    height: 20px;
+    background: var(--gris-medio);
+    color: var(--texto-medio);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.toc-item.active:not(.completed)::before {
+    background: var(--azul-medio);
+    color: white;
+}
+
+.toc-item .toc-label {
+    flex: 1;
+    line-height: 1.3;
+}
+
+.toc-toggle {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 998;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--azul-medio);
+    color: white;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+    align-items: center;
+    justify-content: center;
+}
+
+.toc-overlay {
+    display: none;
+}
+
+.main-content-area {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Circuit table styles */
+.circuit-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.88rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.circuit-table th {
+    background: var(--azul-oscuro);
+    color: var(--blanco);
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.circuit-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--gris-medio);
+    vertical-align: top;
+}
+
+.circuit-table tr:nth-child(even) {
+    background: var(--gris-claro);
+}
+
+.circuit-table tr:hover {
+    background: var(--azul-muy-claro);
+}
+
+.circuit-badge {
+    display: inline-block;
+    background: var(--azul-medio);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+/* Animaciones */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.3s ease;
+}
+
+/* Print styles */
+@media print {
+    .navigation, .progress-container, .knowledge-check {
+        display: none;
+    }
+    
+    .module-section {
+        display: block !important;
+        page-break-after: always;
+    }
+}
+
+</style>
+    <script>
+/**
+ * SCORM 1.2 API - Versión Robusta para Moodle
+ * Curso: Federal Rules of Appellate Procedure (FRAP)
+ * Con ejercicios de verificación y navegación mejorada
+ */
+var SCORM = (function() {
+    var api = null;
+    var initialized = false;
+    
+    function log(msg) {
+        console.log('[SCORM] ' + msg);
+        var debugPanel = document.getElementById('scorm-debug');
+        if (debugPanel) {
+            debugPanel.innerHTML += msg + '<br>';
+            debugPanel.scrollTop = debugPanel.scrollHeight;
+        }
+    }
+    
+    function scanForAPI(win) {
+        var attempts = 0;
+        while (win && attempts < 500) {
+            attempts++;
+            if (win.API) return win.API;
+            if (win === win.parent) break;
+            win = win.parent;
+        }
+        return null;
+    }
+    
+    function findAPI() {
+        var theAPI = scanForAPI(window);
+        
+        if (!theAPI && window.opener) {
+            try { theAPI = scanForAPI(window.opener); } catch(e) {}
+        }
+        
+        if (!theAPI && window.top && window.top !== window) {
+            try { theAPI = scanForAPI(window.top); } catch(e) {}
+        }
+        
+        if (!theAPI && window.parent && window.parent !== window) {
+            if (window.parent.API) theAPI = window.parent.API;
+        }
+        
+        return theAPI;
+    }
+    
+    return {
+        init: function() {
+            if (initialized) return true;
+            
+            api = findAPI();
+            
+            if (!api) {
+                log('Modo standalone (sin LMS)');
+                initialized = true;
+                return true;
+            }
+            
+            var result = api.LMSInitialize('');
+            
+            if (result === 'true' || result === true) {
+                initialized = true;
+                log('SCORM inicializado correctamente');
+                var status = this.get('cmi.core.lesson_status');
+                if (status === 'not attempted' || status === '') {
+                    this.set('cmi.core.lesson_status', 'incomplete');
+                    this.commit();
+                }
+                return true;
+            }
+            log('Error al inicializar SCORM');
+            return false;
+        },
+        
+        get: function(key) {
+            if (!api) return '';
+            return api.LMSGetValue(key);
+        },
+        
+        set: function(key, value) {
+            if (!api) return true;
+            var result = api.LMSSetValue(key, String(value));
+            log('Set ' + key + ' = ' + value + ' → ' + result);
+            return (result === 'true' || result === true);
+        },
+        
+        commit: function() {
+            if (!api) return true;
+            var result = api.LMSCommit('');
+            log('Commit → ' + result);
+            return (result === 'true' || result === true);
+        },
+        
+        finish: function() {
+            if (!api) return true;
+            var result = api.LMSFinish('');
+            log('Finish → ' + result);
+            return (result === 'true' || result === true);
+        },
+        
+        setScore: function(scoreRaw) {
+            log('Enviando calificación: ' + scoreRaw);
+            this.set('cmi.core.score.raw', scoreRaw);
+            this.set('cmi.core.score.min', '0');
+            this.set('cmi.core.score.max', '100');
+            
+            var passed = scoreRaw >= 85;
+            this.set('cmi.core.lesson_status', passed ? 'passed' : 'failed');
+            
+            return this.commit();
+        },
+        
+        setLocation: function(location) {
+            this.set('cmi.core.lesson_location', location);
+            return this.commit();
+        },
+        
+        getLocation: function() {
+            return this.get('cmi.core.lesson_location');
+        },
+        
+        setSuspendData: function(data) {
+            this.set('cmi.suspend_data', data);
+            return this.commit();
+        },
+        
+        getSuspendData: function() {
+            return this.get('cmi.suspend_data');
+        }
+    };
+})();
+
+window.addEventListener('load', function() { SCORM.init(); });
+window.addEventListener('beforeunload', function() { SCORM.commit(); SCORM.finish(); });
+
+</script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>⚖️ Federal Rules of Appellate Procedure (FRAP)</h1>
+            <p class="subtitle">Curso de Capacitación Profesional - Proceso de Apelaciones Federales</p>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressText">Módulo 1 de 8</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-steps">
+                <div class="step active" data-step="1" onclick="goToSection(1)"><div class="step-number"><span>1</span></div><span class="step-label">Intro</span></div>
+                <div class="step" data-step="2" onclick="goToSection(2)"><div class="step-number"><span>2</span></div><span class="step-label">Fundamentos</span></div>
+                <div class="step" data-step="3" onclick="goToSection(3)"><div class="step-number"><span>3</span></div><span class="step-label">Circuitos</span></div>
+                <div class="step" data-step="4" onclick="goToSection(4)"><div class="step-number"><span>4</span></div><span class="step-label">Proceso</span></div>
+                <div class="step" data-step="5" onclick="goToSection(5)"><div class="step-number"><span>5</span></div><span class="step-label">Motiones</span></div>
+                <div class="step" data-step="6" onclick="goToSection(6)"><div class="step-number"><span>6</span></div><span class="step-label">Errores</span></div>
+                <div class="step" data-step="7" onclick="goToSection(7)"><div class="step-number"><span>7</span></div><span class="step-label">Verificación</span></div>
+                <div class="step" data-step="8" onclick="goToSection(8)"><div class="step-number"><span>8</span></div><span class="step-label">Evaluación</span></div>
+            </div>
+        </div>
+
+        <button class="toc-toggle" id="tocToggle" onclick="toggleTOC()">☰</button>
+        <div class="toc-overlay" id="tocOverlay" onclick="toggleTOC()"></div>
+
+        <div class="layout-wrapper">
+            <nav class="toc-sidebar" id="tocSidebar">
+                <h3>📑 Contenidos</h3>
+                <div class="toc-item active" data-num="1" onclick="goToSection(1)"><span class="toc-label">Introducción</span></div>
+                <div class="toc-item" data-num="2" onclick="goToSection(2)"><span class="toc-label">Fundamentos FRAP</span></div>
+                <div class="toc-item" data-num="3" onclick="goToSection(3)"><span class="toc-label">Los 13 Circuitos</span></div>
+                <div class="toc-item" data-num="4" onclick="goToSection(4)"><span class="toc-label">Proceso de Apelación</span></div>
+                <div class="toc-item" data-num="5" onclick="goToSection(5)"><span class="toc-label">Motiones y Procedimientos</span></div>
+                <div class="toc-item" data-num="6" onclick="goToSection(6)"><span class="toc-label">Errores y Prácticas</span></div>
+                <div class="toc-item" data-num="V" onclick="goToSection(7)"><span class="toc-label">Verificación</span></div>
+                <div class="toc-item" data-num="E" onclick="goToSection(8)"><span class="toc-label">Evaluación Final</span></div>
+            </nav>
+
+            <main class="content main-content-area">
+                <!-- MÓDULO 1: INTRODUCCIÓN -->
+                <section class="module-section active" id="section1">
+                    <h2 class="module-title"><span class="icon">📖</span> Módulo 1: Introducción al Sistema de Apelaciones Federales</h2>
+                    <p class="module-subtitle">Bienvenida y panorama general del curso FRAP</p>
+                    <div class="highlight-box info" style="margin-bottom: 30px; background: linear-gradient(135deg, #1a365d 0%, #2563eb 100%); border: none;">
+                        <h4 style="color: #ffffff; font-size: 1.3rem; margin-bottom: 15px;">🎓 Bienvenido al Curso de Federal Rules of Appellate Procedure</h4>
+                        <p style="color: #e0e7ff; font-size: 1rem; line-height: 1.7;">
+                            Este curso está diseñado para proporcionar una comprensión integral del <strong style="color: #fbbf24;">proceso de apelaciones federales en Estados Unidos</strong>. A través de módulos interactivos, ejercicios prácticos y una evaluación final, desarrollarás las competencias necesarias para navegar exitosamente el sistema de apelaciones ante los Tribunales de Circuito.
+                        </p>
+                    </div>
+                    <div class="content-block"><h3>📋 Información del Curso</h3></div>
+                    <div class="card-grid">
+                        <div class="card"><div class="card-icon">⏱️</div><h4>Duración</h4><p>2-3 horas de estudio (a tu propio ritmo)</p></div>
+                        <div class="card"><div class="card-icon">📚</div><h4>Contenido</h4><p>6 módulos + verificación interactiva</p></div>
+                        <div class="card"><div class="card-icon">✅</div><h4>Evaluación</h4><p>15 preguntas - Puntuación mínima: 85%</p></div>
+                        <div class="card"><div class="card-icon">🏆</div><h4>Certificación</h4><p>Al aprobar, tu calificación se registra en el LMS</p></div>
+                    </div>
+                    <div class="content-block" style="margin-top: 30px;"><h3>📑 Índice de Contenidos</h3></div>
+                    <table class="info-table">
+                        <thead><tr><th style="width:12%;">Módulo</th><th>Tema</th><th style="width:35%;">Contenido Principal</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>1</strong></td><td>Introducción</td><td>Panorama del curso, objetivos de aprendizaje</td></tr>
+                            <tr><td><strong>2</strong></td><td>Fundamentos del Sistema</td><td>Qué son las FRAP, jerarquía normativa, marco legal</td></tr>
+                            <tr><td><strong>3</strong></td><td>Los 13 Circuitos Federales</td><td>Estructura, jurisdicción territorial y sede de cada circuito</td></tr>
+                            <tr><td><strong>4</strong></td><td>Proceso de Apelación</td><td>Notice of Appeal, expediente, briefing, argumentación oral</td></tr>
+                            <tr><td><strong>5</strong></td><td>Procedimientos y Motiones</td><td>Suspensión de ejecución, motiones comunes, forma pauperis</td></tr>
+                            <tr><td><strong>6</strong></td><td>Errores y Mejores Prácticas</td><td>Errores fatales, lista de verificación, caso práctico</td></tr>
+                            <tr style="background:#ede9fe;"><td><strong>✍️</strong></td><td><em>Verificación</em></td><td><em>Ejercicios interactivos de repaso</em></td></tr>
+                            <tr style="background:#d1fae5;"><td><strong>📝</strong></td><td><strong>Evaluación Final</strong></td><td><strong>15 preguntas (85% para aprobar)</strong></td></tr>
+                        </tbody>
+                    </table>
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <h4>💡 Cómo Navegar este Curso</h4>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Barra lateral:</strong> Usa el menú de contenidos a la izquierda para navegar libremente entre módulos.</li>
+                            <li><strong>Barra de progreso:</strong> Haz clic en los pasos superiores para ir a cualquier módulo.</li>
+                            <li><strong>Botones:</strong> Usa "Anterior" y "Continuar" en la parte inferior de cada sección.</li>
+                            <li><strong>Verificación:</strong> Los ejercicios de verificación NO afectan tu calificación final.</li>
+                            <li><strong>Guardado automático:</strong> Tu progreso se guarda automáticamente en el LMS.</li>
+                        </ul>
+                    </div>
+                    <div class="content-block" style="margin-top: 30px;">
+                        <h3>📌 Público Objetivo</h3>
+                        <p>Este curso está dirigido a:</p>
+                        <ul>
+                            <li>Abogados litigantes que trabajan con casos federales</li>
+                            <li>Paralegals y asistentes legales en despachos de litigación</li>
+                            <li>Estudiantes de derecho interesados en derecho procesal federal</li>
+                            <li>Profesionales legales que necesitan comprender el sistema de apelaciones</li>
+                        </ul>
+                    </div>
+                    <div class="navigation">
+                        <button class="nav-btn secondary" disabled>← Anterior</button>
+                        <button class="nav-btn primary" onclick="nextSection()">Continuar al Módulo 2 →</button>
+                    </div>
+                </section>
+                <!-- MÓDULO 2: FUNDAMENTOS -->
+                <section class="module-section" id="section2">
+                    <h2 class="module-title"><span class="icon">⚖️</span> Módulo 2: Fundamentos del Sistema de Apelaciones Federales</h2>
+                    <p class="module-subtitle">Qué son las FRAP, jerarquía normativa y marco legal</p>
+                    <div class="learning-objective">
+                        <h4>🎯 Objetivo de Aprendizaje - Módulo 2</h4>
+                        <p>Al finalizar este módulo, el participante comprenderá qué son las Federal Rules of Appellate Procedure, su marco legal, y la jerarquía normativa del sistema de apelaciones federales.</p>
+                    </div>
+                    <div class="content-block">
+                        <h3>¿Qué son las Reglas Federales de Procedimiento Apelativo (FRAP)?</h3>
+                        <p>Las <strong>Federal Rules of Appellate Procedure (FRAP)</strong> son el conjunto de normas procesales que rigen todos los recursos de apelación ante los Tribunales de Circuito de los Estados Unidos.</p>
+                        <p><strong>Característica Clave:</strong> Son reglas de <strong>procedimiento</strong>, no de derecho sustantivo. No crean ni modifican derechos materiales, sino que establecen el "cómo" del proceso de apelación.</p>
+                    </div>
+                    <div class="card-grid">
+                        <div class="card"><div class="card-icon">📜</div><h4>Marco Legal</h4><p>Establecidas por la Corte Suprema bajo la autoridad del "Rules Enabling Act" (Título 28, U.S.C. §§ 2072-2075)</p></div>
+                        <div class="card"><div class="card-icon">📅</div><h4>Versión Vigente</h4><p>La versión actual entró en vigor el 1 de diciembre de 2024</p></div>
+                        <div class="card"><div class="card-icon">🎯</div><h4>Aplicación</h4><p>Base uniforme para los 13 circuitos federales de apelaciones</p></div>
+                        <div class="card"><div class="card-icon">⚖️</div><h4>Naturaleza</h4><p>Reglas de procedimiento, no de derecho sustantivo</p></div>
+                    </div>
+                    <div class="content-block"><h3>Jerarquía Normativa en el Sistema de Apelaciones</h3><p>El sistema de apelaciones federales opera bajo una estructura normativa de tres niveles:</p></div>
+                    <div class="highlight-box info">
+                        <h4>📊 NIVEL 1: REGLAS FEDERALES (FRAP)</h4>
+                        <ul><li>Base uniforme para todos los circuitos</li><li>Versión vigente desde diciembre 1, 2024</li><li>Aplicación nacional obligatoria</li></ul>
+                    </div>
+                    <div class="highlight-box" style="background: #fef3c7; border-color: #f59e0b;">
+                        <h4>📊 NIVEL 2: REGLAS LOCALES DEL CIRCUITO</h4>
+                        <ul><li>Complementan las FRAP para cada circuito</li><li>Son obligatorias (ej: 5th Circuit Rules)</li><li>Especifican requisitos particulares de cada jurisdicción</li></ul>
+                    </div>
+                    <div class="highlight-box" style="background: #e0f2fe; border-color: #0ea5e9;">
+                        <h4>📊 NIVEL 3: PROCEDIMIENTOS OPERATIVOS INTERNOS (IOPs)</h4>
+                        <ul><li>Guías de funcionamiento interno de cada corte</li><li>No son reglas sancionatorias, pero esenciales para la práctica</li><li>Proveen orientación práctica sobre procedimientos diarios</li></ul>
+                    </div>
+                    <div class="content-block"><h3>Conceptos Fundamentales</h3></div>
+                    <table class="info-table">
+                        <thead><tr><th>Concepto</th><th>Definición</th><th>Relevancia</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Decisión Final</strong></td><td>Resolución que termina completamente el caso (28 U.S.C. § 1291)</td><td>Base para el derecho a apelar</td></tr>
+                            <tr><td><strong>Notice of Appeal</strong></td><td>Documento que inicia formalmente el proceso de apelación</td><td>Requisito jurisdiccional absoluto</td></tr>
+                            <tr><td><strong>Record on Appeal</strong></td><td>Expediente completo del caso del tribunal inferior</td><td>Base fáctica y procesal de la apelación</td></tr>
+                            <tr><td><strong>Brief</strong></td><td>Escrito argumentativo presentado por las partes</td><td>Presentación del caso al tribunal de apelaciones</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="source-citation"><strong>📚 Fuente:</strong> Federal Rules of Appellate Procedure (vigentes desde diciembre 1, 2024); Rules Enabling Act, Título 28 U.S.C. §§ 2072-2075.</div>
+                    <div class="navigation">
+                        <button class="nav-btn secondary" onclick="prevSection()">← Anterior</button>
+                        <button class="nav-btn primary" onclick="nextSection()">Continuar al Módulo 3 →</button>
+                    </div>
+                </section>
+                <!-- MÓDULO 3: LOS 13 CIRCUITOS FEDERALES -->
+                <section class="module-section" id="section3">
+                    <h2 class="module-title"><span class="icon">🏛️</span> Módulo 3: Los 13 Circuitos Federales de Apelación</h2>
+                    <p class="module-subtitle">Estructura territorial, jurisdicción y sede de cada Tribunal de Circuito</p>
+                    <div class="learning-objective">
+                        <h4>🎯 Objetivo de Aprendizaje - Módulo 3</h4>
+                        <p>Al finalizar este módulo, el participante identificará cada uno de los 13 Circuitos Federales de Apelación, su jurisdicción territorial y su sede principal.</p>
+                    </div>
+                    <div class="content-block">
+                        <h3>Estructura del Sistema Federal de Apelaciones</h3>
+                        <p>El sistema judicial federal de Estados Unidos cuenta con <strong>94 tribunales de distrito</strong> organizados en <strong>12 circuitos regionales</strong>, más un <strong>circuito especializado por materia</strong> (el Circuito Federal), para un total de <strong>13 Tribunales de Circuito de Apelaciones</strong>.</p>
+                        <p>Cada circuito regional tiene su propia Corte de Apelaciones que revisa las decisiones de los tribunales de distrito dentro de su jurisdicción. Las FRAP aplican uniformemente a todos estos circuitos, pero cada uno complementa las reglas federales con sus propias reglas locales.</p>
+                    </div>
+                    <div class="highlight-box info">
+                        <h4>📊 Datos Clave del Sistema</h4>
+                        <ul>
+                            <li><strong>94</strong> tribunales de distrito en todo el país</li>
+                            <li><strong>13</strong> tribunales de circuito de apelaciones</li>
+                            <li>Más de <strong>50,000</strong> casos procesados anualmente por las cortes de apelaciones</li>
+                            <li>Menos del <strong>10%</strong> de las decisiones son apeladas ante la Corte Suprema</li>
+                            <li>El circuito más pequeño: <strong>1er Circuito</strong> (6 jueces); el más grande: <strong>9° Circuito</strong> (29 jueces)</li>
+                        </ul>
+                    </div>
+                    <div class="content-block"><h3>Los 13 Circuitos Federales</h3></div>
+                    <table class="circuit-table">
+                        <thead><tr><th style="width:12%;">Circuito</th><th style="width:40%;">Jurisdicción Territorial</th><th style="width:20%;">Sede</th><th style="width:28%;">Notas</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="circuit-badge">1°</span></td><td>Maine, Massachusetts, New Hampshire, Rhode Island y Puerto Rico</td><td>Boston, MA</td><td>Circuito más pequeño (6 jueces)</td></tr>
+                            <tr><td><span class="circuit-badge">2°</span></td><td>Connecticut, New York y Vermont</td><td>New York, NY</td><td>Centro financiero del país</td></tr>
+                            <tr><td><span class="circuit-badge">3°</span></td><td>Delaware, New Jersey, Pennsylvania e Islas Vírgenes</td><td>Philadelphia, PA</td><td>Incluye territorio no incorporado</td></tr>
+                            <tr><td><span class="circuit-badge">4°</span></td><td>Maryland, North Carolina, South Carolina, Virginia y West Virginia</td><td>Richmond, VA</td><td>Tasa de reversión más baja por SCOTUS</td></tr>
+                            <tr><td><span class="circuit-badge">5°</span></td><td>Louisiana, Mississippi y Texas</td><td>New Orleans, LA</td><td>Relevante para casos de inmigración</td></tr>
+                            <tr><td><span class="circuit-badge">6°</span></td><td>Kentucky, Michigan, Ohio y Tennessee</td><td>Cincinnati, OH</td><td>Tiene panel de quiebras (BAP)</td></tr>
+                            <tr><td><span class="circuit-badge">7°</span></td><td>Illinois, Indiana y Wisconsin</td><td>Chicago, IL</td><td>Región de los Grandes Lagos</td></tr>
+                            <tr><td><span class="circuit-badge">8°</span></td><td>Arkansas, Iowa, Minnesota, Missouri, Nebraska, North Dakota y South Dakota</td><td>St. Louis, MO</td><td>Tiene panel de quiebras (BAP)</td></tr>
+                            <tr><td><span class="circuit-badge">9°</span></td><td>Alaska, Arizona, California, Guam, Hawaii, Idaho, Montana, Nevada, N. Mariana Islands, Oregon y Washington</td><td>San Francisco, CA</td><td>Más grande (29 jueces); en banc con 11 jueces</td></tr>
+                            <tr><td><span class="circuit-badge">10°</span></td><td>Colorado, Kansas, New Mexico, Oklahoma, Utah y Wyoming</td><td>Denver, CO</td><td>Tiene panel de quiebras (BAP)</td></tr>
+                            <tr><td><span class="circuit-badge">11°</span></td><td>Alabama, Florida y Georgia</td><td>Atlanta, GA</td><td>Creado en 1981 del 5° Circuito</td></tr>
+                            <tr><td><span class="circuit-badge">D.C.</span></td><td>Distrito de Columbia (Washington, D.C.)</td><td>Washington, D.C.</td><td>Derecho administrativo federal</td></tr>
+                            <tr><td><span class="circuit-badge">Fed.</span></td><td>Jurisdicción nacional por materia (no geográfica)</td><td>Washington, D.C.</td><td>Patentes, marcas, contratos gubernamentales, veteranos</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="highlight-box" style="background: #fef3c7;">
+                        <h4>⚠️ Aspectos Importantes</h4>
+                        <ul>
+                            <li><strong>Reglas locales:</strong> Cada circuito tiene reglas locales obligatorias que complementan las FRAP.</li>
+                            <li><strong>Precedente vinculante:</strong> Las decisiones de cada circuito son vinculantes solo dentro de su jurisdicción territorial.</li>
+                            <li><strong>Circuito Federal:</strong> Único circuito cuya jurisdicción se determina por materia, no por ubicación geográfica.</li>
+                            <li><strong>En banc:</strong> En todos los circuitos excepto el 9°, incluye a todos los jueces activos. El 9° usa un panel de 11 jueces al azar.</li>
+                        </ul>
+                    </div>
+                    <div class="content-block"><h3>¿Cómo determinar el circuito correspondiente?</h3></div>
+                    <div class="card-grid">
+                        <div class="card"><div class="card-icon">🔍</div><h4>Paso 1</h4><p>Identificar el tribunal de distrito que dictó el fallo</p></div>
+                        <div class="card"><div class="card-icon">📍</div><h4>Paso 2</h4><p>Localizar el estado donde se ubica ese tribunal</p></div>
+                        <div class="card"><div class="card-icon">🏛️</div><h4>Paso 3</h4><p>Identificar a qué circuito pertenece ese estado</p></div>
+                        <div class="card"><div class="card-icon">📋</div><h4>Paso 4</h4><p>Consultar las FRAP junto con las reglas locales de ese circuito</p></div>
+                    </div>
+                    <div class="source-citation"><strong>📚 Fuente:</strong> 28 U.S.C. § 41 (composición de circuitos); 28 U.S.C. § 44 (número de jueces); www.uscourts.gov</div>
+                    <div class="navigation">
+                        <button class="nav-btn secondary" onclick="prevSection()">← Anterior</button>
+                        <button class="nav-btn primary" onclick="nextSection()">Continuar al Módulo 4 →</button>
+                    </div>
+                </section>
+                <!-- MÓDULO 4: PROCESO -->
+                <section class="module-section" id="section4">
+                    <h2 class="module-title"><span class="icon">📝</span> Módulo 4: El Proceso de Apelación Paso a Paso</h2>
+                    <p class="module-subtitle">Notice of Appeal, expediente, briefing y argumentación oral</p>
+                    <div class="learning-objective">
+                        <h4>🎯 Objetivo de Aprendizaje - Módulo 4</h4>
+                        <p>Al finalizar este módulo, el participante será capaz de identificar y ejecutar cada etapa del proceso de apelación federal.</p>
+                    </div>
+                    <div class="content-block"><h3>4.1. Inicio del Proceso: La Decisión Crítica</h3><p><strong>Reglas Clave:</strong> FRAP Rule 3 y 4</p></div>
+                    <div class="card-grid">
+                        <div class="card"><div class="card-icon">✅</div><h4>Evaluación Preliminar</h4><p>¿Existe un derecho a apelar? (28 U.S.C. § 1291 - decisiones finales)</p></div>
+                        <div class="card"><div class="card-icon">🎯</div><h4>Elección del Foro</h4><p>Identificar el circuito correspondiente según ubicación del tribunal de distrito</p></div>
+                        <div class="card"><div class="card-icon">⏰</div><h4>Verificación de Plazos</h4><p>El factor más crítico del proceso - plazos jurisdiccionales absolutos</p></div>
+                    </div>
+                    <div class="content-block"><h3>4.2. Presentación del Aviso de Apelación (Notice of Appeal)</h3><p><strong>FRAP Rule 3</strong> - Requisitos Esenciales:</p></div>
+                    <div class="highlight-box info">
+                        <h4>📋 Contenido Mínimo del Notice of Appeal</h4>
+                        <ol><li><strong>Identificación de las partes</strong> que apelan</li><li><strong>Designación del fallo u orden apelada</strong></li><li><strong>Tribunal ante el cual se apela</strong></li></ol>
+                        <p style="margin-top: 15px;"><strong>Presentación:</strong> Ante el secretario del tribunal de distrito, cumpliendo plazos absolutos y pagando derechos correspondientes.</p>
+                    </div>
+                    <div class="content-block"><h3>📅 Tabla de Plazos de Apelación (FRAP Rule 4)</h3></div>
+                    <table class="info-table">
+                        <thead><tr><th>Tipo de Caso</th><th>Plazo</th><th>Regla</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Civil</strong></td><td>30 días naturales</td><td>Rule 4(a)(1)</td></tr>
+                            <tr><td><strong>Penal</strong></td><td>14 días naturales</td><td>Rule 4(b)(1)</td></tr>
+                            <tr><td><strong>Con participación del gobierno de EE.UU.</strong></td><td>60 días naturales</td><td>Rule 4(a)(1)(B)</td></tr>
+                            <tr><td><strong>Reapertura de plazo</strong></td><td>14 días tras orden de reapertura</td><td>Rule 4(a)(6)</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="content-block"><h3>4.3. Construcción del Expediente (Record on Appeal)</h3><p><strong>FRAP Rules 10-11</strong></p></div>
+                    <div class="card-grid">
+                        <div class="card"><div class="card-icon">📁</div><h4>Apelante</h4><p>Debe ordenar transcripciones dentro de <strong>14 días</strong> (Rule 10(b))</p></div>
+                        <div class="card"><div class="card-icon">📑</div><h4>Secretario del Distrito</h4><p>Ensambla y transmite el expediente al tribunal de circuito</p></div>
+                        <div class="card"><div class="card-icon">📋</div><h4>Contenido Mínimo</h4><p>Documentos presentados, actas, órdenes, transcripciones designadas</p></div>
+                    </div>
+                    <div class="content-block"><h3>4.4. Presentación de Escritos (Briefing)</h3><p><strong>FRAP Rule 28</strong> - Estructura Obligatoria:</p></div>
+                    <div class="highlight-box" style="background: #dbeafe;">
+                        <h4>📄 1. ESCRITO DEL APELANTE (Appellant's Brief)</h4>
+                        <ul><li>Declaración jurisdiccional</li><li>Enumeración de asuntos en apelación</li><li>Exposición de los hechos</li><li>Resumen del argumento</li><li>Argumento</li><li>Conclusión</li></ul>
+                    </div>
+                    <div class="highlight-box" style="background: #fef3c7;"><h4>📄 2. ESCRITO DEL APELADO (Appellee's Brief)</h4><ul><li>Respuesta estructurada a cada argumento del apelante</li></ul></div>
+                    <div class="highlight-box" style="background: #e0f2fe;"><h4>📄 3. RÉPLICA (Reply Brief - opcional)</h4><ul><li>Respuesta concisa a contraargumentos del apelado</li></ul></div>
+                    <div class="content-block"><h3>Formato y Extensiones (FRAP Rule 32)</h3></div>
+                    <table class="info-table">
+                        <thead><tr><th>Requisito</th><th>Especificación</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Tipografía</strong></td><td>14 puntos o mayor, tipo serif para texto principal</td></tr>
+                            <tr><td><strong>Extensión (escrito principal)</strong></td><td>Máximo 13,000 palabras o 30 páginas</td></tr>
+                            <tr><td><strong>Extensión (réplica)</strong></td><td>Máximo 6,500 palabras o 15 páginas</td></tr>
+                            <tr><td><strong>Apelaciones cruzadas</strong></td><td>Siguen Rule 28.1 con secuencia y extensiones específicas</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="content-block"><h3>4.5. Argumentación Oral y Decisión</h3><p><strong>FRAP Rule 34:</strong> La argumentación oral no es automática; la corte puede decidir basándose solo en escritos.</p></div>
+                    <div class="card-grid">
+                        <div class="card"><div class="card-icon">🎤</div><h4>Duración</h4><p>Generalmente limitada a 15-20 minutos por parte</p></div>
+                        <div class="card"><div class="card-icon">💡</div><h4>Propósito</h4><p>Aclarar puntos dudosos, no repetir escritos</p></div>
+                        <div class="card"><div class="card-icon">👨‍⚖️</div><h4>Panel</h4><p>Normalmente 3 jueces de circuito; posibilidad de en banc</p></div>
+                    </div>
+                    <div class="source-citation"><strong>📚 Fuente:</strong> FRAP Rules 3, 4, 10, 11, 28, 32, 34; 28 U.S.C. § 1291.</div>
+                    <div class="navigation">
+                        <button class="nav-btn secondary" onclick="prevSection()">← Anterior</button>
+                        <button class="nav-btn primary" onclick="nextSection()">Continuar al Módulo 5 →</button>
+                    </div>
+                </section>
+                <!-- MÓDULO 5: MOTIONES -->
+                <section class="module-section" id="section5">
+                    <h2 class="module-title"><span class="icon">📋</span> Módulo 5: Procedimientos Especiales y Motiones</h2>
+                    <p class="module-subtitle">Suspensión de ejecución, motiones comunes y forma pauperis</p>
+                    <div class="learning-objective"><h4>🎯 Objetivo de Aprendizaje - Módulo 5</h4><p>Al finalizar este módulo, el participante será capaz de identificar y aplicar los procedimientos especiales más comunes en el proceso de apelación.</p></div>
+                    <div class="content-block"><h3>5.1. Suspensión de la Ejecución (Stay Pending Appeal)</h3><p><strong>FRAP Rule 8</strong> - Requisitos:</p></div>
+                    <div class="card-grid">
+                        <div class="card"><div class="card-icon">⚖️</div><h4>1. Probabilidad de Éxito</h4><p>Probabilidad de éxito en el fondo del recurso</p></div>
+                        <div class="card"><div class="card-icon">⚠️</div><h4>2. Daño Irreparable</h4><p>Daño irreparable sin la suspensión</p></div>
+                        <div class="card"><div class="card-icon">⚖️</div><h4>3. Equilibrio de Perjuicios</h4><p>Equilibrio de perjuicios favorable al solicitante</p></div>
+                        <div class="card"><div class="card-icon">🏛️</div><h4>4. Interés Público</h4><p>No afectar negativamente el interés público</p></div>
+                    </div>
+                    <div class="content-block"><h3>5.2. Motiones Comunes (FRAP Rule 27)</h3></div>
+                    <div class="highlight-box info">
+                        <h4>📝 Proceso Estándar para Motiones</h4>
+                        <ol><li><strong>Moción por escrito</strong> con exposición de hechos y fundamentos</li><li><strong>Respuesta de la contraparte</strong> (normalmente 7-10 días)</li><li><strong>Réplica</strong> (solo con permiso de la corte)</li><li><strong>Decisión</strong> por panel de tres jueces o juez único</li></ol>
+                    </div>
+                    <div class="content-block"><h3>Tipos Frecuentes de Motiones</h3></div>
+                    <table class="info-table">
+                        <thead><tr><th>Tipo de Moción</th><th>Propósito</th><th>Consideraciones</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Prórroga de plazo</strong></td><td>Extension of time</td><td>Presentar antes del vencimiento cuando sea posible</td></tr>
+                            <tr><td><strong>Admisión de amicus curiae</strong></td><td>Participación de terceros interesados</td><td>Requiere consentimiento de las partes o permiso</td></tr>
+                            <tr><td><strong>Expedición del proceso</strong></td><td>Acelerar la apelación</td><td>Debe justificarse con razones urgentes</td></tr>
+                            <tr><td><strong>Motiones de emergencia</strong></td><td>Asuntos que requieren acción inmediata</td><td>Requieren contacto previo con secretaría de la corte</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="content-block"><h3>5.3. Procedimientos en Forma Pauperis (FRAP Rule 24)</h3></div>
+                    <div class="highlight-box" style="background: #fef3c7;">
+                        <h4>💰 Requisitos para litigar sin costas</h4>
+                        <ol><li>Solicitud con declaración jurada de indigencia</li><li>Certificación de buena fe en el recurso</li><li>Posible pago parcial según fórmula de ingresos</li></ol>
+                    </div>
+                    <div class="source-citation"><strong>📚 Fuente:</strong> FRAP Rules 8, 24, 27.</div>
+                    <div class="navigation">
+                        <button class="nav-btn secondary" onclick="prevSection()">← Anterior</button>
+                        <button class="nav-btn primary" onclick="nextSection()">Continuar al Módulo 6 →</button>
+                    </div>
+                </section>
+
+                <!-- MÓDULO 6: ERRORES -->
+                <section class="module-section" id="section6">
+                    <h2 class="module-title"><span class="icon">⚠️</span> Módulo 6: Errores Comunes y Mejores Prácticas</h2>
+                    <p class="module-subtitle">Errores fatales, lista de verificación y caso práctico</p>
+                    <div class="learning-objective"><h4>🎯 Objetivo de Aprendizaje - Módulo 6</h4><p>Al finalizar este módulo, el participante será capaz de identificar y evitar los errores más comunes en el proceso de apelación.</p></div>
+                    <div class="content-block"><h3>6.1. Errores Procesales Fatales</h3></div>
+                    <div class="card-grid">
+                        <div class="card" style="border-left: 4px solid #dc2626;"><div class="card-icon">❌</div><h4>Plazos Incumplidos</h4><p>No hay prórroga discrecional para el Notice of Appeal - es jurisdiccional</p></div>
+                        <div class="card" style="border-left: 4px solid #dc2626;"><div class="card-icon">⚠️</div><h4>Falta de Jurisdicción</h4><p>Apelar órdenes no apelables (interlocutorias sin excepción)</p></div>
+                        <div class="card" style="border-left: 4px solid #dc2626;"><div class="card-icon">🚫</div><h4>Improcedencia del Fallo</h4><p>Apelar antes de resolución final de todos los asuntos</p></div>
+                        <div class="card" style="border-left: 4px solid #dc2626;"><div class="card-icon">📋</div><h4>Reglas Locales</h4><p>Incumplimiento de reglas locales del circuito específico</p></div>
+                    </div>
+                    <div class="content-block"><h3>6.2. Lista de Verificación Pre-Apelación</h3></div>
+                    <div class="highlight-box" style="background: #d1fae5;">
+                        <h4>✅ Checklist Esencial</h4>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li>☐ 1. Confirmar derecho a apelar (decisión final)</li>
+                            <li>☐ 2. Calcular plazos exactos (considerar feriados, Rule 26)</li>
+                            <li>☐ 3. Identificar el circuito y revisar sus reglas locales</li>
+                            <li>☐ 4. Preparar Notice of Appeal con contenido mínimo</li>
+                            <li>☐ 5. Designar transcripciones necesarias inmediatamente</li>
+                            <li>☐ 6. Planificar cronograma completo</li>
+                            <li>☐ 7. Considerar necesidad de suspensión de ejecución</li>
+                        </ul>
+                    </div>
+                    <div class="content-block"><h3>6.3. Caso Práctico: Aplicación Integral</h3></div>
+                    <div class="highlight-box info"><h4>📚 Escenario</h4><p>Fallo desfavorable en caso civil en el Distrito Sur de Texas (<strong>5° Circuito</strong>) el <strong>15 de noviembre de 2024</strong>.</p></div>
+                    <table class="info-table">
+                        <thead><tr><th style="width:20%;">Día</th><th style="width:30%;">Fecha</th><th>Acción</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Día 0</strong></td><td>15 nov 2024</td><td>Entrada del fallo</td></tr>
+                            <tr style="background:#fef3c7;"><td><strong>Día 30</strong></td><td>16 dic 2024</td><td><strong>Último día para Notice of Appeal</strong> (15 dic es domingo)</td></tr>
+                            <tr><td><strong>Simultáneo</strong></td><td>-</td><td>Solicitar transcripciones (Rule 10)</td></tr>
+                            <tr><td><strong>Día 45</strong></td><td>30 dic 2024</td><td>Expediente completo ante el 5° Circuito</td></tr>
+                            <tr><td><strong>Día 85</strong></td><td>8 feb 2025</td><td>Escrito del apelante (40 días, Rule 31)</td></tr>
+                            <tr><td><strong>Día 115</strong></td><td>10 mar 2025</td><td>Escrito del apelado (30 días)</td></tr>
+                            <tr><td><strong>Día 130</strong></td><td>25 mar 2025</td><td>Réplica (14 días, Rule 31(a)(1))</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="highlight-box" style="background: #fef3c7;">
+                        <h4>🔍 Consideraciones del 5° Circuito</h4>
+                        <ul>
+                            <li>Revisar <strong>5th Cir. R. 25</strong> para presentación electrónica obligatoria</li>
+                            <li>Verificar requisitos de formato en <strong>5th Cir. R. 32</strong></li>
+                            <li>Consultar IOPs para tiempos de argumentación oral</li>
+                            <li>Sede: New Orleans, Louisiana</li>
+                        </ul>
+                    </div>
+                    <div class="source-citation"><strong>📚 Fuente:</strong> FRAP Rules 3, 4, 10, 26, 31, 32; 5th Circuit Local Rules.</div>
+                    <div class="navigation">
+                        <button class="nav-btn secondary" onclick="prevSection()">← Anterior</button>
+                        <button class="nav-btn primary" onclick="nextSection()">Continuar a Verificación →</button>
+                    </div>
+                </section>
+                <!-- VERIFICACIÓN DE CONOCIMIENTOS -->
+                <section class="module-section" id="section7">
+                    <h2 class="module-title"><span class="icon">✅</span> Verificación de Conocimientos</h2>
+                    <p class="module-subtitle">Ejercicios interactivos de repaso</p>
+                    <div class="highlight-box" style="background: #ede9fe; border-color: #7c3aed;">
+                        <h4>💡 Instrucciones</h4>
+                        <p>Responde las siguientes preguntas basándote en el contenido de los módulos. Esta verificación <strong>no afecta tu calificación final</strong>.</p>
+                    </div>
+                    <div class="content-block" style="margin-top: 25px;"><h3>Parte A: Opción Múltiple</h3></div>
+
+                    <div class="check-question" id="check1-q1">
+                        <h4>1. ¿Cuál es el plazo para presentar un Notice of Appeal en un caso civil?</h4>
+                        <div class="check-options">
+                            <div class="check-option" onclick="selectMC('check1', 'q1', 0)"><span class="option-letter">A</span><span class="option-text">14 días naturales</span></div>
+                            <div class="check-option" onclick="selectMC('check1', 'q1', 1)"><span class="option-letter">B</span><span class="option-text">30 días naturales</span></div>
+                            <div class="check-option" onclick="selectMC('check1', 'q1', 2)"><span class="option-letter">C</span><span class="option-text">60 días naturales</span></div>
+                            <div class="check-option" onclick="selectMC('check1', 'q1', 3)"><span class="option-letter">D</span><span class="option-text">90 días naturales</span></div>
+                        </div>
+                        <div class="check-feedback" id="feedback-check1-q1"></div>
+                    </div>
+                    <div class="check-question" id="check1-q2">
+                        <h4>2. ¿Cuántos días tiene el apelante para ordenar las transcripciones necesarias?</h4>
+                        <div class="check-options">
+                            <div class="check-option" onclick="selectMC('check1', 'q2', 0)"><span class="option-letter">A</span><span class="option-text">7 días</span></div>
+                            <div class="check-option" onclick="selectMC('check1', 'q2', 1)"><span class="option-letter">B</span><span class="option-text">14 días</span></div>
+                            <div class="check-option" onclick="selectMC('check1', 'q2', 2)"><span class="option-letter">C</span><span class="option-text">21 días</span></div>
+                            <div class="check-option" onclick="selectMC('check1', 'q2', 3)"><span class="option-letter">D</span><span class="option-text">30 días</span></div>
+                        </div>
+                        <div class="check-feedback" id="feedback-check1-q2"></div>
+                    </div>
+                    <div class="check-question" id="check1-q3">
+                        <h4>3. ¿Cuál es la extensión máxima en palabras para un escrito principal (FRAP Rule 32)?</h4>
+                        <div class="check-options">
+                            <div class="check-option" onclick="selectMC('check1', 'q3', 0)"><span class="option-letter">A</span><span class="option-text">7,500 palabras</span></div>
+                            <div class="check-option" onclick="selectMC('check1', 'q3', 1)"><span class="option-letter">B</span><span class="option-text">10,000 palabras</span></div>
+                            <div class="check-option" onclick="selectMC('check1', 'q3', 2)"><span class="option-letter">C</span><span class="option-text">13,000 palabras</span></div>
+                            <div class="check-option" onclick="selectMC('check1', 'q3', 3)"><span class="option-letter">D</span><span class="option-text">15,000 palabras</span></div>
+                        </div>
+                        <div class="check-feedback" id="feedback-check1-q3"></div>
+                    </div>
+                    <div id="results-check1" class="check-results"><h4>Resultado - Parte A</h4><div class="check-score"></div><p class="check-message"></p></div>
+                    <div class="check-actions">
+                        <button class="check-btn verify" onclick="verifyMC('check1')">Verificar Parte A</button>
+                        <button class="check-btn retry" onclick="retryMC('check1')" style="display: none;">Reintentar Parte A</button>
+                    </div>
+
+                    <hr style="margin: 40px 0; border: none; border-top: 2px solid #ede9fe;">
+                    <div class="content-block"><h3>Parte B: Verdadero o Falso</h3></div>
+
+                    <div class="check-question" id="check2-q1">
+                        <h4>1. Las FRAP son reglas de derecho sustantivo que crean nuevos derechos materiales.</h4>
+                        <div class="tf-container">
+                            <button class="tf-btn" onclick="selectTF('check2', 'q1', 'verdadero', this)">Verdadero</button>
+                            <button class="tf-btn" onclick="selectTF('check2', 'q1', 'falso', this)">Falso</button>
+                        </div>
+                        <div class="check-feedback" id="feedback-check2-q1"></div>
+                    </div>
+                    <div class="check-question" id="check2-q2">
+                        <h4>2. El plazo para presentar un Notice of Appeal en un caso penal es de 14 días naturales.</h4>
+                        <div class="tf-container">
+                            <button class="tf-btn" onclick="selectTF('check2', 'q2', 'verdadero', this)">Verdadero</button>
+                            <button class="tf-btn" onclick="selectTF('check2', 'q2', 'falso', this)">Falso</button>
+                        </div>
+                        <div class="check-feedback" id="feedback-check2-q2"></div>
+                    </div>
+                    <div class="check-question" id="check2-q3">
+                        <h4>3. La argumentación oral es automática en todas las apelaciones federales.</h4>
+                        <div class="tf-container">
+                            <button class="tf-btn" onclick="selectTF('check2', 'q3', 'verdadero', this)">Verdadero</button>
+                            <button class="tf-btn" onclick="selectTF('check2', 'q3', 'falso', this)">Falso</button>
+                        </div>
+                        <div class="check-feedback" id="feedback-check2-q3"></div>
+                    </div>
+                    <div class="check-question" id="check2-q4">
+                        <h4>4. El Circuito Federal determina su jurisdicción por materia, no por ubicación geográfica.</h4>
+                        <div class="tf-container">
+                            <button class="tf-btn" onclick="selectTF('check2', 'q4', 'verdadero', this)">Verdadero</button>
+                            <button class="tf-btn" onclick="selectTF('check2', 'q4', 'falso', this)">Falso</button>
+                        </div>
+                        <div class="check-feedback" id="feedback-check2-q4"></div>
+                    </div>
+                    <div id="results-check2" class="check-results"><h4>Resultado - Parte B</h4><div class="check-score"></div><p class="check-message"></p></div>
+                    <div class="check-actions">
+                        <button class="check-btn verify" onclick="verifyTF('check2')">Verificar Parte B</button>
+                        <button class="check-btn retry" onclick="retryTF('check2')" style="display: none;">Reintentar Parte B</button>
+                    </div>
+                    <div class="navigation">
+                        <button class="nav-btn secondary" onclick="prevSection()">← Anterior</button>
+                        <button class="nav-btn primary" onclick="nextSection()">Continuar a Evaluación Final →</button>
+                    </div>
+                </section>
+                <!-- EVALUACIÓN FINAL -->
+                <section class="module-section" id="section8">
+                    <div id="quiz-intro">
+                        <h2 class="module-title"><span class="icon">📝</span> Evaluación Final</h2>
+                        <p class="module-subtitle">15 preguntas de opción múltiple - Puntuación mínima: 85%</p>
+                        <div class="highlight-box" style="background: linear-gradient(135deg, #1a365d 0%, #2563eb 100%); border: none;">
+                            <h4 style="color: #ffffff; font-size: 1.3rem; margin-bottom: 15px;">🏆 Evaluación Final del Curso</h4>
+                            <p style="color: #e0e7ff; font-size: 1rem; line-height: 1.7;">Necesitas obtener al menos <strong style="color: #fbbf24;">85%</strong> (13 de 15 correctas) para aprobar.</p>
+                        </div>
+                        <div class="card-grid">
+                            <div class="card"><div class="card-icon">📊</div><h4>15 Preguntas</h4><p>Opción múltiple basadas en todo el contenido</p></div>
+                            <div class="card"><div class="card-icon">⏱️</div><h4>Sin Límite</h4><p>Tómate el tiempo necesario</p></div>
+                            <div class="card"><div class="card-icon">✅</div><h4>85% para Aprobar</h4><p>Al menos 13 de 15 correctas</p></div>
+                            <div class="card"><div class="card-icon">📈</div><h4>Retroalimentación</h4><p>Explicaciones para cada pregunta</p></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 40px;">
+                            <button class="nav-btn primary" onclick="startQuiz()" style="font-size: 1.1rem; padding: 15px 40px;">Comenzar Evaluación →</button>
+                        </div>
+                    </div>
+                    <div id="quiz-container" style="display: none;">
+                        <h2 class="module-title"><span class="icon">📝</span> Evaluación Final</h2>
+                        <div class="quiz-progress"><span id="questionCounter">Pregunta 1 de 15</span></div>
+                        <div class="quiz-question"><h3 id="questionText"></h3><div id="optionsContainer"></div></div>
+                        <div class="quiz-navigation">
+                            <button class="nav-btn secondary" id="prevQuestionBtn" onclick="prevQuestion()">← Anterior</button>
+                            <button class="nav-btn primary" id="nextQuestionBtn" onclick="nextQuestion()">Siguiente →</button>
+                        </div>
+                    </div>
+                    <div id="quiz-results" style="display: none;">
+                        <h2 class="module-title"><span class="icon">🎉</span> Resultados de la Evaluación</h2>
+                        <div class="results-summary">
+                            <div class="score-circle" id="scoreCircle"><div class="score-value" id="scoreValue"></div></div>
+                            <div class="results-details">
+                                <h3 id="resultMessage"></h3>
+                                <p>Respuestas correctas: <strong><span id="correctCount"></span> de 15</strong></p>
+                                <p style="margin-top: 15px; color: var(--texto-medio);">Tu calificación ha sido registrada en el sistema LMS.</p>
+                            </div>
+                        </div>
+                        <div id="feedbackSection" class="feedback-section"></div>
+                        <div class="navigation" style="margin-top: 40px;"><button class="nav-btn secondary" onclick="goToSection(1)">← Revisar Curso</button></div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        var currentSection = 1;
+        var totalSections = 8;
+        var visitedSections = [1];
+        var quizCompleted = false;
+        var currentQuestion = 0;
+        var userAnswers = [];
+        var checksCompleted = {};
+
+        var sectionMap = ['section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7', 'section8'];
+        var progressMap = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8};
+
+        var mcAnswers = {};
+        var tfAnswers = {};
+
+        var checkAnswers = {
+            check1: {q1: 1, q2: 1, q3: 2},
+            check2: {q1: 'falso', q2: 'verdadero', q3: 'falso', q4: 'verdadero'}
+        };
+
+        var checkFeedback = {
+            check1: {
+                q1: {correct: '¡Correcto! El plazo para casos civiles es de 30 días naturales según FRAP Rule 4(a)(1).', incorrect: 'Incorrecto. El plazo correcto es de 30 días naturales (Rule 4(a)(1)).'},
+                q2: {correct: '¡Correcto! El apelante tiene 14 días para ordenar transcripciones según FRAP Rule 10(b).', incorrect: 'Incorrecto. El plazo correcto es de 14 días (Rule 10(b)).'},
+                q3: {correct: '¡Correcto! La extensión máxima es de 13,000 palabras según FRAP Rule 32.', incorrect: 'Incorrecto. La extensión máxima es de 13,000 palabras o 30 páginas (Rule 32).'}
+            },
+            check2: {
+                q1: {correct: '¡Correcto! FALSO - Las FRAP son reglas de procedimiento, no de derecho sustantivo.', incorrect: 'Incorrecto. FALSO - Las FRAP son reglas de procedimiento, no crean derechos materiales.'},
+                q2: {correct: '¡Correcto! VERDADERO - El plazo para casos penales es de 14 días según Rule 4(b)(1).', incorrect: 'Incorrecto. VERDADERO - En casos penales el plazo es de 14 días naturales.'},
+                q3: {correct: '¡Correcto! FALSO - La argumentación oral no es automática según Rule 34.', incorrect: 'Incorrecto. FALSO - La corte puede decidir basándose solo en escritos (Rule 34).'},
+                q4: {correct: '¡Correcto! VERDADERO - El Circuito Federal es el único cuya jurisdicción se basa en materia.', incorrect: 'Incorrecto. VERDADERO - El Circuito Federal tiene jurisdicción por materia, no geográfica.'}
+            }
+        };
+
+        var questions = [
+            {q: "¿Qué son las Federal Rules of Appellate Procedure (FRAP)?", options: ["Leyes sustantivas federales", "Reglas de procedimiento para apelaciones federales", "Guías opcionales para tribunales", "Estatutos del Congreso"], correct: 1, feedback: "Las FRAP son reglas de procedimiento que rigen el proceso de apelación ante tribunales federales de circuito."},
+            {q: "¿Bajo qué autoridad legal fueron establecidas las FRAP?", options: ["Constitución de EE.UU. Artículo III", "Rules Enabling Act (28 U.S.C. §§ 2072-2075)", "Administrative Procedure Act", "Judiciary Act de 1789"], correct: 1, feedback: "Las FRAP fueron establecidas por la Corte Suprema bajo la autoridad del Rules Enabling Act."},
+            {q: "¿Cuántos Circuitos Federales de Apelación existen en total?", options: ["11 circuitos", "12 circuitos", "13 circuitos", "14 circuitos"], correct: 2, feedback: "Existen 13 circuitos: 11 numerados, el Circuito de D.C. y el Circuito Federal."},
+            {q: "¿Cuál es el plazo para presentar un Notice of Appeal en un caso civil?", options: ["14 días naturales", "21 días naturales", "30 días naturales", "60 días naturales"], correct: 2, feedback: "FRAP Rule 4(a)(1) establece un plazo de 30 días naturales para casos civiles."},
+            {q: "¿Cuál es el plazo para presentar un Notice of Appeal en un caso penal?", options: ["7 días naturales", "14 días naturales", "30 días naturales", "60 días naturales"], correct: 1, feedback: "FRAP Rule 4(b)(1) establece un plazo de 14 días naturales para casos penales."},
+            {q: "¿Cuál es el contenido mínimo del Notice of Appeal según FRAP Rule 3?", options: ["Solo el nombre del apelante", "Identificación de partes, fallo apelado y tribunal de apelación", "Un escrito completo con argumentos", "Declaración jurisdiccional detallada"], correct: 1, feedback: "Rule 3 requiere: identificación de partes, designación del fallo apelado y el tribunal."},
+            {q: "¿Cuántos días tiene el apelante para ordenar las transcripciones necesarias?", options: ["7 días", "14 días", "21 días", "30 días"], correct: 1, feedback: "FRAP Rule 10(b) establece que el apelante debe ordenar transcripciones dentro de 14 días."},
+            {q: "¿Cuál es la extensión máxima para un escrito principal según FRAP Rule 32?", options: ["7,500 palabras", "10,000 palabras", "13,000 palabras", "15,000 palabras"], correct: 2, feedback: "FRAP Rule 32 establece un máximo de 13,000 palabras o 30 páginas."},
+            {q: "¿Qué tamaño de tipografía requiere FRAP Rule 32?", options: ["12 puntos o mayor", "14 puntos o mayor", "16 puntos o mayor", "No especifica"], correct: 1, feedback: "FRAP Rule 32 requiere tipografía de 14 puntos o mayor, tipo serif."},
+            {q: "¿Cuántos requisitos principales se deben cumplir para obtener una suspensión de ejecución (FRAP Rule 8)?", options: ["2 requisitos", "3 requisitos", "4 requisitos", "5 requisitos"], correct: 2, feedback: "Se requieren 4 elementos: probabilidad de éxito, daño irreparable, equilibrio de perjuicios y no afectar interés público."},
+            {q: "¿Es automática la argumentación oral en apelaciones federales?", options: ["Sí, siempre es obligatoria", "No, la corte puede decidir solo con escritos", "Solo en casos penales", "Solo si ambas partes la solicitan"], correct: 1, feedback: "FRAP Rule 34 establece que la argumentación oral no es automática."},
+            {q: "¿Qué característica distingue al Circuito Federal de los demás circuitos?", options: ["Tiene más jueces que los demás", "Su jurisdicción se basa en materia, no en geografía", "Solo atiende casos penales", "Es el único que permite audiencias en banc"], correct: 1, feedback: "El Circuito Federal es el único cuya jurisdicción se determina por materia (patentes, marcas, etc.) y no por ubicación geográfica."},
+            {q: "¿Qué nivel normativo complementa las FRAP en cada circuito?", options: ["Estatutos federales", "Reglas locales del circuito", "Common law", "Precedentes de la Corte Suprema"], correct: 1, feedback: "Las reglas locales de cada circuito complementan las FRAP y son obligatorias."},
+            {q: "¿Qué sucede si no se cumple el plazo para presentar el Notice of Appeal?", options: ["Se puede solicitar una prórroga discrecional", "El tribunal pierde jurisdicción sobre la apelación", "Se impone una multa pero se acepta", "Se conceden 30 días adicionales automáticamente"], correct: 1, feedback: "El incumplimiento del plazo es fatal - el tribunal pierde jurisdicción."},
+            {q: "Según FRAP Rule 24, ¿qué se requiere para litigar en forma pauperis?", options: ["Solo llenar un formulario", "Solicitud con declaración jurada de indigencia y certificación de buena fe", "Demostrar ciudadanía estadounidense", "Presentar estados financieros de los últimos 5 años"], correct: 1, feedback: "Rule 24 requiere declaración jurada de indigencia, certificación de buena fe, y posible pago parcial."}
+        ];
+
+        // ===== NAVEGACIÓN =====
+        function goToSection(sectionNum) {
+            var currentId = sectionMap[currentSection - 1];
+            var currentEl = document.getElementById(currentId);
+            if (currentEl) currentEl.classList.remove('active');
+            currentSection = sectionNum;
+            var newId = sectionMap[currentSection - 1];
+            var newEl = document.getElementById(newId);
+            if (newEl) newEl.classList.add('active');
+            if (visitedSections.indexOf(currentSection) === -1) visitedSections.push(currentSection);
+            SCORM.setLocation(newId);
+            saveState();
+            updateProgress();
+            updateTOC();
+            window.scrollTo(0, 0);
+        }
+
+        function nextSection() { if (currentSection < totalSections) goToSection(currentSection + 1); }
+        function prevSection() { if (currentSection > 1) goToSection(currentSection - 1); }
+
+        function updateProgress() {
+            var percent = Math.round((currentSection / totalSections) * 100);
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = 'Módulo ' + currentSection + ' de ' + totalSections;
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.querySelectorAll('.step').forEach(function(step) {
+                var stepNum = parseInt(step.getAttribute('data-step'));
+                step.classList.remove('active', 'completed');
+                if (stepNum === currentSection) step.classList.add('active');
+                else if (visitedSections.indexOf(stepNum) !== -1 && stepNum < currentSection) step.classList.add('completed');
+            });
+        }
+
+        function updateTOC() {
+            var tocItems = document.querySelectorAll('.toc-item');
+            tocItems.forEach(function(item, index) {
+                item.classList.remove('active', 'completed');
+                if (index + 1 === currentSection) item.classList.add('active');
+                else if (visitedSections.indexOf(index + 1) !== -1 && index + 1 < currentSection) item.classList.add('completed');
+            });
+        }
+
+        function toggleTOC() {
+            var sidebar = document.getElementById('tocSidebar');
+            var overlay = document.getElementById('tocOverlay');
+            sidebar.classList.toggle('mobile-open');
+            overlay.style.display = sidebar.classList.contains('mobile-open') ? 'block' : 'none';
+        }
+
+        function saveState() {
+            try {
+                var state = JSON.stringify({visited: visitedSections, checks: checksCompleted, quiz: quizCompleted, section: currentSection});
+                SCORM.setSuspendData(state);
+            } catch(e) {}
+        }
+
+        function restoreState() {
+            try {
+                var data = SCORM.getSuspendData();
+                if (data) {
+                    var state = JSON.parse(data);
+                    visitedSections = state.visited || [1];
+                    checksCompleted = state.checks || {};
+                    quizCompleted = state.quiz || false;
+                    currentSection = state.section || 1;
+                }
+            } catch(e) {}
+        }
+
+        // ===== VERIFICACIONES - OPCIÓN MÚLTIPLE =====
+        function selectMC(checkId, question, optionIndex) {
+            mcAnswers[checkId + '-' + question] = optionIndex;
+            var qId = checkId + '-' + question;
+            document.querySelectorAll('#' + qId + ' .check-option').forEach(function(opt, idx) {
+                opt.classList.remove('selected');
+                if (idx === optionIndex) opt.classList.add('selected');
+            });
+        }
+
+        function verifyMC(checkId) {
+            var correct = 0;
+            var questionKeys = Object.keys(checkAnswers[checkId]);
+            questionKeys.forEach(function(q) {
+                var qId = checkId + '-' + q;
+                var userAnswer = mcAnswers[qId];
+                var correctAnswer = checkAnswers[checkId][q];
+                var feedback = document.getElementById('feedback-' + qId);
+                document.querySelectorAll('#' + qId + ' .check-option').forEach(function(opt) {
+                    opt.classList.add('disabled');
+                    opt.style.pointerEvents = 'none';
+                });
+                feedback.classList.add('show');
+                if (userAnswer === correctAnswer) {
+                    correct++;
+                    feedback.className = 'check-feedback show correct';
+                    feedback.innerHTML = '<p>' + checkFeedback[checkId][q].correct + '</p>';
+                } else {
+                    feedback.className = 'check-feedback show incorrect';
+                    feedback.innerHTML = '<p>' + checkFeedback[checkId][q].incorrect + '</p>';
+                }
+            });
+            var total = questionKeys.length;
+            var results = document.getElementById('results-' + checkId);
+            results.classList.add('show');
+            results.querySelector('.check-score').textContent = correct + '/' + total + ' correctas';
+            results.querySelector('.check-score').className = 'check-score ' + (correct === total ? 'excellent' : correct >= total - 1 ? 'good' : 'needs-work');
+            results.querySelector('.check-message').textContent = correct === total ? '¡Excelente! Todas correctas.' : 'Revisa los puntos marcados.';
+            if (correct === total) checksCompleted[checkId] = true;
+            document.querySelector('#section7 .check-actions .check-btn.verify[onclick*="' + checkId + '"]').style.display = 'none';
+            document.querySelector('#section7 .check-actions .check-btn.retry[onclick*="' + checkId + '"]').style.display = 'inline-block';
+            saveState();
+        }
+
+        function retryMC(checkId) {
+            var questionKeys = Object.keys(checkAnswers[checkId]);
+            questionKeys.forEach(function(q) {
+                var qId = checkId + '-' + q;
+                delete mcAnswers[qId];
+                document.querySelectorAll('#' + qId + ' .check-option').forEach(function(opt) {
+                    opt.classList.remove('selected', 'disabled');
+                    opt.style.pointerEvents = '';
+                });
+                document.getElementById('feedback-' + qId).className = 'check-feedback';
+                document.getElementById('feedback-' + qId).classList.remove('show');
+            });
+            document.getElementById('results-' + checkId).classList.remove('show');
+            document.querySelector('#section7 .check-actions .check-btn.verify[onclick*="' + checkId + '"]').style.display = 'inline-block';
+            document.querySelector('#section7 .check-actions .check-btn.retry[onclick*="' + checkId + '"]').style.display = 'none';
+        }
+
+        // ===== VERIFICACIONES - VERDADERO/FALSO (FIXED) =====
+        function selectTF(checkId, question, value, btnElement) {
+            tfAnswers[checkId + '-' + question] = value;
+            var qId = checkId + '-' + question;
+            document.querySelectorAll('#' + qId + ' .tf-btn').forEach(function(btn) {
+                btn.classList.remove('selected');
+            });
+            btnElement.classList.add('selected');
+        }
+
+        function verifyTF(checkId) {
+            var correct = 0;
+            var questionKeys = Object.keys(checkAnswers[checkId]);
+            questionKeys.forEach(function(q) {
+                var qId = checkId + '-' + q;
+                var userAnswer = tfAnswers[qId];
+                var correctAnswer = checkAnswers[checkId][q];
+                var feedback = document.getElementById('feedback-' + qId);
+                document.querySelectorAll('#' + qId + ' .tf-btn').forEach(function(btn) {
+                    btn.classList.add('disabled');
+                    btn.style.pointerEvents = 'none';
+                    var btnValue = btn.textContent.toLowerCase();
+                    if (btnValue === correctAnswer) {
+                        btn.classList.add('correct');
+                    } else if (btn.classList.contains('selected')) {
+                        btn.classList.add('incorrect');
+                    }
+                });
+                feedback.classList.add('show');
+                if (userAnswer === correctAnswer) {
+                    correct++;
+                    feedback.className = 'check-feedback show correct';
+                    feedback.innerHTML = '<p>' + checkFeedback[checkId][q].correct + '</p>';
+                } else {
+                    feedback.className = 'check-feedback show incorrect';
+                    feedback.innerHTML = '<p>' + checkFeedback[checkId][q].incorrect + '</p>';
+                }
+            });
+            var total = questionKeys.length;
+            var results = document.getElementById('results-' + checkId);
+            results.classList.add('show');
+            results.querySelector('.check-score').textContent = correct + '/' + total + ' correctas';
+            results.querySelector('.check-score').className = 'check-score ' + (correct === total ? 'excellent' : correct >= total - 1 ? 'good' : 'needs-work');
+            results.querySelector('.check-message').textContent = correct === total ? '¡Excelente! Todas correctas.' : 'Revisa los puntos marcados.';
+            if (correct === total) checksCompleted[checkId] = true;
+            document.querySelector('#section7 .check-actions .check-btn.verify[onclick*="' + checkId + '"]').style.display = 'none';
+            document.querySelector('#section7 .check-actions .check-btn.retry[onclick*="' + checkId + '"]').style.display = 'inline-block';
+            saveState();
+        }
+
+        function retryTF(checkId) {
+            var questionKeys = Object.keys(checkAnswers[checkId]);
+            questionKeys.forEach(function(q) {
+                var qId = checkId + '-' + q;
+                delete tfAnswers[qId];
+                document.querySelectorAll('#' + qId + ' .tf-btn').forEach(function(btn) {
+                    btn.classList.remove('selected', 'correct', 'incorrect', 'disabled');
+                    btn.style.pointerEvents = '';
+                });
+                document.getElementById('feedback-' + qId).className = 'check-feedback';
+                document.getElementById('feedback-' + qId).classList.remove('show');
+            });
+            document.getElementById('results-' + checkId).classList.remove('show');
+            document.querySelector('#section7 .check-actions .check-btn.verify[onclick*="' + checkId + '"]').style.display = 'inline-block';
+            document.querySelector('#section7 .check-actions .check-btn.retry[onclick*="' + checkId + '"]').style.display = 'none';
+        }
+
+        // ===== QUIZ FINAL =====
+        function startQuiz() {
+            document.getElementById('quiz-intro').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            userAnswers = new Array(questions.length).fill(-1);
+            currentQuestion = 0;
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            var q = questions[currentQuestion];
+            document.getElementById('questionCounter').textContent = 'Pregunta ' + (currentQuestion + 1) + ' de ' + questions.length;
+            document.getElementById('questionText').textContent = q.q;
+            var optionsHtml = '';
+            var letters = ['A', 'B', 'C', 'D'];
+            q.options.forEach(function(opt, index) {
+                var selectedClass = userAnswers[currentQuestion] === index ? 'selected' : '';
+                optionsHtml += '<div class="option ' + selectedClass + '" onclick="selectOption(' + index + ')"><span class="option-letter">' + letters[index] + '</span><span class="option-text">' + opt + '</span></div>';
+            });
+            document.getElementById('optionsContainer').innerHTML = optionsHtml;
+            document.getElementById('prevQuestionBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextQuestionBtn').textContent = currentQuestion === questions.length - 1 ? 'Finalizar' : 'Siguiente →';
+        }
+
+        function selectOption(index) { userAnswers[currentQuestion] = index; renderQuestion(); }
+        function nextQuestion() { if (currentQuestion < questions.length - 1) { currentQuestion++; renderQuestion(); } else { finishQuiz(); } }
+        function prevQuestion() { if (currentQuestion > 0) { currentQuestion--; renderQuestion(); } }
+
+        function finishQuiz() {
+            var correct = 0;
+            userAnswers.forEach(function(answer, index) { if (answer === questions[index].correct) correct++; });
+            var scoreRaw = Math.round((correct / questions.length) * 100);
+            SCORM.setScore(scoreRaw);
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'block';
+            var passed = scoreRaw >= 85;
+            document.getElementById('scoreCircle').className = 'score-circle ' + (passed ? 'passed' : 'failed');
+            document.getElementById('scoreValue').textContent = scoreRaw + '%';
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('resultMessage').className = 'result-message ' + (passed ? 'passed' : 'failed');
+            document.getElementById('resultMessage').textContent = passed ? '¡Felicitaciones! Has aprobado la evaluación.' : 'No alcanzaste el 85%. Revisa el contenido del curso.';
+            var feedbackHtml = '<h4>Retroalimentación:</h4>';
+            questions.forEach(function(q, index) {
+                var isCorrect = userAnswers[index] === q.correct;
+                feedbackHtml += '<div class="feedback-item ' + (isCorrect ? 'correct' : 'incorrect') + '"><p class="feedback-question"><strong>P' + (index + 1) + ':</strong> ' + q.q + '</p>';
+                if (!isCorrect) feedbackHtml += '<p class="feedback-text"><strong>Correcta:</strong> ' + q.options[q.correct] + '</p>';
+                feedbackHtml += '<p class="feedback-text"><em>' + q.feedback + '</em></p></div>';
+            });
+            document.getElementById('feedbackSection').innerHTML = feedbackHtml;
+            document.getElementById('progressFill').style.width = '100%';
+            document.getElementById('progressPercent').textContent = '100%';
+            quizCompleted = true;
+            saveState();
+        }
+
+        // ===== INIT =====
+        window.addEventListener('load', function() {
+            restoreState();
+            updateProgress();
+            updateTOC();
+            var savedLocation = SCORM.getLocation();
+            if (savedLocation) {
+                var sectionIndex = sectionMap.indexOf(savedLocation);
+                if (sectionIndex !== -1) goToSection(sectionIndex + 1);
+            }
+        });
+    </script>
+</body>
+</html>
