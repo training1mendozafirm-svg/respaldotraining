@@ -1,0 +1,621 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Catálogo de Materiales Training</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Layout: banda institucional navy arriba (emblema + contadores), barra de filtros fija, cuadrícula de fichas tipo expediente con lomo de color por área */
+:root{
+  --navy:#0F1E3A; --navy-2:#162A4F; --gold:#C29A4B; --gold-soft:#E7D3A6;
+  --bg:#F3F4F7; --surface:#FFFFFF; --surface-2:#EAEDF3; --fg:#14213A; --muted:#5A6580; --line:#D6DBE5;
+  --chip:#FFFFFF; --chip-on:#0F1E3A; --chip-on-fg:#FFFFFF;
+  --display:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --body:"DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --label:"Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1426; --surface:#13203A; --surface-2:#1A2A49; --fg:#E6EAF2; --muted:#9AA6BF; --line:#25365A;
+  --chip:#13203A; --chip-on:#C29A4B; --chip-on-fg:#0B1426; --navy:#081022; --navy-2:#0F1C36; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0B1426; --surface:#13203A; --surface-2:#1A2A49; --fg:#E6EAF2; --muted:#9AA6BF; --line:#25365A;
+  --chip:#13203A; --chip-on:#C29A4B; --chip-on-fg:#0B1426; --navy:#081022; --navy-2:#0F1C36; color-scheme:dark;}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Banda institucional */
+.hero{background:radial-gradient(1200px 400px at 85% -10%, #24406f 0%, transparent 60%), linear-gradient(180deg,var(--navy) 0%,var(--navy-2) 100%);color:#F4F1E8;border-bottom:3px solid var(--gold)}
+.hero .wrap{padding-block:28px 26px;display:grid;gap:26px}
+.brand{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.emblem{width:112px;height:100px;flex:none;background:#fff;border-radius:6px;padding:8px;box-shadow:0 0 0 1px rgba(194,154,75,.6),0 8px 20px -10px rgba(0,0,0,.6);display:grid;place-items:center}
+.emblem img{width:100%;height:100%;object-fit:contain;display:block}
+@media (max-width:520px){.emblem{width:88px;height:78px}}
+.brand-txt .eyebrow{font-family:var(--label);letter-spacing:.18em;text-transform:uppercase;font-size:13px;color:var(--gold-soft)}
+.brand-txt h1{font-family:var(--display);font-weight:600;font-size:clamp(30px,4.4vw,46px);line-height:1.05;margin:2px 0 4px;text-wrap:balance}
+.brand-txt h1 em{color:var(--gold);font-style:italic;font-weight:500}
+.brand-txt p{margin:0;color:#C8D0E0;max-width:62ch}
+.brand-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.year{display:grid;justify-items:end;gap:6px}
+.year-n{font-family:var(--display);font-weight:700;font-size:clamp(64px,9vw,112px);line-height:.85;letter-spacing:-.01em;font-variant-numeric:lining-nums;background:linear-gradient(180deg,#F1DDAE 0%,#C29A4B 55%,#9C7429 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 24px rgba(194,154,75,.18)}
+@media (max-width:760px){.brand-right{margin-left:0;width:100%}.year{justify-items:start}}
+.seal{font-family:var(--label);font-size:12px;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(194,154,75,.55);color:var(--gold-soft);padding:6px 10px;border-radius:3px}
+
+.kpis{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:1px;background:#D9C9A3;border:1px solid var(--gold);border-radius:6px;overflow:hidden;box-shadow:0 12px 28px -16px rgba(0,0,0,.7)}
+.kpi{background:#FBF8F1;padding:14px 16px;min-width:0}
+.kpi .n{font-family:var(--display);font-size:42px;line-height:1;font-weight:700;color:#0F1E3A;font-variant-numeric:lining-nums tabular-nums}
+.kpi.main{background:#F3E7CC}
+.kpi.main .n{font-size:60px;color:#8A6416}
+.kpi .l{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:#4A5672;margin-top:6px;font-weight:600}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi.main{grid-column:1/-1}}
+
+/* Distribución por área */
+.dist{display:grid;gap:10px}
+.dist-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.dist-head h2{font-family:var(--label);text-transform:uppercase;letter-spacing:.14em;font-size:14px;margin:0;color:var(--gold-soft);font-weight:600}
+.dist-head span{font-size:13px;color:#AEB9CF}
+.bars{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px 18px}
+.bar{all:unset;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:4px 8px;align-items:center;padding:4px 0;border-radius:3px}
+.bar .nm{font-size:13px;color:#DCE2EE;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .ct{font-family:var(--label);font-weight:700;font-size:16px;color:#fff;font-variant-numeric:tabular-nums}
+.bar .tr{grid-column:1/-1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.bar .fl{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.bar:hover .nm,.bar.on .nm{color:#fff}
+.bar.on .tr{outline:1px solid var(--gold)}
+.bar:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* Barra de filtros */
+.tools{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.tools .wrap{padding-block:12px;display:grid;gap:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search{flex:1 1 260px;position:relative;min-width:0}
+.search input{width:100%;font:inherit;padding:10px 12px 10px 38px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg)}
+.search input:focus{outline:2px solid var(--gold);outline-offset:0;border-color:transparent}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{all:unset;cursor:pointer;padding:8px 12px;font-family:var(--label);font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;gap:6px;align-items:center}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--chip-on);color:var(--chip-on-fg)}
+.seg button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.seg .c{font-variant-numeric:tabular-nums;opacity:.75}
+.chips.types .chip{border-radius:4px;font-family:var(--label);text-transform:uppercase;letter-spacing:.06em;font-size:13px}
+.chips.types .chip svg{width:13px;height:13px}
+select{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.chip{all:unset;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:var(--chip);font-size:13px;color:var(--fg)}
+.chip .dot{width:8px;height:8px;border-radius:50%}
+.chip .c{font-family:var(--label);font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.chip.on{background:var(--chip-on);color:var(--chip-on-fg);border-color:var(--chip-on)}
+.chip.on .c{color:inherit;opacity:.8}
+.chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* Resultados */
+main .wrap{padding-block:20px 48px}
+.status{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.status p{margin:0;color:var(--muted);font-size:14px}
+.status b{color:var(--fg);font-variant-numeric:tabular-nums}
+.clear{all:unset;cursor:pointer;font-size:13px;color:var(--gold);text-decoration:underline;text-underline-offset:3px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:14px}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 16px 14px 20px;display:grid;grid-template-rows:auto 1fr auto;gap:10px;min-width:0;transition:transform .18s ease, box-shadow .18s ease, border-color .18s;animation:rise .35s ease both}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:6px 0 0 6px;background:var(--ac)}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 24px -14px rgba(15,30,58,.45);border-color:color-mix(in srgb,var(--ac) 50%,var(--line))}
+@keyframes rise{from{opacity:.0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.area{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:13px;font-weight:600;color:var(--ac2)}
+.num{font-family:var(--label);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.card h3{font-family:var(--display);font-size:22px;line-height:1.15;font-weight:600;margin:0;text-wrap:balance;overflow-wrap:anywhere}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;padding:3px 8px;border-radius:3px;background:var(--surface-2);color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+.tag.type{color:var(--fg);font-weight:600}
+.tag.lvl-e{background:color-mix(in srgb,var(--gold) 22%,transparent);color:var(--fg)}
+.tag svg{width:12px;height:12px}
+.foot{display:flex;gap:8px;align-items:center;border-top:1px dashed var(--line);padding-top:10px}
+.open{flex:1;text-decoration:none;display:inline-flex;justify-content:center;align-items:center;gap:6px;padding:8px 10px;border-radius:5px;background:var(--navy);color:#fff;font-weight:600;font-size:13px}
+:root[data-theme="dark"] .open{background:var(--gold);color:#0B1426}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .open{background:var(--gold);color:#0B1426}}
+.open:hover{filter:brightness(1.12)}
+.open:focus-visible,.icon-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.icon-btn{all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:5px;color:var(--muted)}
+.icon-btn:hover{color:var(--fg);border-color:var(--muted)}
+.icon-btn svg{width:16px;height:16px}
+
+/* Vista lista */
+.grid.list{grid-template-columns:1fr;gap:6px}
+.grid.list .card{grid-template-columns:150px minmax(0,1fr) auto auto;grid-template-rows:auto;align-items:center;padding:10px 12px 10px 18px;gap:14px}
+.grid.list .card h3{font-size:19px}
+.grid.list .meta .num{display:none}
+.grid.list .foot{border:0;padding:0}
+.grid.list .open{flex:none}
+@media (max-width:720px){.grid.list .card{grid-template-columns:1fr;gap:8px}}
+
+.empty{text-align:center;padding:60px 16px;color:var(--muted);border:1px dashed var(--line);border-radius:6px}
+.empty h3{font-family:var(--display);font-size:26px;color:var(--fg);margin:0 0 6px}
+
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer .wrap{padding-block:18px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--navy);color:#fff;padding:9px 16px;border-radius:5px;font-size:13px;transition:.25s;pointer-events:none;z-index:20;border:1px solid var(--gold)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">
+      <div class="emblem"><img src="data:image/jpeg;base64,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dLa6MB77knEoNbkpcpNQfPVbNeZkw4aj2ETqDJBnxLQRcRjQUQ9pA6PFpY+2WiDVlfg2uwiUdNrLSCUtgz3oWWzXbM96cy5SMj3hMIChlKuvTU0c4pW1WrI65ltxS4OJOjpclrS2WwiJxv4xJZFudQeW4jyHqp0ntK6+2jpNg6OcmjzXew6vqTL6m2c/pZupaQRl4xmXMYCQNO29rZoWilVrUqNTabrVeWw3T4KTzcdJt9txa8uJBJSfZHszMi3mJR0de9Lw4/q7C9ykVJxG0Ur6PR7vHErEqpVK/wDFac3GTDiwUrkJgpOQ3rpaSkuzUSDUXYpJCSzyL6Qt/gLTqhSNGCwaXVYUiDOjUKIy/Gktm240tLSSNKkntIyPiMBIgAAAAAAAAAAAAAAAAAAAAAAAACv91Yn6TFLveq062dHWJWqPHkrbhVJVwsMnKaI8kuGg9qcy25HuAWAAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njh13tLXwXIXpPHAWXAVo672lr4LkL0njiZ8NK9fNx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" alt="Training TMLF"></div>
+      <div class="brand-txt">
+        <div class="eyebrow">TMLF Academy · Training Department</div>
+        <h1>Catálogo de <em>materiales</em> de capacitación</h1>
+        <p>Todos los trainings, simuladores, eBooks y herramientas de consulta de The Mendoza Law Firm en un solo lugar. Filtra por área, tipo o nivel.</p>
+      </div>
+      <div class="brand-right"><div class="year"><span class="year-n">2026</span><span class="seal">Actualizado <span id="upd"></span></span></div></div>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="dist">
+      <div class="dist-head"><h2>Materiales por área</h2><span>Toca un área para filtrar</span></div>
+      <div class="bars" id="bars"></div>
+    </div>
+  </div>
+</header>
+
+<div class="tools">
+  <div class="wrap">
+    <div class="row">
+      <label class="search" for="q">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Buscar por nombre, área o tema (ej. VAWA, DCL, Compliance)" autocomplete="off">
+      </label>
+      <select id="lvl" aria-label="Nivel">
+        <option value="">Todos los niveles</option>
+        <option value="General">General</option>
+        <option value="Especializado">Especializado</option>
+      </select>
+      <select id="host" aria-label="Plataforma"><option value="">Todas las plataformas</option></select>
+      <select id="sort" aria-label="Ordenar">
+        <option value="area">Ordenar por área</option>
+        <option value="az">Nombre A–Z</option>
+        <option value="type">Por tipo</option>
+      </select>
+      <div class="seg" role="group" aria-label="Vista">
+        <button id="vGrid" class="on" title="Vista de fichas" aria-pressed="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></button>
+        <button id="vList" title="Vista de lista" aria-pressed="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="4" width="18" height="3" rx="1"/><rect x="3" y="10.5" width="18" height="3" rx="1"/><rect x="3" y="17" width="18" height="3" rx="1"/></svg></button>
+      </div>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Áreas"></div>
+    <div class="chips types" id="types" role="group" aria-label="Tipo de material"></div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <div class="status"><p id="count"></p><button class="clear" id="clear" hidden>Limpiar filtros</button></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</main>
+
+<footer><div class="wrap"><span>TMLF Academy · Training Department · The Mendoza Law Firm</span><span>Uso interno · CDMX · Cancún · Puerto Rico</span></div></footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ===== Catálogo: agrega aquí nuevos materiales [Nombre, Área, Tipo, URL] ===== */
+const UPDATED = "16 oct 2026";
+const RAW = [
+["Visa T Common Core (Especializado)","PR Atty","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Common_Core_Visa_T_Integrado.html"],
+["Formularios USCIS","Packets","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/formularios_capacitacion_TMLF.html"],
+["Instrucciones Compliance","Customer Service","eBook","https://training1mendozafirm-svg.github.io/respaldotraining/Instrucciones_CS_Compliance.html"],
+["End to End (General)","Traducción","Training","https://training1mendozafirm-svg.github.io/respaldotraining/M1_EndToEnd.html"],
+["VAWA y DCL (General)","Traducción","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Modulo1_VAWA_DCL.html"],
+["NO VAWA y DCL (General)","Traducción","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Modulo2_DCL.html"],
+["Visa T y DCL (General)","Traducción","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Modulo3_Visa_T.html"],
+["Good Moral Character (General)","Traducción","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Modulo5_GMC.html"],
+["Compliance Policy Manual (General)","Traducción","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Modulo6_Compliance.html"],
+["Redacción y Traducción (General)","Traducción","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Modulo7_Traduccion.html"],
+["Witness Letters y Reference Letters","Traducción","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Modulo8_Witness.html"],
+["Declaraciones y Semáforos","Case Review","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Portal_Legal_VAWA_T_U_K1.html"],
+["Scripts Intake y Consulta – VAWA y Visa T","DVS","Consulta","https://training1mendozafirm-svg.github.io/respaldotraining/Scripts_VisaT_VAWA_Informativo.html"],
+["Simulador de Roles de Compliance","Compliance","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/Simulador_Roles_Compliance.html"],
+["Simulador Visa T DCL (Criterios y EMP)","PR Atty","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/SimuladorVisaT.html"],
+["Simulador Visa T DCL (Criterios y EMP) Especializado","PR Atty","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/SimuladorVisaT_DomingoPerezLopez.html"],
+["Simulador VAWA DCL (Especializado)","PR Atty","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/taller_VAWA_criterios.html"],
+["Diligencias Compliance (Anti-conductas dilatorias)","PR Atty","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_ComplianceDiligence.html"],
+["RFEs y NOIDs","RFE","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_RFEs_NOIDs_DCLs_VAWA.html"],
+["Preguntas Intake Visa T","DVS","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Visa_T_Intake.html"],
+["Visa T: Fragmentos Entrevista-DCL-CVL (General)","PR Atty","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_VisaT.html"],
+["DCL Edición","WAEs","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_WAE_EdicionIA.html"],
+["VAWA DCL","PR Atty","Training","https://training1mendozafirm-svg.github.io/respaldotraining/VAWA_LMS_Training.html"],
+["VAWA DCL (Especializado)","PR Atty","Training","https://training1mendozafirm-svg.github.io/respaldotraining/VAWA_LMS_Training__taller_vawa_criterios.html"],
+["VAWA DCL (General)","PR Atty","Training","https://training1mendozafirm-svg.github.io/respaldotraining/VAWA_LMS_Training_5.html"],
+["Visa T Common Core (General)","PR Atty","Training","https://training1mendozafirm-svg.github.io/respaldotraining/VisaT_Humanitarias_v1.html"],
+["Visa U Common Core (Especializado)","PR Atty","Training","https://training1mendozafirm-svg.github.io/respaldotraining/VisaU.html"],
+["Chatbot Glosario","TMLF","Consulta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/glosarioTMLF.html"],
+["Escritura Visa T DCL y CVL","WAEs","Training","https://www.dokie.ai/presentation/share/aMNPMJ24BX4Q"],
+["Edición Visa T","WAEs","Training","https://www.canva.com/design/DAG6_n-HEpE/gzmY3S9sCFhND0ZW--YeYg/view?utm_content=DAG6_n-HEpE&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hb13b9e9e24"],
+["Affidavits Litigation","Litigation","Training","https://www.canva.com/design/DAG1CARFoV8/xG-S_xI4PDwKduhKbOO7Vg/edit?utm_content=DAG1CARFoV8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"],
+["Common Core Visa T","WAEs","Training","https://www.canva.com/design/DAG0k5vhaiQ/V1j11l7Gd3B0-l_kP1BLZQ/edit"],
+["DCL y CVL Visa T","WAEs","Training","https://www.canva.com/design/DAG0rpSqyrY/k5IQl5BpHzfOJgNV3ICt1Q/edit?utm_content=DAG0rpSqyrY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"],
+["PBB Template CVL","Litigation","Training","https://www.canva.com/design/DAG0enePV7I/ptNjoUu36EbFyPgtzdFDGQ/edit"],
+["WAEs Visa T Common Core","WAEs","Training","https://www.canva.com/design/DAGzrS25XDc/kSahHNiPmAlshsR2OUmjaQ/view?utm_content=DAGzrS25XDc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h87632ca082"],
+["WAEs Visa T Escritura DCL y CVL","WAEs","Training","https://www.canva.com/design/DAGzrwyYtHc/0S7fS6tZ3RStG-ibAkVz3A/view?utm_content=DAGzrwyYtHc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h309a32ed68"],
+["WAEs Visa T Edición DCL y CVL","WAEs","Training","https://www.canva.com/design/DAG1fUmIIRc/ymImPN5uTIjGcg0_1pV5Bg/view?utm_content=DAG1fUmIIRc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h303ae1949a"],
+["Compliance Diligence 1","Compliance","Simulador","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/SimulComplianP1.html"],
+["Compliance y Dilatory Conducts","Compliance","Simulador","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/ComDilatoryConducts.html"],
+["Liderazgo en Compliance","Compliance","Simulador","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/LiderazgoCompliance.html"],
+/* ---- Bloque 2 ---- */
+["VAWA / No VAWA","TMLF","Training","https://training1mendozafirm-svg.github.io/respaldotraining/VAWA_NoVAWA.html"],
+["End to End TMLF","TMLF","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_End_to_End.html"],
+["Atención al cliente","TMLF","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Atencion_Cliente.html"],
+["Common Core VAWA","TMLF","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_CommonCore_VAWA.html"],
+["Infografía All Process","TMLF","Consulta","https://drive.google.com/file/d/1I6AhJ3AXeUARzGt9isfVLoW-wahdcZYg/view?usp=sharing"],
+["Abusómetro","TMLF","Consulta","https://drive.google.com/file/d/1007FTvTW9l9gcejAz9kuKd7vZ_bIoER-/view?usp=sharing"],
+["Evidenciómetro","TMLF","Consulta","https://drive.google.com/file/d/17DKaNMjW_Met7Jypt7UH5GMWtXN3czzN/view?usp=sharing"],
+["Evidencias admisibles e inadmisibles","TMLF","Consulta","https://drive.google.com/file/d/111kOlH3vTxj5i2cFfNuoqTU-u1tIpTon/view?usp=sharing"],
+["Solicitudes de PCR","PreCase Review","Consulta","https://claude.ai/public/artifacts/c6aa25be-a856-47bb-9e38-fe9ba8cabd8e"],
+["Guía Operativa de PreCase Review","PreCase Review","Training","https://claude.ai/public/artifacts/af7ae8ea-5113-497e-b251-59c52e454452"],
+["Evaluación: Casos PCR Rutina Operativa","PreCase Review","Evaluación","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Casos_PCR_Rutina_Operativa.html"],
+["Recursos Operativos VAWA","PWI","Recursos Operativos","https://docs.google.com/document/d/106YsKcHE428YshVLKXIcZtH1OjirZ6Q90kErl-2OUuw/edit?tab=t.pgmn5sy1jla5"],
+["Recursos Operativos Visa T","PWI","Recursos Operativos","https://docs.google.com/document/d/1_b2kkTo2caWbnet0QwzomNvm7jBqvgDi4mqCjrGAiX0/edit?tab=t.uzog7l7a4hjo"],
+["Witness Statement","PWI","Recursos Operativos","https://docs.google.com/document/d/1GpCjfpAkJIHR-f3ZL5yruonxVCKkDzxcI2sO2OnpqiQ/edit?usp=sharing"],
+["Speech WS","PWI","Recursos Operativos","https://docs.google.com/document/d/1vlPQoWyJ4i_Qino9U9yohrsEjbSeLZCqh4v7da7biiw/edit?usp=sharing"],
+["Antifraude","TMLF","Consulta","https://drive.google.com/file/d/1Vkcv-D0rlXMDWWK1TBnNMPwCBRjCfLAv/view?usp=sharing"],
+["Evidencias de abuso VAWA","TMLF","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Evidencias_Abuso_VAWA.html"],
+["Simulador de Entrevista VAWA","TMLF","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Simulador_Entrevista_VAWA.html"],
+["Estructura de Entrevista VAWA","TMLF","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Estructura_Entrevista_VAWA.html"],
+["Simulador Common Core","TMLF","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Simulador_Common_Core_VAWA.html"],
+["Simulador Case Review","Case Review Attys","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Simulador_Case_Review.html"],
+["Case Review Abogados","Case Review Attys","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Case_Review_Abogados.html"],
+["Actividad Checklist VAWA","PWI","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Actividad_Checklist_VAWA.html"],
+["Training Recursos Operativos VAWA","PWI","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Training_Recursos_PWI_VAWA.html"],
+["Formas VAWA","PWI","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Formas_VAWA.html"],
+["Actividad de llenado de formulario Mendoza Hub","PWI","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_CRM_Checklist_Mendoza_Hub.html"],
+["End to End Case Review Paralegal","CR Paralegal","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_End_to_End_Case_Review_Paralegal.html"],
+["Rutina Operativa Case Review Paralegal","CR Paralegal","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Rutina_Operativa_Case_Review_Paralegal.html"],
+["Videollamadas CR","CR Paralegal","Training","https://drive.google.com/drive/folders/1NbnVE_LH2DMyIhCXHjxB0yU9K65ttlt7?usp=sharing"],
+["Forms Base","CR Paralegal","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Formas_Migratorias_Base.html"],
+["Geografía de Estados Unidos","CR Paralegal","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Geografia_Estados_Unidos.html"],
+["Llenado de Formas","CR Paralegal","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Llenado_de_Formas.html"],
+["Abuso VAWA","TMLF","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Abuso_VAWA.html"],
+["Case Status Call Guide","TMLF","Recursos Operativos","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/CaseStatusCall.html"],
+["End to End Customer Service","Customer Service","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_End_to_End_Customer_Service.html"],
+["CS Dropbox","Customer Service","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Dropbox_CS_Training.html"],
+["CS Portal","Customer Service","Recursos Operativos","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_CS_Portal.html"],
+["Evaluación CS Portal","Customer Service","Evaluación","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Evaluacion_CS_Portal.html"],
+["Formulario de ClickUp","Customer Service","Consulta","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Formulario_ClickUp_Call_Registry.html"],
+["Outbound CS","Customer Service","Consulta","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Outbound_CS_Llamada_Saliente.html"],
+["Inbound CS","Customer Service","Consulta","https://training1mendozafirm-svg.github.io/respaldotraining/TMLF_Inbound_CS_Llamada_Entrante.html"],
+/* ---- Bloque 3 ---- */
+["Callbacks Process","Callbacks","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Callbackprocess.html"],
+["Discovery calls & screenings","Callbacks","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/callbacks2.html"],
+["Estrategias de comunicación y buenas prácticas","Callbacks","Training","https://www.canva.com/design/DAG5QegQb0Q/Viy9f5gpzbfurw0JsU_vJw/view?utm_content=DAG5QegQb0Q&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h08748fcda5"],
+["Simulador de estrategias","Callbacks","Simulador","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Simcallback.html"],
+["Flujo operativo RFE","RFE","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/flujoRFE.html"],
+["Husos horarios","Collections","Consulta","https://cambiohorario.com/zonas/usa/"],
+["Chatbot Glosario","Collections","Consulta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/glosarioTMLF.html"],
+["Inadmisibilidad y delitos","LSU","Training","https://www.canva.com/design/DAGrYOYHgWA/HvusIz5VGBj5gnuAqbUJyg/view?utm_content=DAGrYOYHgWA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h82c2efb556"],
+["Recibos y comunicaciones","LSU","Training","https://www.canva.com/design/DAGsIvZL-kY/4B3WGIAEBoMMuU-042ARMA/view?utm_content=DAGsIvZL-kY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he28f2d6510"],
+["Formas I-360 y I-485","LSU","Training","https://view.genially.com/69121f51c9e397b7f12c230c"],
+["Estructura de paquetes","LSU","Consulta","https://www.canva.com/design/DAHCPsNR3qQ/ItU4TZ8gb1Z1MLufpiCFHw/view?utm_content=DAHCPsNR3qQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h7088d4dab7"],
+["Paquete VAWA AOS","LSU","Consulta","https://view.genially.com/68ecfe1aebd28059092e4d7f"],
+["Paquete Visa T","LSU","Consulta","https://view.genially.com/68a4d74b1807e6a26085323a"],
+["VAWA Documents","LSU","Training","https://www.canva.com/design/DAG3LlU6H_M/1IY_I9T47d26QIVKGGg51A/view?utm_content=DAG3LlU6H_M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h2558291c6a#12"],
+["Evidencias Visa T","LSU","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/VISATEVID.html"],
+["Demandas a empresas (Visa T)","LSU","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Busqueda_demandas.html"],
+["Rutina Operativa y Manejo de Cliente LSU","LSU","Training","https://training1mendozafirm-svg.github.io/respaldotraining/RutinaOperativayManejodeClienteLSU.html"],
+["End to End Litigation Psych","Litigation","Training","https://www.canva.com/design/DAG0jxH9z2A/axZN01Cg_KRppifagvJgyA/view?utm_content=DAG0jxH9z2A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h90d2982d51"],
+["Multi-Party Litigation","Litigation","Training","https://www.canva.com/design/DAGu2AIoWOA/r6taR341EvttKbiZudVKOA/view?utm_content=DAGu2AIoWOA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h79639fad15"],
+["Técnicas de entrevista","Litigation","Training","https://view.genially.com/6838a1b274649875ac46fced"],
+["Manual de protocolos","Litigation","Training","https://www.canva.com/design/DAF2bBEm7fw/Ku4A2olU5IPO3gWsmbTIJQ/view?utm_content=DAF2bBEm7fw&utm_campaign=designshare&utm_medium=link&utm_source=editor"],
+["Protocolos de videollamada","Litigation","Training","https://view.genially.com/67f9e6887614856436806b9d"],
+["Litigation: parte teórica","Litigation","Training","https://view.genially.com/68e2fef3f127904a80428396"],
+["Visa T Common Core (Litigation)","Litigation","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/trainingvisat.html"],
+["Proceso de litigación MLF","Litigation","Training","https://view.genially.com/68e33bcd03cc20c0b62acd95"],
+["Script VAWA Multi-Party Litigation","Litigation","Training","https://www.canva.com/design/DAGu2AIoWOA/r6taR341EvttKbiZudVKOA/view?utm_content=DAGu2AIoWOA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h79639fad15"],
+["Script Visa T Multi-Party Litigation","Litigation","Training","https://www.canva.com/design/DAGvIa50lDc/GGLf-t2ZB-Gm4mZgit8xKQ/view?utm_content=DAGvIa50lDc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hf9d31c6e1b"],
+["CVL Litigation","Litigation","Training","https://www.canva.com/design/DAG0v3M3dJw/p-fywaWUD3A-h2JCI24Zbg/view?utm_content=DAG0v3M3dJw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h86259f814f"],
+["Litigation Audit","Litigation","Training","https://view.genially.com/68d6af958630d242edc9f42c"],
+["CIMT","Litigation","Training","https://www.canva.com/design/DAGVPgAuas4/3asYnxfby_3xv1UXO0uyOA/edit?utm_content=DAGVPgAuas4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"],
+["Recibos y comunicaciones","Litigation","Training","https://www.canva.com/design/DAGsIvZL-kY/4B3WGIAEBoMMuU-042ARMA/view?utm_content=DAGsIvZL-kY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he28f2d6510#11"],
+["Paquetes RFE","Litigation","Training","https://www.canva.com/design/DAG1mgarmBE/cY-RVoZ9dQeOF3qJgqOPhQ/edit"],
+["Legal Requirements, GMC y Bona Fides","Litigation","Training","https://www.canva.com/design/DAGF-Q_QjdA/0euCYQhMMaGICj2M7_R0Pg/view?utm_content=DAGF-Q_QjdA&utm_campaign=designshare&utm_medium=link&utm_source=editor"],
+["Delitos","Litigation","Training","https://www.canva.com/design/DAGymFSHGOM/JwO4BhEevBU8cVrrokVsIg/view?utm_content=DAGymFSHGOM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he9b1154c06"],
+["FRAP","Litigation","Training","https://training1mendozafirm-svg.github.io/respaldotraining/FRAP.html"],
+["Habeas Corpus","Litigation","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Habeas_Corpus.html"],
+["Litigación Migratoria","Litigation","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Litigacion_Migratoria.html"],
+["Recursos legales: APA, Mandamus y Habeas Corpus","Litigation","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Recursos_Legales_APA_Mandamus_Habeas_Corpus.html"],
+["Yajure Maldonado","Litigation","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Yajure_Maldonado.html"],
+["Guía de preguntas Callbacks","Callbacks","Consulta","https://training1mendozafirm-svg.github.io/respaldotraining/GuiadepreguntasCallbacks.html"],
+["Guía de estrategias","Callbacks","Consulta","https://training1mendozafirm-svg.github.io/respaldotraining/guia-estrategiascallbacks.html"],
+["Simulador de estrategias de comunicación","Callbacks","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/Simuladorestrategiasdecomunicaci%C3%B3n.html"],
+["Análisis de llamada","Callbacks","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/Simuladorexploraci%C3%B3nmultiestrat%C3%A9gica.html"],
+["Simulador obtención de información sensible","Callbacks","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/Simuladormanejodeemocionesdelcliente.html"],
+["Radar estratégico Callbacks","Callbacks","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/RadarestrategicoCallbacks.html"],
+["Estrategias de obtención de información sensible","Callbacks","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/Simuladorobtenci%C3%B3ndeinformaci%C3%B3nsensible.html"],
+["Exploración multiestratégica","Callbacks","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/Sumuladorexploraci%C3%B3nmultiestrat%C3%A9gica2.html"],
+["Training paralegales","Callbacks","Training","https://training1mendozafirm-svg.github.io/respaldotraining/TrainingparalegalesCallbacks.html"],
+["Elegibilidad Migratoria","Collections","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Elegibilidad_Migratoria.html"],
+["Evaluación de balances de cobro","Collections","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/Evaluacion_Balance_Adeudo.html"],
+["Evaluación de llamada Collections","Collections","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/Evaluacion_Llamada_Collections.html"],
+["Flujo operativo: guía para agentes","Collections","Consulta","https://training1mendozafirm-svg.github.io/respaldotraining/Flujo_Operativo_TMLF_Guia_Agentes.html"],
+["Fundamentos de elegibilidad e inadmisibilidad","Collections","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Fundamentos_Elegibilidad_Inadmisibilidad.html"],
+["Atención al cliente MLF","Collections","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Manejodeclientes.html"],
+["Manejo de objeciones","Collections","Training","https://training1mendozafirm-svg.github.io/respaldotraining/Manejodeobjecionesdecobranza.html"],
+["Simulador de Balances","Collections","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/Simulador_Balances.html"],
+["Simulador Estatus del cliente","Collections","Simulador","https://training1mendozafirm-svg.github.io/respaldotraining/Simulador_Estatus_Cliente.html"],
+/* ---- Bloque 4 (TMLF-ACTUALIZACIONES / artefac) ---- */
+["Case Status Call Guide (v2)","Customer Service","Consulta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/2docasestatus.html"],
+["TramCase 2.0: actualizaciones","TramCase","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/A.Tramcase2.0.html"],
+["Actualizaciones TramCase (llamadas)","TramCase","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/ACTUALIZACI%C3%93N%20TRAMCASE%20LLAM.html"],
+["Base completa de TramCase","TramCase","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/BASETRAMCASE.html"],
+["Búsqueda de demandas","TMLF","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Busqueda_demandas.html"],
+["Programa Paralegal Callbacks","Callbacks","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/CallBacks.html"],
+["Case Checklist","Callbacks","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/ChecklistCallbacks.html"],
+["Compliance Diligence","Compliance","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/ComplianceDiligence.html"],
+["Conocimientos Visa T","Compliance","Evaluación","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/ConocimientosVisaT.html"],
+["Customer Service: actualización de protocolos","Customer Service","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/CostumServ.html"],
+["Cronograma PR","Attorney","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/CronogramaPR2.html"],
+["Responsabilidades DI y Trainer","Training","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/DI-TRAINER.html"],
+["Directorio con perfiles","People","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Direct-perfil.html"],
+["Directorio sin perfiles","People","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/DirectorioTMLF.html"],
+["EAD 2026","RFE","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/EAD.html"],
+["Simulador avanzado de análisis Visa T","TMLF","Simulador","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/EMPVISAT.html"],
+["Formato de evaluación de calidad","Training","Evaluación","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/EV_LLAMADA_ENTRENAMIENTO_CDMX.html"],
+["Attorney Permanent Bar Quiz: Executive Dashboard","Attorney","Reporte","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/EvaluacionAttys.html"],
+["Gantt Training","Training","Reporte","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/GanttTraining.html"],
+["Checklist de evidencias y Abusómetro","RFE","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/HerramientasRFE.html"],
+["Organigrama TMLF","People","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/OrganigramaTMLF.html"],
+["Organigrama TMLF con nombres","People","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/OrganigramaV2.html"],
+["Regleta Visa T","TMLF","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/REGLETAVISAT.html"],
+["Reporte Training","Training","Reporte","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/REPORTESTRAINING.html"],
+["Revisión de llamadas de atención al cliente (empatía, claridad, comunicación)","Customer Service","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/REVllamadas.html"],
+["Simulador de estrategias USCIS (PR)","PR Atty","Simulador","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Simcallback.html"],
+["Immigration Lawyers Training Program","Attorney","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/T.Immigration%20Lawyers.html"],
+["TramCase: portal de documentos y workflows","TramCase","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TCportaldoc.html"],
+["TMLF Learning Center (cursos y créditos)","TMLF","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TMLFAcademy.html"],
+["Propuesta Moodle","Training","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TMLFLearningCenter.html"],
+["Recuperación de usuario y contraseña (Moodle)","TMLF","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TMLFaccesos.html"],
+["Calendario Training","TMLF","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TRAININGCALENDAR.html"],
+["PCM Monitoring Modules","Compliance","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TRAININGCOMPLIANCE.html"],
+["Compliance Diligence: training completo","Compliance","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TRAININGCOMPLIANDILIGE.html"],
+["Case Review: análisis integral de expedientes","Case Review","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Tcasereview.html"],
+["Case Review Word by Word","Case Review","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TrainingCR.html"],
+["Calculadora Visa T","TMLF","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/VISATCALCULADORA.html"],
+["Evidencias Visa T","TMLF","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/VISATEVID.html"],
+["Abusómetro RFE","RFE","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/abusometrorfe.html"],
+["Agenda PR","PR Atty","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/agendaPR.html"],
+["Agenda visita MGM","MGM","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/agendamgm.html"],
+["Atención al cliente TMLF","TMLF","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/atencliente.html"],
+["Bar Complaints","Compliance","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/barcompliance.html"],
+["Casos de elegibilidad migratoria (PR)","PR Atty","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/casoselegibilidadPR.html"],
+["Evaluación Callbacks","Callbacks","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/checkevaluacionPR.html"],
+["Checklist de evidencias RFE","RFE","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/checklistevidenciasrfe.html"],
+["#Compliance Help","Compliance","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/compliancehelp.html"],
+["Consentimiento informado","PreCase Review","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/consentimiento.html"],
+["Pendientes Training","Training","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/dashboardtraining.html"],
+["Directorio de manuales","Training","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/direcmanual.html"],
+["Centro operativo de consulta y dudas (WbW)","Case Review","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/dudaswbw.html"],
+["Eligibility Intake Assessment","PR Atty","Simulador","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/elegibilasses.html"],
+["Evaluación de reacción 2026","Training","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/ev.reacci%C3%B3n2026.html"],
+["Evaluación de elegibilidad migratoria","PR Atty","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/evelegibilidadmigratoria.html"],
+["Evaluación de reacción: training de abogados (3 días)","PR Atty","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/evreaccionPR.html"],
+["Update Visa T","PWI","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/index.html"],
+["TMLF Live (centro de actividades)","Training","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/livetraining.html"],
+["Actividad de escucha de llamadas","Training","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/llamadasCS.html"],
+["TMLF Training Center","Training","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/portaltraining.html"],
+["Customer Service, Callbacks y Case Review (visita MGM)","MGM","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/portaltrainingMGMcostum.html"],
+["Seguimiento de proceso de caso (internos y externos)","Customer Service","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/procesosintext.html"],
+["Callback Process Diagram","Callbacks","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/processcallback.html"],
+["Cómo pedirme prompts para Claude","Training","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/prompts.html"],
+["Case Review Word by Word: centro de dudas operativas","Case Review","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/pruebadudasdocusing.html"],
+["Reporte MGM sesiones PR","MGM","Reporte","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/reportprtraining.html"],
+["Workflow del área de Training","Training","Reporte","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/reportraining.html"],
+["Roles y responsabilidades en Compliance","Compliance","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/rolesyresponsabilidadescompliance.html"],
+["TMLF CS Simulator","Customer Service","Simulador","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/simulador2tramcase.html"],
+["Checklist para asesores de CS","Customer Service","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/simuladorCSde.html"],
+["Simulador TramCase (perfiles)","Training","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/simuladortramcase.html"],
+["Cómo construir un simulador efectivo","Training","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/simulinfogrf.html"],
+["Talleres de revisión legal (VAWA, Visa T, Cover Letter)","WAEs","Simulador","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/tallerrevisionlegal.html"],
+["Case Review Word by Word (operación fallida)","Case Review","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/trainingW&Wordv2.html"],
+["TMLF Learning Center marzo–mayo 2026","Training","Reporte","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/trainingartefacreport.html"],
+["Bar Complaints: señales, prevención y manejo","Compliance","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/trainingbarcompliance.html"],
+["Estructura de entrevista Visa T","PWI","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/trainingestructuraentrevisat.html"],
+["Hostigamiento","PR Atty","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/traininghostigam.html"],
+["Common Core Visa T","TMLF","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/trainingvisat.html"],
+["TramCase actualizaciones completo","TramCase","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/tramcasecompl.html"],
+["Transcripts Update","TramCase","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/tramcasetranscript.html"],
+["Monitoreo de calidad Customer Service","Customer Service","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/CEDULAMONITOREOCS.html"],
+["DocuSign: tutorial","Training","Herramienta","https://drive.google.com/file/d/1PgikvPrxvhd-ilCb9DrqIdaCybXx4f8s/view"],
+["DocuSign: práctica","Training","Herramienta","https://drive.google.com/file/d/1Fwf_nQrByozMSVlRAsLkHOrLiLp6jgTO/view?t=0.332"],
+["Barras permanentes","Training","Infografía","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/barraspermanentes.html"],
+["Customer Service Operations Portal","Customer Service","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/portalCS.html"],
+["Crimmigration","Training","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Crimmigration.html"],
+["Evaluación de llamadas de CR (prácticas)","Case Review","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/evlauacionllamadasCR.html"],
+["I-130: caso práctico","Packets","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/casopracticoI-130.html#v1"],
+["Evaluación diagnóstica de formas migratorias","Packets","Evaluación","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/evdiagformamigra.html"],
+["Evaluación I-130 petición familiar","Packets","Evaluación","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/EvluacionI130.html"],
+["Asistencia a trainings","Training","Herramienta","https://training1mendozafirm-svg.github.io/artefac/registroasistencia.html"],
+["Training Forma I-131","Packets","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/formaI131.html#v1"],
+["Evaluación Forma I-131","Packets","Evaluación","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/EvformaI-131.html"],
+["Training Forma I-864","Packets","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/formaI-864.html#v0"],
+["Evaluación Forma I-864","Packets","Evaluación","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/evaluacionformaI-864.html"],
+["Consentimiento informado: registro de firmas","Compliance","Herramienta","https://training1mendozafirm-svg.github.io/artefac/firmasregistroconsentimiento.html"],
+["Forma I-90 vs I-751","Packets","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/FormaI-90.html"],
+["Evaluación Forma I-90 vs I-751","Packets","Evaluación","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/evaluacionI-90VsI-751.html"],
+["Forma I-485","Packets","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/FormaI-485.html#v0"],
+["Evaluación Forma I-485","Packets","Evaluación","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/evaluacionI-485.html"],
+["Forma I-751","Packets","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/FormaForma%20I-751.html"],
+["Forma N-400","Packets","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/FormaN400.html#v1"],
+["Horarios y zonas DVS","DVS","Herramienta","https://training1mendozafirm-svg.github.io/artefac/DVStimezone.html"],
+["Guía operativa de firmas e integridad documental","Compliance","Infografía","https://training1mendozafirm-svg.github.io/artefac/Gu%C3%ADaoperativadefirmas.html#p1"],
+["Guía operativa Dirección del Abogado: criterio profesional y ejecución","Compliance","Infografía","https://training1mendozafirm-svg.github.io/artefac/Gu%C3%ADaoperativaDirecci%C3%B3ndelAbogado.html#inicio"],
+["Protocolo Dirección del Abogado","Compliance","Infografía","https://training1mendozafirm-svg.github.io/artefac/ProtocoloDirecci%C3%B3ndelAbogado.html#p1"],
+["Evaluación práctica ABC de formas","Packets","Training","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Evaluaci%C3%B3nPr%C3%A1cticaABC.html"],
+["Evaluación de competencias de cobranza","Collections","Evaluación","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Collectionevaluaciondesemp.html"],
+["Llamadas auditadas de Case Review","Case Review","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/casereviewauditorllamadas.html"],
+["I-192: inadmisibilidad","Attorney","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TMLF_I-192inadmisibilidad.html"],
+["I-918 Visa U","Attorney","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TMLF_I-918_Visa_U.html"],
+["I-914 Supplement A: Visa T derivado","Attorney","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Forma_I-914_Supp_A_VISATDERIVADO.html"],
+["Forma I-914 Visa T","Attorney","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/Forma_I-914_VISAT.html"],
+["I-360 VAWA cónyuge: caso práctico","Attorney","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TMLF_I-360_VAWA_Conyuge_Caso_Practico.html"],
+["I-918 Supplement A: derivado","Attorney","Herramienta","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/I-918_SuppA_DERIVADO.html"],
+["Book Formulario I-485: categorías de ajuste de estatus","Packets","eBook","https://training1mendozafirm-svg.github.io/TMLF-ACTUALIZACIONES/TMLF_Book_I485_Categorias.html"],
+];
+
+/* Colores por área: [lomo, texto en claro] */
+const AREA_COLORS = {
+  "PR Atty":["#C29A4B","#8A6A24"], "Traducción":["#3E7CB1","#2C6597"], "WAEs":["#7A5BB0","#61449A"],
+  "Compliance":["#2E8B6E","#1F735A"], "DVS":["#D0693F","#B2522B"], "Litigation":["#A7414A","#8E2F38"],
+  "Customer Service":["#1F9BB5","#157F95"], "Case Review":["#6B7A2E","#58661F"], "RFE":["#C14E86","#A33A6F"],
+  "Packets":["#4D5FA8","#3A4B91"], "TMLF":["#0F1E3A","#2C3E66"],
+  "Callbacks":["#E0A030","#9A6A10"], "Collections":["#3C9D4E","#2A7A39"], "LSU":["#8C6D52","#6F533B"],
+  "PWI":["#5B8FD6","#3A6DB5"], "CR Paralegal":["#8AA13A","#667A22"], "Case Review Attys":["#4E6B2A","#3F5A1E"],
+  "PreCase Review":["#B07A9E","#8F5880"],
+  "TramCase":["#2A6F8F","#1E5873"], "Training":["#B8862F","#8A6115"], "People":["#7E8C9E","#566377"],
+  "MGM":["#5A2E4A","#7A4065"], "Attorney":["#9C6B1F","#7A510F"]
+};
+const FALLBACK = ["#6E7891","#4E5872"];
+const TYPE_ICON = {
+  "Training":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l9-4 9 4-9 4z"/><path d="M7 9v5c0 1.5 2.5 3 5 3s5-1.5 5-3V9"/></svg>',
+  "Simulador":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M10 9l4 2-4 2z" fill="currentColor"/><path d="M8 21h8"/></svg>',
+  "eBook":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg>',
+  "Consulta":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/><path d="M9 10h6"/></svg>',
+  "Evaluación":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg>',
+  "Recursos Operativos":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h7l2 2h9v10H3z"/><path d="M3 7V5h6l2 2"/></svg>',
+  "Herramienta":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>',
+  "Infografía":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 16v-4M12 16V8M16 16v-6"/></svg>',
+  "Reporte":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>'
+};
+function hostOf(u){
+  if(u.includes("canva.com")) return "Canva";
+  if(u.includes("genially.com")) return "Genially";
+  if(u.includes("dokie.ai")) return "Dokie";
+  if(u.includes("docs.google.com")) return "Google Docs";
+  if(u.includes("drive.google.com")) return "Google Drive";
+  if(u.includes("claude.ai")) return "Claude";
+  if(u.includes("github.io")) return "TMLF Web";
+  return "Sitio externo";
+}
+
+const DATA = RAW.map((r,i)=>{
+  const url = /^https?:\/\//.test(r[3]) ? r[3] : "https://" + r[3];
+  const host = hostOf(url);
+  const lvl = /especializad/i.test(r[0]) ? "Especializado" : /\(general\)/i.test(r[0]) ? "General" : "";
+  return {id:i+1, name:r[0].trim(), area:r[1].trim(), type:r[2].trim(), url, host, lvl};
+});
+const AREAS = [...new Set(DATA.map(d=>d.area))].sort((a,b)=>cnt("area",b)-cnt("area",a)||a.localeCompare(b,"es"));
+const TYPES = [...new Set(DATA.map(d=>d.type))].sort((a,b)=>cnt("type",b)-cnt("type",a));
+function cnt(k,v){return DATA.filter(d=>d[k]===v).length}
+const col = a => AREA_COLORS[a]||FALLBACK;
+
+const S = {q:"", area:"", type:"", lvl:"", host:"", sort:"area", view:"grid"};
+try{const s=JSON.parse(localStorage.getItem("tmlf-cat")||"{}"); if(s.view) S.view=s.view; if(s.sort) S.sort=s.sort;}catch(e){}
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+
+$("upd").textContent = UPDATED;
+
+/* KPIs */
+const kp = [
+  ["Materiales en total", DATA.length, true],
+  ["Áreas atendidas", AREAS.length],
+  ["Trainings", cnt("type","Training")],
+  ["Simuladores y evaluaciones", cnt("type","Simulador")+cnt("type","Evaluación")],
+  ["Herramientas, guías e infografías", DATA.length-cnt("type","Training")-cnt("type","Simulador")-cnt("type","Evaluación")]
+];
+$("kpis").innerHTML = kp.map(k=>`<div class="kpi${k[2]?" main":""}"><div class="n" data-to="${k[1]}">${k[1]}</div><div class="l">${k[0]}</div></div>`).join("");
+if(!matchMedia("(prefers-reduced-motion: reduce)").matches){
+  document.querySelectorAll(".kpi .n").forEach(el=>{
+    const to=+el.dataset.to, t0=performance.now(), d=900;
+    const step=t=>{const p=Math.min(1,(t-t0)/d); el.textContent=Math.round(to*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(step);};
+    el.textContent="0"; requestAnimationFrame(step);
+  });
+}
+
+/* Barras por área */
+const maxA = Math.max(...AREAS.map(a=>cnt("area",a)));
+$("bars").innerHTML = AREAS.map(a=>`<button class="bar" data-a="${esc(a)}" aria-pressed="false"><span class="nm">${esc(a)}</span><span class="ct">${cnt("area",a)}</span><span class="tr"><span class="fl" style="width:0;background:${col(a)[0]}" data-w="${cnt("area",a)/maxA*100}"></span></span></button>`).join("");
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll(".fl").forEach(f=>f.style.width=f.dataset.w+"%")));
+
+/* Chips de área y tipos */
+function buildChips(){
+  const base = DATA.filter(d=>pass(d,{skipArea:true}));
+  $("chips").innerHTML = `<button class="chip${S.area?"":" on"}" data-a="">Todas las áreas <span class="c">${base.length}</span></button>` +
+    AREAS.map(a=>{const n=base.filter(d=>d.area===a).length;return `<button class="chip${S.area===a?" on":""}" data-a="${esc(a)}" aria-pressed="${S.area===a}"><span class="dot" style="background:${col(a)[0]}"></span>${esc(a)} <span class="c">${n}</span></button>`}).join("");
+  const baseT = DATA.filter(d=>pass(d,{skipType:true}));
+  $("types").innerHTML = `<button class="chip${S.type?"":" on"}" data-t="">Todos los tipos <span class="c">${baseT.length}</span></button>` +
+    TYPES.map(t=>`<button class="chip${S.type===t?" on":""}" data-t="${esc(t)}" aria-pressed="${S.type===t}">${TYPE_ICON[t]||""}${esc(t)} <span class="c">${baseT.filter(d=>d.type===t).length}</span></button>`).join("");
+  document.querySelectorAll(".bar").forEach(b=>{const on=b.dataset.a===S.area;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+}
+function pass(d,o={}){
+  if(!o.skipArea && S.area && d.area!==S.area) return false;
+  if(!o.skipType && S.type && d.type!==S.type) return false;
+  if(S.lvl && d.lvl!==S.lvl) return false;
+  if(S.host && d.host!==S.host) return false;
+  if(S.q){const hay=norm(`${d.name} ${d.area} ${d.type} ${d.host} ${d.lvl}`); if(!norm(S.q).split(/\s+/).every(w=>hay.includes(w))) return false;}
+  return true;
+}
+
+function render(){
+  buildChips();
+  let list = DATA.filter(d=>pass(d));
+  const az=(a,b)=>a.name.localeCompare(b.name,"es");
+  if(S.sort==="az") list.sort(az);
+  else if(S.sort==="type") list.sort((a,b)=>a.type.localeCompare(b.type,"es")||az(a,b));
+  else list.sort((a,b)=>AREAS.indexOf(a.area)-AREAS.indexOf(b.area)||az(a,b));
+  const g=$("grid"); g.classList.toggle("list",S.view==="list");
+  $("vGrid").classList.toggle("on",S.view==="grid"); $("vGrid").setAttribute("aria-pressed",S.view==="grid");
+  $("vList").classList.toggle("on",S.view==="list"); $("vList").setAttribute("aria-pressed",S.view==="list");
+  const filt = S.q||S.area||S.type||S.lvl||S.host;
+  $("clear").hidden=!filt;
+  $("count").innerHTML = filt ? `Mostrando <b>${list.length}</b> de <b>${DATA.length}</b> materiales` : `Mostrando los <b>${DATA.length}</b> materiales del catálogo`;
+  if(!list.length){g.innerHTML=`<div class="empty"><h3>Sin resultados</h3>Prueba con otra palabra o limpia los filtros.</div>`;return;}
+  g.innerHTML = list.map((d,i)=>{
+    const [c1,c2]=col(d.area);
+    return `<article class="card" style="--ac:${c1};--ac2:${c2};animation-delay:${Math.min(i,20)*18}ms">
+      <div class="meta"><span class="area">${esc(d.area)}</span><span class="num">N.º ${String(d.id).padStart(3,"0")}</span></div>
+      <h3>${esc(d.name)}</h3>
+      <div class="tags">
+        <span class="tag type">${TYPE_ICON[d.type]||""}${esc(d.type)}</span>
+        ${d.lvl?`<span class="tag${d.lvl==="Especializado"?" lvl-e":""}">${d.lvl}</span>`:""}
+        <span class="tag">${d.host}</span>
+      </div>
+      <div class="foot">
+        <a class="open" href="${esc(d.url)}" target="_blank" rel="noopener">Abrir material <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+        <button class="icon-btn" data-copy="${esc(d.url)}" title="Copiar enlace" aria-label="Copiar enlace de ${esc(d.name)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
+      </div>
+    </article>`}).join("");
+}
+function save(){try{localStorage.setItem("tmlf-cat",JSON.stringify({view:S.view,sort:S.sort}))}catch(e){}}
+
+$("q").addEventListener("input",e=>{S.q=e.target.value.trim();render()});
+$("lvl").addEventListener("change",e=>{S.lvl=e.target.value;render()});
+[...new Set(DATA.map(d=>d.host))].sort((a,b)=>cnt("host",b)-cnt("host",a)).forEach(h=>{const o=document.createElement("option");o.value=h;o.textContent=`${h} (${cnt("host",h)})`;$("host").appendChild(o)});
+$("host").addEventListener("change",e=>{S.host=e.target.value;render()});
+$("sort").value=S.sort; $("sort").addEventListener("change",e=>{S.sort=e.target.value;save();render()});
+$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;S.area=b.dataset.a;render()});
+$("types").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.type=b.dataset.t;render()});
+$("bars").addEventListener("click",e=>{const b=e.target.closest(".bar");if(!b)return;S.area=S.area===b.dataset.a?"":b.dataset.a;render();document.querySelector(".tools").scrollIntoView({behavior:"smooth"})});
+$("vGrid").onclick=()=>{S.view="grid";save();render()};
+$("vList").onclick=()=>{S.view="list";save();render()};
+$("clear").onclick=()=>{S.q=S.area=S.type=S.lvl=S.host="";$("q").value="";$("lvl").value="";$("host").value="";render()};
+
+let tt;
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),1800)}
+$("grid").addEventListener("click",e=>{
+  const b=e.target.closest("[data-copy]"); if(!b) return;
+  const url=b.dataset.copy;
+  navigator.clipboard.writeText(url).then(()=>toast("Enlace copiado")).catch(()=>{
+    const i=document.createElement("input");i.value=url;document.body.appendChild(i);i.select();
+    try{document.execCommand("copy");toast("Enlace copiado")}catch(_){toast("Selecciona y copia el enlace manualmente")}
+    i.remove();
+  });
+});
+render();
+</script>
+
+</body></html>
