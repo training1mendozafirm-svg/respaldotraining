@@ -1,0 +1,1491 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Proceso Operativo CS — Customer Service TMLF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #07111c;
+  --navy2:   #0c1e30;
+  --navy3:   #122540;
+  --navy4:   #1a3354;
+  --gold:    #c9a84c;
+  --gold2:   #e2c06a;
+  --gold3:   #f0d58a;
+  --gold-dim:rgba(201,168,76,.12);
+  --gold-mid:rgba(201,168,76,.28);
+  --gold-str:rgba(201,168,76,.55);
+  --ice:     #7baed4;
+  --ice-dim: rgba(123,174,212,.18);
+  --white:   #ffffff;
+  --off:     #f3f5f8;
+  --text:    #1a2a3a;
+  --muted:   #5a6e82;
+  --light:   #8fa3b8;
+  --card-bg: #ffffff;
+  --card-border: rgba(26,51,84,.1);
+  --shadow-sm: 0 2px 12px rgba(7,17,28,.07);
+  --shadow-md: 0 8px 32px rgba(7,17,28,.12);
+  --shadow-lg: 0 20px 60px rgba(7,17,28,.18);
+  --r: 18px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--off);color:var(--text);min-height:100vh;line-height:1.65;}
+
+/* ══ TOP NAV ══ */
+.topnav{
+  position:sticky;top:0;z-index:400;
+  height:64px;background:rgba(7,17,28,.98);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(201,168,76,.15);
+  display:flex;align-items:center;padding:0 36px;gap:16px;
+}
+.brand{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--white);display:flex;align-items:center;gap:12px;letter-spacing:.3px;}
+.brand .emblem{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(201,168,76,.25),rgba(201,168,76,.06));border:1px solid rgba(201,168,76,.35);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.brand em{color:var(--gold);font-style:normal}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-chip{display:flex;align-items:center;gap:6px;padding:6px 16px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:var(--gold);}
+.nav-chip .pulse{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ══ HERO ══ */
+.hero{background:linear-gradient(160deg,#07111c 0%,#0e1f32 40%,#152d48 70%,#1c3d62 100%);color:var(--white);padding:70px 48px 60px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-120px;right:-80px;width:500px;height:500px;border-radius:50%;border:1px solid rgba(201,168,76,.08);animation:ringPulse 7s ease-in-out infinite;}
+.hero::after{content:'';position:absolute;top:-40px;right:60px;width:320px;height:320px;border-radius:50%;border:1px solid rgba(201,168,76,.05);animation:ringPulse 9s ease-in-out infinite 2s;}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.08);opacity:1}}
+.hero-inner{position:relative;z-index:2;max-width:960px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;}
+.hero-badge .dot{width:6px;height:6px;background:var(--gold);border-radius:50%}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,58px);font-weight:700;line-height:1.15;letter-spacing:.4px;margin-bottom:16px;}
+.hero h1 span{display:block;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:15px;opacity:.68;max-width:60ch;line-height:1.7;margin-bottom:32px;}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px}
+.hm{display:flex;align-items:center;gap:8px;padding:8px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;font-size:12px;color:rgba(255,255,255,.72);font-weight:500;}
+.hm .hm-icon{font-size:14px}
+.hero-rule{height:3px;background:linear-gradient(90deg,var(--gold),rgba(201,168,76,.3),transparent);}
+
+/* ══ PLATAFORMAS BANNER ══ */
+.platforms-bar{
+  background:var(--navy2);border-bottom:1px solid rgba(201,168,76,.12);
+  padding:18px 48px;
+}
+.platforms-inner{max-width:1160px;margin:0 auto;display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+.plat-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(201,168,76,.6);white-space:nowrap;}
+.plat-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.plat-chip{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:8px;
+  font-size:11.5px;font-weight:600;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.75);
+}
+.plat-chip .pi{font-size:13px;}
+
+/* ══ ROAD PAGE ══ */
+.road-page{padding:48px 40px 80px;max-width:1200px;margin:0 auto;}
+
+/* ══ SECTION DIVIDER ══ */
+.section-divider{
+  display:flex;align-items:center;gap:14px;
+  padding:8px 0;margin:32px 0 4px;
+}
+.sdl{flex:1;height:1px;background:linear-gradient(90deg,var(--gold-mid),transparent)}
+.sdl.rev{background:linear-gradient(270deg,var(--gold-mid),transparent)}
+.sd-text{
+  font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--gold);white-space:nowrap;display:flex;align-items:center;gap:6px;
+}
+
+/* ══ ROWS WRAP ══ */
+.rows-wrap{position:relative}
+#curve-overlay{position:absolute;top:0;left:0;pointer-events:none;z-index:1;overflow:visible}
+
+/* ══ ROW ══ */
+.row{
+  display:flex;justify-content:space-around;align-items:flex-start;
+  padding:16px 0;position:relative;
+}
+.row.rtl{flex-direction:row-reverse}
+.row::before{
+  content:'';position:absolute;top:50px;left:5%;right:5%;
+  height:6px;
+  background:linear-gradient(90deg,rgba(201,168,76,.04),rgba(201,168,76,.18) 20%,rgba(201,168,76,.22) 50%,rgba(201,168,76,.18) 80%,rgba(201,168,76,.04));
+  border-radius:3px;z-index:0;
+}
+.chev{position:absolute;top:42px;font-size:22px;font-weight:900;color:rgba(201,168,76,.45);z-index:4;pointer-events:none;line-height:1;letter-spacing:-3px;text-shadow:0 0 12px rgba(201,168,76,.3);}
+
+/* ══ NODE ══ */
+@keyframes nodeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.node{
+  display:flex;flex-direction:column;align-items:center;
+  flex:1;min-width:0;max-width:270px;
+  position:relative;z-index:2;cursor:pointer;padding:0 10px;
+  opacity:0;animation:nodeIn .55s cubic-bezier(.34,1.2,.64,1) forwards;
+}
+.node-pin{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(145deg,var(--navy3),var(--navy));
+  border:2.5px solid var(--nc,#888);
+  box-shadow:0 0 0 7px color-mix(in srgb,var(--nc,#888) 12%,transparent),0 8px 28px rgba(7,17,28,.32),inset 0 1px 0 rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:3;flex-shrink:0;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
+}
+.node:hover .node-pin{
+  transform:scale(1.08) translateY(-2px);
+  box-shadow:0 0 0 10px color-mix(in srgb,var(--nc,#888) 18%,transparent),0 14px 36px rgba(7,17,28,.4),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.pin-inner{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.pin-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--nc,#888);line-height:1;}
+.pin-label{font-size:8px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.35);line-height:1;}
+.node-stem{width:2px;height:16px;background:linear-gradient(180deg,var(--nc,#888),transparent);opacity:.4;flex-shrink:0;}
+.node-card{
+  background:var(--card-bg);border-radius:var(--r);
+  border:1.5px solid var(--card-border);
+  box-shadow:var(--shadow-sm);
+  padding:16px 16px 14px;width:100%;
+  position:relative;overflow:hidden;
+  transition:transform .25s cubic-bezier(.34,1.2,.64,1),box-shadow .25s;
+}
+.node-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--nc,#888),transparent);
+  border-radius:var(--r) var(--r) 0 0;
+}
+.node:hover .node-card{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+.nc-step{font-size:9px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--nc,#888);margin-bottom:5px;}
+.nc-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;line-height:1.2;color:var(--text);margin-bottom:4px;}
+.nc-sub{font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:8px;}
+.nc-dept-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:var(--gold-dim);border:1px solid var(--gold-mid);border-radius:6px;font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.3px;}
+.nc-plat-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+.nc-plat{font-size:9.5px;font-weight:600;padding:2px 7px;border-radius:5px;background:rgba(123,174,212,.1);border:1px solid rgba(123,174,212,.2);color:#5a8fb8;}
+.nc-day{font-size:10px;color:var(--light);margin-top:6px;font-style:italic;}
+
+/* Animation delays */
+.row:nth-child(1) .node:nth-child(1){animation-delay:.02s}
+.row:nth-child(1) .node:nth-child(2){animation-delay:.07s}
+.row:nth-child(1) .node:nth-child(3){animation-delay:.14s}
+.row:nth-child(1) .node:nth-child(4){animation-delay:.21s}
+.row:nth-child(2) .node:nth-child(1){animation-delay:.28s}
+.row:nth-child(2) .node:nth-child(2){animation-delay:.35s}
+.row:nth-child(2) .node:nth-child(3){animation-delay:.42s}
+.row:nth-child(2) .node:nth-child(4){animation-delay:.49s}
+.row:nth-child(3) .node:nth-child(1){animation-delay:.56s}
+.row:nth-child(3) .node:nth-child(2){animation-delay:.63s}
+.row:nth-child(3) .node:nth-child(3){animation-delay:.70s}
+.row:nth-child(3) .node:nth-child(4){animation-delay:.77s}
+.row:nth-child(4) .node:nth-child(1){animation-delay:.84s}
+.row:nth-child(4) .node:nth-child(2){animation-delay:.91s}
+.row:nth-child(4) .node:nth-child(3){animation-delay:.98s}
+
+/* ══ ESCALATION TABLE ══ */
+.escal-section{margin:40px 0 16px;}
+.escal-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.escal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;}
+.escal-card{
+  background:var(--card-bg);border-radius:16px;
+  padding:20px 20px 18px;
+  border:1.5px solid var(--card-border);
+  box-shadow:var(--shadow-sm);
+  position:relative;overflow:hidden;
+  transition:transform .22s,box-shadow .22s;
+}
+.escal-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.escal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.escal-card.duda::before{background:linear-gradient(90deg,#0369a1,#38bdf8);}
+.escal-card.escal::before{background:linear-gradient(90deg,#b45309,#f59e0b);}
+.escal-card.emerg::before{background:linear-gradient(90deg,#b91c1c,#f87171);}
+.escal-card.cback::before{background:linear-gradient(90deg,#7c3aed,#a78bfa);}
+.escal-card.aviso::before{background:linear-gradient(90deg,#047857,#34d399);}
+.escal-card.autori::before{background:linear-gradient(90deg,#1a5c3a,#4ade80);}
+.escal-icon{font-size:26px;margin-bottom:8px;display:block;}
+.escal-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;margin-bottom:6px;}
+.escal-card.duda .escal-name{color:#0369a1}
+.escal-card.escal .escal-name{color:#92400e}
+.escal-card.emerg .escal-name{color:#991b1b}
+.escal-card.cback .escal-name{color:#6d28d9}
+.escal-card.aviso .escal-name{color:#065f46}
+.escal-card.autori .escal-name{color:#1a5c3a}
+.escal-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:10px;}
+.escal-examples{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.escal-examples li{font-size:11px;color:var(--text);display:flex;gap:7px;line-height:1.4;}
+.escal-examples li::before{content:'›';color:var(--gold);font-weight:700;flex-shrink:0;}
+
+/* ══ RESTRICCIONES ══ */
+.restrict-section{margin:40px 0 16px;}
+.restrict-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+.restrict-card{
+  background:rgba(185,28,28,.04);border:1.5px solid rgba(185,28,28,.15);
+  border-radius:14px;padding:16px;
+  display:flex;gap:12px;align-items:flex-start;
+  transition:border-color .2s;
+}
+.restrict-card:hover{border-color:rgba(185,28,28,.35);}
+.restrict-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.restrict-body{}
+.restrict-name{font-weight:700;font-size:13px;color:#991b1b;margin-bottom:3px;}
+.restrict-note{font-size:11.5px;color:var(--muted);line-height:1.5;}
+
+/* ══ NOTAS TEMPLATE ══ */
+.notas-section{margin:40px 0 16px;}
+.nota-template{
+  background:var(--navy2);border-radius:14px;
+  padding:22px 24px;border:1px solid rgba(201,168,76,.15);
+}
+.nota-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.nota-field{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.5px;text-transform:uppercase;min-width:110px;padding-top:2px;}
+.nota-val{font-size:12px;color:rgba(255,255,255,.75);line-height:1.5;flex:1;}
+.nota-example{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px;margin-top:14px;font-size:11.5px;color:rgba(255,255,255,.6);line-height:1.6;}
+.nota-example strong{color:rgba(255,255,255,.85);font-weight:600;}
+
+/* ══ CALLBACKS BANNER ══ */
+.callbacks-banner{
+  background:linear-gradient(135deg,rgba(7,17,28,.85),rgba(26,51,84,.5));
+  border:1.5px solid rgba(201,168,76,.2);
+  border-radius:18px;padding:22px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  margin-top:48px;
+}
+.cb-left{display:flex;align-items:center;gap:18px;}
+.cb-icon{font-size:28px;}
+.cb-text{}
+.cb-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:2px;}
+.cb-sub{font-size:12px;color:rgba(255,255,255,.55);line-height:1.5;max-width:52ch;}
+.cb-badge{display:flex;align-items:center;gap:6px;padding:8px 20px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);white-space:nowrap;}
+
+/* ══ END FLAG ══ */
+.end-flag{text-align:center;font-size:28px;margin:10px 0 4px;opacity:.6;}
+
+/* ══ MODAL ══ */
+.detail-overlay{
+  position:fixed;inset:0;z-index:900;
+  background:rgba(7,17,28,.72);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.detail-overlay.show{opacity:1;pointer-events:all;}
+.detail-panel{
+  background:var(--white);border-radius:24px;
+  max-width:560px;width:100%;max-height:88vh;overflow-y:auto;
+  box-shadow:0 32px 80px rgba(7,17,28,.28);
+  position:relative;
+  transform:scale(.96);transition:transform .3s cubic-bezier(.34,1.2,.64,1);
+}
+.detail-overlay.show .detail-panel{transform:scale(1);}
+.dp-accent{height:4px;border-radius:24px 24px 0 0;}
+.dp-header{display:flex;align-items:flex-start;gap:16px;padding:24px 24px 16px;border-bottom:1px solid var(--card-border);}
+.dp-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.dp-info{flex:1;min-width:0;}
+.dp-step{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.dp-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:3px;}
+.dp-sub{font-size:12.5px;color:var(--muted);}
+.dp-close{background:rgba(7,17,28,.07);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted);transition:background .2s;}
+.dp-close:hover{background:rgba(7,17,28,.14);}
+.dp-body{padding:20px 24px 28px;display:flex;flex-direction:column;gap:18px;}
+.dp-section{}
+.dp-label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.dp-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.dp-tag{padding:4px 12px;border-radius:8px;background:var(--gold-dim);border:1px solid var(--gold-mid);font-size:11px;font-weight:600;color:var(--gold);}
+.dp-text{font-size:13.5px;color:var(--text);line-height:1.65;}
+.dp-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.dp-list li{font-size:13px;color:var(--text);display:flex;gap:8px;line-height:1.5;}
+.dp-list li::before{content:'✦';color:var(--gold);font-size:10px;margin-top:3px;flex-shrink:0;}
+.dp-output{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--off);border:1px solid var(--card-border);border-radius:10px;font-size:12.5px;font-weight:600;color:var(--text);}
+.dp-plats{display:flex;flex-wrap:wrap;gap:6px;}
+.dp-plat{padding:4px 11px;background:rgba(123,174,212,.1);border:1px solid rgba(123,174,212,.25);border-radius:7px;font-size:11px;font-weight:600;color:#3a7aaa;}
+
+/* ══ TAB SWITCHER ══ */
+.tab-bar{
+  background:var(--navy2);
+  border-bottom:1px solid rgba(201,168,76,.12);
+  padding:0 48px;
+  display:flex;align-items:center;gap:0;
+  position:sticky;top:64px;z-index:300;
+}
+.tab-btn{
+  display:flex;align-items:center;gap:10px;
+  padding:0 28px;height:56px;
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;
+  color:rgba(255,255,255,.45);
+  background:none;border:none;cursor:pointer;
+  border-bottom:3px solid transparent;
+  transition:color .22s,border-color .22s;
+  letter-spacing:.2px;
+  white-space:nowrap;
+}
+.tab-btn:hover{color:rgba(255,255,255,.7);}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab-btn .tb-icon{
+  width:32px;height:32px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+  background:rgba(255,255,255,.06);
+  transition:background .22s;
+}
+.tab-btn.active .tb-icon{background:rgba(201,168,76,.15);}
+.tab-btn .tb-count{
+  font-size:10px;font-weight:700;letter-spacing:.6px;
+  padding:2px 8px;border-radius:999px;
+  background:rgba(255,255,255,.07);
+  color:rgba(255,255,255,.4);
+  transition:background .22s,color .22s;
+}
+.tab-btn.active .tb-count{background:rgba(201,168,76,.18);color:var(--gold);}
+.tab-divider{width:1px;height:24px;background:rgba(255,255,255,.08);margin:0 4px;}
+
+/* ══ PANEL TRANSITION ══ */
+.panel-block{
+  transition:opacity .28s ease,transform .28s cubic-bezier(.34,1.2,.64,1);
+}
+.panel-block.hidden{
+  display:none;
+}
+
+/* QUIZ */
+.quiz-section{padding:48px 0 16px;}
+.quiz-wrap{max-width:700px;margin:0 auto;}
+.quiz-progress-bar{height:6px;background:rgba(201,168,76,.15);border-radius:3px;margin-bottom:14px;overflow:hidden;}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.quiz-meta-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.quiz-counter{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;}
+.quiz-score-badge{font-size:12px;font-weight:700;padding:4px 14px;background:var(--gold-dim);border:1px solid var(--gold-mid);border-radius:999px;color:var(--gold);}
+.quiz-card{background:var(--card-bg);border-radius:20px;border:1.5px solid var(--card-border);box-shadow:var(--shadow-sm);padding:32px 32px 28px;position:relative;overflow:hidden;}
+.quiz-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),rgba(201,168,76,.3),transparent);}
+.quiz-q-num{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;color:var(--gold-mid);line-height:1;margin-bottom:8px;}
+.quiz-question{font-size:17px;font-weight:600;color:var(--text);line-height:1.5;margin-bottom:24px;}
+.quiz-options{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.quiz-opt{display:flex;align-items:center;gap:12px;padding:13px 18px;background:var(--off);border:1.5px solid var(--card-border);border-radius:12px;cursor:pointer;font-size:14px;color:var(--text);transition:all .18s;text-align:left;font-family:inherit;width:100%;}
+.quiz-opt:hover:not(:disabled){border-color:var(--gold);background:var(--gold-dim);}
+.quiz-opt .opt-letter{width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid var(--gold-mid);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.quiz-opt.correct{border-color:#16a34a;background:rgba(22,163,74,.08);}
+.quiz-opt.correct .opt-letter{background:rgba(22,163,74,.15);border-color:#16a34a;color:#16a34a;}
+.quiz-opt.wrong{border-color:#dc2626;background:rgba(220,38,38,.07);}
+.quiz-opt.wrong .opt-letter{background:rgba(220,38,38,.12);border-color:#dc2626;color:#dc2626;}
+.quiz-opt:disabled{cursor:default;}
+.quiz-feedback{font-size:13px;line-height:1.6;padding:12px 16px;border-radius:10px;margin-bottom:16px;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.ok{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.25);color:#15803d;}
+.quiz-feedback.fail{background:rgba(220,38,38,.07);border:1px solid rgba(220,38,38,.2);color:#b91c1c;}
+.quiz-next-btn{padding:12px 28px;background:var(--gold);border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;color:var(--navy);cursor:pointer;transition:opacity .18s;}
+.quiz-next-btn:hover{opacity:.88;}
+.quiz-results{max-width:700px;margin:0 auto;background:var(--card-bg);border-radius:20px;border:1.5px solid var(--card-border);box-shadow:var(--shadow-md);padding:40px 36px;text-align:center;}
+.quiz-result-icon{font-size:52px;margin-bottom:12px;}
+.quiz-result-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.quiz-result-sub{font-size:14px;color:var(--muted);margin-bottom:20px;}
+.quiz-result-score{font-size:48px;font-weight:700;color:var(--gold);margin-bottom:28px;}
+.quiz-detail-list{text-align:left;display:flex;flex-direction:column;gap:8px;margin-bottom:28px;}
+.quiz-detail-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;padding:10px 14px;border-radius:10px;background:var(--off);}
+.quiz-detail-item.ok-item{border-left:3px solid #16a34a;border-radius:0 10px 10px 0;}
+.quiz-detail-item.fail-item{border-left:3px solid #dc2626;border-radius:0 10px 10px 0;}
+.quiz-detail-mark{font-weight:700;flex-shrink:0;margin-top:1px;}
+.quiz-mark-ok{color:#16a34a;}
+.quiz-mark-fail{color:#dc2626;}
+.quiz-retry-btn{padding:14px 36px;background:var(--navy);border:none;border-radius:12px;font-family:inherit;font-size:14px;font-weight:700;color:var(--gold);cursor:pointer;transition:opacity .18s;}
+.quiz-retry-btn:hover{opacity:.85;}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="topnav">
+  <div class="brand">
+    <div class="emblem">📞</div>
+    TMLF · <em>Customer Service</em>
+  </div>
+  <div class="nav-right">
+    <div class="nav-chip"><div class="pulse"></div>Rutina Operativa CS</div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><div class="dot"></div>End-to-End Operativo</div>
+    <h1>Proceso Operativo<span>Customer Service</span></h1>
+    <p class="hero-sub">Flujo completo del área de CS: desde la recepción de llamadas entrantes y salientes hasta la gestión de escalaciones, pagos y emergencias. Dos perfiles operativos: Asesores IN y Asesores de Chat &amp; Textos.</p>
+    <div class="hero-meta">
+      <div class="hm"><span class="hm-icon">📞</span>Llamadas Entrantes (IN)</div>
+      <div class="hm"><span class="hm-icon">📤</span>Llamadas Salientes (Chat & Textos)</div>
+      <div class="hm"><span class="hm-icon">🖥️</span>8x8 · TramCase · ClickUp · Slack</div>
+      <div class="hm"><span class="hm-icon">⚠️</span>6 tipos de escalación</div>
+    </div>
+  </div>
+</div>
+<div class="hero-rule"></div>
+
+<!-- ══ PLATAFORMAS BAR ══ -->
+<div class="platforms-bar">
+  <div class="platforms-inner">
+    <span class="plat-label">Plataformas activas</span>
+    <div class="plat-chips">
+      <span class="plat-chip"><span class="pi">📲</span>8x8 Work</span>
+      <span class="plat-chip"><span class="pi">📡</span>8x8 Contact Center</span>
+      <span class="plat-chip"><span class="pi">🗂️</span>TramCase</span>
+      <span class="plat-chip"><span class="pi">✅</span>ClickUp</span>
+      <span class="plat-chip"><span class="pi">💬</span>Slack</span>
+      <span class="plat-chip"><span class="pi">💳</span>Portal de Pagos</span>
+      <span class="plat-chip"><span class="pi">🌐</span>USCIS Check Status</span>
+      <span class="plat-chip"><span class="pi">📊</span>RT Dashboard (HTML)</span>
+      <span class="plat-chip"><span class="pi">📁</span>Dropbox</span>
+    </div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" id="tab-in" onclick="switchTab('in')">
+    <div class="tb-icon">📞</div>
+    Llamadas Entrantes
+    <span class="tb-count">8 pasos</span>
+  </button>
+  <div class="tab-divider"></div>
+  <button class="tab-btn" id="tab-out" onclick="switchTab('out')">
+    <div class="tb-icon">📤</div>
+    Llamadas Salientes
+    <span class="tb-count">7 pasos</span>
+  </button>
+  <div class="tab-divider"></div>
+  <button class="tab-btn" id="tab-escal" onclick="switchTab('escal')">
+    <div class="tb-icon">⚡</div>
+    Escalaciones & Referencia
+    <span class="tb-count">Guía rápida</span>
+  </button>
+  <div class="tab-divider"></div>
+  <button class="tab-btn" id="tab-quiz" onclick="switchTab('quiz')">
+    <div class="tb-icon">📝</div>
+    Evaluación Final
+    <span class="tb-count">10 preguntas</span>
+  </button>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="road-page">
+
+  <!-- PERFIL A -->
+  <div class="panel-block" id="panel-in">
+  <div class="section-divider">
+    <div class="sdl"></div>
+    <div class="sd-text">📞 &nbsp; Perfil A — Asesores de Llamadas Entrantes (IN)</div>
+    <div class="sdl rev"></div>
+  </div>
+
+  <div class="rows-wrap" id="rowsWrapA">
+    <svg id="curve-overlay-a" style="position:absolute;top:0;left:0;pointer-events:none;z-index:1;overflow:visible"></svg>
+
+    <!-- ROW 1 -->
+    <div class="row">
+      <div class="node" id="a1" style="--nc:#3b82f6" onclick="openDetail(0)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">01</span><span class="pin-label">inicio</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 01 — Inicio de turno</div>
+          <div class="nc-title">Setup & Login</div>
+          <div class="nc-sub">El asesor abre las plataformas necesarias y configura su disponibilidad en 8x8</div>
+          <div class="nc-dept-tag">Asesor IN</div>
+          <div class="nc-plat-row"><span class="nc-plat">8x8 Work</span><span class="nc-plat">Contact Center</span><span class="nc-plat">TramCase</span><span class="nc-plat">Dashboard RT</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="a2" style="--nc:#1e4976" onclick="openDetail(1)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">02</span><span class="pin-label">recepción</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 02 — Recepción de Llamada</div>
+          <div class="nc-title">Llamada Entrante</div>
+          <div class="nc-sub">La llamada cae como ventana emergente en 8x8. El asesor identifica el motivo (queue) antes de contestar</div>
+          <div class="nc-dept-tag">Asesor IN</div>
+          <div class="nc-plat-row"><span class="nc-plat">8x8 Work</span><span class="nc-plat">Contact Center</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="a3" style="--nc:#b45309" onclick="openDetail(2)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">03</span><span class="pin-label">speech</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 03 — Speech de Entrada</div>
+          <div class="nc-title">Saludo & Presentación</div>
+          <div class="nc-sub">Saludo formal, identificación del asesor y solicitud de filtros de seguridad al cliente</div>
+          <div class="nc-dept-tag">Asesor IN</div>
+          <div class="nc-plat-row"><span class="nc-plat">TramCase</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="a4" style="--nc:#0369a1" onclick="openDetail(3)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">04</span><span class="pin-label">seguridad</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 04 — Verificación</div>
+          <div class="nc-title">Filtros de Seguridad</div>
+          <div class="nc-sub">Aplicación de los tres filtros de seguridad obligatorios para validar identidad del cliente</div>
+          <div class="nc-dept-tag">Asesor IN</div>
+          <div class="nc-plat-row"><span class="nc-plat">TramCase</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2 (RTL) -->
+    <div class="row rtl">
+      <div class="node" id="a5" style="--nc:#047857" onclick="openDetail(4)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">05</span><span class="pin-label">consulta</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 05 — Atención</div>
+          <div class="nc-title">Gestión de la Consulta</div>
+          <div class="nc-sub">El asesor revisa las notas en TramCase, identifica el case status y atiende la solicitud del cliente</div>
+          <div class="nc-dept-tag">Asesor IN</div>
+          <div class="nc-plat-row"><span class="nc-plat">TramCase</span><span class="nc-plat">USCIS Check</span><span class="nc-plat">ClickUp (SPECs)</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="a6" style="--nc:#c9a84c" onclick="openDetail(5)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">06</span><span class="pin-label">decisión</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 06 — Decisión</div>
+          <div class="nc-title">¿Resuelve o Escala?</div>
+          <div class="nc-sub">El asesor determina si puede resolver directamente o si debe tipificar y escalar la solicitud al TL</div>
+          <div class="nc-dept-tag">Asesor IN + TL</div>
+          <div class="nc-plat-row"><span class="nc-plat">Sheet de escalaciones</span><span class="nc-plat">Slack (CDMX: chat)</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="a7" style="--nc:#b91c1c" onclick="openDetail(6)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">07</span><span class="pin-label">pago</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 07 — Pagos</div>
+          <div class="nc-title">Toma de Pago</div>
+          <div class="nc-sub">Si el motivo de la llamada incluye pago, el asesor usa el portal con los datos de tarjeta del cliente</div>
+          <div class="nc-dept-tag">Asesor IN</div>
+          <div class="nc-plat-row"><span class="nc-plat">Portal de Pagos</span><span class="nc-plat">TramCase</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="a8" style="--nc:#065f46" onclick="openDetail(7)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">08</span><span class="pin-label">cierre</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 08 — Cierre</div>
+          <div class="nc-title">Speech de Cierre & Nota</div>
+          <div class="nc-sub">El asesor cierra la llamada con el speech de salida y deja nota obligatoria en TramCase con formato estándar</div>
+          <div class="nc-dept-tag">Asesor IN</div>
+          <div class="nc-plat-row"><span class="nc-plat">TramCase (nota)</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /rows-wrap A -->
+  </div><!-- /panel-in -->
+
+  <!-- PERFIL B -->
+  <div class="panel-block hidden" id="panel-out">
+  <div class="section-divider" style="margin-top:52px;">
+    <div class="sdl"></div>
+    <div class="sd-text">📤 &nbsp; Perfil B — Asesores de Chat & Textos (Llamadas Salientes)</div>
+    <div class="sdl rev"></div>
+  </div>
+
+  <div class="rows-wrap" id="rowsWrapB">
+    <svg id="curve-overlay-b" style="position:absolute;top:0;left:0;pointer-events:none;z-index:1;overflow:visible"></svg>
+
+    <div class="row">
+      <div class="node" id="b1" style="--nc:#7c3aed" onclick="openDetail(8)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">01</span><span class="pin-label">tarea</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 01 — Revisión</div>
+          <div class="nc-title">Bandeja ClickUp</div>
+          <div class="nc-sub">El asesor abre ClickUp, revisa las tareas asignadas y lee el contexto completo de cada solicitud entrante</div>
+          <div class="nc-dept-tag">Asesor Chat & Textos</div>
+          <div class="nc-plat-row"><span class="nc-plat">ClickUp</span><span class="nc-plat">TramCase (notas)</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="b2" style="--nc:#0369a1" onclick="openDetail(9)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">02</span><span class="pin-label">asignación</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 02 — Asignación</div>
+          <div class="nc-title">Auto-asignar Tarea</div>
+          <div class="nc-sub">El asesor se auto-asigna la tarea y cambia su estado de "To Do" a "En Curso" para tomar ownership</div>
+          <div class="nc-dept-tag">Asesor Chat & Textos</div>
+          <div class="nc-plat-row"><span class="nc-plat">ClickUp</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="b3" style="--nc:#b45309" onclick="openDetail(10)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">03</span><span class="pin-label">contexto</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 03 — Análisis</div>
+          <div class="nc-title">Verificar Últimas Notas</div>
+          <div class="nc-sub">Antes de llamar, el asesor revisa TramCase: si el cliente ya se contactó recientemente, la tarea se cierra sin llamar</div>
+          <div class="nc-dept-tag">Asesor Chat & Textos</div>
+          <div class="nc-plat-row"><span class="nc-plat">TramCase</span><span class="nc-plat">ClickUp</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="b4" style="--nc:#047857" onclick="openDetail(11)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">04</span><span class="pin-label">llamada</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 04 — Contacto</div>
+          <div class="nc-title">Llamada de Salida</div>
+          <div class="nc-sub">El asesor copia el número desde ClickUp/TramCase y llama al cliente directamente desde 8x8 (sin Contact Center)</div>
+          <div class="nc-dept-tag">Asesor Chat & Textos</div>
+          <div class="nc-plat-row"><span class="nc-plat">8x8 Work</span><span class="nc-plat">TramCase</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row rtl">
+      <div class="node" id="b5" style="--nc:#c9a84c" onclick="openDetail(12)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">05</span><span class="pin-label">resolución</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 05 — Resolución</div>
+          <div class="nc-title">Atender Solicitud</div>
+          <div class="nc-sub">El asesor atiende la solicitud, aplica el speech correspondiente y determina si escala o resuelve directo</div>
+          <div class="nc-dept-tag">Asesor Chat & Textos</div>
+          <div class="nc-plat-row"><span class="nc-plat">TramCase</span><span class="nc-plat">Slack</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="b6" style="--nc:#1a5c3a" onclick="openDetail(13)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">06</span><span class="pin-label">nota</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 06 — Documentación</div>
+          <div class="nc-title">Nota en TramCase</div>
+          <div class="nc-sub">Nota en formato "Outgoing Call – Chat Request". Documenta Reason, Solution, Behavior y Client Number</div>
+          <div class="nc-dept-tag">Asesor Chat & Textos</div>
+          <div class="nc-plat-row"><span class="nc-plat">TramCase (nota)</span></div>
+        </div>
+      </div>
+
+      <div class="node" id="b7" style="--nc:#3b82f6" onclick="openDetail(14)">
+        <div class="node-pin"><div class="pin-inner"><span class="pin-num">07</span><span class="pin-label">cierre</span></div></div>
+        <div class="node-stem"></div>
+        <div class="node-card">
+          <div class="nc-step">Paso 07 — Cierre de Tarea</div>
+          <div class="nc-title">Completar en ClickUp</div>
+          <div class="nc-sub">El asesor marca la tarea como "Completada" en ClickUp con un comentario del resultado y pasa a la siguiente</div>
+          <div class="nc-dept-tag">Asesor Chat & Textos</div>
+          <div class="nc-plat-row"><span class="nc-plat">ClickUp</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /rows-wrap B -->
+  </div><!-- /panel-out -->
+
+  <div class="panel-block hidden" id="panel-escal">
+  <!-- ══ ESCALACIONES ══ -->
+  <div class="escal-section">
+    <div class="section-divider" style="margin-bottom:20px;">
+      <div class="sdl"></div>
+      <div class="sd-text">⚡ &nbsp; Tipos de Escalación — Tipificación en Sheet / Chat</div>
+      <div class="sdl rev"></div>
+    </div>
+    <div class="escal-grid">
+
+      <div class="escal-card duda">
+        <span class="escal-icon">🤔</span>
+        <div class="escal-name">Duda</div>
+        <div class="escal-desc">El asesor no sabe cómo responder al cliente o no tiene acceso a la información necesaria. Requiere asistencia del Team Leader.</div>
+        <ul class="escal-examples">
+          <li>Cliente con caso muy inusual fuera del flujo normal</li>
+          <li>Asesor necesita verificar algo en Dropbox (sin acceso)</li>
+          <li>Notificación rara en USCIS que el asesor no identifica</li>
+          <li>Esposo del cliente falleció y no sabe qué estatus asignar</li>
+        </ul>
+      </div>
+
+      <div class="escal-card escal">
+        <span class="escal-icon">🔄</span>
+        <div class="escal-name">Escalación</div>
+        <div class="escal-desc">El cliente requiere acción de otra área que no es Customer Service. Se canaliza a través de Slack o formulario.</div>
+        <ul class="escal-examples">
+          <li>Permiso de trabajo sin actualización → Backoffice</li>
+          <li>Cliente solicita sus recibos iniciales → Backoffice</li>
+          <li>Documentos enviados / paquete de bienvenida → Follow-up</li>
+          <li>Solicitud de biométricos o huellas → Backoffice</li>
+        </ul>
+      </div>
+
+      <div class="escal-card emerg">
+        <span class="escal-icon">🚨</span>
+        <div class="escal-name">Emergencia</div>
+        <div class="escal-desc">Cinco situaciones que requieren reporte inmediato al Team Leader y acción urgente. El asesor solo contiene al cliente.</div>
+        <ul class="escal-examples">
+          <li>📁 File Request — pide su expediente</li>
+          <li>⚖️ Bar Complaint — amenaza con queja a la barra</li>
+          <li>👩‍⚖️ Pide hablar directamente con MGM</li>
+          <li>🔴 Amenaza de demanda legal</li>
+          <li>⭐ Bar Review — amenaza con reviews negativos</li>
+        </ul>
+      </div>
+
+      <div class="escal-card cback">
+        <span class="escal-icon">📲</span>
+        <div class="escal-name">Requiere Callback</div>
+        <div class="escal-desc">El cliente necesita o solicita una llamada de abogado. Siempre requiere autorización del Team Leader antes de ofrecerse.</div>
+        <ul class="escal-examples">
+          <li>Cliente insistente que exige hablar con abogado</li>
+          <li>Caso con Rejection o Decision que el cliente no conoce</li>
+          <li>Asesor detecta que el caso requiere asesoría legal urgente</li>
+          <li>Dictaminación: revisar con TL antes de escalar</li>
+        </ul>
+      </div>
+
+      <div class="escal-card aviso">
+        <span class="escal-icon">📣</span>
+        <div class="escal-name">Aviso</div>
+        <div class="escal-desc">Comunicados informativos que no requieren escalación a ningún área. El TL queda informado; CS resuelve en llamada.</div>
+        <ul class="escal-examples">
+          <li>Cliente pregunta por noticias de Trump / cambios migratorios</li>
+          <li>Cliente recibió cita de biométricos antes que la firma</li>
+          <li>Consultas sobre demandas a abogados (noticias externas)</li>
+        </ul>
+      </div>
+
+      <div class="escal-card autori">
+        <span class="escal-icon">✅</span>
+        <div class="escal-name">Pide Autorización</div>
+        <div class="escal-desc">Áreas específicas cuyo formulario de escalación requiere aprobación explícita de Team Leader antes de enviarse.</div>
+        <ul class="escal-examples">
+          <li>Cancelaciones — autorización TL obligatoria</li>
+          <li>Escalaciones a Backoffice — autorización TL obligatoria</li>
+          <li>Reagendar citas de biométricos (I-90)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ CANALES SLACK ══ -->
+  <div class="escal-section">
+    <div class="section-divider" style="margin-bottom:20px;">
+      <div class="sdl"></div>
+      <div class="sd-text">💬 &nbsp; Canales Slack — Acceso Asesores</div>
+      <div class="sdl rev"></div>
+    </div>
+    <div class="escal-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));">
+
+      <div class="escal-card escal">
+        <span class="escal-icon">💰</span>
+        <div class="escal-name">Collections</div>
+        <div class="escal-desc">Todo lo relacionado con finanzas y pagos del cliente. CS toma pagos directos, pero escala a este canal cuando el cliente necesita información de balance, plan de pagos o reembolsos.</div>
+        <ul class="escal-examples">
+          <li>Cliente solicita su balance completo de pagos</li>
+          <li>Acuerdos o plan de pagos personalizado</li>
+          <li>Seguimiento a reembolso pendiente</li>
+        </ul>
+      </div>
+
+      <div class="escal-card duda">
+        <span class="escal-icon">📋</span>
+        <div class="escal-name">Follow-Up</div>
+        <div class="escal-desc">Escalaciones por documentos, seguimiento de trámites y paquetes. Anteriormente también recolección de documentos (hoy lo lleva DMX).</div>
+        <ul class="escal-examples">
+          <li>Cliente enviando / recibiendo documentos</li>
+          <li>Paquete de bienvenida no recibido</li>
+          <li>Cita de biométricos USCIS (huellas)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ RESTRICCIONES ══ -->
+  <div class="restrict-section">
+    <div class="section-divider" style="margin-bottom:20px;">
+      <div class="sdl"></div>
+      <div class="sd-text">🚫 &nbsp; Información Restringida — NO se comunica al cliente</div>
+      <div class="sdl rev"></div>
+    </div>
+    <div class="restrict-grid">
+      <div class="restrict-card">
+        <span class="restrict-icon">❌</span>
+        <div class="restrict-body">
+          <div class="restrict-name">Rejections</div>
+          <div class="restrict-note">No se informa. Se escala a Callbacks para que un abogado notifique. Si el cliente ya sabe y pide el documento → File Request.</div>
+        </div>
+      </div>
+      <div class="restrict-card">
+        <span class="restrict-icon">❌</span>
+        <div class="restrict-body">
+          <div class="restrict-name">Decisions</div>
+          <div class="restrict-note">No se informa. Mismo protocolo que Rejection. El abogado es quien debe comunicar cualquier decisión formal de USCIS.</div>
+        </div>
+      </div>
+      <div class="restrict-card">
+        <span class="restrict-icon">❌</span>
+        <div class="restrict-body">
+          <div class="restrict-name">RFE / NOID</div>
+          <div class="restrict-note">No se informa directamente. Si el cliente lo pide, se trata como File Request. Se escala el reporte.</div>
+        </div>
+      </div>
+      <div class="restrict-card">
+        <span class="restrict-icon">❌</span>
+        <div class="restrict-body">
+          <div class="restrict-name">NTA (Notice to Appear)</div>
+          <div class="restrict-note">No se informa en ningún caso. Se escala con el área de Removals. Si piden el documento → File Request.</div>
+        </div>
+      </div>
+      <div class="restrict-card">
+        <span class="restrict-icon">❌</span>
+        <div class="restrict-body">
+          <div class="restrict-name">Dictaminación</div>
+          <div class="restrict-note">No se dice "está en dictaminación". Se parafrasea: "se encuentra bajo revisión para definir la mejor estrategia".</div>
+        </div>
+      </div>
+      <div class="restrict-card">
+        <span class="restrict-icon">⚠️</span>
+        <div class="restrict-body">
+          <div class="restrict-name">NOIDs (en TramCase)</div>
+          <div class="restrict-note">No se comparten al cliente. Se escala como File Request para obtener autorización antes de enviar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ NOTAS TEMPLATE ══ -->
+  <div class="notas-section">
+    <div class="section-divider" style="margin-bottom:20px;">
+      <div class="sdl"></div>
+      <div class="sd-text">📝 &nbsp; Plantilla de Notas — TramCase</div>
+      <div class="sdl rev"></div>
+    </div>
+    <div class="nota-template">
+      <div class="nota-row">
+        <div class="nota-field">Tipo</div>
+        <div class="nota-val"><strong style="color:var(--gold2);">Incoming Call</strong> (llamada de entrada) &nbsp;|&nbsp; <strong style="color:var(--gold2);">Outgoing Call – Chat Request</strong> (saliente de ClickUp)</div>
+      </div>
+      <div class="nota-row">
+        <div class="nota-field">Reason</div>
+        <div class="nota-val">Motivo por el que se contacta el cliente. Ej: "Incoming call – request payment" / "Case status – permiso de trabajo"</div>
+      </div>
+      <div class="nota-row">
+        <div class="nota-field">Solution</div>
+        <div class="nota-val">Resumen de lo que se le dijo al cliente y qué acción se tomó. Ej: "Se tomó pago, se envió recibo, se escaló balance a Collections"</div>
+      </div>
+      <div class="nota-row">
+        <div class="nota-field">Internal Note</div>
+        <div class="nota-val">Acciones internas que el cliente NO debe conocer. Ej: "Escalar a backoffice – recibos no enviados"</div>
+      </div>
+      <div class="nota-row">
+        <div class="nota-field">Behavior</div>
+        <div class="nota-val">Estado emocional del cliente en la llamada. Ej: "Calmado", "Molesto", "Muy alterado", "Confundido"</div>
+      </div>
+      <div class="nota-row">
+        <div class="nota-field">Client Number</div>
+        <div class="nota-val">Número de cliente confirmado. Si no lo tiene: fecha de nacimiento, dirección o email registrado. Anotar si <em>confirmó</em> o <em>no confirmó</em>.</div>
+      </div>
+      <div class="nota-example">
+        <strong>Ejemplo:</strong><br>
+        Incoming call – request payment + recibos iniciales. El cliente realizó un pago mensual de $350. Se tomó el pago y se generó recibo (adjunto). Solicitó recibos iniciales de la semana anterior, no recibidos. Se escaló a grupo Collections para envío de balance. Behavior: calmado. Client number: Confirmed.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CALLBACKS BANNER ══ -->
+  <div class="callbacks-banner">
+    <div class="cb-left">
+      <span class="cb-icon">👥</span>
+      <div class="cb-text">
+        <div class="cb-title">Team Leader — Supervisión Activa en Todo Momento</div>
+        <div class="cb-sub">El TL monitorea llamadas en tiempo real vía Dashboard RT. Si una llamada supera <strong>10 minutos</strong>, interviene. Autoriza callbacks, resuelve dudas complejas, toma llamadas de emergencia y transfiere a su extensión cuando el cliente exige un supervisor.</div>
+      </div>
+    </div>
+    <div class="cb-badge">⏱ Máx. 10 min / llamada</div>
+  </div>
+
+  </div><!-- /panel-escal -->
+
+  <div class="panel-block hidden" id="panel-quiz">
+  <div class="quiz-section">
+    <div class="section-divider" style="margin-bottom:28px;">
+      <div class="sdl"></div>
+      <div class="sd-text">&#128221;&nbsp; Evaluaci&oacute;n &mdash; Pon a prueba tu conocimiento</div>
+      <div class="sdl rev"></div>
+    </div>
+    <div class="quiz-wrap" id="quizWrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizFill" style="width:0%"></div></div>
+      <div class="quiz-meta-row">
+        <span class="quiz-counter" id="quizCounter">Pregunta 1 de 10</span>
+        <span class="quiz-score-badge" id="quizScoreBadge">Puntaje: 0</span>
+      </div>
+      <div class="quiz-card">
+        <div class="quiz-q-num" id="quizQNum">01</div>
+        <div class="quiz-question" id="quizQuestion"></div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <button class="quiz-next-btn" id="quizNextBtn" onclick="nextQuestion()" style="display:none">Siguiente pregunta &#8594;</button>
+      </div>
+    </div>
+    <div class="quiz-results" id="quizResults" style="display:none">
+      <div class="quiz-result-icon" id="quizResultIcon"></div>
+      <div class="quiz-result-title" id="quizResultTitle"></div>
+      <div class="quiz-result-sub" id="quizResultSub"></div>
+      <div class="quiz-result-score" id="quizResultScore"></div>
+      <div class="quiz-detail-list" id="quizDetailList"></div>
+      <button class="quiz-retry-btn" onclick="restartQuiz()">Reintentar evaluaci&oacute;n</button>
+    </div>
+  </div>
+
+  </div><!-- /panel-quiz -->
+</div><!-- /road-page -->
+
+
+<!-- ══ MODAL ══ -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetail(event)">
+  <div class="detail-panel" id="detailPanel">
+    <div class="dp-accent" id="dpAccent"></div>
+    <div class="dp-header">
+      <div class="dp-icon" id="dpIcon"></div>
+      <div class="dp-info">
+        <div class="dp-step" id="dpStep"></div>
+        <div class="dp-title" id="dpTitle"></div>
+        <div class="dp-sub" id="dpSub"></div>
+      </div>
+      <button class="dp-close" onclick="document.getElementById('detailOverlay').classList.remove('show')">✕</button>
+    </div>
+    <div class="dp-body" id="dpBody"></div>
+  </div>
+</div>
+
+<script>
+const steps = [
+  // ── PERFIL A ──
+  {
+    icon:'🖥️', color:'#3b82f6',
+    step:'Paso 01 — Inicio de turno',
+    title:'Setup & Login',
+    sub:'Preparación de plataformas y configuración de disponibilidad',
+    desc:'Al inicio del turno el asesor debe tener abiertas y operativas todas las plataformas necesarias para recibir llamadas. Es indispensable que el 8x8 Work esté activo en todo momento porque es donde caen físicamente las llamadas, aunque se gestionen desde el Contact Center.',
+    items:[
+      'Abrir 8x8 Work (permanece abierto toda la sesión)',
+      'Abrir 8x8 Contact Center Agent Workspace',
+      'Abrir TramCase para búsqueda de clientes',
+      'Abrir el Dashboard RT (link HTML compartido) para monitorear métricas del call center',
+      'Configurar los queues en Contact Center según idioma asignado por el TL',
+      'Activar estatus "Available" para comenzar a recibir llamadas',
+    ],
+    output:'✅ Todas las plataformas activas y asesor disponible',
+    tags:['Inicio de turno','8x8','TramCase','Dashboard RT'],
+    plats:['8x8 Work','Contact Center','TramCase','Dashboard RT (HTML)'],
+  },
+  {
+    icon:'📞', color:'#1e4976',
+    step:'Paso 02 — Recepción de Llamada',
+    title:'Llamada Entrante',
+    sub:'Identificación de la llamada y contexto previo al saludo',
+    desc:'Cuando el asesor está en "Available", la llamada cae automáticamente como una ventana emergente en todas las pestañas abiertas del navegador. La llamada muestra el número del cliente y el motivo (queue): Case Status EN/ES, Llamada Perdida, Pagos EN/ES. El asesor ya sabe antes de contestar por qué llaman.',
+    items:[
+      'La llamada aparece como pop-up con número y queue en 8x8',
+      'El asesor copia el número del cliente',
+      'Abre TramCase y pega el número para localizar el expediente',
+      'Contesta desde cualquier ventana donde aparezca el pop-up',
+      'El Team Leader controla qué queues recibe cada asesor según idioma',
+    ],
+    output:'📋 Caso localizado en TramCase antes del speech',
+    tags:['Llamada entrante','8x8','Queues','TramCase'],
+    plats:['8x8 Work','Contact Center','TramCase'],
+  },
+  {
+    icon:'🎙️', color:'#b45309',
+    step:'Paso 03 — Speech de Entrada',
+    title:'Saludo & Presentación',
+    sub:'Protocolo obligatorio de bienvenida al inicio de toda llamada',
+    desc:'El asesor debe completar el speech completo antes de dejar hablar al cliente. El speech tiene tres partes: saludo, agradecimiento y presentación. No se omite ninguna parte.',
+    items:[
+      '1. Saludo: "Buenos días / buenas tardes / buenas noches"',
+      '2. Agradecimiento: "Gracias por comunicarse a Mendoza Law Firm"',
+      '3. Presentación: "Le atiende [Nombre] [Primer Apellido]"',
+      '4. Aviso de seguridad: "Por razones de confidencialidad, necesitamos verificar su identidad"',
+      'No se interrumpe el speech aunque el cliente empiece a hablar',
+    ],
+    output:'🎙️ Speech de entrada completo antes de filtros',
+    tags:['Speech','Protocolo','Saludo'],
+    plats:['8x8'],
+  },
+  {
+    icon:'🔐', color:'#0369a1',
+    step:'Paso 04 — Verificación de Identidad',
+    title:'Filtros de Seguridad',
+    sub:'Tres filtros obligatorios para validar la identidad del cliente',
+    desc:'Antes de dar cualquier información, el asesor aplica los filtros de seguridad. Si el cliente no pasa al menos dos de los tres filtros principales, NO se le puede proporcionar ninguna información. Se le recuerda que es importante tener estos datos a la mano.',
+    items:[
+      'Filtro 1 — Nombre completo (dos nombres y dos apellidos)',
+      'Filtro 2 — Número de teléfono registrado en el caso',
+      'Filtro 3 — Número de cliente',
+      'Alternativas si falla algún filtro: email registrado o dirección del caso',
+      'Si solo tiene UNO de los tres filtros → NO se proporciona información',
+      'Se verifica que coincida exactamente con lo registrado en TramCase',
+    ],
+    output:'🔓 Cliente verificado — se puede proceder con la consulta',
+    tags:['Seguridad','Verificación','Filtros'],
+    plats:['TramCase'],
+  },
+  {
+    icon:'📋', color:'#047857',
+    step:'Paso 05 — Gestión de la Consulta',
+    title:'Atender la Solicitud',
+    sub:'Revisión de notas y atención del motivo de llamada',
+    desc:'Una vez verificado el cliente, el asesor atiende su solicitud basándose exclusivamente en las notas de TramCase. No tienen acceso a Dropbox. Si necesitan el número de recibo, lo buscan en el PDF del caso o piden apoyo al TL. Pueden consultar la página pública de USCIS para case status.',
+    items:[
+      'Revisar últimas notas en TramCase para entender contexto del caso',
+      'Consultar USCIS Check Status si es necesario (página pública)',
+      'Para case status con recibo: copiar número EAC/LIN del PDF en TramCase',
+      'Compartir link de USCIS al cliente si desea verificar por su cuenta',
+      'Consultar ClickUp SPEC (mini-capacitaciones) durante llamada si tiene duda',
+      'Si necesita más info (Dropbox, etc.): poner al cliente en espera y consultar al TL',
+      'Tiempo máximo en espera: anunciar siempre cuánto tardarán',
+    ],
+    output:'✅ Solicitud resuelta o tipificada para escalación',
+    tags:['Case Status','TramCase','USCIS','Atención'],
+    plats:['TramCase','USCIS Check Status','ClickUp (SPECs)'],
+  },
+  {
+    icon:'⚖️', color:'#c9a84c',
+    step:'Paso 06 — Decisión de Escalación',
+    title:'¿Resuelve o Escala?',
+    sub:'El asesor determina el tipo de acción a tomar',
+    desc:'Después de entender la solicitud, el asesor decide si puede resolverla directamente o si debe tipificarla y notificar al Team Leader. La tipificación se hace en la sheet compartida (Cancún) o en el chat de Slack (CDMX). Cada tipificación tiene un protocolo diferente.',
+    items:[
+      'Resuelve directo: case status sencillo, información pública, pago',
+      'Duda → tipificar en sheet/chat, pedir apoyo al TL antes de responder',
+      'Escalación → tipificar, enviar al canal Slack correspondiente (Collections / Follow-up)',
+      'Emergencia → tipificar como emergencia, notificar al TL inmediatamente',
+      'Requiere Callback → tipificar, NO ofrecer CB sin autorización del TL',
+      'Aviso → tipificar, manejar en llamada, no escala a ningún área',
+      'Autorización → llenar formulario y esperar aprobación del TL',
+    ],
+    output:'📊 Tipo de acción definido y tipificada en sheet/chat',
+    tags:['Escalación','Decisión','TL','Tipificación'],
+    plats:['Sheet escalaciones (Cancún)','Slack chat (CDMX)'],
+  },
+  {
+    icon:'💳', color:'#b91c1c',
+    step:'Paso 07 — Toma de Pago',
+    title:'Proceso de Pago',
+    sub:'Protocolo para procesar pagos de clientes via portal',
+    desc:'CS puede tomar pagos directamente. El asesor recibe el link del portal de colecciones del TL y lo abre para el cliente. El mínimo del portal es $50; la mayoría de clientes pagan $350 (plan mensual). Siempre se pega el recibo en TramCase y se envía por mensaje al cliente.',
+    items:[
+      'Recibir el link del portal de pagos (lo comparte el TL)',
+      'Solicitar al cliente: nombre de tarjeta, número, CVV, vencimiento',
+      'La dirección debe coincidir con la registrada en TramCase',
+      'El email puede ser cualquiera (no necesariamente el de TramCase)',
+      'Dar clic en "Pagar" → se genera recibo automático',
+      'Pegar el recibo en TramCase como nota',
+      'Enviar el recibo al cliente por mensaje vía TramCase',
+      'Si quieren hablar con su asesor de collections específico → escalar a canal Collections',
+    ],
+    output:'💳 Pago procesado, recibo en TramCase y enviado al cliente',
+    tags:['Pago','Portal de Pagos','Recibo','Collections'],
+    plats:['Portal de Pagos','TramCase'],
+  },
+  {
+    icon:'📝', color:'#065f46',
+    step:'Paso 08 — Cierre & Nota',
+    title:'Speech de Cierre y Documentación',
+    sub:'Todo contacto con cliente debe terminar con nota obligatoria en TramCase',
+    desc:'Al cerrar la llamada, el asesor aplica el speech de cierre y documenta TODA la interacción en TramCase. No dejar nota es falta grave que puede resultar en feedback o warning. La nota permite a cualquier área entender qué pasó en la llamada y qué acciones quedan pendientes.',
+    items:[
+      'Aplicar speech de cierre formal antes de colgar',
+      'Abrir nueva nota en TramCase inmediatamente después de la llamada',
+      'Formato siempre: Incoming/Outgoing Call + motivo',
+      'Campos: Reason / Solution / Internal Note / Behavior / Client Number',
+      'Dejar Internal Note si hay acción interna pendiente que el cliente no debe saber',
+      'Si el cliente no confirmó su número: anotar alternativa usada (fecha nacimiento / email)',
+      'Si no contestó la llamada saliente: dejar nota "No contestó — intento [fecha]"',
+    ],
+    output:'📝 Nota completa en TramCase para todos los contactos',
+    tags:['Nota','TramCase','Documentación','Cierre'],
+    plats:['TramCase'],
+  },
+  // ── PERFIL B ──
+  {
+    icon:'📋', color:'#7c3aed',
+    step:'Paso 01 — Bandeja ClickUp',
+    title:'Revisión de Tareas',
+    sub:'El asesor de chat abre ClickUp y revisa las solicitudes pendientes',
+    desc:'Los asesores de Chat & Textos trabajan exclusivamente sobre tareas de ClickUp que llegan desde otras áreas de la firma. Cada tarea contiene el contexto completo de por qué el cliente necesita ser contactado. Hay cuatro asesores en total: dos en Cancún y dos en CDMX.',
+    items:[
+      'Abrir ClickUp → Customer Service → Chat Request',
+      'Ver el listado de tareas abiertas ordenadas por fecha',
+      'Identificar categoría: info del caso, pago, cliente molesto, cancelación, etc.',
+      'Leer COMPLETO el contexto de la tarea antes de actuar',
+      'Verificar la fecha del ClickUp vs. últimas notas en TramCase',
+      'Los asesores de IN tienen acceso a ClickUp pero NO deben atender estas tareas',
+    ],
+    output:'📋 Tareas revisadas con contexto completo',
+    tags:['ClickUp','Chat & Textos','Tareas'],
+    plats:['ClickUp','TramCase'],
+  },
+  {
+    icon:'👤', color:'#0369a1',
+    step:'Paso 02 — Auto-asignación',
+    title:'Tomar Ownership de la Tarea',
+    sub:'El asesor se asigna la tarea y cambia su estado',
+    desc:'Antes de llamar al cliente, el asesor debe auto-asignarse la tarea en ClickUp para evitar que dos asesores trabajen el mismo caso simultáneamente. Luego cambia el estado de "To Do" a "En Curso".',
+    items:[
+      'Entrar a la tarea y asignársela a sí mismo (campo Assignee)',
+      'Cambiar el estado de "To Do" → "En Curso"',
+      'Ahora la tarea queda bloqueada para otros asesores',
+      'Revisar todos los campos: área origen, nombre del agente que la pasó, teléfono de contacto',
+    ],
+    output:'✅ Tarea asignada y en curso',
+    tags:['ClickUp','Asignación','Estado'],
+    plats:['ClickUp'],
+  },
+  {
+    icon:'🔍', color:'#b45309',
+    step:'Paso 03 — Verificar Últimas Notas',
+    title:'¿Ya se contactó el cliente?',
+    sub:'Antes de llamar, siempre revisar TramCase para no molestar al cliente innecesariamente',
+    desc:'Si el ClickUp es viejo (varios días) y el cliente ya se contactó con Customer Service recientemente, NO es necesario llamar. Se marca la tarea como completada directamente. Si no hay nota reciente de CS, se procede a llamar.',
+    items:[
+      'Ir a TramCase y buscar el cliente por nombre o número',
+      'Revisar las ÚLTIMAS notas de Customer Service',
+      'Si hay nota de CS de los últimos días → marcar tarea como completada, no llamar',
+      'Si no hay nota reciente → proceder con la llamada de salida',
+      'Si la tarea tiene contexto de emergencia (bar complaint activo) → llamar siempre',
+    ],
+    output:'📊 Decisión: ¿Llamar o cerrar sin llamada?',
+    tags:['TramCase','Notas','Verificación','Decisión'],
+    plats:['TramCase','ClickUp'],
+  },
+  {
+    icon:'📤', color:'#047857',
+    step:'Paso 04 — Llamada de Salida',
+    title:'Contactar al Cliente',
+    sub:'Llamada outgoing desde 8x8, sin usar Contact Center',
+    desc:'Los asesores de chat usan 8x8 Work directamente para llamadas salientes. NO usan el Contact Center (que es para entrantes). Pueden estar deslogueados del Contact Center mientras hacen llamadas salientes.',
+    items:[
+      'Copiar el número de teléfono desde ClickUp (campo de contacto)',
+      'Verificar que coincida con el número en TramCase',
+      'Llamar directamente desde 8x8 Work (no Contact Center)',
+      'Si no contesta: dejar nota en TramCase "Outgoing Call – no contestó" y reintentar después',
+      'Si contesta: aplicar speech de entrada y filtros de seguridad igual que IN',
+    ],
+    output:'📞 Llamada realizada — cliente contactado o registro de intento',
+    tags:['Llamada saliente','8x8','Outgoing'],
+    plats:['8x8 Work','TramCase'],
+  },
+  {
+    icon:'🎯', color:'#c9a84c',
+    step:'Paso 05 — Atender Solicitud',
+    title:'Resolver y Escalar si Aplica',
+    sub:'El asesor atiende lo que generó el ClickUp y determina acciones',
+    desc:'Ya en llamada, el asesor atiende la solicitud original del ClickUp. Aplica los mismos protocolos que un asesor IN: puede escalar por Slack, registrar emergencias, tomar pagos, etc. Si el caso amerita una escalación y el cliente está muy molesto, notifica al TL.',
+    items:[
+      'Atender el motivo original descrito en el ClickUp',
+      'Revisar las últimas notas para entender todo el historial del cliente',
+      'Si es cliente con cancelación → contener máx. 2 min, luego escalar a Cancelaciones',
+      'Si es emergencia durante la llamada → notificar al TL inmediatamente',
+      'Clientes con Bar Complaint → supervisor interviene o devuelve llamada',
+      'Escalar a Slack (Collections / Follow-up) si aplica',
+    ],
+    output:'✅ Solicitud atendida o escalada con protocolo correcto',
+    tags:['Atención','Escalación','ClickUp','Protocolo'],
+    plats:['TramCase','Slack','8x8'],
+  },
+  {
+    icon:'✍️', color:'#1a5c3a',
+    step:'Paso 06 — Nota en TramCase',
+    title:'Documentar la Llamada Saliente',
+    sub:'Nota en formato "Outgoing Call – Chat Request"',
+    desc:'La nota de un asesor de chat siempre comienza con "Outgoing Call – Chat Request". Esto permite identificar que la nota fue generada por el equipo de salientes, diferenciándola de las de IN. Los campos son los mismos que para llamadas entrantes.',
+    items:[
+      'Inicio obligatorio: "Outgoing Call – Chat Request"',
+      'Reason: motivo de la llamada (según lo descrito en ClickUp)',
+      'Solution: qué se resolvió o cómo se atendió',
+      'Behavior: estado emocional del cliente',
+      'Client Number: número confirmado o alternativa usada',
+      'Internal Note: si quedó alguna escalación pendiente interna',
+    ],
+    output:'📝 Nota "Outgoing Call – Chat Request" completa en TramCase',
+    tags:['Nota','TramCase','Chat Request','Outgoing'],
+    plats:['TramCase'],
+  },
+  {
+    icon:'✅', color:'#3b82f6',
+    step:'Paso 07 — Cerrar Tarea en ClickUp',
+    title:'Marcar como Completada',
+    sub:'Cierre del ciclo de la tarea en ClickUp con comentario',
+    desc:'Al terminar la llamada y dejar nota en TramCase, el asesor regresa a ClickUp y cierra la tarea. Deja un comentario breve con el resultado. Si la tarea quedó sin resolver (sin respuesta del cliente) se documenta el intento y se define si se reintenta o se escala.',
+    items:[
+      'Ir a la tarea en ClickUp',
+      'Dejar comentario: "Ya se contactó a Customer Service" o resultado de la llamada',
+      'Cambiar el estado a "Completada"',
+      'La tarea desaparece del listado de pendientes',
+      'Si no contestó: documentar intento y dejar en estado "En Curso" para reintento',
+      'Pasar a la siguiente tarea de la bandeja',
+    ],
+    output:'🏁 Tarea cerrada en ClickUp — ciclo completado',
+    tags:['ClickUp','Cierre','Completada','Ciclo'],
+    plats:['ClickUp'],
+  },
+];
+
+function openDetail(idx) {
+  const s = steps[idx];
+  document.getElementById('dpAccent').style.background = `linear-gradient(90deg,${s.color},${s.color}55)`;
+  const icon = document.getElementById('dpIcon');
+  icon.textContent = s.icon;
+  icon.style.background = s.color + '18';
+  icon.style.border = `1.5px solid ${s.color}30`;
+  document.getElementById('dpStep').textContent = s.step;
+  document.getElementById('dpTitle').textContent = s.title;
+  document.getElementById('dpSub').textContent = s.sub;
+  const platsHtml = s.plats ? `<div class="dp-section"><div class="dp-label">Plataformas</div><div class="dp-plats">${s.plats.map(p=>`<span class="dp-plat">${p}</span>`).join('')}</div></div>` : '';
+  document.getElementById('dpBody').innerHTML = `
+    <div class="dp-section">
+      <div class="dp-label">Área responsable</div>
+      <div class="dp-tags">${s.tags.map(t=>`<span class="dp-tag">${t}</span>`).join('')}</div>
+    </div>
+    ${platsHtml}
+    <div class="dp-section">
+      <div class="dp-label">Descripción del proceso</div>
+      <p class="dp-text">${s.desc}</p>
+    </div>
+    <div class="dp-section">
+      <div class="dp-label">Actividades clave</div>
+      <ul class="dp-list">${s.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+    </div>
+    <div class="dp-section">
+      <div class="dp-label">Entregable / Resultado</div>
+      <span class="dp-output">${s.output}</span>
+    </div>
+  `;
+  document.getElementById('detailOverlay').classList.add('show');
+}
+
+function closeDetail(e) {
+  if (e.target === document.getElementById('detailOverlay'))
+    document.getElementById('detailOverlay').classList.remove('show');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('detailOverlay').classList.remove('show');
+});
+
+function switchTab(tab) {
+  var panelIn    = document.getElementById('panel-in');
+  var panelOut   = document.getElementById('panel-out');
+  var panelEscal = document.getElementById('panel-escal');
+  var panelQuiz  = document.getElementById('panel-quiz');
+  var btnIn      = document.getElementById('tab-in');
+  var btnOut     = document.getElementById('tab-out');
+  var btnEscal   = document.getElementById('tab-escal');
+  var btnQuiz    = document.getElementById('tab-quiz');
+  [panelIn, panelOut, panelEscal, panelQuiz].forEach(function(p){ p.classList.add('hidden'); });
+  [btnIn, btnOut, btnEscal, btnQuiz].forEach(function(b){ b.classList.remove('active'); });
+  if (tab === 'in')    { panelIn.classList.remove('hidden');    btnIn.classList.add('active');    setTimeout(drawConnectors, 60); }
+  if (tab === 'out')   { panelOut.classList.remove('hidden');   btnOut.classList.add('active');   setTimeout(drawConnectorsB, 60); }
+  if (tab === 'escal') { panelEscal.classList.remove('hidden'); btnEscal.classList.add('active'); }
+  if (tab === 'quiz')  { panelQuiz.classList.remove('hidden');  btnQuiz.classList.add('active');  }
+}
+
+/* ── Draw curved connector between pin of node A and pin of node B inside a given SVG overlay ── */
+function drawCurve(svgEl, pinA, pinB, color) {
+  if (!pinA || !pinB || !svgEl) return;
+  var svgRect  = svgEl.getBoundingClientRect();
+  var rA = pinA.getBoundingClientRect();
+  var rB = pinB.getBoundingClientRect();
+
+  // center-bottom of pinA, center-top of pinB (relative to SVG)
+  var x1 = rA.left + rA.width  / 2 - svgRect.left;
+  var y1 = rA.top  + rA.height / 2 - svgRect.top;
+  var x2 = rB.left + rB.width  / 2 - svgRect.left;
+  var y2 = rB.top  + rB.height / 2 - svgRect.top;
+
+  // cubic bezier — control points curve outward to the right
+  var midY = (y1 + y2) / 2;
+  var dx   = Math.abs(x2 - x1);
+  var cx1  = x1 + dx * 0.55;
+  var cy1  = y1 + (y2 - y1) * 0.15;
+  var cx2  = x2 + dx * 0.55;
+  var cy2  = y2 - (y2 - y1) * 0.15;
+
+  var d = 'M ' + x1 + ' ' + y1 +
+          ' C ' + cx1 + ' ' + cy1 + ', ' + cx2 + ' ' + cy2 + ', ' + x2 + ' ' + y2;
+
+  // defs for arrowhead
+  var ns = 'http://www.w3.org/2000/svg';
+  var markerId = 'arr-conn-' + Math.round(Math.random()*9999);
+  var defs = svgEl.querySelector('defs') || svgEl.insertBefore(document.createElementNS(ns,'defs'), svgEl.firstChild);
+  var marker = document.createElementNS(ns, 'marker');
+  marker.setAttribute('id', markerId);
+  marker.setAttribute('viewBox','0 0 10 10');
+  marker.setAttribute('refX','8');
+  marker.setAttribute('refY','5');
+  marker.setAttribute('markerWidth','6');
+  marker.setAttribute('markerHeight','6');
+  marker.setAttribute('orient','auto-start-reverse');
+  var arrowPath = document.createElementNS(ns,'path');
+  arrowPath.setAttribute('d','M2 1L8 5L2 9');
+  arrowPath.setAttribute('fill','none');
+  arrowPath.setAttribute('stroke', color);
+  arrowPath.setAttribute('stroke-width','1.5');
+  arrowPath.setAttribute('stroke-linecap','round');
+  marker.appendChild(arrowPath);
+  defs.appendChild(marker);
+
+  // glow path (thicker, more transparent)
+  var glow = document.createElementNS(ns, 'path');
+  glow.setAttribute('d', d);
+  glow.setAttribute('fill','none');
+  glow.setAttribute('stroke', color);
+  glow.setAttribute('stroke-width','6');
+  glow.setAttribute('stroke-opacity','0.12');
+  glow.setAttribute('stroke-linecap','round');
+  svgEl.appendChild(glow);
+
+  // main path
+  var path = document.createElementNS(ns, 'path');
+  path.setAttribute('d', d);
+  path.setAttribute('fill','none');
+  path.setAttribute('stroke', color);
+  path.setAttribute('stroke-width','2.5');
+  path.setAttribute('stroke-opacity','0.85');
+  path.setAttribute('stroke-linecap','round');
+  path.setAttribute('stroke-dasharray','6 4');
+  path.setAttribute('marker-end','url(#'+markerId+')');
+  // animate dash
+  path.innerHTML = '<animate attributeName="stroke-dashoffset" from="100" to="0" dur="1.8s" repeatCount="indefinite"/>';
+  svgEl.appendChild(path);
+
+  // label in the middle
+  var lx = (x1 + x2) / 2 + dx * 0.6;
+  var ly = midY;
+  var rect = document.createElementNS(ns,'rect');
+  rect.setAttribute('x', lx - 22); rect.setAttribute('y', ly - 11);
+  rect.setAttribute('width','44'); rect.setAttribute('height','22');
+  rect.setAttribute('rx','6'); rect.setAttribute('fill', color);
+  rect.setAttribute('fill-opacity','0.15');
+  rect.setAttribute('stroke', color); rect.setAttribute('stroke-opacity','0.4');
+  rect.setAttribute('stroke-width','1');
+  svgEl.appendChild(rect);
+  var txt = document.createElementNS(ns,'text');
+  txt.setAttribute('x', lx); txt.setAttribute('y', ly + 1);
+  txt.setAttribute('text-anchor','middle'); txt.setAttribute('dominant-baseline','middle');
+  txt.setAttribute('font-size','9'); txt.setAttribute('font-weight','700');
+  txt.setAttribute('font-family','DM Sans,sans-serif');
+  txt.setAttribute('fill', color); txt.setAttribute('fill-opacity','0.9');
+  txt.setAttribute('letter-spacing','0.5');
+  txt.textContent = '04 → 05';
+  svgEl.appendChild(txt);
+}
+
+function drawConnectors() {
+  var svg  = document.getElementById('curve-overlay-a');
+  if (!svg) return;
+  // clear previous drawings (keep svg element)
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  var pinA = document.querySelector('#a4 .node-pin');
+  var pinB = document.querySelector('#a5 .node-pin');
+  drawCurve(svg, pinA, pinB, '#c9a84c');
+}
+
+function drawConnectorsB() {
+  // placeholder for Perfil B if needed later
+}
+
+// Draw on initial load (tab-in is default active)
+window.addEventListener('load', function(){ setTimeout(drawConnectors, 300); });
+// Redraw on resize
+window.addEventListener('resize', function(){ setTimeout(drawConnectors, 100); });
+
+var quizData=[
+  {q:'¿Cuál es el protocolo correcto al recibir una llamada donde el cliente solo proporciona uno de los tres filtros de seguridad?',opts:['Se le da información básica de forma excepcional','No se le proporciona ninguna información','Se escala inmediatamente con el Team Leader','Se transfiere con el área de Backoffice'],ans:1,exp:'Con solo un filtro NO se proporciona información. Se necesitan al menos dos filtros, o el cliente debe proporcionar una alternativa válida como email o dirección registrada.'},
+  {q:'¿Cuántos filtros de seguridad principales se aplican al inicio de toda llamada entrante?',opts:['Dos: nombre y teléfono','Tres: nombre completo, teléfono registrado y número de cliente','Cuatro: nombre, teléfono, email y dirección','Uno: solo número de cliente'],ans:1,exp:'Siempre son 3 filtros: nombre completo (dos nombres y apellidos), teléfono registrado y número de cliente. El email o la dirección son alternativas si falla alguno.'},
+  {q:'Si el cliente solo proporciona UNO de los tres filtros de seguridad, ¿qué hace el asesor?',opts:['Le da información básica de forma excepcional','No le proporciona ninguna información','Escala inmediatamente con el Team Leader','Lo transfiere con Backoffice'],ans:1,exp:'Con solo un filtro NO se proporciona información. Se necesitan al menos dos filtros, o el cliente debe dar una alternativa válida como email o dirección.'},
+  {q:'¿Cuál es el tiempo máximo recomendado por llamada en Customer Service?',opts:['5 minutos','15 minutos','10 minutos','20 minutos'],ans:2,exp:'El máximo es 10 minutos. Si el Team Leader detecta que un asesor supera ese tiempo, interviene para apoyarlo y liberar la llamada.'},
+  {q:'¿Qué tipo de escalación se usa cuando un cliente amenaza con dejar reseñas negativas en Google o redes sociales?',opts:['Duda','Aviso','Escalación regular','Emergencia — Bar Review'],ans:3,exp:'Las amenazas de Bar Review se tipifican como EMERGENCIA. El asesor contiene al cliente y notifica al Team Leader de inmediato.'},
+  {q:'¿Cuál de estas situaciones se clasifica como AVISO y NO requiere escalación a ningún área?',opts:['El cliente pide su expediente (file)','El cliente pregunta por noticias sobre cambios migratorios','El cliente amenaza con una demanda legal','El cliente pide hablar con MGM'],ans:1,exp:'Las consultas sobre noticias externas se tipifican como Aviso. Se resuelven en la llamada sin escalar a ningún canal de Slack.'},
+  {q:'Un asesor de Chat verifica TramCase y ve que el cliente ya llamó a CS hoy. La tarea de ClickUp es del 20 de mayo. ¿Qué debe hacer?',opts:['Llamar de todas formas para confirmar','Marcar la tarea como completada sin llamar','Escalar al Team Leader para que decida','Transferir la tarea a otro asesor'],ans:1,exp:'Si el cliente ya se contactó con CS recientemente, no es necesario llamar. Se marca como Completada en ClickUp con un comentario del resultado.'},
+  {q:'¿Cuál de estas informaciones encontradas en TramCase NO puede comunicar el asesor al cliente bajo ninguna circunstancia?',opts:['El número de recibo de USCIS','El estatus general del caso','Una Notice to Appear (NTA)','El nombre del abogado asignado'],ans:2,exp:'Las NTA, Rejections, Decisions, RFEs y NOIDs son información restringida. Si el asesor las ve en TramCase, escala sin mencionarlas al cliente.'},
+  {q:'Los asesores de Chat y Textos, ¿desde qué plataforma realizan sus llamadas de salida?',opts:['Desde TramCase usando mensajería','Desde 8x8 Contact Center','Desde 8x8 Work directamente','Desde Slack con llamada integrada'],ans:2,exp:'Los asesores de Chat usan 8x8 Work directamente para llamadas salientes. Pueden estar deslogueados del Contact Center mientras trabajan las tareas de ClickUp.'},
+  {q:'¿Cuál es el formato correcto de la nota que deja un asesor de Chat en TramCase tras una llamada de salida?',opts:['Incoming Call — Chat Request','Outgoing Call — Chat Request','Llamada Saliente — ClickUp Task','Callback — Chat y Textos'],ans:1,exp:'Las notas de los asesores de salientes siempre inician con Outgoing Call — Chat Request, diferenciándolas de las notas de llamadas entrantes (Incoming Call).'}
+];
+var qIdx=0,score=0,answered=[],userAnswers=[];
+function renderQuestion(){
+  var q=quizData[qIdx];
+  document.getElementById('quizQNum').textContent=String(qIdx+1).padStart(2,'0');
+  document.getElementById('quizQuestion').textContent=q.q;
+  document.getElementById('quizCounter').textContent='Pregunta '+(qIdx+1)+' de '+quizData.length;
+  document.getElementById('quizScoreBadge').textContent='Puntaje: '+score;
+  document.getElementById('quizFill').style.width=(qIdx/quizData.length*100)+'%';
+  var fb=document.getElementById('quizFeedback');
+  fb.className='quiz-feedback';fb.textContent='';
+  document.getElementById('quizNextBtn').style.display='none';
+  var letters=['A','B','C','D'];
+  document.getElementById('quizOptions').innerHTML=q.opts.map(function(o,i){
+    return '<button class="quiz-opt" onclick="selectOpt('+i+')">'+'<span class="opt-letter">'+letters[i]+'</span>'+o+'</button>';
+  }).join('');
+}
+function selectOpt(i){
+  var q=quizData[qIdx];
+  var correct=i===q.ans;
+  if(correct) score++;
+  answered.push(correct);userAnswers.push(i);
+  var btns=document.querySelectorAll('.quiz-opt');
+  btns.forEach(function(b,idx){
+    b.disabled=true;
+    if(idx===q.ans) b.classList.add('correct');
+    else if(idx===i&&!correct) b.classList.add('wrong');
+  });
+  var fb=document.getElementById('quizFeedback');
+  fb.className='quiz-feedback show '+(correct?'ok':'fail');
+  fb.textContent=(correct?'Correcto. ':'Incorrecto. ')+q.exp;
+  document.getElementById('quizScoreBadge').textContent='Puntaje: '+score;
+  var nb=document.getElementById('quizNextBtn');
+  nb.style.display='inline-block';
+  nb.textContent=qIdx<quizData.length-1?'Siguiente pregunta ->':'Ver resultados ->';
+}
+function nextQuestion(){
+  qIdx++;
+  if(qIdx<quizData.length){renderQuestion();}else{showResults();}
+}
+function showResults(){
+  document.getElementById('quizFill').style.width='100%';
+  document.getElementById('quizWrap').style.display='none';
+  var res=document.getElementById('quizResults');
+  res.style.display='block';
+  var pct=Math.round(score/quizData.length*100);
+  var icon,title,sub;
+  if(pct>=90){icon='Excelente!';title='Dominio sobresaliente';sub='Tienes un conocimiento solido del proceso operativo de CS.';}
+  else if(pct>=70){icon='Buen trabajo!';title='Buen trabajo';sub='Conoces bien el proceso. Repasa los puntos que fallaste.';}
+  else if(pct>=50){icon='En progreso';title='Sigue practicando';sub='Hay areas que necesitan refuerzo. Revisa el material.';}
+  else{icon='A repasar!';title='Necesitas refuerzo';sub='Te recomendamos revisar el proceso completo antes de reintentar.';}
+  document.getElementById('quizResultIcon').textContent=icon;
+  document.getElementById('quizResultTitle').textContent=title;
+  document.getElementById('quizResultSub').textContent=sub;
+  document.getElementById('quizResultScore').textContent=score+' / '+quizData.length+' correctas ('+pct+'%)';
+  var letters=['A','B','C','D'];
+  document.getElementById('quizDetailList').innerHTML=quizData.map(function(q,i){
+    var ok=answered[i];
+    return '<div class="quiz-detail-item '+(ok?'ok-item':'fail-item')+'">'+
+      '<span class="quiz-detail-mark '+(ok?'quiz-mark-ok':'quiz-mark-fail')+'">'+(ok?'+':'-')+'</span>'+
+      '<div><strong>P'+(i+1)+':</strong> '+q.q.substring(0,72)+'... '+
+      (!ok?'<span style="color:#b91c1c;font-size:12px;"> Correcta: '+letters[q.ans]+'</span>':'')+
+      '</div></div>';
+  }).join('');
+}
+function restartQuiz(){
+  qIdx=0;score=0;answered=[];userAnswers=[];
+  document.getElementById('quizResults').style.display='none';
+  document.getElementById('quizWrap').style.display='block';
+  renderQuestion();
+}
+renderQuestion();
+</script>
+</body>
+</html>
