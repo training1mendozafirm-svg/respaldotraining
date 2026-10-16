@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ejemplo de Llamada Entrante — Customer Service TMLF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #07111c;
+  --navy2:   #0c1e30;
+  --navy3:   #122540;
+  --navy4:   #1a3354;
+  --gold:    #c9a84c;
+  --gold2:   #e2c06a;
+  --gold3:   #f0d58a;
+  --gold-dim:rgba(201,168,76,.12);
+  --gold-mid:rgba(201,168,76,.28);
+  --gold-str:rgba(201,168,76,.55);
+  --ice:     #7baed4;
+  --ice-dim: rgba(123,174,212,.18);
+  --white:   #ffffff;
+  --off:     #f3f5f8;
+  --text:    #1a2a3a;
+  --muted:   #5a6e82;
+  --light:   #8fa3b8;
+  --card-bg: #ffffff;
+  --card-border: rgba(26,51,84,.1);
+  --shadow-sm: 0 2px 12px rgba(7,17,28,.07);
+  --shadow-md: 0 8px 32px rgba(7,17,28,.12);
+  --shadow-lg: 0 20px 60px rgba(7,17,28,.18);
+  --r: 18px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--off);color:var(--text);min-height:100vh;line-height:1.65;}
+
+/* SVG icon helper */
+.icon{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.icon svg{display:block;}
+
+/* ══ TOP NAV ══ */
+.topnav{
+  position:sticky;top:0;z-index:400;
+  height:64px;background:rgba(7,17,28,.98);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(201,168,76,.15);
+  display:flex;align-items:center;padding:0 36px;gap:16px;
+}
+.brand{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--white);display:flex;align-items:center;gap:12px;letter-spacing:.3px;}
+.brand .emblem{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(201,168,76,.25),rgba(201,168,76,.06));border:1px solid rgba(201,168,76,.35);display:flex;align-items:center;justify-content:center;}
+.brand em{color:var(--gold);font-style:normal}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-chip{display:flex;align-items:center;gap:6px;padding:6px 16px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:var(--gold);}
+.nav-chip .pulse{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ══ HERO ══ */
+.hero{background:linear-gradient(160deg,#07111c 0%,#0e1f32 40%,#152d48 70%,#1c3d62 100%);color:var(--white);padding:60px 48px 52px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-120px;right:-80px;width:500px;height:500px;border-radius:50%;border:1px solid rgba(201,168,76,.08);animation:ringPulse 7s ease-in-out infinite;}
+.hero::after{content:'';position:absolute;top:-40px;right:60px;width:320px;height:320px;border-radius:50%;border:1px solid rgba(201,168,76,.05);animation:ringPulse 9s ease-in-out infinite 2s;}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.08);opacity:1}}
+.hero-inner{position:relative;z-index:2;max-width:960px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;}
+.hero-badge .dot{width:6px;height:6px;background:var(--gold);border-radius:50%}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4.5vw,52px);font-weight:700;line-height:1.15;letter-spacing:.4px;margin-bottom:14px;}
+.hero h1 span{display:block;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:15px;opacity:.68;max-width:60ch;line-height:1.7;margin-bottom:28px;}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px}
+.hm{display:flex;align-items:center;gap:8px;padding:8px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;font-size:12px;color:rgba(255,255,255,.72);font-weight:500;}
+.hm .hm-icon{display:flex;align-items:center;opacity:.85;}
+.hero-rule{height:3px;background:linear-gradient(90deg,var(--gold),rgba(201,168,76,.3),transparent);}
+
+/* ══ MAIN CONTENT ══ */
+.main-content{max-width:1000px;margin:0 auto;padding:48px 40px 80px;}
+
+/* ══ SECTION DIVIDER ══ */
+.section-divider{
+  display:flex;align-items:center;gap:14px;
+  padding:8px 0;margin:0 0 32px;
+}
+.sdl{flex:1;height:1px;background:linear-gradient(90deg,var(--gold-mid),transparent)}
+.sdl.rev{background:linear-gradient(270deg,var(--gold-mid),transparent)}
+.sd-text{
+  font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--gold);white-space:nowrap;display:flex;align-items:center;gap:6px;
+}
+
+/* ══ VIDEO CONTAINER ══ */
+.video-wrapper{
+  background:var(--navy);
+  border-radius:20px;
+  border:1.5px solid rgba(201,168,76,.2);
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+  position:relative;
+}
+
+.video-header{
+  padding:20px 28px 16px;
+  border-bottom:1px solid rgba(201,168,76,.12);
+  display:flex;align-items:center;gap:16px;
+}
+.video-header-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(201,168,76,.06));
+  border:1px solid rgba(201,168,76,.3);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.video-header-info{flex:1;}
+.video-header-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--white);line-height:1.2;margin-bottom:3px;}
+.video-header-sub{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:.3px;}
+.video-header-badge{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 14px;border-radius:999px;
+  background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);
+  font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+  color:var(--gold);white-space:nowrap;
+}
+
+/* ══ VIDEO FRAME AREA ══ */
+.video-box{
+  background:#000;
+  width:100%;
+  aspect-ratio:16/9;
+  position:relative;
+  flex-shrink:0;
+  border-radius:8px;
+  overflow:hidden;
+}
+.video-box iframe{
+  width:100%;
+  height:100%;
+  display:block;
+  border:none;
+}
+
+/* ══ VIDEO FOOTER ══ */
+.video-footer{
+  padding:20px 28px;
+  display:flex;align-items:center;gap:20px;
+  flex-wrap:wrap;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.vf-note{
+  flex:1;
+  font-size:12px;
+  color:rgba(255,255,255,.45);
+  line-height:1.6;
+  min-width:200px;
+}
+.vf-note strong{color:rgba(255,255,255,.7);font-weight:600;}
+.vf-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.vf-chip{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:8px;
+  font-size:11px;font-weight:600;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.6);
+}
+
+/* ══ PROTOCOL CARDS ROW ══ */
+.protocol-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:14px;
+  margin-top:40px;
+}
+.proto-card{
+  background:var(--card-bg);
+  border-radius:16px;
+  border:1.5px solid var(--card-border);
+  box-shadow:var(--shadow-sm);
+  padding:18px 18px 16px;
+  position:relative;overflow:hidden;
+  transition:transform .22s cubic-bezier(.34,1.2,.64,1),box-shadow .22s;
+  cursor:default;
+}
+.proto-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.proto-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  border-radius:16px 16px 0 0;
+}
+.proto-card.step1::before{background:linear-gradient(90deg,#3b82f6,#93c5fd);}
+.proto-card.step2::before{background:linear-gradient(90deg,#1e4976,#3b82f6);}
+.proto-card.step3::before{background:linear-gradient(90deg,#b45309,#f59e0b);}
+.proto-card.step4::before{background:linear-gradient(90deg,#0369a1,#38bdf8);}
+.proto-card.step5::before{background:linear-gradient(90deg,#047857,#34d399);}
+.proto-card.step6::before{background:linear-gradient(90deg,var(--gold),var(--gold2));}
+.proto-card.step7::before{background:linear-gradient(90deg,#6d28d9,#a78bfa);}
+.proto-card.step8::before{background:linear-gradient(90deg,#991b1b,#f87171);}
+
+.proto-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:36px;font-weight:700;line-height:1;
+  margin-bottom:6px;
+}
+.proto-card.step1 .proto-num{color:#3b82f6;}
+.proto-card.step2 .proto-num{color:#1e4976;}
+.proto-card.step3 .proto-num{color:#b45309;}
+.proto-card.step4 .proto-num{color:#0369a1;}
+.proto-card.step5 .proto-num{color:#047857;}
+.proto-card.step6 .proto-num{color:var(--gold);}
+.proto-card.step7 .proto-num{color:#6d28d9;}
+.proto-card.step8 .proto-num{color:#991b1b;}
+
+.proto-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3;}
+.proto-desc{font-size:11.5px;color:var(--muted);line-height:1.5;}
+
+/* ══ CONTEXT BOX ══ */
+.context-box{
+  margin-top:40px;
+  background:var(--navy2);
+  border-radius:16px;
+  padding:24px 28px;
+  border:1px solid rgba(201,168,76,.15);
+}
+.context-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-weight:700;color:var(--white);
+  margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.context-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.context-item{display:flex;gap:10px;align-items:flex-start;}
+.ctx-icon{flex-shrink:0;margin-top:2px;opacity:.75;}
+.ctx-body{}
+.ctx-label{font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--gold);margin-bottom:3px;}
+.ctx-val{font-size:12.5px;color:rgba(255,255,255,.65);line-height:1.5;}
+
+@media(max-width:640px){
+  .main-content{padding:32px 20px 60px;}
+  .hero{padding:40px 24px 36px;}
+  .topnav{padding:0 20px;}
+  .video-header{padding:16px 20px 14px;flex-wrap:wrap;}
+  .video-header-badge{display:none;}
+  .video-footer{padding:16px 20px;}
+  .context-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="topnav">
+  <div class="brand">
+    <div class="emblem">
+      <!-- phone -->
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.28 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </div>
+    TMLF · <em>Customer Service</em>
+  </div>
+  <div class="nav-right">
+    <div class="nav-chip"><div class="pulse"></div>Llamada Entrante — Ejemplo</div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><div class="dot"></div>Material de Apoyo Operativo</div>
+    <h1>Ejemplo de<span>Llamada Entrante CS</span></h1>
+    <p class="hero-sub">Observa cómo se desarrolla una llamada entrante real de Customer Service aplicando el protocolo completo: speech de entrada, filtros de seguridad, gestión de consulta, cierre y nota en TramCase.</p>
+    <div class="hero-meta">
+      <div class="hm">
+        <span class="hm-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.28 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </span>Perfil Asesor IN
+      </div>
+      <div class="hm">
+        <span class="hm-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </span>TramCase · 8x8
+      </div>
+      <div class="hm">
+        <span class="hm-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </span>8 pasos del protocolo
+      </div>
+      <div class="hm">
+        <span class="hm-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </span>Uso formativo
+      </div>
+    </div>
+  </div>
+</div>
+<div class="hero-rule"></div>
+
+<!-- ══ MAIN ══ -->
+<div class="main-content">
+
+  <div class="section-divider">
+    <div class="sdl"></div>
+    <div class="sd-text">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      Video demostrativo — Llamada entrante completa
+    </div>
+    <div class="sdl rev"></div>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="video-wrapper">
+
+    <div class="video-header">
+      <div class="video-header-icon">
+        <!-- play-circle -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+      </div>
+      <div class="video-header-info">
+        <div class="video-header-title">Llamada Entrante — Caso Demostrativo</div>
+        <div class="video-header-sub">Protocolo completo de atención · Asesor IN · Customer Service TMLF</div>
+      </div>
+      <div class="video-header-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.069A1 1 0 0 1 21 8.845v6.31a1 1 0 0 1-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+        Ejemplo real
+      </div>
+    </div>
+
+    <div class="video-box">
+      <iframe
+        src="https://drive.google.com/file/d/1OZTNg6wsrI57VtG-fXu_A_rx3WcBmUNv/preview"
+        allowfullscreen
+        allow="autoplay">
+      </iframe>
+    </div>
+
+    <div class="video-footer">
+      <div class="vf-note">
+        <strong>Nota formativa:</strong> Este video muestra el flujo esperado de una llamada entrante de CS aplicando los 8 pasos del protocolo operativo. Observa el uso correcto del speech, la verificación de filtros y la nota final en TramCase.
+      </div>
+      <div class="vf-chips">
+        <span class="vf-chip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.28 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          8x8 Work
+        </span>
+        <span class="vf-chip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          TramCase
+        </span>
+        <span class="vf-chip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Protocolo IN
+        </span>
+      </div>
+    </div>
+
+  </div><!-- /video-wrapper -->
+
+  <!-- PROTOCOL SUMMARY CARDS -->
+  <div class="protocol-row">
+    <div class="proto-card step1">
+      <div class="proto-num">01</div>
+      <div class="proto-title">Setup & Login</div>
+      <div class="proto-desc">Apertura de plataformas y configuración de disponibilidad en 8x8.</div>
+    </div>
+    <div class="proto-card step2">
+      <div class="proto-num">02</div>
+      <div class="proto-title">Recepción de Llamada</div>
+      <div class="proto-desc">La llamada llega como ventana emergente en 8x8; identificar el queue antes de contestar.</div>
+    </div>
+    <div class="proto-card step3">
+      <div class="proto-num">03</div>
+      <div class="proto-title">Speech de Entrada</div>
+      <div class="proto-desc">Saludo formal, identificación del asesor y solicitud de filtros de seguridad.</div>
+    </div>
+    <div class="proto-card step4">
+      <div class="proto-num">04</div>
+      <div class="proto-title">Filtros de Seguridad</div>
+      <div class="proto-desc">Aplicación de los tres filtros obligatorios para validar identidad del cliente.</div>
+    </div>
+    <div class="proto-card step5">
+      <div class="proto-num">05</div>
+      <div class="proto-title">Gestión de Consulta</div>
+      <div class="proto-desc">Revisión de notas en TramCase, identificación del case status y atención al cliente.</div>
+    </div>
+    <div class="proto-card step6">
+      <div class="proto-num">06</div>
+      <div class="proto-title">¿Resuelve o Escala?</div>
+      <div class="proto-desc">Decisión operativa: resolver directamente o canalizar al área/TL correspondiente.</div>
+    </div>
+    <div class="proto-card step7">
+      <div class="proto-num">07</div>
+      <div class="proto-title">Cierre & Speech Final</div>
+      <div class="proto-desc">Confirmación de atención, speech de cierre y disposición correcta del estado en 8x8.</div>
+    </div>
+    <div class="proto-card step8">
+      <div class="proto-num">08</div>
+      <div class="proto-title">Nota en TramCase</div>
+      <div class="proto-desc">Registro obligatorio de la interacción con los campos requeridos antes de los 5 minutos.</div>
+    </div>
+  </div>
+
+  <!-- CONTEXT BOX -->
+  <div class="context-box">
+    <div class="context-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"/><polygon points="12 15 17 21 7 21 12 15"/></svg>
+      Contexto del video
+    </div>
+    <div class="context-grid">
+      <div class="context-item">
+        <div class="ctx-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="ctx-body">
+          <div class="ctx-label">Perfil</div>
+          <div class="ctx-val">Asesor de Llamadas Entrantes (IN) — Customer Service</div>
+        </div>
+      </div>
+      <div class="context-item">
+        <div class="ctx-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="ctx-body">
+          <div class="ctx-label">Objetivo</div>
+          <div class="ctx-val">Observar el flujo completo de una llamada entrante con protocolo aplicado</div>
+        </div>
+      </div>
+      <div class="context-item">
+        <div class="ctx-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="ctx-body">
+          <div class="ctx-label">Plataformas visibles</div>
+          <div class="ctx-val">8x8 Work, 8x8 Contact Center, TramCase, Dashboard RT</div>
+        </div>
+      </div>
+      <div class="context-item">
+        <div class="ctx-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="ctx-body">
+          <div class="ctx-label">Uso sugerido</div>
+          <div class="ctx-val">Ver el video completo antes de practicar en el simulador de llamadas CS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-content -->
+
+</body>
+</html>
