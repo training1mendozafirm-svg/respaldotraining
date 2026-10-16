@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<title>Estrategias de Comunicación – Checklist</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg: #0f1520;
+    --surface: #1a2235;
+    --surface2: #222d42;
+    --surface3: #2a3550;
+    --border: rgba(255,255,255,0.08);
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --text: #e2e8f0;
+    --muted: #7a8fa6;
+    --correct: #2ecc71;
+    --wrong: #e74c3c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 16px 60px;
+  }
+
+  .box {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 40px 44px;
+    border: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  h2 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+
+  .instruc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    padding: 12px 16px;
+    background: rgba(201,168,76,0.07);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+  }
+  .instruc strong { color: var(--gold-light); }
+
+  /* SCORE TRACKER */
+  .score-tracker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    padding: 12px 16px;
+    background: var(--surface2);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .score-tracker .lbl { font-size: 12px; color: var(--muted); flex: 1; }
+  .score-tracker .count { font-size: 22px; font-weight: 700; color: var(--gold); }
+  .score-tracker .total { font-size: 13px; color: var(--muted); }
+  .progress-bar { flex: 2; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 3px; transition: width 0.3s ease; width: 0%; }
+
+  .section-title {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  /* STRATEGY CARD */
+  .item {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .item:hover { border-color: rgba(201,168,76,0.35); }
+  .item.checked { border-color: var(--gold); }
+
+  .item-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .checkbox-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--muted);
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: transparent;
+  }
+
+  .item.checked .checkbox-custom {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .checkbox-custom::after {
+    content: '';
+    width: 5px;
+    height: 9px;
+    border: 2px solid #0f1520;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .item.checked .checkbox-custom::after { opacity: 1; }
+
+  .item-label { flex: 1; }
+  .item-name { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+  .item-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* EVIDENCE BOX */
+  .evidence-box {
+    display: none;
+    padding: 0 18px 16px 52px;
+  }
+  .evidence-box.open { display: block; animation: slideDown 0.25s ease; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .evidence-inner {
+    background: rgba(0,0,0,0.3);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+  }
+
+  .evidence-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .evidence-input {
+    width: 100%;
+    background: var(--surface3);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 10px 12px;
+    resize: vertical;
+    min-height: 64px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .evidence-input:focus { border-color: var(--gold); }
+  .evidence-input::placeholder { color: var(--muted); font-style: italic; }
+
+  /* SUBMIT */
+  .submit-row {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: #0f1520;
+    border: none;
+    padding: 13px 36px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.3); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+  .btn-hint { font-size: 12px; color: var(--muted); }
+
+  /* RESULT */
+  .result {
+    margin-top: 24px;
+    padding: 22px 26px;
+    border-radius: 10px;
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .result.pass    { background: rgba(46,204,113,0.07); border: 1.5px solid rgba(46,204,113,0.4); }
+  .result.partial { background: rgba(201,168,76,0.07); border: 1.5px solid rgba(201,168,76,0.4); }
+  .result.fail    { background: rgba(231,76,60,0.07);  border: 1.5px solid rgba(231,76,60,0.3);  }
+
+  .score-display { display: flex; align-items: baseline; gap: 4px; margin-bottom: 10px; }
+  .score-num { font-size: 48px; font-weight: 700; line-height: 1; }
+  .result.pass    .score-num { color: var(--correct); }
+  .result.partial .score-num { color: var(--gold-light); }
+  .result.fail    .score-num { color: var(--wrong); }
+  .score-pct { font-size: 20px; color: var(--muted); }
+
+  .result-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .result.pass    .result-title { color: var(--correct); }
+  .result.partial .result-title { color: var(--gold-light); }
+  .result.fail    .result-title { color: var(--wrong); }
+
+  .result-body { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+
+  .breakdown { display: flex; gap: 16px; flex-wrap: wrap; }
+  .b-item { background: rgba(255,255,255,0.04); border-radius: 7px; padding: 10px 16px; text-align: center; }
+  .b-item .bn { font-size: 22px; font-weight: 700; display: block; }
+  .b-item .bl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .b-item.bc .bn { color: var(--correct); }
+  .b-item.bm .bn { color: var(--gold); }
+
+  .retry-btn {
+    margin-top: 16px;
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    padding: 10px 24px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    display: block;
+  }
+  .retry-btn:hover { background: var(--gold); color: var(--bg); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="box">
+
+  <div class="eyebrow">Módulo de Entrenamiento · VAWA / Visa U / Visa T</div>
+  <h2>Estrategias de Obtención de Información Sensible</h2>
+  <p class="instruc">
+    Después de ver el video, <strong>selecciona cada estrategia que identificaste</strong>. Al marcarla, escribe en la caja el momento exacto o frase que escuchaste de la Abogada Mendoza que demuestra esa estrategia.
+  </p>
+
+  <div class="score-tracker">
+    <div class="lbl">Estrategias seleccionadas</div>
+    <div class="count" id="selCount">0</div>
+    <div class="total">/ 6</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="section-title">Identifica las estrategias presentes en el video</div>
+
+  <!-- Tarjetas generadas por JS para garantizar consistencia -->
+  <div id="cardsContainer"></div>
+
+  <div class="submit-row">
+    <button class="btn" id="submitBtn" onclick="enviar()" disabled>Enviar Respuesta</button>
+    <span class="btn-hint" id="btnHint">Selecciona al menos una estrategia</span>
+  </div>
+
+  <div class="result" id="result">
+    <div class="score-display">
+      <div class="score-num" id="scoreNum">0</div>
+      <div class="score-pct">%</div>
+    </div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-body"  id="resultBody"></div>
+    <div class="breakdown">
+      <div class="b-item bc"><span class="bn" id="bC">0</span><span class="bl">Identificadas</span></div>
+      <div class="b-item bm"><span class="bn" id="bM">0</span><span class="bl">No identificadas</span></div>
+    </div>
+    <button class="retry-btn" id="retryBtn" onclick="reiniciar()" style="display:none">🔄 Intentar de nuevo</button>
+  </div>
+
+</div>
+
+<script>
+// ── SCORM ──────────────────────────────────────────────
+var API = null;
+function findAPI(w) {
+  var t = 0;
+  while (!w.API && w.parent && w.parent !== w && t++ < 7) w = w.parent;
+  return w.API || null;
+}
+API = findAPI(window);
+if (!API && window.opener) API = findAPI(window.opener);
+if (API) { API.LMSInitialize(""); API.LMSSetValue("cmi.core.lesson_status", "incomplete"); API.LMSCommit(""); }
+
+// ── DATA ───────────────────────────────────────────────
+var strategies = [
+  {
+    id: "c1",
+    name: "Preguntas directas pero respetuosas",
+    desc: "Aborda temas sensibles (violencia, sexualidad) de forma directa, sin rodeos y sin juzgar.",
+    placeholder: "Ej: La abogada preguntó sobre el abuso sexual de forma directa diciendo..."
+  },
+  {
+    id: "c2",
+    name: "Profundización narrativa",
+    desc: "Invita a la cliente a contar su historia completa sin apresurarse, en sus propias palabras.",
+    placeholder: "Ej: La abogada dijo 'quiero entenderlo de sus propias palabras'..."
+  },
+  {
+    id: "c3",
+    name: "Parafraseo para confirmar",
+    desc: "Repite lo que entendió para validar la información y mostrar escucha activa.",
+    placeholder: "Ej: La abogada repitió 'entonces él te golpeó en el estómago...'..."
+  },
+  {
+    id: "c4",
+    name: "Exploración de patrones",
+    desc: "Pregunta sobre la frecuencia y sistematicidad de los abusos para evidenciar conducta sostenida.",
+    placeholder: "Ej: La abogada preguntó qué tan seguido ocurrían los insultos..."
+  },
+  {
+    id: "c5",
+    name: "Investigación sistemática de condiciones",
+    desc: "Indaga sobre circunstancias específicas del agresor para construir contexto completo del caso.",
+    placeholder: "Ej: La abogada preguntó sobre el consumo de alcohol y los antecedentes legales..."
+  },
+  {
+    id: "c6",
+    name: "No dejar nada a la interpretación",
+    desc: "Pide aclarar fechas, detalles y situaciones ambiguas para garantizar exactitud legal.",
+    placeholder: "Ej: La abogada preguntó '¿y usted está segura de eso?' para confirmar la fecha..."
+  }
+];
+
+var submitted = false;
+
+// ── BUILD CARDS ────────────────────────────────────────
+var container = document.getElementById('cardsContainer');
+
+strategies.forEach(function(s) {
+  var div = document.createElement('div');
+  div.className = 'item';
+  div.id = 'wrap_' + s.id;
+  div.innerHTML =
+    '<div class="item-header" id="hdr_' + s.id + '">' +
+      '<div class="checkbox-custom" id="chk_' + s.id + '"></div>' +
+      '<div class="item-label">' +
+        '<div class="item-name">' + s.name + '</div>' +
+        '<div class="item-desc">' + s.desc + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="evidence-box" id="ev_' + s.id + '">' +
+      '<div class="evidence-inner">' +
+        '<div class="evidence-label">✍️ ¿Qué dijo la Abogada? Escribe lo que escuchaste:</div>' +
+        '<textarea class="evidence-input" id="txt_' + s.id + '" placeholder="' + s.placeholder + '"></textarea>' +
+      '</div>' +
+    '</div>';
+  container.appendChild(div);
+
+  // Attach click on header
+  document.getElementById('hdr_' + s.id).addEventListener('click', function() {
+    toggle(s.id);
+  });
+});
+
+// ── TOGGLE ─────────────────────────────────────────────
+function toggle(id) {
+  if (submitted) return;
+
+  var wrap = document.getElementById('wrap_' + id);
+  var ev   = document.getElementById('ev_'   + id);
+  var txt  = document.getElementById('txt_'  + id);
+  var isChecked = wrap.classList.contains('checked');
+
+  if (isChecked) {
+    wrap.classList.remove('checked');
+    ev.classList.remove('open');
+  } else {
+    wrap.classList.add('checked');
+    ev.classList.add('open');
+    setTimeout(function() { txt.focus(); }, 50);
+  }
+
+  updateCounter();
+}
+
+// ── COUNTER ────────────────────────────────────────────
+function updateCounter() {
+  var count = document.querySelectorAll('.item.checked').length;
+  document.getElementById('selCount').textContent     = count;
+  document.getElementById('progressFill').style.width = (count / 6 * 100) + '%';
+  document.getElementById('submitBtn').disabled        = (count === 0);
+  document.getElementById('btnHint').textContent       = count > 0 ? 'Listo para enviar' : 'Selecciona al menos una estrategia';
+}
+
+// ── SUBMIT ─────────────────────────────────────────────
+function enviar() {
+  if (submitted) return;
+  submitted = true;
+  document.getElementById('submitBtn').disabled = true;
+
+  var correct = document.querySelectorAll('.item.checked').length;
+  var missed  = 6 - correct;
+  var score   = Math.round((correct / 6) * 100);
+  var passed  = score >= 70;
+
+  if (API) {
+    API.LMSSetValue("cmi.core.score.raw",     score);
+    API.LMSSetValue("cmi.core.score.min",     "0");
+    API.LMSSetValue("cmi.core.score.max",     "100");
+    API.LMSSetValue("cmi.core.lesson_status", passed ? "passed" : "failed");
+    API.LMSCommit("");
+    API.LMSFinish("");
+  }
+
+  var r = document.getElementById('result');
+  r.style.display = 'block';
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('bC').textContent       = correct;
+  document.getElementById('bM').textContent       = missed;
+
+  if (score === 100) {
+    r.className = 'result pass';
+    document.getElementById('resultTitle').textContent = '¡Análisis completo!';
+    document.getElementById('resultBody').textContent  = 'Identificaste las 6 estrategias presentes en el video de la Abogada Mendoza.';
+  } else if (passed) {
+    r.className = 'result partial';
+    document.getElementById('resultTitle').textContent = 'Aprobado';
+    document.getElementById('resultBody').textContent  = 'Identificaste ' + correct + ' de 6 estrategias. Te faltaron ' + missed + '. Revisa el video para encontrar las que no marcaste.';
+  } else {
+    r.className = 'result fail';
+    document.getElementById('resultTitle').textContent = 'Necesitas reforzar tu análisis';
+    document.getElementById('resultBody').textContent  = 'Solo identificaste ' + correct + ' de 6 estrategias. Vuelve a ver el video con atención a los cambios de técnica de la abogada.';
+    document.getElementById('retryBtn').style.display  = 'block';
+  }
+
+  r.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ── RETRY ──────────────────────────────────────────────
+function reiniciar() {
+  submitted = false;
+  strategies.forEach(function(s) {
+    document.getElementById('wrap_' + s.id).classList.remove('checked');
+    document.getElementById('ev_'   + s.id).classList.remove('open');
+    document.getElementById('txt_'  + s.id).value = '';
+  });
+  document.getElementById('result').style.display        = 'none';
+  document.getElementById('retryBtn').style.display      = 'none';
+  document.getElementById('selCount').textContent        = '0';
+  document.getElementById('progressFill').style.width    = '0%';
+  document.getElementById('submitBtn').disabled          = true;
+  document.getElementById('btnHint').textContent         = 'Selecciona al menos una estrategia';
+  if (API) { API.LMSInitialize(""); API.LMSSetValue("cmi.core.lesson_status", "incomplete"); API.LMSCommit(""); }
+}
+</script>
+</body>
+</html>
