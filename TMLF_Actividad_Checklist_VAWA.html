@@ -1,0 +1,1314 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Simulador Checklist VAWA | TMLF Learning Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sage:#5d8a70;--sage-dark:#3a6b52;--sage-light:#a8c9b6;
+  --sage-bg:rgba(93,138,112,.09);--sage-border:rgba(93,138,112,.22);
+  --beige:#f5efe3;--sand:#e8dcc8;--brown:#7a6040;--brown-dark:#4a3820;
+  --cream:#fdfaf4;--warm-white:#fff9f2;
+  --ink:#2c2218;--sl:#6b6055;--mist:#9aa89f;
+  --gold:#c9a84c;--gold-bg:rgba(201,168,76,.09);
+  --green:#3a6b52;--gbg:rgba(93,138,112,.09);
+  --red:#8b2c2c;--rbg:rgba(180,50,50,.08);
+  --amber:#7a5200;--abg:rgba(180,130,0,.08);
+  --ac:var(--sage-dark);--ac2:var(--sage);
+  --sidebar-bg:#2b3f35;
+  --sh:0 8px 28px rgba(44,34,24,.10);--r:14px;
+  --nh:56px;--sw:272px;
+  --w:var(--warm-white);--bg:var(--beige);
+}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{font-family:"DM Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+.tn{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nh);background:rgba(43,63,53,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);display:flex;align-items:center;padding:0 18px;gap:10px}
+.brd{font-family:"Cormorant Garamond",serif;font-size:19px;color:#fff;display:flex;align-items:center;gap:10px}
+.sl{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.08));border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.brd span{color:var(--gold)}.tnr{margin-left:auto}
+.pill{padding:5px 14px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.28);color:rgba(201,168,76,.9)}
+.stog{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px}
+@media(max-width:900px){.stog{display:block}}
+.pw{position:fixed;top:var(--nh);left:0;right:0;z-index:299;height:3px;background:rgba(255,255,255,.06)}
+.pf{height:3px;background:linear-gradient(90deg,var(--sage),var(--gold));transition:width .5s ease;width:0%}
+.sh{display:flex;min-height:100vh;padding-top:var(--nh)}
+.sb{width:var(--sw);flex-shrink:0;background:#2b3f35;position:fixed;top:var(--nh);bottom:0;left:0;overflow-y:auto;isolation:isolate;border-right:1px solid rgba(201,168,76,.07);z-index:200;transition:transform .3s ease;scrollbar-width:thin}
+.sh2{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(0,0,0,.1)}
+.sl2{font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px}
+.st{font-family:"Cormorant Garamond",serif;font-size:14px;color:rgba(255,255,255,.88);font-weight:600;line-height:1.3}
+.sbg2{padding:8px 0}.sbl{padding:6px 16px 3px;font-size:8.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.sdv{margin:4px 14px 6px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.18),transparent)}
+.si{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;pointer-events:auto;transition:all .18s;position:relative;user-select:none}
+.si:hover{background:rgba(255,255,255,.045)}.si.active{background:rgba(168,201,182,.09)}
+.si.active::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.si.done .sn{background:var(--green)!important;color:#fff!important}
+.sn{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);transition:all .18s}
+.si.active .sn{background:var(--gold);color:var(--ink)}
+.st2{flex:1;min-width:0}.sn2{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .18s}
+.si.active .sn2,.si.done .sn2{color:rgba(255,255,255,.88)}
+.ss{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.si.ov .sn{background:rgba(141,184,216,.13);color:var(--ice)}.si.ov.active .sn{background:var(--ice);color:var(--ink)}
+.sbn{margin:6px 12px 2px;padding:7px 11px;border-radius:9px;background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.03));border:1px solid rgba(201,168,76,.16);display:flex;align-items:center;gap:7px}
+.sbnt{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(201,168,76,.75)}
+.si.pr .sn{background:rgba(30,102,65,.14);color:#4ade80}.si.pr.active .sn{background:var(--green);color:#fff}
+.si.pr .sn2{color:rgba(168,201,182,.65)}.si.pr.active .sn2{color:rgba(168,201,182,.92)}
+@media(max-width:900px){.sb{transform:translateX(-100%)}.sb.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.45)}.sbov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:198}.sbov.show{display:block}}
+.main{margin-left:var(--sw);flex:1;padding:26px 26px 60px}
+@media(max-width:900px){.main{margin-left:0;padding:18px 14px 50px}}
+.panel{display:none;animation:fadeUp .28s ease both}.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.hdr{background:linear-gradient(135deg,#1e3328 0%,#2b4a38 50%,#3a6248 100%);color:#fff;border-radius:20px;padding:36px 34px 30px;box-shadow:0 16px 40px rgba(10,20,35,.22);position:relative;overflow:hidden;margin-bottom:18px}
+.hdr::before{content:"";position:absolute;top:-60px;right:-40px;width:260px;height:260px;border:1.5px solid rgba(201,168,76,.1);border-radius:50%}
+.hbdg{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:10px}
+.dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+.hdr h1{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:700;line-height:1.15;position:relative;z-index:1}
+.hdr .sub{font-size:13px;opacity:.76;max-width:52ch;position:relative;z-index:1;margin-top:6px}
+.hmeta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;position:relative;z-index:1}
+.hmi{display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:11.5px}
+.hmi strong{font-weight:700}
+.blk{background:var(--w);border-radius:var(--r);box-shadow:var(--sh);border:1px solid rgba(122,96,64,.12);overflow:hidden;margin-bottom:14px}
+.bh{display:flex;align-items:center;gap:10px;padding:13px 17px;background:linear-gradient(180deg,rgba(168,201,182,.14),rgba(168,201,182,.02));border-bottom:1px solid rgba(93,138,112,.15)}
+.bi{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;color:#fff}
+.bh h3{font-size:14.5px;color:var(--ink);font-family:"Cormorant Garamond",serif;font-weight:700;flex:1}
+.mbdg{margin-left:auto;padding:3px 9px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;flex-shrink:0}
+.bc{background:rgba(26,58,92,.09);color:#1a3a5c;border:1px solid rgba(26,58,92,.17)}
+.bp{background:rgba(30,102,65,.08);color:#1e6641;border:1px solid rgba(30,102,65,.17)}
+.bgd{background:rgba(201,168,76,.09);color:#7a5200;border:1px solid rgba(201,168,76,.2)}
+.bb{padding:17px}.bb p{margin:0 0 10px;font-size:13.5px}.bb p:last-child{margin-bottom:0}
+.al{padding:10px 13px;border-radius:10px;font-size:12.5px;display:flex;align-items:flex-start;gap:8px;line-height:1.5;margin-top:10px}
+.al.info{background:rgba(93,138,112,.08);border:1px solid rgba(122,96,64,.14);color:var(--ink)}
+.al.warn{background:var(--abg);border:1px solid rgba(180,130,0,.19);color:var(--amber)}
+.al.gold{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);color:var(--amber)}
+.al strong{font-weight:700}
+.itbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;border-radius:11px;overflow:hidden}
+.itbl th{background:var(--ac);color:#fff;padding:10px 13px;text-align:left;font-weight:700;font-size:11.5px}
+.itbl td{padding:9px 13px;border-bottom:1px solid rgba(107,143,168,.12)}
+.itbl tr:nth-child(even) td{background:rgba(107,143,168,.04)}.itbl tr:last-child td{border-bottom:none}
+.obl{display:grid;gap:6px;margin-top:9px}
+.obi{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:10px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.16)}
+.obn{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px}
+.obi span{font-size:12.5px;font-weight:600;line-height:1.4}
+/* EMBED PANELS */
+.ep{border-radius:12px;border:1px solid rgba(122,96,64,.18);overflow:hidden;margin-bottom:10px;box-shadow:0 4px 16px rgba(15,25,35,.07)}
+.eph{display:flex;align-items:center;gap:10px;padding:11px 16px;background:var(--sage-dark);color:#fff;cursor:pointer;user-select:none;transition:background .18s}
+.eph:hover{background:var(--sage)}.epi{font-size:15px;flex-shrink:0}.ept{font-size:13px;font-weight:700;flex:1}
+.epb2{font-size:10px;font-weight:700;padding:2px 9px;border-radius:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2)}
+.epa{font-size:12px;transition:transform .22s;flex-shrink:0}.eph.open .epa{transform:rotate(180deg)}
+.epbd{display:none;background:var(--w)}.epbd.open{display:block}
+.tc-iframe{width:100%;height:500px;border:none;display:block;background:#f5f6fa}
+.cl-iframe{width:100%;height:440px;border:none;display:block;background:#fff}
+/* AUDIO */
+.auw{padding:14px 16px;background:#f8fafc}
+.aub{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--w);border:1px solid rgba(122,96,64,.15);border-radius:10px;margin-bottom:10px}
+.aubt{margin-left:auto;padding:8px 15px;border-radius:8px;background:var(--ac);color:#fff;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.aubt:hover{background:var(--ac2)}
+.autx strong{display:block;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.autx span{font-size:11px;color:var(--sl)}
+/* CHECKLIST SIM */
+.sc{background:var(--w);border:1px solid rgba(122,96,64,.15);border-radius:var(--r);padding:17px;margin-top:13px;box-shadow:var(--sh)}
+.sc-t{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:700;color:var(--ac);margin-bottom:3px}
+.sc-c{font-size:11px;color:var(--sl);font-weight:600;margin-bottom:13px}
+.sc-id{width:100%;border-collapse:collapse;margin-bottom:13px;font-size:12px;border-radius:9px;overflow:hidden;border:1px solid rgba(107,143,168,.14)}
+.sc-id th{background:var(--sage-dark);color:#fff;padding:7px 11px;text-align:left;font-weight:700;font-size:10px;letter-spacing:.5px;text-transform:uppercase}
+.sc-id td{padding:7px 11px;border-bottom:1px solid rgba(107,143,168,.09);font-size:12px;color:var(--ink)}
+.sc-id tr:last-child td{border-bottom:none}
+.sc-sec{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--sage-dark);margin:13px 0 7px;display:flex;align-items:center;gap:8px}
+.sc-sec::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(26,58,92,.25),transparent)}
+/* ACT1 ITEMS */
+.a1r{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:9px;background:#f9fafc;border:1px solid rgba(93,138,112,.15);margin-bottom:8px;transition:all .18s}
+.a1r.sy{background:var(--sage-bg);border-color:var(--sage-border)}
+.a1r.sn2{background:rgba(180,50,50,.04);border-color:rgba(180,50,50,.18)}
+.a1r.locked{pointer-events:none}
+.a1lab{flex:1}.a1lab strong{display:block;font-size:12.5px;font-weight:700;color:var(--ink)}
+.hint{font-size:11px;color:var(--ac2);margin-top:3px;font-style:italic}
+.a1btns{display:flex;gap:6px;flex-shrink:0;margin-top:2px}
+.tb{padding:5px 12px;border-radius:7px;font-size:11.5px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all .18s;font-family:inherit;white-space:nowrap}
+.tb.ty{border-color:rgba(30,102,65,.3);background:#fff;color:var(--green)}.tb.ty:hover{background:rgba(30,102,65,.1);border-color:var(--green)}
+.tb.tn2{border-color:rgba(180,50,50,.25);background:#fff;color:var(--red)}.tb.tn2:hover{background:rgba(180,50,50,.07);border-color:var(--red)}
+.tb.ty.sel{background:rgba(30,102,65,.12);border-color:var(--green)}
+.tb.tn2.sel{background:rgba(180,50,50,.09);border-color:var(--red)}
+.tb:disabled{pointer-events:none;opacity:.6}
+.a1fb{display:none;margin-top:8px;padding:7px 10px;border-radius:7px;font-size:11.5px;line-height:1.5}
+.a1fb.show{display:block}.a1fb.ok{background:rgba(30,102,65,.07);border:1px solid rgba(30,102,65,.2);color:var(--green)}
+.a1fb.bad{background:rgba(180,50,50,.06);border:1px solid rgba(180,50,50,.18);color:var(--red)}
+/* ACT2 ITEMS */
+.a2r{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;border-radius:9px;background:#f9fafc;border:1px solid rgba(93,138,112,.15);margin-bottom:7px;transition:all .18s}
+.a2r.obt{background:var(--sage-bg);border-color:var(--sage-border)}
+.a2r.nob{background:rgba(180,50,50,.05);border-color:rgba(180,50,50,.2)}
+.a2r.nap{background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.22)}
+.a2r.bus{background:rgba(26,58,92,.05);border-color:rgba(26,58,92,.2)}
+.a2r.locked{pointer-events:none}
+.a2lab{flex:1}.a2lab strong{display:block;font-size:12.5px;font-weight:700;color:var(--ink)}
+.a2note{font-size:11px;color:var(--sl);margin-top:2px}
+.a2rea{margin-top:7px;width:100%;background:#f4f6f9;border:1px solid rgba(122,96,64,.16);border-radius:7px;padding:7px 10px;font-family:inherit;font-size:12px;color:var(--ink);outline:none;resize:none;display:none;transition:border .18s}
+.a2rea:focus{border-color:var(--ac2)}.a2rea::placeholder{color:var(--sl)}
+.a2btns{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;max-width:140px;justify-content:flex-end}
+.cb2{padding:4px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all .15s;font-family:inherit;white-space:nowrap}
+.cb2.obt{border-color:var(--sage-border);background:#fff;color:var(--sage-dark)}.cb2.obt.sel,.cb2.obt:hover{background:var(--sage-bg);border-color:var(--sage)}
+.cb2.nob{border-color:rgba(180,50,50,.25);background:#fff;color:var(--red)}.cb2.nob.sel,.cb2.nob:hover{background:rgba(180,50,50,.07);border-color:var(--red)}
+.cb2.nap{border-color:rgba(201,168,76,.3);background:#fff;color:var(--amber)}.cb2.nap.sel,.cb2.nap:hover{background:rgba(201,168,76,.08);border-color:var(--amber)}
+.cb2:disabled{pointer-events:none;opacity:.6}.cb2.bus{border-color:rgba(26,58,92,.25);background:#fff;color:#1a3a5c}.cb2.bus.sel,.cb2.bus:hover{background:rgba(26,58,92,.08);border-color:#1a3a5c}
+/* ACT2 FEEDBACK */
+.a2fb{margin-top:8px;padding:8px 12px;border-radius:8px;font-size:12px;line-height:1.55;display:flex;align-items:flex-start;gap:8px}
+.a2fb.ok{background:rgba(30,102,65,.07);border:1px solid rgba(30,102,65,.22);color:#2d5e40}
+.a2fb.bad{background:rgba(180,50,50,.07);border:1px solid rgba(180,50,50,.22);color:#7a2020}
+.a2fb.skip{background:rgba(180,130,0,.07);border:1px solid rgba(180,130,0,.22);color:#6b4800}
+.a2fb-ico{font-size:14px;flex-shrink:0;margin-top:1px}
+.a2fb-tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:2px 6px;border-radius:4px;margin-bottom:4px}
+.a2fb.ok .a2fb-tag{background:rgba(30,102,65,.15);color:#2d5e40}
+.a2fb.bad .a2fb-tag{background:rgba(180,50,50,.13);color:#7a2020}
+.a2fb.skip .a2fb-tag{background:rgba(180,130,0,.13);color:#6b4800}
+.a2fb-text{font-size:12px;line-height:1.5}
+.a2-summary{margin-top:16px;border-radius:13px;overflow:hidden;border:1px solid rgba(107,143,168,.18)}
+.a2-sum-head{padding:14px 18px;display:flex;align-items:center;gap:12px}
+.a2-sum-head.ok{background:linear-gradient(135deg,#2d5e40,#3a7a52)}
+.a2-sum-head.warn{background:linear-gradient(135deg,#7a5200,#a87020)}
+.a2-sum-head.fail{background:linear-gradient(135deg,#7a2020,#a03030)}
+.a2-sum-ico{font-size:28px}
+.a2-sum-title{color:#fff;font-size:15px;font-weight:700}
+.a2-sum-sub{color:rgba(255,255,255,.78);font-size:12px;margin-top:2px}
+.a2-sum-score{margin-left:auto;text-align:right}
+.a2-sum-pct{font-size:28px;font-weight:800;color:#fff}
+.a2-sum-lbl{font-size:10px;color:rgba(255,255,255,.7);letter-spacing:.4px;text-transform:uppercase}
+.a2-sum-body{padding:13px 18px;background:var(--warm-white);display:flex;gap:10px;flex-wrap:wrap}
+.a2-stat{flex:1;min-width:80px;padding:10px 12px;border-radius:9px;text-align:center}
+.a2-stat.ok{background:rgba(30,102,65,.08);border:1px solid rgba(30,102,65,.2)}
+.a2-stat.bad{background:rgba(180,50,50,.07);border:1px solid rgba(180,50,50,.18)}
+.a2-stat.skip{background:rgba(180,130,0,.07);border:1px solid rgba(180,130,0,.18)}
+.a2-stat-n{font-size:22px;font-weight:800}
+.a2-stat.ok .a2-stat-n{color:#2d5e40}
+.a2-stat.bad .a2-stat-n{color:#7a2020}
+.a2-stat.skip .a2-stat-n{color:#6b4800}
+.a2-stat-l{font-size:10.5px;font-weight:600;color:var(--sl);margin-top:2px}
+.a2-sum-msg{padding:10px 18px 14px;background:var(--warm-white);border-top:1px solid rgba(107,143,168,.12);font-size:12.5px;color:var(--sl);line-height:1.55}
+/* DROPBOX */
+.pool{padding:13px;background:var(--sand);border-radius:11px;border:1px solid rgba(122,96,64,.18);margin-bottom:13px;min-height:52px;display:flex;flex-wrap:wrap;gap:7px;align-items:flex-start}
+.pl{width:100%;font-size:9.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--sl);margin-bottom:4px}
+.dp{padding:6px 12px;border-radius:7px;background:var(--w);border:1px solid rgba(122,96,64,.18);font-size:11.5px;font-weight:600;color:var(--ink);cursor:grab;user-select:none;transition:all .18s;display:flex;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(15,25,35,.05)}
+.dp:hover{border-color:var(--ac2);background:rgba(141,184,216,.1);transform:translateY(-1px)}
+.dp.ok{background:rgba(30,102,65,.08);border-color:rgba(30,102,65,.3);color:var(--green)}
+.dp.bad{background:rgba(180,50,50,.06);border-color:rgba(180,50,50,.25);color:var(--red)}
+.dp.locked{cursor:default;pointer-events:none}
+.dbg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:11px}
+.dbf{border-radius:11px;padding:13px;border:2px dashed rgba(107,143,168,.24);min-height:95px;transition:all .2s;background:rgba(253,250,244,.8)}
+.dbf.drag-over{border-color:var(--sage);background:rgba(141,184,216,.11)}
+.dbf.locked{pointer-events:none}
+.dbfh{display:flex;align-items:center;gap:7px;margin-bottom:6px}.dbfi{font-size:16px}
+.dbfn{font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--sage-dark)}
+.dbfd{font-size:10.5px;color:var(--sl);margin-bottom:7px}.dbdocs{display:flex;flex-direction:column;gap:5px;min-height:36px}
+/* RESULTS + BUTTONS */
+.rs{display:none;padding:11px 15px;border-radius:11px;font-size:13px;font-weight:700;margin-top:13px;text-align:center}
+.rs.ok{background:var(--sage-bg);border:1px solid var(--sage-border);color:var(--sage-dark)}
+.rs.warn{background:var(--abg);border:1px solid rgba(201,168,76,.28);color:var(--amber)}
+.rs.fail{background:var(--rbg);border:1px solid rgba(180,50,50,.2);color:var(--red)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 19px;border-radius:9px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.btnp{background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff}.btnp:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,58,92,.25)}
+.btns{background:rgba(122,96,64,.1);color:var(--ink);border:1px solid rgba(122,96,64,.18)}.btns:hover{background:rgba(122,96,64,.14)}
+.btnog{background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff}.btnog:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(30,102,65,.22)}
+.brow{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px;align-items:center;justify-content:flex-end}
+.mnav{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:var(--w);border-radius:11px;border:1px solid rgba(107,143,168,.14);margin-bottom:13px;box-shadow:0 2px 10px rgba(15,25,35,.05)}
+.mnavt{font-family:"Barlow Condensed",sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--sage-dark)}
+.ptit{font-family:"Barlow Condensed",sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sl);padding:4px 11px;background:rgba(122,96,64,.1);border-radius:6px;margin-bottom:13px;display:inline-block}
+/* SCORE */
+.sw{background:linear-gradient(135deg,#1e3328,#3a6248);border-radius:20px;padding:42px;text-align:center;color:#fff}
+.sc2{width:108px;height:108px;border-radius:50%;margin:0 auto 18px;background:conic-gradient(var(--gold) calc(var(--pct)*3.6deg),rgba(255,255,255,.08) 0);display:flex;align-items:center;justify-content:center;position:relative}
+.sc2::before{content:"";position:absolute;inset:9px;border-radius:50%;background:rgba(0,0,0,.4)}
+.scp{font-family:"Barlow Condensed",sans-serif;font-size:30px;font-weight:800;color:var(--gold);position:relative;z-index:1}
+.sw h2{font-family:"Cormorant Garamond",serif;font-size:26px;margin-bottom:8px}
+.sw p{font-size:13.5px;opacity:.78;margin-bottom:18px}
+.sbdgs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.sbdg{padding:8px 15px;border-radius:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:12px;font-weight:700}
+.rlink{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);text-decoration:none;color:#fff;transition:all .2s;margin:0 auto;max-width:430px}
+.rlink:hover{background:rgba(255,255,255,.13)}.rlink-i{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.rlink strong{display:block;font-size:12.5px;font-weight:700}.rlink span{font-size:11px;opacity:.65}
+</style>
+</head>
+<body>
+<nav class="tn">
+  <button class="stog" onclick="toggleSB()">☰</button>
+  <div class="brd"><div class="sl">⚖️</div><span>The Mendoza Law Firm &nbsp;·&nbsp; <span>TMLF Learning</span></span></div>
+  <div class="tnr"><span class="pill">🟣 Simulador · VAWA</span></div>
+</nav>
+<div class="pw"><div class="pf" id="gp"></div></div>
+<div class="sbov" id="sbo" onclick="toggleSB()"></div>
+<div class="sh">
+<aside class="sb" id="sb">
+  <div class="sh2"><div class="sl2">Simulador Práctico · PWI</div><div class="st">Checklist VAWA<br><span style="font-size:11px;color:rgba(255,255,255,.38);font-weight:400">Maria Luisa Garcia Heredia</span></div></div>
+  <div class="sbg2"><div class="sbl">Introducción</div>
+    <div class="si ov active" id="nav-intro" onclick="goP('intro')"><div class="sn">📋</div><div class="st2"><div class="sn2">Bienvenida</div><div class="ss">Caso VAWA</div></div></div>
+  </div>
+  <div class="sdv"></div>
+  <div class="sbg2"><div class="sbl">Actividades</div>
+    <div class="si" id="nav-act1" onclick="goP('act1')"><div class="sn">1</div><div class="st2"><div class="sn2">Perfilar solicitudes</div><div class="ss">Antes de la agenda</div></div></div>
+    <div class="si" id="nav-act2" onclick="goP('act2')"><div class="sn">2</div><div class="st2"><div class="sn2">Escuchar y registrar</div><div class="ss">Durante la agenda</div></div></div>
+    <div class="si" id="nav-act3" onclick="goP('act3')"><div class="sn">3</div><div class="st2"><div class="sn2">Organizar en Dropbox</div><div class="ss">Seguimiento final</div></div></div>
+  </div>
+  <div class="sdv"></div>
+  <div class="sbg2"><div class="sbn"><span>🏆</span><span class="sbnt">Resultado</span></div>
+    <div class="si pr" id="nav-score" onclick="goP('score')"><div class="sn">★</div><div class="st2"><div class="sn2">Calificación final</div></div></div>
+  </div>
+</aside>
+<main class="main">
+
+<!-- INTRO -->
+<div class="panel active" id="panel-intro">
+  <div class="ptit">Simulador · Checklist VAWA</div>
+  <div class="hdr">
+    <div class="hbdg"><span class="dot"></span>Simulador Práctico · Pre Welcome Interview</div>
+    <h1>Simulador de Checklist — Caso VAWA</h1>
+    <p class="sub">Practica las tres etapas del proceso. Las notas de TramCase, la checklist de referencia y el audio de agenda están integrados dentro de cada actividad.</p>
+    <div class="hmeta">
+      <div class="hmi"><span>👤</span><strong>Maria Luisa Garcia Heredia</strong></div>
+      <div class="hmi"><span>📋</span><strong>VAWA · AOS</strong></div>
+      <div class="hmi"><span>⏱</span><strong>~25 min</strong></div>
+      <div class="hmi"><span>🎯</span><strong>3 Actividades</strong></div>
+    </div>
+  </div>
+  <div class="blk">
+    <div class="bh"><div class="bi">ℹ️</div><h3>¿Qué vas a practicar?</h3><span class="mbdg bc">Introducción</span></div>
+    <div class="bb">
+      <div class="obl">
+        <div class="obi"><div class="obn">1</div><span><strong>Perfilar solicitudes:</strong> lee las notas de TramCase y la checklist de referencia. Decide qué documentos y evidencias corresponde solicitar según el perfil del caso.</span></div>
+        <div class="obi"><div class="obn">2</div><span><strong>Registro durante agenda:</strong> escucha el audio real de la llamada y registra el estado de cada ítem: ✓ Tiene · ✗ No tiene · NA.</span></div>
+        <div class="obi"><div class="obn">3</div><span><strong>Organización en Dropbox:</strong> arrastra los archivos del caso a las carpetas correctas usando la nomenclatura establecida.</span></div>
+      </div>
+      <div class="al info" style="margin-top:12px"><span>📌</span><div>Todos los recursos están <strong>integrados dentro de cada actividad</strong>. Los resultados se registran y no se pueden modificar una vez enviados.</div></div>
+    </div>
+  </div>
+  <div class="brow"><button class="btn btnp" onclick="goP('act1')">Comenzar Actividad 1 →</button></div>
+</div>
+
+<!-- ACT 1 -->
+<div class="panel" id="panel-act1">
+  <div class="mnav"><span class="mnavt">Actividad 1 · Perfilar solicitudes a partir de TramCase</span><button class="btn btns" style="padding:6px 13px;font-size:12px" onclick="goP('intro')">← Volver</button></div>
+  <div class="blk">
+    <div class="bh"><div class="bi">📖</div><h3>Instrucción — Antes de la llamada de agenda</h3><span class="mbdg bc">Act. 1</span></div>
+    <div class="bb">
+      <p>Lee las notas de TramCase y consulta la checklist de referencia. Con base en el perfil del caso, decide para cada ítem si <strong>corresponde solicitarlo</strong> o no. Una vez que envíes tus respuestas, el resultado queda registrado.</p>
+      <div class="al gold"><span>📋</span><div><strong>Paso 1:</strong> Abre y lee las notas de TramCase. <strong>Paso 2:</strong> Consulta la checklist. <strong>Paso 3:</strong> Completa el simulador y envía.</div></div>
+    </div>
+  </div>
+  <!-- TramCase -->
+  <div class="ep">
+    <div class="eph open" id="tc-h" onclick="tgl('tc')"><span class="epi">🖥️</span><span class="ept">Notas de TramCase — VAWA · Maria Luisa Garcia Heredia (MyCase)</span><span class="epb2">TRAMCASE</span><span class="epa open" id="tc-a">▲</span></div>
+    <div class="epbd open" id="tc-b"><iframe class="tc-iframe" id="tc-frame" srcdoc="<!DOCTYPE html>
+<html lang=&quot;es&quot;>
+<head>
+<meta charset=&quot;UTF-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>
+<title>Maria Luisa Garcia Heredia – MyCase</title>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --dark-rail: #1e2235;
+    --white: #ffffff;
+    --bg: #f5f6fa;
+    --border: #e3e5ec;
+    --border-light: #eef0f5;
+    --blue: #4f5de4;
+    --text: #1a1c2e;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --label-blue: #4f5de4;
+    --badge-bg: #f0f1fd;
+    --badge-border: #d4d7f7;
+    --badge-text: #3d4ac4;
+    --phone-pill-bg: #eef0fd;
+    --phone-pill-border: #c7ccf5;
+    --phone-pill-text: #4f5de4;
+    --chat-bubble: #dde3f7;
+    --date-chip: #4f5de4;
+    --font: 'Inter', sans-serif;
+  }
+  html, body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 13px; }
+  body { display: flex; align-items: flex-start; }
+
+  /* RAIL */
+  .icon-rail { width: 60px; background: var(--dark-rail); display: flex; flex-direction: column; align-items: center; padding: 14px 0 12px; gap: 4px; flex-shrink: 0; position: sticky; top: 0; min-height: 100vh; }
+  .rail-logo { width: 34px; height: 34px; background: var(--blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+  .rail-logo svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; }
+  .rail-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #7c8bb5; }
+  .rail-icon.active { background: rgba(79,93,228,.3); color: #a5b0f0; }
+  .rail-icon svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .rail-spacer { flex: 1; }
+  .rail-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; margin-top: 8px; }
+
+  /* LEFT PANEL */
+  .info-panel { width: 310px; background: var(--white); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; max-min-height: 100vh; overflow-y: auto; }
+  .search-bar-wrap { padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; gap: 6px; align-items: center; }
+  .search-select { border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; font-family: var(--font); font-size: 12px; color: var(--text-secondary); background: var(--white); cursor: pointer; display: flex; align-items: center; gap: 4px; }
+  .search-select svg { width: 10px; height: 10px; fill: none; stroke: var(--text-muted); stroke-width: 2; }
+  .search-input { flex: 1; border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; font-family: var(--font); font-size: 12px; color: var(--text-secondary); outline: none; }
+  .search-btn { background: var(--blue); color: #fff; border: none; border-radius: 6px; padding: 5px 14px; font-family: var(--font); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .client-header { padding: 14px 16px 12px; border-bottom: 1px solid var(--border-light); }
+  .client-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+  .client-id { font-size: 11px; color: var(--text-muted); }
+  .field-block { padding: 12px 16px; border-bottom: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 10px; }
+  .field-row { display: flex; align-items: flex-start; gap: 10px; }
+  .field-label { font-size: 11.5px; color: var(--label-blue); font-weight: 500; min-width: 88px; padding-top: 3px; line-height: 1.3; }
+  .badge { background: var(--badge-bg); color: var(--badge-text); border: 1px solid var(--badge-border); border-radius: 5px; padding: 3px 10px 3px 8px; font-size: 11.5px; font-weight: 500; display: flex; align-items: center; gap: 5px; cursor: pointer; }
+  .badge svg { width: 9px; height: 9px; fill: none; stroke: currentColor; stroke-width: 2.5; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px 6px; font-size: 12px; font-weight: 600; color: var(--text); }
+  .section-header svg { width: 13px; height: 13px; fill: none; stroke: var(--text-muted); stroke-width: 2; cursor: pointer; }
+  .phone-block { padding: 4px 16px 10px; }
+  .phone-sublabel { font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
+  .phone-pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--phone-pill-border); background: var(--phone-pill-bg); border-radius: 20px; padding: 5px 12px 5px 10px; font-size: 12px; font-weight: 600; color: var(--phone-pill-text); cursor: pointer; }
+  .phone-pill svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  .unavailable { font-size: 12px; color: var(--text-muted); padding: 2px 0 8px; }
+  .details-block { padding: 4px 16px 14px; }
+  .detail-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border-light); font-size: 12px; }
+  .detail-row:last-child { border-bottom: none; }
+  .dl { color: var(--label-blue); font-weight: 500; }
+
+  /* CENTER */
+  .center-panel { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .top-title { text-align: center; padding: 10px 16px 0; font-size: 13px; font-weight: 700; background: var(--bg); flex-shrink: 0; }
+  .tabs-bar { display: flex; flex-wrap: wrap; padding: 8px 16px 0; background: var(--white); border-bottom: 2px solid var(--border); flex-shrink: 0; }
+  .tab { padding: 8px 16px; font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; }
+  .tab.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+  .notes-area { flex: 1; padding: 14px 16px; background: var(--bg); display: flex; flex-direction: column; gap: 12px; }
+
+  /* NOTE CARDS */
+  .note-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: auto; }
+  .note-card-head { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid var(--border); }
+  .note-card-title { font-size: 12.5px; font-weight: 700; color: var(--text); }
+  .note-actions { display: flex; align-items: center; gap: 7px; color: var(--text-muted); }
+  .note-actions svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; cursor: pointer; }
+  .note-actions svg:hover { stroke: var(--blue); }
+  .note-actions .sep { width: 1px; height: 14px; background: var(--border); }
+  .note-body { padding: 16px 18px; font-size: 13px; line-height: 1.75; color: var(--text); }
+  .note-body p { margin-bottom: 3px; }
+  .note-section-title { font-size: 12.5px; font-weight: 700; margin: 18px 0 8px; }
+  .note-meta { margin-bottom: 14px; }
+  .show-less { display: flex; align-items: center; gap: 5px; color: var(--blue); font-size: 12.5px; font-weight: 500; cursor: pointer; padding: 10px 18px 14px; border-top: 1px solid var(--border-light); }
+  .show-less svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; }
+  .note-footer { padding: 10px 14px; background: #fafbff; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+  /* CHAT */
+  .chat-panel_REMOVED { width: 310px; background: var(--white); border-left: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; max-min-height: 100vh; overflow: auto; }
+  .chat-top-title { text-align: center; font-size: 13px; font-weight: 700; padding: 10px 0 8px; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .chat-scroll { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 14px; background: var(--white); }
+  .date-pill { align-self: flex-end; background: var(--date-chip); color: #fff; border-radius: 20px; padding: 3px 14px; font-size: 11px; font-weight: 600; }
+  .chat-sender-name { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
+  .call-card { background: var(--chat-bubble); border-radius: 10px; padding: 10px 12px; display: flex; align-items: flex-start; gap: 10px; }
+  .call-icon-circle { width: 38px; height: 38px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .call-icon-circle svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; }
+  .call-info { flex: 1; min-width: 0; }
+  .call-title { font-size: 13px; font-weight: 700; margin-bottom: 1px; }
+  .call-sub { font-size: 11.5px; color: var(--text-secondary); margin-bottom: 5px; }
+  .grabacion-link { font-size: 12px; color: var(--blue); font-weight: 600; cursor: pointer; margin-bottom: 6px; }
+  .audio-row { display: flex; align-items: center; gap: 7px; background: rgba(255,255,255,.6); border-radius: 20px; padding: 5px 10px; }
+  .play-circle { width: 22px; height: 22px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; }
+  .play-circle svg { width: 8px; height: 8px; fill: #fff; margin-left: 1px; }
+  .audio-time { font-size: 11px; color: var(--text); font-weight: 500; }
+  .audio-dot { width: 7px; height: 7px; background: #cbd5e1; border-radius: 50%; }
+  .audio-icons { display: flex; gap: 6px; margin-left: auto; }
+  .audio-icons svg { width: 14px; height: 14px; fill: none; stroke: var(--text-muted); stroke-width: 1.8; cursor: pointer; }
+  .bubble-time { font-size: 10.5px; color: var(--text-muted); text-align: right; margin-top: 4px; }
+  .sms-bubble { background: #f5f7ff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+  .sms-phone-row { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; margin-bottom: 4px; }
+  .sms-phone-row svg { width: 13px; height: 13px; fill: none; stroke: var(--text-muted); stroke-width: 1.8; }
+  .sms-msg-bubble { border-left: 3px solid var(--blue); padding-left: 10px; font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .chat-input-row { display: flex; align-items: center; gap: 7px; padding: 10px 12px; border-top: 1px solid var(--border); background: var(--white); }
+  .clip-icon svg { width: 16px; height: 16px; fill: none; stroke: var(--text-muted); stroke-width: 1.8; cursor: pointer; }
+  .chat-text-input { flex: 1; font-family: var(--font); font-size: 12px; color: var(--text-muted); border: none; outline: none; background: transparent; }
+  .send-button { background: var(--blue); color: #fff; border: none; border-radius: 6px; padding: 6px 14px; font-family: var(--font); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .send-button svg { width: 12px; height: 12px; fill: none; stroke: #fff; stroke-width: 2.5; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ICON RAIL -->
+<nav class=&quot;icon-rail&quot;>
+  <div class=&quot;rail-logo&quot;><svg viewBox=&quot;0 0 24 24&quot;><rect x=&quot;3&quot; y=&quot;3&quot; width=&quot;7&quot; height=&quot;7&quot; rx=&quot;1&quot;/><rect x=&quot;14&quot; y=&quot;3&quot; width=&quot;7&quot; height=&quot;7&quot; rx=&quot;1&quot;/><rect x=&quot;3&quot; y=&quot;14&quot; width=&quot;7&quot; height=&quot;7&quot; rx=&quot;1&quot;/><rect x=&quot;14&quot; y=&quot;14&quot; width=&quot;7&quot; height=&quot;7&quot; rx=&quot;1&quot;/></svg></div>
+  <div class=&quot;rail-icon active&quot;><svg viewBox=&quot;0 0 24 24&quot;><path d=&quot;M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z&quot;/><polyline points=&quot;9 22 9 12 15 12 15 22&quot;/></svg></div>
+  <div class=&quot;rail-icon&quot;><svg viewBox=&quot;0 0 24 24&quot;><path d=&quot;M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2&quot;/><circle cx=&quot;12&quot; cy=&quot;7&quot; r=&quot;4&quot;/></svg></div>
+  <div class=&quot;rail-icon&quot;><svg viewBox=&quot;0 0 24 24&quot;><path d=&quot;M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z&quot;/></svg></div>
+  <div class=&quot;rail-icon&quot;><svg viewBox=&quot;0 0 24 24&quot;><circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;10&quot;/><polyline points=&quot;12 6 12 12 16 14&quot;/></svg></div>
+  <div class=&quot;rail-icon&quot;><svg viewBox=&quot;0 0 24 24&quot;><rect x=&quot;2&quot; y=&quot;3&quot; width=&quot;20&quot; height=&quot;14&quot; rx=&quot;2&quot;/><line x1=&quot;8&quot; y1=&quot;21&quot; x2=&quot;16&quot; y2=&quot;21&quot;/><line x1=&quot;12&quot; y1=&quot;17&quot; x2=&quot;12&quot; y2=&quot;21&quot;/></svg></div>
+  <div class=&quot;rail-icon&quot;><svg viewBox=&quot;0 0 24 24&quot;><line x1=&quot;8&quot; y1=&quot;6&quot; x2=&quot;21&quot; y2=&quot;6&quot;/><line x1=&quot;8&quot; y1=&quot;12&quot; x2=&quot;21&quot; y2=&quot;12&quot;/><line x1=&quot;8&quot; y1=&quot;18&quot; x2=&quot;21&quot; y2=&quot;18&quot;/><line x1=&quot;3&quot; y1=&quot;6&quot; x2=&quot;3.01&quot; y2=&quot;6&quot;/><line x1=&quot;3&quot; y1=&quot;12&quot; x2=&quot;3.01&quot; y2=&quot;12&quot;/><line x1=&quot;3&quot; y1=&quot;18&quot; x2=&quot;3.01&quot; y2=&quot;18&quot;/></svg></div>
+  <div class=&quot;rail-icon&quot;><svg viewBox=&quot;0 0 24 24&quot;><rect x=&quot;2&quot; y=&quot;2&quot; width=&quot;20&quot; height=&quot;8&quot; rx=&quot;2&quot;/><rect x=&quot;2&quot; y=&quot;14&quot; width=&quot;20&quot; height=&quot;8&quot; rx=&quot;2&quot;/></svg></div>
+  <div class=&quot;rail-icon&quot;><svg viewBox=&quot;0 0 24 24&quot;><line x1=&quot;18&quot; y1=&quot;20&quot; x2=&quot;18&quot; y2=&quot;10&quot;/><line x1=&quot;12&quot; y1=&quot;20&quot; x2=&quot;12&quot; y2=&quot;4&quot;/><line x1=&quot;6&quot; y1=&quot;20&quot; x2=&quot;6&quot; y2=&quot;14&quot;/></svg></div>
+  <div class=&quot;rail-icon&quot;><svg viewBox=&quot;0 0 24 24&quot;><polygon points=&quot;12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2&quot;/></svg></div>
+  <div class=&quot;rail-icon&quot;><svg viewBox=&quot;0 0 24 24&quot;><path d=&quot;M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z&quot;/></svg></div>
+  <div class=&quot;rail-spacer&quot;></div>
+  <div class=&quot;rail-avatar&quot;>AZ</div>
+</nav>
+
+<!-- LEFT INFO PANEL -->
+<aside class=&quot;info-panel&quot;>
+  <div class=&quot;search-bar-wrap&quot;>
+    <div class=&quot;search-select&quot;>Nombre del Clien <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;6 9 12 15 18 9&quot;/></svg></div>
+    <input class=&quot;search-input&quot; type=&quot;text&quot; placeholder=&quot;Ingresa nombre del clier&quot;>
+    <button class=&quot;search-btn&quot;>Buscar</button>
+  </div>
+  <div class=&quot;client-header&quot;>
+    <div class=&quot;client-name&quot;>Maria Luisa Garcia Heredia</div>
+    <div class=&quot;client-id&quot;>ID de MyCase: 45403122</div>
+  </div>
+  <div class=&quot;field-block&quot;>
+    <div class=&quot;field-row&quot;>
+      <div class=&quot;field-label&quot;>Etapa del<br>Caso</div>
+      <div class=&quot;badge&quot;>FULLY RFA <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;6 9 12 15 18 9&quot;/></svg></div>
+    </div>
+    <div class=&quot;field-row&quot;>
+      <div class=&quot;field-label&quot;>Área de<br>Práctica</div>
+      <div class=&quot;badge&quot;>VAWA AOS USC HUS... <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;6 9 12 15 18 9&quot;/></svg></div>
+    </div>
+    <div class=&quot;field-row&quot;>
+      <div class=&quot;field-label&quot;>Tipo de Caso</div>
+      <div class=&quot;badge&quot;>VAWA AOS <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;6 9 12 15 18 9&quot;/></svg></div>
+    </div>
+  </div>
+  <div class=&quot;section-header&quot;>Números de Teléfono <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;18 15 12 9 6 15&quot;/></svg></div>
+  <div class=&quot;phone-block&quot;>
+    <div class=&quot;phone-sublabel&quot;>Celular</div>
+    <div class=&quot;phone-pill&quot;>
+      <svg viewBox=&quot;0 0 24 24&quot;><path d=&quot;M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.003 1.18 2 2 0 012 .003h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z&quot;/></svg>
+      (614) 702-3089 →
+    </div>
+    <div style=&quot;margin-top:10px&quot;>
+      <div class=&quot;phone-sublabel&quot;>Trabajo</div>
+      <div class=&quot;unavailable&quot;>No disponible</div>
+      <div class=&quot;phone-sublabel&quot;>Casa</div>
+      <div class=&quot;unavailable&quot;>No disponible</div>
+      <div class=&quot;phone-sublabel&quot;>Fax</div>
+      <div class=&quot;unavailable&quot;>No disponible</div>
+    </div>
+  </div>
+  <div class=&quot;section-header&quot;>Detalles del Caso <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;18 15 12 9 6 15&quot;/></svg></div>
+  <div class=&quot;details-block&quot;>
+    <div class=&quot;detail-row&quot;><span class=&quot;dl&quot;>Fecha de apertura:</span><span>24 feb 2026</span></div>
+    <div class=&quot;detail-row&quot;><span class=&quot;dl&quot;>Etapa del Caso:</span><span>FULLY RFA</span></div>
+  </div>
+</aside>
+
+<!-- CENTER PANEL -->
+<main class=&quot;center-panel&quot;>
+  <div class=&quot;top-title&quot;>Maria Luisa Garcia Heredia</div>
+  <div class=&quot;tabs-bar&quot;>
+    <div class=&quot;tab active&quot;>Notas</div>
+    <div class=&quot;tab&quot;>Documentos</div>
+    <div class=&quot;tab&quot;>Portal</div>
+    <div class=&quot;tab&quot;>Consulta</div>
+    <div class=&quot;tab&quot;>Formularios</div>
+    <div class=&quot;tab&quot;>Summary</div>
+  </div>
+
+  <div class=&quot;notes-area&quot;>
+
+    <!-- CARD 1: CONSULT NOTE -->
+    <div class=&quot;note-card&quot;>
+      <div class=&quot;note-card-head&quot;>
+        <div class=&quot;note-card-title&quot;>CONSULT - Note</div>
+        <div class=&quot;note-actions&quot;>
+          <svg viewBox=&quot;0 0 24 24&quot;><path d=&quot;M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7&quot;/><path d=&quot;M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z&quot;/></svg>
+          <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;3 6 5 6 21 6&quot;/><path d=&quot;M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6&quot;/><path d=&quot;M10 11v6&quot;/><path d=&quot;M14 11v6&quot;/></svg>
+          <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;15 3 21 3 21 9&quot;/><polyline points=&quot;9 21 3 21 3 15&quot;/><line x1=&quot;21&quot; y1=&quot;3&quot; x2=&quot;14&quot; y2=&quot;10&quot;/><line x1=&quot;3&quot; y1=&quot;21&quot; x2=&quot;10&quot; y2=&quot;14&quot;/></svg>
+          <div class=&quot;sep&quot;></div>
+          <svg viewBox=&quot;0 0 24 24&quot;><line x1=&quot;12&quot; y1=&quot;17&quot; x2=&quot;12&quot; y2=&quot;22&quot;/><path d=&quot;M5 17h14v-1.76a2 2 0 00-1.11-1.79l-1.78-.9A2 2 0 0115 10.76V6h1a2 2 0 000-4H8a2 2 0 000 4h1v4.76a2 2 0 01-1.11 1.79l-1.78.9A2 2 0 005 15.24z&quot;/></svg>
+        </div>
+      </div>
+      <div class=&quot;note-body&quot;>
+        <p>DVS: Jose Antonio Gonzalez Gatica San Juan</p>
+        <p>18 de feb. a las 19:16</p>
+        <p>--------------------------------------------</p>
+        <br>
+        <p>Full name: Maria Luisa Garcia Heredia</p>
+        <p>Address: N/A</p>
+        <p>Type of case: VAWA - AOS</p>
+        <p>USC Children: Yes (Under 21)</p>
+        <p>Deadline: N/A</p>
+        <p>Previous Application: NO</p>
+        <p>Pending/Lost Immigration Court: NO</p>
+        <p>Crimes: NO</p>
+        <p>Important Notes: NO</p>
+        <p>Abuse by: USC Husband</p>
+        <p>Lives with the abuser: NO</p>
+        <p>Time of relationship with the abuser: 1 Yrs</p>
+        <p>VAWA: Admit</p>
+
+        <div class=&quot;note-section-title&quot;>VAWA TEMPLATE – MARÍA LUISA GARCÍA HEREDIA</div>
+        <p>Abuser: Husband - USC (Edgar Eduardo Carranza Arteaga)</p>
+        <p>Edad del abuser: 34 yrs</p>
+        <p>Vive contigo: NO</p>
+        <p>Posible evidencia de joint residence: Yes - bank statement (cuenta bancaria conjunta a nombre de ambos en la dirección donde ella vive)</p>
+        <p>Época en la que sucede el abuso: 2016-2017 (aproximadamente 1 año)</p>
+        <p>Record criminal del abuser: Sí tiene antecedentes - Le llegaban órdenes a la casa</p>
+        <p>Vicios del abuser: Heroína - Marihuana</p>
+
+        <div class=&quot;note-section-title&quot;>ABUSO DOCUMENTADO:</div>
+        <p>1. Abuso: Verbal - Insultos degradantes — Le decía &quot;estás vieja&quot;, &quot;¿quién te va a querer vieja con tres hijos?&quot; Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>2. Abuso: Verbal/Físico - Empujones y agresión — Me empujaba y me decía cosas bien agresivas. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>3. Abuso: Verbal - Insultos a la familia — Me decía &quot;hija de tu puta madre&quot; refiriéndose a su mamá. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>4. Abuso: Verbal - Gritos agresivos — Le gritaba, se le acercaba en la cara, le hablaba de manera agresiva cuando estaba drogado. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>5. Abuso: Físico - Empujones violentos — La aventaba hacia la cama, la aventaba al suelo cuando estaban afuera de la casa. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>6. Abuso: Control económico - Robo de dinero — Sacaba dinero de la cuenta bancaria conjunta sin autorización. Depositaba cheques de $600 y los sacaba poco a poco. Metía $200 y sacaba $100. Posible evidencia: Estados de cuenta bancaria conjunta</p>
+        <br>
+        <p>7. Abuso: Control económico - Robo de bienes personales — Se perdieron los anillos de matrimonio de oro. Ella está segura de que él los empeñó para comprar droga. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>8. Abuso: Control económico - Acceso a dinero personal — Se encerraba en el cuarto cuando ella tenía su bolsa adentro. Le decía &quot;¿para qué la quieres?&quot;. Agarraba dinero de su bolsa ($200-$300). Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>9. Abuso: Control y celos - Revisión de teléfono — Le quitaba el teléfono a la fuerza. Desconfiaba de ella, decía que si no le prestaba el teléfono era porque estaba hablando con otro hombre. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>10. Abuso: Amenaza implícita - Portación de arma — Una ocasión lo vio con una pistola. Nunca la sacó contra ella pero el hecho de que la traiga fue aterrador. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>11. Abuso: Amenaza de inmigración — Le dijo que &quot;nunca iba a arreglar papeles con él&quot; y que &quot;nunca iba a arreglar papeles&quot;. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>12. Abuso: Comportamiento destructivo - Destrucción de propiedad — Después de que ella le dijo que llamaría a la policía, salió enojado en su camioneta, la destruyó completamente y chocó varios carros. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>13. Abuso: Acoso posterior a la separación — Se paraba fuera de su casa con música muy alta de las 10 pm a las 2 am. La encontraba en otros carros y le echaba las luces para intentar pararla. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>14. Abuso: Comportamiento destructivo - Acoso con vehículo — Se iba &quot;pillando llanta&quot; tras confrontaciones. Destruyó su propia camioneta en un arranque de rabia. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>15. Abuso: Cambio de personalidad bajo influencia de drogas — Cuando no estaba drogado era buena persona. Cuando estaba drogado se convertía en otra persona completamente diferente. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>16. Abuso: Aislamiento - Falta de confrontación — Cuando ella lo enfrentaba sobre el dinero, decía &quot;sabes qué, me voy&quot; y se largaba azotando la puerta. Se iba durante una semana o más. Posible evidencia: Testimonio de la PC</p>
+        <br>
+        <p>17. Abuso: Miedo constante e intimidación — La PC vivía con miedo tremendísimo. Sentía que en cualquier ratito la iba a matar. No se atrevía a hacer ruido cuando él llegaba drogado. Posible evidencia: Testimonio de la PC</p>
+
+        <div class=&quot;note-section-title&quot;>IMPACTO DEL ABUSO EN EL PC:</div>
+        <p>Tenía miedo tremendísimo, horrible, pavor</p>
+        <p>Sentía que en cualquier momento la iba a matar</p>
+        <p>Vivía con temor constante</p>
+        <p>No se atrevía a llamar a la policía por miedo a que él saliera de la cárcel y le hiciera algo peor</p>
+        <p>Se sentía impotente</p>
+        <p>Salió de una relación tóxica con el papá de sus hijos para entrar a otra peor</p>
+        <p>Miedo de que fuera a pasarle algo más grave</p>
+        <p>No podía vivir en paz en su propia casa</p>
+        <p>Temía por la seguridad de sus hijos</p>
+        <p>Se describe como &quot;una cosa fea&quot; vivir con una persona drogadicta - es lo peor que puede tener un ser humano</p>
+        <p>No se lo desea ni a su peor enemiga</p>
+
+        <div class=&quot;note-section-title&quot;>POSIBLE EVIDENCIA DE GMC:</div>
+        <p>Trabajadora (tiene su propio taller de reparación de autos)</p>
+        <p>Madre dedicada a sus tres hijos ciudadanos</p>
+        <p>Siempre paga sus impuestos</p>
+        <p>Responsable con la salud de sus hijos (vacunas, doctor)</p>
+        <p>Nunca ha tenido problemas con el gobierno en 22 años en EE.UU.</p>
+        <p>Récord perfecto (sin arrestos, sin condenas, sin problemas con migración)</p>
+        <p>Protectora de sus hijos (priorizó su bienestar sobre la relación)</p>
+        <p>Tomó la decisión de terminar la relación cuando se dio cuenta del abuso.</p>
+
+        <div class=&quot;note-section-title&quot;>BEHAVIOR DEL PC:</div>
+        <p>Visa T: N/Q (PC did not provide any elements)</p>
+      </div>
+      <div class=&quot;show-less&quot;>
+        <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;18 15 12 9 6 15&quot;/></svg>
+        Ver menos
+      </div>
+      <div class=&quot;note-footer&quot;>
+        25 feb 2026, 6:36 a. m. editado por Karen Moalis Araujo Parra<br>
+        Creado: 25 feb 2026, 6:36 a. m. por Karen Moalis Araujo Parra
+      </div>
+    </div>
+
+    <!-- CARD 2: RESUMEN DEL INTAKE -->
+    <div class=&quot;note-card&quot;>
+      <div class=&quot;note-card-head&quot;>
+        <div class=&quot;note-card-title&quot;>RESUMEN DEL INTAKE:</div>
+        <div class=&quot;note-actions&quot;>
+          <svg viewBox=&quot;0 0 24 24&quot;><path d=&quot;M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7&quot;/><path d=&quot;M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z&quot;/></svg>
+          <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;3 6 5 6 21 6&quot;/><path d=&quot;M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6&quot;/></svg>
+          <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;15 3 21 3 21 9&quot;/><polyline points=&quot;9 21 3 21 3 15&quot;/><line x1=&quot;21&quot; y1=&quot;3&quot; x2=&quot;14&quot; y2=&quot;10&quot;/><line x1=&quot;3&quot; y1=&quot;21&quot; x2=&quot;10&quot; y2=&quot;14&quot;/></svg>
+          <div class=&quot;sep&quot;></div>
+          <svg viewBox=&quot;0 0 24 24&quot;><line x1=&quot;12&quot; y1=&quot;17&quot; x2=&quot;12&quot; y2=&quot;22&quot;/><path d=&quot;M5 17h14v-1.76a2 2 0 00-1.11-1.79l-1.78-.9A2 2 0 0115 10.76V6h1a2 2 0 000-4H8a2 2 0 000 4h1v4.76a2 2 0 01-1.11 1.79l-1.78.9A2 2 0 005 15.24z&quot;/></svg>
+        </div>
+      </div>
+      <div class=&quot;note-body&quot;>
+        <p>DVS: Jose Antonio Gonzalez Gatica San Juan</p>
+        <p>13 de feb. a las 22:16</p>
+        <p>-------------------</p>
+        <br>
+        <p>Resultado del intake: Admit Vawa - AOS</p>
+        <br>
+        <p>Fecha y hora de consulta: Lunes 16 de Febrero a las 16:00 Hrs.</p>
+        <br>
+        <p>Horario preferido para llamar: Tarde</p>
+        <br>
+        <p>Tipo de documento pendiente: N/A</p>
+        <br>
+        <p>Información adicional: PC requested not to be contacted by text message and request for everything to be sent by e-mail.</p>
+      </div>
+      <div class=&quot;show-less&quot;>
+        <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;18 15 12 9 6 15&quot;/></svg>
+        Ver menos
+      </div>
+      <div class=&quot;note-footer&quot;>
+        25 feb 2026, 6:35 a. m. editado por Karen Moalis Araujo Parra<br>
+        Creado: 25 feb 2026, 6:35 a. m. por Karen Moalis Araujo Parra
+      </div>
+    </div>
+
+    <!-- CARD 3: CRIMINAL RECORD -->
+    <div class=&quot;note-card&quot;>
+      <div class=&quot;note-card-head&quot;>
+        <div class=&quot;note-card-title&quot;>CRIMINAL RECORD</div>
+        <div class=&quot;note-actions&quot;>
+          <svg viewBox=&quot;0 0 24 24&quot;><path d=&quot;M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7&quot;/><path d=&quot;M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z&quot;/></svg>
+          <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;3 6 5 6 21 6&quot;/><path d=&quot;M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6&quot;/></svg>
+          <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;15 3 21 3 21 9&quot;/><polyline points=&quot;9 21 3 21 3 15&quot;/><line x1=&quot;21&quot; y1=&quot;3&quot; x2=&quot;14&quot; y2=&quot;10&quot;/><line x1=&quot;3&quot; y1=&quot;21&quot; x2=&quot;10&quot; y2=&quot;14&quot;/></svg>
+          <div class=&quot;sep&quot;></div>
+          <svg viewBox=&quot;0 0 24 24&quot;><line x1=&quot;12&quot; y1=&quot;17&quot; x2=&quot;12&quot; y2=&quot;22&quot;/><path d=&quot;M5 17h14v-1.76a2 2 0 00-1.11-1.79l-1.78-.9A2 2 0 0115 10.76V6h1a2 2 0 000-4H8a2 2 0 000 4h1v4.76a2 2 0 01-1.11 1.79l-1.78.9A2 2 0 005 15.24z&quot;/></svg>
+        </div>
+      </div>
+      <div class=&quot;note-body&quot;>
+        <p>- Maria Luisa Garcia Heredia</p>
+        <br>
+        <p>Total de arrestos: 0</p>
+        <p>Total de condenas: 0</p>
+        <p>Tickets: 2 — 1 Ticket 2005 - No license - Paid / 1 Ticket 2008 - Speeding - Paid</p>
+        <br>
+        <p>Entry - Piedras Negras - 09/2003 - EWI - No Contact with immigration. (Never Left)</p>
+      </div>
+      <div class=&quot;show-less&quot;>
+        <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;18 15 12 9 6 15&quot;/></svg>
+        Ver menos
+      </div>
+      <div class=&quot;note-footer&quot;>
+        25 feb 2026, 6:35 a. m. editado por Karen Moalis Araujo Parra<br>
+        Creado: 25 feb 2026, 6:35 a. m. por Karen Moalis Araujo Parra
+      </div>
+    </div>
+
+    <!-- CARD 4: INTAKE NOTES -->
+    <div class=&quot;note-card&quot;>
+      <div class=&quot;note-card-head&quot;>
+        <div class=&quot;note-card-title&quot;>Intake notes</div>
+        <div class=&quot;note-actions&quot;>
+          <svg viewBox=&quot;0 0 24 24&quot;><path d=&quot;M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7&quot;/><path d=&quot;M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z&quot;/></svg>
+          <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;3 6 5 6 21 6&quot;/><path d=&quot;M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6&quot;/></svg>
+          <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;15 3 21 3 21 9&quot;/><polyline points=&quot;9 21 3 21 3 15&quot;/><line x1=&quot;21&quot; y1=&quot;3&quot; x2=&quot;14&quot; y2=&quot;10&quot;/><line x1=&quot;3&quot; y1=&quot;21&quot; x2=&quot;10&quot; y2=&quot;14&quot;/></svg>
+          <div class=&quot;sep&quot;></div>
+          <svg viewBox=&quot;0 0 24 24&quot;><line x1=&quot;12&quot; y1=&quot;17&quot; x2=&quot;12&quot; y2=&quot;22&quot;/><path d=&quot;M5 17h14v-1.76a2 2 0 00-1.11-1.79l-1.78-.9A2 2 0 0115 10.76V6h1a2 2 0 000-4H8a2 2 0 000 4h1v4.76a2 2 0 01-1.11 1.79l-1.78.9A2 2 0 005 15.24z&quot;/></svg>
+        </div>
+      </div>
+      <div class=&quot;note-body&quot;>
+        <p>DVS: Jose Antonio Gonzalez Gatica San Juan</p>
+        <p>13 de feb. a las 22:09</p>
+        <p>------------------</p>
+        <br>
+        <p>1. PC's Name: Maria Luisa Garcia Heredia (Luisa)</p>
+        <p>Originally from: Acámbaro Gjto - Mex</p>
+        <p>Date of birth: 09/15/1981</p>
+        <br>
+        <p>Primary Motivation: Tried before? Yes but the lawyer told her no chance - just once.</p>
+        <br>
+        <p>Facebook</p>
+        <br>
+        <p>2. Are you married to anyone from the U.S. or who has legal papers?</p>
+        <p>Yes - USC (Edgard Eduardo Carranza Artiaga)</p>
+        <p>Together Since: 2015 // Married since: 07/04/2016 - 2017 they broke apart</p>
+        <br>
+        <p>3. Have you ever divorced someone who had U.S. papers? NO (But she does not live together with them)</p>
+        <br>
+        <p>4. Do you have any children who are U.S. citizens? YES</p>
+        <p>4a. Litzy 22 Yrs GA / Rafael 17 Yrs TN / Keighley 13 Yrs Columbus</p>
+        <br>
+        <p>5. Parents: Mom - Mex Visa / Dad Passed</p>
+        <br>
+        <p>6. Has anyone ever filed a petition for you? NO</p>
+        <p>6B. Has anyone ever petitioned for your parents? NO</p>
+        <br>
+        <p>7. U.S. Armed Forces: NO</p>
+        <br>
+        <p>8. Have you ever been a victim of a crime? NO</p>
+        <p>8a. Children victim of a crime or sexual abuse? NO</p>
+        <br>
+        <p>9. Coyote entry? YES - coyote</p>
+        <br>
+        <p>10. First entry: 09/2003</p>
+        <p>11. Entry - Piedras - 09/2003 - EWI - No Contact with immigration. (Never Left)</p>
+        <br>
+        <p>12. Left the U.S. after first entry? NO - Never Left</p>
+        <br>
+        <p>13. Problems with police? NO</p>
+        <p>13a. Traffic tickets: 1 Ticket 2005 - No license - Paid / 1 Ticket 2008 - Speeding - Paid</p>
+        <br>
+        <p>14. Immigration court / detained? NO</p>
+        <p>15. Petition denied? NO</p>
+        <p>16. Claimed to be U.S. citizen or used someone else's documents? NO</p>
+        <br>
+        <p>17. VAWA ABUSE: Admit - Husband</p>
+
+        <div class=&quot;note-section-title&quot;>BEHAVIOR DEL PC:</div>
+        <p>Honesta y directa en sus respuestas</p>
+        <br>
+        <p>18. T VISA: N/Q (PC did not provide any elements)</p>
+      </div>
+      <div class=&quot;show-less&quot;>
+        <svg viewBox=&quot;0 0 24 24&quot;><polyline points=&quot;18 15 12 9 6 15&quot;/></svg>
+        Ver menos
+      </div>
+      <div class=&quot;note-footer&quot;>
+        25 feb 2026, 6:34 a. m. editado por Karen Moalis Araujo Parra<br>
+        Creado: 25 feb 2026, 6:34 a. m. por Karen Moalis Araujo Parra
+      </div>
+    </div>
+
+  </div><!-- /notes-area -->
+</main>
+
+
+
+
+<script>
+  // Toggle note body visibility on &quot;Ver menos / Ver más&quot; click
+  document.querySelectorAll('.show-less').forEach(btn => {
+    const card = btn.closest('.note-card');
+    const body = card.querySelector('.note-body');
+    const svgPoly = btn.querySelector('polyline');
+    btn.addEventListener('click', () => {
+      const collapsed = body.style.display === 'none';
+      body.style.display = collapsed ? '' : 'none';
+      btn.childNodes[btn.childNodes.length - 1].textContent = collapsed ? ' Ver menos' : ' Ver más';
+      if (svgPoly) svgPoly.setAttribute('points', collapsed ? '18 15 12 9 6 15' : '18 9 12 15 6 9');
+    });
+  });
+<\/script>
+</body>
+</html>
+"></iframe></div>
+  </div>
+  <!-- Checklist -->
+  <div class="ep">
+    <div class="eph" id="cl-h" onclick="tgl('cl')"><span class="epi">📋</span><span class="ept">VAWA Checklist — Referencia de solicitudes</span><span class="epb2">CHECKLIST</span><span class="epa" id="cl-a">▼</span></div>
+    <div class="epbd" id="cl-b"><iframe class="cl-iframe" id="cl-frame" srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot;>
+<head>
+<meta charset=&quot;UTF-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;>
+<link href=&quot;https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#fff;color:#1a1a1a;font-size:13px;line-height:1.65;padding:24px 28px}
+h1{font-size:22px;font-weight:700;text-align:center;margin-bottom:20px}
+.id-tbl{width:100%;border-collapse:collapse;margin-bottom:22px}
+.id-tbl td{border:1px solid #bbb;padding:6px 10px;font-size:12.5px}
+.id-tbl .lbl{font-weight:700;background:#f5f5f5;width:100px}
+.section{margin-bottom:20px}
+.sec-h{font-size:14px;font-weight:700;margin:18px 0 8px;border-bottom:2px solid #2b3f35;padding-bottom:5px}
+.sub-h{font-size:13px;font-weight:700;margin:12px 0 6px;color:#2b3f35}
+.item{display:flex;align-items:flex-start;gap:9px;padding:4px 0;font-size:13px;border-bottom:1px solid #f2f2f2}
+.cb{width:14px;height:14px;border:1.5px solid #999;border-radius:2px;flex-shrink:0;margin-top:3px;background:#fff}
+.circ{width:13px;height:13px;border:1.5px solid #999;border-radius:50%;flex-shrink:0;margin-top:3px;background:#fff}
+.txt{flex:1;line-height:1.5}
+.note{background:#fffbec;border-left:3px solid #c9a84c;padding:8px 12px;font-size:12px;color:#5a3e00;margin:8px 0 4px;line-height:1.55;border-radius:0 5px 5px 0}
+.indent{padding-left:20px}
+.entry-tbl{width:100%;border-collapse:collapse;margin:8px 0;font-size:11.5px}
+.entry-tbl td,.entry-tbl th{border:1px solid #ccc;padding:5px 8px}
+.entry-tbl th{background:#f0f0f0;font-weight:700;font-size:11px}
+.strategy-box{border:1px solid #ccc;border-radius:6px;padding:12px;margin-top:8px;min-height:80px;font-size:12px;color:#888}
+</style>
+</head>
+<body>
+<h1>VAWA Self-Petition Checklist (Internal)</h1>
+
+<div class=&quot;section&quot;>
+  <div class=&quot;sec-h&quot;>Personal Documents of Client</div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Birth certificate of applicant</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Marriage certificate (if VAWA is based on abuse by a spouse or ex-spouse)</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Divorce certificate (if VAWA is based on abuse by a spouse or ex-spouse)</div></div>
+</div>
+
+<div class=&quot;section&quot;>
+  <div class=&quot;sec-h&quot;>Abuser's Legal Status Documentation</div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Proof of abuser's legal status (birth certificate, certificate of naturalization, copy of green card, social security number)</div></div>
+  <div class=&quot;note&quot;>[Note: If client cannot obtain this evidence due to the abuse, we can request that USCIS look up this evidence but the client runs the risk of USCIS sending an RFE for this evidence]</div>
+</div>
+
+<div class=&quot;section&quot;>
+  <div class=&quot;sec-h&quot;>Bona Fide Marriage Evidence (Recommended 10 pieces of evidence)</div>
+  <p style=&quot;font-size:13px;margin-bottom:8px&quot;>Bona fide evidence — recommended 10 pieces of evidence<br>Examples of acceptable evidence:</p>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Mortgage together</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Purchase of land together</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Joint lease agreement (apartment, mobile home, house)</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Car purchase showing both parties names</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Joint bank statements (at least six months, full statement)</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Taxes filed together</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Bills with both names (telephone, gas, electricity, water, credit card, etc.)</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Joint Sam's Club card</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Joint Costco membership</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Joint gym membership</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Letters delivered to the home</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Health insurance together</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Car insurance showing both parties names</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>School records showing the applicant as parent if abuser is a US Child over 21 or showing applicant as parent and spouse of abuser</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Pictures together (Note: Very little weight is given to pictures together)</div></div>
+</div>
+
+<div class=&quot;section&quot;>
+  <div class=&quot;sec-h&quot;>Evidence of Abuse</div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Declaration (Please make sure declaration is ready)</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Evidence of abuse (documentation such as):</div></div>
+  <div class=&quot;indent&quot;>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Abusive text messages and voice recordings</div></div>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Photos of property damage caused by the abuse (broken phones, walls, furniture, damage to vehicles, etc.)</div></div>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Photos of physical injuries caused by the abuse (bruises, scars)</div></div>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Medical reports and records (injuries, miscarriages, STIs, prescriptions for depression/anxiety)</div></div>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Evidence of surveillance/control (GPS tracking, cameras)</div></div>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Security cameras in home that captured the abuse</div></div>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Documentation of financial abuse</div></div>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Therapy/counseling records or letters</div></div>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Police reports and restraining orders</div></div>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Evidence of abuser's bad character (criminal record of abuser, pictures of abuser's drugs or alcohol, pictures of abuser's gang related tattoos)</div></div>
+    <div class=&quot;item&quot;><div class=&quot;circ&quot;></div><div class=&quot;txt&quot;>Witness statements describing the abuse</div></div>
+  </div>
+  <div class=&quot;note&quot;>[Note: In order to win a VAWA case, you can do so with &quot;any credible evidence.&quot; This means that you can win a VAWA case with an honest and truthful declaration but please ask the client if they have any evidence that can be used.]</div>
+</div>
+
+<div class=&quot;section&quot;>
+  <div class=&quot;sec-h&quot;>Criminal History Documentation</div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Criminal dispositions for all crimes, including traffic tickets (arrest report, disposition of crime, proof of completion of probation if applicable)</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>FBI rap sheets (higher preference)</div></div>
+  <div class=&quot;item&quot;><div class=&quot;cb&quot;></div><div class=&quot;txt&quot;>Police clearance letter (preference will be for FBI rap sheets)</div></div>
+</div>
+
+</body>
+</html>" style="height:600px"></iframe></div>
+  </div>
+  <div class="blk">
+    <div class="bh"><div class="bi">🗂️</div><h3>VAWA Checklist PreCR — Perfilado de solicitudes</h3><span class="mbdg bp">Simulador</span></div>
+    <div class="bb">
+      <div class="sc">
+        <div class="sc-t">VAWA Checklist PreCR — Maria Luisa Garcia Heredia</div>
+        <div class="sc-c" id="a1c">0 / 19 ítems respondidos</div>
+        <table class="sc-id"><tr><th>ID</th><th>Cliente</th><th>Abuser</th><th>Proceso</th></tr>
+        <tr><td>VAWA-2024-0312</td><td>Maria Luisa Garcia Heredia</td><td>Edgard Eduardo Carranza (esposo USC)</td><td>VAWA · AOS</td></tr></table>
+        <div class="al info" style="margin:0 0 12px"><span>💡</span><div>Para cada ítem: <strong style="color:var(--green)">✓ Sí solicitar</strong> — corresponde según el caso · <strong style="color:var(--red)">✗ No solicitar</strong> — no aplica al perfil. Usa TramCase y la checklist como referencia.</div></div>
+        <div class="sc-sec">📁 PERSONAL DOCUMENTS OF CLIENT</div><div id="a1d"></div>
+        <div class="sc-sec">🚨 EVIDENCIAS / EVIDENCE OF TRAFFICKING</div><div id="a1e"></div>
+        <div class="sc-sec">⭐ GOOD MORAL CHARACTER — OPTIONAL</div><div id="a1g"></div>
+      </div>
+      <div class="brow">
+        <button class="btn btnp" id="a1v" onclick="submitA1()">Enviar respuestas</button>
+      </div>
+      <div class="rs" id="a1s"></div>
+      <div class="brow" id="a1nxt" style="display:none">
+        <button class="btn btnog" onclick="goP('act2')">Continuar a Actividad 2 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACT 2 -->
+<div class="panel" id="panel-act2">
+  <div class="mnav"><span class="mnavt">Actividad 2 · Escuchar y registrar</span><button class="btn btns" style="padding:6px 13px;font-size:12px" onclick="goP('act1')">← Act. 1</button></div>
+  <div class="blk">
+    <div class="bh"><div class="bi">🎙️</div><h3>Instrucción — Durante la llamada de agenda</h3><span class="mbdg bc">Act. 2</span></div>
+    <div class="bb">
+      <p>Escucha la llamada de agenda usando el reproductor integrado. Para cada documento, marca según lo que el cliente respondió: <strong>✓ Sí lo tiene</strong> · <strong>✗ No lo tiene</strong> · <strong>🔍 Lo va a buscar / tramitar</strong>.</p>
+      <div class="al warn"><span>⚠️</span><div>Escucha la llamada y marca lo que el cliente reporta para cada documento. Una vez que envíes, el resultado queda registrado.</div></div>
+    </div>
+  </div>
+  <!-- Audio embed -->
+  <div class="ep">
+    <div class="eph open" id="au-h" onclick="tgl('au')"><span class="epi">🎙️</span><span class="ept">LLAMADA DE AGENDA PWC_PSYCHS VAWA MARIA LUISA GARCIA HEREDIA.mp3</span><span class="epb2">AUDIO AGENDA</span><span class="epa open" id="au-a">▲</span></div>
+    <div class="epbd open" id="au-b"><div class="auw" style="padding:16px 20px"><div style="background:linear-gradient(135deg,#1e3328,#3a6248);border-radius:14px;padding:18px 22px;color:#fff;display:flex;align-items:center;gap:16px"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px">🎙️</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;margin-bottom:3px">Llamada de Agenda — VAWA · María Luisa García Heredía</div><div style="font-size:11.5px;opacity:.78">Haz clic para abrir en Google Drive y escucha mientras completas el simulador</div></div><a href="https://drive.google.com/file/d/1Km1gjuPzTqiX16r5byQkUKQDxdH0VzpI/view?usp=drive_link" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:11px 20px;border-radius:10px;background:var(--gold);color:#0f1923;font-size:13px;font-weight:800;text-decoration:none;flex-shrink:0;white-space:nowrap">▶ Escuchar llamada</a></div></div></div>
+  </div>
+  <div class="blk">
+    <div class="bh"><div class="bi">🗂️</div><h3>VAWA Checklist — Registro post-agenda</h3><span class="mbdg bp">Simulador</span></div>
+    <div class="bb">
+      <div class="sc">
+        <div class="sc-t">VAWA Checklist — Post Agenda · Maria Luisa Garcia Heredia</div>
+        <div class="sc-c" id="a2c">0 registros completados</div>
+        <div id="a2d"></div>
+      </div>
+      <div class="brow">
+        <button class="btn btnp" id="a2v" onclick="submitA2()">Enviar registro</button>
+      </div>
+      <div class="rs" id="a2s"></div>
+      <div class="brow" id="a2nxt" style="display:none">
+        <button class="btn btnog" onclick="goP('act3')">Continuar a Actividad 3 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACT 3 -->
+<div class="panel" id="panel-act3">
+  <div class="mnav"><span class="mnavt">Actividad 3 · Organización en Dropbox</span><button class="btn btns" style="padding:6px 13px;font-size:12px" onclick="goP('act2')">← Act. 2</button></div>
+  <div class="blk">
+    <div class="bh"><div class="bi">📂</div><h3>Instrucción — Organización en Dropbox VAWA</h3><span class="mbdg bc">Act. 3</span></div>
+    <div class="bb">
+      <p>Organiza los archivos en las carpetas correctas de Dropbox. Una vez verificado, el resultado queda registrado.</p>
+      <table class="itbl" id="a3-table"></table>
+      <div class="al warn" style="margin-top:10px"><span>⚠️</span><div><strong>Nomenclatura obligatoria.</strong> La IA de ensamblado no reconocerá el caso si los archivos están mal ubicados.</div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;background:rgba(141,184,216,.07);border:1px solid rgba(122,96,64,.15);margin-top:12px">
+        <div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;flex-shrink:0">📂</div>
+        <div style="flex:1"><strong style="display:block;font-size:12px;font-weight:700;color:var(--ink)">Carpeta del caso en Drive — VAWA Maria Luisa Garcia Heredia</strong><span style="font-size:11px;color:var(--sl)">Consulta los archivos recibidos</span></div>
+        <a href="https://drive.google.com/drive/folders/1It3vGwx8gSCR_Lja8uoc1CENzIXzunJ1?usp=drive_link" target="_blank" style="padding:7px 14px;border-radius:8px;background:var(--sage-dark);color:#fff;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0">Abrir carpeta</a>
+      </div>
+    </div>
+  </div>
+  <div class="blk">
+    <div class="bh"><div class="bi">📦</div><h3>Simulador — Drag &amp; Drop Dropbox VAWA</h3><span class="mbdg bp">Simulador</span></div>
+    <div class="bb">
+      <p style="font-size:13px;color:var(--sl);margin-bottom:11px">Arrastra cada archivo a la carpeta correcta:</p>
+      <div class="pool" id="pool"><div class="pl">📥 Archivos recibidos — arrastra a la carpeta correcta</div></div>
+      <div class="dbg" id="dbg"></div>
+      <div class="brow">
+        <button class="btn btnp" id="a3v" onclick="submitA3()">Verificar organización</button>
+      </div>
+      <div class="rs" id="a3s"></div>
+      <div class="brow" id="a3nxt" style="display:none">
+        <button class="btn btnog" onclick="goP('score')">Ver resultado final →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCORE -->
+<div class="panel" id="panel-score">
+  <div class="sw">
+    <div class="sc2" id="scc" style="--pct:0"><div class="scp" id="scp">—</div></div>
+    <h2>Simulador completado</h2>
+    <p id="sm">Completa las tres actividades para ver tu calificación.</p>
+    <div class="sbdgs" id="sbd"></div>
+    <a class="rlink" href="https://docs.google.com/document/d/1a_tanQWeILbuBY0Is25tBmf4cB5pkOYB8dhxGQFGFcQ/edit?usp=sharing" target="_blank">
+      <div class="rlink-i">✅</div>
+      <div><strong>Ver checklist de referencia completa</strong><span>VAWA — Maria Luisa Garcia Heredia</span></div>
+    </a>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+
+/* NAV */
+var SC={a1:null,a2:null,a3:null};
+var PNS=["intro","act1","act2","act3","score"];
+function goP(id){
+  PNS.forEach(function(p){var e=document.getElementById("panel-"+p),n=document.getElementById("nav-"+p);if(e)e.classList.remove("active");if(n)n.classList.remove("active");});
+  var t=document.getElementById("panel-"+id),n=document.getElementById("nav-"+id);
+  if(t)t.classList.add("active");if(n)n.classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(window.innerWidth<=900){document.getElementById("sb").classList.remove("open");document.getElementById("sbo").classList.remove("show");}
+  upGP();
+}
+function toggleSB(){document.getElementById("sb").classList.toggle("open");document.getElementById("sbo").classList.toggle("show");}
+function upGP(){
+  var d=(SC.a1!==null?1:0)+(SC.a2!==null?1:0)+(SC.a3!==null?1:0);
+  document.getElementById("gp").style.width=Math.round(d/3*100)+"%";
+}
+
+/* EMBED TOGGLE */
+function tgl(id){
+  var h=document.getElementById(id+"-h"),b=document.getElementById(id+"-b"),a=document.getElementById(id+"-a");
+  var o=b.classList.contains("open");
+  b.classList.toggle("open");h.classList.toggle("open");
+  a.textContent=o?"▼":"▲";if(o)a.classList.remove("open");else a.classList.add("open");
+}
+
+/* ═══════════ ACTIVITY 1 DATA ═══════════ */
+var A1D=[{id:"bc",label:"Acta de nacimiento del solicitante (BC CL)",hint:"¿Está en Personal Documents de la checklist?",correct:true,fb_ok:"Correcto. Siempre se solicita — está en la checklist como documento base.",fb_bad:"Incorrecto. El acta de nacimiento siempre debe solicitarse. Está en la sección Personal Documents de la checklist VAWA."},
+  {id:"pp",label:"Pasaporte del solicitante",hint:"¿La checklist VAWA lo lista en Personal Documents?",correct:true,fb_ok:"Correcto. El pasaporte está en la checklist y es documento de identidad principal.",fb_bad:"Incorrecto. El pasaporte debe solicitarse — está en la checklist VAWA."},
+  {id:"mc",label:"Certificado de matrimonio (MC)",hint:"¿Las notas indican si está casada? ¿La checklist lo requiere en este tipo de VAWA?",correct:true,fb_ok:"Correcto. La checklist VAWA lo requiere cuando el abuso es por esposo o ex-esposo. Las notas confirman matrimonio con USC.",fb_bad:"Incorrecto. La checklist VAWA requiere el certificado de matrimonio cuando el abuso es por esposo/ex. Las notas lo confirman."},
+  {id:"dc",label:"Certificado de divorcio previo (DC)",hint:"¿Las notas mencionan matrimonios anteriores? ¿La checklist lo pide siempre?",correct:false,fb_ok:"Correcto. La checklist lo pide solo si aplica. Las notas no mencionan matrimonios anteriores.",fb_bad:"Incorrecto. La checklist dice if applicable. Las notas no reportan matrimonios anteriores."},
+  {id:"bck",label:"Actas de nacimiento de hijos (BC KID)",hint:"¿Las notas mencionan hijos? ¿Cuántos y cuál es su estatus?",correct:true,fb_ok:"Correcto. Las notas indican tres hijos ciudadanos: Litzy (22), Rafael (17) y Keighley (13). Deben solicitarse las tres actas.",fb_bad:"Incorrecto. Las notas indican tres hijos ciudadanos americanos. Sus actas deben solicitarse para documentar la relación familiar."},
+  {id:"ab_id",label:"Documentos del abusador (prueba de estatus USC)",hint:"¿La checklist VAWA tiene una sección específica para el estatus del abusador?",correct:true,fb_ok:"Correcto. La checklist VAWA incluye Abuser Legal Status Documentation. El abusador es USC identificado por nombre.",fb_bad:"Incorrecto. La checklist VAWA incluye explícitamente Abuser Legal Status Documentation."},
+  {id:"trap_work_permit",label:"Permiso de trabajo del cliente",hint:"¿El permiso de trabajo aparece en la checklist VAWA en Personal Documents?",correct:false,fb_ok:"Correcto. El permiso de trabajo no está en la checklist VAWA. No es un documento que se solicite en este proceso.",fb_bad:"Incorrecto. El permiso de trabajo no está en la checklist VAWA. No corresponde solicitarlo."},
+  {id:"trap_pass_kids",label:"Pasaportes de los hijos del cliente",hint:"¿La checklist VAWA pide los pasaportes de los hijos?",correct:false,fb_ok:"Correcto. La checklist pide actas de nacimiento de los hijos, no sus pasaportes.",fb_bad:"Incorrecto. La checklist VAWA solicita actas de nacimiento de hijos, no sus pasaportes."}];
+var A1E=[{id:"msgs",label:"Mensajes de texto, WhatsApp o notas de voz del abusador",hint:"¿Está en Evidence of Abuse de la checklist VAWA?",correct:true,fb_ok:"Correcto. La checklist VAWA incluye abusive text messages and voice recordings en Evidence of Abuse.",fb_bad:"Incorrecto. La checklist VAWA incluye mensajes abusivos en Evidence of Abuse."},
+  {id:"photos",label:"Fotos de lesiones físicas o daños a propiedad",hint:"¿Está en Evidence of Abuse?",correct:true,fb_ok:"Correcto. Fotos de lesiones y daños a propiedad están en la checklist VAWA Evidence of Abuse.",fb_bad:"Incorrecto. Las fotos de lesiones y daños están explícitamente en la checklist VAWA."},
+  {id:"testigos",label:"Testimonio de testigos del abuso",hint:"¿La checklist VAWA incluye testimonios? ¿Las notas mencionan testigos?",correct:true,fb_ok:"Correcto. La checklist incluye witness statements. Las notas mencionan a Carmen Rodríguez como testigo disponible.",fb_bad:"Incorrecto. La checklist incluye testimonios de testigos. Las notas mencionan a Carmen Rodríguez."},
+  {id:"police",label:"Reportes policiales u órdenes de restricción",hint:"¿La checklist lo tiene? ¿Las notas indican que llamó a la policía?",correct:false,fb_ok:"Correcto. Aunque está en la checklist, las notas indican que nunca llamó a la policía por miedo. No es realista para este perfil.",fb_bad:"Incorrecto. Las notas indican que nunca llamó a la policía. No es una solicitud realista aunque esté en la checklist."}];
+var A1G=[{id:"trap_rehab",label:"Rehab Courses Certificate (if applies)",hint:"¿Las notas mencionan que el cliente ha tomado cursos de rehabilitación?",correct:false,fb_ok:"Correcto. Las notas no mencionan cursos de rehabilitación. Aunque está en la checklist como optional, no aplica para este perfil.",fb_bad:"Incorrecto. Las notas no mencionan rehabilitación. Este ítem está en la checklist como optional pero no corresponde solicitarlo sin evidencia de que aplica."},
+  {id:"ref",label:"Cartas de referencia (x5)",hint:"¿La checklist VAWA incluye cartas de referencia en GMC?",correct:true,fb_ok:"Correcto. Las cartas de referencia están en la checklist VAWA en GMC — siempre deben solicitarse.",fb_bad:"Incorrecto. Las cartas de referencia son parte de GMC en la checklist VAWA y deben solicitarse."}];
+
+function bldA1(){
+  function mkRow(item,ctr){
+    var d=document.createElement("div");d.className="a1r";d.id="r1_"+item.id;
+    d.innerHTML="<div class=\"a1lab\"><strong>"+item.label+"</strong>"+(item.hint?"<div class=\"hint\">💭 "+item.hint+"</div>":"")+"</div>"
+      +"<div class=\"a1btns\"><button class=\"tb ty\" id=\"y1_"+item.id+"\" onclick=\"selA1('"+item.id+"',true)\">✓ Sí</button>"
+      +"<button class=\"tb tn2\" id=\"n1_"+item.id+"\" onclick=\"selA1('"+item.id+"',false)\">✗ No</button></div>"
+      +"<div class=\"a1fb\" id=\"f1_"+item.id+"\"></div>";
+    ctr.appendChild(d);
+  }
+  var d=document.getElementById("a1d");d.innerHTML="";A1D.forEach(function(i){mkRow(i,d);});
+  var e=document.getElementById("a1e");e.innerHTML="";A1E.forEach(function(i){mkRow(i,e);});
+  var g=document.getElementById("a1g");g.innerHTML="";A1G.forEach(function(i){mkRow(i,g);});
+}
+var A1ANS={};
+function selA1(id,yes){
+  if(SC.a1!==null)return; /* locked */
+  A1ANS[id]=yes;
+  document.getElementById("y1_"+id).classList.toggle("sel",yes);
+  document.getElementById("n1_"+id).classList.toggle("sel",!yes);
+  var tot=19,done=Object.keys(A1ANS).length;
+  document.getElementById("a1c").textContent=done+" / "+tot+" ítems respondidos";
+}
+function submitA1(){
+  var all=A1D.concat(A1E).concat(A1G);
+  var tot=all.length,ok=0;
+  all.forEach(function(item){
+    var ans=A1ANS[item.id],fb=document.getElementById("f1_"+item.id),row=document.getElementById("r1_"+item.id);
+    var isOk=(ans===item.correct);
+    if(isOk){ok++;fb.className="a1fb show ok";fb.innerHTML="✓ "+item.fb_ok;row.className="a1r sy locked";}
+    else if(ans===undefined){fb.className="a1fb show bad";fb.innerHTML="⬤ Sin respuesta. "+item.fb_ok;row.className="a1r locked";}
+    else{fb.className="a1fb show bad";fb.innerHTML="✗ "+item.fb_bad;row.className="a1r sn2 locked";}
+    /* disable buttons */
+    var yb=document.getElementById("y1_"+item.id),nb=document.getElementById("n1_"+item.id);
+    if(yb)yb.disabled=true;if(nb)nb.disabled=true;
+  });
+  var p=Math.round(ok/tot*100);SC.a1=p;upGP();
+  document.getElementById("nav-act1").classList.add("done");
+  document.getElementById("a1v").style.display="none";
+  var s=document.getElementById("a1s");s.style.display="block";
+  s.className="rs "+(p>=70?"ok":p>=50?"warn":"fail");
+  s.textContent=ok+"/"+tot+" correctos ("+p+"%) — "+(p>=70?"Excelente perfilado.":"Revisa las notas de TramCase y la checklist. Recuerda: la pregunta es si corresponde solicitar el ítem según el perfil del caso.");
+  document.getElementById("a1nxt").style.display="flex";
+  document.getElementById("a1c").textContent=Object.keys(A1ANS).length+" / "+tot+" ítems respondidos";
+}
+
+/* ═══════════ ACTIVITY 2 DATA ═══════════ */
+var A2ALL=[
+  {id:"bc",n:"Acta de nacimiento del solicitante",sec:"doc",correct:"obt",fb_ok:"Correcto. Confirmó que sí la tiene.",fb_bad:"Incorrecto. Confirmó que sí tiene el acta de nacimiento."},
+  {id:"id",n:"ID del solicitante",sec:"doc",correct:"obt",fb_ok:"Correcto. Confirmó que sí la tiene.",fb_bad:"Incorrecto. Confirmó que sí tiene ID."},
+  {id:"mc",n:"Certificado de matrimonio",sec:"doc",correct:"obt",fb_ok:"Correcto. Confirmó que sí lo tiene.",fb_bad:"Incorrecto. Confirmó que sí tiene el certificado de matrimonio."},
+  {id:"bc_esp",n:"Certificado de nacimiento del esposo",sec:"doc",correct:"obt",fb_ok:"Correcto. Confirmó que sí lo tiene.",fb_bad:"Incorrecto. Confirmó que sí tiene el certificado de nacimiento del esposo."},
+  {id:"ab_id",n:"Identificación del abuser",sec:"doc",correct:"bus",fb_ok:"Correcto. Indicó que la puede conseguir.",fb_bad:"Incorrecto. Indicó que la puede conseguir — corresponde \'Lo va a buscar\'."},
+  {id:"hipoteca",n:"Hipoteca o renta",sec:"bona",correct:"nob",fb_ok:"Correcto. Indicó que no lo tiene.",fb_bad:"Incorrecto. Indicó que no tiene hipoteca ni renta conjunta."},
+  {id:"luz",n:"Recibo de luz",sec:"bona",correct:"bus",fb_ok:"Correcto. Indicó que lo puede conseguir.",fb_bad:"Incorrecto. Indicó que lo puede conseguir — corresponde \'Lo va a buscar\'."},
+  {id:"banco",n:"Cuenta de banco en conjunto",sec:"bona",correct:"bus",fb_ok:"Correcto. Indicó que puede tratar de conseguirlo.",fb_bad:"Incorrecto. Indicó que puede tratar de conseguirlo — corresponde \'Lo va a buscar\'."},
+  {id:"auto",n:"Compra en conjunto de automóvil",sec:"bona",correct:"nob",fb_ok:"Correcto. Indicó que no lo tiene.",fb_bad:"Incorrecto. Indicó que no tiene compra conjunta de automóvil."},
+  {id:"seguro",n:"Aseguranza",sec:"bona",correct:"nob",fb_ok:"Correcto. Indicó que no la tiene.",fb_bad:"Incorrecto. Indicó que no tiene aseguranza conjunta."},
+  {id:"cartas_gob",n:"Cartas del gobierno con la misma dirección en conjunto",sec:"bona",correct:"obt",fb_ok:"Correcto. Confirmó que sí las tiene.",fb_bad:"Incorrecto. Confirmó que sí tiene cartas del gobierno con la misma dirección."},
+  {id:"taxes",n:"Taxes en conjunto",sec:"bona",correct:"nob",fb_ok:"Correcto. Indicó que no los tiene.",fb_bad:"Incorrecto. Indicó que no tiene taxes en conjunto."},
+  {id:"memb",n:"Membresías en conjunto",sec:"bona",correct:"nob",fb_ok:"Correcto. Indicó que no las tiene.",fb_bad:"Incorrecto. Indicó que no tiene membresías en conjunto."},
+  {id:"corresp",n:"Correspondencia a nombre de él con esa dirección",sec:"bona",correct:"obt",fb_ok:"Correcto. Confirmó que sí la tiene.",fb_bad:"Incorrecto. Confirmó que sí tiene correspondencia a nombre de él con esa dirección."},
+  {id:"escolar",n:"Registros escolares a nombre de ambos con la dirección",sec:"bona",correct:"obt",fb_ok:"Correcto. Confirmó que sí los tiene.",fb_bad:"Incorrecto. Confirmó que sí tiene registros escolares a nombre de ambos."},
+  {id:"fotos_conj",n:"Fotos en conjunto",sec:"bona",correct:"bus",fb_ok:"Correcto. Indicó que las va a tratar de conseguir en una cuenta de Facebook que cerró.",fb_bad:"Incorrecto. Indicó que las va a tratar de conseguir — corresponde \'Lo va a buscar\'."},
+  {id:"fin",n:"Capturas de abuso financiero",sec:"evid",correct:"bus",fb_ok:"Correcto. Indicó que va a tratar de conseguirlo.",fb_bad:"Incorrecto. Indicó que va a tratar de conseguirlo — corresponde \'Lo va a buscar\'."},
+  {id:"camion",n:"Fotos de camionetas destruidas",sec:"evid",correct:"nob",fb_ok:"Correcto. Indicó que no las tiene.",fb_bad:"Incorrecto. Indicó que no tiene fotos de camionetas destruidas."},
+  {id:"corte",n:"Órdenes de la corte",sec:"evid",correct:"bus",fb_ok:"Correcto. Indicó que va a tratar de conseguirlas.",fb_bad:"Incorrecto. Indicó que va a tratar de conseguirlas — corresponde \'Lo va a buscar\'."},
+  {id:"msgs",n:"Mensajes o audios de abuso",sec:"evid",correct:"nob",fb_ok:"Correcto. Indicó que no los tiene.",fb_bad:"Incorrecto. Indicó que no tiene mensajes o audios de abuso."},
+  {id:"armas",n:"Fotos de perfilamiento de armas",sec:"evid",correct:"bus",fb_ok:"Correcto. Indicó que las va a buscar en el Facebook del esposo.",fb_bad:"Incorrecto. Indicó que las va a buscar en el Facebook del esposo — corresponde \'Lo va a buscar\'."},
+  {id:"celu",n:"Destrucción de celulares",sec:"evid",correct:"obt",fb_ok:"Correcto. Confirmó que sí los tiene.",fb_bad:"Incorrecto. Confirmó que sí tiene evidencia de destrucción de celulares."},
+  {id:"psic_cl",n:"Récord psicológico del cliente",sec:"evid",correct:"obt",fb_ok:"Correcto. Confirmó que sí lo tiene.",fb_bad:"Incorrecto. Confirmó que sí tiene el récord psicológico propio."},
+  {id:"psic_hija",n:"Récord psicológico de hija",sec:"evid",correct:"obt",fb_ok:"Correcto. Confirmó que sí lo tiene.",fb_bad:"Incorrecto. Confirmó que sí tiene el récord psicológico de la hija."},
+  {id:"dona",n:"Donaciones",sec:"gmc",correct:"bus",fb_ok:"Correcto. Indicó que las va a tratar de conseguir.",fb_bad:"Incorrecto. Indicó que las va a tratar de conseguir — corresponde \'Lo va a buscar\'."},
+  {id:"iglesia",n:"Carta de la iglesia",sec:"gmc",correct:"bus",fb_ok:"Correcto. Indicó que la va a tratar de conseguir.",fb_bad:"Incorrecto. Indicó que la va a tratar de conseguir — corresponde \'Lo va a buscar\'."},
+  {id:"curso",n:"Curso o certificado",sec:"gmc",correct:"nob",fb_ok:"Correcto. Indicó que no lo tiene.",fb_bad:"Incorrecto. Indicó que no tiene curso o certificado."},
+  {id:"vol",n:"Voluntariados",sec:"gmc",correct:"bus",fb_ok:"Correcto. Indicó que los va a tratar de conseguir.",fb_bad:"Incorrecto. Indicó que los va a tratar de conseguir — corresponde \'Lo va a buscar\'."},
+  {id:"ref",n:"Cartas de referencia",sec:"gmc",correct:"bus",fb_ok:"Correcto. Indicó que las va a tratar de conseguir.",fb_bad:"Incorrecto. Indicó que las va a tratar de conseguir — corresponde \'Lo va a buscar\'."}];
+
+
+var A2ST={};
+
+function bldA2(){
+  var secs={"doc":"📁 DOCUMENTOS PERSONALES","bona":"💍 BONA FIDE MARRIAGE EVIDENCE","evid":"🚨 EVIDENCIAS DE ABUSO","gmc":"⭐ GOOD MORAL CHARACTER"};
+  var cur="";
+  var ctr=document.createElement("div");
+  A2ALL.forEach(function(item){
+    if(item.sec!==cur){
+      cur=item.sec;
+      var h=document.createElement("div");
+      h.className="sc-sec";h.textContent=secs[cur]||cur;
+      ctr.appendChild(h);
+    }
+    var d=document.createElement("div");d.className="a2r";d.id="r2_"+item.id;
+    d.innerHTML="<div class=\"a2lab\"><strong>"+item.n+"</strong></div>"
+      +"<div class=\"a2btns\">"
+      +"<button class=\"cb2 obt\" id=\"b2o_"+item.id+"\" onclick=\"setA2('"+item.id+"','obt')\">✓ Sí lo tiene</button>"
+      +"<button class=\"cb2 nob\" id=\"b2n_"+item.id+"\" onclick=\"setA2('"+item.id+"','nob')\">✗ No lo tiene</button>"
+      +"<button class=\"cb2 bus\" id=\"b2b_"+item.id+"\" onclick=\"setA2('"+item.id+"','bus')\">🔍 Lo va a buscar</button>"
+      +"</div>";
+    ctr.appendChild(d);
+  });
+  var wrap=document.getElementById("a2wrap");
+  if(wrap)wrap.innerHTML="";
+  else{wrap=document.createElement("div");wrap.id="a2wrap";}
+  wrap.appendChild(ctr);
+  var parent=document.getElementById("a2d");
+  if(parent){parent.parentNode.replaceChild(wrap,parent);}
+  upA2C();
+}
+function setA2(id,state){
+  if(SC.a2!==null)return;
+  A2ST[id]=state;
+  ["obt","nob","bus"].forEach(function(s){var b=document.getElementById("b2"+s[0]+"_"+id);if(b)b.classList.toggle("sel",s===state);});
+  document.getElementById("r2_"+id).className="a2r "+state;
+  upA2C();
+}
+
+function upA2C(){
+  var done=Object.keys(A2ST).length;
+  var tot=A2ALL.length;
+  var el=document.getElementById("a2c");
+  if(el)el.textContent=done+" / "+tot+" registros completados";
+}
+function submitA2(){
+  var tot=A2ALL.length,ok=0,skipped=0,wrong=0;
+  A2ALL.forEach(function(item){
+    var sel=A2ST[item.id];
+    var isOk=item.correct==="nob"?(sel==="nob"):(sel==="obt"||sel==="bus");
+    if(sel===undefined)skipped++;
+    else if(isOk)ok++;
+    else wrong++;
+    var row=document.getElementById("r2_"+item.id);
+    if(row){
+      var fb=document.createElement("div");
+      if(sel===undefined){
+        fb.className="a2fb skip";
+        fb.innerHTML='<span class="a2fb-ico">\u26a0\ufe0f</span><div class="a2fb-body"><span class="a2fb-tag">Sin respuesta</span><div class="a2fb-text">'+item.fb_ok+'</div></div>';
+      } else if(isOk){
+        fb.className="a2fb ok";
+        fb.innerHTML='<span class="a2fb-ico">\u2705</span><div class="a2fb-body"><span class="a2fb-tag">Correcto</span><div class="a2fb-text">'+item.fb_ok+'</div></div>';
+      } else {
+        fb.className="a2fb bad";
+        var extra=item.correct!=="nob"?"<strong>Respuesta esperada:</strong> Lo que el cliente report\u00f3 en la llamada no coincide con tu selecci\u00f3n. ":"";
+        fb.innerHTML='<span class="a2fb-ico">\u274c</span><div class="a2fb-body"><span class="a2fb-tag">Incorrecto</span><div class="a2fb-text">'+extra+item.fb_bad+'</div></div>';
+      }
+      row.appendChild(fb);
+      row.classList.add("locked");
+    }
+    ["obt","nob","bus"].forEach(function(s){
+      var b=document.getElementById("b2"+s[0]+"_"+item.id);
+      if(b)b.disabled=true;
+    });
+  });
+  var p=Math.round(ok/tot*100);SC.a2=p;upGP();
+  document.getElementById("nav-act2").classList.add("done");
+  document.getElementById("a2v").style.display="none";
+  var grade=p>=70?"ok":p>=50?"warn":"fail";
+  var ico=p>=70?"\ud83c\udfaf":p>=50?"\ud83d\udccb":"\ud83d\udd04";
+  var title=p>=70?"Registro preciso":p>=50?"Registro con observaciones":"Registro incompleto";
+  var msg=p>=70
+    ?"Los \u00edtems reflejan correctamente lo que el cliente report\u00f3 en la llamada. Puedes continuar a la siguiente actividad."
+    :"Escucha la llamada nuevamente y revisa los \u00edtems marcados en rojo. Recuerda distinguir entre lo que el cliente ya tiene, lo que no tiene, y lo que va a buscar.";
+  var s=document.getElementById("a2s");
+  s.style.display="block";
+  s.className="";
+  s.style.cssText="display:block;margin-top:16px";
+  s.innerHTML='<div class="a2-summary">'
+    +'<div class="a2-sum-head '+grade+'">'
+    +'<span class="a2-sum-ico">'+ico+'</span>'
+    +'<div><div class="a2-sum-title">'+title+'</div><div class="a2-sum-sub">Actividad 2 \u00b7 Registro Post-Agenda</div></div>'
+    +'<div class="a2-sum-score"><div class="a2-sum-pct">'+p+'%</div><div class="a2-sum-lbl">'+ok+' / '+tot+' correctos</div></div>'
+    +'</div>'
+    +'<div class="a2-sum-body">'
+    +'<div class="a2-stat ok"><div class="a2-stat-n">'+ok+'</div><div class="a2-stat-l">\u2705 Correctos</div></div>'
+    +'<div class="a2-stat bad"><div class="a2-stat-n">'+wrong+'</div><div class="a2-stat-l">\u274c Incorrectos</div></div>'
+    +(skipped>0?'<div class="a2-stat skip"><div class="a2-stat-n">'+skipped+'</div><div class="a2-stat-l">\u26a0\ufe0f Sin respuesta</div></div>':"")
+    +'</div>'
+    +'<div class="a2-sum-msg">'+msg+'</div>'
+    +'</div>';
+  document.getElementById("a2nxt").style.display="flex";
+  upA2C();
+}
+
+/* ═══════════ ACTIVITY 3 DATA ═══════════ */
+var DBF=[{id:"id",l:"ID CL",c:"sup"},
+  {id:"bc",l:"BC CL",c:"sup"},
+  {id:"mc",l:"MC",c:"sup"},
+  {id:"cl",l:"Checklist",c:"sup"},
+  {id:"pdf",l:"PDF Formulario",c:"sup"},
+  {id:"e1",l:"EVIDENCIA 1 — Mensajes abuso",c:"vawa9"},
+  {id:"e2",l:"EVIDENCIA 2 — Fotos danos",c:"vawa9"},
+  {id:"gmc1",l:"Carta Referencia GMC",c:"vawa9"},
+  {id:"ag",l:"Grab. Agenda PWC",c:"rec"},
+  {id:"vi",l:"Grab. Videollamada PWC",c:"rec"}];
+var DBFLD=[{id:"sup",n:"5. Supporting Documents",d:"Documentos del cliente, Checklist y PDF Formulario"},
+  {id:"vawa9",n:"9. VAWA",d:"Evidencias de abuso y GMC"},
+  {id:"rec",n:"10. Recordings; Attorney Notes",d:"Grabacion Agenda PWC y Videollamada PWC"}];
+
+function bldA3(){
+  /* Build table */
+  var tbl=document.getElementById("a3-table");
+  tbl.innerHTML="<tr><th>Carpeta Dropbox</th><th>Contenido</th></tr>";
+  DBFLD.forEach(function(f){tbl.innerHTML+="<tr><td><strong>"+f.n+"</strong></td><td>"+f.d+"</td></tr>";});
+  /* Pool */
+  var pool=document.getElementById("pool");
+  pool.innerHTML="<div class=\"pl\">📥 Archivos recibidos — arrastra a la carpeta correcta</div>";
+  DBF.forEach(function(f){
+    var p=document.createElement("div");p.className="dp";p.id="pill_"+f.id;p.draggable=true;p.dataset.c=f.c;p.innerHTML="📄 "+f.l;
+    p.addEventListener("dragstart",function(e){e.dataTransfer.setData("text",f.id);});
+    pool.appendChild(p);
+  });
+  /* Folders */
+  var g=document.getElementById("dbg");g.innerHTML="";
+  DBFLD.forEach(function(fd){
+    var d=document.createElement("div");d.className="dbf";d.id="fold_"+fd.id;
+    d.innerHTML="<div class=\"dbfh\"><span class=\"dbfi\">📁</span><span class=\"dbfn\">"+fd.n+"</span></div><div class=\"dbfd\">"+fd.d+"</div><div class=\"dbdocs\" id=\"fd_"+fd.id+"\"></div>";
+    d.addEventListener("dragover",function(e){e.preventDefault();d.classList.add("drag-over");});
+    d.addEventListener("dragleave",function(){d.classList.remove("drag-over");});
+    d.addEventListener("drop",function(e){
+      if(SC.a3!==null)return;
+      e.preventDefault();d.classList.remove("drag-over");
+      var id=e.dataTransfer.getData("text");var p=document.getElementById("pill_"+id);
+      if(p){document.getElementById("fd_"+fd.id).appendChild(p);p.dataset.placed=fd.id;}
+    });
+    g.appendChild(d);
+  });
+}
+function submitA3(){
+  var ok=0;
+  DBF.forEach(function(f){
+    var p=document.getElementById("pill_"+f.id);if(!p)return;
+    var pl=p.dataset.placed;
+    if(pl===f.c){p.classList.remove("bad");p.classList.add("ok");ok++;}
+    else if(pl){p.classList.remove("ok");p.classList.add("bad");}
+    p.classList.add("locked");p.draggable=false;
+  });
+  document.querySelectorAll(".dbf").forEach(function(d){d.classList.add("locked");});
+  var p=Math.round(ok/DBF.length*100);SC.a3=p;upGP();
+  document.getElementById("nav-act3").classList.add("done");
+  document.getElementById("a3v").style.display="none";
+  var s=document.getElementById("a3s");s.style.display="block";
+  s.className="rs "+(p>=70?"ok":p>=50?"warn":"fail");
+  s.textContent=ok+"/"+DBF.length+" archivos correctamente ubicados ("+p+"%) — "+(p>=70?"Excelente.":"Revisa las carpetas de Dropbox para este proceso.");
+  document.getElementById("a3nxt").style.display="flex";
+  bldScore();
+}
+
+/* ═══════════ SCORE ═══════════ */
+function bldScore(){
+  var a1=SC.a1!==null?SC.a1:0,a2=SC.a2!==null?SC.a2:0,a3=SC.a3!==null?SC.a3:0;
+  var done=(SC.a1!==null?1:0)+(SC.a2!==null?1:0)+(SC.a3!==null?1:0);
+  var avg=done>0?Math.round((a1+a2+a3)/done):0;
+  document.getElementById("scc").style.setProperty("--pct",avg);
+  document.getElementById("scp").textContent=avg+"%";
+  document.getElementById("sm").textContent=avg>=90?"Dominio excepcional del proceso de checklist.":avg>=70?"Buen desempeño. Revisa los ítems incorrectos para consolidar.":"Repasa las notas del caso y la checklist, luego intenta de nuevo.";
+  document.getElementById("sbd").innerHTML=[
+    {l:"Act. 1 — Perfilado",v:a1,done:SC.a1!==null},
+    {l:"Act. 2 — Agenda",v:a2,done:SC.a2!==null},
+    {l:"Act. 3 — Dropbox",v:a3,done:SC.a3!==null}
+  ].map(function(b){
+    return "<div class=\"sbdg\" style=\"border-color:"+(b.done?(b.v>=70?"rgba(93,138,112,.4)":"rgba(180,50,50,.3)"):"rgba(255,255,255,.15)")+"\">"+b.l+"<br><strong style=\"color:"+(b.done?(b.v>=70?"#5d8a70":"#f87171"):"rgba(255,255,255,.4)")+"\">"+( b.done?b.v+"%":"—")+"</strong></div>";
+  }).join("");
+}
+
+/* INIT */
+bldA1();bldA2();bldA3();bldScore();
+/* Ensure sidebar navigation works - bind click events directly */
+document.addEventListener("DOMContentLoaded",function(){
+  var navMap={"nav-intro":"intro","nav-act1":"act1","nav-act2":"act2","nav-act3":"act3","nav-score":"score"};
+  Object.keys(navMap).forEach(function(navId){
+    var el=document.getElementById(navId);
+    if(el){
+      el.addEventListener("click",function(e){
+        e.stopPropagation();
+        goP(navMap[navId]);
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>
