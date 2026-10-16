@@ -1,0 +1,1518 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Evidencias de Abuso — VAWA | TMLF Learning Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1923;--slate:#5a6a7a;--steel:#6b8fa8;--ice:#8db8d8;
+  --gold:#c9a84c;--gold-bg:rgba(201,168,76,.09);
+  --white:#fff;--bg:#eef1f5;--shadow:0 8px 28px rgba(15,25,35,.11);--radius:16px;
+  --nav-h:56px;--sidebar-w:272px;
+  --green:#1e6641;--green-bg:rgba(30,102,65,.08);
+  --red:#8b2c2c;--red-bg:rgba(180,50,50,.08);
+  --amber:#7a5200;--amber-bg:rgba(180,130,0,.09);
+  --accent:#1a3a5c;--accent2:#2e5c8a;
+  --sidebar-bg:#0d1e2e;
+  --purple:#2e5c8a;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+.topnav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav-h);background:rgba(10,18,28,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);display:flex;align-items:center;padding:0 18px;gap:10px}
+.topnav .brand{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;white-space:nowrap;letter-spacing:.3px;display:flex;align-items:center;gap:10px}
+.topnav .brand .seal{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.08));border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.topnav .brand span{color:var(--gold)}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topnav-pill{padding:5px 14px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.28);color:rgba(201,168,76,.9)}
+.sidebar-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px}
+@media(max-width:900px){.sidebar-toggle{display:block}}
+.app-shell{display:flex;min-height:100vh;padding-top:var(--nav-h)}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);position:fixed;top:var(--nav-h);bottom:0;left:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;border-right:1px solid rgba(201,168,76,.07);z-index:200;transition:transform .3s ease}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:3px}
+.sidebar-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sidebar-header .sh-label{font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px}
+.sidebar-header .sh-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.88);font-weight:600;line-height:1.3}
+.sb-group{padding:8px 0}
+.sb-group-label{padding:6px 16px 3px;font-size:8.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.sb-divider{margin:4px 14px 6px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.18),transparent)}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:all .18s;position:relative;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.045)}
+.sb-item.active{background:rgba(141,184,216,.09)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.sb-item.locked{opacity:.42;cursor:not-allowed}
+.sb-item.locked:hover{background:none}
+.sb-item.completed .sb-num{background:var(--green)!important;color:#fff!important}
+.sb-num{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);transition:all .18s}
+.sb-item.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item:hover:not(.locked) .sb-num{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+.sb-text{flex:1;min-width:0}
+.sb-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);line-height:1.3;transition:color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item.active .sb-name{color:rgba(255,255,255,.92)}
+.sb-item:hover:not(.locked) .sb-name{color:rgba(255,255,255,.82)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.sb-item.overview .sb-num{background:rgba(141,184,216,.13);color:var(--ice)}
+.sb-item.overview.active .sb-num{background:var(--ice);color:var(--ink)}
+.sb-spec-banner{margin:6px 12px 2px;padding:7px 11px;border-radius:9px;background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.03));border:1px solid rgba(201,168,76,.16);display:flex;align-items:center;gap:7px}
+.sb-spec-banner .sbb-text{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(201,168,76,.75)}
+.sb-item.exam .sb-num{background:rgba(201,168,76,.14);color:var(--gold)}
+.sb-item.exam.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item.exam .sb-name{color:rgba(255,210,80,.55)}
+.sb-item.exam.active .sb-name{color:rgba(255,210,80,.92)}
+.sb-item.practice .sb-num{background:rgba(30,102,65,.14);color:#4ade80}
+.sb-item.practice.active .sb-num{background:var(--green);color:#fff}
+.sb-item.practice .sb-name{color:rgba(74,222,128,.55)}
+.sb-item.practice.active .sb-name{color:rgba(74,222,128,.92)}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.45)}
+  .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+  .sb-overlay.show{display:block}
+}
+.progress-bar-wrap{position:fixed;top:var(--nav-h);left:0;right:0;z-index:299;height:3px;background:rgba(255,255,255,.06)}
+.progress-bar-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--ice));transition:width .5s ease;width:0%}
+.main{margin-left:var(--sidebar-w);flex:1;padding:26px 26px 60px;max-width:100%}
+@media(max-width:900px){.main{margin-left:0;padding:18px 14px 50px}}
+.header{background:linear-gradient(135deg,#0b1f35 0%,#0e2540 45%,#1a3a5c 100%);color:#fff;border-radius:20px;padding:42px 38px 36px;box-shadow:0 16px 40px rgba(10,20,35,.22);position:relative;overflow:hidden;margin-bottom:22px}
+.header::before{content:'';position:absolute;top:-60px;right:-40px;width:270px;height:270px;border:1.5px solid rgba(201,168,76,.1);border-radius:50%;animation:pulse 5s ease-in-out infinite}
+.header::after{content:'';position:absolute;bottom:-70px;right:90px;width:180px;height:180px;border:1.5px solid rgba(37,99,235,.08);border-radius:50%;animation:pulse 6s ease-in-out infinite .8s}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:.85}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.header-seal{position:absolute;top:26px;right:34px;width:62px;height:62px;border:1.5px solid rgba(201,168,76,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;opacity:.5;animation:pulse 4s ease-in-out infinite}
+.header-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:12px}
+.header-badge .dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+h1{font-family:'Cormorant Garamond',serif;font-size:36px;letter-spacing:.4px;position:relative;z-index:1;font-weight:700;line-height:1.15}
+.subtitle{font-size:14px;opacity:.76;max-width:52ch;position:relative;z-index:1;margin-top:6px}
+.header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.header-meta-item{display:flex;align-items:center;gap:6px;padding:5px 13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:11.5px}
+.header-meta-item span:first-child{opacity:.58}
+.header-meta-item strong{font-weight:700}
+.panel{display:none;animation:fadeUp .28s ease both}
+.panel.active{display:block}
+.dist-bar{display:flex;border-radius:10px;overflow:hidden;height:36px;margin:14px 0}
+.dist-seg{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.dist-seg.theory{background:linear-gradient(135deg,#1a3a5c,#2e5c8a);color:#fff;flex:20}
+.dist-seg.practice{background:linear-gradient(135deg,#1e6641,#2d9d62);color:#fff;flex:70}
+.dist-seg.eval{background:linear-gradient(135deg,var(--gold),#a07828);color:#fff;flex:10}
+.dist-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.dist-lg-item{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--slate)}
+.dist-lg-dot{width:10px;height:10px;border-radius:3px}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:9px;margin-bottom:18px}
+.stat-card{background:var(--white);border-radius:13px;padding:15px;border:1px solid rgba(107,143,168,.16);text-align:center}
+.stat-card .stat-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--accent);line-height:1}
+.stat-card .stat-label{font-size:11px;color:var(--slate);margin-top:4px;font-weight:600}
+.block{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(107,143,168,.15);overflow:hidden;margin-bottom:14px}
+.block:last-child{margin-bottom:0}
+.block .btitle{display:flex;align-items:center;gap:10px;padding:15px 18px;background:linear-gradient(180deg,rgba(141,184,216,.16),rgba(141,184,216,.02));border-bottom:1px solid rgba(107,143,168,.13)}
+.block .btitle .bicon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.block .btitle h3{font-size:15.5px;color:var(--ink);font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.2px;flex:1}
+.block .btitle .mod-badge{margin-left:auto;padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;flex-shrink:0}
+.badge-core{background:rgba(26,58,92,.09);color:#1a3a5c;border:1px solid rgba(26,58,92,.17)}
+.badge-warn{background:rgba(139,44,44,.08);color:#8b2c2c;border:1px solid rgba(139,44,44,.17)}
+.badge-green{background:rgba(30,102,65,.08);color:#1e6641;border:1px solid rgba(30,102,65,.17)}
+.badge-gold{background:rgba(201,168,76,.09);color:#7a5200;border:1px solid rgba(201,168,76,.2)}
+.badge-exam{background:linear-gradient(135deg,rgba(201,168,76,.16),rgba(201,168,76,.05));color:#7a5200;border:1px solid rgba(201,168,76,.28)}
+.badge-practice{background:rgba(30,102,65,.08);color:#1e6641;border:1px solid rgba(30,102,65,.17)}
+.badge-template{background:rgba(46,92,138,.08);color:#2e5c8a;border:1px solid rgba(46,92,138,.2)}
+.block .bbody{padding:18px}
+.block .bbody p{margin:0 0 10px;font-size:13.5px}
+.block .bbody p:last-child{margin-bottom:0}
+.sdiv{display:flex;align-items:center;gap:11px;margin:20px 0 13px}
+.sdiv .l{flex:1;height:1px;background:linear-gradient(90deg,rgba(107,143,168,.28),transparent)}
+.sdiv .l:last-child{background:linear-gradient(270deg,rgba(107,143,168,.28),transparent)}
+.sdiv .t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--slate);white-space:nowrap}
+.lo-callout{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.13);margin-bottom:13px}
+.lo-callout .lo-icon{font-size:17px;flex-shrink:0;margin-top:1px}
+.lo-callout .lo-text{font-size:12.5px;color:var(--slate);line-height:1.55}
+.lo-callout .lo-text strong{color:var(--ink);display:block;margin-bottom:2px;font-size:13px}
+details.block-accordion{border:none;background:none;padding:0;margin:8px 0 0}
+details.block-accordion+details.block-accordion{margin-top:7px}
+.block-accordion-header{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.04),rgba(107,143,168,.08));border:1px solid rgba(107,143,168,.15);transition:all .2s;user-select:none}
+.block-accordion-header::-webkit-details-marker{display:none}
+details.block-accordion[open] .block-accordion-header{border-radius:11px 11px 0 0;border-bottom-color:transparent;background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.12))}
+.block-accordion-header:hover{background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.13))}
+.bac-left{display:flex;align-items:center;gap:11px}
+.bac-num{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bac-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.bac-title{font-size:13.5px;font-weight:700;color:var(--ink)}
+.bac-arrow{font-size:11px;color:var(--slate);transition:transform .2s;flex-shrink:0}
+details.block-accordion[open] .bac-arrow{transform:rotate(90deg)}
+.bac-body{padding:14px 16px 16px;border:1px solid rgba(107,143,168,.15);border-top:none;border-radius:0 0 11px 11px;background:rgba(242,244,247,.45)}
+.ev-list{margin:8px 0 0;padding:0 0 0 15px;font-size:13px;line-height:1.7}
+.ev-list li{margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chip{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:600;background:rgba(141,184,216,.13);border:1px solid rgba(107,143,168,.17);color:var(--ink)}
+.chip.green{background:var(--green-bg);border-color:rgba(30,102,65,.17);color:var(--green)}
+.chip.amber{background:var(--amber-bg);border-color:rgba(180,130,0,.19);color:var(--amber)}
+.chip.dark{background:rgba(15,25,35,.07);border-color:rgba(15,25,35,.12);color:var(--ink)}
+.chip.gold{background:var(--gold-bg);border-color:rgba(201,168,76,.2);color:#7a5200}
+.chip.red{background:rgba(180,50,50,.08);border-color:rgba(180,50,50,.18);color:#8b2c2c}
+.chip.blue{background:rgba(37,99,235,.09);border-color:rgba(37,99,235,.18);color:#1a3a5c}
+.chip.purple{background:rgba(46,92,138,.08);border-color:rgba(46,92,138,.2);color:#2e5c8a}
+.alert{margin-top:10px;padding:10px 13px;border-radius:10px;font-size:12.5px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.alert.warn{background:var(--amber-bg);border:1px solid rgba(180,130,0,.19);color:var(--amber)}
+.alert.danger{background:var(--red-bg);border:1px solid rgba(180,50,50,.17);color:var(--red)}
+.alert.success{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.alert.info{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.18);color:var(--ink)}
+.alert.blue{background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);color:#1a3a5c}
+.alert.purple{background:rgba(46,92,138,.06);border:1px solid rgba(46,92,138,.18);color:#2e5c8a}
+.alert.gold{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);color:var(--amber)}
+.alert-icon{flex-shrink:0;margin-top:1px}
+.alert strong{font-weight:700}
+.principle{margin-top:13px;padding:14px 17px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.03),rgba(141,184,216,.06));border:1px solid rgba(107,143,168,.17);border-left:3px solid var(--accent)}
+.principle p{margin:0;font-size:14px;font-weight:600;font-style:italic;font-family:'Cormorant Garamond',serif;line-height:1.55;color:var(--ink)}
+.principle .principle-sub{font-weight:500;color:var(--slate);margin-top:4px;font-style:normal;font-family:'DM Sans',sans-serif;font-size:12px}
+.ob-list{display:grid;grid-template-columns:1fr;gap:6px;margin-top:9px}
+@media(min-width:600px){.ob-list{grid-template-columns:1fr 1fr}}
+.ob-item{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:10px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.16);transition:all .2s}
+.ob-item:hover{transform:translateX(3px);background:rgba(141,184,216,.16)}
+.ob-num{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px}
+.ob-item span{font-size:12.5px;font-weight:600;line-height:1.4}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px}
+@media(max-width:700px){.three-col{grid-template-columns:1fr}}
+@media(max-width:600px){.two-col{grid-template-columns:1fr}}
+.mini-card{padding:13px;border-radius:11px;border:1px solid rgba(107,143,168,.15);background:rgba(107,143,168,.04)}
+.mini-card h4{font-size:12.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px;color:var(--ink);font-weight:700}
+.mini-card p,.mini-card li{font-size:12px;color:var(--slate);line-height:1.6}
+.mini-card ul{padding-left:15px}
+.info-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.5px;border-radius:11px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.info-table th{background:var(--accent);color:#fff;padding:11px 14px;text-align:left;font-weight:700;font-size:11.5px}
+.info-table td{padding:10px 14px;border-bottom:1px solid rgba(107,143,168,.12)}
+.info-table tr:nth-child(even) td{background:rgba(107,143,168,.04)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:hover td{background:rgba(141,184,216,.08)}
+.mod-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:6px;margin-bottom:13px}
+.mod-meta-item{padding:8px 12px;border-radius:9px;background:rgba(107,143,168,.055);border:1px solid rgba(107,143,168,.13)}
+.mod-meta-item .label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.mod-meta-item .value{font-size:12.5px;font-weight:700;color:var(--ink)}
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:2px}
+.ov-card{background:var(--white);border-radius:12px;padding:14px;border:1px solid rgba(107,143,168,.15);cursor:pointer;transition:all .22s;display:flex;flex-direction:column;gap:4px;position:relative}
+.ov-card:hover{transform:translateY(-3px);box-shadow:0 7px 20px rgba(15,25,35,.1);border-color:var(--ice)}
+.ov-card.locked-card{opacity:.5;cursor:not-allowed;filter:grayscale(.5)}
+.ov-card.locked-card:hover{transform:none;box-shadow:none}
+.ov-card .ov-icon{font-size:22px;margin-bottom:3px}
+.ov-card strong{font-size:12px;font-weight:700;color:var(--ink);line-height:1.3}
+.ov-card small{font-size:10.5px;color:var(--slate)}
+.ov-card .lock-badge{position:absolute;top:8px;right:8px;font-size:11px;opacity:.6}
+.ov-card.exam-card{background:linear-gradient(135deg,rgba(201,168,76,.05),rgba(201,168,76,.02));border-color:rgba(201,168,76,.18)}
+.ov-card.practice-card{background:linear-gradient(135deg,rgba(30,102,65,.05),rgba(30,102,65,.02));border-color:rgba(30,102,65,.18)}
+.ov-card.completed-card{border-color:rgba(30,102,65,.3);background:rgba(30,102,65,.03)}
+.progress-section{background:var(--white);border-radius:12px;padding:16px;border:1px solid rgba(107,143,168,.15);margin-bottom:14px}
+.progress-section h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:12px}
+.prog-track{display:flex;flex-direction:column;gap:8px}
+.prog-row{display:flex;align-items:center;gap:12px}
+.prog-label{font-size:11.5px;font-weight:600;color:var(--ink);min-width:110px}
+.prog-bar-outer{flex:1;height:7px;background:rgba(107,143,168,.14);border-radius:4px;overflow:hidden}
+.prog-bar-inner{height:7px;border-radius:4px;transition:width .8s ease}
+.prog-bar-inner.theory{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.prog-bar-inner.practice{background:linear-gradient(90deg,var(--green),#2d9d62)}
+.prog-bar-inner.eval{background:linear-gradient(90deg,var(--gold),#a07828)}
+.prog-pct{font-size:11px;font-weight:700;color:var(--slate);min-width:32px;text-align:right}
+.ck2-question{background:rgba(242,244,247,.6);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.ck2-qtext{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px}
+.ck2-opts{display:flex;flex-direction:column;gap:7px}
+.ck2-opt{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:8px;border:1.5px solid rgba(107,143,168,.18);background:var(--white);cursor:pointer;font-size:12.5px;transition:all .18s}
+.ck2-opt:hover{border-color:var(--purple);background:rgba(46,92,138,.05)}
+.ck2-opt.selected{border-color:var(--purple);background:rgba(46,92,138,.07)}
+.ck2-opt.correct{border-color:#1e6641;background:#d1fae5;pointer-events:none}
+.ck2-opt.incorrect{border-color:#8b2c2c;background:#fee2e2;pointer-events:none}
+.ck2-opt.disabled{pointer-events:none;opacity:.7}
+.ck2-radio{width:18px;height:18px;border-radius:50%;border:2px solid rgba(107,143,168,.3);flex-shrink:0;transition:all .18s}
+.ck2-opt.selected .ck2-radio{border-color:var(--purple);background:var(--purple)}
+.ck4-question{background:rgba(242,244,247,.6);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.ck4-stmt{font-size:13px;color:var(--ink);margin-bottom:12px;padding:12px;background:var(--white);border-radius:8px;border-left:3px solid var(--purple);line-height:1.5}
+.ck4-btns{display:flex;gap:10px}
+.ck4-btn{flex:1;padding:11px 16px;border:1.5px solid rgba(107,143,168,.2);border-radius:9px;background:var(--white);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.ck4-btn:hover{border-color:var(--purple)}
+.ck4-btn.selected{border-color:var(--purple);background:rgba(46,92,138,.07);color:var(--purple)}
+.ck4-btn.correct{border-color:#1e6641;background:#d1fae5;color:#1e6641;pointer-events:none}
+.ck4-btn.incorrect{border-color:#8b2c2c;background:#fee2e2;color:#8b2c2c;pointer-events:none}
+.ck4-btn.disabled{pointer-events:none;opacity:.6}
+.ck-feedback{margin-top:10px;padding:10px 13px;border-radius:9px;font-size:12.5px;display:none;line-height:1.5}
+.ck-feedback.show{display:block;animation:fadeUp .25s ease}
+.ck-feedback.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.ck-feedback.fail{background:var(--red-bg);border:1px solid rgba(139,44,44,.17);color:var(--red)}
+.ck-result-summary{margin-top:12px;padding:14px 16px;border-radius:10px;background:var(--white);border:1px solid rgba(107,143,168,.18);text-align:center;font-size:15px;font-weight:700;display:none}
+.ck-result-summary.ok{color:var(--green)}.ck-result-summary.warn{color:var(--amber)}.ck-result-summary.fail{color:var(--red)}
+.ck-actions{display:flex;gap:10px;justify-content:center;margin-top:16px}
+.ck-btn{padding:10px 24px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.ck-verify{background:var(--purple);color:#fff}
+.ck-verify:hover{background:#1a3a5c;box-shadow:0 4px 12px rgba(46,92,138,.35)}
+.ck-retry{background:rgba(107,143,168,.12);color:var(--slate);border:1px solid rgba(107,143,168,.2)}
+.ck-retry:hover{background:rgba(107,143,168,.22)}
+.ck-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.ck-next:hover{box-shadow:0 4px 14px rgba(26,58,92,.35);transform:translateY(-1px)}
+.ck-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--purple);margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid rgba(46,92,138,.15)}
+.q-item{background:rgba(242,244,247,.7);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.q-stem{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.5}
+.q-opts{display:flex;flex-direction:column;gap:7px}
+.q-opt{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:8px;border:1.5px solid rgba(107,143,168,.18);background:var(--white);cursor:pointer;font-size:12.5px;transition:all .18s}
+.q-opt:hover{border-color:var(--accent2);background:rgba(26,58,92,.04)}
+.q-opt.selected{border-color:var(--accent2);background:rgba(26,58,92,.06)}
+.q-opt.correct{border-color:#1e6641;background:#d1fae5;pointer-events:none}
+.q-opt.incorrect{border-color:#8b2c2c;background:#fee2e2;pointer-events:none}
+.q-opt.disabled{pointer-events:none;opacity:.7}
+.q-letter{width:22px;height:22px;border-radius:5px;background:rgba(107,143,168,.13);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;flex-shrink:0}
+.q-feedback{display:none;margin-top:10px;padding:9px 12px;border-radius:8px;font-size:12px;line-height:1.5}
+.q-feedback.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.q-feedback.fail{background:var(--red-bg);border:1px solid rgba(139,44,44,.17);color:var(--red)}
+.q-feedback.show{display:block}
+.eval-footer{padding:14px 16px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid rgba(107,143,168,.12)}
+.btn-retry,.btn-submit{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.btn-retry{background:rgba(107,143,168,.12);color:var(--slate);display:none}
+.btn-retry:hover{background:rgba(107,143,168,.22)}
+.btn-submit{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.btn-submit:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(26,58,92,.35)}
+.result-card{display:none;margin:0 16px 16px;padding:22px;border-radius:13px;background:linear-gradient(135deg,rgba(26,58,92,.04),rgba(141,184,216,.06));border:1px solid rgba(107,143,168,.18);text-align:center}
+.result-card.show{display:block;animation:fadeUp .3s ease}
+.result-score{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1}
+.result-score.pass{color:var(--green)}.result-score.warn{color:var(--amber)}.result-score.fail{color:var(--red)}
+.result-label{font-size:13px;font-weight:700;color:var(--ink);margin:6px 0 8px}
+.result-msg{font-size:12px;color:var(--slate);line-height:1.6;max-width:50ch;margin:0 auto 14px}
+.result-breakdown{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.rb-item{padding:10px 18px;border-radius:10px;text-align:center;min-width:80px}
+.rb-ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.17)}
+.rb-bad{background:var(--red-bg);border:1px solid rgba(139,44,44,.17)}
+.rb-mod{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.17)}
+.rb-n{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1}
+.rb-ok .rb-n{color:var(--green)}.rb-bad .rb-n{color:var(--red)}.rb-mod .rb-n{color:var(--slate)}
+.rb-l{font-size:10px;font-weight:700;color:var(--slate);margin-top:2px}
+.sim-card{background:linear-gradient(135deg,rgba(30,102,65,.04),rgba(30,102,65,.01));border:1.5px dashed rgba(30,102,65,.25);border-radius:14px;padding:24px;text-align:center;margin-bottom:12px}
+.sim-card .sim-icon{font-size:38px;margin-bottom:10px;opacity:.7}
+.sim-card h4{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.sim-card p{font-size:12.5px;color:var(--slate);max-width:40ch;margin:0 auto 14px;line-height:1.6}
+.sim-card .sim-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;background:rgba(30,102,65,.08);border:1px solid rgba(30,102,65,.2);font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:10px}
+.sim-item{background:var(--white);border-radius:11px;padding:16px;border:1px solid rgba(107,143,168,.15);display:flex;flex-direction:column;gap:6px;opacity:.75}
+.sim-item .si-icon{font-size:24px}
+.sim-item h5{font-size:13px;font-weight:700;color:var(--ink)}
+.sim-item p{font-size:11.5px;color:var(--slate);line-height:1.5;margin:0}
+.sim-item .si-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--green);margin-top:4px}
+.template-note{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:10px;background:rgba(46,92,138,.06);border:1px dashed rgba(46,92,138,.25);margin-bottom:12px;font-size:12px;color:var(--purple);line-height:1.55}
+.template-note .tn-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.template-note strong{font-weight:700;display:block;margin-bottom:2px}
+.page-title{margin-bottom:16px}
+.page-title .pt-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate);margin-bottom:4px}
+.page-title h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.page-title .pt-sub{font-size:13px;color:var(--slate);margin-top:3px}
+.roadmap{display:flex;flex-direction:column;gap:0;margin-top:11px;position:relative}
+.roadmap::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2),var(--ice));border-radius:2px}
+.rm-item{display:flex;gap:15px;padding:0 0 16px;position:relative}
+.rm-dot{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;box-shadow:0 3px 9px rgba(26,58,92,.25)}
+.rm-dot.locked{background:rgba(107,143,168,.2)!important;box-shadow:none;color:rgba(107,143,168,.5)!important}
+.rm-dot.done{background:linear-gradient(135deg,var(--green),#2d9d62)!important}
+.rm-content{padding:8px 12px;background:var(--white);border-radius:10px;border:1px solid rgba(107,143,168,.15);flex:1;transition:all .2s}
+.rm-content:hover{border-color:var(--ice);transform:translateX(3px)}
+.rm-level{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px}
+.rm-level.intro{color:var(--green)}.rm-level.inter{color:var(--amber)}.rm-level.avanz{color:#1a3a5c}
+.rm-content h4{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 2px}
+.rm-content p{font-size:11.5px;color:var(--slate);margin:0}
+.section-head{margin-bottom:18px}
+.section-head h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--ink);line-height:1.2}
+.section-head p{font-size:14px;color:var(--slate);margin-top:5px;max-width:60ch}
+.section-head .sh-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;background:var(--gold-bg);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.mod-nav-bar{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid rgba(107,143,168,.15)}
+.mod-nav-btn{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.mod-nav-prev{background:rgba(107,143,168,.1);color:var(--slate);border:1px solid rgba(107,143,168,.2)}
+.mod-nav-prev:hover{background:rgba(107,143,168,.2)}
+.mod-nav-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(26,58,92,.2)}
+.mod-nav-next:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,58,92,.3)}
+.block.b-concepto{border-color:rgba(201,168,76,.22);background:#fffdf0}
+.block.b-concepto .btitle{background:rgba(201,168,76,.08);border-bottom-color:rgba(201,168,76,.15)}
+.block.b-concepto .btitle h3{color:#7a5200}
+.block.b-caso{border-color:rgba(30,102,65,.18);background:#f0fbf5}
+.block.b-caso .btitle{background:rgba(30,102,65,.07);border-bottom-color:rgba(30,102,65,.12)}
+.block.b-caso .btitle h3{color:#1e5c3a}
+.block.b-error{border-color:rgba(139,44,44,.18);background:#fff5f5}
+.block.b-error .btitle{background:rgba(139,44,44,.06);border-bottom-color:rgba(139,44,44,.12)}
+.block.b-error .btitle h3{color:#8b2c2c}
+.block.b-error .mod-badge{background:rgba(139,44,44,.1);color:#8b2c2c;border-color:rgba(139,44,44,.22)}
+.block.b-ejercicio{border-color:rgba(37,99,235,.18);background:#f0f6ff}
+.block.b-ejercicio .btitle{background:rgba(37,99,235,.07);border-bottom-color:rgba(37,99,235,.12)}
+.block.b-ejercicio .btitle h3{color:#1a3a8f}
+.critical-rule{background:linear-gradient(135deg,rgba(15,25,35,.96) 0%,rgba(26,58,92,.97) 100%);border-radius:14px;padding:18px 22px;margin:16px 0;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(15,25,35,.18)}
+.critical-rule::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.critical-rule-label{font-size:9px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:rgba(201,168,76,.7);margin-bottom:8px}
+.critical-rule-text{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:#fff;line-height:1.3;letter-spacing:.1px;text-transform:uppercase}
+.critical-rule-text em{font-style:normal;color:rgba(201,168,76,.95)}
+.critical-rule-sub{font-size:12px;color:rgba(255,255,255,.58);margin-top:8px;line-height:1.55}
+.critical-rule-sub strong{color:rgba(255,255,255,.82)}
+.case-box{background:linear-gradient(135deg,#f8f9fb,#f2f4f8);border:1px solid rgba(15,25,35,.1);border-radius:14px;padding:20px 22px;margin-bottom:16px;position:relative}
+.case-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold);border-radius:14px 0 0 14px}
+.case-label{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.case-narrative{font-size:14px;color:var(--ink);line-height:1.7;font-style:italic}
+.scenario-card{background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:14px;padding:20px 22px;margin-bottom:14px;box-shadow:0 2px 8px rgba(15,25,35,.05)}
+.scenario-num{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--slate);margin-bottom:8px}
+.scenario-text{font-size:14px;color:var(--ink);line-height:1.65;margin-bottom:14px;padding:12px 16px;background:rgba(15,25,35,.025);border-radius:9px;border-left:3px solid var(--gold)}
+.scenario-q{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px}
+.opt-btn{display:block;width:100%;text-align:left;padding:11px 16px;margin-bottom:7px;border-radius:10px;border:1.5px solid rgba(15,25,35,.1);background:var(--white);font-size:13.5px;cursor:pointer;transition:all .18s;color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.45}
+.opt-btn:hover{border-color:rgba(37,99,235,.35);background:rgba(37,99,235,.04);color:var(--accent)}
+.opt-btn.correct{border-color:rgba(30,102,65,.5);background:var(--green-bg);color:var(--green);pointer-events:none}
+.opt-btn.wrong{border-color:rgba(139,44,44,.4);background:var(--red-bg);color:var(--red);pointer-events:none}
+.strength-bar{height:6px;border-radius:999px;background:rgba(15,25,35,.08);margin-top:8px;overflow:hidden}
+.strength-fill{height:100%;border-radius:999px;transition:width .5s ease}
+.strength-fill.strong{background:var(--green);width:90%}
+.strength-fill.medium{background:var(--gold);width:55%}
+.strength-fill.weak{background:var(--red);width:22%}
+.strength-label{font-size:10.5px;font-weight:700;letter-spacing:.4px;margin-top:4px}
+.strength-label.strong{color:var(--green)}.strength-label.medium{color:var(--amber)}.strength-label.weak{color:var(--red)}
+mark.hi{background:rgba(201,168,76,.22);color:#5a3e00;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(201,168,76,.5)}
+mark.hi-red{background:rgba(180,40,40,.12);color:#7a1a1a;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(180,40,40,.4)}
+mark.hi-green{background:rgba(30,102,65,.1);color:#1a5234;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(30,102,65,.35)}
+tr.tr-critical{background:rgba(201,168,76,.08)!important}
+tr.tr-critical td{font-weight:700;color:var(--ink)}
+tr.tr-critical td:first-child{border-left:3px solid var(--gold)}
+.error-item{display:flex;gap:14px;padding:14px 16px;background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:12px;margin-bottom:10px}
+.ei-icon{width:36px;height:36px;border-radius:9px;background:var(--red-bg);border:1px solid rgba(139,44,44,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ei-body .ei-title{font-size:13.5px;font-weight:700;color:var(--red);margin-bottom:4px}
+.ei-body .ei-desc{font-size:13px;color:var(--slate);line-height:1.5}
+.ei-body .ei-fix{font-size:12px;color:var(--green);margin-top:6px;font-weight:600}
+.sc-fb{margin-top:10px;padding:11px 14px;border-radius:9px;font-size:13px;line-height:1.55;display:none}
+.sc-fb.show{display:block;animation:fadeUp .22s ease}
+.sc-fb.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.18);color:var(--green)}
+.sc-fb.fail{background:var(--red-bg);border:1px solid rgba(139,44,44,.18);color:var(--red)}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <div class="seal">⚖️</div>
+    TMLF <span>Learning Center</span>
+  </div>
+  <div class="topnav-right">
+    <div class="topnav-pill">PWI · VAWA</div>
+  </div>
+</nav>
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="globalProgress"></div></div>
+<div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sh-label">TMLF Learning Center</div>
+    <div class="sh-title">Evidencias de Abuso — VAWA</div>
+  </div>
+  <div class="sb-group">
+    <div class="sb-group-label">Inicio</div>
+    <div class="sb-item overview active" id="nav-instrucciones" onclick="showPanel('instrucciones')">
+      <div class="sb-num">📋</div>
+      <div class="sb-text"><div class="sb-name">Instrucciones</div><div class="sb-sub">Cómo usar este training</div></div>
+    </div>
+    <div class="sb-item" id="nav-acerca" onclick="showPanel('acerca')">
+      <div class="sb-num">📖</div>
+      <div class="sb-text"><div class="sb-name">Acerca del Programa</div><div class="sb-sub">Objetivo y perfil</div></div>
+    </div>
+    <div class="sb-item" id="nav-estructura" onclick="showPanel('estructura')">
+      <div class="sb-num">🗺️</div>
+      <div class="sb-text"><div class="sb-name">Estructura General</div><div class="sb-sub">Mapa del training</div></div>
+    </div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-group">
+    <div class="sb-group-label">Módulos del Training</div>
+    <div class="sb-item" id="nav-mod1" onclick="showPanel('mod1')">
+      <div class="sb-num">1</div>
+      <div class="sb-text"><div class="sb-name">El Evidenciometro</div><div class="sb-sub">Sistema D+ · D- · I+ · I-</div></div>
+    </div>
+    <div class="sb-item" id="nav-mod2" onclick="showPanel('mod2')">
+      <div class="sb-num">2</div>
+      <div class="sb-text"><div class="sb-name">Calidad y Contundencia</div><div class="sb-sub">Teoría · Ejercicios</div></div>
+    </div>
+    <div class="sb-item locked" id="nav-mod3" onclick="showLockedMsg()">
+      <div class="sb-num">3</div>
+      <div class="sb-text"><div class="sb-name">Inadmisibilidades</div><div class="sb-sub">🔒 Completa Módulo 2</div></div>
+    </div>
+    <div class="sb-item locked" id="nav-mod4" onclick="showLockedMsg()">
+      <div class="sb-num">4</div>
+      <div class="sb-text"><div class="sb-name">Obtención Segura</div><div class="sb-sub">🔒 Completa Módulo 3</div></div>
+    </div>
+  </div>
+
+</aside>
+
+<main class="main">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-seal">⚖️</div>
+  <div class="header-badge"><div class="dot"></div>TMLF Learning Center · Pre Welcome Interview</div>
+  <h1>Evidencias de Abuso — VAWA</h1>
+  <p class="subtitle">Clasificación, evaluación de calidad y obtención segura de evidencias para casos VAWA. Enfocado en criterio legal aplicado al trabajo del equipo PWI.</p>
+  <div class="header-meta">
+    <div class="header-meta-item"><span>📚</span><strong>4 Módulos</strong></div>
+    <div class="header-meta-item"><span>📊</span><strong>Nivel: Intermedio</strong></div>
+    <div class="header-meta-item"><span>⏱️</span><strong>2.5 horas estimadas</strong></div>
+    <div class="header-meta-item"><span>🖥️</span><strong>E-Learning + Práctica</strong></div>
+    <div class="header-meta-item"><span>📅</span><strong>v1.0 · 2025</strong></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PANEL: INSTRUCCIONES
+     ═══════════════════════════════════════════ -->
+<div class="panel active" id="panel-instrucciones">
+  <div class="page-title">
+    <div class="pt-label">Inicio obligatorio</div>
+    <h2>Instrucciones del Training</h2>
+    <p class="pt-sub">Lee esta sección antes de comenzar cualquier módulo.</p>
+  </div>
+  <div class="alert blue" style="margin-bottom:14px">
+    <span class="alert-icon">📌</span>
+    <div><strong>Este training es parte del programa de formación del equipo PWI.</strong> Está diseñado para desarrollar criterio legal en la evaluación de evidencias VAWA, no para memorizar reglas.</div>
+  </div>
+  <div class="block">
+    <div class="btitle"><div class="bicon">🧭</div><h3>Cómo usar este training</h3><div class="mod-badge badge-core">Guía de uso</div></div>
+    <div class="bbody">
+      <div class="lo-callout">
+        <div class="lo-icon">🎯</div>
+        <div class="lo-text"><strong>Enfoque del training</strong>El aprendizaje real ocurre al analizar evidencias y tomar decisiones. Lee el contenido teórico, pero prioriza los ejercicios interactivos en cada módulo.</div>
+      </div>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Lee el contenido teórico de cada módulo antes de intentar los ejercicios.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Completa los ejercicios de refuerzo al final de cada módulo para desbloquearlo.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Los módulos 3 y 4 se desbloquean al completar los anteriores.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Al completar los 4 módulos y sus ejercicios, el training queda finalizado.</span></div>
+        <div class="ob-item"><div class="ob-num">5</div><span>La evaluación final integra contenido de los 4 módulos. Puntaje mínimo: 80%.</span></div>
+        <div class="ob-item"><div class="ob-num">6</div><span>Puedes regresar a cualquier módulo desbloqueado para repasar conceptos.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="btitle"><div class="bicon">📊</div><h3>Distribución del aprendizaje</h3><div class="mod-badge badge-gold">Estándar TMLF</div></div>
+    <div class="bbody">
+      <div class="dist-bar">
+        <div class="dist-seg theory">📚 20%</div>
+        <div class="dist-seg practice">🔬 70%</div>
+        <div class="dist-seg eval">✦ 10%</div>
+      </div>
+      <div class="dist-legend">
+        <div class="dist-lg-item"><div class="dist-lg-dot" style="background:#1a3a5c"></div>20% Teórico — 4 módulos de contenido</div>
+        <div class="dist-lg-item"><div class="dist-lg-dot" style="background:#1e6641"></div>70% Práctico — Análisis de evidencias reales con el trainer</div>
+        <div class="dist-lg-item"><div class="dist-lg-dot" style="background:var(--gold)"></div>10% Evaluación — Simulador integrado de cierre</div>
+      </div>
+      <div class="alert warn" style="margin-top:12px">
+        <span class="alert-icon">⚠️</span>
+        <div><strong>El criterio legal se desarrolla en el 70% práctico.</strong> Los módulos teóricos preparan al colaborador para analizar evidencias reales. No se puede omitir el componente práctico.</div>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="btitle"><div class="bicon">🏁</div><h3>Criterios de finalización</h3><div class="mod-badge badge-green">Requisitos mínimos</div></div>
+    <div class="bbody">
+      <table class="info-table">
+        <thead><tr><th>Criterio</th><th>Requisito</th><th>Observación</th></tr></thead>
+        <tbody>
+          <tr><td>Módulos completados</td><td>4 de 4 módulos</td><td>Cada módulo requiere completar su ejercicio de refuerzo</td></tr>
+          <tr><td>Evaluación final</td><td>≥ 80% de respuestas correctas</td><td>Simulador integrado al final del training</td></tr>
+          <tr><td>Componente práctico</td><td>Participación activa</td><td>Validado por el trainer en sesión</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /panel instrucciones -->
+
+<!-- ═══════════════════════════════════════════
+     PANEL: ACERCA
+     ═══════════════════════════════════════════ -->
+<div class="panel" id="panel-acerca">
+  <div class="page-title">
+    <div class="pt-label">Presentación del programa</div>
+    <h2>Acerca de este Training</h2>
+    <p class="pt-sub">Contexto, propósito y perfil del participante.</p>
+  </div>
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-val">4</div><div class="stat-label">Módulos</div></div>
+    <div class="stat-card"><div class="stat-val">16</div><div class="stat-label">Ejercicios interactivos</div></div>
+    <div class="stat-card"><div class="stat-val">16</div><div class="stat-label">Preguntas de refuerzo</div></div>
+    <div class="stat-card"><div class="stat-val">80%</div><div class="stat-label">Puntaje mínimo</div></div>
+    <div class="stat-card"><div class="stat-val">2.5h</div><div class="stat-label">Duración estimada</div></div>
+  </div>
+  <div class="block">
+    <div class="btitle"><div class="bicon">🎯</div><h3>Objetivo General</h3><div class="mod-badge badge-core">Propósito</div></div>
+    <div class="bbody">
+      <div class="principle">
+        <p>"Desarrollar en el equipo PWI el criterio legal para clasificar, evaluar y solicitar evidencias en casos VAWA con base en el Evidenciometro institucional, distinguiendo niveles de contundencia, admisibilidad y estrategias de complementación."</p>
+        <div class="principle-sub">Objetivo general del programa — Pre Welcome Interview Team</div>
+      </div>
+    </div>
+  </div>
+  <div class="two-col" style="margin-bottom:14px">
+    <div class="block" style="margin-bottom:0">
+      <div class="btitle"><div class="bicon">💡</div><h3>Propósito del Training</h3></div>
+      <div class="bbody">
+        <p>El equipo PWI es el primer filtro de calidad en la construcción del expediente VAWA. Una evaluación incorrecta de evidencias puede debilitar o invalidar un caso ante USCIS. Este training construye criterio práctico para tomar decisiones correctas desde el primer contacto con el cliente.</p>
+      </div>
+    </div>
+    <div class="block" style="margin-bottom:0">
+      <div class="btitle"><div class="bicon">🔍</div><h3>Problema que Resuelve</h3></div>
+      <div class="bbody">
+        <p>Inclusión de evidencias inadmisibles, confusión entre evidencia directa e indirecta, solicitud de complemento cuando no se necesita (o viceversa), y riesgos legales por sugerencias incorrectas al cliente durante la entrevista.</p>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="btitle"><div class="bicon">👥</div><h3>Perfil del Participante</h3><div class="mod-badge badge-green">Audiencia</div></div>
+    <div class="bbody">
+      <div class="chips">
+        <span class="chip blue">Equipo PWI</span>
+        <span class="chip blue">Pre Welcome Interview</span>
+        <span class="chip">Conocimiento previo de VAWA</span>
+        <span class="chip">Experiencia en intake</span>
+        <span class="chip amber">Nivel intermedio</span>
+      </div>
+    </div>
+  </div>
+</div><!-- /panel acerca -->
+
+<!-- ═══════════════════════════════════════════
+     PANEL: ESTRUCTURA
+     ═══════════════════════════════════════════ -->
+<div class="panel" id="panel-estructura">
+  <div class="page-title">
+    <div class="pt-label">Mapa del training</div>
+    <h2>Estructura General</h2>
+    <p class="pt-sub">Recorrido completo del programa.</p>
+  </div>
+  <div class="progress-section">
+    <h4>Tu progreso en este training</h4>
+    <div class="prog-track">
+      <div class="prog-row"><div class="prog-label">📚 Contenido teórico</div><div class="prog-bar-outer"><div class="prog-bar-inner theory" id="prog-theory" style="width:0%"></div></div><div class="prog-pct" id="pct-theory">0%</div></div>
+      <div class="prog-row"><div class="prog-label">🔬 Práctica aplicada</div><div class="prog-bar-outer"><div class="prog-bar-inner practice" id="prog-practice" style="width:0%"></div></div><div class="prog-pct" id="pct-practice">0%</div></div>
+      <div class="prog-row"><div class="prog-label">✦ Evaluación final</div><div class="prog-bar-outer"><div class="prog-bar-inner eval" id="prog-eval" style="width:0%"></div></div><div class="prog-pct" id="pct-eval">0%</div></div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="btitle"><div class="bicon">🗺️</div><h3>Módulos del Programa</h3><div class="mod-badge badge-core">Visión general</div></div>
+    <div class="bbody">
+      <div class="overview-grid">
+        <div class="ov-card completed-card" onclick="showPanel('instrucciones')"><div class="ov-icon">📋</div><strong>Instrucciones</strong><small>✅ Revisado</small></div>
+        <div class="ov-card" onclick="showPanel('mod1')"><div class="ov-icon">📊</div><strong>Módulo 1</strong><small>El Evidenciometro</small></div>
+        <div class="ov-card" onclick="showPanel('mod2')"><div class="ov-icon">🔍</div><strong>Módulo 2</strong><small>Calidad y Contundencia</small></div>
+        <div class="ov-card locked-card"><div class="ov-icon">🔒</div><strong>Módulo 3</strong><small>Inadmisibilidades</small><div class="lock-badge">🔒</div></div>
+        <div class="ov-card locked-card"><div class="ov-icon">🔒</div><strong>Módulo 4</strong><small>Obtención Segura</small><div class="lock-badge">🔒</div></div>
+
+
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="btitle"><div class="bicon">🛣️</div><h3>Ruta de Aprendizaje</h3><div class="mod-badge badge-green">Secuencia recomendada</div></div>
+    <div class="bbody">
+      <div class="roadmap">
+        <div class="rm-item"><div class="rm-dot done">✓</div><div class="rm-content"><div class="rm-level intro">Inicio</div><h4>Instrucciones y Presentación</h4><p>Contexto, objetivo, perfil y metodología del programa.</p></div></div>
+        <div class="rm-item"><div class="rm-dot">1</div><div class="rm-content"><div class="rm-level intro">Módulo 1</div><h4>El Evidenciometro</h4><p>Sistema D+/D-/I+/I- · Evidencia directa vs indirecta · Ejercicio de clasificación con 5 evidencias.</p></div></div>
+        <div class="rm-item"><div class="rm-dot">2</div><div class="rm-content"><div class="rm-level inter">Módulo 2</div><h4>Criterios de Calidad y Contundencia</h4><p>Contundencia fuerte vs media · Evidencia complementaria · Preguntas base · Recursos de perfilamiento.</p></div></div>
+        <div class="rm-item"><div class="rm-dot locked">3</div><div class="rm-content" style="opacity:.6"><div class="rm-level avanz">Módulo 3 · Bloqueado</div><h4>Inadmisibilidades</h4><p>Criterios de inadmisibilidad por tipo · GMC del cliente y del abuser · Evidencia falsa, en duda o contradictoria.</p></div></div>
+        <div class="rm-item"><div class="rm-dot locked">4</div><div class="rm-content" style="opacity:.6"><div class="rm-level avanz">Módulo 4 · Bloqueado</div><h4>Obtención Segura de Evidencias</h4><p>Principios normativos · Abuser cooperador · Testigos directos e indirectos · Witness Statement.</p></div></div>
+
+
+      </div>
+    </div>
+  </div>
+</div><!-- /panel estructura -->
+
+
+<!-- ═══════════════════════════════════════════
+     MÓDULO 1: EL EVIDENCIOMETRO
+     ═══════════════════════════════════════════ -->
+<div class="panel" id="panel-mod1">
+  <div class="page-title">
+    <div class="pt-label">Módulo 1 de 4</div>
+    <h2>El Evidenciometro</h2>
+    <p class="pt-sub">Sistema de clasificación institucional de evidencias VAWA: niveles D+, D-, I+ e I-.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración</div><div class="value">35 min</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Intermedio</div></div>
+    <div class="mod-meta-item"><div class="label">Temas</div><div class="value">3 acordeones</div></div>
+    <div class="mod-meta-item"><div class="label">Ejercicios</div><div class="value">4 interactivos</div></div>
+  </div>
+
+  <div class="sdiv"><div class="l"></div><div class="t">📚 Contenido Teórico · 20%</div><div class="l"></div></div>
+
+  <div class="block b-concepto">
+    <div class="btitle"><div class="bicon">📘</div><h3>El Evidenciometro y el Sistema de Clasificación</h3><div class="mod-badge badge-gold">Teoría</div></div>
+    <div class="bbody">
+      <div class="lo-callout">
+        <div class="lo-icon">🎯</div>
+        <div class="lo-text"><strong>Objetivo de aprendizaje</strong>Al finalizar este módulo, podrás clasificar cualquier evidencia dentro del sistema D+ / D- / I+ / I-, distinguiendo su nivel de contundencia y su función directa o indirecta.</div>
+      </div>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">Tema 1</div><div class="bac-title">¿Qué es el Evidenciometro?</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <p>El Evidenciometro es el documento interno de The Mendoza Law Firm que establece la <strong>categorización oficial</strong> de todas las evidencias utilizadas en casos VAWA. Su función es doble:</p>
+          <div class="ob-list">
+            <div class="ob-item"><div class="ob-num">1</div><span>Identificar las evidencias posibles a recabar en cada caso.</span></div>
+            <div class="ob-item"><div class="ob-num">2</div><span>Categorizar esas evidencias por nivel de contundencia según su impacto en el caso del cliente.</span></div>
+          </div>
+          <div class="alert info" style="margin-top:10px">
+            <span class="alert-icon">ℹ️</span>
+            <div>El Evidenciometro es la herramienta de referencia oficial. Toda clasificación de evidencia en TMLF debe basarse en este documento.</div>
+          </div>
+          <div class="chips" style="margin-top:10px">
+            <span class="chip blue">Documento institucional</span>
+            <span class="chip">Categorización oficial</span>
+            <span class="chip gold">Herramienta PWI</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">Tema 2</div><div class="bac-title">Sistema D+ · D- · I+ · I-</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <p>El Evidenciometro organiza todas las evidencias en cuatro niveles basados en dos ejes: si la evidencia es <mark class="hi-green">directa o indirecta</mark> y si tiene <mark class="hi">mayor o menor impacto visual/emocional</mark>.</p>
+          <table class="info-table">
+            <thead><tr><th>Nivel</th><th>Tipo</th><th>Definición</th><th>Ejemplos</th></tr></thead>
+            <tbody>
+              <tr class="tr-critical"><td><strong>D+</strong></td><td>Directa Alta</td><td>Demuestra daño directo al cliente con <strong>alto impacto visual</strong>.</td><td>Heridas abiertas, moretones visibles, fracturas, órdenes de restricción</td></tr>
+              <tr><td><strong>D-</strong></td><td>Directa Media</td><td>Demuestra daño directo pero con <strong>menor impacto visual</strong>.</td><td>Marcas por pellizcos, cicatrices pequeñas, ETS con reporte médico</td></tr>
+              <tr><td><strong>I+</strong></td><td>Indirecta Alta</td><td>Documenta el contexto de abuso con <strong>soporte audiovisual</strong>. NO demuestra daño directo.</td><td>Mensajes de texto, audios o videos que muestran amenazas, insultos, destrucción</td></tr>
+              <tr><td><strong>I-</strong></td><td>Indirecta Baja</td><td>Evidencia indirecta <strong>débil por sí sola</strong>. Requiere mayor complementación.</td><td>Fotos de objetos destruidos sin audio/video, récord criminal de terceros</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">Tema 3</div><div class="bac-title">Evidencia Directa vs. Evidencia Indirecta</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <div class="two-col">
+            <div class="mini-card mc-critical">
+              <h4>🔴 Evidencia Directa</h4>
+              <p>Demuestra <strong>daño directo al cliente</strong> como consecuencia de los abusos, o que va en función directa de él.</p>
+              <ul>
+                <li>Fotografías de heridas, golpes, moretones</li>
+                <li>Reportes médicos de lesiones</li>
+                <li>Mensajes directos de amenaza al cliente</li>
+                <li>Órdenes de restricción</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h4>🟡 Evidencia Indirecta</h4>
+              <p>Evidencia <strong>funcional</strong>, pero que no demuestra daño causado directamente al cliente. Requiere más evidencia complementaria.</p>
+              <ul>
+                <li>Fotografías de objetos destruidos</li>
+                <li>Registro de llamadas constantes</li>
+                <li>Fotos de drogas o armas del abuser</li>
+                <li>Redes sociales del abuser</li>
+              </ul>
+            </div>
+          </div>
+          <div class="principle">
+            <p>"La distinción más importante que el equipo PWI debe dominar es la diferencia entre evidencia directa e indirecta, ya que determina la estrategia de solicitud y complementación."</p>
+            <div class="principle-sub">Documento Base — Evidencias de Abuso VAWA</div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="sdiv"><div class="l"></div><div class="t">🧪 Ejercicios de Refuerzo · Módulo 1</div><div class="l"></div></div>
+
+  <div class="block b-ejercicio">
+    <div class="btitle"><div class="bicon">📝</div><h3>Preguntas de Refuerzo</h3><div class="mod-badge badge-template">Módulo 1</div></div>
+    <div class="bbody">
+
+      <div class="ck2-question" id="m1-q1">
+        <div class="ck2-qtext">Una cliente presenta una fotografía donde se le observa el rostro con un ojo completamente cerrado por inflamación severa y un moretón que abarca desde el pómulo hasta el ojo. ¿Cómo clasificas esta evidencia en el Evidenciometro?</div>
+        <div class="ck2-opts">
+          <div class="ck2-opt" data-val="1" onclick="m1q1Sel(this)"><div class="ck2-radio"></div>A) I+ porque sin video del evento no puede establecerse la intencionalidad del daño ni su contexto temporal</div>
+          <div class="ck2-opt" data-val="2" onclick="m1q1Sel(this)"><div class="ck2-radio"></div>B) D- porque aunque el daño es visible en el rostro, la ausencia de contexto médico limita su clasificación a nivel moderado</div>
+          <div class="ck2-opt" data-val="3" onclick="m1q1Sel(this)"><div class="ck2-radio"></div>C) D+ porque demuestra daño físico directo de alto impacto con el rostro de la cliente visible</div>
+          <div class="ck2-opt" data-val="4" onclick="m1q1Sel(this)"><div class="ck2-radio"></div>D) I- porque sin un testimonio médico o de terceros que confirme el origen del daño, la fotografía sola es insuficiente</div>
+        </div>
+        <div class="ck-feedback" id="m1-q1-fb"></div>
+      </div>
+
+      <div class="ck4-question" id="m1-tf1">
+        <div class="ck4-stmt">Todos los mensajes de texto del abuser hacia el cliente son evidencia <strong>directa</strong> (D+ o D-), porque demuestran con claridad que el abuso está siendo ejercido por el abusador hacia el cliente.</div>
+        <div class="ck4-btns">
+          <button class="ck4-btn" data-val="true" onclick="m1tf1Sel(this)">✅ Verdadero</button>
+          <button class="ck4-btn" data-val="false" onclick="m1tf1Sel(this)">❌ Falso</button>
+        </div>
+        <div class="ck-feedback" id="m1-tf1-fb"></div>
+      </div>
+
+      <div class="ck-actions" style="margin-top:18px">
+        <button class="ck-btn ck-verify" id="m1-verify" onclick="m1Verify()">Verificar respuestas</button>
+        <button class="ck-btn ck-retry" id="m1-retry" style="display:none" onclick="m1Reset()">Reintentar</button>
+        <button class="ck-btn ck-next" id="m1-next" style="display:none" onclick="unlockMod2()">Desbloquear Módulo 2 →</button>
+      </div>
+      <div class="ck-result-summary" id="m1-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="showPanel('estructura')">← Estructura</button>
+    <button class="mod-nav-btn mod-nav-next" onclick="showPanel('mod2')">Módulo 2 →</button>
+  </div>
+</div><!-- /panel mod1 -->
+
+
+<!-- ═══════════════════════════════════════════
+     MÓDULO 2: CALIDAD Y CONTUNDENCIA
+     ═══════════════════════════════════════════ -->
+<div class="panel" id="panel-mod2">
+  <div class="page-title">
+    <div class="pt-label">Módulo 2 de 4</div>
+    <h2>Criterios de Calidad y Contundencia</h2>
+    <p class="pt-sub">Evidencia complementaria, preguntas base y estrategias de solicitud al cliente.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración</div><div class="value">35 min</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Intermedio</div></div>
+    <div class="mod-meta-item"><div class="label">Temas</div><div class="value">4 acordeones</div></div>
+    <div class="mod-meta-item"><div class="label">Ejercicios</div><div class="value">4 interactivos</div></div>
+  </div>
+
+  <div class="sdiv"><div class="l"></div><div class="t">📚 Contenido Teórico · 20%</div><div class="l"></div></div>
+
+  <div class="block b-concepto">
+    <div class="btitle"><div class="bicon">📘</div><h3>Contundencia, Complemento y Estrategia</h3><div class="mod-badge badge-gold">Teoría</div></div>
+    <div class="bbody">
+      <div class="lo-callout">
+        <div class="lo-icon">🎯</div>
+        <div class="lo-text"><strong>Objetivo de aprendizaje</strong>Al completar este módulo, podrás determinar cuándo una evidencia es suficiente por sí sola y cuándo requiere complemento, aplicando las preguntas base y usando recursos de perfilamiento del abuser.</div>
+      </div>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">Tema 1</div><div class="bac-title">Contundencia Fuerte vs. Media</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <div class="two-col">
+            <div class="mini-card mc-critical">
+              <h4>💪 Contundencia Fuerte</h4>
+              <p>Demuestra daño directo al cliente como consecuencia de los abusos.</p>
+              <p style="margin-top:6px"><mark class="hi-green">No requiere evidencia complementaria obligatoria</mark>, aunque esta siempre suma.</p>
+            </div>
+            <div class="mini-card">
+              <h4>⚠️ Contundencia Media</h4>
+              <p>Evidencia funcional, pero que no demuestra daño causado directamente al cliente.</p>
+              <p style="margin-top:6px"><mark class="hi">Requiere acompañarse de más evidencia.</mark> Sugerencias: testimonios, mensajes, audios, videos del evento.</p>
+            </div>
+          </div>
+          <div class="strength-bar"><div class="strength-fill strong"></div></div>
+          <div class="strength-label strong">FUERTE — Sustenta el caso por sí sola</div>
+          <div class="strength-bar" style="margin-top:8px"><div class="strength-fill medium"></div></div>
+          <div class="strength-label medium">MEDIA — Requiere complemento obligatorio</div>
+        </div>
+      </details>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">Tema 2</div><div class="bac-title">La Evidencia Complementaria</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <p>La evidencia complementaria es aquella que, en relación a un mismo evento, <strong>lo fortalece</strong>. Su función es dar contundencia a evidencia media para confirmar los hechos.</p>
+          <div class="lo-callout">
+            <div class="lo-icon">📋</div>
+            <div class="lo-text"><strong>¿Cuándo es necesaria?</strong>Cuando la evidencia obtenida es de contundencia media y no demuestra el abuso por sí sola. Complementos válidos: testimonios, mensajes de texto, audios o videos.</div>
+          </div>
+          <p>La evidencia complementaria es especialmente necesaria en:</p>
+          <ul class="ev-list">
+            <li>Casos donde los abusos pudieron haber sido situaciones consensuadas</li>
+            <li>Cuando hay abusos realizados por un tercero</li>
+            <li>Cuando la evidencia por sí misma deja lugar a dudas sobre el abuso</li>
+          </ul>
+          <div class="alert warn" style="margin-top:10px">
+            <span class="alert-icon">⚠️</span>
+            <div><strong>Ejemplo práctico:</strong> Fotos de objetos destruidos (I-) + mensajes del abuser amenazando (I+) = contexto documentado del abuso económico/control.</div>
+          </div>
+        </div>
+      </details>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">Tema 3</div><div class="bac-title">Preguntas Base en la Búsqueda de Evidencias</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <p>Al explorar con el cliente la posibilidad de recabar evidencias, el equipo PWI debe emplear estas dos preguntas sistemáticamente para cada tipo de abuso identificado:</p>
+          <table class="info-table">
+            <thead><tr><th>#</th><th>Pregunta base</th><th>Propósito</th></tr></thead>
+            <tbody>
+              <tr class="tr-critical"><td><strong>1</strong></td><td>¿Aún lo hace? ¿Cada cuándo lo hace?</td><td>Establece la posibilidad de documentar el abuso en tiempo real o futuro.</td></tr>
+              <tr><td><strong>2</strong></td><td>¿Por qué medios lo hace?</td><td>Determina qué tipo de evidencia es posible solicitar: mensajes, audios, videos, registros de llamadas.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">4</div><div><div class="bac-label">Tema 4</div><div class="bac-title">Recursos para Perfilamiento del Abuser</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <div class="three-col">
+            <div class="mini-card">
+              <h4>📰 Noticias de Arresto</h4>
+              <p>En internet y periódicos locales es posible encontrar noticias de situaciones relacionadas con los antecedentes del abuser.</p>
+            </div>
+            <div class="mini-card">
+              <h4>🏛️ Páginas de la Policía</h4>
+              <p>Algunos estados de EE.UU. permiten buscar antecedentes penales en línea mediante buscadores del gobierno.</p>
+            </div>
+            <div class="mini-card">
+              <h4>📄 Records</h4>
+              <p>Documentos físicos que dan cuenta de los antecedentes del abuser: arrestos domiciliarios, centros de rehabilitación.</p>
+            </div>
+          </div>
+          <div class="alert info" style="margin-top:10px">
+            <span class="alert-icon">ℹ️</span>
+            <div>Estos recursos generan evidencia de <strong>perfilamiento (I-)</strong>. Por sí solos no demuestran el abuso hacia el cliente — necesitan complemento.</div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="sdiv"><div class="l"></div><div class="t">🧪 Ejercicios de Refuerzo · Módulo 2</div><div class="l"></div></div>
+
+  <div class="block b-ejercicio">
+    <div class="btitle"><div class="bicon">📝</div><h3>Preguntas de Refuerzo</h3><div class="mod-badge badge-template">Módulo 2</div></div>
+    <div class="bbody">
+
+      <div class="ck2-question" id="m2-q1">
+        <div class="ck2-qtext">El cliente tiene mensajes donde el abuser le amenaza con migración si no transfiere dinero. También tiene capturas de transferencias bancarias recurrentes. ¿Cómo describes la relación entre estas dos evidencias?</div>
+        <div class="ck2-opts">
+          <div class="ck2-opt" data-val="1" onclick="m2q1Sel(this)"><div class="ck2-radio"></div>A) Son dos evidencias independientes: cada una documenta un evento distinto y deben clasificarse y presentarse por separado en el expediente</div>
+          <div class="ck2-opt" data-val="2" onclick="m2q1Sel(this)"><div class="ck2-radio"></div>B) Los mensajes son la evidencia complementaria que eleva la contundencia de las transferencias; juntos documentan abuso económico con coerción migratoria</div>
+          <div class="ck2-opt" data-val="3" onclick="m2q1Sel(this)"><div class="ck2-radio"></div>C) Las transferencias no son admisibles en este contexto porque sin acuerdo firmado entre las partes podrían interpretarse como gastos voluntarios o préstamos</div>
+          <div class="ck2-opt" data-val="4" onclick="m2q1Sel(this)"><div class="ck2-radio"></div>D) Solo los mensajes califican como evidencia válida; las transferencias bancarias requieren una orden judicial o dictamen contable para ser admitidas</div>
+        </div>
+        <div class="ck-feedback" id="m2-q1-fb"></div>
+      </div>
+
+      <div class="ck2-question" id="m2-q2">
+        <div class="ck2-qtext">En redes sociales del abuser encuentras fotos donde aparece con armas de fuego en poses agresivas. El cliente no tiene mensajes ni testigos que vinculen esas armas con su abuso. ¿Qué haces?</div>
+        <div class="ck2-opts">
+          <div class="ck2-opt" data-val="1" onclick="m2q2Sel(this)"><div class="ck2-radio"></div>A) La incluyes directamente en el expediente porque las fotos con armas son prueba objetiva de la peligrosidad del abuser y no requieren contexto adicional</div>
+          <div class="ck2-opt" data-val="2" onclick="m2q2Sel(this)"><div class="ck2-radio"></div>B) La descartas por completo ya que las fotos de redes sociales del abuser no tienen valor probatorio en ningún expediente VAWA sin importar su contenido</div>
+          <div class="ck2-opt" data-val="3" onclick="m2q2Sel(this)"><div class="ck2-radio"></div>C) La registras como evidencia I- de perfilamiento que necesita complemento: mensajes, audios o testigos que vinculen las armas con amenazas hacia el cliente</div>
+          <div class="ck2-opt" data-val="4" onclick="m2q2Sel(this)"><div class="ck2-radio"></div>D) Solo la incluyes si el abuser tiene antecedentes penales por portación de armas; sin ese historial registrado, la evidencia no tiene peso probatorio suficiente</div>
+        </div>
+        <div class="ck-feedback" id="m2-q2-fb"></div>
+      </div>
+
+      <div class="ck4-question" id="m2-tf1">
+        <div class="ck4-stmt">La evidencia complementaria solo es necesaria cuando no hay ninguna fotografía del abuso.</div>
+        <div class="ck4-btns">
+          <button class="ck4-btn" data-val="true" onclick="m2tf1Sel(this)">✅ Verdadero</button>
+          <button class="ck4-btn" data-val="false" onclick="m2tf1Sel(this)">❌ Falso</button>
+        </div>
+        <div class="ck-feedback" id="m2-tf1-fb"></div>
+      </div>
+
+      <div class="ck-actions" style="margin-top:18px">
+        <button class="ck-btn ck-verify" id="m2-verify" onclick="m2Verify()">Verificar respuestas</button>
+        <button class="ck-btn ck-retry" id="m2-retry" style="display:none" onclick="m2Reset()">Reintentar</button>
+        <button class="ck-btn ck-next" id="m2-next" style="display:none" onclick="unlockMod3()">Desbloquear Módulo 3 →</button>
+      </div>
+      <div class="ck-result-summary" id="m2-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="showPanel('mod1')">← Módulo 1</button>
+    <button class="mod-nav-btn mod-nav-next" onclick="showPanel('mod3')">Módulo 3 →</button>
+  </div>
+</div><!-- /panel mod2 -->
+
+
+<!-- ═══════════════════════════════════════════
+     MÓDULO 3: INADMISIBILIDADES
+     ═══════════════════════════════════════════ -->
+<div class="panel" id="panel-mod3">
+  <div class="page-title">
+    <div class="pt-label">Módulo 3 de 4</div>
+    <h2>Inadmisibilidades</h2>
+    <p class="pt-sub">Criterios sobre evidencias que NO deben ser incluidas en casos VAWA. Filtro de admisibilidad del Evidenciometro.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración</div><div class="value">40 min</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Avanzado</div></div>
+    <div class="mod-meta-item"><div class="label">Temas</div><div class="value">3 acordeones</div></div>
+    <div class="mod-meta-item"><div class="label">Ejercicios</div><div class="value">4 interactivos</div></div>
+  </div>
+
+  <div class="sdiv"><div class="l"></div><div class="t">📚 Contenido Teórico · 20%</div><div class="l"></div></div>
+
+  <div class="critical-rule">
+    <div class="critical-rule-label">⛔ Regla Fundamental</div>
+    <div class="critical-rule-text">Toda evidencia debe pasar un <em>filtro de admisibilidad</em> antes de ser incluida.</div>
+    <div class="critical-rule-sub">Una evidencia inadmisible no solo no suma al caso — puede <strong>perjudicarlo gravemente</strong>. El criterio general: la evidencia debe demostrar abuso sin comprometer el GMC del cliente ni beneficiar al abuser.</div>
+  </div>
+
+  <div class="block b-error">
+    <div class="btitle"><div class="bicon">⛔</div><h3>Criterios de Inadmisibilidad</h3><div class="mod-badge badge-warn">Crítico</div></div>
+    <div class="bbody">
+      <div class="lo-callout">
+        <div class="lo-icon">🎯</div>
+        <div class="lo-text"><strong>Objetivo de aprendizaje</strong>Al completar este módulo, podrás identificar qué evidencias son inadmisibles y por qué, incluyendo problemas de GMC, cooperación del abuser, y evidencia falsa, en duda o contradictoria.</div>
+      </div>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">Tema 1</div><div class="bac-title">Criterios por Tipo de Evidencia</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <table class="info-table">
+            <thead><tr><th>Tipo de Evidencia</th><th>Criterio de Admisibilidad</th></tr></thead>
+            <tbody>
+              <tr class="tr-critical"><td><strong>Medicamentos</strong></td><td>Solo con receta médica clara (todas las páginas, fechas coherentes, nombre del cliente). No se aceptan: sin receta, de venta libre, homeopáticos o naturistas. Debe demostrarse relación directa con el abuso.</td></tr>
+              <tr><td><strong>Armas</strong></td><td>Las fotografías de armas NO son evidencia por sí solas. Siempre deben presentarse con complemento (amenazas, mensajes, testigos) que haga evidente el riesgo o abuso con el arma.</td></tr>
+              <tr><td><strong>Drogas</strong></td><td>Las fotografías de drogas NO son evidencia por sí solas. Requieren complemento que muestre el daño al cliente. Para marihuana: considerar leyes del estado y cantidad.</td></tr>
+              <tr><td><strong>Abusos de terceros</strong></td><td>Son evidencia solo cuando el abuser promueve o facilita el abuso. Debe respaldarse con evidencia que demuestre que el abuser lo permite o perpetúa.</td></tr>
+              <tr><td><strong>Gastos del abuser (dinero del cliente)</strong></td><td>Se acepta ticket, transferencia, estado de cuenta u objeto. Solo montos grandes o significativos en suma. Requiere complemento (mensaje, audio o testigo) que confirme el abuso.</td></tr>
+              <tr><td><strong>Cicatrices o heridas</strong></td><td>Siempre se necesitan: (a) foto de lejos con rostro visible y (b) foto de cerca con el daño claro. El daño debe ser congruente con la descripción. Las cicatrices deben ser confirmadas por testigo.</td></tr>
+              <tr><td><strong>ETS</strong></td><td>Son evidencia con reporte médico, medicamento recetado, o fotografías que visualicen los síntomas.</td></tr>
+              <tr><td><strong>Fotos antes y después</strong></td><td>Solo si muestran deterioro evidente (cambios físicos abruptos). No se aceptan: imágenes con filtros digitales, alteraciones digitales, o deterioro asociado al envejecimiento natural.</td></tr>
+              <tr><td><strong>Habitaciones desordenadas</strong></td><td>Solo son evidencia cuando hay riesgo a la salud (plagas, alergias), consumo de sustancias en el hogar, o daños a la propiedad que amenacen con desalojo.</td></tr>
+              <tr><td><strong>Accidentes de trabajo</strong></td><td>Los accidentes por estrés o por pensar en el abuser NO se consideran evidencia. Solo son admisibles si hay relación directa con el abuser demostrada por testigo.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">Tema 2</div><div class="bac-title">Inadmisibilidades por GMC (Good Moral Character)</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <div class="error-item ei-critical">
+            <div class="ei-icon">🚫</div>
+            <div class="ei-body">
+              <div class="ei-title">Evidencias que demuestran el GMC del abuser</div>
+              <div class="ei-desc">Las evidencias que, además de demostrar abuso, sugieren que el abuser posee un buen carácter moral <strong>NO deben ser incluidas bajo ninguna circunstancia</strong>. Incluye: situaciones donde el abuser muestra disposición a proteger al cliente causando daño a otros, o donde se evidencian atributos positivos del abuser (grado académico, asistencia a la iglesia, etc.).</div>
+            </div>
+          </div>
+          <div class="error-item ei-critical">
+            <div class="ei-icon">🚫</div>
+            <div class="ei-body">
+              <div class="ei-title">Evidencias que perjudican el GMC del cliente</div>
+              <div class="ei-desc">Las evidencias donde, además del abuso, hay elementos que perjudican el buen carácter moral del cliente <strong>NO deben ser incluidas</strong>. Incluye: situaciones donde el cliente usa violencia contra el abuser, incita o provoca al abuser, o se evidencia violencia bilateral (ambos involucrados en actos violentos).</div>
+            </div>
+          </div>
+          <div class="error-item ei-critical">
+            <div class="ei-icon">🚫</div>
+            <div class="ei-body">
+              <div class="ei-title">Evidencias con cooperación evidente del abuser</div>
+              <div class="ei-desc">Las evidencias donde el abuser participa o podría interpretarse que participa en la obtención de evidencias son inadmisibles. Incluye: fotografías donde el reflejo revela al abuser tomando la foto, fotos donde aparecen manos/uñas del abuser, capturas desde el celular del abuser.</div>
+              <div class="ei-fix">✅ Correcto: Si el cliente tiene la conversación en el celular del abuser, se recomienda fotografiar la pantalla con otro celular mostrando la pantalla completa.</div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">Tema 3</div><div class="bac-title">Evidencia Falsa, en Duda o Contradictoria</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <table class="info-table">
+            <thead><tr><th>Categoría</th><th>Criterios de identificación</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Evidencia que pareciera falsa</strong></td><td>El abuso puede interpretarse como fabricado. Falta de coherencia en la redacción. Fotografías borrosas, cortadas, sombreadas o contaminadas. Falta de detalle fundamentado.</td></tr>
+              <tr><td><strong>Evidencia en duda</strong></td><td>La evidencia existe pero puede cuestionarse su veracidad. Ejemplos: fotos de uñas mordidas sin contexto, "antes y después" sin cambio evidente, fotos de manos sin identificar al cliente.</td></tr>
+              <tr class="tr-critical"><td><strong>Evidencia contradictoria</strong></td><td>La cronología de los eventos no coincide. Ejemplo clásico: el cliente describe un evento que supuestamente desencadenó una hospitalización, pero la evidencia muestra que esa hospitalización ocurrió dos años antes del evento descrito.</td></tr>
+            </tbody>
+          </table>
+          <div class="alert danger" style="margin-top:10px">
+            <span class="alert-icon">🚨</span>
+            <div><strong>Criterio de cicatrices:</strong> Siempre se necesitan foto de lejos con rostro visible + foto de cerca con daño claro. El daño debe ser congruente con la descripción. Si hay incongruencia, se considera en duda y se necesita testigo.</div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="sdiv"><div class="l"></div><div class="t">🧪 Ejercicios de Refuerzo · Módulo 3</div><div class="l"></div></div>
+
+  <div class="block b-ejercicio">
+    <div class="btitle"><div class="bicon">📝</div><h3>Preguntas de Refuerzo</h3><div class="mod-badge badge-template">Módulo 3</div></div>
+    <div class="bbody">
+
+      <div class="ck2-question" id="m3-q1">
+        <div class="ck2-qtext">El cliente tiene un mensaje donde el abuser dice 'te voy a matar' — pero en el mismo hilo de mensajes, días antes, el abuser escribió 'te cuido y te quiero, eres lo mejor que me ha pasado'. ¿Qué haces?</div>
+        <div class="ck2-opts">
+          <div class="ck2-opt" data-val="1" onclick="m3q1Sel(this)"><div class="ck2-radio"></div>A) Presentas el hilo completo de mensajes porque el contexto de la relación entera le da mayor autenticidad y credibilidad al mensaje amenazante ante el oficial</div>
+          <div class="ck2-opt" data-val="2" onclick="m3q1Sel(this)"><div class="ck2-radio"></div>B) Presentas una captura del mensaje de amenaza aislado porque el contenido afectivo previo no aporta nada al análisis del caso y puede omitirse sin consecuencias</div>
+          <div class="ck2-opt" data-val="3" onclick="m3q1Sel(this)"><div class="ck2-radio"></div>C) Debes descartar toda la conversación porque la presencia de mensajes positivos del abuser en el mismo hilo contamina la evidencia y la vuelve inadmisible en su totalidad</div>
+          <div class="ck2-opt" data-val="4" onclick="m3q1Sel(this)"><div class="ck2-radio"></div>D) Presentas una captura que muestre solo el mensaje amenazante, sin incluir los mensajes de afecto previos en la misma imagen</div>
+        </div>
+        <div class="ck-feedback" id="m3-q1-fb"></div>
+      </div>
+
+      <div class="ck2-question" id="m3-q2">
+        <div class="ck2-qtext">El cliente presenta una foto de una cicatriz en el brazo. La narrativa dice que el abuser le quemó con un cigarro, pero la cicatriz parece demasiado pequeña y antigua para ser una quemadura de cigarro reciente. ¿Qué criterio aplicas?</div>
+        <div class="ck2-opts">
+          <div class="ck2-opt" data-val="1" onclick="m3q2Sel(this)"><div class="ck2-radio"></div>A) La aceptas sin reservas porque el cliente tiene el derecho de incluir todas las evidencias que considere relevantes y el oficial evaluará su peso probatorio</div>
+          <div class="ck2-opt" data-val="2" onclick="m3q2Sel(this)"><div class="ck2-radio"></div>B) Debido a que el daño no es congruente con la descripción. Como estrategia se solicita una foto de lejos con rostro + un testigo que confirme ese evento</div>
+          <div class="ck2-opt" data-val="3" onclick="m3q2Sel(this)"><div class="ck2-radio"></div>C) La rechazas de forma definitiva y la excluyes del expediente porque una inconsistencia entre la foto y la narrativa invalida automáticamente esa pieza de evidencia</div>
+          <div class="ck2-opt" data-val="4" onclick="m3q2Sel(this)"><div class="ck2-radio"></div>D) La aceptas tal cual y añades una nota al margen del expediente documentando la inconsistencia observada, dejando la decisión final al criterio del abogado a cargo</div>
+        </div>
+        <div class="ck-feedback" id="m3-q2-fb"></div>
+      </div>
+
+      <div class="ck4-question" id="m3-tf1">
+        <div class="ck4-stmt">Si el cliente presenta un frasco de medicamento recetado para depresión con su nombre, el del médico y la fecha, esa evidencia es suficiente por sí sola para demostrar abuso psicológico sin necesitar ningún complemento.</div>
+        <div class="ck4-btns">
+          <button class="ck4-btn" data-val="true" onclick="m3tf1Sel(this)">✅ Verdadero</button>
+          <button class="ck4-btn" data-val="false" onclick="m3tf1Sel(this)">❌ Falso</button>
+        </div>
+        <div class="ck-feedback" id="m3-tf1-fb"></div>
+      </div>
+
+      <div class="ck-actions" style="margin-top:18px">
+        <button class="ck-btn ck-verify" id="m3-verify" onclick="m3Verify()">Verificar respuestas</button>
+        <button class="ck-btn ck-retry" id="m3-retry" style="display:none" onclick="m3Reset()">Reintentar</button>
+        <button class="ck-btn ck-next" id="m3-next" style="display:none" onclick="unlockMod4()">Desbloquear Módulo 4 →</button>
+      </div>
+      <div class="ck-result-summary" id="m3-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="showPanel('mod2')">← Módulo 2</button>
+    <button class="mod-nav-btn mod-nav-next" onclick="showPanel('mod4')">Módulo 4 →</button>
+  </div>
+</div><!-- /panel mod3 -->
+
+
+<!-- ═══════════════════════════════════════════
+     MÓDULO 4: OBTENCIÓN SEGURA
+     ═══════════════════════════════════════════ -->
+<div class="panel" id="panel-mod4">
+  <div class="page-title">
+    <div class="pt-label">Módulo 4 de 4</div>
+    <h2>Obtención Segura de Evidencias</h2>
+    <p class="pt-sub">Principios normativos, testigos y documentos de soporte para el armado del expediente VAWA.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración</div><div class="value">35 min</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Avanzado</div></div>
+    <div class="mod-meta-item"><div class="label">Temas</div><div class="value">4 acordeones</div></div>
+    <div class="mod-meta-item"><div class="label">Ejercicios</div><div class="value">4 interactivos</div></div>
+  </div>
+
+  <div class="sdiv"><div class="l"></div><div class="t">📚 Contenido Teórico · 20%</div><div class="l"></div></div>
+
+  <div class="block b-concepto">
+    <div class="btitle"><div class="bicon">📘</div><h3>Principios, Testigos y Documentos de Soporte</h3><div class="mod-badge badge-gold">Teoría</div></div>
+    <div class="bbody">
+      <div class="lo-callout">
+        <div class="lo-icon">🎯</div>
+        <div class="lo-text"><strong>Objetivo de aprendizaje</strong>Al completar este módulo, podrás guiar al cliente en la obtención segura de evidencias, clasificar testigos por tipo, y evaluar la calidad de un Witness Statement antes de incluirlo en el expediente.</div>
+      </div>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">Tema 1</div><div class="bac-title">Principios Normativos de Obtención</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <div class="two-col">
+            <div class="mini-card mc-critical">
+              <h4>🛡️ Principio 1: Nunca poner en riesgo al cliente</h4>
+              <p>Nunca se debe poner en peligro la integridad física o mental del cliente para obtener evidencia. <strong>La seguridad del cliente es absoluta y no negociable.</strong></p>
+            </div>
+            <div class="mini-card mc-critical">
+              <h4>⚠️ Principio 2: Nunca provocar al abuser</h4>
+              <p>Nunca se deben realizar sugerencias que puedan llevar a la provocación del abuser. El cliente puede prepararse para documentar, pero <strong>NUNCA se le sugiere provocar para generar evidencia.</strong></p>
+            </div>
+          </div>
+          <div class="two-col" style="margin-top:10px">
+            <div class="mini-card">
+              <h4 style="color:var(--red)">❌ Incorrecto</h4>
+              <p>Si sabemos que el abuser se enfada cuando el cliente llega tarde, NO debemos sugerir al cliente que llegue tarde a propósito y lo grabe. Si sabemos que el abuser debe dinero, NO debemos pedir que exija el dinero por mensaje.</p>
+            </div>
+            <div class="mini-card" style="border-color:rgba(30,102,65,.2)">
+              <h4 style="color:var(--green)">✅ Correcto</h4>
+              <p>Podemos pedir al cliente que, <strong>en caso de que vuelva a ocurrir el abuso</strong>, esté preparado para documentar de manera segura. En ningún momento se le puede sugerir provocar al abuser para generar evidencia.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">Tema 2</div><div class="bac-title">Casos de Abuser Cooperador</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <div class="critical-rule">
+            <div class="critical-rule-label">📋 Regla: Abuser Cooperador</div>
+            <div class="critical-rule-text">Solo se acepta <em>evidencia preexistente</em>. Nunca se recrean situaciones.</div>
+            <div class="critical-rule-sub">En situaciones donde el abuser está al tanto del proceso y coopera, <strong>únicamente se aceptará evidencia preexistente</strong> (fotografías o documentos del pasado). EN NINGÚN CASO se pedirá recrear situaciones pasadas o crear abusos nuevos. Si el cliente solicita prácticas poco éticas, se debe reportar el caso y aplicar el Speech Antifraude.</div>
+          </div>
+        </div>
+      </details>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">Tema 3</div><div class="bac-title">Testigos: Directos e Indirectos</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <table class="info-table">
+            <thead><tr><th>Tipo</th><th>Definición</th><th>Valor probatorio</th></tr></thead>
+            <tbody>
+              <tr class="tr-critical"><td><strong>Testigo Directo</strong></td><td>Estuvo presente en los hechos. Acompañó a la víctima al hospital inmediatamente después, o presenció el evento de abuso directamente.</td><td>Alto — confirma los hechos directamente</td></tr>
+              <tr><td><strong>Testigo Indirecto</strong></td><td>Se entera de los hechos por dichos o relatos de la persona afectada. No estuvo físicamente presente en el evento.</td><td>Medio — refuerza la narrativa pero no confirma directamente</td></tr>
+            </tbody>
+          </table>
+          <div class="alert info" style="margin-top:10px">
+            <span class="alert-icon">👦</span>
+            <div><strong>Menores como testigos:</strong> Los menores sí pueden ser testigos en casos VAWA. Para que su testimonio sea válido: deben presentar su ID de la escuela (firman con su nombre) + ID del padre o tutor. Puede ser el hijo del cliente.</div>
+          </div>
+        </div>
+      </details>
+
+      <details class="block-accordion">
+        <summary class="block-accordion-header">
+          <div class="bac-left"><div class="bac-num">4</div><div><div class="bac-label">Tema 4</div><div class="bac-title">Criterios para el Witness Statement</div></div></div>
+          <span class="bac-arrow">▶</span>
+        </summary>
+        <div class="bac-body">
+          <table class="info-table">
+            <thead><tr><th>Criterio</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr class="tr-critical"><td><strong>Evidencias verosímiles</strong></td><td>Coherente y congruente, sin contradicciones. Descripción lógica y razonable. Encaja con los demás elementos del caso. La información resalta el objetivo del documento.</td></tr>
+              <tr><td><strong>Evidencias no contraproducentes</strong></td><td>Se cuida el GMC del cliente. No beneficia el GMC del abuser. Se evita información no relevante o cualquier información que no sume al objetivo del documento.</td></tr>
+              <tr><td><strong>Objetivo principal</strong></td><td>El Witness Statement aporta evidencia clara, detallada y verosímil sobre la dinámica de abuso desde la perspectiva del testigo. El peso legal de un testigo en EE.UU. se basa en la calidad de su testimonio.</td></tr>
+            </tbody>
+          </table>
+          <div class="alert warn" style="margin-top:10px">
+            <span class="alert-icon">⚠️</span>
+            <div><strong>Tipos de testigos complejos a manejar:</strong> personas que normalizan la violencia, personas con contradicciones involuntarias, personas que mezclan información irrelevante, personas con miedo a involucrarse, personas que hablan en generalidades.</div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="sdiv"><div class="l"></div><div class="t">🧪 Ejercicios de Refuerzo · Módulo 4</div><div class="l"></div></div>
+
+  <div class="block b-ejercicio">
+    <div class="btitle"><div class="bicon">📝</div><h3>Preguntas de Refuerzo</h3><div class="mod-badge badge-template">Módulo 4</div></div>
+    <div class="bbody">
+
+      <div class="ck2-question" id="m4-q1">
+        <div class="ck2-qtext">Una familiar del cliente quiere ser testigo. Dice que escuchó al abuser insultar al cliente varias veces por teléfono pero nunca estuvo físicamente presente en ningún evento. ¿Qué tipo de testigo es?</div>
+        <div class="ck2-opts">
+          <div class="ck2-opt" data-val="1" onclick="m4q1Sel(this)"><div class="ck2-radio"></div>A) Testigo directo, porque el audio en tiempo real por teléfono equivale a presenciar el evento y le permite describir los hechos con la misma precisión que si hubiera estado presente</div>
+          <div class="ck2-opt" data-val="2" onclick="m4q1Sel(this)"><div class="ck2-radio"></div>B) Testigo indirecto: conoce los hechos por lo que escuchó y por relatos del cliente. Suma credibilidad pero no confirma directamente los eventos de violencia física</div>
+          <div class="ck2-opt" data-val="3" onclick="m4q1Sel(this)"><div class="ck2-radio"></div>C) No califica como testigo válido para el expediente porque USCIS únicamente acepta declaraciones de personas que hayan estado físicamente presentes durante los eventos de abuso</div>
+          <div class="ck2-opt" data-val="4" onclick="m4q1Sel(this)"><div class="ck2-radio"></div>D) Se clasifica como testigo directo exclusivamente para los episodios escuchados por teléfono, e indirecto para todos los eventos de abuso físico que conoce por relato del cliente</div>
+        </div>
+        <div class="ck-feedback" id="m4-q1-fb"></div>
+      </div>
+
+      <div class="ck4-question" id="m4-tf1">
+        <div class="ck4-stmt">Cuando el abuser está al tanto del proceso y ofrece "recrear" situaciones de abuso para documentarlas, se pueden aceptar estas recreaciones siempre que el abuser firme un documento de consentimiento.</div>
+        <div class="ck4-btns">
+          <button class="ck4-btn" data-val="true" onclick="m4tf1Sel(this)">✅ Verdadero</button>
+          <button class="ck4-btn" data-val="false" onclick="m4tf1Sel(this)">❌ Falso</button>
+        </div>
+        <div class="ck-feedback" id="m4-tf1-fb"></div>
+      </div>
+
+      <div class="ck-actions" style="margin-top:18px">
+        <button class="ck-btn ck-verify" id="m4-verify" onclick="m4Verify()">Verificar respuestas</button>
+        <button class="ck-btn ck-retry" id="m4-retry" style="display:none" onclick="m4Reset()">Reintentar</button>
+        <button class="ck-btn ck-next" id="m4-next" style="display:none" onclick="unlockExam()">Completar Training ✓</button>
+      </div>
+      <div class="ck-result-summary" id="m4-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="showPanel('mod3')">← Módulo 3</button>
+    <div style="flex:1"></div>
+  </div>
+</div><!-- /panel mod4 -->
+
+
+<!-- ═══════════════════════════════════════════
+     PANEL: EVALUACIÓN FINAL
+     ═══════════════════════════════════════════ -->
+
+
+
+
+<!-- ═══════════════════════════════════════════
+     PANEL: COMPONENTE PRÁCTICO
+     ═══════════════════════════════════════════ -->
+
+
+</main>
+</div><!-- /app-shell -->
+
+<script>
+/* ══ ESTADO GLOBAL ══ */
+var trainingState = {
+  mod1Completed: false, mod2Completed: false,
+  mod3Completed: false, mod3Unlocked: false,
+  mod4Completed: false, mod4Unlocked: false,
+  examCompleted: false, examScore: 0
+};
+
+/* ══ NAVEGACIÓN ══ */
+var panels = ['instrucciones','acerca','estructura','mod1','mod2','mod3','mod4'];
+function showPanel(id) {
+  if(id==='mod3' && !trainingState.mod3Unlocked){showLockedMsg();return;}
+  if(id==='mod4' && !trainingState.mod4Unlocked){showLockedMsg();return;}
+  panels.forEach(function(p){
+    var el=document.getElementById('panel-'+p);
+    var nav=document.getElementById('nav-'+p);
+    if(el) el.classList.remove('active');
+    if(nav) nav.classList.remove('active');
+  });
+  var target=document.getElementById('panel-'+id);
+  var navTarget=document.getElementById('nav-'+id);
+  if(target) target.classList.add('active');
+  if(navTarget) navTarget.classList.add('active');
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=900){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sbOverlay').classList.remove('show');
+  }
+}
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sbOverlay').classList.toggle('show');
+}
+function showLockedMsg(){alert('🔒 Este módulo está bloqueado. Completa los ejercicios del módulo anterior para desbloquearlo.');}
+
+/* ══ PROGRESO ══ */
+function updateProgress(){
+  var completed=0, total=6;
+  if(trainingState.mod1Completed) completed++;
+  if(trainingState.mod2Completed) completed++;
+  if(trainingState.mod3Completed) completed++;
+  if(trainingState.mod4Completed) completed++;
+  if(trainingState.examCompleted) completed+=2;
+  var pct=Math.round(completed/total*100);
+  document.getElementById('globalProgress').style.width=pct+'%';
+  var theoryPct=Math.round(((trainingState.mod1Completed?1:0)+(trainingState.mod2Completed?1:0)+(trainingState.mod3Completed?1:0)+(trainingState.mod4Completed?1:0))/4*100);
+  var evalPct=trainingState.examCompleted?100:0;
+  var tp=document.getElementById('prog-theory');
+  var ep=document.getElementById('prog-eval');
+  if(tp){tp.style.width=theoryPct+'%';document.getElementById('pct-theory').textContent=theoryPct+'%';}
+  var pp=document.getElementById('prog-practice');
+  if(pp){pp.style.width='0%';document.getElementById('pct-practice').textContent='0%';}
+  if(ep){ep.style.width=evalPct+'%';document.getElementById('pct-eval').textContent=evalPct+'%';}
+}
+
+/* ══ ESCENARIOS MÓDULO 1 ══ */
+var m1Sc1FB={correct:'✅ Correcto. D- es la clasificación adecuada. El moretón es daño físico directo visible, pero de impacto moderado — no de la severidad que justifica D+.',wrong:'❌ Incorrecto. Esta es una fotografía de daño físico directo al cliente. El moretón es visible en el cuello con el rostro identificable. Al ser de impacto moderado (no severo), corresponde a D-.'};
+var m1Sc2FB={correct:'✅ Correcto. D- es correcto. El video en tiempo real de una agresión es evidencia directa del abuso aunque no muestre el rostro del cliente; confirma el evento de violencia.',wrong:'❌ Incorrecto. El video en tiempo real de la agresión es evidencia directa porque confirma el evento de violencia. Al ser de impacto moderado (sin rostro visible), corresponde a D-.'};
+var m1Sc3FB={correct:'✅ Correcto. I+ es correcto. El medicamento recetado muestra afectación a la salud vinculable al abuso, pero necesita complemento que establezca esa relación: descripción del cliente + cómo el abuso causó o agravó su cuadro clínico.',wrong:'❌ Incorrecto. El medicamento recetado para ansiedad es evidencia indirecta (no demuestra daño directo). Tiene soporte documental claro (receta), por lo que es I+, pero necesita complemento que vincule la ansiedad al abuso.'};
+function m1Sc1(el,result){document.querySelectorAll('.scenario-card:nth-of-type(1) .opt-btn').forEach(function(b){b.classList.remove('correct','wrong');b.style.pointerEvents='none';});el.classList.add(result);var fb=document.getElementById('m1-sc1-fb');fb.className='sc-fb show '+result;fb.textContent=m1Sc1FB[result];}
+function m1Sc2(el,result){document.querySelectorAll('#panel-mod1 .scenario-card')[1].querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('correct','wrong');b.style.pointerEvents='none';});el.classList.add(result);var fb=document.getElementById('m1-sc2-fb');fb.className='sc-fb show '+result;fb.textContent=m1Sc2FB[result];}
+function m1Sc3(el,result){document.querySelectorAll('#panel-mod1 .scenario-card')[2].querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('correct','wrong');b.style.pointerEvents='none';});el.classList.add(result);var fb=document.getElementById('m1-sc3-fb');fb.className='sc-fb show '+result;fb.textContent=m1Sc3FB[result];}
+
+/* ══ MÓDULO 1: Preguntas ══ */
+var m1Correct={q1:3,tf1:'true'};
+var m1FB={
+  q1:{ok:'✅ Correcto. D+ cumple todos los criterios: daño físico directo, alto impacto visual (ojo completamente cerrado con inflamación severa), y el rostro de la cliente es visible.',fail:'❌ Incorrecto. Esta evidencia es D+. Cumple todos los criterios: daño físico directo, alto impacto visual (ojo completamente cerrado, moretón severo), y el rostro es visible.'},
+  tf1:{ok:'✅ Correcto. Los mensajes del abuser hacia el cliente son evidencia directa (D+ o D-) porque demuestran con claridad que el abuso está siendo ejercido por el abusador hacia el cliente. El nivel (D+ o D-) depende del impacto y contundencia del contenido.',fail:'❌ Incorrecto. Los mensajes del abuser hacia el cliente sí son evidencia directa (D+ o D-): demuestran que el abuso está siendo ejercido directamente por el abusador hacia el cliente. El nivel exacto depende de la contundencia del contenido.'}
+};
+var m1Answers={};
+function m1q1Sel(el){if(el.classList.contains('disabled'))return;document.querySelectorAll('#m1-q1 .ck2-opt').forEach(function(o){o.classList.remove('selected');});el.classList.add('selected');m1Answers.q1=parseInt(el.dataset.val);}
+function m1tf1Sel(btn){if(btn.classList.contains('disabled'))return;document.querySelectorAll('#m1-tf1 .ck4-btn').forEach(function(b){b.classList.remove('selected');});btn.classList.add('selected');m1Answers.tf1=btn.dataset.val;}
+function m1Verify(){
+  var total=2,correct=0;
+  var ua1=m1Answers.q1,ca1=m1Correct.q1,fb1=document.getElementById('m1-q1-fb');
+  document.querySelectorAll('#m1-q1 .ck2-opt').forEach(function(o){o.classList.add('disabled');var v=parseInt(o.dataset.val);if(v===ca1)o.classList.add('correct');else if(v===ua1&&ua1!==ca1)o.classList.add('incorrect');});
+  fb1.className='ck-feedback show '+(ua1===ca1?'ok':'fail');fb1.textContent=ua1===ca1?m1FB.q1.ok:m1FB.q1.fail;if(ua1===ca1)correct++;
+  var ua2=m1Answers.tf1,ca2=m1Correct.tf1,fb2=document.getElementById('m1-tf1-fb');
+  document.querySelectorAll('#m1-tf1 .ck4-btn').forEach(function(b){b.classList.add('disabled');if(b.dataset.val===ca2)b.classList.add('correct');else if(b.dataset.val===ua2&&ua2!==ca2)b.classList.add('incorrect');});
+  fb2.className='ck-feedback show '+(ua2===ca2?'ok':'fail');fb2.textContent=ua2===ca2?m1FB.tf1.ok:m1FB.tf1.fail;if(ua2===ca2)correct++;
+  var pct=Math.round(correct/total*100);
+  var sum=document.getElementById('m1-summary');sum.style.display='block';
+  sum.className='ck-result-summary '+(pct>=80?'ok':pct>=60?'warn':'fail');
+  sum.textContent=correct+'/'+total+' correctas ('+pct+'%) — '+(pct>=80?'¡Excelente! Puedes avanzar al Módulo 2.':pct>=60?'Buen avance. Revisa los errores antes de continuar.':'Repasa el contenido del módulo e inténtalo de nuevo.');
+  document.getElementById('m1-verify').style.display='none';document.getElementById('m1-retry').style.display='inline-block';
+  if(pct>=60)document.getElementById('m1-next').style.display='inline-block';
+}
+function m1Reset(){
+  m1Answers={};
+  document.querySelectorAll('#m1-q1 .ck2-opt').forEach(function(o){o.className='ck2-opt';});
+  document.getElementById('m1-q1-fb').className='ck-feedback';
+  document.querySelectorAll('#m1-tf1 .ck4-btn').forEach(function(b){b.className='ck4-btn';});
+  document.getElementById('m1-tf1-fb').className='ck-feedback';
+  document.getElementById('m1-summary').style.display='none';
+  document.getElementById('m1-verify').style.display='inline-block';document.getElementById('m1-retry').style.display='none';document.getElementById('m1-next').style.display='none';
+}
+function unlockMod2(){trainingState.mod1Completed=true;var nav=document.getElementById('nav-mod1');if(nav)nav.classList.add('completed');showPanel('mod2');updateProgress();}
+
+/* ══ ESCENARIOS MÓDULO 2 ══ */
+var m2Sc1FB={correct:'✅ Correcto. Las fotografías de objetos destruidos son I- y requieren complemento. Las preguntas base ("¿Lo sigue haciendo? ¿Por qué medios?") permiten identificar mensajes, audios o testigos que eleven la contundencia.',wrong:'❌ Incorrecto. Las fotografías de objetos destruidos son evidencia I- (indirecta baja). Por sí solas no son suficientes — necesitan complemento que vincule al abuser con la destrucción y el abuso.'};
+function m2Sc1(el,result){document.querySelectorAll('#panel-mod2 .scenario-card')[0].querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('correct','wrong');b.style.pointerEvents='none';});el.classList.add(result);var fb=document.getElementById('m2-sc1-fb');fb.className='sc-fb show '+result;fb.textContent=m2Sc1FB[result];}
+
+/* ══ MÓDULO 2: Preguntas ══ */
+var m2Correct={q1:2,q2:3,tf1:'false'};
+var m2FB={
+  q1:{ok:'✅ Correcto. Los mensajes de amenaza confirman que las transferencias no fueron voluntarias, construyendo abuso económico con coerción. Este es el modelo exacto de cómo funciona la evidencia complementaria.',fail:'❌ Incorrecto. Los mensajes son la evidencia complementaria que eleva la contundencia de las transferencias. Juntos documentan abuso económico con coerción migratoria.'},
+  q2:{ok:'✅ Correcto. Las fotos de armas en redes son evidencia de perfilamiento I-. Por sí solas no son suficientes; necesitan complemento que demuestre que el abuser usó o amenazó con armas hacia el cliente.',fail:'❌ Incorrecto. Las fotos de armas son evidencia I- de perfilamiento. No se descartan — se registran y se busca complemento que las vincule con amenazas directas hacia el cliente.'},
+  tf1:{ok:'✅ Correcto. La evidencia complementaria es necesaria cuando la evidencia principal es de contundencia media — no solo cuando no hay fotografías. Es una estrategia de fortalecimiento de la evidencia existente.',fail:'❌ Incorrecto. La evidencia complementaria es necesaria cuando la evidencia es de contundencia media y no demuestra el abuso por sí sola. No depende de si hay fotografías o no.'}
+};
+var m2Answers={};
+function m2q1Sel(el){if(el.classList.contains('disabled'))return;document.querySelectorAll('#m2-q1 .ck2-opt').forEach(function(o){o.classList.remove('selected');});el.classList.add('selected');m2Answers.q1=parseInt(el.dataset.val);}
+function m2q2Sel(el){if(el.classList.contains('disabled'))return;document.querySelectorAll('#m2-q2 .ck2-opt').forEach(function(o){o.classList.remove('selected');});el.classList.add('selected');m2Answers.q2=parseInt(el.dataset.val);}
+function m2tf1Sel(btn){if(btn.classList.contains('disabled'))return;document.querySelectorAll('#m2-tf1 .ck4-btn').forEach(function(b){b.classList.remove('selected');});btn.classList.add('selected');m2Answers.tf1=btn.dataset.val;}
+function m2Verify(){
+  var total=3,correct=0;
+  [['q1',1,'m2-q1'],['q2',2,'m2-q2']].forEach(function(arr){
+    var key=arr[0],n=arr[1],id=arr[2];
+    var ua=m2Answers[key],ca=m2Correct[key],fb=document.getElementById(id+'-fb');
+    document.querySelectorAll('#'+id+' .ck2-opt').forEach(function(o){o.classList.add('disabled');var v=parseInt(o.dataset.val);if(v===ca)o.classList.add('correct');else if(v===ua&&ua!==ca)o.classList.add('incorrect');});
+    fb.className='ck-feedback show '+(ua===ca?'ok':'fail');fb.textContent=ua===ca?m2FB[key].ok:m2FB[key].fail;if(ua===ca)correct++;
+  });
+  var ua3=m2Answers.tf1,ca3=m2Correct.tf1,fb3=document.getElementById('m2-tf1-fb');
+  document.querySelectorAll('#m2-tf1 .ck4-btn').forEach(function(b){b.classList.add('disabled');if(b.dataset.val===ca3)b.classList.add('correct');else if(b.dataset.val===ua3&&ua3!==ca3)b.classList.add('incorrect');});
+  fb3.className='ck-feedback show '+(ua3===ca3?'ok':'fail');fb3.textContent=ua3===ca3?m2FB.tf1.ok:m2FB.tf1.fail;if(ua3===ca3)correct++;
+  var pct=Math.round(correct/total*100);
+  var sum=document.getElementById('m2-summary');sum.style.display='block';
+  sum.className='ck-result-summary '+(pct>=80?'ok':pct>=60?'warn':'fail');
+  sum.textContent=correct+'/'+total+' correctas ('+pct+'%) — '+(pct>=80?'¡Excelente! Puedes avanzar al Módulo 3.':pct>=60?'Buen avance. Repasa los errores antes de continuar.':'Regresa al contenido del módulo e inténtalo de nuevo.');
+  document.getElementById('m2-verify').style.display='none';document.getElementById('m2-retry').style.display='inline-block';
+  if(pct>=60)document.getElementById('m2-next').style.display='inline-block';
+}
+function m2Reset(){
+  m2Answers={};
+  ['m2-q1','m2-q2'].forEach(function(id){document.querySelectorAll('#'+id+' .ck2-opt').forEach(function(o){o.className='ck2-opt';});document.getElementById(id+'-fb').className='ck-feedback';});
+  document.querySelectorAll('#m2-tf1 .ck4-btn').forEach(function(b){b.className='ck4-btn';});document.getElementById('m2-tf1-fb').className='ck-feedback';
+  document.getElementById('m2-summary').style.display='none';
+  document.getElementById('m2-verify').style.display='inline-block';document.getElementById('m2-retry').style.display='none';document.getElementById('m2-next').style.display='none';
+}
+function unlockMod3(){
+  trainingState.mod2Completed=true;trainingState.mod3Unlocked=true;
+  var nav2=document.getElementById('nav-mod2');if(nav2)nav2.classList.add('completed');
+  var nav3=document.getElementById('nav-mod3');
+  if(nav3){nav3.classList.remove('locked');nav3.onclick=function(){showPanel('mod3');};nav3.querySelector('.sb-sub').textContent='Inadmisibilidades';}
+  showPanel('mod3');updateProgress();
+}
+
+/* ══ ESCENARIOS MÓDULO 3 ══ */
+var m3Sc1FB={correct:'✅ Correcto. La evidencia de violencia bilateral es inadmisible aunque el abuser también haya agredido. La solución es buscar otras evidencias del mismo evento que no involucren al cliente como agresor.',wrong:'❌ Incorrecto. Cualquier evidencia que muestre al cliente usando violencia — aunque sea en defensa propia — perjudica su GMC y es inadmisible. El video completo debe descartarse y buscar otras evidencias del evento.'};
+function m3Sc1(el,result){document.querySelectorAll('#panel-mod3 .scenario-card')[0].querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('correct','wrong');b.style.pointerEvents='none';});el.classList.add(result);var fb=document.getElementById('m3-sc1-fb');fb.className='sc-fb show '+result;fb.textContent=m3Sc1FB[result];}
+
+/* ══ MÓDULO 3: Preguntas ══ */
+var m3Correct={q1:4,q2:2,tf1:'false'};
+var m3FB={
+  q1:{ok:'✅ Correcto. La captura que muestre solo el mensaje amenazante (sin los mensajes de afecto) es admisible. La captura completa que incluye los mensajes positivos sería inadmisible porque muestra el GMC favorable del abuser.',fail:'❌ Incorrecto. La solución correcta es presentar una captura que muestre solo el mensaje amenazante, sin incluir los mensajes de afecto. Los mensajes positivos del abuser son inadmisibles porque muestran su GMC favorable.'},
+  q2:{ok:'✅ Correcto. Cicatrices requieren: foto de lejos con rostro visible, foto de cerca con el daño claro, y congruencia entre el daño y la descripción. Si hay incongruencia, se considera en duda y se necesita testigo.',fail:'❌ Incorrecto. La evidencia debe marcarse como "en duda" — no rechazarse definitivamente. Necesita foto de lejos con rostro + testigo que confirme el evento específico. El criterio de cicatrices exige congruencia entre descripción y evidencia.'},
+  tf1:{ok:'✅ Correcto. El medicamento con receta es admisible, pero no es suficiente por sí solo. Necesita complemento que demuestre la relación con el abuso: causa directa, agravamiento por el abuso, o impacto en el tratamiento.',fail:'❌ Incorrecto. El medicamento con receta es admisible, pero necesita complemento que demuestre la relación con el abuso. No puede sostenerse solo como evidencia de abuso psicológico.'}
+};
+var m3Answers={};
+function m3q1Sel(el){if(el.classList.contains('disabled'))return;document.querySelectorAll('#m3-q1 .ck2-opt').forEach(function(o){o.classList.remove('selected');});el.classList.add('selected');m3Answers.q1=parseInt(el.dataset.val);}
+function m3q2Sel(el){if(el.classList.contains('disabled'))return;document.querySelectorAll('#m3-q2 .ck2-opt').forEach(function(o){o.classList.remove('selected');});el.classList.add('selected');m3Answers.q2=parseInt(el.dataset.val);}
+function m3tf1Sel(btn){if(btn.classList.contains('disabled'))return;document.querySelectorAll('#m3-tf1 .ck4-btn').forEach(function(b){b.classList.remove('selected');});btn.classList.add('selected');m3Answers.tf1=btn.dataset.val;}
+function m3Verify(){
+  var total=3,correct=0;
+  [['q1','m3-q1'],['q2','m3-q2']].forEach(function(arr){
+    var key=arr[0],id=arr[1];
+    var ua=m3Answers[key],ca=m3Correct[key],fb=document.getElementById(id+'-fb');
+    document.querySelectorAll('#'+id+' .ck2-opt').forEach(function(o){o.classList.add('disabled');var v=parseInt(o.dataset.val);if(v===ca)o.classList.add('correct');else if(v===ua&&ua!==ca)o.classList.add('incorrect');});
+    fb.className='ck-feedback show '+(ua===ca?'ok':'fail');fb.textContent=ua===ca?m3FB[key].ok:m3FB[key].fail;if(ua===ca)correct++;
+  });
+  var ua3=m3Answers.tf1,ca3=m3Correct.tf1,fb3=document.getElementById('m3-tf1-fb');
+  document.querySelectorAll('#m3-tf1 .ck4-btn').forEach(function(b){b.classList.add('disabled');if(b.dataset.val===ca3)b.classList.add('correct');else if(b.dataset.val===ua3&&ua3!==ca3)b.classList.add('incorrect');});
+  fb3.className='ck-feedback show '+(ua3===ca3?'ok':'fail');fb3.textContent=ua3===ca3?m3FB.tf1.ok:m3FB.tf1.fail;if(ua3===ca3)correct++;
+  var pct=Math.round(correct/total*100);
+  var sum=document.getElementById('m3-summary');sum.style.display='block';
+  sum.className='ck-result-summary '+(pct>=80?'ok':pct>=60?'warn':'fail');
+  sum.textContent=correct+'/'+total+' correctas ('+pct+'%) — '+(pct>=80?'¡Excelente! Puedes avanzar al Módulo 4.':pct>=60?'Buen avance. Repasa los errores antes de continuar.':'Regresa al contenido del módulo e inténtalo de nuevo.');
+  document.getElementById('m3-verify').style.display='none';document.getElementById('m3-retry').style.display='inline-block';
+  if(pct>=60)document.getElementById('m3-next').style.display='inline-block';
+}
+function m3Reset(){
+  m3Answers={};
+  ['m3-q1','m3-q2'].forEach(function(id){document.querySelectorAll('#'+id+' .ck2-opt').forEach(function(o){o.className='ck2-opt';});document.getElementById(id+'-fb').className='ck-feedback';});
+  document.querySelectorAll('#m3-tf1 .ck4-btn').forEach(function(b){b.className='ck4-btn';});document.getElementById('m3-tf1-fb').className='ck-feedback';
+  document.getElementById('m3-summary').style.display='none';
+  document.getElementById('m3-verify').style.display='inline-block';document.getElementById('m3-retry').style.display='none';document.getElementById('m3-next').style.display='none';
+}
+function unlockMod4(){
+  trainingState.mod3Completed=true;trainingState.mod4Unlocked=true;
+  var nav3=document.getElementById('nav-mod3');if(nav3)nav3.classList.add('completed');
+  var nav4=document.getElementById('nav-mod4');
+  if(nav4){nav4.classList.remove('locked');nav4.onclick=function(){showPanel('mod4');};nav4.querySelector('.sb-sub').textContent='Obtención Segura';}
+  showPanel('mod4');updateProgress();
+}
+
+/* ══ ESCENARIOS MÓDULO 4 ══ */
+var m4Sc1FB={correct:'✅ Correcto. Preparar al cliente para documentar si el abuso ocurre está bien. Sugerir que provoque al abuser está prohibido — cualquier sugerencia que pueda desencadenar violencia es inadmisible.',wrong:'❌ Incorrecto. NUNCA se le sugiere al cliente provocar al abuser para generar evidencia. Solo se le prepara para documentar de forma segura si el abuso ocurre de nuevo.'};
+function m4Sc1(el,result){document.querySelectorAll('#panel-mod4 .scenario-card')[0].querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('correct','wrong');b.style.pointerEvents='none';});el.classList.add(result);var fb=document.getElementById('m4-sc1-fb');fb.className='sc-fb show '+result;fb.textContent=m4Sc1FB[result];}
+
+/* ══ MÓDULO 4: Preguntas ══ */
+var m4Correct={q1:2,tf1:'false'};
+var m4FB={
+  q1:{ok:'✅ Correcto. Se clasifica como testigo indirecto porque no estuvo presente físicamente. Su testimonio refuerza la narrativa pero necesita respaldo de evidencia directa para tener pleno peso legal.',fail:'❌ Incorrecto. Esta familiar es testigo indirecto — conoce los hechos por lo que escuchó y por relatos del cliente. No estuvo físicamente presente en ningún evento de abuso.'},
+  tf1:{ok:'✅ Correcto. Cuando el abuser coopera, SOLO se acepta evidencia preexistente. Nunca se debe recrear el abuso bajo ninguna circunstancia, independientemente de consentimientos. Si el cliente lo solicita, aplica el Speech Antifraude y reporta el caso.',fail:'❌ Incorrecto. Cuando el abuser coopera, SOLO se acepta evidencia preexistente. Recrear situaciones de abuso está absolutamente prohibido — ningún consentimiento lo justifica. Si el cliente lo solicita, aplica el Speech Antifraude y reporta el caso.'}
+};
+var m4Answers={};
+function m4q1Sel(el){if(el.classList.contains('disabled'))return;document.querySelectorAll('#m4-q1 .ck2-opt').forEach(function(o){o.classList.remove('selected');});el.classList.add('selected');m4Answers.q1=parseInt(el.dataset.val);}
+function m4tf1Sel(btn){if(btn.classList.contains('disabled'))return;document.querySelectorAll('#m4-tf1 .ck4-btn').forEach(function(b){b.classList.remove('selected');});btn.classList.add('selected');m4Answers.tf1=btn.dataset.val;}
+function m4Verify(){
+  var total=2,correct=0;
+  [['q1','m4-q1']].forEach(function(arr){
+    var key=arr[0],id=arr[1];
+    var ua=m4Answers[key],ca=m4Correct[key],fb=document.getElementById(id+'-fb');
+    document.querySelectorAll('#'+id+' .ck2-opt').forEach(function(o){o.classList.add('disabled');var v=parseInt(o.dataset.val);if(v===ca)o.classList.add('correct');else if(v===ua&&ua!==ca)o.classList.add('incorrect');});
+    fb.className='ck-feedback show '+(ua===ca?'ok':'fail');fb.textContent=ua===ca?m4FB[key].ok:m4FB[key].fail;if(ua===ca)correct++;
+  });
+  var ua3=m4Answers.tf1,ca3=m4Correct.tf1,fb3=document.getElementById('m4-tf1-fb');
+  document.querySelectorAll('#m4-tf1 .ck4-btn').forEach(function(b){b.classList.add('disabled');if(b.dataset.val===ca3)b.classList.add('correct');else if(b.dataset.val===ua3&&ua3!==ca3)b.classList.add('incorrect');});
+  fb3.className='ck-feedback show '+(ua3===ca3?'ok':'fail');fb3.textContent=ua3===ca3?m4FB.tf1.ok:m4FB.tf1.fail;if(ua3===ca3)correct++;
+  var pct=Math.round(correct/total*100);
+  var sum=document.getElementById('m4-summary');sum.style.display='block';
+  sum.className='ck-result-summary '+(pct>=80?'ok':pct>=60?'warn':'fail');
+  sum.textContent=correct+'/'+total+' correctas ('+pct+'%) — '+(pct>=80?'¡Excelente! Has completado todos los módulos.':pct>=60?'Buen avance. Repasa los errores antes de continuar.':'Regresa al contenido del módulo e inténtalo de nuevo.');
+  document.getElementById('m4-verify').style.display='none';document.getElementById('m4-retry').style.display='inline-block';
+  if(pct>=60)document.getElementById('m4-next').style.display='inline-block';
+}
+function m4Reset(){
+  m4Answers={};
+  ['m4-q1'].forEach(function(id){document.querySelectorAll('#'+id+' .ck2-opt').forEach(function(o){o.className='ck2-opt';});document.getElementById(id+'-fb').className='ck-feedback';});
+  document.querySelectorAll('#m4-tf1 .ck4-btn').forEach(function(b){b.className='ck4-btn';});document.getElementById('m4-tf1-fb').className='ck-feedback';
+  document.getElementById('m4-summary').style.display='none';
+  document.getElementById('m4-verify').style.display='inline-block';document.getElementById('m4-retry').style.display='none';document.getElementById('m4-next').style.display='none';
+}
+function unlockExam(){
+  trainingState.mod4Completed=true;
+  var nav4=document.getElementById('nav-mod4');if(nav4)nav4.classList.add('completed');
+  updateProgress();
+  var sum=document.getElementById('m4-summary');
+  if(sum){sum.className='ck-result-summary ok';sum.style.display='block';sum.textContent='✅ ¡Training completado! Has finalizado todos los módulos del programa.';}
+}
+
+updateProgress();
+</script>
+</body>
+</html>
