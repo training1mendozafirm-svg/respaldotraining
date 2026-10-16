@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARALEGAL LEGAL STRATEGY UNIT (LSU)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --navy: #0b2e4e;
+    --navy-mid: #1a4a6e;
+    --navy-light: #1f5f8b;
+    --gold: #c9a646;
+    --gold-light: #e8c96a;
+    --cream: #f8f5ef;
+    --gray-100: #f4f6f8;
+    --gray-200: #e8ecf0;
+    --gray-400: #9aa4b0;
+    --gray-600: #5a6472;
+    --gray-800: #2c3540;
+    --white: #ffffff;
+    --success: #2e7d55;
+    --danger: #b83232;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-800);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, var(--navy-light) 100%);
+    color: var(--white);
+    padding: 36px 40px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(201,166,70,0.08);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: 30%;
+    width: 340px; height: 140px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+  .header-sub {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 300;
+    letter-spacing: 0.3px;
+  }
+  .header-pills {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .header-pill {
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.5px;
+  }
+  .header-pill.gold { background: rgba(201,166,70,0.2); border-color: rgba(201,166,70,0.4); color: var(--gold-light); }
+
+  .nav-tabs {
+    background: var(--navy);
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 2px solid rgba(201,166,70,0.2);
+  }
+  .nav-tab {
+    padding: 14px 22px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .nav-tab:hover { color: rgba(255,255,255,0.75); }
+  .nav-tab.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 28px 20px 60px; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(11,46,78,0.07);
+    border: 1px solid var(--gray-200);
+  }
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .card-title-block h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .card-title-block p {
+    font-size: 12px;
+    color: var(--gray-400);
+    margin-top: 2px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+  .badge-gold { background: rgba(201,166,70,0.12); color: #9a7a20; border: 1px solid rgba(201,166,70,0.3); }
+  .badge-navy { background: rgba(11,46,78,0.08); color: var(--navy-mid); border: 1px solid rgba(11,46,78,0.15); }
+  .badge-success { background: rgba(46,125,85,0.1); color: var(--success); border: 1px solid rgba(46,125,85,0.25); }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: var(--gray-600);
+    margin-bottom: 24px;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:600px){ .grid-2 { grid-template-columns: 1fr; } }
+
+  .info-block h4 {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .info-block ul { list-style: none; padding: 0; }
+  .info-block ul li {
+    padding: 7px 0 7px 18px;
+    position: relative;
+    font-size: 14px;
+    color: var(--gray-800);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .info-block ul li:last-child { border-bottom: none; }
+  .info-block ul li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 16px;
+    top: 5px;
+  }
+  .info-block.errors ul li::before { content: '✕'; font-size: 12px; top: 7px; color: var(--danger); }
+  .info-block.good ul li::before { content: '✓'; font-size: 12px; top: 7px; color: var(--success); }
+
+  .alert {
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13.5px;
+  }
+  .alert-warning {
+    background: rgba(201,166,70,0.08);
+    border-left: 4px solid var(--gold);
+    color: #6b5010;
+  }
+  .alert-danger {
+    background: rgba(184,50,50,0.07);
+    border-left: 4px solid var(--danger);
+    color: #6e1e1e;
+  }
+  .alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .alert strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+  .step-list { counter-reset: step; list-style: none; padding: 0; }
+  .step-list li {
+    counter-increment: step;
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-200);
+    align-items: flex-start;
+    font-size: 14px;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .video-wrap {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid var(--gray-200);
+    margin: 16px 0;
+    background: var(--navy);
+  }
+  .video-wrap iframe { display: block; width: 100%; }
+
+  /* ── CHECKLIST ── */
+  .checklist-group { margin-bottom: 20px; }
+  .checklist-group-title {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--navy-mid);
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--gold);
+    display: inline-block;
+  }
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    margin-bottom: 6px;
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    cursor: pointer;
+    transition: background 0.15s;
+    user-select: none;
+  }
+  .checklist-item:hover { background: #eef2f5; }
+  .checklist-item.checked {
+    background: rgba(46,125,85,0.07);
+    border-color: rgba(46,125,85,0.25);
+  }
+  .checklist-item.checked .chk-label { color: var(--gray-400); text-decoration: line-through; }
+  .chk-box {
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    border: 2px solid var(--gray-400);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    color: var(--success);
+    transition: border-color 0.15s;
+    margin-top: 1px;
+  }
+  .checklist-item.checked .chk-box { border-color: var(--success); background: rgba(46,125,85,0.1); }
+  .chk-label { font-size: 13.5px; color: var(--gray-800); }
+  .checklist-progress {
+    background: var(--gray-200);
+    border-radius: 20px;
+    height: 6px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .checklist-progress-bar {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--navy-light), var(--gold));
+    transition: width 0.3s;
+  }
+  .checklist-progress-label {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ── PREGUNTAS DE CONFIRMACIÓN ── */
+  .confirm-section {
+    background: linear-gradient(135deg, rgba(11,46,78,0.04), rgba(201,166,70,0.04));
+    border: 1px solid rgba(11,46,78,0.1);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-top: 20px;
+  }
+  .confirm-section-title {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .confirm-section-title span { font-size: 16px; }
+  .confirm-section-sub {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-bottom: 18px;
+  }
+
+  .question-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 6px rgba(11,46,78,0.05);
+  }
+  .question-number {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .question-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+  .question-scenario {
+    font-size: 13px;
+    color: var(--gray-600);
+    background: var(--gray-100);
+    border-left: 3px solid var(--navy-light);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 14px;
+    line-height: 1.55;
+  }
+  .options { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 14px;
+    border-radius: 7px;
+    border: 1.5px solid var(--gray-200);
+    background: var(--gray-100);
+    cursor: pointer;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    color: var(--gray-800);
+    transition: all 0.15s;
+    line-height: 1.45;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--navy-light); background: #eaf1f7; }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { border-color: var(--success) !important; background: rgba(46,125,85,0.08) !important; color: #1a5c38 !important; font-weight: 500; }
+  .option-btn.incorrect { border-color: var(--danger) !important; background: rgba(184,50,50,0.07) !important; color: var(--danger) !important; }
+  .option-letter {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .option-btn.correct .option-letter { background: var(--success); color: white; }
+  .option-btn.incorrect .option-letter { background: var(--danger); color: white; }
+
+  .feedback-block {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .feedback-block.correct-fb { background: rgba(46,125,85,0.08); border-left: 3px solid var(--success); color: #1a5c38; }
+  .feedback-block.incorrect-fb { background: rgba(184,50,50,0.07); border-left: 3px solid var(--danger); color: #6e1e1e; }
+  .feedback-block.show { display: block; }
+
+  .tf-options { display: flex; gap: 10px; margin-top: 12px; }
+  .tf-btn {
+    flex: 1;
+    padding: 11px;
+    border-radius: 7px;
+    border: 1.5px solid var(--gray-200);
+    background: var(--gray-100);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-800);
+    transition: all 0.15s;
+  }
+  .tf-btn:hover:not(:disabled) { border-color: var(--navy-light); background: #eaf1f7; }
+  .tf-btn:disabled { cursor: default; }
+  .tf-btn.correct { border-color: var(--success) !important; background: rgba(46,125,85,0.08) !important; color: var(--success) !important; }
+  .tf-btn.incorrect { border-color: var(--danger) !important; background: rgba(184,50,50,0.07) !important; color: var(--danger) !important; }
+
+  /* ── PRACTICA ── */
+  .quiz-score-bar {
+    background: var(--gray-200);
+    border-radius: 20px;
+    height: 8px;
+    margin: 8px 0 4px;
+    overflow: hidden;
+  }
+  .quiz-score-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--navy-light), var(--gold));
+    transition: width 0.5s;
+  }
+
+  /* ── ROLE PLAY ── */
+  .roleplay-instruction {
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    border-radius: 12px;
+    padding: 24px 26px;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .roleplay-instruction h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+  .roleplay-instruction p {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+  }
+  .roleplay-instruction .obj-list {
+    margin-top: 12px;
+    list-style: none;
+    padding: 0;
+  }
+  .roleplay-instruction .obj-list li {
+    padding: 5px 0 5px 18px;
+    position: relative;
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.85);
+  }
+  .roleplay-instruction .obj-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--gold-light);
+  }
+
+  .case-file {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .case-file-header {
+    background: linear-gradient(90deg, var(--navy), var(--navy-mid));
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .case-file-header h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--white);
+  }
+  .case-file-header p { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .case-file-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: rgba(201,166,70,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .case-body { padding: 22px 24px; }
+
+  .case-row {
+    display: flex;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--gray-200);
+    font-size: 13.5px;
+    align-items: flex-start;
+  }
+  .case-row:last-child { border-bottom: none; }
+  .case-label {
+    min-width: 180px;
+    font-weight: 600;
+    color: var(--navy-mid);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-top: 1px;
+  }
+  .case-value { color: var(--gray-800); flex: 1; }
+  .case-value.missing { color: var(--gray-400); font-style: italic; }
+
+  .abuse-block {
+    background: rgba(184,50,50,0.04);
+    border: 1px solid rgba(184,50,50,0.15);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--gray-800);
+  }
+  .abuse-block strong { color: var(--danger); display: block; margin-bottom: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  .inadmisibilidad-block {
+    background: rgba(201,166,70,0.06);
+    border: 1px solid rgba(201,166,70,0.25);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+  }
+  .inadmisibilidad-block strong { color: #7a5c00; display: block; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .inadmisibilidad-block ul { list-style: none; padding: 0; }
+  .inadmisibilidad-block ul li {
+    padding: 6px 0 6px 18px;
+    position: relative;
+    font-size: 13.5px;
+    color: var(--gray-800);
+    border-bottom: 1px solid rgba(201,166,70,0.15);
+    line-height: 1.5;
+  }
+  .inadmisibilidad-block ul li:last-child { border-bottom: none; }
+  .inadmisibilidad-block ul li::before {
+    content: '⚠';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 11px;
+    top: 7px;
+  }
+
+  .notes-area {
+    width: 100%;
+    min-height: 160px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    color: var(--gray-800);
+    resize: vertical;
+    background: var(--gray-100);
+    transition: border-color 0.15s;
+    line-height: 1.6;
+  }
+  .notes-area:focus { outline: none; border-color: var(--navy-light); background: var(--white); }
+  .notes-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--navy-mid);
+    margin-bottom: 8px;
+  }
+  .notes-hint {
+    font-size: 12px;
+    color: var(--gray-400);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  .answer-toggle-btn {
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    color: var(--white);
+    border: none;
+    border-radius: 7px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    letter-spacing: 0.3px;
+    transition: opacity 0.2s;
+  }
+  .answer-toggle-btn:hover { opacity: 0.88; }
+  .answer-reveal {
+    display: none;
+    margin-top: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .answer-reveal.show { display: block; }
+  .answer-reveal-header {
+    background: linear-gradient(90deg, var(--success), #236b41);
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  .answer-reveal-body {
+    background: rgba(46,125,85,0.05);
+    border: 1px solid rgba(46,125,85,0.2);
+    border-top: none;
+    padding: 16px;
+    font-size: 13.5px;
+    color: var(--gray-800);
+    line-height: 1.65;
+  }
+  .answer-reveal-body ul { list-style: none; padding: 0; }
+  .answer-reveal-body ul li {
+    padding: 6px 0 6px 18px;
+    position: relative;
+    border-bottom: 1px solid rgba(46,125,85,0.1);
+  }
+  .answer-reveal-body ul li:last-child { border-bottom: none; }
+  .answer-reveal-body ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: 700;
+  }
+  .answer-reveal-body strong { color: var(--navy); }
+
+  .phrase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .phrase-card {
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13.5px;
+    color: var(--navy);
+    font-style: italic;
+    border-left: 3px solid var(--gold);
+    line-height: 1.5;
+  }
+
+  .divider { border: none; border-top: 1px solid var(--gray-200); margin: 22px 0; }
+
+  .quiz-result-panel {
+    display: none;
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+    color: var(--white);
+    margin-top: 20px;
+  }
+  .quiz-result-panel h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; }
+  .quiz-result-panel .score-big { font-size: 52px; font-weight: 700; color: var(--gold-light); line-height: 1; }
+  .quiz-result-panel p { font-size: 14px; color: rgba(255,255,255,0.7); margin-top: 6px; }
+  .retry-btn {
+    margin-top: 18px;
+    padding: 10px 28px;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+
+  @media(max-width:600px){
+    .header { padding: 24px 16px 20px; }
+    .header h1 { font-size: 20px; }
+    .container { padding: 16px 12px 40px; }
+    .card { padding: 20px 16px; }
+    .case-label { min-width: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-eyebrow">TMLF · Mendoza Learning Center</div>
+  <h1>Paralegal Legal Strategy Unit</h1>
+  <div class="header-sub">Estándares operativos de atención al cliente · LSU</div>
+  <div class="header-pills">
+    <span class="header-pill gold">20% Teoría</span>
+    <span class="header-pill gold">70% Práctica</span>
+    <span class="header-pill gold">10% Evaluación</span>
+    <span class="header-pill">Nivel: Operativo</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showTab('teoria',this)">1 · Estándares</div>
+  <div class="nav-tab" onclick="showTab('rutina',this)">2 · Rutina Operativa</div>
+  <div class="nav-tab" onclick="showTab('checklist',this)">3 · Checklist</div>
+  <div class="nav-tab" onclick="showTab('practica',this)">4 · Práctica</div>
+  <div class="nav-tab" onclick="showTab('evaluacion',this)">5 · Evaluación</div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     MÓDULO 1 · ESTÁNDARES
+══════════════════════════════════ -->
+<div id="teoria" class="section active">
+<div class="container">
+
+  <div class="section-label">Módulo 1</div>
+  <h2 class="section-heading">Manejo y Atención al Cliente</h2>
+  <p class="section-desc">Aplicación de estándares de excelencia en comunicación, empatía, ética y servicio en cada interacción con el cliente.</p>
+
+  <!-- TONO Y EMPATÍA -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🎯</div>
+      <div class="card-title-block">
+        <h3>Tono Amigable y Empatía</h3>
+        <p>Pilares fundamentales de la relación con el cliente</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="info-block">
+        <h4>Qué implica</h4>
+        <ul>
+          <li>Trato cordial y amigable en todo momento</li>
+          <li>Uso de palabras de cortesía</li>
+          <li>Parafrasear lo que el cliente expresa para demostrar empatía real</li>
+          <li>Validar emociones del cliente</li>
+          <li>Mostrar interés genuino por la situación del cliente</li>
+        </ul>
+      </div>
+      <div class="info-block errors">
+        <h4>Errores comunes</h4>
+        <ul>
+          <li>Decir solo "entiendo" o "lo siento" sin parafrasear</li>
+          <li>Falta de empatía en el tono de voz</li>
+          <li>Suponer lo que el cliente siente o necesita</li>
+          <li>Permitir que las emociones del cliente no sean validadas</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert alert-warning">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Punto crítico:</strong> La empatía real se demuestra parafraseando. Decir "entiendo" sin reflejar lo que el cliente comunicó no constituye empatía efectiva.</div>
+    </div>
+
+    <!-- PREGUNTAS DE CONFIRMACIÓN MOD 1 -->
+    <div class="confirm-section">
+      <div class="confirm-section-title"><span>✏️</span> Preguntas de Confirmación</div>
+      <div class="confirm-section-sub">Verifica tu comprensión antes de continuar.</div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 1 · Empatía</div>
+        <div class="question-text">¿Cuál de las siguientes acciones demuestra empatía efectiva con un cliente?</div>
+        <div class="options">
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq1')"><span class="option-letter">A</span>Decir "entiendo cómo se siente" y continuar con las preguntas.</button>
+          <button class="option-btn" onclick="confirmQ(this,'correct','cq1')"><span class="option-letter">B</span>Parafrasear lo que el cliente expresa, reflejar sus sentimientos con palabras y validar su experiencia.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq1')"><span class="option-letter">C</span>Escuchar en silencio sin responder hasta que el cliente termine.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq1')"><span class="option-letter">D</span>Cambiar de tema para evitar que el cliente se emocione más.</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq1-c">✓ <strong>Correcto.</strong> El parafraseo es la forma de demostrar empatía genuina. Reflejar con palabras lo que el cliente comunicó valida sus sentimientos y fortalece la confianza, a diferencia de frases genéricas como "entiendo".</div>
+        <div class="feedback-block incorrect-fb" id="cq1-w">✗ <strong>Incorrecto.</strong> La empatía efectiva requiere parafrasear lo que el cliente expresa — no es suficiente decir frases genéricas, guardar silencio pasivo ni evadir las emociones. La respuesta correcta es B.</div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 2 · Tono de voz</div>
+        <div class="question-text">¿Por qué es importante mantener un tono amigable y cordial con el cliente?</div>
+        <div class="options">
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq2')"><span class="option-letter">A</span>Para cumplir con el protocolo de la llamada.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq2')"><span class="option-letter">B</span>Porque el cliente siempre tiene la razón.</button>
+          <button class="option-btn" onclick="confirmQ(this,'correct','cq2')"><span class="option-letter">C</span>Porque crea un ambiente de confianza, refleja el profesionalismo de la firma y mejora la satisfacción del cliente.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq2')"><span class="option-letter">D</span>Para evitar que el cliente haga preguntas difíciles.</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq2-c">✓ <strong>Correcto.</strong> El tono amigable establece una relación de confianza y comodidad, refleja el compromiso de la firma con la excelencia y contribuye directamente a la satisfacción del cliente.</div>
+        <div class="feedback-block incorrect-fb" id="cq2-w">✗ <strong>Incorrecto.</strong> El tono amigable no es solo protocolo ni una frase hecha — su propósito real es crear confianza, demostrar profesionalismo y mejorar genuinamente la experiencia del cliente. La respuesta correcta es C.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESCUCHA ACTIVA -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">👂</div>
+      <div class="card-title-block">
+        <h3>Escucha Activa</h3>
+        <p>Cuatro componentes esenciales</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="info-block">
+        <h4>Componentes clave</h4>
+        <ul>
+          <li><strong>Atención plena:</strong> Eliminar distracciones, concentración total en la llamada</li>
+          <li><strong>Clarificación:</strong> Preguntas de seguimiento para confirmar comprensión</li>
+          <li><strong>Empatía a través de la voz:</strong> Captar emociones y tono del cliente</li>
+          <li><strong>Silencio respetuoso:</strong> Esperar que el cliente termine antes de responder</li>
+        </ul>
+      </div>
+      <div class="info-block errors">
+        <h4>Evitar siempre</h4>
+        <ul>
+          <li>Suponer sentimientos o necesidades del cliente</li>
+          <li>Subestimar la importancia de mostrar empatía vocal</li>
+          <li>Distraerse durante la conversación</li>
+          <li>Interrumpir al cliente mientras habla</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert alert-warning">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Recuerda:</strong> La escucha activa va más allá de las palabras — implica captar emociones, necesidades y preocupaciones para responder de forma empática y efectiva.</div>
+    </div>
+
+    <div class="confirm-section">
+      <div class="confirm-section-title"><span>✏️</span> Preguntas de Confirmación</div>
+      <div class="confirm-section-sub">Verifica tu comprensión antes de continuar.</div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 3 · Escucha activa</div>
+        <div class="question-text">¿Cuál de estos comportamientos corresponde a la aplicación correcta del "silencio respetuoso"?</div>
+        <div class="options">
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq3')"><span class="option-letter">A</span>Completar las frases del cliente para demostrar que ya entendiste.</button>
+          <button class="option-btn" onclick="confirmQ(this,'correct','cq3')"><span class="option-letter">B</span>Esperar a que el cliente termine de hablar antes de responder, sin interrumpir.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq3')"><span class="option-letter">C</span>Aprovechar los silencios del cliente para avanzar con el formulario.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq3')"><span class="option-letter">D</span>Interrumpir para confirmar que entendiste cada punto.</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq3-c">✓ <strong>Correcto.</strong> El silencio respetuoso consiste en esperar pacientemente a que el cliente termine de expresarse antes de responder, demostrando consideración por sus opiniones y dándole espacio para comunicar sus necesidades.</div>
+        <div class="feedback-block incorrect-fb" id="cq3-w">✗ <strong>Incorrecto.</strong> Completar frases, interrumpir o aprovechar los silencios para avanzar viola el principio de silencio respetuoso. La respuesta correcta es B: esperar sin interrumpir.</div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 4 · Error en escucha activa</div>
+        <div class="question-text">Verdadero o Falso: Suponer lo que el cliente necesita con base en experiencias anteriores es una práctica aceptable en la escucha activa.</div>
+        <div class="tf-options">
+          <button class="tf-btn" onclick="confirmTF(this,'wrong','cq4')">Verdadero</button>
+          <button class="tf-btn" onclick="confirmTF(this,'correct','cq4')">Falso</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq4-c">✓ <strong>Correcto — Falso.</strong> Suponer lo que el cliente siente o necesita es uno de los errores críticos de la escucha activa. Siempre se debe preguntar y verificar en lugar de asumir.</div>
+        <div class="feedback-block incorrect-fb" id="cq4-w">✗ <strong>Incorrecto.</strong> Suponer es un error grave en la escucha activa. Cada cliente y situación son únicos — siempre se debe preguntar y confirmar en lugar de asumir.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POLITE INTERRUPTION -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">✋</div>
+      <div class="card-title-block">
+        <h3>Interrupción Educada (Polite Interruption)</h3>
+        <p>Herramienta para mantener comunicación efectiva y respetuosa</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="info-block">
+        <h4>Cuándo aplicarla</h4>
+        <ul>
+          <li>Para solicitar clarificación sobre detalles cruciales del caso</li>
+          <li>Para brindar información relevante en el momento oportuno</li>
+          <li>Cuando el cliente manifiesta angustia o ansiedad</li>
+          <li>Para optimizar los tiempos de la llamada</li>
+          <li>Para centrar la conversación en información relevante para el caso</li>
+        </ul>
+      </div>
+      <div>
+        <div class="info-block good">
+          <h4>Frases para retomar</h4>
+          <ul>
+            <li>"Como lo mencionaba…"</li>
+            <li>"Regresando a lo que decía…"</li>
+            <li>"Para continuar con lo que le comentaba…"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <div class="section-label" style="margin-bottom:10px">Frases de interrupción educada</div>
+      <div class="phrase-grid">
+        <div class="phrase-card">"Disculpe la interrupción…"</div>
+        <div class="phrase-card">"Perdón por interrumpirlo/a, solo quiero entender bien esto…"</div>
+        <div class="phrase-card">"Disculpe, tengo una pregunta…"</div>
+        <div class="phrase-card">"Perdón, solo un momento, déjeme ver si entendí bien…"</div>
+        <div class="phrase-card">"Es difícil escuchar lo que pasó, sin embargo, es importante enfocarnos en lo que le sucedió a usted"</div>
+        <div class="phrase-card">"Entiendo que es una situación difícil, sin embargo, concentrémonos en la información más importante para fortalecer su caso"</div>
+      </div>
+    </div>
+
+    <div class="confirm-section">
+      <div class="confirm-section-title"><span>✏️</span> Preguntas de Confirmación</div>
+      <div class="confirm-section-sub">Verifica tu comprensión antes de continuar.</div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 5 · Polite interruption</div>
+        <div class="question-text">Un cliente lleva 10 minutos dando información no relevante. ¿Cuál es la acción correcta?</div>
+        <div class="options">
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq5')"><span class="option-letter">A</span>Interrumpirlo directamente: "Eso no nos ayuda, vamos al punto."</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq5')"><span class="option-letter">B</span>Esperar en silencio hasta que termine aunque tome todo el tiempo disponible.</button>
+          <button class="option-btn" onclick="confirmQ(this,'correct','cq5')"><span class="option-letter">C</span>Aplicar polite interruption: "Agradezco la confianza de contarme todo esto; sin embargo, para fortalecer su caso es importante centrarnos en lo que le sucedió directamente a usted."</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq5')"><span class="option-letter">D</span>Poner la llamada en silencio y continuar con otras tareas.</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq5-c">✓ <strong>Correcto.</strong> La polite interruption permite redirigir la conversación con respeto: agradeces al cliente, reconoces lo compartido y reencuadras hacia la información que fortalece su caso.</div>
+        <div class="feedback-block incorrect-fb" id="cq5-w">✗ <strong>Incorrecto.</strong> Interrumpir bruscamente daña la confianza. Esperar sin límite afecta la efectividad. La herramienta correcta es la polite interruption con frases específicas y respetuosas. La respuesta correcta es C.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÉTICA Y CONFIDENCIALIDAD -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🔒</div>
+      <div class="card-title-block">
+        <h3>Ética, Confidencialidad y Privacidad</h3>
+        <p>Pilares no negociables de la práctica profesional</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="info-block">
+        <h4>Estándares obligatorios</h4>
+        <ul>
+          <li>Mantener confidencialidad estricta de la información del cliente</li>
+          <li>No compartir información del cliente con terceros</li>
+          <li>Actuar con integridad y honestidad en todo momento</li>
+          <li>Respetar la privacidad, tiempo y espacio del cliente</li>
+          <li>Recordar al cliente la política de confidencialidad cuando aplique</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Comunicación clara</h4>
+        <ul>
+          <li>Lenguaje claro y preciso, sin tecnicismos innecesarios</li>
+          <li>Escuchar activamente y responder preguntas de forma completa</li>
+          <li>Asegurarse de que el cliente comprende la información</li>
+          <li>Canalizar correctamente cuando sea necesario</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert alert-danger">
+      <span class="alert-icon">🚨</span>
+      <div><strong>ALERTA CRÍTICA:</strong> Si el operador considera que no puede manejar la situación, debe solicitar apoyo inmediato al Team Leader — poner la llamada en silencio y pedir acompañamiento, sin dejar al cliente sin atención.</div>
+    </div>
+
+    <div class="confirm-section">
+      <div class="confirm-section-title"><span>✏️</span> Preguntas de Confirmación</div>
+      <div class="confirm-section-sub">Verifica tu comprensión antes de continuar.</div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 6 · Confidencialidad</div>
+        <div class="question-text">Un familiar del cliente llama solicitando información del caso. ¿Qué haces?</div>
+        <div class="options">
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq6')"><span class="option-letter">A</span>Proporcionar información general sin datos específicos.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq6')"><span class="option-letter">B</span>Transferir al abogado sin verificar identidad.</button>
+          <button class="option-btn" onclick="confirmQ(this,'correct','cq6')"><span class="option-letter">C</span>No compartir información del caso, recordar la política de confidencialidad y pedir que el cliente autorizado se comunique directamente.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq6')"><span class="option-letter">D</span>Dar información si el familiar demuestra ser de confianza.</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq6-c">✓ <strong>Correcto.</strong> La confidencialidad es obligatoria sin excepción. La información del cliente no se comparte con terceros, independientemente del vínculo familiar. Se debe recordar la política y redirigir correctamente.</div>
+        <div class="feedback-block incorrect-fb" id="cq6-w">✗ <strong>Incorrecto.</strong> Ninguna información del caso se comparte con terceros, sin importar el parentesco ni la confianza. La respuesta correcta es C: recordar la política y redirigir al cliente autorizado.</div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 7 · Escalamiento</div>
+        <div class="question-text">¿Cuál es el protocolo correcto cuando el operador no puede manejar una llamada difícil?</div>
+        <div class="options">
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq7')"><span class="option-letter">A</span>Terminar la llamada y reportar después al Team Leader.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq7')"><span class="option-letter">B</span>Continuar la llamada aunque no pueda manejarla adecuadamente.</button>
+          <button class="option-btn" onclick="confirmQ(this,'correct','cq7')"><span class="option-letter">C</span>Pedir al cliente unos minutos, poner la llamada en silencio y buscar apoyo inmediato del Team Leader.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq7')"><span class="option-letter">D</span>Derivar al cliente a otro número sin informarle.</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq7-c">✓ <strong>Correcto.</strong> El protocolo establecido es: pedir unos minutos al cliente → silenciar la llamada → buscar apoyo inmediato del Team Leader. Nunca se deja al cliente sin atención ni se termina abruptamente la llamada.</div>
+        <div class="feedback-block incorrect-fb" id="cq7-w">✗ <strong>Incorrecto.</strong> Nunca se termina la llamada abruptamente ni se deriva sin informar. El protocolo es: minutos → silencio → Team Leader de forma inmediata. La respuesta correcta es C.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTITUD DE SERVICIO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">⭐</div>
+      <div class="card-title-block">
+        <h3>Actitud de Servicio y Canalización</h3>
+        <p>Orientación proactiva hacia el cliente</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="info-block good">
+        <h4>Buenas prácticas</h4>
+        <ul>
+          <li>Estar dispuesto a ayudar y resolver problemas de forma proactiva</li>
+          <li>Identificar cuándo canalizar al área o persona correspondiente</li>
+          <li>Evitar que el cliente sienta que su tiempo es malgastado</li>
+          <li>Garantizar la satisfacción del cliente en cada interacción</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Impacto del servicio de excelencia</h4>
+        <ul>
+          <li>Mayor satisfacción y fidelización del cliente</li>
+          <li>Imagen positiva de la firma</li>
+          <li>Reducción de conflictos y quejas</li>
+          <li>Mayor efectividad en la aplicación de protocolos</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     MÓDULO 2 · RUTINA OPERATIVA
+══════════════════════════════════ -->
+<div id="rutina" class="section">
+<div class="container">
+
+  <div class="section-label">Módulo 2</div>
+  <h2 class="section-heading">Rutina Operativa LSU</h2>
+  <p class="section-desc">Protocolo completo de gestión de llamadas: preparación, ejecución y cierre con el cliente.</p>
+
+  <!-- PREVIO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📋</div>
+      <div class="card-title-block">
+        <h3>Previo a la Llamada</h3>
+        <p>Preparación estructurada del caso</p>
+      </div>
+    </div>
+    <ol class="step-list">
+      <li>
+        <div class="step-num">1</div>
+        <div>
+          <strong>Revisar el entregable disponible</strong>
+          <div style="font-size:13px;color:var(--gray-600);margin-top:3px">Una vez asignado el caso, revisar toda la documentación e información disponible antes de iniciar cualquier gestión.</div>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div>
+          <strong>Anotar puntos clave</strong>
+          <div style="font-size:13px;color:var(--gray-600);margin-top:3px">Realizar anotaciones de los puntos críticos a considerar para la llamada con base en el entregable revisado.</div>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div>
+          <strong>Preparar la llamada</strong>
+          <div style="font-size:13px;color:var(--gray-600);margin-top:3px">Revisar la anatomía de la llamada y confirmar que todos los recursos necesarios están disponibles.</div>
+        </div>
+      </li>
+    </ol>
+    <div style="margin-top:16px">
+      <div class="badge badge-navy" style="margin-bottom:10px">📹 Recurso de apoyo · Anatomía de la llamada</div>
+      <div class="video-wrap">
+        <iframe height="300" src="https://drive.google.com/file/d/1E26dcIvj-ZWASKGDRxkYtCOxkuGVeAqH/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="confirm-section">
+      <div class="confirm-section-title"><span>✏️</span> Preguntas de Confirmación</div>
+      <div class="confirm-section-sub">Verifica tu comprensión antes de continuar.</div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 8 · Preparación</div>
+        <div class="question-text">¿Cuál es el primer paso de la rutina operativa LSU antes de una llamada?</div>
+        <div class="options">
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq8')"><span class="option-letter">A</span>Ingresar directamente a la videollamada cuando el cliente esté listo.</button>
+          <button class="option-btn" onclick="confirmQ(this,'correct','cq8')"><span class="option-letter">B</span>Revisar el entregable disponible del caso asignado y tomar anotaciones de puntos clave.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq8')"><span class="option-letter">C</span>Contactar al cliente por mensaje para confirmar la llamada.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq8')"><span class="option-letter">D</span>Coordinar con el abogado el contenido de la llamada en el momento.</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq8-c">✓ <strong>Correcto.</strong> El proceso previo comienza con revisar el entregable del caso y tomar notas clave — esto garantiza que el paralegal llegue preparado a la llamada y brinde un apoyo de calidad.</div>
+        <div class="feedback-block incorrect-fb" id="cq8-w">✗ <strong>Incorrecto.</strong> Ninguna llamada debe iniciarse sin preparación previa. El primer paso es revisar el entregable y tomar anotaciones de puntos clave. La respuesta correcta es B.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DURANTE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📞</div>
+      <div class="card-title-block">
+        <h3>Durante la Llamada</h3>
+        <p>Protocolo de ejecución paso a paso</p>
+      </div>
+    </div>
+    <ol class="step-list">
+      <li><div class="step-num">1</div><div><strong>Gestión de ingreso del cliente a la videollamada</strong></div></li>
+      <li><div class="step-num">2</div><div><strong>Presentación formal del paralegal y abogado/a ante el cliente</strong></div></li>
+      <li><div class="step-num">3</div><div><strong>Explicación formal del objetivo de la llamada</strong></div></li>
+      <li><div class="step-num">4</div><div><strong>Lectura de abusos / información previamente proporcionada por el cliente</strong></div></li>
+      <li><div class="step-num">5</div><div><strong>Apoyo continuo durante videollamada con abogado/a</strong></div></li>
+      <li><div class="step-num">6</div><div><strong>Explicación del llenado de formas</strong></div></li>
+      <li><div class="step-num">7</div><div><strong>Presentación de pantalla durante llenado de formas</strong></div></li>
+      <li><div class="step-num">8</div><div><strong>Llenado correcto de formas</strong></div></li>
+      <li><div class="step-num">9</div><div><strong>Explicación de pasos siguientes al cliente</strong></div></li>
+      <li><div class="step-num">10</div><div><strong>Resolución efectiva de dudas</strong> <span class="badge badge-gold" style="margin-left:6px">En caso de que aplique</span></div></li>
+      <li><div class="step-num">11</div><div><strong>Cierre cordial de la llamada con el cliente</strong></div></li>
+    </ol>
+
+    <div class="confirm-section">
+      <div class="confirm-section-title"><span>✏️</span> Preguntas de Confirmación</div>
+      <div class="confirm-section-sub">Verifica tu comprensión antes de continuar.</div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 9 · Protocolo durante la llamada</div>
+        <div class="question-text">¿En qué momento del protocolo de llamada se realiza la "presentación formal del paralegal y abogado/a"?</div>
+        <div class="options">
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq9')"><span class="option-letter">A</span>Al final de la llamada, como parte del cierre.</button>
+          <button class="option-btn" onclick="confirmQ(this,'correct','cq9')"><span class="option-letter">B</span>Al inicio, inmediatamente después de gestionar el ingreso del cliente a la videollamada.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq9')"><span class="option-letter">C</span>Antes de comenzar el llenado de formas.</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq9')"><span class="option-letter">D</span>Solo si el cliente pregunta quiénes son los presentes.</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq9-c">✓ <strong>Correcto.</strong> La presentación formal es el paso 2 del protocolo — ocurre inmediatamente después de gestionar el ingreso del cliente. Es parte esencial del inicio estructurado de la llamada.</div>
+        <div class="feedback-block incorrect-fb" id="cq9-w">✗ <strong>Incorrecto.</strong> La presentación formal ocurre al inicio de la llamada, como paso 2 del protocolo, no al final ni de forma condicional. La respuesta correcta es B.</div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 10 · Orden del protocolo</div>
+        <div class="question-text">¿Cuál es el orden correcto de los últimos pasos de la llamada según el protocolo LSU?</div>
+        <div class="options">
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq10')"><span class="option-letter">A</span>Cierre cordial → Resolución de dudas → Explicación de pasos siguientes</button>
+          <button class="option-btn" onclick="confirmQ(this,'correct','cq10')"><span class="option-letter">B</span>Llenado correcto de formas → Explicación de pasos siguientes → Resolución de dudas → Cierre cordial</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq10')"><span class="option-letter">C</span>Resolución de dudas → Llenado de formas → Cierre cordial</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq10')"><span class="option-letter">D</span>Explicación de pasos siguientes → Llenado de formas → Cierre cordial</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq10-c">✓ <strong>Correcto.</strong> El orden correcto es: llenado de formas → explicación de pasos siguientes → resolución de dudas (si aplica) → cierre cordial. Este orden garantiza que el cliente sale con claridad sobre su caso.</div>
+        <div class="feedback-block incorrect-fb" id="cq10-w">✗ <strong>Incorrecto.</strong> El orden protocolario correcto es: llenado de formas → pasos siguientes → resolución de dudas → cierre cordial. La respuesta correcta es B.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PUNTOS CLAVE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">⚡</div>
+      <div class="card-title-block">
+        <h3>Puntos Clave a lo Largo de Toda la Llamada</h3>
+        <p>Aplicación constante en cada etapa de la interacción</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="info-block good">
+        <h4>Siempre presentes</h4>
+        <ul>
+          <li>Tono de voz adecuado</li>
+          <li>Aplicación adecuada de escucha activa</li>
+          <li>Aplicación adecuada de polite interruption</li>
+          <li>Claridad al brindar información</li>
+          <li>Empatía con el cliente</li>
+          <li>Lenguaje corporal adecuado</li>
+        </ul>
+      </div>
+      <div>
+        <div class="info-block" style="margin-bottom:16px">
+          <h4>Cuando aplique</h4>
+          <ul>
+            <li><strong>Contención:</strong> Apoyo emocional activo cuando el cliente manifiesta angustia o crisis emocional</li>
+          </ul>
+        </div>
+        <div class="alert alert-danger">
+          <span class="alert-icon">🚨</span>
+          <div><strong>ALERTA CRÍTICA:</strong> Mantener confidencialidad y ética profesional en todo momento, sin excepción.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="confirm-section">
+      <div class="confirm-section-title"><span>✏️</span> Preguntas de Confirmación</div>
+      <div class="confirm-section-sub">Verifica tu comprensión antes de continuar.</div>
+
+      <div class="question-card">
+        <div class="question-number">Pregunta 11 · Puntos clave</div>
+        <div class="question-text">¿Cuál de los siguientes puntos clave aplica SOLO cuando la situación lo requiere, no durante toda la llamada?</div>
+        <div class="options">
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq11')"><span class="option-letter">A</span>Tono de voz adecuado</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq11')"><span class="option-letter">B</span>Escucha activa</button>
+          <button class="option-btn" onclick="confirmQ(this,'correct','cq11')"><span class="option-letter">C</span>Contención emocional</button>
+          <button class="option-btn" onclick="confirmQ(this,'wrong','cq11')"><span class="option-letter">D</span>Empatía con el cliente</button>
+        </div>
+        <div class="feedback-block correct-fb" id="cq11-c">✓ <strong>Correcto.</strong> La contención emocional es el único punto que se aplica "cuando aplique" — es decir, solo cuando el cliente manifiesta angustia o crisis emocional. Los demás (tono, escucha activa, empatía) se mantienen durante toda la llamada.</div>
+        <div class="feedback-block incorrect-fb" id="cq11-w">✗ <strong>Incorrecto.</strong> El tono, la escucha activa y la empatía se mantienen durante toda la llamada sin excepción. La contención emocional es la que se aplica solo cuando el cliente la necesita. La respuesta correcta es C.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     MÓDULO 3 · CHECKLIST
+══════════════════════════════════ -->
+<div id="checklist" class="section">
+<div class="container">
+
+  <div class="section-label">Módulo 3</div>
+  <h2 class="section-heading">Checklist de Proceso Operativo</h2>
+  <p class="section-desc">Observa el video y, con base en el desempeño de la compañera, marca los elementos que se cumplen a lo largo de toda la llamada.</p>
+
+  <!-- VIDEO CANVA -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🎬</div>
+      <div class="card-title-block">
+        <h3>Video de Observación</h3>
+        <p>Mira atentamente el siguiente video antes de completar el checklist</p>
+      </div>
+    </div>
+    <div class="alert alert-warning" style="margin-bottom:16px;margin-top:0">
+      <span class="alert-icon">📌</span>
+      <div><strong>Instrucción:</strong> Mira atentamente el siguiente video y con base en lo observado del desempeño de la compañera, realiza el llenado del checklist marcando los elementos que se cumplen a lo largo de toda la llamada.</div>
+    </div>
+    <div class="video-wrap">
+      <iframe height="380" src="https://www.canva.com/design/DAHHwY1ltUI/q4KFc7ruc7GTqRrFKKvktQ/watch?embed" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <p style="font-size:12px;color:var(--gray-400);margin-top:8px;text-align:center">Si el video no carga correctamente, <a href="https://www.canva.com/design/DAHHwY1ltUI/q4KFc7ruc7GTqRrFKKvktQ/watch?utm_content=DAHHwY1ltUI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h29f8a75806" target="_blank" style="color:var(--navy-light)">ábrelo directamente aquí</a>.</p>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="card">
+    <div class="checklist-progress-label">
+      <span>Progreso de verificación</span>
+      <span id="chk-pct">0 / 20 marcado</span>
+    </div>
+    <div class="checklist-progress"><div class="checklist-progress-bar" id="chk-bar" style="width:0%"></div></div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Previo a la Llamada</div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Revisó el entregable disponible una vez asignado el caso</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Realizó anotaciones de puntos clave a considerar para la llamada</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Preparó la llamada y revisó la anatomía de la llamada</span>
+      </div>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Durante la Llamada</div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Gestionó el ingreso del cliente a la videollamada</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Realizó presentación formal del paralegal y abogado/a ante el cliente</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Explicó formalmente el objetivo de la llamada</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Realizó la lectura de abusos / información proporcionada previamente por el cliente</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Proporcionó apoyo continuo durante la videollamada con abogado/a</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Explicó el llenado de formas al cliente</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Presentó la pantalla durante el llenado de formas</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Realizó el llenado correcto de formas</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Explicó los pasos siguientes al cliente</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Resolvió efectivamente las dudas del cliente (cuando aplicó)</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Realizó un cierre cordial de la llamada</span>
+      </div>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Puntos Clave en Toda la Llamada</div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Mantuvo un tono de voz adecuado durante toda la llamada</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Aplicó escucha activa (atención plena, clarificación, silencio respetuoso)</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Aplicó polite interruption cuando fue necesario</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Brindó información con claridad y sin tecnicismos innecesarios</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Demostró empatía parafraseando al cliente</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Mantuvo lenguaje corporal adecuado durante la videollamada</span>
+      </div>
+      <div class="checklist-item" onclick="toggleChk(this)">
+        <div class="chk-box"></div><span class="chk-label">Mantuvo confidencialidad y ética profesional en todo momento</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     MÓDULO 4 · PRÁCTICA
+══════════════════════════════════ -->
+<div id="practica" class="section">
+<div class="container">
+
+  <div class="section-label">Módulo 4 · 70% Práctica</div>
+  <h2 class="section-heading">Escenarios de Aplicación Real</h2>
+  <p class="section-desc">Analiza cada situación y selecciona la acción correcta. Recibirás retroalimentación inmediata en todas las respuestas.</p>
+
+  <div class="question-card">
+    <div class="question-number">Escenario 01 · Empatía</div>
+    <div class="question-text">¿Cómo demuestras empatía efectiva con un cliente que está llorando durante la llamada?</div>
+    <div class="question-scenario">Un cliente te relata una situación de abuso muy dolorosa y comienza a llorar. Debes continuar con la recopilación de información para el caso.</div>
+    <div class="options">
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p1')"><span class="option-letter">A</span>Decirle "entiendo cómo se siente" y continuar con las preguntas del formulario.</button>
+      <button class="option-btn" onclick="practiceQ(this,'correct','p1')"><span class="option-letter">B</span>Parafrasear lo que el cliente expresó, validar sus emociones y después reorientar hacia la información del caso con una frase de polite interruption.</button>
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p1')"><span class="option-letter">C</span>Esperar en silencio hasta que el cliente se calme y continuar como si nada.</button>
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p1')"><span class="option-letter">D</span>Ignorar el llanto para mantener el ritmo de la llamada.</button>
+    </div>
+    <div class="feedback-block correct-fb" id="p1-c">✓ <strong>Correcto.</strong> La empatía real exige parafrasear — no solo decir "entiendo". Validar emociones y luego usar una frase de polite interruption permite continuar con la llamada sin ignorar la experiencia del cliente.</div>
+    <div class="feedback-block incorrect-fb" id="p1-w">✗ <strong>Incorrecto.</strong> La empatía efectiva requiere parafrasear lo que el cliente expresa, no solo reconocer el dolor con frases genéricas ni ignorar sus emociones. La respuesta correcta es B.</div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-number">Escenario 02 · Polite Interruption</div>
+    <div class="question-text">El cliente lleva 8 minutos dando detalles irrelevantes para el caso. ¿Cómo manejas la situación?</div>
+    <div class="question-scenario">Tienes 30 minutos para la llamada y el cliente continúa narrando eventos que no tienen relación directa con su caso.</div>
+    <div class="options">
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p2')"><span class="option-letter">A</span>Interrumpirlo directamente: "Necesitamos avanzar, eso no es relevante."</button>
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p2')"><span class="option-letter">B</span>Esperar a que termine aunque se acabe el tiempo disponible.</button>
+      <button class="option-btn" onclick="practiceQ(this,'correct','p2')"><span class="option-letter">C</span>Usar polite interruption: "Agradezco la confianza de contarme todo esto; sin embargo, para fortalecer su caso es importante que nos centremos en lo que le sucedió directamente a usted."</button>
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p2')"><span class="option-letter">D</span>Poner la llamada en silencio y continuar con otras tareas mientras el cliente habla.</button>
+    </div>
+    <div class="feedback-block correct-fb" id="p2-c">✓ <strong>Correcto.</strong> La polite interruption permite redirigir la conversación hacia la información relevante sin ser irrespetuoso. Agradeces al cliente y lo reencuadras hacia lo que fortalecerá su caso.</div>
+    <div class="feedback-block incorrect-fb" id="p2-w">✗ <strong>Incorrecto.</strong> Interrumpir bruscamente daña la confianza. Esperar sin límite perjudica la efectividad. La herramienta correcta es la polite interruption con frases específicas. La respuesta correcta es C.</div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-number">Escenario 03 · Escalamiento</div>
+    <div class="question-text">¿Cuándo y cómo debes escalar una llamada al Team Leader?</div>
+    <div class="question-scenario">El cliente está en crisis emocional severa y consideras que no tienes la capacidad de manejar la situación de forma efectiva.</div>
+    <div class="options">
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p3')"><span class="option-letter">A</span>Terminar la llamada y avisar después al Team Leader.</button>
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p3')"><span class="option-letter">B</span>Continuar la llamada aunque no puedas manejarla adecuadamente.</button>
+      <button class="option-btn" onclick="practiceQ(this,'correct','p3')"><span class="option-letter">C</span>Pedir al cliente unos minutos, poner la llamada en silencio y buscar inmediatamente el acompañamiento del Team Leader o supervisor.</button>
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p3')"><span class="option-letter">D</span>Derivar al cliente a otro número sin informarle.</button>
+    </div>
+    <div class="feedback-block correct-fb" id="p3-c">✓ <strong>Correcto.</strong> El protocolo es claro: pedir unos minutos al cliente → silenciar → buscar apoyo inmediato del Team Leader. Nunca se deja al cliente sin atención ni se termina la llamada abruptamente.</div>
+    <div class="feedback-block incorrect-fb" id="p3-w">✗ <strong>Incorrecto.</strong> Nunca termines abruptamente ni derives sin informar. El protocolo es: minutos → silencio → Team Leader de forma inmediata. La respuesta correcta es C.</div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-number">Escenario 04 · Escucha Activa</div>
+    <div class="question-text">¿Cuál de estas acciones NO forma parte de la escucha activa?</div>
+    <div class="options">
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p4')"><span class="option-letter">A</span>Hacer preguntas de clarificación cuando algo no queda claro.</button>
+      <button class="option-btn" onclick="practiceQ(this,'correct','p4')"><span class="option-letter">B</span>Anticipar lo que el cliente va a decir y completar sus frases para agilizar.</button>
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p4')"><span class="option-letter">C</span>Guardar silencio respetuoso hasta que el cliente termine de hablar.</button>
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p4')"><span class="option-letter">D</span>Captar el tono emocional del cliente y responder con empatía.</button>
+    </div>
+    <div class="feedback-block correct-fb" id="p4-c">✓ <strong>Correcto.</strong> Completar las frases del cliente viola el principio de silencio respetuoso y puede hacer que el cliente se sienta interrumpido y no escuchado.</div>
+    <div class="feedback-block incorrect-fb" id="p4-w">✗ <strong>Incorrecto.</strong> La opción B es la que NO corresponde a escucha activa — anticipar y completar frases interrumpe al cliente y supone información incorrecta. La respuesta correcta es B.</div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-number">Escenario 05 · Confidencialidad</div>
+    <div class="question-text">Un familiar del cliente llama preguntando detalles del caso. ¿Cuál es la acción correcta?</div>
+    <div class="options">
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p5')"><span class="option-letter">A</span>Proporcionar la información solicitada porque es familia del cliente.</button>
+      <button class="option-btn" onclick="practiceQ(this,'correct','p5')"><span class="option-letter">B</span>No compartir información del caso. Recordar la política de confidencialidad y solicitar que el cliente autorizado se comunique directamente.</button>
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p5')"><span class="option-letter">C</span>Dar información general sin datos específicos.</button>
+      <button class="option-btn" onclick="practiceQ(this,'wrong','p5')"><span class="option-letter">D</span>Transferir la llamada directamente al abogado sin verificar.</button>
+    </div>
+    <div class="feedback-block correct-fb" id="p5-c">✓ <strong>Correcto.</strong> La confidencialidad aplica sin excepción. Independientemente del vínculo familiar, la información del caso no se comparte con terceros.</div>
+    <div class="feedback-block incorrect-fb" id="p5-w">✗ <strong>Incorrecto.</strong> La confidencialidad aplica sin excepción — ni el parentesco justifica compartir información. La respuesta correcta es B.</div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-number">Verdadero / Falso · 01</div>
+    <div class="question-text">Decir "entiendo" o "lo siento mucho" es suficiente para demostrar empatía efectiva con el cliente.</div>
+    <div class="tf-options">
+      <button class="tf-btn" onclick="practiceTF(this,'wrong','ptf1','ptf1-v','ptf1-f')">Verdadero</button>
+      <button class="tf-btn" onclick="practiceTF(this,'correct','ptf1','ptf1-v','ptf1-f')">Falso</button>
+    </div>
+    <div class="feedback-block correct-fb" id="ptf1-f">✓ <strong>Correcto — Falso.</strong> Las frases genéricas no constituyen empatía efectiva. La empatía real requiere parafrasear lo que el cliente expresa, validar genuinamente sus sentimientos.</div>
+    <div class="feedback-block incorrect-fb" id="ptf1-v">✗ <strong>Incorrecto.</strong> Solo decir "entiendo" sin parafrasear no es empatía efectiva. Se requiere reflejar con palabras lo que el cliente comunicó.</div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-number">Verdadero / Falso · 02</div>
+    <div class="question-text">Interrumpir al cliente para agilizar la llamada mejora la experiencia del servicio.</div>
+    <div class="tf-options">
+      <button class="tf-btn" onclick="practiceTF(this,'wrong','ptf2','ptf2-v','ptf2-f')">Verdadero</button>
+      <button class="tf-btn" onclick="practiceTF(this,'correct','ptf2','ptf2-v','ptf2-f')">Falso</button>
+    </div>
+    <div class="feedback-block correct-fb" id="ptf2-f">✓ <strong>Correcto — Falso.</strong> Interrumpir bruscamente es un error que daña la confianza. Si se requiere interrumpir, debe aplicarse la polite interruption con frases específicas y respetuosas.</div>
+    <div class="feedback-block incorrect-fb" id="ptf2-v">✗ <strong>Incorrecto.</strong> Interrumpir sin cortesía perjudica la experiencia y daña la relación de confianza con el cliente.</div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-number">Verdadero / Falso · 03</div>
+    <div class="question-text">La confidencialidad aplica solo cuando el cliente lo solicita expresamente.</div>
+    <div class="tf-options">
+      <button class="tf-btn" onclick="practiceTF(this,'wrong','ptf3','ptf3-v','ptf3-f')">Verdadero</button>
+      <button class="tf-btn" onclick="practiceTF(this,'correct','ptf3','ptf3-v','ptf3-f')">Falso</button>
+    </div>
+    <div class="feedback-block correct-fb" id="ptf3-f">✓ <strong>Correcto — Falso.</strong> La confidencialidad es un estándar obligatorio y permanente — no depende de una solicitud del cliente. Aplica en cada interacción sin excepción.</div>
+    <div class="feedback-block incorrect-fb" id="ptf3-v">✗ <strong>Incorrecto.</strong> La confidencialidad es un compromiso permanente, no condicional. Aplica siempre, en toda interacción.</div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     MÓDULO 5 · EVALUACIÓN ROLE PLAY
+══════════════════════════════════ -->
+<div id="evaluacion" class="section">
+<div class="container">
+
+  <div class="section-label">Módulo 5 · 10% Evaluación</div>
+  <h2 class="section-heading">Evaluación Final — Role Play</h2>
+  <p class="section-desc">Ejercicio de aplicación real. Analiza el expediente del caso y prepara tu briefing para el attorney asignado.</p>
+
+  <!-- INSTRUCCIÓN -->
+  <div class="roleplay-instruction">
+    <h3>📁 Instrucción del Ejercicio</h3>
+    <p>Analiza el documento del caso que se te comparte y realiza las anotaciones que consideres importantes para realizar un <strong>briefing con el attorney asignado</strong>.</p>
+    <ul class="obj-list">
+      <li>El abogado deberá entender todos los <strong>puntos más importantes del caso</strong></li>
+      <li>El abogado deberá conocer cuáles podrían ser las <strong>posibles causas de inadmisibilidad</strong></li>
+      <li>Usa el área de notas para registrar tu análisis antes de ver la respuesta modelo</li>
+    </ul>
+  </div>
+
+  <!-- EXPEDIENTE -->
+  <div class="case-file">
+    <div class="case-file-header">
+      <div class="case-file-icon">📄</div>
+      <div>
+        <h4>LSC Report · Visa T — Caso 46199112</h4>
+        <p>Fecha de llamada: 05/01/2026 · Tipo: T VISA LABOR</p>
+      </div>
+    </div>
+    <div class="case-body">
+
+      <!-- DATOS DEL CLIENTE -->
+      <div class="section-label" style="margin-bottom:8px">Datos del Cliente</div>
+      <div class="case-row"><span class="case-label">Nombre completo</span><span class="case-value">Miguel Angel Perdomo Wilches</span></div>
+      <div class="case-row"><span class="case-label">Número de caso</span><span class="case-value">46199112</span></div>
+      <div class="case-row"><span class="case-label">Tipo de caso</span><span class="case-value"><strong>T VISA LABOR</strong></span></div>
+      <div class="case-row"><span class="case-label">Fecha de nacimiento</span><span class="case-value">08/31/1986</span></div>
+      <div class="case-row"><span class="case-label">País de origen</span><span class="case-value">Colombia</span></div>
+      <div class="case-row"><span class="case-label">A-Number</span><span class="case-value">A-220848611</span></div>
+      <div class="case-row"><span class="case-label">Paralegal</span><span class="case-value">Karen Moalis Araujo Parra</span></div>
+      <div class="case-row"><span class="case-label">Abogada</span><span class="case-value">Abogada Albalis</span></div>
+
+      <hr class="divider">
+
+      <!-- HISTORIAL DE ABUSO -->
+      <div class="section-label" style="margin-bottom:8px">Historial de Abuso — Hechos Confirmados</div>
+      <div class="abuse-block">
+        <strong>⚠ Naturaleza del abuso</strong>
+        El cliente fue explotado por su <strong>ex empleadora</strong>. Los hechos confirmados incluyen:
+        <ul style="margin-top:10px;list-style:none;padding:0">
+          <li style="padding:5px 0 5px 16px;position:relative;border-bottom:1px solid rgba(184,50,50,0.1)"><span style="position:absolute;left:0;color:var(--danger)">•</span> <strong>Explotación laboral extrema:</strong> Obligado a trabajar jornadas de 12 horas los 7 días de la semana durante casi un año</li>
+          <li style="padding:5px 0 5px 16px;position:relative;border-bottom:1px solid rgba(184,50,50,0.1)"><span style="position:absolute;left:0;color:var(--danger)">•</span> <strong>Fraude en el pago de salarios:</strong> Sin remuneración justa</li>
+          <li style="padding:5px 0 5px 16px;position:relative;border-bottom:1px solid rgba(184,50,50,0.1)"><span style="position:absolute;left:0;color:var(--danger)">•</span> <strong>Control coercitivo:</strong> Vigilancia constante sobre el cliente</li>
+          <li style="padding:5px 0 5px 16px;position:relative;border-bottom:1px solid rgba(184,50,50,0.1)"><span style="position:absolute;left:0;color:var(--danger)">•</span> <strong>Amenazas migratorias y legales:</strong> Amenazas de denuncia falsa ante autoridades para forzar deportación</li>
+          <li style="padding:5px 0 5px 16px;position:relative"><span style="position:absolute;left:0;color:var(--danger)">•</span> <strong>Impacto emocional:</strong> Profundo miedo e incertidumbre por vulnerabilidad económica y migratoria</li>
+        </ul>
+      </div>
+
+      <hr class="divider">
+
+      <!-- HISTORIAL DE EMPLEO -->
+      <div class="section-label" style="margin-bottom:8px">Historial de Empleo (5 años)</div>
+      <div class="case-row"><span class="case-label">Ocupación</span><span class="case-value">Ayudante de tienda — explotado por empleadora durante casi un año</span></div>
+      <div class="case-row"><span class="case-label">Empleador / Empresa</span><span class="case-value missing">Información no proporcionada</span></div>
+      <div class="case-row"><span class="case-label">Dirección</span><span class="case-value missing">Información no proporcionada</span></div>
+      <div class="case-row"><span class="case-label">Fechas</span><span class="case-value missing">Información no proporcionada</span></div>
+
+      <hr class="divider">
+
+      <!-- ESTADO CIVIL / DERIVADOS -->
+      <div class="section-label" style="margin-bottom:8px">Estado Civil y Derivados</div>
+      <div class="case-row"><span class="case-label">Cónyuge</span><span class="case-value">Marge Carolina Rincon-Salinas (DOB: 20/11/1988)</span></div>
+      <div class="case-row"><span class="case-label">Hijos</span><span class="case-value">Valeria Perdomo Rincon, Santiago, Mia</span></div>
+      <div class="case-row"><span class="case-label">SS cónyuge</span><span class="case-value missing">Información no proporcionada</span></div>
+      <div class="case-row"><span class="case-label">Número A cónyuge</span><span class="case-value missing">Información no proporcionada</span></div>
+
+      <hr class="divider">
+
+      <!-- INFORMACIÓN FALTANTE -->
+      <div class="section-label" style="margin-bottom:8px">Información Pendiente de Obtener</div>
+      <div class="case-row"><span class="case-label">Nombre del abusador</span><span class="case-value missing">No proporcionado</span></div>
+      <div class="case-row"><span class="case-label">Alias / otros nombres</span><span class="case-value missing">No proporcionado</span></div>
+      <div class="case-row"><span class="case-label">Correo electrónico</span><span class="case-value missing">No proporcionado</span></div>
+      <div class="case-row"><span class="case-label">Número de seguro social</span><span class="case-value missing">No proporcionado</span></div>
+      <div class="case-row"><span class="case-label">Dirección actual</span><span class="case-value missing">No proporcionada</span></div>
+      <div class="case-row"><span class="case-label">Estado civil actual</span><span class="case-value missing">No proporcionado</span></div>
+      <div class="case-row"><span class="case-label">Historial de entradas/salidas</span><span class="case-value missing">No verificado</span></div>
+      <div class="case-row"><span class="case-label">Historial penal</span><span class="case-value missing">No documentado</span></div>
+      <div class="case-row"><span class="case-label">Peticiones migratorias previas</span><span class="case-value missing">No verificadas</span></div>
+      <div class="case-row"><span class="case-label">Entrevista con psicóloga</span><span class="case-value missing">Verificar en MyCase</span></div>
+
+      <hr class="divider">
+
+      <!-- POSIBLES INADMISIBILIDADES -->
+      <div class="section-label" style="margin-bottom:8px">Posibles Causas de Inadmisibilidad a Revisar</div>
+      <div class="inadmisibilidad-block">
+        <strong>⚠ Áreas de riesgo identificadas</strong>
+        <ul>
+          <li><strong>Uso de documentos falsos:</strong> Si el cliente ingresó con visa de turista, green card u otros documentos falsos o que no eran suyos — requiere Formulario I-601 y demostración de dificultades extremas</li>
+          <li><strong>False claim to citizenship:</strong> Verificar si utilizó documentos de ciudadano estadounidense después del 30/09/1996 para ingresar, o declaró ser ciudadano ante un funcionario migratorio</li>
+          <li><strong>Información falsa al gobierno:</strong> Si proporcionó documentos o información falsa en peticiones previas — requiere I-601</li>
+          <li><strong>Denegaciones previas por fraude:</strong> Verificar si hay fraude en asilo, fraude matrimonial o cualquier hallazgo de fraude migratorio (distinto a caso negado por falta de evidencia)</li>
+          <li><strong>Antecedentes penales:</strong> Historial no documentado — revisar arrestos, condenas, libertad condicional, multas, DUI, violencia doméstica, cualquier delito en EE.UU. o país de origen</li>
+          <li><strong>Órdenes de deportación o salida voluntaria incumplida:</strong> Verificar si fue puesto en procedimiento de deportación, si tiene barra de reingreso (5, 10 o 20 años) o si hay orden de remoción activa</li>
+          <li><strong>Reinstauración de orden de deportación:</strong> Si fue deportado, regresó a EE.UU. y fue deportado nuevamente bajo la misma orden</li>
+          <li><strong>Pertenencia a grupos armados o militares:</strong> Revisar antecedentes en fuerzas armadas, grupos militares o guerrilleros</li>
+          <li><strong>Trabajo sin permiso / presencia sin autorización:</strong> Documenta permanencia irregular — no es causa de inadmisibilidad directa en Visa T, pero se debe registrar formalmente</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ÁREA DE NOTAS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">✏️</div>
+      <div class="card-title-block">
+        <h3>Tus Anotaciones de Briefing</h3>
+        <p>Registra los puntos que presentarías al attorney antes de ver la respuesta modelo</p>
+      </div>
+    </div>
+
+    <div class="notes-label">Puntos clave del caso para el attorney</div>
+    <textarea class="notes-area" id="notes-1" placeholder="Escribe aquí los puntos más importantes del caso que presentarías al abogado..."></textarea>
+    <div class="notes-hint">Incluye: tipo de caso, hechos del abuso, datos relevantes del cliente, información faltante, derivados.</div>
+
+    <hr class="divider">
+
+    <div class="notes-label" style="margin-top:0">Posibles causas de inadmisibilidad identificadas</div>
+    <textarea class="notes-area" id="notes-2" placeholder="Escribe aquí las posibles causas de inadmisibilidad que identificaste en el expediente..."></textarea>
+    <div class="notes-hint">Considera: historial penal, entradas con documentos falsos, peticiones previas, órdenes de deportación, fraude migratorio, etc.</div>
+
+    <button class="answer-toggle-btn" onclick="toggleAnswer('answer-reveal-1')">Ver respuesta modelo — Puntos clave del caso</button>
+    <div class="answer-reveal" id="answer-reveal-1">
+      <div class="answer-reveal-header">✓ Respuesta Modelo — Puntos Clave para el Briefing</div>
+      <div class="answer-reveal-body">
+        <ul>
+          <li><strong>Tipo de caso:</strong> Visa T Labor — víctima de trata laboral grave por parte de ex empleadora</li>
+          <li><strong>Identidad:</strong> Miguel Angel Perdomo Wilches, Colombia, DOB 08/31/1986, A-Number: A-220848611</li>
+          <li><strong>Hechos centrales del abuso:</strong> Explotación laboral extrema (~1 año), jornadas de 12h diarias los 7 días sin pago justo, vigilancia constante, amenazas migratorias para evitar que denunciara, control coercitivo e impacto emocional severo</li>
+          <li><strong>Abusador:</strong> Ex empleadora — nombre NO proporcionado (dato crítico pendiente)</li>
+          <li><strong>Derivados confirmados:</strong> Esposa Marge Carolina Rincon-Salinas (DOB 20/11/1988) + 3 hijos: Valeria Perdomo Rincon, Santiago y Mia</li>
+          <li><strong>Información crítica faltante:</strong> Nombre del abusador, historial de entradas/salidas a EE.UU., antecedentes penales, peticiones migratorias previas, SS y A-Number de cónyuge, dirección actual, estado civil, datos completos de empleo</li>
+          <li><strong>Entrevista con psicóloga:</strong> Pendiente verificar en MyCase — si no se ha realizado, es próximo paso operativo</li>
+          <li><strong>Cooperación con autoridades:</strong> Requerida — cliente fue informado y notificado por mensaje de texto durante la llamada</li>
+          <li><strong>Advertencia de no fraude:</strong> Cliente fue notificado y confirmó por mensaje de texto durante la llamada</li>
+        </ul>
+      </div>
+    </div>
+
+    <button class="answer-toggle-btn" onclick="toggleAnswer('answer-reveal-2')" style="margin-top:12px">Ver respuesta modelo — Posibles inadmisibilidades</button>
+    <div class="answer-reveal" id="answer-reveal-2">
+      <div class="answer-reveal-header">✓ Respuesta Modelo — Posibles Causas de Inadmisibilidad</div>
+      <div class="answer-reveal-body">
+        <ul>
+          <li><strong>Documentos falsos al ingresar (I-601 potencial):</strong> Verificar si ingresó con visa de turista, green card u otros documentos falsos o de terceros — si aplica, requiere I-601 y demostración de dificultades extremas para ajuste de estatus</li>
+          <li><strong>False claim to citizenship:</strong> Verificar si utilizó documentos de ciudadano estadounidense post 30/09/1996 o declaró ser ciudadano ante un oficial migratorio al ingresar a EE.UU.</li>
+          <li><strong>Información o documentos falsos al gobierno (I-601 potencial):</strong> Verificar si en peticiones previas presentó información o documentos fraudulentos — si aplica, requiere I-601</li>
+          <li><strong>Denegaciones previas por fraude:</strong> Distinguir entre caso negado por falta de evidencia vs. determinación específica de fraude migratorio o fraude matrimonial (tiene consecuencias muy distintas)</li>
+          <li><strong>Antecedentes penales:</strong> Historial sin documentar — prioridad revisar arrestos, condenas, DUI, violencia doméstica, robos, libertad condicional, multas con pago, tanto en EE.UU. como en Colombia</li>
+          <li><strong>Procedimientos de deportación activos o previos:</strong> Verificar si existe orden de remoción vigente, barra de reingreso (5/10/20 años), o reinstauración de orden de deportación</li>
+          <li><strong>Salida voluntaria incumplida:</strong> Si un juez le otorgó salida voluntaria con plazo y no salió dentro del tiempo requerido</li>
+          <li><strong>Grupos armados / militares:</strong> Preguntar sobre pertenencia a fuerzas armadas, grupos militares o guerrilleros (Colombia — contexto relevante)</li>
+          <li><strong>Nota práctica:</strong> El uso de número de Seguro Social falso para empleo privado y documentos de ciudadano para empleo privado NO se interpretan como "false claim to citizenship" — aclarar al attorney para no sobredimensionar riesgos</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PANTALLA DE REGISTRO (nombre)
+══════════════════════════════════ -->
+<div id="registro-overlay" style="display:flex;position:fixed;inset:0;background:rgba(11,46,78,0.96);z-index:2000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--white);border-radius:16px;max-width:480px;width:100%;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.4)">
+    <div style="background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:28px 30px 22px;text-align:center">
+      <div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-light);font-weight:600;margin-bottom:8px">TMLF · Mendoza Learning Center</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--white)">Paralegal Legal Strategy Unit</h2>
+      <p style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:4px">Antes de comenzar, ingresa tu nombre completo</p>
+    </div>
+    <div style="padding:28px 30px">
+      <label style="font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--navy-mid);display:block;margin-bottom:8px">Nombre completo del colaborador</label>
+      <input id="input-nombre" type="text" placeholder="Ej. Laura Karen Reyna Castro"
+        style="width:100%;padding:13px 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);outline:none;transition:border-color 0.15s"
+        onfocus="this.style.borderColor='var(--navy-light)'"
+        onblur="this.style.borderColor='var(--gray-200)'"
+        onkeydown="if(event.key==='Enter')iniciarTraining()"
+      />
+      <div id="registro-error" style="color:var(--danger);font-size:12px;margin-top:6px;display:none">Por favor ingresa tu nombre completo para continuar.</div>
+      <button onclick="iniciarTraining()" style="width:100%;margin-top:16px;background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:var(--white);border:none;border-radius:8px;padding:13px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:0.3px;">Comenzar training →</button>
+      <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--gray-400)">Tu nombre se utilizará para registrar tu desempeño.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCORE TRACKER BAR (sticky)
+══════════════════════════════════ -->
+<div id="score-tracker" style="
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);
+  border-top:2px solid rgba(201,166,70,0.35);
+  padding:10px 24px;
+  display:flex;align-items:center;gap:18px;
+  z-index:999;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.18);
+">
+  <div style="flex:1">
+    <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+      <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.55);font-weight:600">Puntaje acumulado</span>
+      <span id="score-label" style="font-size:12px;font-weight:700;color:var(--gold-light)">0 / 0 respondidas</span>
+    </div>
+    <div style="background:rgba(255,255,255,0.1);border-radius:20px;height:6px;overflow:hidden">
+      <div id="score-bar-fill" style="height:100%;border-radius:20px;background:linear-gradient(90deg,var(--navy-light),var(--gold));width:0%;transition:width 0.4s"></div>
+    </div>
+  </div>
+  <div style="text-align:center;flex-shrink:0">
+    <div id="score-pct-display" style="font-size:22px;font-weight:700;color:var(--gold-light);line-height:1">—</div>
+    <div style="font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:1px;text-transform:uppercase">puntos</div>
+  </div>
+  <button onclick="showFinalFeedback()" id="btn-final" style="
+    background:var(--gold);color:var(--navy);border:none;border-radius:7px;
+    padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;
+    cursor:pointer;letter-spacing:0.4px;white-space:nowrap;flex-shrink:0;
+    opacity:0.5;pointer-events:none;transition:opacity 0.3s;
+  ">Ver resultado final</button>
+  <button id="admin-access-btn" onclick="openAdminLogin()" style="display:none;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:9px 13px;border-radius:7px;font-family:DM Sans,sans-serif;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;letter-spacing:0.4px;">🔐 Admin</button>
+</div>
+
+<!-- ══════════════════════════════════
+     FEEDBACK MODAL
+══════════════════════════════════ -->
+<div id="feedback-overlay" style="
+  display:none;position:fixed;inset:0;
+  background:rgba(11,46,78,0.82);
+  z-index:1000;overflow-y:auto;padding:30px 16px 60px;
+">
+  <div style="max-width:680px;margin:0 auto;background:var(--white);border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+
+    <!-- modal header -->
+    <div style="background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:28px 30px 22px;text-align:center;position:relative">
+      <div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-light);font-weight:600;margin-bottom:6px">TMLF · Mendoza Learning Center</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--white)">Resultado Final del Training</h2>
+      <p style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:4px">Paralegal Legal Strategy Unit (LSU)</p>
+      <button onclick="document.getElementById('feedback-overlay').style.display='none'" style="
+        position:absolute;top:16px;right:16px;
+        background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);
+        width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;
+        display:flex;align-items:center;justify-content:center;
+      ">×</button>
+    </div>
+
+    <!-- score circle -->
+    <div style="background:var(--gray-100);padding:28px 30px 20px;text-align:center;border-bottom:1px solid var(--gray-200)">
+      <div style="display:inline-block;position:relative;margin-bottom:12px">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="56" fill="none" stroke="var(--gray-200)" stroke-width="10"/>
+          <circle id="score-circle" cx="65" cy="65" r="56" fill="none" stroke="var(--gold)" stroke-width="10"
+            stroke-dasharray="351.86" stroke-dashoffset="351.86"
+            stroke-linecap="round" transform="rotate(-90 65 65)"
+            style="transition:stroke-dashoffset 1s ease"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <span id="modal-score-num" style="font-size:34px;font-weight:700;color:var(--navy);line-height:1">0</span>
+          <span style="font-size:12px;color:var(--gray-400);font-weight:500">/100</span>
+        </div>
+      </div>
+      <div id="modal-level-badge" style="display:inline-block;padding:5px 16px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:8px"></div>
+      <div id="modal-score-msg" style="font-size:14px;color:var(--gray-600);max-width:420px;margin:0 auto;line-height:1.6"></div>
+    </div>
+
+    <!-- desglose por módulo -->
+    <div style="padding:24px 28px">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px">Desempeño por Módulo</div>
+
+      <div id="module-breakdown" style="display:flex;flex-direction:column;gap:10px"></div>
+
+      <!-- áreas de oportunidad -->
+      <div style="margin-top:20px;padding:16px;background:rgba(201,166,70,0.06);border:1px solid rgba(201,166,70,0.2);border-radius:8px">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px">Áreas de Oportunidad</div>
+        <div id="oportunidades-list" style="font-size:13.5px;color:var(--gray-800);line-height:1.7"></div>
+      </div>
+
+      <!-- fortalezas -->
+      <div style="margin-top:12px;padding:16px;background:rgba(46,125,85,0.06);border:1px solid rgba(46,125,85,0.2);border-radius:8px">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--success);font-weight:700;margin-bottom:10px">Fortalezas Identificadas</div>
+        <div id="fortalezas-list" style="font-size:13.5px;color:var(--gray-800);line-height:1.7"></div>
+      </div>
+
+      <!-- recomendación -->
+      <div id="recomendacion-block" style="margin-top:12px;padding:16px;background:rgba(11,46,78,0.05);border:1px solid rgba(11,46,78,0.12);border-radius:8px">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-mid);font-weight:700;margin-bottom:8px">Recomendación</div>
+        <div id="recomendacion-text" style="font-size:13.5px;color:var(--gray-800);line-height:1.7"></div>
+      </div>
+
+      <!-- role play nota -->
+      <div id="roleplay-nota" style="margin-top:12px;padding:14px 16px;background:rgba(11,46,78,0.04);border-left:4px solid var(--navy-light);border-radius:0 8px 8px 0;font-size:13px;color:var(--gray-600);line-height:1.6">
+        <strong style="color:var(--navy-mid)">Nota sobre el Role Play (Módulo 5):</strong> El ejercicio de briefing es de autoevaluación cualitativa. Se recomienda que el Team Leader o coordinador de Training revise las anotaciones del colaborador para retroalimentación adicional.
+      </div>
+    </div>
+
+    <div style="padding:16px 28px 24px;text-align:center;border-top:1px solid var(--gray-200)">
+      <button onclick="document.getElementById('feedback-overlay').style.display='none'" style="
+        background:linear-gradient(135deg,var(--navy),var(--navy-mid));
+        color:var(--white);border:none;border-radius:8px;
+        padding:12px 32px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+        cursor:pointer;letter-spacing:0.3px;
+      ">Cerrar y revisar el training</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ADMIN LOGIN OVERLAY
+══════════════════════════════════ -->
+<div id="admin-login-overlay" style="display:none;position:fixed;inset:0;background:rgba(11,46,78,0.92);z-index:3000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--white);border-radius:16px;max-width:420px;width:100%;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.4)">
+    <div style="background:linear-gradient(135deg,#0b2035,#0b3c5d);padding:24px 28px 20px;text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">🔐</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:19px;color:var(--white)">Panel de Administrador</h3>
+      <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px">TMLF · Training &amp; Instructional Design</p>
+    </div>
+    <div style="padding:24px 28px">
+      <label style="font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--navy-mid);display:block;margin-bottom:8px">Contraseña de administrador</label>
+      <input id="admin-pwd-input" type="password" placeholder="Ingresa la contraseña"
+        style="width:100%;padding:12px 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none"
+        onkeydown="if(event.key==='Enter')checkAdminPwd()"
+      />
+      <div id="admin-pwd-error" style="color:var(--danger);font-size:12px;margin-top:6px;display:none">Contraseña incorrecta.</div>
+      <div style="display:flex;gap:10px;margin-top:14px">
+        <button onclick="checkAdminPwd()" style="flex:1;background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:var(--white);border:none;border-radius:8px;padding:11px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">Ingresar</button>
+        <button onclick="closeAdminLogin()" style="flex:1;background:var(--gray-100);color:var(--gray-600);border:1px solid var(--gray-200);border-radius:8px;padding:11px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ADMIN PANEL
+══════════════════════════════════ -->
+<div id="admin-panel" style="display:none;position:fixed;inset:0;background:var(--gray-100);z-index:3000;overflow-y:auto;">
+
+  <!-- admin header -->
+  <div style="background:linear-gradient(135deg,#0b2035,#0b3c5d);color:var(--white);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;box-shadow:0 4px 20px rgba(0,0,0,0.2)">
+    <div>
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-light);font-weight:600;margin-bottom:4px">TMLF · Training &amp; Instructional Design</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:20px">Panel de Administrador — LSU Training</h2>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button onclick="exportCSV()" style="background:rgba(201,166,70,0.2);border:1px solid rgba(201,166,70,0.4);color:var(--gold-light);padding:8px 14px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.4px;">⬇ CSV</button>
+      <button onclick="exportPDF()" style="background:rgba(201,166,70,0.2);border:1px solid rgba(201,166,70,0.4);color:var(--gold-light);padding:8px 14px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.4px;">⬇ PDF</button>
+      <button onclick="clearAllData()" style="background:rgba(184,50,50,0.2);border:1px solid rgba(184,50,50,0.4);color:#f0a0a0;padding:8px 14px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">🗑 Limpiar datos</button>
+      <button onclick="closeAdminPanel()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);padding:8px 14px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">✕ Cerrar</button>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:28px 24px 60px">
+
+    <!-- KPI cards -->
+    <div id="admin-kpis" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px"></div>
+
+    <!-- distribution chart -->
+    <div style="background:var(--white);border-radius:12px;padding:22px 24px;margin-bottom:20px;border:1px solid var(--gray-200)">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px">Distribución de Puntajes</div>
+      <div id="dist-chart" style="display:flex;align-items:flex-end;gap:8px;height:90px"></div>
+      <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
+        <span style="font-size:11px;color:var(--gray-400)"><span style="display:inline-block;width:10px;height:10px;background:#2e7d55;border-radius:2px;margin-right:4px"></span>Sobresaliente ≥90</span>
+        <span style="font-size:11px;color:var(--gray-400)"><span style="display:inline-block;width:10px;height:10px;background:#c9a646;border-radius:2px;margin-right:4px"></span>Satisfactorio 75–89</span>
+        <span style="font-size:11px;color:var(--gray-400)"><span style="display:inline-block;width:10px;height:10px;background:#d4870a;border-radius:2px;margin-right:4px"></span>En Desarrollo 60–74</span>
+        <span style="font-size:11px;color:var(--gray-400)"><span style="display:inline-block;width:10px;height:10px;background:#b83232;border-radius:2px;margin-right:4px"></span>Requiere Refuerzo &lt;60</span>
+      </div>
+    </div>
+
+    <!-- results table -->
+    <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-200);overflow:hidden;margin-bottom:20px">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700">Resultados por Colaborador</div>
+        <input id="admin-search" type="text" placeholder="Buscar colaborador..." oninput="renderAdminTable()"
+          style="padding:7px 12px;border:1px solid var(--gray-200);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:200px"/>
+      </div>
+      <div style="overflow-x:auto">
+        <table id="admin-table" style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="background:var(--gray-100)">
+              <th style="padding:11px 14px;text-align:left;font-size:11px;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-600);font-weight:700;border-bottom:1px solid var(--gray-200)">Colaborador</th>
+              <th style="padding:11px 14px;text-align:center;font-size:11px;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-600);font-weight:700;border-bottom:1px solid var(--gray-200)">Fecha</th>
+              <th style="padding:11px 14px;text-align:center;font-size:11px;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-600);font-weight:700;border-bottom:1px solid var(--gray-200)">Puntaje</th>
+              <th style="padding:11px 14px;text-align:center;font-size:11px;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-600);font-weight:700;border-bottom:1px solid var(--gray-200)">M1 Est.</th>
+              <th style="padding:11px 14px;text-align:center;font-size:11px;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-600);font-weight:700;border-bottom:1px solid var(--gray-200)">M2 Rut.</th>
+              <th style="padding:11px 14px;text-align:center;font-size:11px;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-600);font-weight:700;border-bottom:1px solid var(--gray-200)">M4 Práct.</th>
+              <th style="padding:11px 14px;text-align:center;font-size:11px;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-600);font-weight:700;border-bottom:1px solid var(--gray-200)">Nivel</th>
+              <th style="padding:11px 14px;text-align:center;font-size:11px;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-600);font-weight:700;border-bottom:1px solid var(--gray-200)">Detalle</th>
+            </tr>
+          </thead>
+          <tbody id="admin-tbody"></tbody>
+        </table>
+      </div>
+      <div id="admin-empty" style="display:none;padding:36px;text-align:center;color:var(--gray-400);font-size:14px">No hay resultados registrados aún.</div>
+    </div>
+
+    <!-- reactivo breakdown -->
+    <div style="background:var(--white);border-radius:12px;padding:22px 24px;border:1px solid var(--gray-200)">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px">Desempeño por Reactivo — Tasa de Acierto del Grupo</div>
+      <div id="reactivo-breakdown" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div id="detail-modal" style="display:none;position:fixed;inset:0;background:rgba(11,46,78,0.7);z-index:4000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--white);border-radius:14px;max-width:560px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-height:85vh;overflow-y:auto">
+    <div style="background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:18px 22px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-light);font-weight:600;margin-bottom:3px">Detalle de respuestas</div>
+        <div id="detail-name" style="font-family:'Playfair Display',serif;font-size:17px;color:var(--white)"></div>
+      </div>
+      <button onclick="document.getElementById('detail-modal').style.display='none'" style="background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;">×</button>
+    </div>
+    <div id="detail-body" style="padding:20px 22px"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════
+//  SCORING ENGINE
+// ══════════════════════════════════
+
+// ══════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════
+const ADMIN_PASSWORD = 'CEU2026';
+const LS_KEY = 'lsu_training_results';
+
+const QUESTIONS = [
+  { id:'cq1',  module:1, label:'Empatía' },
+  { id:'cq2',  module:1, label:'Tono amigable' },
+  { id:'cq3',  module:1, label:'Silencio respetuoso' },
+  { id:'cq4',  module:1, label:'Error escucha activa' },
+  { id:'cq5',  module:1, label:'Polite interruption' },
+  { id:'cq6',  module:1, label:'Confidencialidad' },
+  { id:'cq7',  module:1, label:'Escalamiento' },
+  { id:'cq8',  module:2, label:'Preparación previa' },
+  { id:'cq9',  module:2, label:'Presentación formal' },
+  { id:'cq10', module:2, label:'Orden del protocolo' },
+  { id:'cq11', module:2, label:'Puntos clave llamada' },
+  { id:'p1',   module:4, label:'Empatía en crisis' },
+  { id:'p2',   module:4, label:'Polite interruption práctica' },
+  { id:'p3',   module:4, label:'Escalamiento práctica' },
+  { id:'p4',   module:4, label:'Escucha activa — error' },
+  { id:'p5',   module:4, label:'Confidencialidad práctica' },
+  { id:'ptf1', module:4, label:'V/F: Empatía frases genéricas' },
+  { id:'ptf2', module:4, label:'V/F: Interrumpir' },
+  { id:'ptf3', module:4, label:'V/F: Confidencialidad condicional' },
+];
+
+const MOD_DEFS = {
+  1: { label:'M1 · Estándares', ids:['cq1','cq2','cq3','cq4','cq5','cq6','cq7'] },
+  2: { label:'M2 · Rutina Operativa', ids:['cq8','cq9','cq10','cq11'] },
+  4: { label:'M4 · Práctica', ids:['p1','p2','p3','p4','p5','ptf1','ptf2','ptf3'] },
+};
+
+const TOTAL_Q = QUESTIONS.length;
+let results = {};
+let currentName = '';
+
+// ══════════════════════════════════
+//  REGISTRO DE NOMBRE
+// ══════════════════════════════════
+function iniciarTraining() {
+  const v = document.getElementById('input-nombre').value.trim();
+  if (!v || v.length < 3) {
+    document.getElementById('registro-error').style.display = 'block';
+    return;
+  }
+  currentName = v;
+  document.getElementById('registro-overlay').style.display = 'none';
+  // Show admin access button in score tracker
+  document.getElementById('admin-access-btn').style.display = 'inline-block';
+}
+
+// ══════════════════════════════════
+//  SCORE ENGINE
+// ══════════════════════════════════
+function calcPct(res) {
+  const correct = Object.values(res).filter(Boolean).length;
+  return Math.round((correct / TOTAL_Q) * 100);
+}
+
+function getScore() {
+  const correct = Object.values(results).filter(Boolean).length;
+  const answered = Object.keys(results).length;
+  const pct = answered === 0 ? 0 : Math.round((correct / TOTAL_Q) * 100);
+  return { correct, answered, pct };
+}
+
+function updateScoreBar() {
+  const { answered, pct } = getScore();
+  document.getElementById('score-label').textContent = answered + ' / ' + TOTAL_Q + ' respondidas';
+  document.getElementById('score-bar-fill').style.width = Math.round((answered / TOTAL_Q) * 100) + '%';
+  document.getElementById('score-pct-display').textContent = answered > 0 ? pct : '—';
+  const btn = document.getElementById('btn-final');
+  if (answered >= TOTAL_Q) { btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
+}
+
+function recordAnswer(qId, isCorrect) {
+  if (results[qId] !== undefined) return;
+  results[qId] = isCorrect;
+  updateScoreBar();
+}
+
+// ══════════════════════════════════
+//  SAVE TO LOCALSTORAGE
+// ══════════════════════════════════
+function saveResult() {
+  const { pct } = getScore();
+  const existing = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+  // Build per-module scores
+  const modScores = {};
+  for (const [m, d] of Object.entries(MOD_DEFS)) {
+    const ok = d.ids.filter(id => results[id] === true).length;
+    modScores[m] = Math.round((ok / d.ids.length) * 100);
+  }
+  const entry = {
+    id: Date.now(),
+    name: currentName,
+    date: new Date().toLocaleString('es-MX', { dateStyle:'short', timeStyle:'short' }),
+    score: pct,
+    modScores,
+    answers: { ...results },
+  };
+  existing.push(entry);
+  localStorage.setItem(LS_KEY, JSON.stringify(existing));
+}
+
+// ══════════════════════════════════
+//  TABS
+// ══════════════════════════════════
+function showTab(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ══════════════════════════════════
+//  CHECKLIST
+// ══════════════════════════════════
+const TOTAL_CHK = 20;
+function toggleChk(el) {
+  el.classList.toggle('checked');
+  el.querySelector('.chk-box').innerHTML = el.classList.contains('checked') ? '✓' : '';
+  const checked = document.querySelectorAll('.checklist-item.checked').length;
+  const pct = Math.round((checked / TOTAL_CHK) * 100);
+  document.getElementById('chk-bar').style.width = pct + '%';
+  document.getElementById('chk-pct').textContent = checked + ' / ' + TOTAL_CHK + ' marcado';
+}
+
+// ══════════════════════════════════
+//  QUESTION HANDLERS
+// ══════════════════════════════════
+function handleQ(btn, type, qId, feedCorrectId, feedWrongId) {
+  const card = btn.closest('.question-card');
+  if (card.dataset.answered) return;
+  card.dataset.answered = '1';
+  const isCorrect = type === 'correct';
+  const opts = card.querySelectorAll('.option-btn');
+  opts.forEach(b => {
+    b.disabled = true;
+    if (b === btn) b.classList.add(isCorrect ? 'correct' : 'incorrect');
+  });
+  opts.forEach(b => { if ((b.getAttribute('onclick')||'').includes("'correct'")) b.classList.add('correct'); });
+  if (feedCorrectId && feedWrongId)
+    document.getElementById(isCorrect ? feedCorrectId : feedWrongId).classList.add('show');
+  recordAnswer(qId, isCorrect);
+}
+function confirmQ(btn, type, qId) { handleQ(btn, type, qId, qId+'-c', qId+'-w'); }
+function practiceQ(btn, type, qId) { handleQ(btn, type, qId, qId+'-c', qId+'-w'); }
+
+function handleTF(btn, type, qId, trueId, falseId) {
+  const card = btn.closest('.question-card');
+  if (card.dataset.answered) return;
+  card.dataset.answered = '1';
+  const isCorrect = type === 'correct';
+  card.querySelectorAll('.tf-btn').forEach(b => b.disabled = true);
+  btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+  card.querySelectorAll('.tf-btn').forEach(b => { if ((b.getAttribute('onclick')||'').includes("'correct'")) b.classList.add('correct'); });
+  if (isCorrect) { document.getElementById(falseId) && document.getElementById(falseId).classList.add('show'); }
+  else { document.getElementById(trueId) && document.getElementById(trueId).classList.add('show'); }
+  recordAnswer(qId, isCorrect);
+}
+function confirmTF(btn, type, qId) { handleTF(btn, type, qId, qId+'-w', qId+'-c'); }
+function practiceTF(btn, type, qId, verdId, falsId) { handleTF(btn, type, qId, verdId, falsId); }
+
+// ══════════════════════════════════
+//  ROLE PLAY
+// ══════════════════════════════════
+function toggleAnswer(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+  const btn = el.previousElementSibling;
+  btn.textContent = el.classList.contains('show')
+    ? btn.textContent.replace('Ver respuesta','Ocultar respuesta')
+    : btn.textContent.replace('Ocultar respuesta','Ver respuesta');
+}
+
+// ══════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════
+function levelInfo(pct) {
+  if (pct >= 90) return { label:'🏆 Sobresaliente', bg:'rgba(46,125,85,0.12)', color:'#1a5c38', barColor:'#2e7d55' };
+  if (pct >= 75) return { label:'✅ Satisfactorio',  bg:'rgba(201,166,70,0.15)', color:'#7a5c00', barColor:'#c9a646' };
+  if (pct >= 60) return { label:'⚠️ En Desarrollo',  bg:'rgba(184,130,30,0.12)', color:'#7a4e00', barColor:'#d4870a' };
+  return           { label:'🔴 Requiere Refuerzo', bg:'rgba(184,50,50,0.1)',   color:'#6e1e1e', barColor:'#b83232' };
+}
+
+// ══════════════════════════════════
+//  FEEDBACK MODAL
+// ══════════════════════════════════
+function showFinalFeedback() {
+  const { correct, pct } = getScore();
+
+  // Save first
+  saveResult();
+
+  const circ = document.getElementById('score-circle');
+  const offset = 351.86 - (pct / 100) * 351.86;
+  setTimeout(() => { circ.style.strokeDashoffset = offset; }, 100);
+  const lv = levelInfo(pct);
+  circ.style.stroke = lv.barColor;
+
+  document.getElementById('modal-score-num').textContent = pct;
+  const badge = document.getElementById('modal-level-badge');
+  badge.textContent = lv.label;
+  badge.style.background = lv.bg;
+  badge.style.color = lv.color;
+  badge.style.border = '1px solid ' + lv.color;
+
+  const msgs = {
+    90:'Dominas los estándares operativos LSU con alto nivel de aplicación. Tu comprensión de empatía, protocolos y ética profesional es sólida y consistente.',
+    75:'Buen dominio general del training. Hay áreas puntuales donde reforzar antes de operar de forma autónoma con clientes.',
+    60:'Comprendes los conceptos base pero presentas errores en aplicación práctica. Se requiere refuerzo antes de implementar en llamadas reales.',
+    0:'El puntaje indica que los estándares operativos aún no están consolidados. Es necesario revisar todos los módulos antes de continuar.',
+  };
+  document.getElementById('modal-score-msg').textContent = msgs[pct>=90?90:pct>=75?75:pct>=60?60:0];
+
+  // Module breakdown
+  let bHTML = '';
+  for (const [m, d] of Object.entries(MOD_DEFS)) {
+    const ok = d.ids.filter(id => results[id]===true).length;
+    const mp = Math.round((ok/d.ids.length)*100);
+    const bc = mp>=80?'var(--success)':mp>=60?'var(--gold)':'var(--danger)';
+    bHTML += `<div style="background:var(--gray-100);border-radius:8px;padding:12px 14px;border:1px solid var(--gray-200)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;align-items:center">
+        <span style="font-size:13px;font-weight:600;color:var(--navy-mid)">${d.label}</span>
+        <span style="font-size:13px;font-weight:700;color:${bc}">${ok}/${d.ids.length} · ${mp}%</span>
+      </div>
+      <div style="background:var(--gray-200);border-radius:10px;height:5px;overflow:hidden">
+        <div style="height:100%;border-radius:10px;background:${bc};width:${mp}%;transition:width 0.8s ease"></div>
+      </div></div>`;
+  }
+  document.getElementById('module-breakdown').innerHTML = bHTML;
+
+  // Oportunidades
+  const wrongQs = QUESTIONS.filter(q => results[q.id]===false);
+  let opHTML = wrongQs.length===0
+    ? '<span style="color:var(--success);font-weight:600">✓ Respuestas correctas en todos los reactivos.</span>'
+    : wrongQs.map(q=>`• ${q.label}`).join('<br>');
+  document.getElementById('oportunidades-list').innerHTML = opHTML;
+
+  // Fortalezas
+  const okQs = QUESTIONS.filter(q => results[q.id]===true);
+  const ftMap = {}; okQs.forEach(q=>{ const l=q.module===1?'Estándares':q.module===2?'Rutina Operativa':'Práctica Aplicada'; ftMap[l]=(ftMap[l]||0)+1; });
+  document.getElementById('fortalezas-list').innerHTML = Object.keys(ftMap).length===0
+    ? 'Sin fortalezas identificadas.'
+    : Object.entries(ftMap).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`✓ <strong>${t}:</strong> ${n} correcta${n>1?'s':''}`).join('<br>');
+
+  // Recomendación
+  const recs = [
+    [90,'El colaborador está listo para operación real. Se recomienda continuar con el módulo de Role Play supervisado.'],
+    [75,'Revisar los temas fallados antes de operar de forma autónoma. Una sesión de refuerzo con el Team Leader es recomendable.'],
+    [60,'Se recomienda repetir Módulos 1 y/o 2 con énfasis en los temas fallados. No operar en llamadas reales hasta alcanzar 80+.'],
+    [0,'Revisar el training completo desde el inicio con acompañamiento de Training antes de retomar la evaluación.'],
+  ];
+  document.getElementById('recomendacion-text').textContent = recs.find(([t])=>pct>=t)[1];
+
+  document.getElementById('feedback-overlay').style.display = 'block';
+  document.getElementById('feedback-overlay').scrollTop = 0;
+}
+
+// ══════════════════════════════════
+//  ADMIN PANEL
+// ══════════════════════════════════
+function openAdminLogin() {
+  document.getElementById('admin-pwd-input').value = '';
+  document.getElementById('admin-pwd-error').style.display = 'none';
+  document.getElementById('admin-login-overlay').style.display = 'flex';
+}
+function closeAdminLogin() {
+  document.getElementById('admin-login-overlay').style.display = 'none';
+}
+function checkAdminPwd() {
+  const v = document.getElementById('admin-pwd-input').value;
+  if (v === ADMIN_PASSWORD) {
+    document.getElementById('admin-login-overlay').style.display = 'none';
+    openAdminPanel();
+  } else {
+    document.getElementById('admin-pwd-error').style.display = 'block';
+  }
+}
+function closeAdminPanel() {
+  document.getElementById('admin-panel').style.display = 'none';
+}
+
+function getStoredResults() {
+  return JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+}
+
+function openAdminPanel() {
+  document.getElementById('admin-panel').style.display = 'block';
+  document.getElementById('admin-panel').scrollTop = 0;
+  renderAdminKPIs();
+  renderAdminTable();
+  renderDistChart();
+  renderReactivoBreakdown();
+}
+
+function renderAdminKPIs() {
+  const data = getStoredResults();
+  const n = data.length;
+  const avg = n===0 ? 0 : Math.round(data.reduce((s,r)=>s+r.score,0)/n);
+  const pass = data.filter(r=>r.score>=75).length;
+  const best = n===0 ? 0 : Math.max(...data.map(r=>r.score));
+  const kpis = [
+    { label:'Colaboradores', value:n, icon:'👥', color:'var(--navy-mid)' },
+    { label:'Promedio general', value:avg+'pts', icon:'📊', color:avg>=75?'var(--success)':avg>=60?'var(--gold)':'var(--danger)' },
+    { label:'Aprobados ≥75', value:pass+'/'+n, icon:'✅', color:'var(--success)' },
+    { label:'Puntaje más alto', value:best+'pts', icon:'🏆', color:'var(--gold)' },
+  ];
+  document.getElementById('admin-kpis').innerHTML = kpis.map(k=>`
+    <div style="background:var(--white);border-radius:10px;padding:16px 18px;border:1px solid var(--gray-200)">
+      <div style="font-size:22px;margin-bottom:6px">${k.icon}</div>
+      <div style="font-size:22px;font-weight:700;color:${k.color};line-height:1">${k.value}</div>
+      <div style="font-size:11px;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-400);margin-top:4px;font-weight:600">${k.label}</div>
+    </div>`).join('');
+}
+
+function renderDistChart() {
+  const data = getStoredResults();
+  const buckets = [
+    { label:'<60', color:'#b83232', fn:r=>r.score<60 },
+    { label:'60-74', color:'#d4870a', fn:r=>r.score>=60&&r.score<75 },
+    { label:'75-89', color:'#c9a646', fn:r=>r.score>=75&&r.score<90 },
+    { label:'≥90', color:'#2e7d55', fn:r=>r.score>=90 },
+  ];
+  const counts = buckets.map(b=>data.filter(b.fn).length);
+  const maxC = Math.max(...counts, 1);
+  document.getElementById('dist-chart').innerHTML = counts.map((c,i)=>`
+    <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px">
+      <div style="font-size:14px;font-weight:700;color:${buckets[i].color}">${c}</div>
+      <div style="width:100%;background:${buckets[i].color};border-radius:4px 4px 0 0;height:${Math.round((c/maxC)*70)+5}px;min-height:5px;transition:height 0.5s"></div>
+      <div style="font-size:11px;color:var(--gray-400)">${buckets[i].label}</div>
+    </div>`).join('');
+}
+
+function renderAdminTable() {
+  const data = getStoredResults();
+  const q = (document.getElementById('admin-search').value||'').toLowerCase();
+  const filtered = data.filter(r=>r.name.toLowerCase().includes(q)).sort((a,b)=>b.id-a.id);
+
+  const empty = document.getElementById('admin-empty');
+  const table = document.getElementById('admin-table');
+  if (filtered.length===0) { empty.style.display='block'; table.style.display='none'; return; }
+  empty.style.display='none'; table.style.display='table';
+
+  document.getElementById('admin-tbody').innerHTML = filtered.map(r=>{
+    const lv = levelInfo(r.score);
+    const m1 = r.modScores?.[1]??'—';
+    const m2 = r.modScores?.[2]??'—';
+    const m4 = r.modScores?.[4]??'—';
+    const scoreColor = r.score>=75?'#2e7d55':r.score>=60?'#d4870a':'#b83232';
+    return `<tr style="border-bottom:1px solid var(--gray-200)" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+      <td style="padding:12px 14px;font-weight:600;color:var(--navy)">${escHTML(r.name)}</td>
+      <td style="padding:12px 14px;text-align:center;color:var(--gray-600);font-size:12px">${r.date}</td>
+      <td style="padding:12px 14px;text-align:center">
+        <span style="font-size:16px;font-weight:700;color:${scoreColor}">${r.score}</span>
+        <span style="font-size:11px;color:var(--gray-400)">/100</span>
+      </td>
+      <td style="padding:12px 14px;text-align:center"><span style="font-size:13px;font-weight:600;color:${m1>=80?'var(--success)':m1>=60?'var(--gold)':'var(--danger)'}">${m1}%</span></td>
+      <td style="padding:12px 14px;text-align:center"><span style="font-size:13px;font-weight:600;color:${m2>=80?'var(--success)':m2>=60?'var(--gold)':'var(--danger)'}">${m2}%</span></td>
+      <td style="padding:12px 14px;text-align:center"><span style="font-size:13px;font-weight:600;color:${m4>=80?'var(--success)':m4>=60?'var(--gold)':'var(--danger)'}">${m4}%</span></td>
+      <td style="padding:12px 14px;text-align:center"><span style="background:${lv.bg};color:${lv.color};padding:3px 9px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap">${lv.label}</span></td>
+      <td style="padding:12px 14px;text-align:center"><button onclick="showDetail(${r.id})" style="background:var(--navy);color:white;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Ver</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderReactivoBreakdown() {
+  const data = getStoredResults();
+  if (data.length===0) { document.getElementById('reactivo-breakdown').innerHTML='<p style="font-size:13px;color:var(--gray-400)">Sin datos aún.</p>'; return; }
+  document.getElementById('reactivo-breakdown').innerHTML = QUESTIONS.map(q=>{
+    const total = data.filter(r=>r.answers&&r.answers[q.id]!==undefined).length;
+    const ok = data.filter(r=>r.answers&&r.answers[q.id]===true).length;
+    const pct = total===0?0:Math.round((ok/total)*100);
+    const bc = pct>=80?'var(--success)':pct>=60?'var(--gold)':'var(--danger)';
+    const modLabel = q.module===1?'M1':q.module===2?'M2':'M4';
+    return `<div style="display:flex;align-items:center;gap:12px">
+      <span style="width:16px;font-size:10px;font-weight:700;color:var(--gray-400);text-align:right;flex-shrink:0">${modLabel}</span>
+      <span style="width:200px;font-size:12px;color:var(--gray-800);flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHTML(q.label)}</span>
+      <div style="flex:1;background:var(--gray-200);border-radius:10px;height:8px;overflow:hidden">
+        <div style="height:100%;border-radius:10px;background:${bc};width:${pct}%;transition:width 0.6s"></div>
+      </div>
+      <span style="width:46px;text-align:right;font-size:12px;font-weight:700;color:${bc};flex-shrink:0">${pct}%</span>
+      <span style="width:40px;text-align:right;font-size:11px;color:var(--gray-400);flex-shrink:0">${ok}/${total}</span>
+    </div>`;
+  }).join('');
+}
+
+function showDetail(id) {
+  const data = getStoredResults();
+  const r = data.find(x=>x.id===id);
+  if (!r) return;
+  document.getElementById('detail-name').textContent = r.name + ' · ' + r.date;
+  const lv = levelInfo(r.score);
+
+  let html = `<div style="text-align:center;padding:16px 0 20px;border-bottom:1px solid var(--gray-200);margin-bottom:18px">
+    <div style="font-size:40px;font-weight:700;color:${lv.color};line-height:1">${r.score}</div>
+    <div style="font-size:12px;color:var(--gray-400);margin-bottom:6px">/100 puntos</div>
+    <span style="background:${lv.bg};color:${lv.color};padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">${lv.label}</span>
+  </div>
+  <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px">Respuestas por Reactivo</div>
+  <div style="display:flex;flex-direction:column;gap:6px">`;
+
+  QUESTIONS.forEach(q=>{
+    const ans = r.answers?.[q.id];
+    const ic = ans===true?'✓':ans===false?'✗':'—';
+    const bc = ans===true?'rgba(46,125,85,0.08)':ans===false?'rgba(184,50,50,0.07)':'var(--gray-100)';
+    const cc = ans===true?'var(--success)':ans===false?'var(--danger)':'var(--gray-400)';
+    const modL = q.module===1?'M1':q.module===2?'M2':'M4';
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;background:${bc}">
+      <span style="font-size:10px;font-weight:700;color:var(--gray-400);width:18px;flex-shrink:0">${modL}</span>
+      <span style="flex:1;font-size:13px;color:var(--gray-800)">${escHTML(q.label)}</span>
+      <span style="font-size:15px;font-weight:700;color:${cc};width:20px;text-align:center;flex-shrink:0">${ic}</span>
+    </div>`;
+  });
+  html += '</div>';
+
+  // Module scores
+  html += `<div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin:18px 0 10px">Puntaje por Módulo</div>`;
+  for (const [m,d] of Object.entries(MOD_DEFS)) {
+    const mp = r.modScores?.[m]??0;
+    const bc2 = mp>=80?'var(--success)':mp>=60?'var(--gold)':'var(--danger)';
+    html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <span style="font-size:13px;color:var(--navy-mid);font-weight:600;width:160px">${d.label}</span>
+      <div style="flex:1;background:var(--gray-200);border-radius:10px;height:6px;overflow:hidden">
+        <div style="height:100%;border-radius:10px;background:${bc2};width:${mp}%"></div>
+      </div>
+      <span style="font-size:13px;font-weight:700;color:${bc2};width:40px;text-align:right">${mp}%</span>
+    </div>`;
+  }
+
+  document.getElementById('detail-body').innerHTML = html;
+  document.getElementById('detail-modal').style.display = 'flex';
+}
+
+function escHTML(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ══════════════════════════════════
+//  EXPORT CSV
+// ══════════════════════════════════
+function exportCSV() {
+  const data = getStoredResults();
+  if (!data.length) { alert('No hay resultados para exportar.'); return; }
+  const qHeaders = QUESTIONS.map(q=>'"'+q.label+'"').join(',');
+  const rows = [
+    ['Colaborador','Fecha','Puntaje Total','M1 Estándares %','M2 Rutina %','M4 Práctica %','Nivel',...QUESTIONS.map(q=>q.label)].map(h=>'"'+h+'"').join(','),
+    ...data.map(r=>{
+      const lv = levelInfo(r.score);
+      const base = [r.name,r.date,r.score,r.modScores?.[1]??'',r.modScores?.[2]??'',r.modScores?.[4]??'',lv.label].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',');
+      const answers = QUESTIONS.map(q=>r.answers?.[q.id]===true?'Correcto':r.answers?.[q.id]===false?'Incorrecto':'No respondido').map(v=>'"'+v+'"').join(',');
+      return base+','+answers;
+    })
+  ];
+  const blob = new Blob(['\uFEFF'+rows.join('\n')], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='LSU_Training_Resultados_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+
+// ══════════════════════════════════
+//  EXPORT PDF (print)
+// ══════════════════════════════════
+function exportPDF() {
+  const data = getStoredResults();
+  if (!data.length) { alert('No hay resultados para exportar.'); return; }
+  const rows = data.map(r=>{
+    const lv = levelInfo(r.score);
+    const scoreColor = r.score>=75?'#2e7d55':r.score>=60?'#d4870a':'#b83232';
+    return `<tr>
+      <td>${escHTML(r.name)}</td>
+      <td style="text-align:center">${r.date}</td>
+      <td style="text-align:center;font-weight:700;color:${scoreColor}">${r.score}/100</td>
+      <td style="text-align:center">${r.modScores?.[1]??'—'}%</td>
+      <td style="text-align:center">${r.modScores?.[2]??'—'}%</td>
+      <td style="text-align:center">${r.modScores?.[4]??'—'}%</td>
+      <td style="text-align:center;color:${lv.color};font-weight:700">${lv.label}</td>
+    </tr>`;
+  }).join('');
+
+  const avg = Math.round(data.reduce((s,r)=>s+r.score,0)/data.length);
+  const pass = data.filter(r=>r.score>=75).length;
+
+  const win = window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>LSU Training — Resultados Admin</title>
+  <style>
+    body{font-family:Arial,sans-serif;margin:30px;color:#2c3540;font-size:13px}
+    h1{font-size:20px;color:#0b2e4e;margin-bottom:4px}
+    .sub{font-size:12px;color:#9aa4b0;margin-bottom:20px}
+    .kpis{display:flex;gap:16px;margin-bottom:24px}
+    .kpi{background:#f4f6f8;border:1px solid #e8ecf0;border-radius:8px;padding:12px 16px;text-align:center}
+    .kpi .val{font-size:22px;font-weight:700;color:#0b2e4e}
+    .kpi .lbl{font-size:10px;color:#9aa4b0;text-transform:uppercase;letter-spacing:0.8px;margin-top:2px}
+    table{width:100%;border-collapse:collapse;font-size:12px}
+    th{background:#0b2e4e;color:white;padding:9px 10px;text-align:left;font-size:11px;letter-spacing:0.5px}
+    td{padding:8px 10px;border-bottom:1px solid #e8ecf0}
+    tr:nth-child(even) td{background:#f8fafc}
+    .footer{margin-top:20px;font-size:11px;color:#9aa4b0;text-align:right}
+  </style></head><body>
+  <h1>LSU Training — Panel de Resultados</h1>
+  <p class="sub">TMLF · Training &amp; Instructional Design · Generado: ${new Date().toLocaleString('es-MX')}</p>
+  <div class="kpis">
+    <div class="kpi"><div class="val">${data.length}</div><div class="lbl">Colaboradores</div></div>
+    <div class="kpi"><div class="val">${avg}pts</div><div class="lbl">Promedio</div></div>
+    <div class="kpi"><div class="val">${pass}/${data.length}</div><div class="lbl">Aprobados ≥75</div></div>
+  </div>
+  <table>
+    <thead><tr><th>Colaborador</th><th>Fecha</th><th>Puntaje</th><th>M1 Est.</th><th>M2 Rut.</th><th>M4 Práct.</th><th>Nivel</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <p class="footer">Paralegal Legal Strategy Unit (LSU) · The Mendoza Law Firm</p>
+  </body></html>`);
+  win.document.close();
+  setTimeout(()=>win.print(), 400);
+}
+
+// ══════════════════════════════════
+//  CLEAR DATA
+// ══════════════════════════════════
+function clearAllData() {
+  if (!confirm('¿Estás seguro de que deseas eliminar TODOS los resultados? Esta acción no se puede deshacer.')) return;
+  localStorage.removeItem(LS_KEY);
+  renderAdminKPIs(); renderAdminTable(); renderDistChart(); renderReactivoBreakdown();
+}
+</script>
+
+</body>
+</html>
