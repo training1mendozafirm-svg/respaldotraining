@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador: Estrategias de Comunicación - Call Backs</title>
+    <script>
+/**
+ * SCORM 1.2 API Wrapper
+ * Simulador de Atención al Cliente - TMLF
+ */
+
+var SCORM = {
+    API: null,
+    initialized: false,
+    finishCalled: false,
+
+    findAPI: function(win) {
+        var findAttempts = 0;
+        var findAttemptLimit = 500;
+        
+        while ((win.API == null) && (win.parent != null) && (win.parent != win)) {
+            findAttempts++;
+            if (findAttempts > findAttemptLimit) {
+                return null;
+            }
+            win = win.parent;
+        }
+        return win.API;
+    },
+
+    getAPI: function() {
+        var theAPI = this.findAPI(window);
+        if ((theAPI == null) && (window.opener != null) && (typeof(window.opener) != "undefined")) {
+            theAPI = this.findAPI(window.opener);
+        }
+        if (theAPI == null) {
+            console.log("SCORM API no encontrada - modo standalone");
+        }
+        return theAPI;
+    },
+
+    init: function() {
+        if (this.initialized) return true;
+        
+        this.API = this.getAPI();
+        
+        if (this.API == null) {
+            console.log("Ejecutando en modo standalone (sin LMS)");
+            this.initialized = true;
+            return true;
+        }
+
+        var result = this.API.LMSInitialize("");
+        
+        if (result == "true" || result == true) {
+            this.initialized = true;
+            this.API.LMSSetValue("cmi.core.lesson_status", "incomplete");
+            this.API.LMSCommit("");
+            console.log("SCORM inicializado correctamente");
+            return true;
+        } else {
+            console.log("Error al inicializar SCORM");
+            return false;
+        }
+    },
+
+    setProgress: function(progress) {
+        if (this.API == null) {
+            console.log("Progreso (standalone): " + progress + "%");
+            return true;
+        }
+        
+        this.API.LMSSetValue("cmi.core.lesson_location", progress.toString());
+        this.API.LMSCommit("");
+        return true;
+    },
+
+    setScore: function(score) {
+        if (this.API == null) {
+            console.log("Puntuación (standalone): " + score + "%");
+            return true;
+        }
+
+        this.API.LMSSetValue("cmi.core.score.min", "0");
+        this.API.LMSSetValue("cmi.core.score.max", "100");
+        this.API.LMSSetValue("cmi.core.score.raw", score.toString());
+        
+        if (score >= 67) {
+            this.API.LMSSetValue("cmi.core.lesson_status", "passed");
+        } else {
+            this.API.LMSSetValue("cmi.core.lesson_status", "failed");
+        }
+        
+        this.API.LMSCommit("");
+        console.log("Puntuación guardada: " + score + "%");
+        return true;
+    },
+
+    complete: function() {
+        if (this.finishCalled) return true;
+        
+        if (this.API == null) {
+            console.log("Curso completado (standalone)");
+            this.finishCalled = true;
+            return true;
+        }
+
+        // No sobreescribimos lesson_status aquí — ya fue establecido como passed/failed por setScore()
+        // Solo marcamos exit y hacemos commit
+        this.API.LMSSetValue("cmi.core.exit", "");
+        this.API.LMSCommit("");
+        
+        var result = this.API.LMSFinish("");
+        this.finishCalled = true;
+        
+        console.log("Simulación completada y finalizada");
+        return (result == "true" || result == true);
+    },
+
+    setSuspendData: function(data) {
+        if (this.API == null) {
+            localStorage.setItem('scorm_roleplay_data', data);
+            return true;
+        }
+        
+        this.API.LMSSetValue("cmi.suspend_data", data);
+        this.API.LMSCommit("");
+        return true;
+    },
+
+    getSuspendData: function() {
+        if (this.API == null) {
+            return localStorage.getItem('scorm_roleplay_data') || "";
+        }
+        
+        return this.API.LMSGetValue("cmi.suspend_data");
+    },
+
+    getLastError: function() {
+        if (this.API == null) return "0";
+        return this.API.LMSGetLastError();
+    },
+
+    getErrorString: function(errorCode) {
+        if (this.API == null) return "";
+        return this.API.LMSGetErrorString(errorCode);
+    }
+};
+
+window.onbeforeunload = function() {
+    if (SCORM.initialized && !SCORM.finishCalled) {
+        if (SCORM.API != null) {
+            SCORM.API.LMSSetValue("cmi.core.exit", "suspend");
+            SCORM.API.LMSCommit("");
+            SCORM.API.LMSFinish("");
+        }
+    }
+};
+
+window.onunload = function() {
+    if (SCORM.initialized && !SCORM.finishCalled && SCORM.API != null) {
+        SCORM.API.LMSFinish("");
+    }
+};
+
+</script>
+    <style>
+        /* =====================================================
+           PALETA: Azul marino profundo + Dorado institucional
+           Inspirada en Radar Estratégico – Análisis de Llamada
+           ===================================================== */
+
+        /* Reset y configuración base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(160deg, #07111f 0%, #0d1b3e 60%, #0a1628 100%);
+            min-height: 100vh;
+            color: #dce8f5;
+            line-height: 1.6;
+        }
+
+        #scorm-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0d1b3e 0%, #112248 100%);
+            border-bottom: 2px solid rgba(240, 185, 40, 0.4);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .header-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: #f0b928;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            color: #7a9cc4;
+            font-size: 1.1rem;
+        }
+
+        /* Dashboard de estadísticas */
+        .stats-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(13, 27, 62, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(240, 185, 40, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(240, 185, 40, 0.6);
+            box-shadow: 0 10px 30px rgba(240, 185, 40, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #f0b928;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #7a9cc4;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Progreso circular */
+        .circular-progress {
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            stroke: rgba(240, 185, 40, 0.15);
+            fill: none;
+            stroke-width: 8;
+        }
+
+        .progress-ring-circle-fill {
+            stroke: #f0b928;
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .progress-text {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #f0b928;
+            margin-top: 20px;
+        }
+
+        .progress-label {
+            color: #7a9cc4;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* Contenido principal */
+        main {
+            background: rgba(10, 22, 50, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            min-height: 500px;
+            border: 1px solid rgba(240, 185, 40, 0.12);
+        }
+
+        /* Pantalla de bienvenida */
+        .welcome-screen {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .welcome-icon {
+            font-size: 5rem;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            color: #f0b928;
+            margin-bottom: 20px;
+        }
+
+        .welcome-description {
+            color: #b0c8e8;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        /* Instrucciones */
+        .instructions-box {
+            background: rgba(7, 17, 40, 0.7);
+            border-left: 4px solid #f0b928;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .instructions-title {
+            color: #f0b928;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions-list {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .instructions-list li {
+            color: #b0c8e8;
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .instructions-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #f0b928;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        /* Botón de comenzar principal */
+        .start-button {
+            background: linear-gradient(135deg, #f0b928 0%, #d4960e 100%);
+            color: #07111f;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(240, 185, 40, 0.35);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(240, 185, 40, 0.55);
+        }
+
+        .start-button::before {
+            content: "📞";
+            font-size: 1.5rem;
+        }
+
+        /* Escena individual */
+        .scene-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .scene-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(240, 185, 40, 0.25);
+        }
+
+        .scene-title {
+            color: #f0b928;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .scene-subtitle {
+            color: #7a9cc4;
+            font-size: 1.1rem;
+        }
+
+        /* Cliente llamando */
+        .client-call-header {
+            background: linear-gradient(135deg, rgba(240, 185, 40, 0.08) 0%, rgba(212, 150, 14, 0.08) 100%);
+            border: 1px solid rgba(240, 185, 40, 0.25);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-style: italic;
+            color: #b0c8e8;
+        }
+
+        .client-call-header::before {
+            content: "📞";
+            font-size: 1.5rem;
+        }
+
+        /* Cajas de información */
+        .info-box {
+            background: rgba(7, 17, 40, 0.7);
+            border-left: 4px solid #4d90d4;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .info-box h3 {
+            color: #7ab8f5;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .info-box ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .info-box li {
+            color: #b0c8e8;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .info-box li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #4d90d4;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        /* Speech bubble del cliente */
+        .client-speech {
+            background: linear-gradient(135deg, rgba(240, 185, 40, 0.1) 0%, rgba(212, 150, 14, 0.1) 100%);
+            border: 2px solid rgba(240, 185, 40, 0.3);
+            padding: 20px 30px 30px 30px;
+            margin: 45px 0 30px 0;
+            border-radius: 15px;
+            position: relative;
+            font-style: italic;
+            color: #fde9a2;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .client-speech::before {
+            content: "💬";
+            position: absolute;
+            top: -22px;
+            left: 25px;
+            font-size: 2rem;
+            line-height: 1;
+            background: #0d1b3e;
+            padding: 4px 8px;
+            border-radius: 50%;
+            display: block;
+            width: 42px;
+            height: 42px;
+            text-align: center;
+        }
+
+        /* Pregunta */
+        .question-box {
+            background: rgba(7, 17, 40, 0.85);
+            border: 2px solid rgba(240, 185, 40, 0.25);
+            padding: 30px;
+            margin: 40px 0;
+            border-radius: 15px;
+        }
+
+        .question-box h3 {
+            color: #f0b928;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Opciones de respuesta */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .option-card {
+            background: rgba(13, 27, 62, 0.9);
+            border: 2px solid rgba(122, 156, 196, 0.25);
+            padding: 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .option-card:hover {
+            border-color: #f0b928;
+            background: rgba(240, 185, 40, 0.08);
+            transform: translateX(5px);
+        }
+
+        .option-card.selected {
+            border-color: #f0b928;
+            background: rgba(240, 185, 40, 0.12);
+            box-shadow: 0 0 20px rgba(240, 185, 40, 0.2);
+        }
+
+        .option-card.correct {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.12);
+        }
+
+        .option-card.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        .option-label {
+            font-weight: bold;
+            color: #f0b928;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .option-text {
+            color: #b0c8e8;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* Botón de enviar respuesta */
+        #submit-answer {
+            background: linear-gradient(135deg, #f0b928 0%, #d4960e 100%);
+            color: #07111f;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(240, 185, 40, 0.3);
+            width: 100%;
+            margin-top: 25px;
+        }
+
+        #submit-answer:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(240, 185, 40, 0.5);
+        }
+
+        #submit-answer:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            background: rgba(7, 17, 40, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            display: none;
+            border: 2px solid rgba(240, 185, 40, 0.25);
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(240, 185, 40, 0.2);
+        }
+
+        .feedback-icon {
+            font-size: 3rem;
+        }
+
+        .feedback-title {
+            font-size: 1.6rem;
+            margin: 0;
+            color: #f0b928;
+            flex: 1;
+        }
+
+        .feedback-score {
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 8px 20px;
+            border-radius: 25px;
+        }
+
+        .score-optimal {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            border: 2px solid #22c55e;
+        }
+
+        .score-good {
+            background: rgba(77, 144, 212, 0.15);
+            color: #7ab8f5;
+            border: 2px solid #4d90d4;
+        }
+
+        .score-poor {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 2px solid #ef4444;
+        }
+
+        .feedback-section {
+            margin-bottom: 25px;
+        }
+
+        .feedback-section h4 {
+            color: #f0b928;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        .feedback-section p, .feedback-section ul {
+            color: #b0c8e8;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .feedback-section ul {
+            margin-left: 20px;
+        }
+
+        .feedback-list li {
+            margin-bottom: 10px;
+        }
+
+        .check-icon {
+            color: #22c55e;
+            margin-right: 8px;
+        }
+
+        .cross-icon {
+            color: #ef4444;
+            margin-right: 8px;
+        }
+
+        /* Resultados finales */
+        .results-container {
+            background: linear-gradient(135deg, rgba(240, 185, 40, 0.12) 0%, rgba(212, 150, 14, 0.12) 100%);
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 30px 0;
+            border: 2px solid rgba(240, 185, 40, 0.4);
+        }
+
+        .results-score {
+            font-size: 5rem;
+            font-weight: bold;
+            color: #f0b928;
+            margin: 30px 0;
+            text-shadow: 0 0 30px rgba(240, 185, 40, 0.5);
+        }
+
+        .results-level {
+            font-size: 2.2rem;
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(7, 17, 40, 0.7);
+            border-radius: 15px;
+            color: #f0b928;
+        }
+
+        .results-details {
+            background: rgba(13, 27, 62, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .results-details h3 {
+            color: #f0b928;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+        }
+
+        .scene-result {
+            background: rgba(7, 17, 40, 0.7);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 12px;
+            border-left: 4px solid #f0b928;
+        }
+
+        .scene-result h4 {
+            color: #f0b928;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .scene-result p {
+            color: #b0c8e8;
+            margin: 5px 0;
+        }
+
+        .recommendations {
+            background: linear-gradient(135deg, rgba(240, 185, 40, 0.1) 0%, rgba(212, 150, 14, 0.1) 100%);
+            border-left: 4px solid #f0b928;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 12px;
+        }
+
+        .recommendations h3 {
+            color: #f0b928;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .recommendations ul {
+            margin-left: 25px;
+        }
+
+        .recommendations li {
+            color: #fde9a2;
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        /* Footer de navegación */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        button {
+            background: rgba(13, 27, 62, 0.9);
+            color: #f0b928;
+            border: 2px solid rgba(240, 185, 40, 0.3);
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover:not(:disabled) {
+            background: rgba(240, 185, 40, 0.15);
+            border-color: #f0b928;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(240, 185, 40, 0.25);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #next-btn {
+            margin-left: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            main {
+                padding: 25px;
+            }
+            
+            .scene-title {
+                font-size: 1.5rem;
+            }
+            
+            .option-card {
+                padding: 18px;
+            }
+            
+            .results-score {
+                font-size: 3rem;
+            }
+            
+            .results-level {
+                font-size: 1.5rem;
+            }
+
+            .stats-dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Animación de fade in */
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="scorm-container">
+        <header>
+            <div class="header-icon">🎯</div>
+            <h1>Simulador de Estrategias de Comunicación</h1>
+            <p class="header-subtitle">MENDOZA LAW FIRM - Call Backs con Clientes</p>
+        </header>
+
+        <!-- Dashboard de estadísticas -->
+        <div class="stats-dashboard">
+            <div class="stat-card">
+                <div class="stat-number" id="stat-escenario">0/5</div>
+                <div class="stat-label">ESCENARIO</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-correctas">0</div>
+                <div class="stat-label">CORRECTAS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-puntuacion">0%</div>
+                <div class="stat-label">PUNTUACIÓN</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-estandares">0</div>
+                <div class="stat-label">ESTÁNDARES</div>
+            </div>
+        </div>
+
+        <main id="content-area">
+            <!-- El contenido se cargará dinámicamente aquí -->
+        </main>
+        
+        <footer>
+            <button id="prev-btn" style="display:none;">← Anterior</button>
+            <button id="next-btn" class="hidden">Siguiente →</button>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize SCORM
+        window.addEventListener('load', function() {
+            SCORM.init();
+        });
+
+        // Simulator State
+        const simulatorState = {
+            currentScene: 0,
+            totalScore: 0,
+            maxScore: 75,
+            correctAnswers: 0,
+            decisions: [],
+            answered: false
+        };
+
+        // Update dashboard stats
+        function updateDashboard() {
+            const totalScenes = 5;
+            const completedScenes = Math.min(simulatorState.currentScene, totalScenes);
+            const percentage = simulatorState.maxScore > 0 ? Math.round((simulatorState.totalScore / simulatorState.maxScore) * 100) : 0;
+            
+            document.getElementById('stat-escenario').textContent = `${completedScenes}/${totalScenes}`;
+            document.getElementById('stat-correctas').textContent = simulatorState.correctAnswers;
+            document.getElementById('stat-puntuacion').textContent = `${percentage}%`;
+            document.getElementById('stat-estandares').textContent = simulatorState.decisions.filter(d => d.points >= 15).length;
+        }
+
+        // Scene Data
+        const scenes = [
+            {
+                id: 'intro',
+                title: 'Bienvenida',
+                content: `
+                    <div class="welcome-screen">
+                        <div class="welcome-icon">🎯</div>
+                        <h2 class="welcome-title">Practica tus Habilidades</h2>
+                        <p class="welcome-description">
+                            Bienvenido al simulador de call backs de MENDOZA LAW FIRM.<br>
+                            Aquí pondrás en práctica las estrategias de comunicación aprendidas.
+                        </p>
+
+                        <div class="instructions-box">
+                            <h3 class="instructions-title">📋 Instrucciones</h3>
+                            <ul class="instructions-list">
+                                <li>Atenderás <strong>5 llamadas</strong> de clientes con diferentes situaciones reales</li>
+                                <li>En cada escena, selecciona la respuesta que mejor refleje los estándares de TMLF</li>
+                                <li>Recibirás retroalimentación detallada inmediata sobre tu elección</li>
+                                <li>Necesitas <strong>50 puntos (67%)</strong> para aprobar la evaluación</li>
+                            </ul>
+
+                            <div style="margin-top: 25px; border-top: 1px solid rgba(94,234,212,0.2); padding-top: 20px;">
+                                <p style="color:#f0b928; font-weight:bold; margin-bottom:14px;">🎯 Sistema de Puntuación (por escena)</p>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                                    <div style="background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.4); border-radius:8px; padding:12px; text-align:center;">
+                                        <div style="font-size:1.6rem; font-weight:bold; color:#22c55e;">15 pts</div>
+                                        <div style="color:#86efac; font-size:0.85rem; margin-top:4px;">🌟 Decisión Óptima</div>
+                                    </div>
+                                    <div style="background:rgba(234,179,8,0.12); border:1px solid rgba(234,179,8,0.4); border-radius:8px; padding:12px; text-align:center;">
+                                        <div style="font-size:1.6rem; font-weight:bold; color:#eab308;">8–12 pts</div>
+                                        <div style="color:#fde047; font-size:0.85rem; margin-top:4px;">⚠️ Decisión Parcial</div>
+                                    </div>
+                                    <div style="background:rgba(249,115,22,0.12); border:1px solid rgba(249,115,22,0.4); border-radius:8px; padding:12px; text-align:center;">
+                                        <div style="font-size:1.6rem; font-weight:bold; color:#f97316;">1–7 pts</div>
+                                        <div style="color:#fdba74; font-size:0.85rem; margin-top:4px;">⚠️ Error No Crítico</div>
+                                    </div>
+                                    <div style="background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.4); border-radius:8px; padding:12px; text-align:center;">
+                                        <div style="font-size:1.6rem; font-weight:bold; color:#ef4444;">0 pts</div>
+                                        <div style="color:#fca5a5; font-size:0.85rem; margin-top:4px;">❌ Error Crítico</div>
+                                    </div>
+                                </div>
+                                <div style="margin-top:14px; background:rgba(240,185,40,0.08); border-radius:8px; padding:12px; text-align:center;">
+                                    <span style="color:#94a3b8; font-size:0.9rem;">Puntaje máximo total: </span>
+                                    <strong style="color:#f0b928;">75 puntos</strong>
+                                    <span style="color:#94a3b8; font-size:0.9rem;"> · Aprobado: </span>
+                                    <strong style="color:#f0b928;">50 pts (67%)</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="start-button" onclick="startSimulation()">Comenzar Simulación</button>
+                    </div>
+                `
+            },
+            // Escena 1
+            {
+                id: 'escena1',
+                title: 'Escena 1: La Cliente Impaciente',
+                hasOptions: true,
+                content: function() {
+                    return `
+                        <div class="scene-container">
+                            <div class="scene-header">
+                                <h2 class="scene-title">Escena 1: La Cliente Impaciente</h2>
+                                <p class="scene-subtitle">Caso: Caridad Cardona - VAWA con posible Visa T</p>
+                            </div>
+
+                            <div class="client-call-header">
+                                Nueva llamada: Caridad Cardona - Cliente desde hace 8 meses, caso VAWA en proceso
+                            </div>
+                            
+                            <div class="client-speech">
+                                <p>"Abogada, ya no sé qué pensar. Han pasado muchos meses y no he sabido nada de mi caso. Estoy pensando en abandonar todo esto de VAWA porque me dijeron que no tengo suficientes pruebas del abuso. Mi amiga me dijo que debería demandar a USCIS para que se apuren. ¿Usted cree que eso funcione? Ya no aguanto esta incertidumbre."</p>
+                            </div>
+                            
+                            <div class="info-box">
+                                <h3>Información del caso:</h3>
+                                <ul>
+                                    <li>Su caso VAWA está en proceso normal de espera</li>
+                                    <li>Los tiempos actuales de USCIS son de 2-3 años para VAWA</li>
+                                    <li>Ella tiene un historial que podría calificar para Visa T</li>
+                                    <li>No tiene evidencia física del abuso, pero hay patrones de control documentables</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="question-box">
+                                <h3>Selecciona tu respuesta:</h3>
+                                
+                                <div class="options-container" id="options-escena1">
+                                    <div class="option-card" data-option="A" data-points="8">
+                                        <span class="option-label">OPCIÓN A:</span>
+                                        <p class="option-text">"Caridad, entiendo perfectamente tu frustración. Ocho meses se sienten eternos cuando estás en la incertidumbre. Quiero que sepas que lo que estás sintiendo es completamente normal y tu caso no está abandonado. Antes de hablar de soluciones, cuéntame: ¿qué es lo que más te preocupa en este momento: los tiempos de espera o la falta de pruebas?"</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="B" data-points="0">
+                                        <span class="option-label">OPCIÓN B:</span>
+                                        <p class="option-text">"No debes abandonar tu caso VAWA. Demandar a USCIS puede ser contraproducente y tu amiga no tiene razón. Los tiempos de espera son normales y todos los casos tardan lo mismo. Debes ser paciente y confiar en el proceso. Te llamaré cuando haya novedades."</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="C" data-points="15">
+                                        <span class="option-label">OPCIÓN C:</span>
+                                        <p class="option-text">"Caridad, tu frustración es válida. Mira, tengo una propuesta estratégica para ti: vamos a mantener tu caso VAWA activo, pero quiero explorar un 'Plan B' contigo. He identificado que podrías calificar para una Visa T, que tiene un perdón más amplio y podría resolver el tema de las pruebas. ¿Te parece si revisamos esto juntas?"</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="D" data-points="3">
+                                        <span class="option-label">OPCIÓN D:</span>
+                                        <p class="option-text">"Entiendo tu preocupación. La realidad es que USCIS está muy atrasado y no podemos hacer nada al respecto. Sobre las pruebas, necesitamos conseguir más evidencia física del abuso, de lo contrario tu caso podría ser negado. ¿Tienes reportes policiales o médicos que no me hayas mostrado?"</p>
+                                    </div>
+                                </div>
+                                
+                                <button id="submit-answer" disabled>Enviar Respuesta</button>
+                            </div>
+                            
+                            <div id="feedback-escena1" class="feedback-container"></div>
+                        </div>
+                    `;
+                },
+                feedback: {
+                    A: {
+                        points: 8,
+                        title: 'Decisión Parcialmente Correcta',
+                        icon: '⚠️',
+                        scoreClass: 'score-good',
+                        content: `
+                            <div class="feedback-section">
+                                <h4>✅ Aspectos Positivos:</h4>
+                                <ul class="feedback-list">
+                                    <li><span class="check-icon">✓</span> Validas la emoción sin minimizarla</li>
+                                    <li><span class="check-icon">✓</span> Normalizas su experiencia</li>
+                                    <li><span class="check-icon">✓</span> Usas escucha activa para identificar la preocupación principal</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="feedback-section">
+                                <h4>❌ Áreas de Mejora:</h4>
+                                <ul class="feedback-list">
+                                    <li><span class="cross-icon">✗</span> No propones una solución o estrategia concreta</li>
+                                    <li><span class="cross-icon">✗</span> Podrías perder la oportunidad de presentar opciones legales viables</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="feedback-section">
+                                <h4>💡 Impacto en la Vida Real:</h4>
+                                <p>La cliente se sentirá escuchada, pero podría quedar con la sensación de que la llamada no avanzó hacia una solución. En call backs, es importante equilibrar la empatía con propuestas estratégicas concretas.</p>
+                            </div>
+                            
+                            <div class="feedback-section">
+                                <h4>📚 Estrategia Aplicada:</h4>
+                                <p><strong>Validación emocional + Escucha activa</strong></p>
+                                <p>Después de validar, transfiere rápidamente hacia opciones legales: "Entiendo tu ansiedad. Déjame proponerte dos caminos que podemos tomar juntas..."</p>
+                            </div>
+                        `
+                    },
+                    B: {
+                        points: 0,
+                        title: 'Error Crítico',
+                        icon: '❌',
+                        scoreClass: 'score-poor',
+                        content: `
+                            <div class="feedback-section">
+                                <h4>❌ Errores Críticos Identificados:</h4>
+                                <ul class="feedback-list">
+                                    <li><span class="cross-icon">✗</span> Minimizas las preocupaciones legítimas de la cliente ("debes ser paciente")</li>
+                                    <li><span class="cross-icon">✗</span> Desacreditas su red de apoyo sin explicación ("tu amiga no tiene razón")</li>
+                                    <li><span class="cross-icon">✗</span> No proporcionas alternativas ni estrategias</li>
+                                    <li><span class="cross-icon">✗</span> Cierras la comunicación ("te llamaré cuando haya novedades")</li>
+                                    <li><span class="cross-icon">✗</span> No corriges la creencia errónea sobre abandonar VAWA con empatía</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="feedback-section">
+                                <h4>⚠️ Impacto en la Vida Real:</h4>
+                                <p>La cliente se sentirá invalidada, ignorada y podría: (1) Buscar otro abogado, (2) Tomar decisiones precipitadas como abandonar el caso, (3) Perder confianza en el sistema legal. Esta respuesta rompe la relación de confianza y aumenta la ansiedad.</p>
+                            </div>
+                            
+                            <div class="feedback-section">
+                                <h4>🚨 Error Crítico:</h4>
+                                <p>En casos sensibles como VAWA, invalidar emociones puede retraumatizar a víctimas de abuso que ya experimentan falta de control.</p>
+                            </div>
+                        `
+                    },
+                    C: {
+                        points: 15,
+                        title: '¡Decisión Óptima!',
+                        icon: '🌟',
+                        scoreClass: 'score-optimal',
+                        content: `
+                            <div class="feedback-section">
+                                <h4>✅ Excelente Estrategia:</h4>
+                                <ul class="feedback-list">
+                                    <li><span class="check-icon">✓</span> Validas la emoción inmediatamente</li>
+                                    <li><span class="check-icon">✓</span> Propones una estrategia de "Plan A/Plan B" que reduce ansiedad</li>
+                                    <li><span class="check-icon">✓</span> Presentas una solución legal creativa (Visa T) basada en tu análisis del caso</li>
+                                    <li><span class="check-icon">✓</span> Abordas directamente la preocupación sobre pruebas</li>
+                                    <li><span class="check-icon">✓</span> Empoderas a la cliente invitándola a tomar la decisión contigo</li>
+                                    <li><span class="check-icon">✓</span> Mantienes el caso VAWA activo mientras exploras alternativas</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="feedback-section">
+                                <h4>💡 Impacto en la Vida Real:</h4>
+                                <p>La cliente se sentirá escuchada, aliviada al saber que hay opciones, y confiada en tu liderazgo estratégico. La propuesta de Visa T:</p>
+                                <ul>
+                                    <li>Ofrece un perdón más amplio que VAWA</li>
+                                    <li>Puede documentar el abuso de forma diferente (evaluación psicológica, patrones de control)</li>
+                                    <li>Reduce la ansiedad sobre "falta de pruebas"</li>
+                                    <li>Maximiza las posibilidades de obtener residencia</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="feedback-section">
+                                <h4>📚 Estrategia Aplicada:</h4>
+                                <p><strong>Doble vía legal (VAWA + Visa T) + Validación emocional + Transparencia estratégica + Empoderamiento del cliente</strong></p>
+                                <p>Has aplicado el enfoque proactivo multi-estratégico: en lugar de limitarte al caso original, exploraste activamente alternativas que pueden ser más favorables.</p>
+                            </div>
+                        `
+                    },
+                    D: {
+                        points: 3,
+                        title: 'Error No Crítico',
+                        icon: '⚠️',
+                        scoreClass: 'score-poor',
+                        content: `
+                            <div class="feedback-section">
+                                <h4>✅ Aspecto Positivo:</h4>
+                                <ul class="feedback-list">
+                                    <li><span class="check-icon">✓</span> Eres honesta sobre los retrasos de USCIS</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="feedback-section">
+                                <h4>❌ Errores Identificados:</h4>
+                                <ul class="feedback-list">
+                                    <li><span class="cross-icon">✗</span> Comunicas impotencia ("no podemos hacer nada")</li>
+                                    <li><span class="cross-icon">✗</span> Enfocas en lo que falta en lugar de lo que es posible</li>
+                                    <li><span class="cross-icon">✗</span> Pones presión sobre la cliente para conseguir evidencia que puede no existir</li>
+                                    <li><span class="cross-icon">✗</span> No ofreces métodos creativos de documentación del abuso</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="feedback-section">
+                                <h4>💡 Impacto en la Vida Real:</h4>
+                                <p>La cliente se sentirá desempoderada y ansiosa. En casos VAWA, muchas víctimas no tienen reportes policiales por miedo, vergüenza o porque el abuso fue psicológico. Pedir "más evidencia física" puede hacerla sentir que su experiencia no es válida.</p>
+                            </div>
+                            
+                            <div class="feedback-section">
+                                <h4>📚 Alternativa Mejor:</h4>
+                                <p>"Podemos documentar el abuso de otras formas: evaluaciones psicológicas, declaraciones juradas de testigos, análisis de patrones de control financiero o comunicaciones. No necesitas reportes policiales para tener un caso fuerte."</p>
+                            </div>
+                        `
+                    }
+                }
+            }
+        ];
+
+        // Add remaining condensed scenes (2-5) with same structure...
+        // Due to length, I'll add them in a condensed format
+
+        scenes.push(
+            {
+                id: 'escena2',
+                title: 'Escena 2: El Cliente Confundido',
+                hasOptions: true,
+                content: function() {
+                    return `
+                        <div class="scene-container">
+                            <div class="scene-header">
+                                <h2 class="scene-title">Escena 2: El Cliente Confundido</h2>
+                                <p class="scene-subtitle">Caso: VAWA con castigo permanente</p>
+                            </div>
+
+                            <div class="client-call-header">
+                                Nueva llamada: Cliente con caso VAWA - Consulta sobre hijo y castigo permanente
+                            </div>
+                            
+                            <div class="client-speech">
+                                <p>"Abogada, quería preguntarle sobre mi caso VAWA y cómo va a afectar a mi hijo. Mi hijo ya tiene su residencia, entonces no sé si el VAWA me va a servir. Además, me dijeron que tengo un castigo permanente por haber salido y entrado varias veces del país. ¿Eso es verdad? ¿Ya no puedo arreglar nada?"</p>
+                            </div>
+                            
+                            <div class="info-box">
+                                <h3>Información del caso:</h3>
+                                <ul>
+                                    <li>El hijo derivado ya tiene residencia</li>
+                                    <li>El cliente tiene castigo permanente por entradas/salidas</li>
+                                    <li>Mencionó que su expareja lo obligaba a trabajar sin pago</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="question-box">
+                                <h3>Selecciona tu respuesta:</h3>
+                                
+                                <div class="options-container" id="options-escena2">
+                                    <div class="option-card" data-option="A" data-points="0">
+                                        <span class="option-label">OPCIÓN A:</span>
+                                        <p class="option-text">"Mire, su caso es complicado. El castigo permanente limita sus opciones. Su hijo ya tiene residencia, así que el VAWA no le sirve para él. Deberíamos cancelar esta consulta y reagendar cuando tenga más claridad."</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="B" data-points="12">
+                                        <span class="option-label">OPCIÓN B:</span>
+                                        <p class="option-text">"Déjeme aclarar: su hijo ya tiene residencia, puede estar tranquilo por él. El VAWA es para USTED. Sobre el castigo permanente: sí existe, pero no significa que no podamos hacer nada. Cuénteme más sobre que su expareja lo obligaba a trabajar."</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="C" data-points="3">
+                                        <span class="option-label">OPCIÓN C:</span>
+                                        <p class="option-text">"Su hijo no tiene de qué preocuparse. Usted debe enfocarse en su propio caso. El castigo permanente es algo conocido y hay formas de manejarlo. Vamos a continuar con el VAWA."</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="D" data-points="15">
+                                        <span class="option-label">OPCIÓN D:</span>
+                                        <p class="option-text">"Vamos con Plan A y Plan B. Plan A: su caso VAWA es para USTED, su hijo ya está protegido. Plan B: el castigo permanente ES un obstáculo, pero hay opciones. Usted mencionó trabajo forzado. Eso podría abrirnos la Visa T para víctimas de trata laboral. ¿Su expareja controlaba su dinero o documentos?"</p>
+                                    </div>
+                                </div>
+                                
+                                <button id="submit-answer" disabled>Enviar Respuesta</button>
+                            </div>
+                            
+                            <div id="feedback-escena2" class="feedback-container"></div>
+                        </div>
+                    `;
+                },
+                feedback: {
+                    A: { points: 0, title: 'Error Crítico', icon: '❌', scoreClass: 'score-poor', content: `
+                        <div class="feedback-section">
+                            <h4>❌ Errores Críticos Identificados:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> Rechazas al cliente sin explorar sus opciones reales</li>
+                                <li><span class="cross-icon">✗</span> Pierdes la oportunidad de identificar una posible Visa T por trata laboral</li>
+                                <li><span class="cross-icon">✗</span> Sugieres cancelar la consulta en lugar de profundizar — proyectas abandono</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>⚠️ Impacto en la Vida Real:</h4>
+                            <p>El cliente saldrá sintiéndose sin salida. Un caso con castigo permanente + trabajo forzado tiene rutas legales reales que no fueron exploradas. Esta respuesta puede llevar al cliente a abandonar su proceso o buscar otro bufete.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Lo Correcto Sería:</h4>
+                            <p>Escuchar activamente, corregir la confusión sobre el hijo, y hacer preguntas de sondeo sobre el trabajo forzado para evaluar Visa T.</p>
+                        </div>
+                    ` },
+                    B: { points: 12, title: 'Buena Decisión', icon: '✅', scoreClass: 'score-good', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Aspectos Positivos:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Corriges inmediatamente la confusión sobre el hijo</li>
+                                <li><span class="check-icon">✓</span> Eres honesta sobre el castigo permanente sin cerrar puertas</li>
+                                <li><span class="check-icon">✓</span> Haces preguntas de sondeo sobre el trabajo forzado — señal clave de Visa T</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>❌ Área de Mejora:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> No nombras explícitamente la Visa T como alternativa estratégica</li>
+                                <li><span class="cross-icon">✗</span> El cliente podría quedarse sin entender por qué le preguntas sobre el trabajo</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>El cliente se sentirá más claro, pero podría necesitar otra llamada para entender la estrategia completa. Un pequeño paso adicional —nombrar la Visa T— convierte esta respuesta en óptima.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Estrategia Aplicada:</h4>
+                            <p><strong>Corrección de creencias erróneas + Escucha activa + Sondeo de indicadores de trata</strong></p>
+                        </div>
+                    ` },
+                    C: { points: 3, title: 'Error No Crítico', icon: '⚠️', scoreClass: 'score-poor', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Aspecto Positivo:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Tranquilizas al cliente sobre su hijo</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>❌ Errores Identificados:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> Minimizas el castigo permanente sin explicar qué significa realmente</li>
+                                <li><span class="cross-icon">✗</span> Ignoras completamente la mención de trabajo forzado — señal crítica de Visa T</li>
+                                <li><span class="cross-icon">✗</span> "Vamos a continuar con el VAWA" no es una estrategia completa ante esta situación</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>El cliente seguirá confundido sobre el castigo permanente y perderás la oportunidad de explorar Visa T. En casos de trata laboral, cada pregunta sin hacer puede significar meses de retraso en la estrategia correcta.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Alternativa Mejor:</h4>
+                            <p>"El castigo permanente existe, pero no cierra todas las puertas. Cuénteme más sobre cómo su expareja lo obligaba a trabajar — eso puede abrirnos una vía legal diferente con perdón más amplio."</p>
+                        </div>
+                    ` },
+                    D: { points: 15, title: '¡Decisión Óptima!', icon: '🌟', scoreClass: 'score-optimal', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Excelente Estrategia:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Aplicas Plan A/B con claridad: VAWA para el cliente, hijo ya protegido</li>
+                                <li><span class="check-icon">✓</span> Reconoces el castigo permanente como obstáculo real sin cerrarlo como definitivo</li>
+                                <li><span class="check-icon">✓</span> Identificas la señal de trata laboral (trabajo forzado) y la conectas directamente a Visa T</li>
+                                <li><span class="check-icon">✓</span> Haces preguntas de sondeo dirigidas (dinero, documentos) para documentar el patrón de control</li>
+                                <li><span class="check-icon">✓</span> Empoderas al cliente con una ruta clara sin generar falsas expectativas</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>El cliente comprende que tiene dos problemas distintos con dos soluciones potenciales. La Visa T, al tener un perdón más amplio, puede resolver tanto el castigo permanente como la falta de evidencia directa de abuso. Esta claridad reduce ansiedad y genera confianza en la estrategia.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Estrategia Aplicada:</h4>
+                            <p><strong>Plan A/B + Corrección de confusiones + Identificación de Visa T + Sondeo de indicadores de trata laboral</strong></p>
+                        </div>
+                    ` }
+                }
+            },
+            {
+                id: 'escena3',
+                title: 'Escena 3: La Cliente Enojada',
+                hasOptions: true,
+                content: function() {
+                    return `
+                        <div class="scene-container">
+                            <div class="scene-header">
+                                <h2 class="scene-title">Escena 3: La Cliente Enojada</h2>
+                                <p class="scene-subtitle">Caso: María Elena - Visa U con errores graves</p>
+                            </div>
+
+                            <div class="client-call-header">
+                                Nueva llamada: María Elena - Cliente molesta por errores y falta de comunicación
+                            </div>
+                            
+                            <div class="client-speech">
+                                <p>"¡Abogada, esto es INACEPTABLE! ¡Hace tres años que pago y nadie me llama! ¡El formulario tenía mi nombre MAL ESCRITO! ¡Violaron mi confidencialidad! Mi esposo está enfermo y necesito mi permiso YA!"</p>
+                            </div>
+                            
+                            <div class="info-box">
+                                <h3>Información del caso:</h3>
+                                <ul>
+                                    <li>Errores confirmados en el formulario</li>
+                                    <li>Podría calificar para Visa T además de Visa U</li>
+                                    <li>Writ of Mandamus podría acelerar el proceso</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="question-box">
+                                <h3>Selecciona tu respuesta:</h3>
+                                
+                                <div class="options-container" id="options-escena3">
+                                    <div class="option-card" data-option="A" data-points="15">
+                                        <span class="option-label">OPCIÓN A:</span>
+                                        <p class="option-text">"María Elena, tiene toda la razón de estar enojada. Los errores son inaceptables y asumo responsabilidad. Plan: corregir Visa U, explorar Visa T en paralelo (más rápida), y considerar demanda contra USCIS. ¿Agendamos reunión esta semana para revisar TODO?"</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="B" data-points="0">
+                                        <span class="option-label">OPCIÓN B:</span>
+                                        <p class="option-text">"Entiendo que está molesta, pero los tiempos de USCIS no están bajo nuestro control. Los errores fueron un malentendido. Vamos a reenviar la solicitud. Sea paciente."</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="C" data-points="0">
+                                        <span class="option-label">OPCIÓN C:</span>
+                                        <p class="option-text">"Lamento que se sienta así. Los errores ocurren en todos los bufetes. Vamos a corregirlo. Le aseguro que saldrá bien. No se preocupe por su esposo."</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="D" data-points="10">
+                                        <span class="option-label">OPCIÓN D:</span>
+                                        <p class="option-text">"Comprendo su frustración y tiene derecho a estar molesta. Lamento los errores. Necesito revisar su expediente antes de prometer. ¿Agendamos reunión esta semana? Voy a investigar."</p>
+                                    </div>
+                                </div>
+                                
+                                <button id="submit-answer" disabled>Enviar Respuesta</button>
+                            </div>
+                            
+                            <div id="feedback-escena3" class="feedback-container"></div>
+                        </div>
+                    `;
+                },
+                feedback: {
+                    A: { points: 15, title: '¡Decisión Óptima!', icon: '🌟', scoreClass: 'score-optimal', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Excelente Manejo de Crisis:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Validas la emoción sin minimizar ni defenderte</li>
+                                <li><span class="check-icon">✓</span> Asumes responsabilidad institucional de forma directa — esto desescala la tensión</li>
+                                <li><span class="check-icon">✓</span> Propones un plan concreto: corregir Visa U + explorar Visa T + Writ of Mandamus</li>
+                                <li><span class="check-icon">✓</span> Cierras con acción inmediata (reunión esta semana) en lugar de promesas vagas</li>
+                                <li><span class="check-icon">✓</span> No haces promesas que no puedes garantizar</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>María Elena pasará de la ira a la acción. Al sentir que su enojo fue escuchado y que existe un plan estructurado, la probabilidad de que busque otro bufete cae drásticamente. Asumir responsabilidad con un plan es la respuesta más profesional ante quejas legítimas.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Estrategia Aplicada:</h4>
+                            <p><strong>Validación de la queja + Responsabilidad institucional + Plan multiestratégico (Visa U + Visa T + Writ) + Cierre con acción concreta</strong></p>
+                        </div>
+                    ` },
+                    B: { points: 0, title: 'Error Crítico', icon: '❌', scoreClass: 'score-poor', content: `
+                        <div class="feedback-section">
+                            <h4>❌ Errores Críticos Identificados:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> Deflectas la responsabilidad hacia USCIS en lugar de asumir los errores del bufete</li>
+                                <li><span class="cross-icon">✗</span> Llamas "malentendido" a errores confirmados — esto invalida la queja legítima</li>
+                                <li><span class="cross-icon">✗</span> "Sea paciente" ante una cliente con tres años de espera y errores documentados es condescendiente</li>
+                                <li><span class="cross-icon">✗</span> No propones ninguna estrategia adicional ni alternativa</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>⚠️ Impacto en la Vida Real:</h4>
+                            <p>Esta respuesta escalará el conflicto. María Elena, al sentirse nuevamente ignorada, tiene alta probabilidad de: presentar una queja formal al bar, buscar otro abogado, o generar una reseña negativa. La minimización de errores reales es una de las causas más comunes de litigios por mala praxis.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>🚨 Riesgo Legal:</h4>
+                            <p>Minimizar errores documentados (nombre mal escrito, violación de confidencialidad) sin plan de remediación puede interpretarse como negligencia continuada.</p>
+                        </div>
+                    ` },
+                    C: { points: 0, title: 'Error Crítico', icon: '❌', scoreClass: 'score-poor', content: `
+                        <div class="feedback-section">
+                            <h4>❌ Errores Críticos Identificados:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> "Los errores ocurren en todos los bufetes" normaliza negligencia inaceptable</li>
+                                <li><span class="cross-icon">✗</span> "Le aseguro que saldrá bien" es una promesa que no puedes garantizar — riesgo legal</li>
+                                <li><span class="cross-icon">✗</span> "No se preocupe por su esposo" descarta una preocupación humana legítima</li>
+                                <li><span class="cross-icon">✗</span> No hay plan concreto, ni responsabilidad, ni alternativas legales</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>⚠️ Impacto en la Vida Real:</h4>
+                            <p>Esta respuesta puede constituir mala praxis: hacer promesas de resultados en casos legales es éticamente problemático y puede usarse en su contra si el caso tiene un desenlace negativo. La cliente no se sentirá tomada en serio.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Principio Clave:</h4>
+                            <p>En situaciones de queja, nunca prometas resultados. Promete acciones: "Voy a revisar todo tu expediente esta semana y te presento un plan de acción el jueves."</p>
+                        </div>
+                    ` },
+                    D: { points: 10, title: 'Buena Decisión', icon: '✅', scoreClass: 'score-good', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Aspectos Positivos:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Validas la emoción sin ponerte a la defensiva</li>
+                                <li><span class="check-icon">✓</span> Reconoces los errores con responsabilidad</li>
+                                <li><span class="check-icon">✓</span> Propones una reunión esta semana — acción concreta</li>
+                                <li><span class="check-icon">✓</span> No haces promesas que no puedes cumplir</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>❌ Área de Mejora:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> Es una respuesta reactiva, no proactiva — no mencionas las herramientas disponibles</li>
+                                <li><span class="cross-icon">✗</span> No propones explorar Visa T ni Writ of Mandamus como opciones que pueden acelerar el proceso</li>
+                                <li><span class="cross-icon">✗</span> La cliente sigue sin saber qué pasos concretos se tomarán</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>María Elena estará algo más calmada, pero seguirá con incertidumbre. Una respuesta óptima combina la responsabilidad con un esquema claro de las acciones a tomar, demostrando que ya estás pensando en soluciones.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Estrategia Aplicada:</h4>
+                            <p><strong>Validación + Responsabilidad + Acción inmediata</strong> — falta el componente de estrategia multicanal (Visa T + Writ).</p>
+                        </div>
+                    ` }
+                }
+            },
+            {
+                id: 'escena4',
+                title: 'Escena 4: La Cliente Ansiosa por Viajar',
+                hasOptions: true,
+                content: function() {
+                    return `
+                        <div class="scene-container">
+                            <div class="scene-header">
+                                <h2 class="scene-title">Escena 4: La Cliente Ansiosa por Viajar</h2>
+                                <p class="scene-subtitle">Caso: Victoria - 36 años en EE.UU., hermana con cáncer terminal</p>
+                            </div>
+
+                            <div class="client-call-header">
+                                Nueva llamada: Victoria Martínez - Urgencia familiar, desea viajar a México
+                            </div>
+                            
+                            <div class="client-speech">
+                                <p>"Abogada, mi hermana en México tiene cáncer terminal. Necesito verla antes que muera. ¿Puedo usar mi permiso de trabajo para viajar? No quiero perder mi caso pero tampoco que mi hermana muera sin verme. ¿Qué hago?"</p>
+                            </div>
+                            
+                            <div class="info-box">
+                                <h3>Información crítica:</h3>
+                                <ul>
+                                    <li>Caso fuerte de Visa T identificado</li>
+                                    <li>Viajar activaría castigo permanente</li>
+                                    <li>Podría no poder regresar a EE.UU.</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="question-box">
+                                <h3>Selecciona tu respuesta:</h3>
+                                
+                                <div class="options-container" id="options-escena4">
+                                    <div class="option-card" data-option="A" data-points="12">
+                                        <span class="option-label">OPCIÓN A:</span>
+                                        <p class="option-text">"Victoria, debo ser honesta: viajar ahora es extremadamente riesgoso. Tiene castigo permanente y podría no regresar. Perdería 36 años aquí y su caso de Visa T. Lamento la situación, pero mi deber es proteger su futuro legal."</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="B" data-points="0">
+                                        <span class="option-label">OPCIÓN B:</span>
+                                        <p class="option-text">"No se preocupe, podemos solicitar Advance Parole (permiso de viaje) para que vaya a ver a su hermana. Es la forma legal de viajar. Vamos a preparar la solicitud con carta de emergencia."</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="C" data-points="15">
+                                        <span class="option-label">OPCIÓN C:</span>
+                                        <p class="option-text">"Victoria, sé que esto es difícil. Lo bueno: tiene caso excelente de Visa T que incluye a su esposo. Lo difícil: viajar ahora sería tirar 36 años a la basura. No la dejarían regresar. Entiendo el dolor, pero ¿hay forma de conectar virtualmente mientras aseguramos su residencia?"</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="D" data-points="5">
+                                        <span class="option-label">OPCIÓN D:</span>
+                                        <p class="option-text">"La decisión es suya. Si viaja, hay riesgo de no regresar por castigo permanente. Si no viaja, pierde ver a su hermana. Es decisión personal que solo usted puede tomar. Piénselo."</p>
+                                    </div>
+                                </div>
+                                
+                                <button id="submit-answer" disabled>Enviar Respuesta</button>
+                            </div>
+                            
+                            <div id="feedback-escena4" class="feedback-container"></div>
+                        </div>
+                    `;
+                },
+                feedback: {
+                    A: { points: 12, title: 'Buena Decisión', icon: '✅', scoreClass: 'score-good', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Aspectos Positivos:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Eres completamente honesta sobre el riesgo real del viaje</li>
+                                <li><span class="check-icon">✓</span> Mencionas el castigo permanente y las consecuencias concretas</li>
+                                <li><span class="check-icon">✓</span> Priorizas la protección del caso legal de Victoria</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>❌ Área de Mejora:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> No ofreces alternativas emocionales o prácticas para su situación familiar</li>
+                                <li><span class="cross-icon">✗</span> No explicas el valor de la Visa T como la razón positiva para quedarse</li>
+                                <li><span class="cross-icon">✗</span> La respuesta puede sentirse como "no puedes hacer nada" sin salida emocional</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>Victoria entiende el riesgo, pero sigue con el peso emocional sin apoyo. En crisis familiares, la cliente necesita escuchar que su dolor es válido Y que hay una razón poderosa para proteger su futuro. Sin eso, puede tomar decisiones impulsivas.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Estrategia Aplicada:</h4>
+                            <p><strong>Honestidad total sobre riesgos</strong> — falta equilibrar con validación emocional y alternativas concretas (videollamadas, por qué vale la pena la Visa T que incluye a su esposo).</p>
+                        </div>
+                    ` },
+                    B: { points: 0, title: 'Error Crítico', icon: '❌', scoreClass: 'score-poor', content: `
+                        <div class="feedback-section">
+                            <h4>🚨 Error Legal Grave:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> El Advance Parole NO protege a personas con castigo permanente de 10 años</li>
+                                <li><span class="cross-icon">✗</span> Solicitar Advance Parole en este caso no resuelve la barra de inadmisibilidad</li>
+                                <li><span class="cross-icon">✗</span> Si Victoria sale con ese consejo y no puede regresar, el bufete enfrenta riesgo real de demanda por mala praxis</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>⚠️ Impacto en la Vida Real:</h4>
+                            <p>Esta es la respuesta más peligrosa del simulador. Victoria confía en tu consejo como abogado/a. Si viaja basándose en esta información incorrecta, perderá 36 años de vida en EE.UU., su caso de Visa T, y posiblemente la posibilidad de reunirse con su esposo. El daño sería irreversible.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Principio Clave:</h4>
+                            <p>Cuando no estés seguro/a sobre el impacto del Advance Parole en casos con castigos de inadmisibilidad, escala al abogado supervisor ANTES de dar cualquier consejo al cliente.</p>
+                        </div>
+                    ` },
+                    C: { points: 15, title: '¡Decisión Óptima!', icon: '🌟', scoreClass: 'score-optimal', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Equilibrio Perfecto:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Comienzas con lo bueno: presenta la Visa T como razón positiva y poderosa para quedarse</li>
+                                <li><span class="check-icon">✓</span> Explicas el riesgo del viaje con claridad y sin rodeos</li>
+                                <li><span class="check-icon">✓</span> Validas el dolor emocional de la situación ("sé que esto es difícil")</li>
+                                <li><span class="check-icon">✓</span> Ofreces una alternativa concreta (conexión virtual) que honra su necesidad de despedirse</li>
+                                <li><span class="check-icon">✓</span> No tomas la decisión por ella, pero sí le das toda la información para decidir bien</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>Victoria siente que fue escuchada como persona, no solo como caso. Al presentar la Visa T primero —con beneficio para ella y su esposo— la razón para quedarse tiene valor positivo, no solo miedo. La alternativa virtual le da un camino para acompañar a su hermana sin destruir su futuro.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Estrategia Aplicada:</h4>
+                            <p><strong>Validación emocional + Presentación positiva de Visa T + Honestidad sobre riesgo + Alternativa práctica</strong> — la fórmula completa para crisis de alto impacto emocional.</p>
+                        </div>
+                    ` },
+                    D: { points: 5, title: 'Error No Crítico', icon: '⚠️', scoreClass: 'score-poor', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Aspecto Positivo:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Presentas los dos escenarios con honestidad</li>
+                                <li><span class="check-icon">✓</span> Respetas la autonomía de la cliente</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>❌ Errores Identificados:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> La neutralidad en crisis emocional se siente como abandono profesional</li>
+                                <li><span class="cross-icon">✗</span> "Piénselo" sin herramientas ni alternativas no es orientación legal, es indiferencia</li>
+                                <li><span class="cross-icon">✗</span> No mencionas la Visa T, que es la razón estratégica más poderosa para no viajar</li>
+                                <li><span class="cross-icon">✗</span> No ofreces alternativas que reduzcan el costo emocional (videollamadas, cartas)</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>Victoria cuelga sin orientación y con el peso completo de la decisión. En ese estado emocional, es probable que tome la decisión más impulsiva (viajar) porque nadie le presentó una razón positiva para quedarse. El rol del abogado incluye guiar, no solo informar.</p>
+                        </div>
+                    ` }
+                }
+            },
+            {
+                id: 'escena5',
+                title: 'Escena 5: El Cliente Desesperado',
+                hasOptions: true,
+                content: function() {
+                    return `
+                        <div class="scene-container">
+                            <div class="scene-header">
+                                <h2 class="scene-title">Escena 5: El Cliente Desesperado</h2>
+                                <p class="scene-subtitle">Caso: Carlos - Permiso de trabajo pendiente, riesgo de despido</p>
+                            </div>
+
+                            <div class="client-call-header">
+                                Nueva llamada: Carlos - Urgencia laboral, fecha límite 12 de marzo
+                            </div>
+                            
+                            <div class="client-speech">
+                                <p>"Abogado, no sé qué hacer. Ya perdí dos años esperando. Mi jefe me dio hasta el 12 de marzo o me despide. Tengo dos niños pequeños. Pensé en ir a USCIS a exigirles. ¿Cree que funcione? ¿Ya perdí mi caso?"</p>
+                            </div>
+                            
+                            <div class="info-box">
+                                <h3>Información del caso:</h3>
+                                <ul>
+                                    <li>Demora de 2 años es irrazonable</li>
+                                    <li>Writ of Mandamus podría funcionar</li>
+                                    <li>Ir a oficinas USCIS NO sirve</li>
+                                    <li>Carta amenazando podría ser suficiente</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="question-box">
+                                <h3>Selecciona tu respuesta:</h3>
+                                
+                                <div class="options-container" id="options-escena5">
+                                    <div class="option-card" data-option="A" data-points="14">
+                                        <span class="option-label">OPCIÓN A:</span>
+                                        <p class="option-text">"Carlos, dos años es irrazonable. Ir a USCIS no funciona. PERO tengo estrategia: 'Writ of Mandamus', carta amenazando con demandar. En muchos casos, solo la carta es suficiente. Tenemos hasta el 12 de marzo. ¿Empezamos esta semana?"</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="B" data-points="6">
+                                        <span class="option-label">OPCIÓN B:</span>
+                                        <p class="option-text">"Ir a USCIS no servirá. El sistema está colapsado y no podemos hacer nada excepto esperar. Puede seguir trabajando con el recibo de renovación. Hable con su empleador."</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="C" data-points="8">
+                                        <span class="option-label">OPCIÓN C:</span>
+                                        <p class="option-text">"Su caso no está perdido pero necesitamos actuar con inteligencia. Dos años es inaceptable y hay acciones legales. Déjeme investigar esta semana y le propongo opciones el jueves. NO vaya a USCIS."</p>
+                                    </div>
+                                    
+                                    <div class="option-card" data-option="D" data-points="15">
+                                        <span class="option-label">OPCIÓN D:</span>
+                                        <p class="option-text">"Carlos, vamos a actuar rápido. Opción 1: Carta amenazando con Writ of Mandamus (menos costosa). Opción 2: Demanda formal (más agresiva). Recomiendo Opción 1 esta semana. Si para el 5 de marzo no hay respuesta, escalamos. Lo importante: NO pierda su trabajo. ¿Preguntas?"</p>
+                                    </div>
+                                </div>
+                                
+                                <button id="submit-answer" disabled>Enviar Respuesta</button>
+                            </div>
+                            
+                            <div id="feedback-escena5" class="feedback-container"></div>
+                        </div>
+                    `;
+                },
+                feedback: {
+                    A: { points: 14, title: 'Excelente Estrategia', icon: '🌟', scoreClass: 'score-optimal', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Aspectos Muy Positivos:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Descartas ir a USCIS con fundamento claro</li>
+                                <li><span class="check-icon">✓</span> Propones el Writ of Mandamus como estrategia concreta</li>
+                                <li><span class="check-icon">✓</span> Mencionas que a veces solo la carta amenazante es suficiente — gestión de expectativas realista</li>
+                                <li><span class="check-icon">✓</span> Anclas la urgencia a la fecha límite del 12 de marzo</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>❌ Área de Mejora:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> No ofreces orientación sobre qué hacer con el empleador mientras se resuelve el proceso</li>
+                                <li><span class="cross-icon">✗</span> No presentas las opciones en niveles (carta primero, demanda si no hay respuesta), lo que ayuda a Carlos a entender el plan escalonado</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>Carlos sabrá que hay una acción legal posible, lo que reduce el pánico. Sin embargo, sin orientación para su empleador, podría perder el trabajo antes de que el Writ surta efecto. Un plan completo cubre ambos frentes.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Estrategia Aplicada:</h4>
+                            <p><strong>Writ of Mandamus + Fecha límite anclada</strong> — falta el plan escalonado explícito y la orientación paralela al empleador.</p>
+                        </div>
+                    ` },
+                    B: { points: 6, title: 'Error No Crítico', icon: '⚠️', scoreClass: 'score-poor', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Aspecto Positivo:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Corriges correctamente que ir a USCIS no sirve</li>
+                                <li><span class="check-icon">✓</span> Mencionas el recibo de renovación como recurso temporal</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>❌ Errores Identificados:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> "No podemos hacer nada excepto esperar" proyecta impotencia total ante una demora de 2 años que es irrazonable</li>
+                                <li><span class="cross-icon">✗</span> No mencionas el Writ of Mandamus, que es la herramienta legal diseñada exactamente para esta situación</li>
+                                <li><span class="cross-icon">✗</span> "Hable con su empleador" sin herramientas ni argumentos no es orientación útil</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>Carlos cuelga sin esperanza real. Ante una emergencia laboral con fecha límite y dos hijos, decirle que espere puede llevar a que busque otro abogado, o peor, que pierda el trabajo por no tener información de cómo hablar con su empleador.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Alternativa Mejor:</h4>
+                            <p>"Dos años es irrazonable. Tenemos una herramienta: Writ of Mandamus. A veces solo la carta amenazando con demandar mueve el caso. Hablemos de cómo podemos también hablar con tu empleador sobre el recibo de renovación."</p>
+                        </div>
+                    ` },
+                    C: { points: 8, title: 'Decisión Parcial', icon: '⚠️', scoreClass: 'score-good', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Aspectos Positivos:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Corriges que ir a USCIS no es la solución</li>
+                                <li><span class="check-icon">✓</span> Reconoces que 2 años es inaceptable — validas la frustración</li>
+                                <li><span class="check-icon">✓</span> Propones actuar, no esperar</li>
+                                <li><span class="check-icon">✓</span> Estableces un plazo de respuesta (jueves)</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>❌ Área de Mejora:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="cross-icon">✗</span> Ante una emergencia con fecha límite del 12 de marzo, decir "investigo y te digo el jueves" puede ser demasiado lento</li>
+                                <li><span class="cross-icon">✗</span> Puedes dar orientación preliminar inmediata (Writ of Mandamus) sin esperar a investigar</li>
+                                <li><span class="cross-icon">✗</span> Carlos sigue sin saber qué decirle a su empleador hoy</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>Es una respuesta prudente, pero en urgencias laborales la prudencia excesiva puede costar el trabajo al cliente. Un abogado con experiencia puede dar orientación inmediata básica y confirmar detalles después.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Estrategia Aplicada:</h4>
+                            <p><strong>Reconocimiento de urgencia + Acción futura</strong> — falta el liderazgo estratégico inmediato que la situación requiere.</p>
+                        </div>
+                    ` },
+                    D: { points: 15, title: '¡Decisión Óptima!', icon: '🌟', scoreClass: 'score-optimal', content: `
+                        <div class="feedback-section">
+                            <h4>✅ Liderazgo Estratégico Completo:</h4>
+                            <ul class="feedback-list">
+                                <li><span class="check-icon">✓</span> Actúas de inmediato — no hay demoras en una emergencia con fecha límite</li>
+                                <li><span class="check-icon">✓</span> Presentas dos opciones claras y ordenadas por costo y agresividad</li>
+                                <li><span class="check-icon">✓</span> Haces una recomendación explícita (Opción 1 esta semana) — no dejas la decisión en el aire</li>
+                                <li><span class="check-icon">✓</span> Estableces un punto de escalamiento con fecha (5 de marzo) — plan escalonado claro</li>
+                                <li><span class="check-icon">✓</span> Priorizas mantener el empleo como objetivo central paralelo al proceso legal</li>
+                                <li><span class="check-icon">✓</span> Cierras con "¿Preguntas?" — abres el diálogo sin cortar la comunicación</li>
+                            </ul>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>💡 Impacto en la Vida Real:</h4>
+                            <p>Carlos pasa del pánico a la acción en segundos. Al tener un plan con opciones, fechas y una recomendación clara, puede: hablar con su empleador con confianza, entender exactamente qué pasará y cuándo, y confiar en que su abogado tiene el control de la situación.</p>
+                        </div>
+                        <div class="feedback-section">
+                            <h4>📚 Estrategia Aplicada:</h4>
+                            <p><strong>Writ of Mandamus + Plan escalonado con fechas + Recomendación explícita + Prioridad en el empleo + Cierre abierto</strong> — el modelo completo de liderazgo en crisis urgente.</p>
+                        </div>
+                    ` }
+                }
+            }
+        );
+
+        // Start simulation function
+        function startSimulation() {
+            simulatorState.currentScene = 1;
+            loadScene();
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        // Load scene
+        function loadScene() {
+            const scene = scenes[simulatorState.currentScene];
+            const contentArea = document.getElementById('content-area');
+            
+            // Load content
+            if (typeof scene.content === 'function') {
+                contentArea.innerHTML = scene.content();
+            } else {
+                contentArea.innerHTML = scene.content;
+            }
+            
+            contentArea.classList.add('fade-in');
+            
+            // Initialize interactions if scene has options
+            if (scene.hasOptions) {
+                // Clonar botón submit para limpiar listeners acumulados de escenas anteriores
+                const oldSubmit = document.getElementById('submit-answer');
+                if (oldSubmit) {
+                    const newSubmit = oldSubmit.cloneNode(true);
+                    oldSubmit.parentNode.replaceChild(newSubmit, oldSubmit);
+                }
+                initializeSceneInteractions(scene);
+                simulatorState.answered = false;
+            } else {
+                simulatorState.answered = true;
+            }
+            
+            updateNavigationButtons();
+            updateDashboard();
+            
+            // Update SCORM progress
+            const progress = Math.round((simulatorState.currentScene / (scenes.length - 1)) * 100);
+            SCORM.setProgress(progress);
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize scene interactions
+        function initializeSceneInteractions(scene) {
+            const options = document.querySelectorAll(`#options-${scene.id} .option-card`);
+            const submitBtn = document.getElementById('submit-answer');
+            let selectedOption = null;
+            
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedOption = option;
+                    if (submitBtn) submitBtn.disabled = false;
+                });
+            });
+            
+            if (submitBtn) {
+                submitBtn.addEventListener('click', () => {
+                    if (selectedOption) {
+                        showFeedback(scene, selectedOption);
+                        submitBtn.disabled = true;
+                        options.forEach(opt => opt.style.pointerEvents = 'none');
+                        simulatorState.answered = true;
+                        document.getElementById('next-btn').disabled = false;
+                    }
+                });
+            }
+        }
+
+        // Show feedback
+        function showFeedback(scene, selectedOption) {
+            const optionValue = selectedOption.dataset.option;
+            const optionPoints = parseInt(selectedOption.dataset.points);
+            const feedback = scene.feedback[optionValue];
+            
+            // Update score
+            simulatorState.totalScore += optionPoints;
+            if (optionPoints >= 15) simulatorState.correctAnswers++;
+            
+            // Calculate percentage for SCORM
+            const scorePercentage = Math.round((simulatorState.totalScore / simulatorState.maxScore) * 100);
+            SCORM.setScore(scorePercentage);
+            
+            // Record decision
+            simulatorState.decisions.push({
+                scene: scene.title,
+                option: optionValue,
+                points: optionPoints
+            });
+            
+            // Show feedback
+            const feedbackContainer = document.getElementById(`feedback-${scene.id}`);
+            if (feedbackContainer && feedback) {
+                feedbackContainer.innerHTML = `
+                    <div class="feedback-header">
+                        <span class="feedback-icon">${feedback.icon}</span>
+                        <h3 class="feedback-title">${feedback.title}</h3>
+                        <span class="feedback-score ${feedback.scoreClass}">+${optionPoints} puntos</span>
+                    </div>
+                    ${feedback.content}
+                `;
+                feedbackContainer.classList.add('show');
+                feedbackContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            
+            // Mark option
+            if (optionPoints >= 15) {
+                selectedOption.classList.add('correct');
+            } else if (optionPoints === 0) {
+                selectedOption.classList.add('incorrect');
+            }
+            
+            updateDashboard();
+        }
+
+        // Update navigation buttons
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (simulatorState.currentScene === 0) {
+                prevBtn.style.display = 'none';
+                nextBtn.classList.add('hidden');
+            } else if (simulatorState.currentScene === scenes.length) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            } else {
+                prevBtn.style.display = 'block';
+                nextBtn.classList.remove('hidden');
+                
+                if (simulatorState.currentScene === scenes.length - 1) {
+                    nextBtn.textContent = 'Ver Resultados';
+                } else {
+                    nextBtn.textContent = 'Siguiente →';
+                }
+            }
+            
+            // Disable next if decision not made
+            if (scenes[simulatorState.currentScene] && scenes[simulatorState.currentScene].hasOptions && !simulatorState.answered) {
+                nextBtn.disabled = true;
+            } else {
+                nextBtn.disabled = false;
+            }
+        }
+
+        // Navigation functions
+        function nextScene() {
+            if (simulatorState.currentScene === scenes.length - 1) {
+                showResults();
+            } else if (simulatorState.currentScene < scenes.length - 1) {
+                simulatorState.currentScene++;
+                loadScene();
+            }
+        }
+
+        function prevScene() {
+            if (simulatorState.currentScene > 1) {
+                simulatorState.currentScene--;
+                loadScene();
+            }
+        }
+
+        // Show results
+        function showResults() {
+            const level = calculateLevel(simulatorState.totalScore);
+            const contentArea = document.getElementById('content-area');
+            const scorePercentage = Math.round((simulatorState.totalScore / simulatorState.maxScore) * 100);
+            
+            // Complete SCORM
+            SCORM.setScore(scorePercentage);
+            SCORM.complete();
+            
+            // Update final scene counter
+            simulatorState.currentScene = scenes.length;
+            
+            let html = `
+                <div class="results-container">
+                    <h2>¡Simulación Completada!</h2>
+                    <div class="circular-progress">
+                        <svg width="200" height="200">
+                            <circle class="progress-ring-circle" cx="100" cy="100" r="90" />
+                            <circle class="progress-ring-circle-fill" cx="100" cy="100" r="90" 
+                                    style="stroke-dasharray: 565.48; stroke-dashoffset: ${565.48 - (565.48 * scorePercentage / 100)};" />
+                        </svg>
+                        <div class="progress-text">${scorePercentage}%</div>
+                        <div class="progress-label">Progreso General</div>
+                    </div>
+                    <div class="results-score">${simulatorState.totalScore}/75 puntos</div>
+                    <div class="results-level">${level.title}</div>
+                    <p style="font-size: 1.2rem; color: #cbd5e1;">${level.description}</p>
+                </div>
+                
+                <div class="results-details">
+                    <h3>📊 Análisis de tu Desempeño</h3>
+                    ${generateSceneResults()}
+                    ${generateRecommendations(level)}
+                </div>
+            `;
+            
+            contentArea.innerHTML = html;
+            updateNavigationButtons();
+            updateDashboard();
+        }
+
+        function calculateLevel(score) {
+            if (score >= 70) {
+                return {
+                    title: '🌟 EXPERTO EN MANEJO DE CALL BACKS',
+                    description: 'Dominio excepcional de competencias críticas'
+                };
+            } else if (score >= 50) {
+                return {
+                    title: '✅ COMPETENTE CON ÁREAS DE MEJORA',
+                    description: 'Base sólida con oportunidades de crecimiento'
+                };
+            } else if (score >= 30) {
+                return {
+                    title: '⚠️ BÁSICO - REQUIERE ENTRENAMIENTO',
+                    description: 'Gaps significativos en competencias'
+                };
+            } else {
+                return {
+                    title: '❌ NECESITA DESARROLLO FUNDAMENTAL',
+                    description: 'Requiere entrenamiento formal inmediato'
+                };
+            }
+        }
+
+        function generateSceneResults() {
+            let html = '<h4 style="color: #f0b928; margin: 25px 0 15px 0;">Resultados por Escena:</h4>';
+            
+            simulatorState.decisions.forEach((decision) => {
+                html += `
+                    <div class="scene-result">
+                        <h4>${decision.scene}</h4>
+                        <p>Opción elegida: <strong>${decision.option}</strong></p>
+                        <p><strong style="color: #f0b928;">Puntos obtenidos: ${decision.points}/15</strong></p>
+                    </div>
+                `;
+            });
+            
+            return html;
+        }
+
+        function generateRecommendations(level) {
+            let recommendations = [];
+            
+            if (level.title.includes('EXPERTO')) {
+                recommendations = [
+                    'Considera mentorar a otros abogados en técnicas de comunicación',
+                    'Documenta tus mejores prácticas para materiales de entrenamiento',
+                    'Lidera workshops sobre manejo de casos VAWA y Visa T'
+                ];
+            } else if (level.title.includes('COMPETENTE')) {
+                recommendations = [
+                    'Practica el enfoque "Plan A/Plan B" en todas las consultas',
+                    'Valida siempre la emoción ANTES de dar soluciones legales',
+                    'Revisa casos de Visa T para identificar señales de trata',
+                    'Observa consultas de abogados senior'
+                ];
+            } else {
+                recommendations = [
+                    'Participa como oyente en consultas reales con supervisión',
+                    'Estudia los elementos legales de Visa T vs VAWA',
+                    'Practica role-plays de situaciones de crisis',
+                    'No realices call backs independientes hasta completar entrenamiento'
+                ];
+            }
+            
+            let html = `
+                <div class="recommendations">
+                    <h3>📋 Recomendaciones para tu Desarrollo</h3>
+                    <ul>
+            `;
+            
+            recommendations.forEach(rec => {
+                html += `<li>${rec}</li>`;
+            });
+            
+            html += `
+                    </ul>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadScene();
+            updateDashboard();
+            
+            document.getElementById('prev-btn').addEventListener('click', prevScene);
+            document.getElementById('next-btn').addEventListener('click', nextScene);
+        });
+    </script>
+</body>
+</html>
