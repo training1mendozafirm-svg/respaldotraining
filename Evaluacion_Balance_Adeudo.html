@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación · Balance de Adeudo — Cobranza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Tokens TMLF BaseMaestra v2 */
+    --navy:#0d1e2e;
+    --navy-2:#1a3a5c;
+    --gold:#c9a84c;
+    --gold-light:#f1e6c8;
+    --cream:#f4f1ea;
+    --line:#dcd6c9;
+    --ok:#1e6641;
+    --ok-bg:#e7f2ea;
+    --warn:#8b2c2c;
+    --warn-bg:#f6e6e4;
+    --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+    --cond: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--navy);
+    font-family:var(--sans);
+  }
+  .shell{max-width:760px;margin:0 auto;padding:28px 20px 60px;min-height:100%;}
+
+  header.top{
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:2px solid var(--navy);
+    padding-bottom:14px;margin-bottom:22px;
+    flex-wrap:wrap;gap:10px;
+  }
+  .brand{font-family:var(--cond);text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:var(--gold);font-weight:700;}
+  .brand-title{font-family:var(--serif);font-size:20px;color:var(--navy);margin-top:2px;}
+  .learner{font-size:12px;color:var(--navy-2);text-align:right;}
+
+  .progress-wrap{margin-bottom:22px;}
+  .progress-track{height:6px;background:var(--line);border-radius:4px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--gold);transition:width .25s;}
+  .progress-label{font-size:11px;color:var(--navy-2);margin-top:6px;text-transform:uppercase;letter-spacing:.06em;font-family:var(--cond);}
+
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:3px;
+    padding:26px 24px;margin-bottom:20px;
+  }
+  .q-eyebrow{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;font-size:11px;color:var(--gold);font-weight:700;margin-bottom:6px;}
+  .q-prompt{font-family:var(--serif);font-size:19px;color:var(--navy);margin-bottom:16px;line-height:1.4;}
+  .scenario{
+    background:var(--cream);
+    border:1px solid var(--line);
+    border-left:3px solid var(--navy);
+    padding:14px 16px;
+    font-size:13.5px;
+    line-height:1.85;
+    white-space:pre-line;
+    margin-bottom:20px;
+    font-family:var(--sans);
+    color:var(--navy-2);
+  }
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    display:flex;align-items:flex-start;gap:12px;
+    border:1px solid #c9c2b0;border-radius:3px;
+    padding:12px 14px;cursor:pointer;
+    font-size:14px;line-height:1.4;
+    transition:border-color .12s, background .12s;
+    background:#fdfcf9;
+  }
+  .opt:hover{border-color:var(--navy-2);}
+  .opt.selected{border-color:var(--navy);background:var(--gold-light);}
+  .opt .marker{
+    flex:0 0 22px;height:22px;border-radius:50%;border:1.5px solid #97907c;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--sans);font-size:12px;font-weight:700;color:var(--navy-2);
+    margin-top:1px;
+  }
+  .opt.selected .marker{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .opt.incorrect{border-color:var(--warn);background:var(--warn-bg);}
+
+  .feedback{
+    margin-top:16px;padding:12px 14px;border-radius:3px;font-size:13.5px;line-height:1.6;display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--ok-bg);color:var(--ok);border:1px solid #b9dcc2;}
+  .feedback.bad{background:var(--warn-bg);color:var(--warn);border:1px solid #e0b9b4;}
+
+  .nav-row{display:flex;justify-content:flex-end;gap:10px;margin-top:6px;}
+  button{
+    font-family:var(--sans);font-size:13.5px;font-weight:700;
+    letter-spacing:.03em;
+    border:none;border-radius:3px;padding:11px 22px;cursor:pointer;
+    background:var(--navy);color:#fff;
+  }
+  button:disabled{background:#b9b2a0;cursor:not-allowed;}
+  button:hover:not(:disabled){background:var(--navy-2);}
+  button.ghost{background:transparent;color:var(--navy);border:1px solid var(--navy);}
+
+  .intro h1{font-family:var(--serif);font-size:28px;color:var(--navy);margin:0 0 6px;}
+  .intro p{font-size:14.5px;line-height:1.7;color:var(--navy-2);}
+  .rules{
+    background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);
+    padding:16px 18px;margin:18px 0;font-size:13.5px;line-height:1.8;
+  }
+  .rules li{margin-bottom:4px;}
+
+  .results-hero{text-align:center;padding:20px 0 8px;}
+  .results-score{font-family:var(--serif);font-size:56px;color:var(--navy);line-height:1;}
+  .results-status{
+    display:inline-block;margin-top:10px;padding:6px 18px;border-radius:20px;
+    font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;font-weight:700;font-size:12.5px;
+  }
+  .results-status.pass{background:var(--ok-bg);color:var(--ok);}
+  .results-status.fail{background:var(--warn-bg);color:var(--warn);}
+  .results-detail{font-size:13px;color:var(--navy-2);margin-top:14px;}
+  .review-list{margin-top:24px;display:flex;flex-direction:column;gap:8px;}
+  .review-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:9px 14px;border:1px solid var(--line);border-radius:3px;font-size:13px;
+  }
+  .review-row .tag{font-family:var(--cond);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:11px;padding:3px 10px;border-radius:10px;}
+  .review-row .tag.ok{background:var(--ok-bg);color:var(--ok);}
+  .review-row .tag.bad{background:var(--warn-bg);color:var(--warn);}
+
+  .hidden{display:none !important;}
+  footer.foot{text-align:center;font-size:11px;color:#8f8a7a;margin-top:30px;font-family:var(--cond);letter-spacing:.03em;}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <div>
+      <div class="brand">Mendoza Learning Center · Cobranza</div>
+      <div class="brand-title">Evaluación de Balance de Adeudo</div>
+    </div>
+    <div class="learner" id="learnerBox">Colaborador(a)</div>
+  </header>
+
+  <!-- INTRO -->
+  <div id="screenIntro" class="intro">
+    <h1>Antes de comenzar</h1>
+    <p>Esta evaluación mide tu capacidad para calcular el balance de adeudo de un cliente a partir del tipo de caso, la fecha de apertura y el plan de pago seleccionado.</p>
+    <div class="rules">
+      <ul>
+        <li>30 preguntas de opción múltiple, una por caso.</li>
+        <li>Para cada caso, calcula el tramo de precio vigente, el total del plan, los pagos que debieron cubrirse y el saldo pendiente antes de seleccionar tu respuesta.</li>
+        <li>Este es un examen de <strong>un solo intento</strong>: una vez enviada una respuesta no podrás regresar a modificarla.</li>
+        <li>El resultado se registra automáticamente en tu perfil dentro de la plataforma.</li>
+        <li>Calificación mínima aprobatoria: <strong id="passLabel">85%</strong>.</li>
+      </ul>
+    </div>
+    <div class="nav-row" style="justify-content:flex-start;">
+      <button id="btnStart">Comenzar evaluación</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screenQuiz" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%;"></div></div>
+      <div class="progress-label" id="progressLabel">Caso 1 de 30</div>
+    </div>
+    <div class="card">
+      <div class="q-eyebrow" id="qEyebrow">Caso 1</div>
+      <div class="q-prompt">Con los datos del caso, ¿cuál es el estado del plazo y el saldo pendiente correcto?</div>
+      <div class="scenario" id="qScenario"></div>
+      <div class="options" id="qOptions"></div>
+      <div class="feedback" id="qFeedback"></div>
+      <div class="nav-row">
+        <button id="btnNext" disabled>Siguiente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screenResults" class="hidden">
+    <div class="card results-hero">
+      <div class="q-eyebrow" style="text-align:center;">Resultado final</div>
+      <div class="results-score" id="scoreBig">0%</div>
+      <div id="statusPill" class="results-status pass">Aprobado</div>
+      <div class="results-detail" id="scoreDetail"></div>
+    </div>
+    <div class="card">
+      <div class="q-eyebrow">Detalle por caso</div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </div>
+
+  <footer class="foot">MLC · Training de Cobranza · Simulador de opción múltiple construido a partir de la tabla de precios y planes de pago vigente</footer>
+</div>
+
+<script>
+var QUESTIONS = [{"id": 1, "stem": "Tipo de caso: VAWA (Individual)\nFecha de apertura: 2024-01-15\nPlan seleccionado: Plan A · 15 pagos\nEsquema de pago (downpayment*mensualidad*meses): 4,600*500*15\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 10\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $7,100", "Vigente — Saldo pendiente: $2,500", "VENCIDO — Saldo pendiente: $2,500", "VENCIDO — Saldo pendiente: $4,400"], "correct_index": 2}, {"id": 2, "stem": "Tipo de caso: Visa T (Individual)\nFecha de apertura: 2024-10-01\nPlan seleccionado: Plan B · 24 pagos\nEsquema de pago (downpayment*mensualidad*meses): 2,100*350*24\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2025-06-01\nPagos mensuales confirmados en Collector/Law Pay: 8\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $5,600", "Vigente — Saldo pendiente: $7,700", "Vigente — Saldo pendiente: $5,600", "Vigente — Saldo pendiente: $3,700"], "correct_index": 2}, {"id": 3, "stem": "Tipo de caso: Combo VAWA (pareja)\nFecha de apertura: 2025-04-05\nPlan seleccionado: Plan A · 24 pagos\nEsquema de pago (downpayment*mensualidad*meses): 7,000*580*24\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 5\nEnganche / pago inicial cubierto: Sí", "options": ["Vigente — Saldo pendiente: $18,020", "Vigente — Saldo pendiente: $3,100", "VENCIDO — Saldo pendiente: $11,020", "Vigente — Saldo pendiente: $11,020"], "correct_index": 3}, {"id": 4, "stem": "Tipo de caso: Combo Visa T (pareja)\nFecha de apertura: 2025-01-05\nPlan seleccionado: Plan A · 10 pagos\nEsquema de pago (downpayment*mensualidad*meses): 5,600*500*10\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2025-12-01\nPagos mensuales confirmados en Collector/Law Pay: 12\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $0", "VENCIDO — Saldo pendiente: $5,600", "VENCIDO — Saldo pendiente: $800", "Vigente — Saldo pendiente: $0"], "correct_index": 0}, {"id": 5, "stem": "Tipo de caso: VAWA AOS — I-360\nFecha de apertura: 2023-05-01\nPlan seleccionado: Plan B · 32 pagos\nEsquema de pago (downpayment*mensualidad*meses): 2,000*350*32\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 20\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $1,500", "VENCIDO — Saldo pendiente: $4,200", "Vigente — Saldo pendiente: $4,200", "VENCIDO — Saldo pendiente: $6,200"], "correct_index": 1}, {"id": 6, "stem": "Tipo de caso: VAWA AOS con I-601 — I-360\nFecha de apertura: 2025-01-01\nPlan seleccionado: Plan A · 15 pagos\nEsquema de pago (downpayment*mensualidad*meses): 4,600*500*15\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 9\nEnganche / pago inicial cubierto: Sí", "options": ["Vigente — Saldo pendiente: $3,000", "VENCIDO — Saldo pendiente: $1,500", "VENCIDO — Saldo pendiente: $2,900", "VENCIDO — Saldo pendiente: $3,000"], "correct_index": 3}, {"id": 7, "stem": "Tipo de caso: Consular Processing I-130\nFecha de apertura: 2024-03-01\nPlan seleccionado: Plan B · 24 pagos\nEsquema de pago (downpayment*mensualidad*meses): 2,000*350*24\nGov Fee aplicable (se resta del total abonado): $675\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 18\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $2,100", "VENCIDO — Saldo pendiente: $200", "VENCIDO — Saldo pendiente: $4,100", "VENCIDO — Saldo pendiente: $2,775"], "correct_index": 3}, {"id": 8, "stem": "Tipo de caso: NATZ / N-400\nFecha de apertura: 2025-05-01\nPlan seleccionado: Plan único · 4 pagos\nEsquema de pago (downpayment*mensualidad*meses): 1,250*312.50*4\nGov Fee aplicable (se resta del total abonado): $760\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 2\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $625", "VENCIDO — Saldo pendiente: $1,875", "VENCIDO — Saldo pendiente: $1,385", "Vigente — Saldo pendiente: $1,385"], "correct_index": 2}, {"id": 9, "stem": "Tipo de caso: Regular AOS (I-130)\nFecha de apertura: 2026-01-01\nPlan seleccionado: Plan único · 6 pagos\nEsquema de pago (downpayment*mensualidad*meses): 2,500*416*6\nGov Fee aplicable (se resta del total abonado): $3,265\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 3\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $1,252", "VENCIDO — Saldo pendiente: $3,748", "VENCIDO — Saldo pendiente: $1,248", "VENCIDO — Saldo pendiente: $4,513"], "correct_index": 3}, {"id": 10, "stem": "Tipo de caso: Combo Regular AOS\nFecha de apertura: 2025-11-01\nPlan seleccionado: Plan único · 6 pagos\nEsquema de pago (downpayment*mensualidad*meses): 3,000*500*6\nGov Fee aplicable (se resta del total abonado): $6,530\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 4\nEnganche / pago inicial cubierto: Sí", "options": ["Vigente — Saldo pendiente: $6,000", "VENCIDO — Saldo pendiente: $4,000", "VENCIDO — Saldo pendiente: $6,000", "VENCIDO — Saldo pendiente: $1,000"], "correct_index": 2}, {"id": 11, "stem": "Tipo de caso: DACA — Renovación\nFecha de apertura: 2026-03-01\nPlan seleccionado: Pago único\nEsquema de pago (downpayment*mensualidad*meses): 1,500*0*0\nGov Fee aplicable (se resta del total abonado): $520\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 0\nEnganche / pago inicial cubierto: No", "options": ["VENCIDO — Saldo pendiente: $1,500", "VENCIDO — Saldo pendiente: $1,502", "Vigente — Saldo pendiente: $1,500", "VENCIDO — Saldo pendiente: $1,501"], "correct_index": 0}, {"id": 12, "stem": "Tipo de caso: PIP menor de 21\nFecha de apertura: 2026-06-01\nPlan seleccionado: Plan único · 1 pago restante\nEsquema de pago (downpayment*mensualidad*meses): 1,000*1,000*1\nGov Fee aplicable (se resta del total abonado): $580\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 0\nEnganche / pago inicial cubierto: Sí", "options": ["Vigente — Saldo pendiente: $1,580", "VENCIDO — Saldo pendiente: $1,000", "VENCIDO — Saldo pendiente: $1,580", "VENCIDO — Saldo pendiente: $2,000"], "correct_index": 2}, {"id": 13, "stem": "Tipo de caso: PIP menor de 21 (cumple 21 en el proceso)\nFecha de apertura: 2024-08-01\nPlan seleccionado: Plan único · 6 pagos\nEsquema de pago (downpayment*mensualidad*meses): 2,000*333*6\nGov Fee aplicable (se resta del total abonado): $3,845\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 3\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $999", "VENCIDO — Saldo pendiente: $1,001", "VENCIDO — Saldo pendiente: $3,998", "VENCIDO — Saldo pendiente: $2,999"], "correct_index": 2}, {"id": 14, "stem": "Tipo de caso: PIP mayor de 21\nFecha de apertura: 2025-02-01\nPlan seleccionado: Plan único · 12 pagos\nEsquema de pago (downpayment*mensualidad*meses): 2,500*350*12\nGov Fee aplicable (se resta del total abonado): $3,845\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 10\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $0", "Vigente — Saldo pendiente: $4,545", "VENCIDO — Saldo pendiente: $4,545", "VENCIDO — Saldo pendiente: $3,200"], "correct_index": 2}, {"id": 15, "stem": "Tipo de caso: PIP mayor de 21 (Combo)\nFecha de apertura: 2023-01-01\nPlan seleccionado: Plan único · 12 pagos\nEsquema de pago (downpayment*mensualidad*meses): 3,500*350*12\nGov Fee aplicable (se resta del total abonado): $3,845\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 8\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $700", "Vigente — Saldo pendiente: $5,245", "VENCIDO — Saldo pendiente: $5,245", "VENCIDO — Saldo pendiente: $4,900"], "correct_index": 2}, {"id": 16, "stem": "Tipo de caso: Green Card — Renovación / Reposición (I-90)\nFecha de apertura: 2026-07-01\nPlan seleccionado: Pago único\nEsquema de pago (downpayment*mensualidad*meses): 700*0*0\nGov Fee aplicable (se resta del total abonado): $465\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 0\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $465", "Vigente — Saldo pendiente: $465", "VENCIDO — Saldo pendiente: $0", "VENCIDO — Saldo pendiente: $700"], "correct_index": 0}, {"id": 17, "stem": "Tipo de caso: Petición de expediente (FOIA)\nFecha de apertura: 2026-07-20\nPlan seleccionado: Pago único\nEsquema de pago (downpayment*mensualidad*meses): 1,000*0*0\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 0\nEnganche / pago inicial cubierto: No", "options": ["VENCIDO — Saldo pendiente: $1,000", "Vigente — Saldo pendiente: $1,000", "VENCIDO — Saldo pendiente: $1,001", "VENCIDO — Saldo pendiente: $1,002"], "correct_index": 0}, {"id": 18, "stem": "Tipo de caso: 245(I)\nFecha de apertura: 2025-09-01\nPlan seleccionado: Plan único · 6 pagos\nEsquema de pago (downpayment*mensualidad*meses): 2,500*416*6\nGov Fee aplicable (se resta del total abonado): $3,590\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 4\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $4,422", "VENCIDO — Saldo pendiente: $3,332", "VENCIDO — Saldo pendiente: $832", "VENCIDO — Saldo pendiente: $836"], "correct_index": 0}, {"id": 19, "stem": "Tipo de caso: Ciudadanía Automática\nFecha de apertura: 2026-02-01\nPlan seleccionado: Plan único · 4 pagos\nEsquema de pago (downpayment*mensualidad*meses): 1,500*375*4\nGov Fee aplicable (se resta del total abonado): $1,385\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 2\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $2,250", "VENCIDO — Saldo pendiente: $2,135", "Vigente — Saldo pendiente: $2,135", "VENCIDO — Saldo pendiente: $750"], "correct_index": 1}, {"id": 20, "stem": "Tipo de caso: Residencia sin restricciones I-751 + VAWA\nFecha de apertura: 2024-05-01\nPlan seleccionado: Plan único · 12 pagos\nEsquema de pago (downpayment*mensualidad*meses): 2,500*350*12\nGov Fee aplicable (se resta del total abonado): $750\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 9\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $1,050", "VENCIDO — Saldo pendiente: $350", "VENCIDO — Saldo pendiente: $3,550", "VENCIDO — Saldo pendiente: $1,800"], "correct_index": 3}, {"id": 21, "stem": "Tipo de caso: Visa de Prometido(a) K1\nFecha de apertura: 2025-03-01\nPlan seleccionado: Plan único · 18 pagos\nEsquema de pago (downpayment*mensualidad*meses): 2,000*305*18\nGov Fee aplicable (se resta del total abonado): $4,475\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 10\nEnganche / pago inicial cubierto: Sí", "options": ["Vigente — Saldo pendiente: $2,440", "Vigente — Saldo pendiente: $6,915", "Vigente — Saldo pendiente: $4,440", "VENCIDO — Saldo pendiente: $6,915"], "correct_index": 1}, {"id": 22, "stem": "Tipo de caso: Renovación EAD\nFecha de apertura: 2026-07-01\nPlan seleccionado: Pago único\nEsquema de pago (downpayment*mensualidad*meses): 700*0*0\nGov Fee aplicable (se resta del total abonado): $520\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 0\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $520", "VENCIDO — Saldo pendiente: $0", "Vigente — Saldo pendiente: $520", "VENCIDO — Saldo pendiente: $700"], "correct_index": 0}, {"id": 23, "stem": "Tipo de caso: U VISA\nFecha de apertura: 2023-12-01\nPlan seleccionado: Plan A · 24 pagos\nEsquema de pago (downpayment*mensualidad*meses): 2,000*350*24\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 20\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $1,751", "Vigente — Saldo pendiente: $1,400", "VENCIDO — Saldo pendiente: $3,400", "VENCIDO — Saldo pendiente: $1,400"], "correct_index": 3}, {"id": 24, "stem": "Tipo de caso: U VISA\nFecha de apertura: 2025-01-15\nPlan seleccionado: Plan B · 10 pagos\nEsquema de pago (downpayment*mensualidad*meses): 4,500*500*10\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 9\nEnganche / pago inicial cubierto: Sí", "options": ["Vigente — Saldo pendiente: $500", "VENCIDO — Saldo pendiente: $5,000", "VENCIDO — Saldo pendiente: $0", "VENCIDO — Saldo pendiente: $500"], "correct_index": 3}, {"id": 25, "stem": "Tipo de caso: U VISA — Certificación\nFecha de apertura: 2026-01-01\nPlan seleccionado: Contado (pago único / cash out)\nEsquema de pago (downpayment*mensualidad*meses): N/A — pago de contado\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nEnganche / pago inicial cubierto: Sí", "options": ["Pago único de contado — Total: $2,752", "Pago único de contado — Total: $2,500", "Pago único de contado — Total: $2,753", "Pago único de contado — Total: $2,751"], "correct_index": 1}, {"id": 26, "stem": "Tipo de caso: Combo VAWA + REG AOS\nFecha de apertura: 2025-06-01\nPlan seleccionado: Plan B · 60 pagos\nEsquema de pago (downpayment*mensualidad*meses): 4,400*350*60\nGov Fee aplicable (se resta del total abonado): $3,265\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 30\nEnganche / pago inicial cubierto: Sí", "options": ["Vigente — Saldo pendiente: $2,850", "Vigente — Saldo pendiente: $13,765", "Vigente — Saldo pendiente: $10,500", "Vigente — Saldo pendiente: $14,900"], "correct_index": 1}, {"id": 27, "stem": "Tipo de caso: VAWA COR — I-360\nFecha de apertura: 2024-09-16\nPlan seleccionado: Plan A · 15 pagos\nEsquema de pago (downpayment*mensualidad*meses): 4,600*500*15\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 11\nEnganche / pago inicial cubierto: Sí", "options": ["VENCIDO — Saldo pendiente: $6,600", "VENCIDO — Saldo pendiente: $500", "Vigente — Saldo pendiente: $2,000", "VENCIDO — Saldo pendiente: $2,000"], "correct_index": 3}, {"id": 28, "stem": "Tipo de caso: Visa T (Individual)\nFecha de apertura: 2025-08-31\nPlan seleccionado: Plan A · 15 pagos\nEsquema de pago (downpayment*mensualidad*meses): 4,600*500*15\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 15\nEnganche / pago inicial cubierto: Sí", "options": ["Vigente — Saldo pendiente: $4,600", "VENCIDO — Saldo pendiente: $0", "Vigente — Saldo pendiente: $501", "Vigente — Saldo pendiente: $0"], "correct_index": 3}, {"id": 29, "stem": "Tipo de caso: VAWA (Individual)\nFecha de apertura: 2025-12-10\nPlan seleccionado: Plan A · 18 pagos\nEsquema de pago (downpayment*mensualidad*meses): 5,000*500*18\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-07-24\nPagos mensuales confirmados en Collector/Law Pay: 3\nEnganche / pago inicial cubierto: No\nDerivados 18–19 años: 1", "options": ["Vigente — Saldo pendiente: $13,100", "Vigente — Saldo pendiente: $13,500", "VENCIDO — Saldo pendiente: $15,000", "Vigente — Saldo pendiente: $15,000"], "correct_index": 3}, {"id": 30, "stem": "Tipo de caso: Combo Visa T (pareja)\nFecha de apertura: 2025-03-20\nPlan seleccionado: Plan B · 60 pagos\nEsquema de pago (downpayment*mensualidad*meses): 4,400*350*60\nGov Fee aplicable (se resta del total abonado): N/A\nFecha de corte: 2026-06-01\nPagos mensuales confirmados en Collector/Law Pay: 40\nEnganche / pago inicial cubierto: Sí\nDerivados 20 años: 1", "options": ["Vigente — Saldo pendiente: $15,400", "Vigente — Saldo pendiente: $3,350", "VENCIDO — Saldo pendiente: $11,000", "Vigente — Saldo pendiente: $11,000"], "correct_index": 3}];
+</script>
+<script>
+/* Almacenamiento local: guarda el avance de un intento en curso en este
+   navegador. Al terminar la evaluación se borra para que el siguiente
+   intento empiece desde cero. */
+var MLC_STORE = (function(){
+  var KEY = 'mlc_balance_adeudo_progreso';
+  return {
+    get: function(){ try{ return localStorage.getItem(KEY) || ''; }catch(e){ return ''; } },
+    set: function(str){
+      try{
+        var d = JSON.parse(str);
+        if(d && d.finished){ localStorage.removeItem(KEY); }
+        else { localStorage.setItem(KEY, str); }
+      }catch(e){}
+    }
+  };
+})();
+(function(){
+  var PASS_THRESHOLD = 85; // %
+  var questions = QUESTIONS; // cargado desde questions.js
+  var current = 0;
+  var answers = new Array(questions.length).fill(null);
+  var locked = new Array(questions.length).fill(false);
+
+  var elIntro = document.getElementById('screenIntro');
+  var elQuiz = document.getElementById('screenQuiz');
+  var elResults = document.getElementById('screenResults');
+  var elLearner = document.getElementById('learnerBox');
+  var elEyebrow = document.getElementById('qEyebrow');
+  var elScenario = document.getElementById('qScenario');
+  var elOptions = document.getElementById('qOptions');
+  var elFeedback = document.getElementById('qFeedback');
+  var elNext = document.getElementById('btnNext');
+  var elProgFill = document.getElementById('progressFill');
+  var elProgLabel = document.getElementById('progressLabel');
+
+  document.getElementById('passLabel').textContent = PASS_THRESHOLD + '%';
+
+
+  // Reanudar intento previo si existe suspend_data válida
+  function tryResume(){
+    var raw = MLC_STORE.get();
+    if(!raw) return false;
+    try{
+      var data = JSON.parse(raw);
+      if(data && Array.isArray(data.answers) && data.answers.length === questions.length){
+        answers = data.answers;
+        locked = data.locked;
+        current = data.current || 0;
+        if(data.finished){
+          renderResults(true);
+          return true;
+        }
+      }
+    }catch(e){}
+    return false;
+  }
+
+  function persist(finished){
+    MLC_STORE.set(JSON.stringify({answers:answers, locked:locked, current:current, finished: !!finished}));
+  }
+
+  document.getElementById('btnStart').addEventListener('click', function(){
+    elIntro.classList.add('hidden');
+    elQuiz.classList.remove('hidden');
+    renderQuestion();
+  });
+
+  function renderQuestion(){
+    var q = questions[current];
+    elEyebrow.textContent = 'Caso ' + (current+1) + ' de ' + questions.length;
+    elProgLabel.textContent = 'Caso ' + (current+1) + ' de ' + questions.length;
+    elProgFill.style.width = Math.round((current/questions.length)*100) + '%';
+    elScenario.textContent = q.stem;
+    elOptions.innerHTML = '';
+    elFeedback.className = 'feedback';
+    elFeedback.textContent = '';
+    elNext.disabled = true;
+    elNext.textContent = (current === questions.length-1) ? 'Finalizar evaluación' : 'Siguiente';
+
+    var letters = ['A','B','C','D'];
+    q.options.forEach(function(optText, idx){
+      var div = document.createElement('div');
+      div.className = 'opt';
+      div.innerHTML = '<span class="marker">'+letters[idx]+'</span><span>'+optText+'</span>';
+      div.addEventListener('click', function(){ selectOption(idx); });
+      elOptions.appendChild(div);
+    });
+
+    if(locked[current]){
+      applyLockedView();
+    }
+  }
+
+  function selectOption(idx){
+    if(locked[current]) return;
+    var opts = elOptions.querySelectorAll('.opt');
+    opts.forEach(function(o,i){ o.classList.toggle('selected', i===idx); });
+    answers[current] = idx;
+    elNext.disabled = false;
+  }
+
+  function applyLockedView(){
+    var q = questions[current];
+    var opts = elOptions.querySelectorAll('.opt');
+    var chosen = answers[current];
+    opts.forEach(function(o,i){
+      o.style.pointerEvents = 'none';
+      if(i === q.correct_index) o.classList.add('correct');
+      if(i === chosen && chosen !== q.correct_index) o.classList.add('incorrect');
+      if(i === chosen) o.classList.add('selected');
+    });
+    elFeedback.classList.add('show');
+    if(chosen === q.correct_index){
+      elFeedback.classList.add('ok');
+      elFeedback.textContent = 'Correcto. ' + q.options[q.correct_index];
+    } else {
+      elFeedback.classList.add('bad');
+      elFeedback.textContent = 'Incorrecto. La respuesta correcta era: ' + q.options[q.correct_index];
+    }
+    elNext.disabled = false;
+  }
+
+  elNext.addEventListener('click', function(){
+    if(!locked[current]){
+      locked[current] = true;
+      applyLockedView();
+      persist(false);
+      // Da un momento para leer la retroalimentación antes de continuar
+      elNext.disabled = true;
+      setTimeout(function(){ elNext.disabled = false; }, 550);
+      return;
+    }
+    if(current < questions.length - 1){
+      current++;
+      persist(false);
+      renderQuestion();
+    } else {
+      finishExam();
+    }
+  });
+
+  function finishExam(){
+    persist(true);
+    renderResults(false);
+  }
+
+  function renderResults(fromResume){
+    elIntro.classList.add('hidden');
+    elQuiz.classList.add('hidden');
+    elResults.classList.remove('hidden');
+
+    var correctCount = 0;
+    var reviewHtml = '';
+    questions.forEach(function(q, i){
+      var isCorrect = answers[i] === q.correct_index;
+      if(isCorrect) correctCount++;
+      reviewHtml += '<div class="review-row"><span>Caso '+(i+1)+'</span><span class="tag '+(isCorrect?'ok':'bad')+'">'+(isCorrect?'Correcto':'Incorrecto')+'</span></div>';
+    });
+
+    var pct = Math.round((correctCount/questions.length)*100);
+    var passed = pct >= PASS_THRESHOLD;
+
+    document.getElementById('scoreBig').textContent = pct + '%';
+    document.getElementById('scoreDetail').textContent = correctCount + ' de ' + questions.length + ' casos resueltos correctamente.';
+    var pill = document.getElementById('statusPill');
+    pill.textContent = passed ? 'Aprobado' : 'No aprobado';
+    pill.className = 'results-status ' + (passed ? 'pass':'fail');
+    document.getElementById('reviewList').innerHTML = reviewHtml;
+
+  }
+
+  var resumedFinished = tryResume();
+  if(resumedFinished){
+    // renderResults ya se ejecutó dentro de tryResume
+  } else if(answers.some(function(a){return a!==null;})){
+    // había progreso a medio terminar: continuar directo en el quiz
+    elIntro.classList.add('hidden');
+    elQuiz.classList.remove('hidden');
+    renderQuestion();
+  }
+})();
+</script>
+</body>
+</html>
