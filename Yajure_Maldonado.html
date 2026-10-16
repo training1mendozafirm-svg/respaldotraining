@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casos Yajure Hurtado y Maldonado Bautista</title>
+    <style>
+/* 
+ * Litigation Training SCORM - Styles
+ * Mendoza Law Firm LLC
+ * Color Palette: #DAD7CD, #A3B18A, #588157, #3A5A40, #344E41
+ */
+
+:root {
+    --color-lightest: #DAD7CD;
+    --color-light: #A3B18A;
+    --color-medium: #588157;
+    --color-dark: #3A5A40;
+    --color-darkest: #344E41;
+    --shadow: 0 4px 6px rgba(52, 78, 65, 0.1);
+    --shadow-lg: 0 10px 25px rgba(52, 78, 65, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--color-lightest) 0%, var(--color-light) 100%);
+    color: var(--color-darkest);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, var(--color-darkest) 0%, var(--color-dark) 100%);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 30px;
+    border-radius: 12px;
+}
+
+.header h1 {
+    font-size: 2.2em;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.header p {
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+/* Progress Bar */
+.progress-container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 30px;
+    background-color: var(--color-lightest);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-medium) 0%, var(--color-dark) 100%);
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9em;
+    min-width: 40px;
+}
+
+.progress-text {
+    margin-top: 10px;
+    text-align: center;
+    color: var(--color-dark);
+    font-weight: 600;
+}
+
+/* Content Sections */
+.module-section {
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.module-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.module-section h2 {
+    color: var(--color-darkest);
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--color-medium);
+    padding-bottom: 10px;
+}
+
+.module-section h3 {
+    color: var(--color-dark);
+    font-size: 1.4em;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.module-section p, .module-section ul, .module-section ol {
+    margin-bottom: 15px;
+    font-size: 1.05em;
+    color: #333;
+}
+
+.module-section ul, .module-section ol {
+    padding-left: 30px;
+}
+
+.module-section li {
+    margin-bottom: 10px;
+}
+
+/* Highlight Boxes */
+.highlight-box {
+    background: linear-gradient(135deg, var(--color-light) 0%, var(--color-lightest) 100%);
+    border-left: 5px solid var(--color-medium);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.highlight-box h4 {
+    color: var(--color-darkest);
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+/* Statistics Box */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.stat-card {
+    background: var(--color-lightest);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid var(--color-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--color-dark);
+    display: block;
+}
+
+.stat-label {
+    font-size: 1em;
+    color: var(--color-darkest);
+    margin-top: 10px;
+}
+
+/* Quiz Styles */
+.quiz-intro {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.quiz-intro h3 {
+    color: var(--color-darkest);
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.quiz-intro ul {
+    text-align: left;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.start-quiz-btn {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-darkest) 100%);
+    color: white;
+    padding: 20px 50px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    margin-top: 30px;
+    transition: all 0.3s ease;
+}
+
+.start-quiz-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Question Cards */
+.question-card {
+    background: white;
+    border: 2px solid var(--color-light);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+}
+
+.question-card.answered {
+    opacity: 0.7;
+}
+
+.question-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.question-number {
+    background: var(--color-dark);
+    color: white;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.question-text {
+    font-size: 1.15em;
+    color: var(--color-darkest);
+    font-weight: 600;
+    flex: 1;
+}
+
+.options {
+    margin-top: 15px;
+}
+
+.option {
+    background: var(--color-lightest);
+    border: 2px solid var(--color-light);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.option:hover:not(.disabled) {
+    background: var(--color-light);
+    transform: translateX(5px);
+}
+
+.option input[type="radio"] {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.option.selected {
+    background: var(--color-medium);
+    color: white;
+    border-color: var(--color-dark);
+}
+
+.option.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.option.correct-answer {
+    background: var(--color-medium);
+    color: white;
+    border-color: var(--color-dark);
+    font-weight: bold;
+}
+
+.option.incorrect-answer {
+    background: #fdd;
+    border-color: #c55;
+}
+
+/* Feedback */
+.feedback {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.feedback.show {
+    display: block;
+}
+
+.feedback.correct {
+    background: linear-gradient(135deg, rgba(88, 129, 87, 0.15) 0%, rgba(163, 177, 138, 0.15) 100%);
+    border-left: 5px solid var(--color-medium);
+}
+
+.feedback.incorrect {
+    background: rgba(204, 85, 85, 0.1);
+    border-left: 5px solid #c55;
+}
+
+.feedback-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.feedback-icon {
+    margin-right: 10px;
+    font-size: 1.3em;
+}
+
+.feedback-text {
+    line-height: 1.7;
+}
+
+/* Navigation Buttons */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.btn {
+    padding: 15px 35px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-darkest) 100%);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: var(--color-light);
+    color: var(--color-darkest);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--color-medium);
+    color: white;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Results */
+.results-container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.score-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, var(--color-medium) 0%, var(--color-dark) 100%);
+    box-shadow: var(--shadow-lg);
+}
+
+.score-percentage {
+    font-size: 1em;
+}
+
+.score-label {
+    font-size: 0.3em;
+    margin-top: 5px;
+    opacity: 0.9;
+}
+
+.results-details {
+    max-width: 600px;
+    margin: 30px auto;
+    text-align: left;
+}
+
+.result-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: var(--color-lightest);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-label {
+    font-weight: 600;
+    color: var(--color-darkest);
+}
+
+.result-value {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--color-dark);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.status-badge.passed {
+    background: var(--color-medium);
+    color: white;
+}
+
+.status-badge.failed {
+    background: #c55;
+    color: white;
+}
+
+.recommendation-box {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.recommendation-box.passed {
+    background: rgba(88, 129, 87, 0.1);
+    border-left: 5px solid var(--color-medium);
+}
+
+.recommendation-box.failed {
+    background: rgba(204, 85, 85, 0.1);
+    border-left: 5px solid #c55;
+}
+
+/* Loading Animation */
+.loading {
+    display: none;
+    text-align: center;
+    padding: 40px;
+}
+
+.loading.show {
+    display: block;
+}
+
+.spinner {
+    border: 5px solid var(--color-lightest);
+    border-top: 5px solid var(--color-dark);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.6em;
+    }
+    
+    .module-section {
+        padding: 20px;
+    }
+    
+    .module-section h2 {
+        font-size: 1.4em;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .navigation {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .score-circle {
+        width: 150px;
+        height: 150px;
+        font-size: 2.5em;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navigation, .btn {
+        display: none;
+    }
+    
+    .module-section {
+        display: block !important;
+        page-break-after: always;
+    }
+}
+
+/* Hidden class */
+.hidden {
+    display: none !important;
+}
+
+</style>
+    <script>
+/**
+ * SCORM 1.2 API - Versión Robusta para Moodle
+ * Mendoza Law Firm LLC - Training Department
+ */
+var SCORM = (function() {
+    var api = null;
+    var initialized = false;
+    var debugMode = false; // Cambiar a true para ver logs detallados
+    
+    function log(msg) {
+        if (debugMode) {
+            console.log('[SCORM] ' + msg);
+        }
+    }
+    
+    function scanForAPI(win) {
+        var attempts = 0;
+        while (win && attempts < 500) {
+            attempts++;
+            if (win.API) {
+                log('API encontrada en intento ' + attempts);
+                return win.API;
+            }
+            if (win === win.parent) {
+                break;
+            }
+            win = win.parent;
+        }
+        return null;
+    }
+    
+    function findAPI() {
+        log('Buscando API SCORM...');
+        
+        // Buscar en window actual
+        var theAPI = scanForAPI(window);
+        if (theAPI) {
+            log('API encontrada en window');
+            return theAPI;
+        }
+        
+        // Buscar en opener
+        if (window.opener) {
+            try { 
+                theAPI = scanForAPI(window.opener);
+                if (theAPI) {
+                    log('API encontrada en opener');
+                    return theAPI;
+                }
+            } catch(e) {
+                log('Error buscando en opener: ' + e);
+            }
+        }
+        
+        // Buscar en top
+        if (window.top && window.top !== window) {
+            try { 
+                theAPI = scanForAPI(window.top);
+                if (theAPI) {
+                    log('API encontrada en top');
+                    return theAPI;
+                }
+            } catch(e) {
+                log('Error buscando en top: ' + e);
+            }
+        }
+        
+        // Buscar en parent directo
+        if (window.parent && window.parent !== window) {
+            if (window.parent.API) {
+                log('API encontrada en parent');
+                return window.parent.API;
+            }
+        }
+        
+        log('API no encontrada - Modo standalone');
+        return null;
+    }
+    
+    return {
+        init: function() {
+            if (initialized) {
+                log('Ya inicializado');
+                return true;
+            }
+            
+            api = findAPI();
+            
+            if (!api) {
+                log('Modo standalone (sin LMS)');
+                initialized = true;
+                return true;
+            }
+            
+            var result = api.LMSInitialize('');
+            log('LMSInitialize result: ' + result);
+            
+            if (result === 'true' || result === true) {
+                initialized = true;
+                
+                // Obtener estado actual
+                var status = this.get('cmi.core.lesson_status');
+                log('Estado actual: ' + status);
+                
+                // Si no ha sido intentado, marcarlo como incompleto
+                if (status === 'not attempted' || status === '' || status === 'unknown') {
+                    this.set('cmi.core.lesson_status', 'incomplete');
+                    this.commit();
+                    log('Estado cambiado a incomplete');
+                }
+                
+                return true;
+            }
+            
+            log('Error en LMSInitialize');
+            return false;
+        },
+        
+        get: function(key) {
+            if (!api) return '';
+            var value = api.LMSGetValue(key);
+            log('GET ' + key + ' = ' + value);
+            return value;
+        },
+        
+        set: function(key, value) {
+            if (!api) return true;
+            log('SET ' + key + ' = ' + value);
+            var result = api.LMSSetValue(key, String(value));
+            return (result === 'true' || result === true);
+        },
+        
+        commit: function() {
+            if (!api) return true;
+            var result = api.LMSCommit('');
+            log('COMMIT result: ' + result);
+            return (result === 'true' || result === true);
+        },
+        
+        finish: function() {
+            if (!api || !initialized) return true;
+            log('Finalizando sesión SCORM...');
+            this.commit();
+            var result = api.LMSFinish('');
+            log('FINISH result: ' + result);
+            initialized = false;
+            return (result === 'true' || result === true);
+        },
+        
+        /**
+         * FUNCIÓN PRINCIPAL: Enviar calificación a Moodle
+         * @param {number} scoreRaw - Puntuación de 0 a 100
+         */
+        setScore: function(scoreRaw) {
+            log('=== ENVIANDO CALIFICACIÓN ===');
+            log('Score: ' + scoreRaw);
+            
+            // Asegurar que el score esté en el rango correcto
+            scoreRaw = Math.max(0, Math.min(100, scoreRaw));
+            
+            // Establecer score
+            this.set('cmi.core.score.raw', scoreRaw);
+            this.set('cmi.core.score.min', '0');
+            this.set('cmi.core.score.max', '100');
+            
+            // Establecer estado según si aprobó o no (70% es el mínimo)
+            var passed = scoreRaw >= 70;
+            var status = passed ? 'passed' : 'failed';
+            this.set('cmi.core.lesson_status', status);
+            
+            log('Estado final: ' + status);
+            
+            // CRÍTICO: Commit inmediatamente
+            var commitResult = this.commit();
+            log('Commit después de score: ' + commitResult);
+            
+            return commitResult;
+        },
+        
+        /**
+         * Guardar progreso del usuario
+         */
+        saveProgress: function(data) {
+            if (!api) return true;
+            this.set('cmi.suspend_data', JSON.stringify(data));
+            return this.commit();
+        },
+        
+        /**
+         * Recuperar progreso del usuario
+         */
+        getProgress: function() {
+            if (!api) return null;
+            var data = this.get('cmi.suspend_data');
+            if (data) {
+                try {
+                    return JSON.parse(data);
+                } catch(e) {
+                    log('Error parseando suspend_data: ' + e);
+                    return null;
+                }
+            }
+            return null;
+        },
+        
+        /**
+         * Establecer ubicación actual
+         */
+        setLocation: function(location) {
+            if (!api) return true;
+            this.set('cmi.core.lesson_location', location);
+            return this.commit();
+        },
+        
+        /**
+         * Obtener ubicación actual
+         */
+        getLocation: function() {
+            if (!api) return '';
+            return this.get('cmi.core.lesson_location');
+        },
+        
+        /**
+         * Verificar si el API está disponible
+         */
+        isAvailable: function() {
+            return api !== null;
+        }
+    };
+})();
+
+// Inicializar cuando la página carga
+window.addEventListener('load', function() {
+    SCORM.init();
+});
+
+// Finalizar cuando la página se cierra
+window.addEventListener('beforeunload', function() {
+    SCORM.commit();
+    SCORM.finish();
+});
+
+// Finalizar también cuando se navega fuera
+window.addEventListener('unload', function() {
+    SCORM.commit();
+    SCORM.finish();
+});
+
+</script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>⚖️ Casos Yajure Hurtado y Maldonado Bautista</h1>
+            <p>Audiencias de Fianza y la Directriz de la Jueza Principal Riley (Enero 2026)</p>
+            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">Mendoza Law Firm LLC - Training Department</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">20%</div>
+            </div>
+            <div class="progress-text" id="progressText">Sección 1 de 5</div>
+        </div>
+
+        <!-- SECCIÓN 1: Contexto y Antecedentes -->
+        <section class="module-section active" id="section1">
+            <h2>I. Contexto y Antecedentes de los Casos</h2>
+            
+            <div class="highlight-box">
+                <h4>📅 Cronología de Eventos Clave</h4>
+                <ul>
+                    <li><strong>2023:</strong> Matter of Yajure Hurtado - BIA establece precedente restrictivo</li>
+                    <li><strong>2025:</strong> Maldonado Bautista v. Garland - Tribunal federal desafía el precedente</li>
+                    <li><strong>13 de enero de 2026:</strong> Jueza Principal Teresa L. Riley emite directriz nacional</li>
+                </ul>
+            </div>
+
+            <h3>La Directriz de la Jueza Principal Riley (13 de enero de 2026)</h3>
+
+            <p>El 13 de enero de 2026, la Jueza en Jefe de Migración Teresa L. Riley emitió una guía a nivel nacional con las siguientes instrucciones clave:</p>
+
+            <div class="highlight-box">
+                <h4>🔑 Puntos Clave de la Directriz</h4>
+                
+                <p><strong>Declaración Principal:</strong></p>
+                <blockquote style="background: rgba(218, 215, 205, 0.3); padding: 15px; border-left: 4px solid var(--color-dark); margin: 15px 0; font-style: italic;">
+                    "Maldonado Bautista no es una orden judicial a nivel nacional y no pretende anular, suspender o prohibir a Yajure Hurtado"
+                </blockquote>
+
+                <p><strong>Instrucción a Jueces de Inmigración:</strong></p>
+                <ul>
+                    <li>Seguir la decisión de la BIA en <strong>Matter of Yajure Hurtado</strong> como precedente vinculante</li>
+                    <li>No considerar <strong>Maldonado Bautista</strong> como precedente obligatorio</li>
+                    <li>Continuar denegando jurisdicción para audiencias de fianza en casos de reinstalación</li>
+                </ul>
+
+                <p><strong>Razonamiento Legal:</strong></p>
+                <ul>
+                    <li>Una "sentencia declarativa" no es vinculante para el sistema administrativo</li>
+                    <li>No tiene autoridad para obligar a tomar medidas específicas</li>
+                    <li>No constituye una orden judicial nacional (nationwide injunction)</li>
+                </ul>
+            </div>
+
+            <h3>Implicaciones Inmediatas</h3>
+
+            <p>Esta directriz tiene consecuencias profundas:</p>
+
+            <ul>
+                <li><strong>Vuelta al Status Quo:</strong> La esperanza abierta por Maldonado Bautista se cierra para la mayoría de jurisdicciones</li>
+                <li><strong>Detención Prolongada:</strong> Miles de personas continúan atrapadas sin posibilidad de audiencia de fianza</li>
+                <li><strong>Cambio de Estrategia:</strong> Los defensores deben recurrir directamente a tribunales federales</li>
+                <li><strong>Litigio Individual:</strong> Se requiere presentar acciones de habeas corpus caso por caso</li>
+            </ul>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">13 Enero</span>
+                    <span class="stat-label">2026 - Directriz Riley</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Miles</span>
+                    <span class="stat-label">Afectados en Detención</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Habeas</span>
+                    <span class="stat-label">Nueva Estrategia Legal</span>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: Matter of Yajure Hurtado -->
+        <section class="module-section" id="section2">
+            <h2>II. Matter of Yajure Hurtado (2023)</h2>
+            
+            <div class="highlight-box">
+                <h4>📋 Resumen del Caso</h4>
+                <p><strong>Matter of Yajure Hurtado</strong> es un precedente vinculante establecido por la Junta de Apelaciones de Inmigración (BIA) en 2023.</p>
+            </div>
+
+            <h3>La Decisión de la BIA</h3>
+
+            <p>La BIA dictaminó que los jueces de inmigración (IJs) <strong>no tienen jurisdicción</strong> para escuchar solicitudes de fianza para ciertos inmigrantes detenidos que:</p>
+
+            <ul>
+                <li>Ingresaron al país sin inspección (EWI - Entry Without Inspection)</li>
+                <li>Están en procedimientos de "reinstalación" de una orden de deportación previa</li>
+                <li>Fueron previamente removidos y regresaron sin autorización</li>
+            </ul>
+
+            <h3>Consecuencias de la Decisión</h3>
+
+            <div class="highlight-box">
+                <h4>⚠️ Impacto en Detenidos</h4>
+                
+                <p><strong>Situación Resultante:</strong></p>
+                <ul>
+                    <li>Miles de personas quedaron atrapadas en detención prolongada</li>
+                    <li>Sin posibilidad de audiencia de fianza ante un juez</li>
+                    <li>Detención puede extenderse por meses o años</li>
+                    <li>No hay revisión judicial de la razonabilidad de la detención</li>
+                </ul>
+
+                <p><strong>Perfil de Personas Afectadas:</strong></p>
+                <ul>
+                    <li>Personas con órdenes de deportación previas</li>
+                    <li>Que regresaron a EE.UU. sin inspección</li>
+                    <li>Sujetas a procedimientos de reinstalación bajo 8 U.S.C. § 1231(a)(5)</li>
+                    <li>En detención obligatoria sin acceso a fianza</li>
+                </ul>
+            </div>
+
+            <h3>Naturaleza de la BIA y su Autoridad</h3>
+
+            <div class="highlight-box">
+                <h4>🏛️ La BIA como Máxima Autoridad Administrativa</h4>
+                
+                <p><strong>Posición en el Sistema:</strong></p>
+                <ul>
+                    <li>La BIA es la máxima autoridad de interpretación de la ley de inmigración dentro del sistema administrativo</li>
+                    <li>Opera dentro del Departamento de Justicia (Poder Ejecutivo)</li>
+                    <li>No es parte del Poder Judicial federal</li>
+                </ul>
+
+                <p><strong>Jerarquía y Cadena de Mando:</strong></p>
+                <ul>
+                    <li>Los jueces de inmigración (IJs) trabajan para la Oficina Ejecutiva de Revisión de Inmigración (EOIR)</li>
+                    <li>EOIR está bajo el Departamento de Justicia</li>
+                    <li>La BIA es su tribunal de apelaciones</li>
+                    <li><strong>Por lo tanto:</strong> Las decisiones de la BIA son precedente vinculante directo para todos los jueces de inmigración</li>
+                </ul>
+
+                <p><strong>Función de Uniformidad:</strong></p>
+                <ul>
+                    <li>La BIA existe para asegurar uniformidad en la aplicación de la ley en todos los tribunales de inmigración del país</li>
+                    <li>Cuando dictamina sobre un punto legal, esa interpretación se convierte en la regla que todos los IJs deben seguir</li>
+                    <li>Solo puede ser anulada por el Fiscal General o por un tribunal federal</li>
+                </ul>
+            </div>
+
+            <h3>Críticas al Precedente</h3>
+
+            <p>La decisión de Yajure Hurtado fue ampliamente criticada por:</p>
+
+            <ul>
+                <li><strong>Debido Proceso:</strong> Niega revisión judicial básica de detenciones prolongadas</li>
+                <li><strong>Interpretación Estatutaria:</strong> Lectura restrictiva de la jurisdicción de los IJs</li>
+                <li><strong>Impacto Humanitario:</strong> Detenciones indefinidas sin revisión</li>
+                <li><strong>Violación Constitucional Potencial:</strong> Posible violación de principios de habeas corpus</li>
+            </ul>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: Maldonado Bautista v. Garland -->
+        <section class="module-section" id="section3">
+            <h2>III. Maldonado Bautista v. Garland (2025)</h2>
+            
+            <div class="highlight-box">
+                <h4>📋 Contexto del Caso</h4>
+                <p>En respuesta a las consecuencias devastadoras de <strong>Yajure Hurtado</strong>, se presentaron demandas en tribunales federales. El caso <strong>Maldonado Bautista</strong> representó un intento de remediar esta situación.</p>
+            </div>
+
+            <h3>El Fallo del Tribunal Federal</h3>
+
+            <p>Un tribunal federal de distrito en Washington falló a favor de los demandantes:</p>
+
+            <div class="highlight-box">
+                <h4>⚖️ Decisión del Tribunal</h4>
+                
+                <p><strong>Sentencia Declaratoria Emitida:</strong></p>
+                <blockquote style="background: rgba(218, 215, 205, 0.3); padding: 15px; border-left: 4px solid var(--color-dark); margin: 15px 0; font-style: italic;">
+                    "La interpretación de la BIA en Yajure Hurtado es incorrecta según la ley, y los jueces de inmigración SÍ tienen jurisdicción para realizar estas audiencias de fianza"
+                </blockquote>
+
+                <p><strong>Razonamiento Legal:</strong></p>
+                <ul>
+                    <li>La interpretación de la BIA es contraria a la ley estatutaria</li>
+                    <li>Los IJs sí tienen jurisdicción bajo el estatuto de inmigración</li>
+                    <li>La denegación de audiencias de fianza viola principios legales fundamentales</li>
+                    <li>El debido proceso requiere alguna forma de revisión</li>
+                </ul>
+            </div>
+
+            <h3>Naturaleza del Tribunal Federal de Distrito</h3>
+
+            <div class="highlight-box">
+                <h4>🏛️ Poder Judicial Federal</h4>
+                
+                <p><strong>Posición del Tribunal:</strong></p>
+                <ul>
+                    <li>Un tribunal federal de distrito es parte del Poder Judicial federal</li>
+                    <li>Su función es la revisión externa de la legalidad de acciones del Poder Ejecutivo</li>
+                    <li>Incluye revisión de decisiones de la BIA y otras agencias</li>
+                </ul>
+
+                <p><strong>Autoridad del Tribunal:</strong></p>
+                <ul>
+                    <li>Puede revisar si las agencias actuaron según la ley</li>
+                    <li>Puede declarar acciones de agencias como ilegales</li>
+                    <li>Puede emitir órdenes (injunctions) contra el gobierno</li>
+                    <li>Sus decisiones pueden ser apeladas a Cortes de Circuito</li>
+                </ul>
+            </div>
+
+            <h3>Tipo de Remedio: Sentencia Declaratoria vs. Orden Judicial</h3>
+
+            <p>Este es el punto más importante para entender las limitaciones del fallo:</p>
+
+            <div class="highlight-box">
+                <h4>📜 Sentencia Declaratoria (Lo que se emitió)</h4>
+                
+                <p><strong>Características:</strong></p>
+                <ul>
+                    <li>El juez emitió una <strong>declaración</strong> sobre lo que la ley significa</li>
+                    <li>Dijo: "La interpretación de la BIA es incorrecta según el estatuto"</li>
+                    <li>Es una victoria legal para los demandantes</li>
+                    <li><strong>PERO:</strong> Por sí sola no ordena a nadie que haga o deje de hacer algo</li>
+                    <li>Es un fallo sobre el estado de la ley, no una orden ejecutable</li>
+                </ul>
+
+                <p><strong>Limitaciones:</strong></p>
+                <ul>
+                    <li>No es automáticamente vinculante para todos los casos</li>
+                    <li>No obliga al DOJ a cambiar sus políticas</li>
+                    <li>No da instrucciones específicas a los IJs</li>
+                    <li>Requiere acciones adicionales para tener efecto práctico</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h4>🛑 Orden Judicial Nacional - Nationwide Injunction (Lo que NO se emitió)</h4>
+                
+                <p><strong>Si se hubiera emitido una injunction:</strong></p>
+                <ul>
+                    <li>Habría sido una orden directa al Departamento de Justicia</li>
+                    <li>Ejemplo: "Se le prohíbe aplicar Yajure Hurtado"</li>
+                    <li>Ejemplo: "Debe instruir a todos los IJs que acepten jurisdicción"</li>
+                    <li><strong>Esto SÍ sería obligatorio y exigible</strong></li>
+                </ul>
+
+                <p><strong>Por qué el juez no la emitió:</strong></p>
+                <ul>
+                    <li>Probablemente por prudencia judicial</li>
+                    <li>O por considerar que la declaración era suficiente</li>
+                    <li>O por temor a que fuera anulada en apelación</li>
+                    <li>Las nationwide injunctions son controvertidas</li>
+                </ul>
+            </div>
+
+            <h3>Alcance Geográfico (Jurisdicción)</h3>
+
+            <p>Incluso si se hubiera emitido una orden:</p>
+
+            <ul>
+                <li>Un fallo de un solo juez de distrito normalmente solo es vinculante para las partes en el caso</li>
+                <li>En algunos contextos, puede ser aplicable solo dentro de su distrito judicial</li>
+                <li>Para efecto verdaderamente nacional, necesitaría:
+                    <ul>
+                        <li>Venir de un tribunal de apelaciones (Circuito)</li>
+                        <li>O de la Corte Suprema</li>
+                        <li>O ser adoptado explícitamente por el gobierno</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">2025</span>
+                    <span class="stat-label">Año del Fallo</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Declaratoria</span>
+                    <span class="stat-label">Tipo de Sentencia</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Washington</span>
+                    <span class="stat-label">Distrito Federal</span>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: Análisis y Estrategias -->
+        <section class="module-section" id="section4">
+            <h2>IV. Análisis y Estrategias Legales</h2>
+            
+            <h3>¿Por qué Yajure Hurtado es Obligatorio pero no Maldonado Bautista?</h3>
+
+            <p>Esta es la pregunta fundamental para entender la situación:</p>
+
+            <div class="highlight-box">
+                <h4>🔍 Diferencias Fundamentales</h4>
+                
+                <p><strong>1. Naturaleza de las Instituciones:</strong></p>
+                <table style="width: 100%; margin: 15px 0; border-collapse: collapse;">
+                    <thead style="background: var(--color-light);">
+                        <tr>
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--color-medium);">Aspecto</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--color-medium);">BIA (Yajure)</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--color-medium);">Tribunal Federal (Maldonado)</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background: var(--color-lightest);">
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Rama de Gobierno</strong></td>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);">Poder Ejecutivo (DOJ)</td>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);">Poder Judicial Federal</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Autoridad sobre IJs</strong></td>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);">Directa (jerarquía)</td>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);">Indirecta (revisión externa)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Tipo de Precedente</strong></td>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);">Administrativo vinculante</td>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);">Judicial (requiere orden)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Obligatoriedad</strong></td>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);">Automática para IJs</td>
+                            <td style="padding: 10px; border: 1px solid var(--color-light);">Solo si hay injunction</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>2. Sistema Administrativo (BIA):</strong></p>
+                <ul>
+                    <li>Los IJs están en la misma cadena de mando que la BIA</li>
+                    <li>EOIR → BIA → IJs (todos en el DOJ)</li>
+                    <li>Las decisiones de la BIA son instrucciones internas vinculantes</li>
+                    <li>Es como un jefe diciendo a empleados cómo hacer su trabajo</li>
+                </ul>
+
+                <p><strong>3. Sistema Judicial Federal:</strong></p>
+                <ul>
+                    <li>Los tribunales federales están fuera de la cadena de mando del DOJ</li>
+                    <li>Pueden revisar acciones del ejecutivo pero necesitan emitir órdenes</li>
+                    <li>Una declaración de lo que dice la ley no es una orden ejecutable</li>
+                    <li>Es como un árbitro diciendo que una regla está mal, pero sin ordenar cambiarla</li>
+                </ul>
+            </div>
+
+            <h3>La Lógica de la Directriz Riley</h3>
+
+            <p>La guía del 13 de enero es la respuesta oficial de EOIR:</p>
+
+            <div class="highlight-box">
+                <h4>📋 Tres Argumentos Principales</h4>
+                
+                <p><strong>1. "No es una orden judicial":</strong></p>
+                <ul>
+                    <li>Dado que fue una sentencia declaratoria y no una injunction</li>
+                    <li>Técnicamente no hay orden que les prohíba seguir aplicando Yajure Hurtado</li>
+                    <li>La declaración no tiene fuerza ejecutiva por sí misma</li>
+                </ul>
+
+                <p><strong>2. "No es precedente vinculante para nosotros":</strong></p>
+                <ul>
+                    <li>EOIR y los IJs están obligados por precedentes de la BIA</li>
+                    <li>Y por directivas del Fiscal General</li>
+                    <li>No por sentencias declaratorias de jueces de distrito individuales</li>
+                    <li>A menos que esas sentencias se conviertan en órdenes o sean afirmadas por tribunales superiores</li>
+                </ul>
+
+                <p><strong>3. "Estrategia Legal / Juego de Expectativas":</strong></p>
+                <ul>
+                    <li>Es una postura legalmente defensiva</li>
+                    <li>Forza a defensores a llevar cada caso individual a tribunales federales</li>
+                    <li>Esto consume recursos de los defensores</li>
+                    <li>Ralentiza el proceso</li>
+                    <li>Beneficia al gobierno en mantener la política restrictiva el mayor tiempo posible</li>
+                </ul>
+            </div>
+
+            <h3>Nueva Estrategia: Habeas Corpus</h3>
+
+            <div class="highlight-box">
+                <h4>🔧 Plan de Contingencia</h4>
+                
+                <p><strong>¿Qué es Habeas Corpus?</strong></p>
+                <ul>
+                    <li>Un recurso de habeas corpus es una demanda en tribunal federal</li>
+                    <li>Presentada contra el gobierno (generalmente el alcaide del centro de detención)</li>
+                    <li>Alegando que la detención de alguien es ilegal</li>
+                </ul>
+
+                <p><strong>Argumento Legal:</strong></p>
+                <ul>
+                    <li>Siguiendo el razonamiento de Maldonado Bautista</li>
+                    <li>La negación de audiencia de fianza viola la ley de inmigración</li>
+                    <li>Y viola la Constitución (debido proceso)</li>
+                </ul>
+
+                <p><strong>Objetivo:</strong></p>
+                <ul>
+                    <li>Obtener órdenes judiciales federales individuales</li>
+                    <li>O de clase (class action)</li>
+                    <li>Que obliguen al gobierno a proporcionar audiencia de fianza</li>
+                </ul>
+
+                <p><strong>Desafíos:</strong></p>
+                <ul>
+                    <li>Proceso más lento que victoria administrativa</li>
+                    <li>Más costoso (litigio federal complejo)</li>
+                    <li>Caso por caso (no solución sistémica inmediata)</li>
+                    <li>Pero ahora es la única vía viable</li>
+                </ul>
+            </div>
+
+            <h3>Pugna de Poder: Ejecutivo vs. Judicial</h3>
+
+            <p>La situación refleja una tensión fundamental:</p>
+
+            <ul>
+                <li><strong>Poder Judicial (Tribunales Federales):</strong> Dice que la política es incorrecta</li>
+                <li><strong>Poder Ejecutivo (EOIR/DOJ):</strong> Decide limitar ese fallo y mantener su política restrictiva</li>
+                <li><strong>Resultado:</strong> Duro revés para derechos de detenidos</li>
+                <li><strong>Implicación:</strong> Obliga a defensores a recurrir a litigios más complejos</li>
+            </ul>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Ir a Evaluación →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: Evaluación -->
+        <section class="module-section" id="section5">
+            <h2>Evaluación Final</h2>
+            
+            <div id="quizIntro" class="quiz-intro">
+                <h3>📝 Evaluación de Conocimientos</h3>
+                
+                <div class="highlight-box">
+                    <h4>Instrucciones</h4>
+                    <ul>
+                        <li><strong>Total de preguntas:</strong> 15</li>
+                        <li><strong>Calificación mínima para aprobar:</strong> 70% (11 respuestas correctas)</li>
+                        <li><strong>Tiempo recomendado:</strong> 30-40 minutos</li>
+                        <li><strong>Intentos:</strong> Un intento (respuestas no pueden modificarse una vez enviadas)</li>
+                        <li><strong>Feedback:</strong> Recibirás retroalimentación detallada para cada pregunta</li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: 30px; font-size: 1.1em;">
+                    Esta evaluación mide tu comprensión de los casos Yajure Hurtado y Maldonado Bautista, sus implicaciones y la directriz de la Jueza Principal Riley.
+                </p>
+
+                <button class="start-quiz-btn" onclick="startQuiz()">Comenzar Evaluación</button>
+            </div>
+
+            <div id="quizContainer" class="hidden"></div>
+
+            <div id="quizNav" class="navigation hidden">
+                <button class="btn btn-secondary" onclick="prevSection()">← Regresar al Curso</button>
+                <button class="btn btn-primary" id="submitQuizBtn" onclick="submitQuiz()">Enviar Evaluación</button>
+            </div>
+
+            <div id="resultsContainer" class="hidden"></div>
+        </section>
+    </div>
+
+    <script>
+    // ==================== VARIABLES GLOBALES ====================
+    var currentSection = 1;
+    var totalSections = 5;
+    var quizStarted = false;
+    var quizCompleted = false;
+    var userAnswers = [];
+    var startTime = null;
+    var endTime = null;
+
+    // ==================== PREGUNTAS DE EVALUACIÓN ====================
+    var questions = [
+        {
+            id: 1,
+            question: "¿Cuándo emitió la Jueza Teresa L. Riley su directriz nacional sobre Maldonado Bautista?",
+            options: [
+                "13 de enero de 2023",
+                "13 de enero de 2025",
+                "13 de enero de 2026",
+                "13 de diciembre de 2025"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Correcto! El 13 de enero de 2026, la Jueza en Jefe Teresa L. Riley emitió una guía a nivel nacional instruyendo a todos los jueces de inmigración que Maldonado Bautista no es una orden judicial nacional y que deben seguir aplicando Yajure Hurtado como precedente vinculante.",
+                incorrect: "Incorrecto. La fecha correcta es el 13 de enero de 2026. Esta directriz fue emitida un año después del fallo Maldonado Bautista (2025) y tres años después de Matter of Yajure Hurtado (2023), siendo un evento muy reciente que cambió las estrategias legales."
+            }
+        },
+        {
+            id: 2,
+            question: "¿Qué estableció la BIA en Matter of Yajure Hurtado (2023)?",
+            options: [
+                "Que todos los detenidos tienen derecho a audiencia de fianza",
+                "Que los IJs no tienen jurisdicción para audiencias de fianza en casos de reinstalación de EWI",
+                "Que las detenciones no pueden exceder 6 meses",
+                "Que se requiere representación legal gratuita"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! Matter of Yajure Hurtado (2023) es un precedente de la BIA que dictaminó que los jueces de inmigración NO tienen jurisdicción para escuchar solicitudes de fianza para inmigrantes detenidos que: (1) ingresaron sin inspección (EWI), y (2) están en procedimientos de reinstalación de una orden de deportación previa.",
+                incorrect: "Incorrecto. Yajure Hurtado estableció lo contrario: los jueces de inmigración NO tienen jurisdicción para audiencias de fianza en casos de reinstalación de personas que ingresaron sin inspección (EWI). Esto dejó a miles de personas atrapadas en detención prolongada sin posibilidad de audiencia de fianza."
+            }
+        },
+        {
+            id: 3,
+            question: "¿Qué significa 'EWI' en el contexto de Yajure Hurtado?",
+            options: [
+                "Early Warning Inspection",
+                "Entry Without Inspection (Entrada sin inspección)",
+                "Emergency Waiver Included",
+                "Extended Warrant Investigation"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! EWI significa 'Entry Without Inspection' (Entrada sin inspección). Se refiere a personas que ingresaron a Estados Unidos sin pasar por un puerto de entrada oficial o sin ser inspeccionadas por un oficial de inmigración. Esta es una categoría crucial en Yajure Hurtado porque el precedente se aplica específicamente a personas EWI en procedimientos de reinstalación.",
+                incorrect: "Incorrecto. EWI significa 'Entry Without Inspection' (Entrada sin inspección). Es un término técnico fundamental en leyes de inmigración que se refiere a ingresar al país sin pasar por inspección en un puerto de entrada oficial. Distinguir entre EWI y otras formas de entrada es crucial para entender la aplicabilidad de Yajure Hurtado."
+            }
+        },
+        {
+            id: 4,
+            question: "¿Qué tipo de fallo emitió el tribunal federal en Maldonado Bautista v. Garland (2025)?",
+            options: [
+                "Una orden judicial nacional (nationwide injunction)",
+                "Una sentencia declaratoria",
+                "Un mandamus",
+                "Un writ de habeas corpus"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Perfecto! El tribunal federal emitió una 'sentencia declaratoria', que es una declaración sobre lo que la ley significa. El juez dijo que la interpretación de la BIA es incorrecta, pero esta sentencia declaratoria NO ordena automáticamente a nadie que haga o deje de hacer algo. Esta distinción es crucial para entender por qué la directriz Riley tuvo éxito.",
+                incorrect: "Incorrecto. El tribunal emitió una 'sentencia declaratoria', no una orden judicial (injunction). Esta es la diferencia clave: una declaración dice qué es la ley, pero no ordena acciones específicas. Si hubiera sido una injunction, habría ordenado directamente al DOJ que cambiara su política. Esta distinción explica por qué la directriz Riley pudo limitar el impacto de Maldonado Bautista."
+            }
+        },
+        {
+            id: 5,
+            question: "¿Cuál es la diferencia principal entre una sentencia declaratoria y una orden judicial (injunction)?",
+            options: [
+                "No hay diferencia, son lo mismo",
+                "Una sentencia declaratoria dice qué es la ley; una injunction ordena hacer o dejar de hacer algo específico",
+                "Una injunction es más débil que una sentencia declaratoria",
+                "Solo aplica en tribunales estatales"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente comprensión! Esta es la distinción crucial: Una sentencia declaratoria es un pronunciamiento sobre el significado de la ley ('la interpretación de la BIA es incorrecta'). Una injunction es una ORDEN ejecutable que requiere acción específica ('se prohíbe al DOJ aplicar Yajure Hurtado'). La sentencia declaratoria de Maldonado Bautista no tiene la fuerza ejecutiva de una injunction.",
+                incorrect: "Incorrecto. La diferencia es fundamental: Una sentencia declaratoria DECLARA qué es la ley pero no ordena acciones específicas. Una injunction es una ORDEN que requiere hacer o cesar hacer algo, y es ejecutable. En Maldonado Bautista, el juez solo declaró que la ley dice algo distinto, pero no ordenó al gobierno que cambiara su práctica. Esta limitación permite que la directriz Riley mantenga Yajure Hurtado."
+            }
+        },
+        {
+            id: 6,
+            question: "¿Por qué la BIA es autoridad vinculante para los jueces de inmigración?",
+            options: [
+                "Porque está en el Poder Judicial",
+                "Porque es la máxima autoridad administrativa dentro del DOJ y los IJs están en su cadena de mando",
+                "Porque lo ordena el Congreso",
+                "Porque los jueces votan para aceptar sus decisiones"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! La BIA es vinculante porque es la máxima autoridad de interpretación de ley migratoria dentro del sistema administrativo del DOJ, y los jueces de inmigración (IJs) trabajan para EOIR, que está bajo el DOJ. La BIA es su tribunal de apelaciones. Es como una jerarquía corporativa: el jefe (BIA) da instrucciones que los empleados (IJs) deben seguir.",
+                incorrect: "Incorrecto. La BIA NO está en el Poder Judicial - es parte del Poder Ejecutivo (DOJ). Su autoridad sobre los IJs viene de la jerarquía administrativa: EOIR supervisa a los IJs, y la BIA es el tribunal de apelaciones de EOIR, todos dentro del DOJ. Sus decisiones son precedente vinculante para todos los IJs porque es su superior jerárquico en la cadena de mando administrativa."
+            }
+        },
+        {
+            id: 7,
+            question: "¿Qué instrucción específica dio la directriz Riley a los jueces de inmigración?",
+            options: [
+                "Aplicar Maldonado Bautista como precedente nacional",
+                "Seguir Matter of Yajure Hurtado como precedente vinculante",
+                "Conceder todas las audiencias de fianza",
+                "Consultar con el Fiscal General en cada caso"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Perfecto! La directriz Riley instruyó explícitamente a todos los jueces de inmigración que sigan la decisión de la BIA en Matter of Yajure Hurtado como precedente vinculante. Esto significa que deben continuar denegando jurisdicción para audiencias de fianza en casos de reinstalación de personas EWI, efectivamente ignorando el fallo de Maldonado Bautista.",
+                incorrect: "Incorrecto. La directriz Riley instruyó lo opuesto: seguir Yajure Hurtado (de la BIA) como precedente vinculante, no Maldonado Bautista. La directriz afirma que Maldonado Bautista 'no es una orden judicial nacional y no pretende anular, suspender o prohibir a Yajure Hurtado'. Esto mantiene el status quo restrictivo de negación de audiencias de fianza."
+            }
+        },
+        {
+            id: 8,
+            question: "¿Cuál es la consecuencia práctica de la directriz Riley para personas detenidas?",
+            options: [
+                "Obtienen audiencias de fianza automáticas",
+                "Son liberados inmediatamente",
+                "Continúan en detención prolongada sin posibilidad de audiencia de fianza ante un juez",
+                "Pueden apelar directamente a la Corte Suprema"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Correcto! La consecuencia devastadora es que las personas afectadas seguirán atrapadas en detención, a menudo durante meses o años, mientras sus casos de fondo avanzan lentamente, sin poder pedir su libertad bajo fianza a un juez. La puerta que parecía abrirse con Maldonado Bautista se cerró rápidamente con la directriz Riley.",
+                incorrect: "Incorrecto. La directriz Riley tiene el efecto opuesto: las personas detenidas continúan sin acceso a audiencias de fianza, permaneciendo en detención prolongada (meses o años). La directriz cerró la esperanza que Maldonado Bautista había creado, volviendo al status quo restrictivo donde miles quedan atrapados sin revisión judicial de su detención."
+            }
+        },
+        {
+            id: 9,
+            question: "¿Qué nueva estrategia legal deben adoptar los defensores después de la directriz Riley?",
+            options: [
+                "Continuar argumentando Maldonado Bautista ante jueces de inmigración",
+                "Presentar recursos de habeas corpus directamente en tribunales federales",
+                "Esperar una nueva decisión de la BIA",
+                "Apelar al Congreso"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! La nueva estrategia es presentar recursos de habeas corpus directamente en tribunales federales caso por caso. Un habeas corpus es una demanda en tribunal federal alegando que la detención es ilegal. Aunque es más lento, costoso y caso por caso que una victoria administrativa, ahora es la única vía viable para obtener audiencias de fianza.",
+                incorrect: "Incorrecto. Argumentar Maldonado Bautista ante IJs ya no funciona debido a la directriz Riley. Los defensores ahora deben ir directamente a tribunales federales mediante acciones de habeas corpus, demandando que la detención sin audiencia de fianza es ilegal. Es un proceso más lento y costoso, pero es la única vía efectiva después de que EOIR limitó el impacto de Maldonado Bautista."
+            }
+        },
+        {
+            id: 10,
+            question: "¿Qué es un recurso de habeas corpus en este contexto?",
+            options: [
+                "Una apelación administrativa ante la BIA",
+                "Una demanda en tribunal federal alegando que la detención es ilegal",
+                "Una solicitud de visa humanitaria",
+                "Un procedimiento de remoción acelerada"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! Un habeas corpus es una demanda presentada en un tribunal federal contra el gobierno (generalmente el alcaide del centro de detención) alegando que la detención de alguien es ilegal. El argumento será que, siguiendo el razonamiento de Maldonado Bautista, la negación de audiencia de fianza viola la ley de inmigración y la Constitución.",
+                incorrect: "Incorrecto. Un habeas corpus no es un procedimiento administrativo - es una demanda FEDERAL que desafía la legalidad de la detención. Se presenta en tribunal de distrito federal (no ante la BIA) contra el gobierno, alegando que mantener a alguien detenido sin audiencia de fianza es ilegal. Es el remedio constitucional histórico contra detención ilegal."
+            }
+        },
+        {
+            id: 11,
+            question: "¿Qué significa que Maldonado Bautista 'no es una orden judicial a nivel nacional'?",
+            options: [
+                "Que el fallo no aplica a ningún caso",
+                "Que el fallo no tiene fuerza legal",
+                "Que la sentencia declaratoria no obliga automáticamente al gobierno a cambiar políticas en todo el país",
+                "Que solo aplica en el estado de Washington"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Perfecto! Esto significa que aunque el tribunal federal dijo que la interpretación de la BIA es incorrecta, esa declaración por sí sola no obliga automáticamente al Departamento de Justicia a cambiar sus políticas a nivel nacional. Sin una 'nationwide injunction' (orden judicial nacional), EOIR puede optar por no cambiar su postura y continuar aplicando Yajure Hurtado.",
+                incorrect: "Incorrecto. El fallo tiene fuerza legal, pero una sentencia declaratoria no constituye una 'orden judicial nacional' (nationwide injunction). Esto significa que aunque el tribunal declaró que la política es incorrecta, no hay una orden ejecutable que obligue al DOJ a cambiar la política en todo el país. EOIR aprovecha esta limitación para mantener Yajure Hurtado vigente."
+            }
+        },
+        {
+            id: 12,
+            question: "¿Qué representa la situación entre Yajure Hurtado y Maldonado Bautista?",
+            options: [
+                "Un conflicto entre leyes estatales y federales",
+                "Una pugna de poder entre el Poder Judicial (tribunales federales) y el Poder Ejecutivo (sistema administrativo)",
+                "Un desacuerdo entre el Congreso y el Presidente",
+                "Una disputa entre diferentes estados"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente análisis! Esta situación describe una pugna de poder entre el Poder Judicial (tribunales federales que dijeron que la política es incorrecta) y el Poder Ejecutivo (EOIR/DOJ que decidió limitar ese fallo y mantener su política restrictiva). Es un ejemplo de tensión constitucional entre poderes del gobierno sobre derechos de detenidos.",
+                incorrect: "Incorrecto. No es un conflicto legislativo - es una pugna entre ramas del gobierno: El Poder Judicial (tribunal federal en Maldonado Bautista) dijo que la política es incorrecta, pero el Poder Ejecutivo (EOIR/DOJ a través de la directriz Riley) limitó ese fallo y mantiene su política. Esta tensión entre poderes es fundamental para entender el caso."
+            }
+        },
+        {
+            id: 13,
+            question: "¿Por qué es la directriz Riley considerada 'malas noticias' para los detenidos?",
+            options: [
+                "Aumenta los tiempos de procesamiento de casos",
+                "Cierra la esperanza de audiencias de fianza que Maldonado Bautista había abierto",
+                "Prohíbe el acceso a abogados",
+                "Elimina las apelaciones al BIA"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! Es 'malas noticias' porque la puerta que parecía abrirse con Maldonado Bautista (esperanza de audiencias de fianza) se cerró rápidamente con la directriz Riley. Los detenidos vuelven al status quo perjudicial: atrapados en detención prolongada sin posibilidad de audiencia de fianza ante un juez, obligando a defensores a litigio federal más complejo y costoso.",
+                incorrect: "Incorrecto. El impacto principal es que cierra la esperanza abierta por Maldonado Bautista de obtener audiencias de fianza. La directriz Riley vuelve al status quo restrictivo donde miles permanecen en detención prolongada (meses/años) sin revisión judicial. Obliga a los defensores a cambiar a estrategia de habeas corpus caso por caso, que es más lenta y costosa."
+            }
+        },
+        {
+            id: 14,
+            question: "¿Cuántos poderes del gobierno están involucrados en este conflicto?",
+            options: [
+                "Solo el Poder Ejecutivo",
+                "Solo el Poder Judicial",
+                "Dos: Poder Ejecutivo (EOIR/BIA/DOJ) y Poder Judicial (tribunales federales)",
+                "Los tres poderes incluido el Legislativo"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Perfecto! El conflicto involucra dos poderes: (1) Poder Ejecutivo - donde opera la BIA/EOIR/DOJ, que establece Yajure Hurtado y mantiene la política vía directriz Riley, y (2) Poder Judicial - tribunales federales que emitieron Maldonado Bautista desafiando la interpretación del ejecutivo. Esta tensión entre poderes es central al caso.",
+                incorrect: "Incorrecto. Dos poderes están en conflicto: El Poder Ejecutivo (BIA/EOIR/DOJ estableciendo y defendiendo Yajure Hurtado) y el Poder Judicial (tribunales federales desafiando esa interpretación en Maldonado Bautista). El Legislativo (Congreso) no está directamente involucrado en este conflicto interpretativo específico, aunque las leyes que creó son las que se están interpretando."
+            }
+        },
+        {
+            id: 15,
+            question: "¿Cuál es la situación actual (enero 2026) para casos de reinstalación de personas EWI?",
+            options: [
+                "Todos obtienen audiencias de fianza automáticamente",
+                "Los IJs deben seguir Yajure Hurtado y denegar jurisdicción, requiriendo habeas corpus federal para audiencias de fianza",
+                "La Corte Suprema resolvió el conflicto",
+                "Ya no hay detenciones en estos casos"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente comprensión del estado actual! Después de la directriz Riley del 13 de enero de 2026, los jueces de inmigración deben seguir Yajure Hurtado como precedente vinculante, denegando jurisdicción para audiencias de fianza en casos de reinstalación de EWI. La única vía para obtener audiencia de fianza es mediante habeas corpus en tribunales federales, caso por caso.",
+                incorrect: "Incorrecto. La situación actual es restrictiva: Los IJs siguen Yajure Hurtado (por la directriz Riley), lo que significa que niegan tener jurisdicción para audiencias de fianza en casos de reinstalación de personas EWI. Los detenidos permanecen sin acceso a audiencias de fianza a nivel administrativo. La única opción es litigio federal mediante habeas corpus, que es más lento, costoso y caso por caso."
+            }
+        }
+    ];
+
+    // ==================== FUNCIONES DE NAVEGACIÓN ====================
+    function goToSection(sectionNum) {
+        var sections = document.querySelectorAll('.module-section');
+        sections.forEach(function(section) {
+            section.classList.remove('active');
+        });
+        
+        var targetSection = document.getElementById('section' + sectionNum);
+        if (targetSection) {
+            targetSection.classList.add('active');
+            currentSection = sectionNum;
+            updateProgressBar();
+            SCORM.setLocation('section_' + sectionNum);
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function nextSection() {
+        if (currentSection < totalSections) {
+            goToSection(currentSection + 1);
+        }
+    }
+
+    function prevSection() {
+        if (currentSection > 1) {
+            goToSection(currentSection - 1);
+        }
+    }
+
+    function updateProgressBar() {
+        var progress = (currentSection / totalSections) * 100;
+        var progressFill = document.getElementById('progressFill');
+        var progressText = document.getElementById('progressText');
+        
+        if (progressFill) {
+            progressFill.style.width = progress + '%';
+            progressFill.textContent = Math.round(progress) + '%';
+        }
+        
+        if (progressText) {
+            progressText.textContent = 'Sección ' + currentSection + ' de ' + totalSections;
+        }
+    }
+
+    // ==================== FUNCIONES DEL QUIZ ====================
+    function startQuiz() {
+        quizStarted = true;
+        startTime = new Date();
+        
+        document.getElementById('quizIntro').classList.add('hidden');
+        var quizContainer = document.getElementById('quizContainer');
+        quizContainer.classList.remove('hidden');
+        document.getElementById('quizNav').classList.remove('hidden');
+        
+        renderQuiz();
+        userAnswers = new Array(questions.length).fill(-1);
+        window.scrollTo(0, 0);
+    }
+
+    function renderQuiz() {
+        var container = document.getElementById('quizContainer');
+        container.innerHTML = '';
+        
+        questions.forEach(function(q, index) {
+            var card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = 'question-' + q.id;
+            
+            var header = document.createElement('div');
+            header.className = 'question-header';
+            
+            var number = document.createElement('div');
+            number.className = 'question-number';
+            number.textContent = (index + 1);
+            
+            var text = document.createElement('div');
+            text.className = 'question-text';
+            text.textContent = q.question;
+            
+            header.appendChild(number);
+            header.appendChild(text);
+            card.appendChild(header);
+            
+            var optionsContainer = document.createElement('div');
+            optionsContainer.className = 'options';
+            
+            q.options.forEach(function(option, optIndex) {
+                var optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.setAttribute('data-question', q.id);
+                optionDiv.setAttribute('data-option', optIndex);
+                
+                var radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'question-' + q.id;
+                radio.value = optIndex;
+                radio.id = 'q' + q.id + '-opt' + optIndex;
+                
+                radio.addEventListener('change', function() {
+                    selectAnswer(q.id, optIndex);
+                });
+                
+                var label = document.createElement('label');
+                label.htmlFor = radio.id;
+                label.textContent = option;
+                label.style.cursor = 'pointer';
+                label.style.flex = '1';
+                label.style.marginLeft = '0';
+                
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            card.appendChild(optionsContainer);
+            
+            var feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback';
+            feedbackDiv.id = 'feedback-' + q.id;
+            card.appendChild(feedbackDiv);
+            
+            container.appendChild(card);
+        });
+    }
+
+    function selectAnswer(questionId, optionIndex) {
+        var qIndex = questions.findIndex(function(q) { return q.id === questionId; });
+        if (qIndex !== -1) {
+            userAnswers[qIndex] = optionIndex;
+        }
+        
+        var allOptions = document.querySelectorAll('[data-question="' + questionId + '"]');
+        allOptions.forEach(function(opt) {
+            opt.classList.remove('selected');
+        });
+        
+        var selectedOption = document.querySelector('[data-question="' + questionId + '"][data-option="' + optionIndex + '"]');
+        if (selectedOption) {
+            selectedOption.classList.add('selected');
+        }
+    }
+
+    function submitQuiz() {
+        var unanswered = userAnswers.filter(function(a) { return a === -1; }).length;
+        
+        if (unanswered > 0) {
+            alert('Por favor responde todas las preguntas. Faltan ' + unanswered + ' pregunta(s).');
+            return;
+        }
+        
+        if (!confirm('¿Estás seguro de que deseas enviar la evaluación? No podrás cambiar tus respuestas después.')) {
+            return;
+        }
+        
+        quizCompleted = true;
+        endTime = new Date();
+        
+        var correct = 0;
+        questions.forEach(function(q, index) {
+            if (userAnswers[index] === q.correct) {
+                correct++;
+            }
+        });
+        
+        var scoreRaw = Math.round((correct / questions.length) * 100);
+        
+        console.log('Enviando calificación a Moodle: ' + scoreRaw);
+        SCORM.setScore(scoreRaw);
+        
+        showFeedback();
+        
+        var submitBtn = document.getElementById('submitQuizBtn');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Evaluación Enviada';
+        }
+        
+        setTimeout(function() {
+            showResults(scoreRaw, correct);
+        }, 1000);
+    }
+
+    function showFeedback() {
+        questions.forEach(function(q, index) {
+            var card = document.getElementById('question-' + q.id);
+            var feedbackDiv = document.getElementById('feedback-' + q.id);
+            var options = card.querySelectorAll('.option');
+            
+            var userAnswer = userAnswers[index];
+            var isCorrect = userAnswer === q.correct;
+            
+            options.forEach(function(opt) {
+                opt.classList.add('disabled');
+                var radio = opt.querySelector('input[type="radio"]');
+                if (radio) radio.disabled = true;
+            });
+            
+            var correctOption = card.querySelector('[data-option="' + q.correct + '"]');
+            if (correctOption) {
+                correctOption.classList.add('correct-answer');
+            }
+            
+            if (!isCorrect) {
+                var incorrectOption = card.querySelector('[data-option="' + userAnswer + '"]');
+                if (incorrectOption) {
+                    incorrectOption.classList.add('incorrect-answer');
+                }
+            }
+            
+            feedbackDiv.classList.add('show');
+            feedbackDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            var feedbackTitle = document.createElement('div');
+            feedbackTitle.className = 'feedback-title';
+            feedbackTitle.innerHTML = '<span class="feedback-icon">' + (isCorrect ? '✓' : '✗') + '</span>' +
+                                      (isCorrect ? 'Respuesta Correcta' : 'Respuesta Incorrecta');
+            
+            var feedbackText = document.createElement('div');
+            feedbackText.className = 'feedback-text';
+            feedbackText.textContent = isCorrect ? q.feedback.correct : q.feedback.incorrect;
+            
+            feedbackDiv.appendChild(feedbackTitle);
+            feedbackDiv.appendChild(feedbackText);
+        });
+    }
+
+    function showResults(scoreRaw, correct) {
+        var resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.classList.remove('hidden');
+        
+        var incorrect = questions.length - correct;
+        var duration = Math.round((endTime - startTime) / 1000 / 60);
+        var passed = scoreRaw >= 70;
+        
+        var html = '<div class="results-container">';
+        html += '<h2>Resultados de la Evaluación</h2>';
+        
+        html += '<div class="score-circle">';
+        html += '<div class="score-percentage">' + scoreRaw + '%</div>';
+        html += '<div class="score-label">CALIFICACIÓN</div>';
+        html += '</div>';
+        
+        html += '<div class="status-badge ' + (passed ? 'passed' : 'failed') + '">';
+        html += (passed ? '✓ ¡APROBADO!' : '✗ NO APROBADO');
+        html += '</div>';
+        
+        html += '<div class="results-details">';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Respuestas Correctas:</span>';
+        html += '<span class="result-value" style="color: var(--color-medium);">' + correct + ' / ' + questions.length + '</span>';
+        html += '</div>';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Respuestas Incorrectas:</span>';
+        html += '<span class="result-value" style="color: #c55;">' + incorrect + ' / ' + questions.length + '</span>';
+        html += '</div>';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Tiempo Empleado:</span>';
+        html += '<span class="result-value">' + duration + ' minutos</span>';
+        html += '</div>';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Calificación Mínima:</span>';
+        html += '<span class="result-value">70%</span>';
+        html += '</div>';
+        
+        html += '</div>';
+        
+        if (passed) {
+            html += '<div class="recommendation-box passed">';
+            html += '<p style="margin: 0; color: var(--color-darkest);">';
+            html += '<strong>¡Felicitaciones!</strong> Has demostrado un excelente entendimiento de los casos Yajure Hurtado y Maldonado Bautista, ';
+            html += 'sus implicaciones legales y las estrategias necesarias post-directriz Riley. Tu calificación ha sido registrada en el sistema.';
+            html += '</p></div>';
+        } else {
+            html += '<div class="recommendation-box failed">';
+            html += '<p style="margin: 0; color: var(--color-darkest);">';
+            html += '<strong>Recomendación:</strong> Revisa el material del curso prestando especial atención a: ';
+            html += '(1) La diferencia entre sentencia declaratoria e injunction, (2) Por qué la BIA es vinculante pero el tribunal federal no, ';
+            html += 'y (3) La nueva estrategia de habeas corpus.';
+            html += '</p></div>';
+        }
+        
+        html += '<div class="navigation" style="justify-content: center; margin-top: 30px;">';
+        html += '<button class="btn btn-primary" onclick="window.print()">Imprimir Resultados</button>';
+        html += '</div>';
+        
+        html += '</div>';
+        
+        resultsContainer.innerHTML = html;
+        resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ==================== INICIALIZACIÓN ====================
+    window.addEventListener('load', function() {
+        updateProgressBar();
+        
+        var savedLocation = SCORM.getLocation();
+        if (savedLocation && savedLocation.startsWith('section_')) {
+            var sectionNum = parseInt(savedLocation.replace('section_', ''));
+            if (sectionNum >= 1 && sectionNum <= totalSections) {
+                goToSection(sectionNum);
+            }
+        }
+    });
+    </script>
+</body>
+</html>
