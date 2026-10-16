@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAWA Eligibility Simulator — TMLF</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0F1B2D;--navy-mid:#1B2D45;--navy-l:#243750;--gold:#C9A84C;--gold-l:#E8C97A;--ice:#EEF4FB;--ice-m:#D4E3F5;--red:#C0392B;--red-l:#FADBD8;--green:#1E6641;--green-l:#D5F0E3;--amber:#8B5E00;--amb-l:#FEF3D0;--text:#0F1B2D;--tm:#3A4D62;--ts:#6B7E94;--brd:#C8D8E8;--bg:#F5F8FC;--w:#fff;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:var(--sans);background:var(--bg);color:var(--text);height:100%;line-height:1.6}
+.wrap{display:flex;flex-direction:column;height:100%;min-height:640px}
+.hdr{background:var(--navy);padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;height:50px;border-bottom:2.5px solid var(--gold);flex-shrink:0}
+.logo{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.1em}
+.hdr-r{display:flex;align-items:center;gap:12px}
+.dots{display:flex;gap:5px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);transition:background .3s}
+.dot.done{background:var(--gold)}
+.dot.active{background:var(--gold-l);box-shadow:0 0 0 2px rgba(201,168,76,.25)}
+.hdr-score{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.4)}
+.body{display:flex;flex:1;overflow:hidden}
+.side{width:230px;flex-shrink:0;background:var(--w);border-right:1px solid var(--brd);overflow-y:auto;padding:1rem 0}
+.slbl{font-family:var(--mono);font-size:10px;color:var(--ts);letter-spacing:.1em;text-transform:uppercase;padding:0 1rem .5rem;display:block;border-bottom:1px solid var(--brd);margin-bottom:.75rem}
+.cbtn{display:block;width:calc(100% - 1.5rem);margin:0 .75rem 6px;text-align:left;background:none;border:1px solid var(--brd);border-radius:7px;padding:10px 12px;cursor:pointer;transition:all .2s;position:relative}
+.cbtn:hover{border-color:var(--gold);background:#FBF8F0}
+.cbtn.active{border-color:var(--gold);background:#FBF8F0;border-left:3px solid var(--gold)}
+.cbtn.done{border-color:var(--green);background:var(--green-l)}
+.cnum{font-family:var(--mono);font-size:10px;color:var(--ts)}
+.cname{font-size:12px;font-weight:500;color:var(--text);margin:2px 0}
+.ctag{font-size:10px;font-family:var(--mono);padding:2px 5px;border-radius:3px;background:var(--ice-m);color:var(--tm);display:inline-block;margin-top:3px}
+.cbadge{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:11px;color:var(--green);font-weight:500}
+.sbox{margin:.75rem;background:var(--navy);border-radius:7px;padding:10px 12px}
+.srow{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.srow:last-child{margin:0}
+.slb2{font-size:11px;color:rgba(255,255,255,.4)}
+.sval{font-family:var(--mono);font-size:12px;color:var(--gold);font-weight:500}
+.content{flex:1;overflow-y:auto;padding:1.5rem}
+.scr{display:none;animation:fi .3s ease}
+.scr.vis{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+/* Welcome */
+.hero{background:var(--navy);border-radius:10px;padding:2.25rem 2.5rem;margin-bottom:1.25rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;border:35px solid rgba(201,168,76,.07)}
+.hero::after{content:'';position:absolute;bottom:-30px;right:120px;width:130px;height:130px;border-radius:50%;border:25px solid rgba(201,168,76,.05)}
+.eyeb{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem}
+.h1{font-size:28px;font-weight:300;color:var(--w);line-height:1.2;margin-bottom:.6rem}
+.h1 strong{font-weight:600;color:var(--gold-l)}
+.sub{font-size:13px;color:rgba(255,255,255,.55);max-width:480px;line-height:1.65;font-weight:300}
+.wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:1.25rem 0}
+.wc{background:var(--w);border:1px solid var(--brd);border-radius:8px;padding:1rem}
+.wc-i{font-size:18px;margin-bottom:.4rem}
+.wc-t{font-size:12px;font-weight:600;margin-bottom:.25rem}
+.wc-d{font-size:11px;color:var(--ts);line-height:1.5}
+.btn-go{background:var(--gold);color:var(--navy);border:none;border-radius:7px;padding:12px 28px;font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.02em}
+.btn-go:hover{background:var(--gold-l);transform:translateY(-1px)}
+
+/* Case */
+.case-bar{background:var(--w);border:1px solid var(--brd);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
+.cb-l{flex:1}
+.cb-eye{font-family:var(--mono);font-size:10px;color:var(--ts);letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+.cb-name{font-size:17px;font-weight:600;color:var(--text);margin-bottom:3px}
+.cb-sub{font-size:12px;color:var(--tm)}
+.dif{font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:3px;flex-shrink:0}
+.db{background:var(--green-l);color:var(--green)}
+.dm{background:var(--amb-l);color:var(--amber)}
+.dh{background:var(--red-l);color:var(--red)}
+
+.pips{display:flex;gap:4px;margin-bottom:1rem}
+.pip{height:3px;flex:1;border-radius:2px;background:var(--brd);transition:background .3s}
+.pip.done{background:var(--green)}
+.pip.active{background:var(--gold)}
+
+/* Expediente */
+.exp{background:var(--w);border:1px solid var(--brd);border-radius:8px;margin-bottom:1rem;overflow:hidden}
+.exp-h{background:var(--navy);padding:8px 14px;display:flex;align-items:center;justify-content:space-between}
+.exp-hl{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase}
+.exp-toggle{font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;background:none;border:none;font-family:var(--mono)}
+.exp-body{padding:1rem 1.25rem}
+.exp-g{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.ef label{font-size:10px;font-weight:500;color:var(--ts);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:2px}
+.ef p{font-size:12px;color:var(--text);line-height:1.4}
+.ediv{border:none;border-top:1px solid var(--brd);margin:.75rem 0}
+.iss{display:flex;flex-wrap:wrap;gap:5px}
+.itag{font-size:10px;padding:2px 7px;border-radius:3px;font-family:var(--mono)}
+.iw{background:var(--amb-l);color:var(--amber)}
+.id2{background:var(--red-l);color:var(--red)}
+.ig{background:var(--green-l);color:var(--green)}
+
+/* Chat */
+.chat{background:var(--w);border:1px solid var(--brd);border-radius:8px;margin-bottom:1rem;overflow:hidden}
+.ch-hdr{background:var(--navy-mid);padding:9px 14px;display:flex;align-items:center;gap:9px}
+.av{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--navy);flex-shrink:0}
+.ch-n{font-size:12px;font-weight:500;color:var(--w)}
+.ch-i{font-size:10px;color:rgba(255,255,255,.4)}
+.msgs{padding:1rem;max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:.8rem}
+.msg{display:flex;gap:8px}
+.mav{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;margin-top:2px}
+.mc .mav{background:var(--gold);color:var(--navy)}
+.ma .mav{background:var(--navy);color:var(--w)}
+.bbl{max-width:460px;padding:8px 12px;border-radius:8px;font-size:13px;line-height:1.6}
+.mc .bbl{background:var(--ice);border:1px solid var(--brd)}
+.ma .bbl{background:var(--navy-l);color:rgba(255,255,255,.85)}
+.mdr{font-size:10px;font-weight:500;color:var(--ts);margin-bottom:2px}
+.ma .mdr{color:rgba(255,255,255,.38)}
+.manswered{display:flex;justify-content:flex-end;}
+.abadge{font-size:11px;font-family:var(--mono);padding:3px 9px;border-radius:3px;}
+
+/* Decision */
+.ds{background:var(--w);border:1px solid var(--brd);border-radius:8px;padding:1.25rem;margin-bottom:1rem}
+.dq-top{font-family:var(--mono);font-size:10px;color:var(--ts);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.dq{font-size:14px;font-weight:500;color:var(--text);line-height:1.55;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--brd)}
+.og{display:flex;flex-direction:column;gap:8px}
+.ob{width:100%;text-align:left;background:var(--bg);border:1.5px solid var(--brd);border-radius:7px;padding:10px 14px;cursor:pointer;transition:all .2s;font-family:var(--sans);font-size:13px;color:var(--text);line-height:1.5;display:flex;gap:10px;align-items:flex-start}
+.ob:hover:not(:disabled){border-color:var(--navy);background:var(--w)}
+.ob:disabled{cursor:default}
+.ob.correct{border-color:var(--green) !important;background:var(--green-l) !important;color:var(--green) !important}
+.ob.wrong{border-color:var(--red) !important;background:var(--red-l) !important;color:var(--red) !important}
+.ob.neutral{border-color:var(--brd);opacity:.4}
+.ol{font-family:var(--mono);font-size:11px;font-weight:500;width:18px;flex-shrink:0;margin-top:1px}
+
+/* Feedback */
+.fp{border-radius:8px;padding:1.1rem 1.25rem;margin-bottom:1rem;display:none;animation:fi .4s ease}
+.fp.vis{display:block}
+.fp.correct{background:var(--green-l);border:1.5px solid var(--green)}
+.fp.wrong{background:var(--red-l);border:1.5px solid var(--red)}
+.fh{display:flex;align-items:center;gap:8px;margin-bottom:.6rem}
+.fi{font-size:17px}
+.ft{font-size:14px;font-weight:600}
+.fp.correct .ft{color:var(--green)}
+.fp.wrong .ft{color:var(--red)}
+.ftxt{font-size:13px;line-height:1.65;color:var(--text);margin-bottom:.6rem}
+.flaw{padding:.65rem .85rem;background:rgba(0,0,0,.04);border-radius:5px;font-size:12px;color:var(--tm);line-height:1.55}
+.flaw strong{color:var(--text);font-weight:600}
+
+/* Nav */
+.nav{display:flex;gap:10px;margin-bottom:2rem}
+.btn-nx{background:var(--navy);color:var(--w);border:none;border-radius:7px;padding:11px 22px;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-nx:hover:not(:disabled){background:var(--navy-mid)}
+.btn-nx:disabled{opacity:.38;cursor:default}
+.btn-2{background:transparent;color:var(--text);border:1px solid var(--brd);border-radius:7px;padding:11px 22px;font-family:var(--sans);font-size:13px;cursor:pointer;transition:all .2s}
+.btn-2:hover{border-color:var(--navy)}
+
+/* Results */
+.rh{background:var(--navy);border-radius:10px;padding:2.5rem;margin-bottom:1.25rem;text-align:center}
+.rsco{font-family:var(--mono);font-size:60px;font-weight:500;color:var(--gold);line-height:1;margin-bottom:.4rem}
+.rlbl{font-size:13px;color:rgba(255,255,255,.4)}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem}
+.rcard{background:var(--w);border:1px solid var(--brd);border-radius:8px;padding:1rem;text-align:center}
+.rval{font-family:var(--mono);font-size:26px;font-weight:500;color:var(--text);margin-bottom:3px}
+.rllb{font-size:11px;color:var(--ts)}
+.ri{background:var(--w);border:1px solid var(--brd);border-radius:7px;padding:.9rem 1rem;display:flex;gap:10px;align-items:flex-start;margin-bottom:.6rem}
+.riq{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px}
+.rid{font-size:11px;color:var(--ts);line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hdr">
+  <div class="logo">TMLF · VAWA Eligibility Simulator</div>
+  <div class="hdr-r">
+    <span class="hdr-score" id="hdr-score"></span>
+    <div class="dots"><div class="dot" id="d0"></div><div class="dot" id="d1"></div><div class="dot" id="d2"></div></div>
+  </div>
+</header>
+<div class="body">
+<aside class="side">
+  <span class="slbl">Casos</span>
+  <button class="cbtn" id="sb0" onclick="loadCase(0)">
+    <div class="cnum">Caso 01 · Básico</div>
+    <div class="cname">Elena Soto</div>
+    <span class="ctag">SPOUSE · USC · EWI</span>
+  </button>
+  <button class="cbtn" id="sb1" onclick="loadCase(1)">
+    <div class="cnum">Caso 02 · Intermedio</div>
+    <div class="cname">Roberto Mendoza</div>
+    <span class="ctag">PARENT · USC · HIJASTRO</span>
+  </button>
+  <button class="cbtn" id="sb2" onclick="loadCase(2)">
+    <div class="cnum">Caso 03 · Complejo</div>
+    <div class="cname">Diana Reyes</div>
+    <span class="ctag">EX-CÓNYUGE · CIMT · DERIV.</span>
+  </button>
+  <div class="sbox">
+    <div class="srow"><span class="slb2">Completados</span><span class="sval" id="sc">0 / 3</span></div>
+    <div class="srow"><span class="slb2">Correctas</span><span class="sval" id="sq">0 / 15</span></div>
+    <div class="srow"><span class="slb2">Precisión</span><span class="sval" id="sp">—</span></div>
+  </div>
+</aside>
+
+<main class="content">
+
+<!-- WELCOME -->
+<div class="scr vis" id="sw">
+  <div class="hero">
+    <div class="eyeb">TMLF · Common Core VAWA · Simulador de Elegibilidad</div>
+    <h1 class="h1">Simulador de<br><strong>Criterios VAWA</strong></h1>
+    <p class="sub">Tres casos basados en perfiles reales. Lee la conversación con el cliente, analiza el expediente y decide en cada punto crítico de elegibilidad VAWA — con la norma exacta en cada feedback.</p>
+  </div>
+  <div class="wgrid">
+    <div class="wc"><div class="wc-i">⚖️</div><div class="wc-t">Elegibilidad real</div><div class="wc-d">Relaciones calificantes, USC vs LPR, ex-cónyuge, hijastros, Intending Spouse, derivados.</div></div>
+    <div class="wc"><div class="wc-i">📋</div><div class="wc-t">5 preguntas por caso</div><div class="wc-d">Cada pregunta cubre un criterio distinto del I-360: relación, abuso, cohabitación, GMC, derivados.</div></div>
+    <div class="wc"><div class="wc-i">🔍</div><div class="wc-t">Norma en cada respuesta</div><div class="wc-d">Feedback con INA, CFR y Policy Update USCIS diciembre 2025 aplicable a cada decisión.</div></div>
+  </div>
+  <button class="btn-go" onclick="loadCase(0)">Comenzar — Caso 01 →</button>
+</div>
+
+<!-- CASE -->
+<div class="scr" id="sc2"><div id="cc"></div></div>
+
+<!-- RESULTS -->
+<div class="scr" id="sr">
+  <div class="rh">
+    <div class="rsco" id="rsc">—</div>
+    <div class="rlbl">Puntuación final del simulador</div>
+  </div>
+  <div class="rgrid">
+    <div class="rcard"><div class="rval" id="rco">0</div><div class="rllb">Respuestas correctas</div></div>
+    <div class="rcard"><div class="rval" id="rto">0</div><div class="rllb">Total preguntas</div></div>
+    <div class="rcard"><div class="rval" id="rca">0/3</div><div class="rllb">Casos completados</div></div>
+  </div>
+  <div id="rv"></div>
+  <div style="margin-top:1rem"><button class="btn-go" onclick="resetAll()">Reiniciar simulador →</button></div>
+</div>
+
+</main>
+</div>
+</div>
+<script>
+const C=[
+/* ══════════════════════════════════════════
+   CASO 1 — ELENA SOTO
+   SPOUSE · USC · EWI · EXTREME CRUELTY · DERIVADOS
+══════════════════════════════════════════ */
+{id:0,name:"Elena Soto",sub:"VAWA SPOUSE · USC · Entrada sin inspección · Extreme Cruelty",dif:"db",difl:"Básico",ini:"ES",
+exp:{n:"Elena Soto, 34 años",or:"México",en:"Sin inspección (EWI), 2017. Nunca ha salido.",es:"Sin estatus legal",pr:"8 años continuos en EE.UU.",ab:"Robert Williams, USC por nacimiento",re:"Casados desde 2019. Conviven desde entonces.",hi:"Valentina, 8 años (nacida EE.UU.) · Diego, 6 años (nacido EE.UU.)",is:["EWI — nunca ha salido","Sin estatus 8 años","Abusador USC","Hijos ciudadanos"]},
+msgs:[
+{r:"c",t:"Hola. Me dijeron que ustedes pueden ayudarme. Mi esposo Robert es americano de nacimiento. Llevamos casados desde 2019 y vivimos juntos. Me golpea, me controla el dinero, no me deja ver a mi familia. Entré sin papeles en 2017 y nunca he salido de Estados Unidos."},
+{r:"a",t:"Elena, todo lo que me diga aquí está protegido por la Sección 1367 — su esposo no será notificado de nada. Para entender bien su caso, necesito hacerle algunas preguntas sobre su situación."},
+{r:"c",t:"Claro. Llevamos juntos desde el 2018, nos casamos en 2019 en una ceremonia real con familia y amigos. Tenemos dos hijos juntos, Valentina de 8 y Diego de 6, ambos nacidos aquí en Estados Unidos. Robert me dice que si lo dejo me va a quitar a mis hijos porque yo no tengo papeles."}
+],
+steps:[
+{cm:{r:"a",t:"Análisis 1 de 5: Elena entró sin inspección y lleva 8 años sin estatus. Primer punto crítico de elegibilidad."},
+q:"Elena entró a EE.UU. sin inspección (EWI) en 2017 y nunca ha salido. ¿Cuál es la categoría VAWA correcta y la base de elegibilidad?",
+opts:[
+"Elena no califica para VAWA porque la EWI es una causal de inadmisibilidad que bloquea el ajuste de estatus. Sin regularizar primero su situación migratoria, USCIS no puede procesar el I-360 ni avanzar hacia el I-485.",
+"Elena califica como VAWA SPOUSE de USC. La EWI no afecta su elegibilidad: VAWA exime expresamente esta causal de inadmisibilidad. La relación calificante es el matrimonio con Robert (USC).",
+"Elena califica para VAWA, pero primero debe obtener un estatus temporal — como un Deferred Action o un parole — para poder presentar el I-485 como parte del proceso. Sin ese paso previo, el I-360 no puede avanzar.",
+"Elena califica bajo la categoría VAWA PARENT: al tener hijos ciudadanos americanos, puede presentar el I-360 con esa base, independientemente de su relación con Robert. Los hijos funcionarían como fundamento de la relación calificante."
+],cor:1,
+fc:"Correcto. Elena califica como VAWA SPOUSE de USC bajo INA §204(a)(1)(A)(iii). La EWI está expresamente exenta en VAWA — no es obstáculo para presentar el I-360. La relación calificante es el matrimonio válido con Robert, que es ciudadano americano por nacimiento. No se requiere estatus legal previo.",
+fw:"Incorrecto. Elena califica como VAWA SPOUSE de USC. La EWI está expresamente exenta por VAWA bajo INA §212(a)(6)(A) — no requiere estatus previo ni waiver. La relación calificante es el matrimonio con un USC. VAWA PARENT es una categoría diferente: aplica cuando el peticionario es padre/madre abusado por su hijo USC adulto.",
+law:"INA §204(a)(1)(A)(iii): VAWA SPOUSE de USC. INA §212(a)(6)(A): EWI exento para VAWA. Relación calificante: matrimonio válido con USC."},
+
+{cm:{r:"c",t:"Robert nunca me ha golpeado enfrente de alguien. Me controla todo el dinero, me revisa el teléfono a toda hora, me dice que si lo dejo llama a ICE y me deporta, y no me deja ver a mi familia. Pero como no hay testigos de los golpes, me da miedo que no me crean."},
+q:"El abuso de Robert incluye control económico, vigilancia del teléfono, amenazas de deportación y aislamiento. No hay testigos de los golpes. ¿Cómo afecta esto al Requisito 4 del I-360?",
+opts:[
+"Sin testigos presenciales del abuso físico, el Requisito 4 no puede cumplirse ante USCIS. La battery debe ser corroborada por evidencia objetiva — como un reporte médico, un police report o declaraciones de terceros que hayan presenciado el abuso directamente.",
+"El control económico y las amenazas de deportación son Extreme Cruelty: formas de abuso que USCIS reconoce expresamente como base del Requisito 4, sin necesidad de violencia física ni testigos.",
+"Para cumplir el Requisito 4 sin testigos, Elena necesita al menos un police report, aunque no haya habido una detención.",
+"Para que el control económico sea reconocido como Extreme Cruelty, Elena debe acreditar un daño concreto y significativo. USCIS exige evidencia de terceros — como estados de cuenta, reportes bancarios o declaraciones de un contador — que demuestren el impacto real del control financiero ejercido por Robert."
+],cor:1,
+fc:"Correcto. El Requisito 4 de VAWA (Battery or Extreme Cruelty) no exige violencia física ni testigos. El control económico, la vigilancia del teléfono, las amenazas de deportación y el aislamiento social son formas de Extreme Cruelty reconocidas por USCIS — todas caen en las categorías de control coercitivo y abuso migratorio. Un patrón de conductas de control, aunque cada una pareciera menor, puede calificar cuando en conjunto forman un sistema de poder y control.",
+fw:"Incorrecto. El Requisito 4 incluye Extreme Cruelty, que no requiere violencia física ni testigos. El control económico, la vigilancia del teléfono, el aislamiento social y las amenazas migratorias son formas documentadas de Extreme Cruelty bajo VAWA. USCIS evalúa el patrón de control y su impacto — no solo si hubo golpes.",
+law:"VAWA I-360 Requisito 4 — Battery or Extreme Cruelty. USCIS Policy Manual Vol. 3 Part D: incluye control coercitivo, abuso económico, abuso migratorio. INA §204(a)(1)(A)(iii)."},
+
+{cm:{r:"a",t:"Análisis 3 de 5: Elena y Robert viven juntos desde 2019. ¿Está cubierto el requisito de cohabitación bajo la nueva política?"},
+q:"Elena y Robert se casaron en 2019 y han vivido juntos desde entonces hasta hoy. ¿Cómo se cubre el Requisito 3 (cohabitación) bajo el Policy Update diciembre 2025?",
+opts:[
+"La cohabitación durante un matrimonio vigente es un hecho presumido por USCIS: si la pareja está legalmente casada y viviendo junta, no se requiere documentación adicional para acreditar esa convivencia dentro del I-360.",
+"El Policy Update de diciembre 2025 flexibilizó las reglas para cónyuges con matrimonio vigente: cuando ambas partes siguen conviviendo bajo el mismo techo, USCIS ya no exige documentación explícita de cohabitación, ya que la convivencia es un hecho presente y verificable.",
+"El Policy Update dic. 2025 exige prueba explícita de cohabitación en todos los casos I-360, incluyendo matrimonios vigentes. Elena debe aportar: contrato de arrendamiento, facturas de servicios a la misma dirección, correspondencia bancaria o declaraciones juradas.",
+"El Requisito 3 de cohabitación fue diseñado principalmente para casos de ex-cónyuge o separación, donde la convivencia ya no es un hecho presente. Mientras el matrimonio esté vigente y la pareja conviva activamente, USCIS no exige documentación adicional de esa convivencia."
+],cor:2,
+fc:"Correcto. El Policy Update de diciembre 2025 exige prueba explícita de cohabitación en TODOS los casos I-360, sin excepción, incluyendo matrimonios vigentes. La presunción ya no es suficiente. Elena necesita al menos uno de: contrato de arrendamiento con ambos nombres, facturas de servicios a la misma dirección, correspondencia bancaria o del gobierno a la misma dirección, o declaraciones juradas de vecinos o familiares.",
+fw:"Incorrecto. El Policy Update de diciembre 2025 exige prueba explícita de cohabitación en todos los casos, incluyendo matrimonios vigentes. Ya no se puede presumir. Elena debe aportar documentación que acredite la convivencia: contrato, facturas de servicios, correspondencia a la misma dirección, o declaraciones juradas.",
+law:"USCIS Policy Update diciembre 2025: cohabitación obligatoria en todos los I-360. I-360 Requisito 3. 8 CFR §204.2. Evidencias: contratos, facturas, correspondencia, declaraciones juradas."},
+
+{cm:{r:"c",t:"Tengo una duda. Robert me dice que él puede retirar mi caso en cualquier momento. ¿Es verdad eso? ¿Y mis hijos? Valentina y Diego nacieron aquí, ¿ellos necesitan también arreglar papeles?"},
+q:"Robert amenaza con 'retirar el caso' de Elena. Y Elena pregunta si sus hijos nacidos en EE.UU. necesitan trámites. ¿Cuáles son los dos análisis correctos?",
+opts:[
+"Robert sí puede retirar la petición de Elena porque él es el patrocinador. Los hijos necesitan I-485 como derivados.",
+"Robert no puede hacer nada: la auto-petición VAWA es presentada por Elena en su propio nombre sin el conocimiento ni consentimiento de Robert. Valentina y Diego son ciudadanos por nacimiento — no necesitan ningún trámite migratorio.",
+"Robert no puede interferir en la auto-petición de Elena, pero Valentina y Diego, a pesar de haber nacido en EE.UU., necesitan presentar sus propios I-360 vinculados al expediente de su madre para regularizar su situación migratoria y obtener estatus formal reconocido por USCIS.",
+"Elena puede presentar el I-360 de forma independiente, pero USCIS no puede procesar los formularios de Valentina y Diego hasta que Elena cuente con su residencia permanente. Solo entonces podrán presentar sus propios documentos de ajuste de estatus como derivados del caso principal."
+],cor:1,
+fc:"Correcto en ambos puntos. La auto-petición VAWA (I-360) es presentada por Elena en su propio nombre — Robert no es el patrocinador, no puede retirarla ni interferir. La Sección 1367 protege que ni siquiera sea notificado. Valentina y Diego nacieron en EE.UU. — son ciudadanos americanos por la 14a Enmienda y no necesitan ningún trámite migratorio.",
+fw:"Incorrecto. La auto-petición VAWA no depende de Robert en absoluto — él no tiene rol en el proceso y no puede retirarla ni interferir. Es la esencia del programa: la víctima peticiona en su propio nombre. Valentina y Diego, nacidos en EE.UU., son ciudadanos americanos por la 14a Enmienda — no necesitan I-360, I-485 ni derivados.",
+law:"INA §204(a)(1)(A)(iii): auto-petición. 8 U.S.C. §1367: confidencialidad — abusador no notificado. 14a Enmienda: ciudadanía por nacimiento. Derivados VAWA no aplican a ciudadanos."},
+
+{cm:{r:"a",t:"Análisis 5 de 5: El abusador Robert es ciudadano USC. ¿Qué implica esto para la estrategia de filing del I-360?"},
+q:"Robert es ciudadano USC. Elena presentará el I-360. ¿Cuál es la implicación correcta para el filing del I-485 y el tipo de visa?",
+opts:[
+"Como el abusador es LPR (residente), Elena debe esperar a que su priority date sea 'current' en el Visa Bulletin.",
+"Como cónyuge de USC, Elena cae en la categoría de Inmediato Relativo — la visa siempre está disponible. Puede presentar el I-360 y el I-485 de forma concurrente el mismo día, acortando el proceso total.",
+"El procedimiento estándar de VAWA exige que el I-360 sea aprobado primero para que USCIS verifique la elegibilidad. Solo después de esa aprobación puede presentarse el I-485, independientemente de si el abusador es USC o LPR. Hacer ambos pasos en paralelo no está permitido.",
+"USCIS otorga prioridad a los casos donde el abusador es ciudadano americano, lo que en la práctica se traduce en tiempos de resolución más rápidos. En general, los casos de VAWA SPOUSE con abusador USC suelen resolverse en aproximadamente 6 meses desde la presentación del I-360."
+],cor:1,
+fc:"Correcto. Cuando el abusador es ciudadano americano (USC), el peticionario VAWA cae en la categoría de Inmediato Relativo — sin límite de cupo y siempre disponible. Esto permite hacer concurrent filing: presentar el I-360 y el I-485 el mismo día, acortando el proceso. Con abusador LPR la situación es diferente: la visa está sujeta al Visa Bulletin y el concurrent filing solo es posible si el priority date es 'current'.",
+fw:"Incorrecto. Robert es USC (ciudadano por nacimiento), lo que significa Inmediato Relativo para Elena: visa siempre disponible, sin esperar Visa Bulletin. Puede hacer concurrent filing del I-360 + I-485 el mismo día. Si el abusador fuera LPR, la situación sería diferente.",
+law:"INA §201(b): Immediate Relative — siempre disponible para cónyuge de USC. Concurrent filing: I-360 + I-485 simultáneo cuando hay visa inmediata. Con abusador LPR: Visa Bulletin F-2A aplica."}
+]},
+
+/* ══════════════════════════════════════════
+   CASO 2 — ROBERTO MENDOZA
+   PARENT · HIJO USC · HIJASTRO · COHABITACIÓN
+══════════════════════════════════════════ */
+{id:1,name:"Roberto Mendoza",sub:"VAWA PARENT · Hijo USC · Hijastro como peticionario · Cohabitación",dif:"dm",difl:"Intermedio",ini:"RM",
+exp:{n:"Roberto Mendoza, 61 años",or:"Honduras",en:"Visa B-2, 2014. Venció 2015.",es:"Sin estatus desde 2015",pr:"11 años en EE.UU.",ab:"Jason Miller, 29 años, ciudadano USC por nacimiento",re:"Jason es hijo de la esposa de Roberto (Patricia). Roberto se casó con Patricia en 2010 — cuando Jason tenía 18 años.",hi:"Sin dependientes adicionales",is:["Presencia ilegal 11 años","Salida 2 semanas en 2019","Hijastro como hijo USC","Abusador USC"]},
+msgs:[
+{r:"c",t:"Buenas tardes. Me llamo Roberto. Vivo aquí desde 2014. El problema es con Jason, el hijo de mi esposa Patricia. Jason es americano. Cuando me mudé con Patricia en 2014, Jason empezó a insultarme, me golpeó varias veces y me amenazó con reportarme a migración si lo denunciaba. Yo vivía con ellos en la misma casa."},
+{r:"a",t:"Roberto, lamento lo que está viviendo. Necesito entender la relación legal entre usted y Jason. ¿Cuándo se casó con Patricia? ¿Y qué edad tenía Jason en ese momento?"},
+{r:"c",t:"Me casé con Patricia en 2010, en Honduras. Cuando nos casamos, Jason tenía 18 años. Luego en 2014 vinimos todos a Estados Unidos. Jason tiene 29 años ahora. Y en 2019 tuve que salir a Honduras dos semanas porque se murió mi madre, pero luego regresé."}
+],
+steps:[
+{cm:{r:"a",t:"Análisis 1 de 5: Roberto quiere peticionar VAWA como padre abusado por su hijastro USC. ¿Califica esta relación?"},
+q:"Roberto se casó con Patricia en 2010 cuando Jason tenía 18 años. Jason es ciudadano USC por nacimiento. ¿Califica Roberto para VAWA bajo esta relación?",
+opts:[
+"VAWA PARENT exige un vínculo de consanguinidad directa entre el peticionario y el hijo abusador. La norma delimita estrictamente la relación calificante al lazo biológico: el hijo debe ser hijo de sangre. Las relaciones adquiridas por matrimonio, como la de padrastro e hijastro, quedan fuera del alcance de esta categoría.",
+"La ley exige que el matrimonio entre Roberto y Patricia haya ocurrido ANTES de que Jason cumpliera 18 años para reconocer el vínculo padrastro/hijastro. Jason tenía exactamente 18 años al momento del matrimonio — es decir, ya había cumplido la mayoría de edad — lo que significa que el requisito legal no se cumple y la relación no es calificante.",
+"Sí califica: Roberto puede peticionar VAWA como padre abusado por su hijastro USC (Jason). El requisito es que el matrimonio con Patricia haya ocurrido antes de que Jason cumpliera 18 años. Como Jason tenía exactamente 18 años al casarse Roberto con Patricia, es necesario verificar la fecha exacta — si el matrimonio fue antes del cumpleaños número 18, califica.",
+"La relación padrastro/hijastro es plenamente reconocida en VAWA sin condiciones adicionales. Lo que importa es que existe el vínculo formal derivado del matrimonio con la madre del hijastro — la edad de Jason cuando Patricia y Roberto se casaron no es un elemento que la ley tome en cuenta."
+],cor:2,
+fc:"Correcto. VAWA reconoce la relación padrastro/hijastro como calificante para la Categoría 5 (padre/madre abusado por hijo USC). El requisito crítico es que el matrimonio entre Roberto y Patricia haya ocurrido ANTES de que Jason cumpliera 18 años. Jason tenía exactamente 18 al casarse — esto requiere verificar las fechas exactas: si el matrimonio fue antes del 18° cumpleaños de Jason, la relación califica. Si fue después, no. Este punto debe documentarse con actas.",
+fw:"Incorrecto. VAWA sí reconoce la relación padrastro/hijastro. El requisito es que el matrimonio con el padre/madre del hijastro haya ocurrido antes de que el hijastro cumpliera 18 años. Con Jason teniendo exactamente 18 al momento del matrimonio, la clave está en las fechas exactas: antes del cumpleaños = califica; después = no califica. No se puede asumir sin verificar.",
+law:"INA §101(b)(1)(B): definición de 'hijo' incluye hijastro si el matrimonio ocurrió antes de que el menor cumpliera 18 años. Categoría VAWA PARENT: padre/madre abusado por hijo USC ≥ 21. Jason tiene 29 — cumple el requisito de edad del abusador."},
+
+{cm:{r:"c",t:"Una cosa que quiero aclarar: Jason vive en la misma casa que Patricia y yo. Pero hay épocas en que él viaja por trabajo y no está meses enteros. ¿Eso afecta algo?"},
+q:"Roberto vivía en la misma casa que Jason (el abusador), pero Jason se ausentaba por meses de trabajo. ¿Cómo se analiza el Requisito 3 de cohabitación con el abusador en este contexto?",
+opts:[
+"El Requisito 3 exige que el peticionario haya compartido domicilio con el abusador de manera continua durante la relación calificante. Las ausencias prolongadas del abusador — aunque sean por razones laborales — rompen esa continuidad y debilitan la prueba de cohabitación ante USCIS.",
+"El Requisito 3 exige que el peticionario haya vivido con el abusador en ALGÚN MOMENTO de la relación, no necesariamente de forma ininterrumpida. La residencia compartida como hogar principal es suficiente, incluso con ausencias temporales del abusador.",
+"El Requisito 3 fue concebido para relaciones conyugales, donde la convivencia es inherente a la naturaleza del vínculo. En el caso de un padrastro y un hijastro adulto que comparten el mismo hogar por dinámica familiar, USCIS aplica un análisis distinto y no necesariamente exige el mismo estándar.",
+"El Requisito 3 exige continuidad en la convivencia: las ausencias prolongadas de Jason por trabajo rompen la cadena de cohabitación que USCIS requiere. La práctica en casos PARENT exige acreditar al menos 12 meses de convivencia ininterrumpida, respaldados por documentación formal como contratos o facturas a la misma dirección."
+],cor:1,
+fc:"Correcto. El Requisito 3 de cohabitación no exige convivencia ininterrumpida. Basta con que Roberto haya vivido con Jason como hogar compartido en algún momento de la relación calificante. Las ausencias temporales de Jason por trabajo no eliminan el requisito — el domicilio principal compartido es suficiente. Roberto debe documentar el período de convivencia: contrato de arrendamiento con la dirección compartida, facturas de servicios, correspondencia del gobierno. El Policy Update dic. 2025 hace esta documentación obligatoria.",
+fw:"Incorrecto. La cohabitación en VAWA no exige continuidad ininterrumpida. La residencia principal compartida es suficiente. Las ausencias temporales del abusador no eliminan el requisito cumplido. Roberto debe documentar el período de convivencia (contrato, facturas, correspondencia), pero no necesita probar que Jason estuvo físicamente presente cada día.",
+law:"I-360 Requisito 3. USCIS Policy Update dic. 2025: cohabitación obligatoria de documentar en todos los casos. Las ausencias temporales no eliminan la convivencia establecida. 8 CFR §204.2."},
+
+{cm:{r:"a",t:"Análisis 3 de 5: Roberto salió del país en 2019 por 2 semanas con 4 años de presencia ilegal acumulada."},
+q:"Roberto tuvo presencia ilegal desde 2015 hasta 2019 (aprox. 4 años) y salió del país 2 semanas en 2019. ¿Qué causal de inadmisibilidad se activó y qué implica para el caso?",
+opts:[
+"La duración de la ausencia determina si se activa o no una barra migratoria. Una salida de apenas 2 semanas es una ausencia breve y no activa ninguna barra bajo el INA, independientemente de cuánto tiempo de presencia ilegal haya acumulado el peticionario antes de salir.",
+"La barra de 3 años bajo INA §212(a)(9)(B)(i) se activa cuando alguien acumula entre 180 días y 1 año de presencia ilegal antes de salir del país. Roberto estuvo sin estatus desde 2015 hasta 2019 — un período que corresponde analizar bajo los criterios de esa barra específica del INA.",
+"Se activó la barra de 10 años al salir con más de 1 año de presencia ilegal. Para el I-485, Roberto necesitará un waiver I-601. La ventaja VAWA: puede demostrar extreme hardship a sí mismo — no necesita un familiar USC/LPR calificante.",
+"VAWA otorga protecciones especiales frente a ciertas barras de inadmisibilidad. Específicamente, la ley exime a los peticionarios VAWA de la barra de 10 años por presencia ilegal, lo que significa que Roberto puede presentar el I-485 directamente sin necesidad de tramitar el waiver I-601."
+],cor:2,
+fc:"Correcto. Roberto acumuló más de 1 año de presencia ilegal (2015–2019) antes de salir en 2019 — la barra de 10 años bajo INA §212(a)(9)(B)(i) se activó al salir y reingresar. Para el I-485, necesitará un waiver I-601. La ventaja VAWA es determinante: mientras que en procesos ordinarios se necesita un familiar USC/LPR que demuestre extreme hardship, en VAWA el peticionario puede demostrar el hardship A SÍ MISMO. El nexo abuso → presencia ilegal debe documentarse en el affidavit personal.",
+fw:"Incorrecto. Roberto tenía más de 1 año de presencia ilegal cuando salió del país en 2019 (2015–2019 = ~4 años). Esto activa la barra de 10 años bajo INA §212(a)(9)(B)(i) — no la de 3 años, que aplica para 180 días a 1 año. VAWA no exime esta barra automáticamente, pero permite waivarla con I-601 y la ventaja de demostrar hardship propio.",
+law:"INA §212(a)(9)(B)(i): barra 10 años por presencia ilegal >1 año + salida. I-601 waiver disponible. Ventaja VAWA §212(i): extreme hardship del propio peticionario — no requiere familiar calificante."},
+
+{cm:{r:"c",t:"¿Y qué pasa con Patricia, mi esposa? ¿Ella también puede beneficiarse de mi caso VAWA? Y yo quisiera entender — ¿por qué la Categoría 5 no permite llevar a Patricia como derivada si ella depende económicamente de mí?"},
+q:"Roberto pregunta si Patricia (su esposa) puede ser derivada de su I-360 VAWA como PARENT. ¿Cuál es el análisis correcto?",
+opts:[
+"En VAWA, el cónyuge del peticionario puede incluirse como derivado cuando la relación matrimonial está vigente y documentada. Patricia, como esposa actual de Roberto, tiene una relación directa y reconocida con el peticionario principal que fundamentaría su inclusión en el I-360.",
+"No: la Categoría 5 (padre/madre de hijo USC abusivo) es la única categoría VAWA que NO permite derivados. Solo los hijos del peticionario pueden ser derivados en otras categorías, y los cónyuges nunca pueden serlo en ninguna categoría VAWA.",
+"La dependencia económica es un factor que USCIS valora en el análisis de impacto familiar. Cuando el peticionario sostiene económicamente a su cónyuge, esa relación puede fundamentar la inclusión de la cónyuge como derivada dentro del I-360, especialmente si hay documentación de esa dependencia.",
+"VAWA permite incluir derivados que también hayan sido víctimas del abusador o que estén en riesgo por la situación. Si Patricia puede demostrar que Jason ejerció violencia o control sobre ella también, podría calificar como derivada del I-360 de Roberto bajo esa base adicional."
+],cor:1,
+fc:"Correcto. La Categoría 5 (padre/madre abusado por hijo USC) es la única categoría VAWA que NO permite incluir derivados — es una excepción absoluta. Además, en ninguna categoría VAWA los cónyuges pueden ser derivados: solo los hijos solteros menores de 21 años del peticionario pueden serlo. Patricia no puede ser incluida como derivada en el I-360 de Roberto bajo ninguna circunstancia.",
+fw:"Incorrecto. La Categoría 5 es la única categoría VAWA sin derivados — excepción absoluta. Y en ninguna categoría VAWA los cónyuges son derivados: solo los hijos solteros menores de 21 del peticionario. Patricia no puede incluirse como derivada bajo ninguna circunstancia.",
+law:"INA §204(a)(1)(A)(v): Categoría 5 — padre/madre de hijo USC abusivo. SIN derivados — excepción absoluta. Derivados VAWA: solo hijos solteros <21 del peticionario principal. Cónyuges NO son derivados en ninguna categoría."},
+
+{cm:{r:"a",t:"Análisis 5 de 5: Roberto quiere presentar el I-360. ¿Cuál es la estrategia de filing correcta dado que el abusador es USC?"},
+q:"Jason (el abusador) es ciudadano USC. Roberto lleva 11 años en EE.UU. sin estatus. ¿Cuál es la estrategia correcta de filing?",
+opts:[
+"Dado que Jason es ciudadano americano y la visa es de disponibilidad inmediata, Roberto puede presentar el I-360 y el I-485 el mismo día sin ningún obstáculo adicional. La barra de 10 años no afecta el concurrent filing — USCIS procesará ambos formularios de forma paralela desde el inicio.",
+"Roberto puede hacer concurrent filing del I-360 + I-485 porque el abusador es USC (Inmediato Relativo), pero primero debe resolver el waiver I-601 por la barra de 10 años antes de que el I-485 pueda aprobarse. El concurrent filing es válido aunque el waiver esté pendiente.",
+"El procedimiento correcto cuando hay inadmisibilidades pendientes es secuencial: presentar el I-360, esperar su aprobación, y solo entonces presentar el I-485 junto con el waiver I-601. Presentar todo en paralelo puede generar conflictos en el expediente y ralentizar la adjudicación.",
+"Como Roberto tiene una barra de 10 años, no puede hacer concurrent filing aunque el abusador sea USC."
+],cor:1,
+fc:"Correcto. Hijo de USC cae en Inmediato Relativo — la visa siempre está disponible, lo que permite concurrent filing del I-360 + I-485. Sin embargo, el I-485 no puede aprobarse hasta que se resuelva el waiver I-601 por la barra de 10 años. El concurrent filing es válido y conveniente: se preserva la priority date y el proceso avanza en paralelo. El I-601 se puede presentar junto con el I-485 o en respuesta a una RFE.",
+fw:"Incorrecto. Roberto puede hacer concurrent filing porque Jason es USC (Inmediato Relativo). El hecho de que tenga una barra de 10 años no impide el concurrent filing — el I-485 queda pendiente hasta que el I-601 sea aprobado, pero presentarlo desde el inicio preserva la priority date y optimiza el proceso.",
+law:"INA §201(b): Inmediato Relativo para cónyuge/hijo/padre de USC — visa siempre disponible. Concurrent filing: I-360 + I-485 + I-601 simultáneos. La barra de 10 años no impide el filing, pero sí la aprobación del I-485."}
+]},
+
+/* ══════════════════════════════════════════
+   CASO 3 — DIANA REYES
+   EX-CÓNYUGE · CIMT · DERIVADOS · GOOD FAITH · INTENDING SPOUSE
+══════════════════════════════════════════ */
+{id:2,name:"Diana Reyes",sub:"VAWA SPOUSE · Ex-cónyuge · CIMT · Derivados · Good Faith",dif:"dh",difl:"Complejo",ini:"DR",
+exp:{n:"Diana Reyes, 41 años",or:"El Salvador",en:"Visa F-1, 2008. Venció 2011.",es:"Sin estatus desde 2011",pr:"17 años en EE.UU.",ab:"James Thompson, USC por naturalización",re:"Divorciadas hace 18 meses. Casadas 2013–2023.",hi:"Sofía, 24 años (soltera) · Luis, 17 años (soltero)",is:["Condena CIMT 2019 (petty theft)","Divorcio hace 18 meses","Salida F-1 en 2011","Hijo menor posible derivado"]},
+msgs:[
+{r:"c",t:"Hola. Me llamo Diana. Me divorcié hace un año y medio de James, que es ciudadano americano. Durante 10 años me golpeó, me humillaba y me decía que me deportaría si lo denunciaba. En 2019 tuve un problema — me arrestaron por robo menor en una tienda. James me controlaba todo el dinero y literalmente no teníamos qué comer."},
+{r:"a",t:"Diana, gracias por compartir eso. El arresto es algo que necesitamos analizar con cuidado — necesito los detalles del cargo y la disposición exacta."},
+{r:"c",t:"Me cargaron con 'petty theft', robo de menos de $200. Me dieron un año de probation, ya la terminé en 2020. No fui a la cárcel. Sí robé — estaba desesperada. También quería preguntarle por mis hijos: Luis tiene 17 y Sofía tiene 24, ambos solteros, están aquí conmigo."}
+],
+steps:[
+{cm:{r:"a",t:"Análisis 1 de 5: Diana se divorció hace 18 meses. ¿Está dentro del plazo VAWA como ex-cónyuge?"},
+q:"Diana se divorció hace 18 meses de James (USC). ¿Sigue siendo elegible para presentar el I-360 VAWA como ex-cónyuge?",
+opts:[
+"La auto-petición VAWA requiere que la relación calificante esté vigente al momento del filing. Una vez que se formaliza el divorcio, la peticionaria pierde la base legal como cónyuge, ya que USCIS no reconoce retroactivamente una relación que ya fue disuelta por un tribunal.",
+"Sí califica: ex-cónyuges de USC pueden presentar el I-360 hasta 2 años post-divorcio con nexo entre el divorcio y el abuso. 18 meses está dentro del plazo. El nexo abuso-divorcio debe documentarse en la declaración personal.",
+"Para que un ex-cónyuge pueda peticionar VAWA después del divorcio, la ley exige demostrar que fue el abusador quien tomó la iniciativa de disolver el matrimonio. Si fue la peticionaria quien presentó el divorcio, pierde la elegibilidad como ex-cónyuge, ya que se interpreta que actuó voluntariamente para terminar la relación.",
+"VAWA establece una ventana de 12 meses después del divorcio para que un ex-cónyuge pueda presentar el I-360 con el nexo al abuso. Diana lleva 18 meses desde la separación legal, lo que significa que ya superó ese plazo legal y técnicamente no puede presentar la petición bajo esta categoría."
+],cor:1,
+fc:"Correcto. Los ex-cónyuges de USC tienen 2 años post-divorcio para presentar el I-360, con la condición de que exista nexo entre el divorcio y el abuso. Diana lleva 18 meses desde el divorcio — está dentro del plazo. El nexo aquí es evidente: 10 años de abuso culminaron en la separación. Ese nexo debe documentarse explícitamente en la declaración personal. No importa quién presentó el divorcio.",
+fw:"Incorrecto. VAWA permite a ex-cónyuges de USC presentar el I-360 hasta 2 años post-divorcio con nexo al abuso. Diana lleva 18 meses — en plazo. El plazo es de 2 años, no 12 meses. No importa quién inició el divorcio. El nexo abuso-divorcio debe documentarse.",
+law:"INA §204(a)(1)(A)(iii): ex-cónyuge de USC — hasta 2 años post-divorcio con nexo al abuso. El iniciador del divorcio es irrelevante. Nexo abuso-divorcio: documentar en declaración personal."},
+
+{cm:{r:"c",t:"James y yo nos casamos en una ceremonia real en 2013, con familia y amigos. Vivimos juntos durante 10 años. Tenemos cuentas de banco conjuntas, declaraciones de impuestos conjuntas, fotos... ¿Eso sirve para probar que el matrimonio fue real?"},
+q:"Diana aporta fotos, cuentas conjuntas y declaraciones de impuestos conjuntas de 10 años de matrimonio. ¿Cómo se analiza el Requisito 2 de buena fe matrimonial?",
+opts:[
+"El Requisito 2 de buena fe matrimonial aplica exclusivamente cuando la relación calificante está activa al momento del filing. En casos de ex-cónyuge, USCIS asume que la autenticidad del matrimonio ya fue reconocida por el proceso de divorcio, por lo que no se exige documentación adicional para este requisito.",
+"La evidencia que aporta Diana (fotos, cuentas conjuntas, declaraciones de impuestos conjuntas, 10 años de convivencia) es exactamente el tipo de prueba que USCIS valora para el Requisito 2. Este expediente presenta una base sólida de buena fe matrimonial.",
+"Las declaraciones de impuestos conjuntas tienen peso probatorio limitado porque James pudo haberlas firmado simplemente por conveniencia tributaria o por obligación fiscal, sin que eso refleje genuina intención de reconocer el matrimonio. USCIS puede cuestionar su valor como evidencia del Requisito 2.",
+"USCIS da el mayor peso probatorio a los hijos en común al evaluar el Requisito 2. La existencia de hijos compartidos demuestra de forma objetiva que el matrimonio fue genuino y que ambas partes convivieron de manera real. Otros documentos como fotos o cuentas conjuntas son útiles pero tienen un valor probatorio menor."
+],cor:1,
+fc:"Correcto. El Requisito 2 (buena fe en el matrimonio) sí aplica a ex-cónyuges. La evidencia de Diana — cuentas conjuntas, declaraciones de impuestos Married Filing Jointly, fotos de 10 años, convivencia documentada — cubre exactamente lo que USCIS busca para probar que el matrimonio fue genuino y no un arreglo migratorio. Este es un expediente con buena cobertura del Requisito 2.",
+fw:"Incorrecto. El Requisito 2 sí aplica a ex-cónyuges — USCIS verifica que el matrimonio fue real para cualquier peticionario VAWA SPOUSE, vigente o no. La evidencia de Diana (cuentas conjuntas, impuestos conjuntos, fotos, 10 años de convivencia) es precisamente la más valorada por USCIS para este requisito.",
+law:"I-360 Requisito 2: buena fe en el matrimonio. Aplica a cónyuge y ex-cónyuge. Evidencias: fotos, cuentas conjuntas, declaraciones de impuestos MFJ, declaraciones juradas de terceros. USCIS Policy Manual Vol. 3 Part D."},
+
+{cm:{r:"c",t:"Estoy muy preocupada por la condena de 2019. James me controlaba absolutamente todo el dinero — no teníamos qué comer. Robé por eso. ¿Eso me impide todo?"},
+q:"Diana tiene condena de 2019 por petty theft (<$200) con probation. El robo ocurrió en contexto de control económico severo por el abusador. ¿Análisis correcto de GMC y su impacto en el I-360?",
+opts:[
+"Bajo INA §101(a)(43), el petty theft puede constituir un Aggravated Felony dependiendo de las circunstancias, especialmente si la sentencia impuesta supera un año de reclusión. Al ser Aggravated Felony, representa una barra absoluta de GMC que no admite waiver ni discreción de USCIS.",
+"El período de evaluación de GMC bajo VAWA abarca los 3 años anteriores al filing del I-360. Si la condena ocurrió antes de ese umbral, queda fuera del rango de análisis y USCIS no la considera para el Requisito 5. Si Diana presenta en 2025 o después, la condena de 2019 cae fuera de ese período de evaluación.",
+"El petty theft es un CIMT (Crime Involving Moral Turpitude), categoría de barra relativa — no absoluta. Con documentación del nexo entre el control económico del abusador y el delito, USCIS tiene discreción para valorarlo positivamente. El Policy Update dic. 2025 exige affidavit de GMC detallado y explícito sobre ese nexo en todos los casos.",
+"Cuando existe una condena penal, USCIS exige un período de rehabilitación demostrable antes de reconocer que el peticionario cumple con buena conducta moral. Para una condena por CIMT como el petty theft, ese período es de 3 años contados desde el fin de la sentencia — desde que Diana terminó su probation en 2020, por lo que debería esperar hasta 2023 como mínimo."
+],cor:2,
+fc:"Correcto. El petty theft es un CIMT (barra relativa), NO un Aggravated Felony (barra absoluta). La condena está dentro del período de 3 años de GMC requerido, pero no es automáticamente descalificante. El nexo directo entre el control económico del abusador (Requisito 4) y el delito debe documentarse exhaustivamente en el affidavit personal de GMC. El Policy Update dic. 2025 hace que este affidavit sea obligatorio y deba ser explícito. USCIS tiene discreción para valorar positivamente el nexo abuso-delito. Siempre revisar con el abogado.",
+fw:"Incorrecto. El petty theft es un CIMT (barra relativa), no un Aggravated Felony. La distinción es fundamental. No hay plazo adicional que esperar después de la probation. El nexo abuso-delito, bien documentado, permite que USCIS ejerza discreción positiva. El affidavit de GMC debe ser detallado y explícito sobre ese nexo — requisito reforzado por el Policy Update dic. 2025.",
+law:"INA §101(f): GMC. CIMT = barra relativa, superable con nexo al abuso. Aggravated Felony INA §101(a)(43) = barra absoluta — petty theft no lo es. Policy Update dic. 2025: affidavit de GMC obligatorio y detallado en todos los I-360."},
+
+{cm:{r:"c",t:"Luis tiene 17 años y Sofía tiene 24, ambos solteros. ¿Los dos pueden incluirse en mi caso? Y también me quiero asegurar de una cosa: ¿si yo me vuelvo a casar antes de que me aprueben, pierdo todo?"},
+q:"Luis (17, soltero) y Sofía (24, soltera) — ¿quién puede ser derivado? Y si Diana se vuelve a casar antes de la aprobación, ¿pierde la elegibilidad?",
+opts:[
+"VAWA permite incluir como derivados a todos los hijos solteros del peticionario principal, sin restricción de edad, siempre que estén en EE.UU. y no tengan estatus migratorio propio. Tanto Luis como Sofía, al ser solteros, cumplen el único requisito que la ley establece para ser incluidos como derivados. Diana puede casarse cuando quiera sin afectar el I-360.",
+"Solo Luis (17, soltero) califica como derivado — menor de 21 al momento del filing. Sofía (24) no califica. Si Diana se vuelve a casar ANTES de que se apruebe el I-360, pierde la elegibilidad como ex-cónyuge.",
+"En VAWA, las ex-cónyuges tienen una elegibilidad más limitada que las cónyuges con matrimonio vigente. USCIS restringe los beneficios de la petición únicamente al peticionario principal en los casos donde la relación calificante ya no existe al momento del filing, sin posibilidad de incluir derivados.",
+"Sofía (24) es la candidata viable como derivada por tener capacidad legal plena para firmar sus propios formularios y participar de forma autónoma en el proceso. Luis, al ser menor de edad, requeriría la intervención de un representante legal para cada paso, lo que hace su inclusión más compleja. Diana puede casarse en cualquier momento sin afectar su elegibilidad."
+],cor:1,
+fc:"Correcto en ambos puntos. Derivados: Luis (17, soltero) califica como derivado — es menor de 21 y soltero al momento del filing del I-360. Sofía (24) supera el límite de edad y no puede ser derivada — debe explorar opciones propias. Volver a casarse: si Diana se casa ANTES de que el I-360 sea aprobado y se otorgue la residencia, pierde la elegibilidad como ex-cónyuge de USC. Esto es un riesgo real que debe comunicarse claramente.",
+fw:"Incorrecto. Los derivados VAWA deben ser menores de 21 años y solteros al momento del I-360. Luis (17) califica; Sofía (24) no. Y sí hay un impacto real si Diana se vuelve a casar antes de la aprobación del I-360 — pierde elegibilidad como ex-cónyuge. Esto debe documentarse como advertencia en el expediente.",
+law:"INA §204(a)(1)(A)(v): derivados = hijos solteros <21 al momento del I-360. INA §204(a)(1)(A)(iii): ex-cónyuge pierde elegibilidad si se vuelve a casar antes de la aprobación del I-360. CSPA puede aplicar si hay visa inmediata disponible."},
+
+{cm:{r:"a",t:"Análisis 5 de 5: Un detalle crítico adicional. Diana menciona que antes de James, tuvo una relación con otro hombre que decía ser ciudadano y nunca le presentó los papeles. ¿Es relevante para VAWA?"},
+q:"Diana informa que antes de James, convivió con un hombre llamado Carlos que aseguraba ser ciudadano USC, organizó una 'boda' y luego ella descubrió que Carlos ya estaba casado — el matrimonio resultó inválido. ¿Cómo se analiza este antecedente en el contexto de VAWA?",
+opts:[
+"USCIS analiza el historial matrimonial de los peticionarios para detectar patrones de fraude. Dos matrimonios fallidos con ciudadanos americanos en un período corto generan señales de alerta para los oficiales de adjudicación, quienes pueden concluir que hubo una intención deliberada de obtener beneficios migratorios a través de esas relaciones sucesivas.",
+"Este antecedente podría haber generado elegibilidad VAWA por sí mismo bajo la figura de 'Intending Spouse': aplica cuando la víctima creyó casarse con un USC/LPR pero el matrimonio resultó inválido por causa del abusador. Requiere probar que la ceremonia fue real y de buena fe.",
+"USCIS analiza el I-360 exclusivamente con base en la relación calificante actual, que es el matrimonio con James. Los antecedentes de relaciones anteriores no son parte del formulario ni del expediente estándar, ya que cada petición se juzga únicamente por sus propios méritos y los hechos específicos de esa relación.",
+"La obligación de revelar información en el I-360 se limita estrictamente a lo solicitado en el formulario. Si Carlos nunca presentó una petición formal ante USCIS ni tramitó ningún beneficio migratorio en nombre de Diana, ese antecedente no es técnicamente exigible y no necesita declararse en el proceso actual."
+],cor:1,
+fc:"Correcto. La figura de 'Intending Spouse' bajo VAWA aplica exactamente a este escenario: cuando la víctima creyó de buena fe que estaba contrayendo matrimonio con un USC/LPR, pero el matrimonio resultó inválido porque el abusador ya estaba casado (o por otra causa imputable al abusador). Esta figura podría haber generado elegibilidad VAWA independiente. En el caso actual con James, este antecedente es información que USCIS podría evaluar en el análisis de buena fe — debe revelarse y contextualizarse correctamente para evitar que se interprete negativamente.",
+fw:"Incorrecto. La figura de 'Intending Spouse' en VAWA aplica cuando la víctima creyó de buena fe estar casándose con un USC/LPR pero el matrimonio resultó inválido por causa del abusador. Este antecedente con Carlos no invalida el caso con James — pero debe revelarse a USCIS y contextualizarse correctamente para que no sea interpretado como intención de fraude migratorio.",
+law:"INA §204(a)(1)(A)(iii): Intending Spouse — aplica cuando la víctima creyó contraer matrimonio válido con USC/LPR pero resultó inválido. Requiere: ceremonia real, buena fe de la víctima, causa imputable al abusador. Evidencias: mismas que para buena fe matrimonial."}
+]}
+];
+
+// ── STATE ────────────────────────────────────────────────────
+let S={cur:null,step:0,correct:0,answered:0,done:0,scores:{},ans:false,hist:[]};
+
+function upd(){
+  const pct=S.answered>0?Math.round(S.correct/S.answered*100):0;
+  document.getElementById('sc').textContent=`${S.done}/3`;
+  document.getElementById('sq').textContent=`${S.correct}/${S.answered||15}`;
+  document.getElementById('sp').textContent=S.answered>0?`${pct}%`:'—';
+  document.getElementById('hdr-score').textContent=S.answered>0?`${S.correct}/${S.answered} (${pct}%)`:'';
+  C.forEach((_,i)=>{
+    const b=document.getElementById(`sb${i}`);
+    b.classList.remove('active','done');
+    if(S.scores[i]!==undefined){
+      b.classList.add('done');
+      let bd=b.querySelector('.cbadge');
+      if(!bd){bd=document.createElement('span');bd.className='cbadge';b.appendChild(bd);}
+      bd.textContent=`${S.scores[i]}/5`;
+    }
+    if(S.cur===i)b.classList.add('active');
+  });
+  for(let i=0;i<3;i++){
+    const d=document.getElementById(`d${i}`);
+    d.className='dot';
+    if(S.scores[i]!==undefined)d.classList.add('done');
+    else if(S.cur===i)d.classList.add('active');
+  }
+}
+
+function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('vis'));document.getElementById(id).classList.add('vis');}
+
+function loadCase(ci){S.cur=ci;S.step=0;S.ans=false;upd();show('sc2');render();}
+
+function render(){
+  const cs=C[S.cur],st=cs.steps[S.step];
+  let msgs=[...cs.msgs];
+  for(let i=0;i<S.step;i++){
+    msgs.push(cs.steps[i].cm);
+    msgs.push({r:'x',si:i});
+  }
+  msgs.push(st.cm);
+
+  const mh=msgs.map(m=>{
+    if(m.r==='x'){
+      const h=S.hist.find(h=>h.c===S.cur&&h.s===m.si);
+      const ok=h?.ok;
+      return `<div class="manswered"><span class="abadge" style="background:${ok?'var(--green-l)':'var(--red-l)'};color:${ok?'var(--green)':'var(--red)'}">${ok?'✓':'✗'} Análisis ${m.si+1} ${ok?'correcto':'incorrecto'}</span></div>`;
+    }
+    const isc=m.r==='c';
+    return `<div class="msg ${isc?'mc':'ma'}">
+      <div class="mav">${isc?cs.ini:'A'}</div>
+      <div><div class="mdr">${isc?cs.name:'Abogado(a)'}</div><div class="bbl">${m.t}</div></div>
+    </div>`;
+  }).join('');
+
+  const ph=cs.steps.map((_,i)=>`<div class="pip${i<S.step?' done':i===S.step?' active':''}"></div>`).join('');
+  const ish=cs.exp.is.map(x=>{
+    const cl=x.includes('USC')||x.includes('ciudadano')?'ig':x.includes('Condena')||x.includes('Salida')||x.includes('ilegal')?'id2':'iw';
+    return `<span class="itag ${cl}">${x}</span>`;
+  }).join('');
+  const oh=st.opts.map((o,i)=>`<button class="ob" id="o${i}" onclick="sel(${i})"><span class="ol">${['A','B','C','D'][i]}</span><span>${o}</span></button>`).join('');
+  const nxt=S.step<cs.steps.length-1?`Siguiente análisis (${S.step+2}/5) →`:S.cur<C.length-1?'Siguiente caso →':'Ver resultados finales →';
+
+  document.getElementById('cc').innerHTML=`
+<div class="case-bar">
+  <div class="cb-l">
+    <div class="cb-eye">Caso ${S.cur+1} de 3 · Análisis ${S.step+1} de 5</div>
+    <div class="cb-name">${cs.name}</div>
+    <div class="cb-sub">${cs.sub}</div>
+  </div>
+  <span class="dif ${cs.dif}">${cs.difl}</span>
+</div>
+<div class="pips">${ph}</div>
+<div class="exp">
+  <div class="exp-h">
+    <span class="exp-hl">Expediente del cliente</span>
+    <button class="exp-toggle" onclick="toggleExp()">▼ ocultar</button>
+  </div>
+  <div class="exp-body" id="expb">
+    <div class="exp-g">
+      <div class="ef"><label>Cliente</label><p>${cs.exp.n}</p></div>
+      <div class="ef"><label>Origen</label><p>${cs.exp.or}</p></div>
+      <div class="ef"><label>Entrada EE.UU.</label><p>${cs.exp.en}</p></div>
+      <div class="ef"><label>Estatus actual</label><p>${cs.exp.es}</p></div>
+      <div class="ef"><label>Presencia</label><p>${cs.exp.pr}</p></div>
+      <div class="ef"><label>Abusador</label><p>${cs.exp.ab}</p></div>
+      <div class="ef"><label>Relación</label><p>${cs.exp.re}</p></div>
+      <div class="ef"><label>Hijos / Dep.</label><p>${cs.exp.hi}</p></div>
+    </div>
+    <hr class="ediv">
+    <div><label style="font-size:10px;font-weight:500;color:var(--ts);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">Issues identificados</label><div class="iss">${ish}</div></div>
+  </div>
+</div>
+<div class="chat">
+  <div class="ch-hdr">
+    <div class="av">${cs.ini}</div>
+    <div><div class="ch-n">${cs.name}</div><div class="ch-i">Conversación de intake — simulada</div></div>
+  </div>
+  <div class="msgs" id="cm">${mh}</div>
+</div>
+<div class="ds">
+  <div class="dq-top">Análisis de elegibilidad ${S.step+1} / 5</div>
+  <div class="dq">${st.q}</div>
+  <div class="og">${oh}</div>
+</div>
+<div class="fp" id="fp">
+  <div class="fh"><span class="fi" id="fi"></span><span class="ft" id="ft"></span></div>
+  <div class="ftxt" id="fb"></div>
+  <div class="flaw" id="fl"></div>
+</div>
+<div class="nav">
+  <button class="btn-nx" id="bn" onclick="nxt()" disabled>${nxt}</button>
+  <button class="btn-2" onclick="show('sw')">← Inicio</button>
+</div>`;
+
+  const cm=document.getElementById('cm');
+  if(cm)cm.scrollTop=cm.scrollHeight;
+}
+
+function toggleExp(){
+  const b=document.getElementById('expb');
+  const btn=document.querySelector('.exp-toggle');
+  if(b.style.display==='none'){b.style.display='';btn.textContent='▼ ocultar';}
+  else{b.style.display='none';btn.textContent='▶ mostrar';}
+}
+
+function sel(i){
+  if(S.ans)return;
+  S.ans=true;
+  const st=C[S.cur].steps[S.step];
+  const ok=i===st.cor;
+  if(ok)S.correct++;
+  S.answered++;
+  S.hist.push({c:S.cur,s:S.step,ok,ch:i});
+  st.opts.forEach((_,j)=>{
+    const b=document.getElementById(`o${j}`);
+    b.disabled=true;
+    if(j===st.cor)b.classList.add('correct');
+    else if(j===i&&!ok)b.classList.add('wrong');
+    else b.classList.add('neutral');
+  });
+  const fp=document.getElementById('fp');
+  fp.classList.remove('correct','wrong');
+  fp.classList.add('vis',ok?'correct':'wrong');
+  document.getElementById('fi').textContent=ok?'✓':'✗';
+  document.getElementById('ft').textContent=ok?'Análisis correcto':'Análisis incorrecto';
+  document.getElementById('fb').textContent=ok?st.fc:st.fw;
+  document.getElementById('fl').innerHTML=`<strong>Base legal:</strong> ${st.law}`;
+  document.getElementById('bn').disabled=false;
+  upd();
+}
+
+function nxt(){
+  const cs=C[S.cur];
+  if(S.step<cs.steps.length-1){
+    S.step++;S.ans=false;
+    render();
+    document.querySelector('.content').scrollTo(0,0);
+  } else {
+    const cc=S.hist.filter(h=>h.c===S.cur&&h.ok).length;
+    S.scores[S.cur]=cc;S.done++;upd();
+    if(S.cur<C.length-1){loadCase(S.cur+1);}
+    else{showRes();}
+  }
+}
+
+function showRes(){
+  show('sr');
+  const pct=Math.round(S.correct/S.answered*100);
+  const grade=pct>=90?'Excelente':pct>=75?'Aprobado — sólido':pct>=60?'Aprobado — reforzar áreas':' Requiere repaso';
+  document.getElementById('rsc').textContent=`${pct}%`;
+  document.getElementById('rco').textContent=S.correct;
+  document.getElementById('rto').textContent=S.answered;
+  document.getElementById('rca').textContent=`${S.done}/3`;
+
+  const byCase=C.map((cs,i)=>{
+    const sc=S.scores[i]||0;
+    const pct2=Math.round(sc/5*100);
+    return `<div style="background:var(--w);border:1px solid var(--brd);border-radius:7px;padding:.9rem 1rem;margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center;">
+      <div><div style="font-size:12px;font-weight:600;color:var(--text)">${cs.name}</div><div style="font-size:11px;color:var(--ts)">${cs.sub}</div></div>
+      <span style="font-family:var(--mono);font-size:14px;color:${sc>=4?'var(--green)':sc>=3?'var(--amber)':'var(--red)'};font-weight:500">${sc}/5 (${pct2}%)</span>
+    </div>`;
+  }).join('');
+
+  const rh=S.hist.map(h=>{
+    const cs=C[h.c],st=cs.steps[h.s];
+    const dt=h.ok?'Análisis correcto.':'Opción seleccionada: "'+st.opts[h.ch].substring(0,65)+'..." — Correcta: "'+st.opts[st.cor].substring(0,65)+'..."';
+    return `<div class="ri"><div style="font-size:14px;color:${h.ok?'var(--green)':'var(--red)'};flex-shrink:0">${h.ok?'✓':'✗'}</div><div><div class="riq">Caso ${h.c+1} — ${cs.name} · Análisis ${h.s+1}</div><div class="rid">${dt}</div></div></div>`;
+  }).join('');
+
+  
+  document.getElementById('rv').innerHTML=`
+    <div style="background:var(--w);border:1px solid var(--brd);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1.25rem;">
+      <p style="font-size:11px;font-family:var(--mono);color:var(--ts);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem">Resultado por caso</p>
+      ${byCase}
+    </div>
+    <p style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:.75rem">Revisión detallada</p>${rh}`;
+  upd();
+}
+
+function resetAll(){
+  S={cur:null,step:0,correct:0,answered:0,done:0,scores:{},ans:false,hist:[]};
+  document.querySelectorAll('.cbtn').forEach(b=>{b.classList.remove('done','active');const bd=b.querySelector('.cbadge');if(bd)bd.remove();});
+  upd();show('sw');
+}
+</script>
+</body>
+</html>
