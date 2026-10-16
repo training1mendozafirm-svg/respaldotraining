@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Simulador TMLF — Llamadas y Notas del Sistema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#07111c; --navy2:#0c1e30; --navy3:#122540; --navy4:#1a3354;
+  --gold:#c9a84c; --gold2:#e2c06a; --gold3:#f0d58a;
+  --gold-dim:rgba(201,168,76,.12); --gold-mid:rgba(201,168,76,.3); --gold-str:rgba(201,168,76,.55);
+  --off:#f3f5f8; --white:#fff; --text:#1a2a3a; --muted:#5a6e82; --light:#8fa3b8;
+  --card-border:rgba(26,51,84,.1);
+  --shadow-sm:0 2px 12px rgba(7,17,28,.07); --shadow-md:0 8px 28px rgba(7,17,28,.12);
+  --green:#0f7a4f; --green-bg:#f2faf6; --green-border:rgba(15,122,79,.3);
+  --red:#b91c1c; --red-bg:#fdf2f2; --red-border:rgba(185,28,28,.3);
+  --amber:#b45309;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--off);color:var(--text);line-height:1.55}
+
+.hero{
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 55%,var(--navy3) 100%);
+  color:#fff; padding:44px 24px 38px; position:relative; overflow:hidden;
+}
+.hero::before{
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 88% 10%, rgba(201,168,76,.16), transparent 45%),
+    radial-gradient(circle at 8% 90%, rgba(123,174,212,.10), transparent 40%);
+  pointer-events:none;
+}
+.hero-inner{max-width:820px;margin:0 auto;position:relative}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--gold-mid); background:var(--gold-dim);
+  color:var(--gold3); font-family:'Barlow Condensed',sans-serif;
+  font-size:12px; letter-spacing:1.4px; text-transform:uppercase;
+  padding:6px 14px; border-radius:999px; font-weight:600;
+}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--gold2)}
+.hero h1{
+  font-family:'Cormorant Garamond',serif; font-weight:700;
+  font-size:clamp(26px,4vw,38px); margin-top:14px; line-height:1.1;
+}
+.hero h1 span{display:block; color:var(--gold2); font-style:italic; font-weight:600; font-size:.6em; margin-top:4px}
+.hero p{max-width:620px; margin-top:12px; color:var(--light); font-size:14.5px}
+
+.wrap{max-width:820px; margin:0 auto; padding:36px 20px 80px}
+
+.card{background:#fff; border:1px solid var(--card-border); border-radius:16px; box-shadow:var(--shadow-sm); padding:28px}
+.start-title{font-family:'Cormorant Garamond',serif; font-weight:700; font-size:22px; color:var(--navy); margin-bottom:6px}
+.start-sub{font-size:13.5px; color:var(--muted); margin-bottom:20px}
+.step-label{
+  font-family:'Barlow Condensed',sans-serif; font-size:11.5px; letter-spacing:1px; text-transform:uppercase;
+  font-weight:700; color:var(--gold); margin:22px 0 10px;
+}
+.step-label:first-of-type{margin-top:0}
+
+.mode-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:6px}
+@media(max-width:560px){.mode-grid{grid-template-columns:1fr}}
+.mode-btn{
+  text-align:left; border:1.5px solid var(--card-border); background:var(--off); border-radius:12px;
+  padding:16px 18px; cursor:pointer; transition:.15s; font-family:inherit;
+}
+.mode-btn:hover{border-color:var(--gold-mid); background:var(--gold-dim)}
+.mode-btn.active{border-color:var(--gold); background:var(--gold-dim); box-shadow:0 0 0 1px var(--gold)}
+.mode-btn .mt{font-weight:700; color:var(--navy); font-size:14.5px}
+.mode-btn .ms{font-size:12.5px; color:var(--muted); margin-top:3px}
+
+.block-list{display:flex; flex-direction:column; gap:8px; margin-bottom:22px}
+.block-row{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  border:1px solid var(--card-border); border-radius:10px; padding:11px 14px; font-size:13.5px;
+  background:var(--off);
+}
+.block-row b{color:var(--navy)}
+.block-row span{color:var(--muted); font-size:12px}
+
+.btn-primary{
+  width:100%; background:var(--navy); color:var(--gold3); border:none; border-radius:10px;
+  padding:14px; font-family:'Barlow Condensed',sans-serif; font-size:15px; letter-spacing:.8px;
+  text-transform:uppercase; font-weight:700; cursor:pointer; transition:.15s; margin-top:14px;
+}
+.btn-primary:hover{background:var(--navy3)}
+
+/* ===== QUIZ SCREEN ===== */
+.hidden{display:none !important}
+.progress-wrap{display:flex; align-items:center; gap:14px; margin-bottom:18px}
+.progress-track{flex:1; height:6px; background:var(--card-border); border-radius:99px; overflow:hidden}
+.progress-fill{height:100%; background:linear-gradient(90deg,var(--gold),var(--gold2)); border-radius:99px; transition:width .3s}
+.progress-label{font-family:'Barlow Condensed',sans-serif; font-size:12.5px; color:var(--muted); font-weight:600; white-space:nowrap}
+.score-pill{
+  font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; color:var(--navy);
+  background:var(--gold-dim); border:1px solid var(--gold-mid); padding:4px 12px; border-radius:99px; white-space:nowrap;
+}
+
+.q-cat{
+  display:inline-block; font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px;
+  text-transform:uppercase; font-weight:700; color:var(--gold); background:var(--gold-dim);
+  padding:4px 11px; border-radius:99px; margin-bottom:14px;
+}
+
+/* Llamada */
+.call-box{ border-radius:12px; padding:16px 18px; margin-bottom:16px; background:var(--navy); }
+.call-box .who{
+  font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase;
+  font-weight:700; color:var(--gold2); display:flex; align-items:center; gap:7px; margin-bottom:8px;
+}
+.call-box .who .ic{font-size:14px}
+.call-box p{font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:600; font-size:18px; color:#fff; line-height:1.4}
+
+/* Notas del sistema */
+.notes-wrap{margin-bottom:16px}
+.notes-label{
+  font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase;
+  font-weight:700; color:var(--muted); display:flex; align-items:center; gap:7px; margin-bottom:8px;
+}
+.note-card{
+  background:var(--navy2); border:1px solid rgba(255,255,255,.08); border-radius:10px;
+  padding:13px 16px; margin-bottom:8px; font-family:'JetBrains Mono',monospace;
+}
+.note-card .note-top{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:7px; flex-wrap:wrap}
+.note-card .note-dept{
+  font-size:10.5px; letter-spacing:.6px; text-transform:uppercase; font-weight:700; color:var(--gold2);
+  background:rgba(201,168,76,.14); padding:3px 9px; border-radius:5px;
+}
+.note-card .note-date{font-size:11px; color:var(--light)}
+.note-card .note-text{font-size:12.8px; color:#e4ebf2; line-height:1.55}
+
+.instr{font-size:12.5px; color:var(--muted); margin-bottom:14px}
+
+.opt-list{display:flex; flex-direction:column; gap:10px}
+.opt{
+  text-align:left; border:1.5px solid var(--card-border); background:#fff; border-radius:10px;
+  padding:13px 16px; cursor:pointer; font-family:inherit; font-size:13.5px; color:var(--text);
+  display:flex; align-items:flex-start; gap:10px; transition:.12s;
+}
+.opt:hover{border-color:var(--gold-mid); background:var(--gold-dim)}
+.opt .letter{
+  flex:none; width:24px;height:24px;border-radius:50%;background:var(--navy4);color:#fff;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;
+  display:flex;align-items:center;justify-content:center; margin-top:1px;
+}
+.opt.correct{border-color:var(--green); background:var(--green-bg)}
+.opt.correct .letter{background:var(--green)}
+.opt.incorrect{border-color:var(--red); background:var(--red-bg)}
+.opt.incorrect .letter{background:var(--red)}
+.opt.disabled{cursor:default}
+.opt.dim{opacity:.5}
+
+.feedback{
+  margin-top:18px; padding:14px 16px; border-radius:10px; border-left:4px solid var(--green);
+  background:var(--green-bg); font-size:13.5px; display:none;
+}
+.feedback.show{display:block}
+.feedback.wrong{border-left-color:var(--red); background:var(--red-bg)}
+.feedback .fb-title{font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:.5px; text-transform:uppercase; font-size:11.5px; margin-bottom:5px}
+.feedback.wrong .fb-title{color:var(--red)}
+.feedback:not(.wrong) .fb-title{color:var(--green)}
+.feedback p{color:var(--navy)}
+
+.nav-row{display:flex; justify-content:flex-end; margin-top:22px}
+.btn-next{
+  background:var(--navy); color:var(--gold3); border:none; border-radius:9px; padding:11px 24px;
+  font-family:'Barlow Condensed',sans-serif; font-size:13.5px; letter-spacing:.7px; text-transform:uppercase;
+  font-weight:700; cursor:pointer; opacity:.35; pointer-events:none; transition:.15s;
+}
+.btn-next.ready{opacity:1; pointer-events:auto}
+.btn-next.ready:hover{background:var(--navy3)}
+
+/* ===== RESULTS ===== */
+.result-hero{text-align:center; padding:8px 0 22px}
+.result-score{font-family:'Cormorant Garamond',serif; font-weight:700; font-size:54px; color:var(--navy)}
+.result-score span{font-size:.4em; color:var(--muted); font-weight:500}
+.result-tag{
+  display:inline-block; margin-top:8px; font-family:'Barlow Condensed',sans-serif; font-size:12.5px;
+  letter-spacing:1px; text-transform:uppercase; font-weight:700; padding:5px 14px; border-radius:99px;
+}
+.tag-great{background:var(--green-bg); color:var(--green); border:1px solid var(--green-border)}
+.tag-mid{background:#fdf7ee; color:var(--amber); border:1px solid rgba(180,83,9,.3)}
+.tag-low{background:var(--red-bg); color:var(--red); border:1px solid var(--red-border)}
+
+.breakdown{display:flex; flex-direction:column; gap:8px; margin:20px 0}
+.bd-row{display:flex; align-items:center; gap:10px; font-size:12.5px}
+.bd-label{flex:none; width:180px; color:var(--muted); font-weight:600}
+.bd-track{flex:1; height:8px; background:var(--card-border); border-radius:99px; overflow:hidden}
+.bd-fill{height:100%; background:var(--navy4); border-radius:99px}
+.bd-val{flex:none; width:44px; text-align:right; color:var(--navy); font-weight:700}
+
+.review-item{border-top:1px solid var(--card-border); padding:16px 0}
+.review-item:first-child{border-top:none}
+.review-q{font-weight:600; color:var(--navy); font-size:13.5px; margin-bottom:8px}
+.review-your{font-size:13px; color:var(--red); margin-bottom:4px}
+.review-correct{font-size:13px; color:var(--green); margin-bottom:8px}
+.review-explain{font-size:12.5px; color:var(--muted); background:var(--off); padding:10px 12px; border-radius:8px}
+
+.actions-row{display:flex; gap:10px; margin-top:24px; flex-wrap:wrap}
+.actions-row .btn-primary{flex:1; min-width:160px; margin-top:0}
+
+footer{text-align:center; padding:24px; color:var(--muted); font-size:11.5px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span>TMLF Legal Academy · Práctica</div>
+    <h1>Simulador de Estatus al Cliente<span>Llamadas reales y lectura de notas del sistema</span></h1>
+    <p>Practica cómo dar el estatus correcto: ya sea porque el cliente te cuenta qué fue lo último que pasó, o porque tú tienes que revisarlo directamente en las notas del expediente.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- START SCREEN -->
+  <div id="screen-start" class="card">
+    <div class="start-title">Configura tu simulacro</div>
+    <div class="start-sub">Elige el tipo de ejercicio y qué tanto quieres practicar.</div>
+
+    <div class="step-label">1 · Tipo de ejercicio</div>
+    <div class="mode-grid">
+      <button class="mode-btn active" data-exam="calls" onclick="selectExam('calls')">
+        <div class="mt">☎️ Simulación de llamada</div>
+        <div class="ms">El cliente te cuenta qué fue lo último que pasó con su caso</div>
+      </button>
+      <button class="mode-btn" data-exam="notes" onclick="selectExam('notes')">
+        <div class="mt">🗂️ Lectura de notas del sistema</div>
+        <div class="ms">Tú revisas el expediente y decides qué estatus dar</div>
+      </button>
+    </div>
+
+    <div class="step-label">2 · Alcance</div>
+    <div class="mode-grid">
+      <button class="mode-btn active" data-mode="full" onclick="selectMode('full')">
+        <div class="mt">🎯 Simulacro completo</div>
+        <div class="ms">Las 50 preguntas, todas las etapas mezcladas</div>
+      </button>
+      <button class="mode-btn" data-mode="block" onclick="selectMode('block')">
+        <div class="mt">🧩 Practicar por etapa</div>
+        <div class="ms">Elige un grupo de etapas para reforzar</div>
+      </button>
+    </div>
+
+    <div id="block-picker" class="block-list hidden" style="margin-top:14px"></div>
+
+    <button class="btn-primary" onclick="startQuiz()">Comenzar simulacro</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="screen-quiz" class="card hidden">
+    <div class="progress-wrap">
+      <span class="progress-label" id="progress-label">1 / 50</span>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <span class="score-pill" id="score-pill">Aciertos: 0</span>
+    </div>
+
+    <div class="q-cat" id="q-cat">Etapa</div>
+
+    <div id="q-body"></div>
+    <div class="instr" id="q-instr">¿Cuál es la respuesta de estatus correcta?</div>
+
+    <div class="opt-list" id="opt-list"></div>
+
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fb-title">Correcto</div>
+      <p id="fb-text"></p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div id="screen-results" class="card hidden">
+    <div class="result-hero">
+      <div class="result-score" id="result-score">0<span> / 0</span></div>
+      <div class="result-tag" id="result-tag">Resultado</div>
+    </div>
+
+    <div class="breakdown" id="breakdown"></div>
+
+    <div id="review-wrap"></div>
+
+    <div class="actions-row">
+      <button class="btn-primary" onclick="location.reload()">Repetir simulacro</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>TMLF Legal Academy · Simulador interno para agentes · Basado en el Flujo Operativo TMLF</footer>
+
+<script>
+// ===================== FRASES DE ESTATUS CANÓNICAS =====================
+const P = {
+  marketing: "Aún no tienes un caso abierto con nosotros: por ahora solo contamos con tus datos de contacto captados por marketing; el proceso formal inicia cuando Openers agende tu cita de evaluación.",
+  openers: "Ya tienes agendada tu cita de evaluación con nuestro especialista para revisar si calificas.",
+  dv: "Tu caso inició oficialmente el día de tu contrato — esa es tu fecha Día 0.",
+  pwi: "Ya completamos tu entrevista de extracción; esa información es la base de tu declaración legal.",
+  wca: "Un abogado ya revisó tu caso a fondo y dio su primer consejo legal formal.",
+  writing: "En este momento nuestro equipo de escritores está redactando tu declaración legal.",
+  precase: "Tu paquete está en control de calidad antes de pasar a revisión con el abogado firmante.",
+  casereview: "Tienes programada (o ya tuviste) la videollamada con el abogado firmante para revisar juntos tu paquete antes de la firma final.",
+  packets: "Estamos aplicando los últimos ajustes a tu paquete antes de la revisión final.",
+  mgm: "¡Tu caso fue enviado oficialmente a USCIS! Ahora entramos a la etapa de espera de resolución.",
+  incoming: "Tu número de recibo empieza con [EAC/LIN/IOE]; así podemos rastrear en qué oficina está tu caso.",
+  aprobacion: "¡Felicidades! USCIS aprobó tu caso — este es el resultado que buscábamos desde el día 0.",
+  rfe: "USCIS solicitó información adicional (RFE); nuestro equipo ya está preparando la respuesta dentro del plazo.",
+  noid: "USCIS notificó una intención de negar tu caso (NOID); es momento de responder con urgencia, y nuestro equipo legal ya está trabajando en tu respuesta."
+};
+
+// ===================== BANCO 1: SIMULACIÓN DE LLAMADA (50) =====================
+const CALL_QUESTIONS = [
+{block:"Antes del contrato", q:"\"Hace poco alguien me llamó y me hizo muchas preguntas, y me dijo que me iban a agendar con un especialista. ¿Qué sigue?\"",
+ correct:P.openers, opts:[P.openers,P.dv,P.pwi,P.mgm],
+ explain:"Es el momento de Openers: aplicó el cuestionario inicial y agendó la cita con D.V. Specialist."},
+{block:"Antes del contrato", q:"\"¿Ya tengo mi cita para saber si califico?\"",
+ correct:P.openers, opts:[P.openers,P.wca,P.packets,P.aprobacion],
+ explain:"Openers es quien agenda la cita de evaluación con D.V. Specialist."},
+{block:"Antes del contrato", q:"\"Me dejaron mis datos hace unos días y hoy me volvieron a llamar para preguntarme cosas básicas de mi caso. ¿Cuál es mi estatus?\"",
+ correct:P.openers, opts:[P.openers,P.precase,P.incoming,P.rfe],
+ explain:"El cuestionario inicial y la primera llamada de extracción corresponden a Openers."},
+{block:"Antes del contrato", q:"\"Todavía no he firmado nada ni pagado nada, solo me hicieron un cuestionario corto. ¿En qué va mi caso?\"",
+ correct:P.openers, opts:[P.openers,P.writing,P.casereview,P.noid],
+ explain:"Sin contrato firmado, el cliente sigue en Openers, antes del cierre con D.V. Specialist."},
+
+{block:"Extracción legal", q:"\"Ya firmé el contrato y elegí cómo voy a pagar. ¿Cuál es el estatus de mi caso ahorita?\"",
+ correct:P.dv, opts:[P.dv,P.openers,P.writing,P.mgm],
+ explain:"La firma del contrato y la selección del plan de pago ocurren con D.V. Specialist: es el Día 0."},
+{block:"Extracción legal", q:"\"¿Cuándo empezó oficialmente mi proceso?\"",
+ correct:P.dv, opts:[P.dv,P.pwi,P.precase,P.aprobacion],
+ explain:"El Día 0 se marca con la firma del contrato en D.V. Specialist."},
+{block:"Extracción legal", q:"\"Ya cerré el trato con el especialista y me dijo cuál iba a ser la estrategia legal. ¿Qué sigue?\"",
+ correct:P.dv, opts:[P.dv,P.casereview,P.incoming,P.noid],
+ explain:"Definir la estrategia legal y cerrar el trato es función de D.V. Specialist."},
+{block:"Extracción legal", q:"\"Apenas seleccioné mi plan de pagos con el especialista, ¿en qué etapa estoy?\"",
+ correct:P.dv, opts:[P.dv,P.wca,P.packets,P.rfe],
+ explain:"Seleccionar el plan de pago es parte del cierre con D.V. Specialist (Día 0)."},
+{block:"Extracción legal", q:"\"Tuve una videollamada muy larga donde me preguntaron a detalle sobre lo que viví y llenaron varios formularios. ¿Cuál es mi estatus?\"",
+ correct:P.pwi, opts:[P.pwi,P.dv,P.wca,P.mgm],
+ explain:"Esa entrevista detallada con I-Forms corresponde a Pre Welcome Interview (PWI)."},
+{block:"Extracción legal", q:"\"Ya terminé mi entrevista de extracción, ¿qué van a hacer con esa información?\"",
+ correct:P.pwi, opts:[P.pwi,P.writing,P.packets,P.aprobacion],
+ explain:"PWI confirma que la entrevista quedó completa y que es la base de la Declaración."},
+{block:"Extracción legal", q:"\"Me llamaron para prepararme antes de una videollamada legal, y ya llenamos los I-Forms. ¿En qué va mi caso?\"",
+ correct:P.pwi, opts:[P.pwi,P.openers,P.casereview,P.rfe],
+ explain:"Aplicar los I-Forms y preparar la entrevista de extracción es función de PWI."},
+{block:"Extracción legal", q:"\"¿Ya terminaron de investigar mi caso a fondo? Fue una entrevista muy detallada.\"",
+ correct:P.pwi, opts:[P.pwi,P.precase,P.incoming,P.noid],
+ explain:"La investigación profunda del caso ocurre en la entrevista de PWI."},
+{block:"Extracción legal", q:"\"Un abogado me llamó y revisó mi historial y mi carácter moral, y me dio su opinión legal. ¿Qué sigue?\"",
+ correct:P.wca, opts:[P.wca,P.dv,P.casereview,P.aprobacion],
+ explain:"Revisar carácter moral, antecedentes y dar el primer consejo legal es el Welcome Call Attorney (LSU Call)."},
+{block:"Extracción legal", q:"\"Ya me dieron el primer consejo legal formal sobre mi caso, ¿cuál es mi estatus?\"",
+ correct:P.wca, opts:[P.wca,P.pwi,P.writing,P.mgm],
+ explain:"El primer consejo legal formal se da en el Welcome Call Attorney, alrededor del Día +15."},
+{block:"Extracción legal", q:"\"El abogado ya revisó mis antecedentes y posibles barreras del caso. ¿Qué va a pasar ahora?\"",
+ correct:P.wca, opts:[P.wca,P.precase,P.packets,P.rfe],
+ explain:"Revisar antecedentes y barreras corresponde al Welcome Call Attorney, antes de pasar a redacción."},
+{block:"Extracción legal", q:"\"¿Ya un abogado vio mi caso a fondo, no solo el especialista de ventas?\"",
+ correct:P.wca, opts:[P.wca,P.openers,P.incoming,P.noid],
+ explain:"La primera revisión legal a fondo la hace el abogado en el Welcome Call Attorney."},
+
+{block:"Redacción y calidad", q:"\"¿Quién está escribiendo mi declaración legal en este momento?\"",
+ correct:P.writing, opts:[P.writing,P.pwi,P.precase,P.aprobacion],
+ explain:"El equipo de Writing & Analysis Experts redacta la Declaración (DCL) y la Cover Letter."},
+{block:"Redacción y calidad", q:"\"Ya me entrevistaron y un abogado me dio su opinión, ¿qué sigue con mi declaración?\"",
+ correct:P.writing, opts:[P.writing,P.dv,P.casereview,P.mgm],
+ explain:"Después del Welcome Call Attorney, el caso pasa a Writing & Analysis Experts para redactar la Declaración."},
+{block:"Redacción y calidad", q:"\"¿En qué va la redacción de mi Declaración y mi Cover Letter?\"",
+ correct:P.writing, opts:[P.writing,P.packets,P.incoming,P.rfe],
+ explain:"Redactar la Declaración y la Cover Letter es exactamente la función de Writing & Analysis Experts."},
+{block:"Redacción y calidad", q:"\"Todavía no me han llamado para ninguna revisión de calidad, ¿en qué etapa va mi documento?\"",
+ correct:P.writing, opts:[P.writing,P.openers,P.wca,P.noid],
+ explain:"Antes del control de calidad (Pre Case Review), el documento está en redacción con Writing & Analysis Experts."},
+{block:"Redacción y calidad", q:"\"Me pidieron un documento que me faltaba antes de mi revisión con el abogado firmante. ¿Qué está pasando con mi caso?\"",
+ correct:P.precase, opts:[P.precase,P.writing,P.mgm,P.aprobacion],
+ explain:"Solicitar documentos faltantes antes del abogado firmante es función de Pre Case Review (equipo FORMAS)."},
+{block:"Redacción y calidad", q:"\"¿Ya revisaron todo mi paquete antes de que lo vea el abogado que firma?\"",
+ correct:P.precase, opts:[P.precase,P.pwi,P.packets,P.rfe],
+ explain:"Esa revisión integral previa es el control de calidad de Pre Case Review."},
+{block:"Redacción y calidad", q:"\"Me dijeron que están checando que todo esté completo antes de mi videollamada legal. ¿Cuál es mi estatus?\"",
+ correct:P.precase, opts:[P.precase,P.casereview,P.incoming,P.noid],
+ explain:"Verificar que el paquete esté completo antes del Case Review Call es tarea de Pre Case Review."},
+{block:"Redacción y calidad", q:"\"¿Ya terminó el control de calidad de mi paquete?\"",
+ correct:P.precase, opts:[P.precase,P.dv,P.wca,P.marketing],
+ explain:"El \"control de calidad\" del paquete es, específicamente, la etapa de Pre Case Review."},
+{block:"Redacción y calidad", q:"\"Tuve una videollamada con un abogado donde revisamos juntos todo mi paquete antes de la firma. ¿Qué sigue?\"",
+ correct:P.casereview, opts:[P.casereview,P.wca,P.precase,P.mgm],
+ explain:"Esa videollamada de revisión conjunta con el abogado firmante es el Case Review Call."},
+{block:"Redacción y calidad", q:"\"¿Ya validaron con el abogado firmante que mi paquete coincide con lo que yo conté?\"",
+ correct:P.casereview, opts:[P.casereview,P.writing,P.packets,P.aprobacion],
+ explain:"Validar que el paquete corresponda a lo narrado por el cliente es el propósito del Case Review Call."},
+{block:"Redacción y calidad", q:"\"Tengo programada mi videollamada final con el abogado que firma mi caso, ¿de qué se trata?\"",
+ correct:P.casereview, opts:[P.casereview,P.pwi,P.incoming,P.rfe],
+ explain:"Es el Case Review Call: revisión legal en videollamada con el abogado firmante antes de la firma."},
+{block:"Redacción y calidad", q:"\"¿Cuál es el propósito de la llamada con el abogado firmante que tengo agendada?\"",
+ correct:P.casereview, opts:[P.casereview,P.openers,P.dv,P.noid],
+ explain:"El Case Review Call sirve para revisar juntos el paquete con el abogado firmante antes de liberarlo para firma."},
+
+{block:"Ensamble y envío", q:"\"Me dijeron que están haciendo los últimos ajustes a mi paquete antes de mandarlo a revisión final. ¿Cuál es mi estatus?\"",
+ correct:P.packets, opts:[P.packets,P.precase,P.mgm,P.aprobacion],
+ explain:"Aplicar los últimos ajustes al paquete es función de Packets, antes de MGM Review."},
+{block:"Ensamble y envío", q:"\"Mi videollamada con el abogado firmante encontró unas correcciones, ¿qué sigue?\"",
+ correct:P.packets, opts:[P.packets,P.casereview,P.incoming,P.rfe],
+ explain:"Si el Case Review Call detecta correcciones, el paquete regresa a Packets para aplicarlas."},
+{block:"Ensamble y envío", q:"\"¿Ya integraron toda mi documentación en el paquete final?\"",
+ correct:P.packets, opts:[P.packets,P.writing,P.wca,P.noid],
+ explain:"Integrar la documentación y ensamblar el paquete final es función de Packets."},
+{block:"Ensamble y envío", q:"\"¿En qué va el ensamble final de mi expediente antes de que lo revise la abogada en El Paso?\"",
+ correct:P.packets, opts:[P.packets,P.openers,P.pwi,P.marketing],
+ explain:"El ensamble final antes de MGM Review (la abogada en El Paso, TX) lo hace el equipo Packets."},
+{block:"Ensamble y envío", q:"\"¿Quién dio el visto bueno definitivo antes de que mi caso saliera hacia USCIS?\"",
+ correct:P.mgm, opts:[P.mgm,P.casereview,P.packets,P.noid],
+ explain:"La revisión final y autorización de envío la hace MGM Review (Abogada María Guadalupe Mendoza)."},
+{block:"Ensamble y envío", q:"\"Me dijeron que la abogada María Guadalupe Mendoza revisó todo mi expediente. ¿Cuál es mi estatus?\"",
+ correct:P.mgm, opts:[P.mgm,P.wca,P.precase,P.aprobacion],
+ explain:"Esa revisión final es MGM Review, en el Día +45, previa al envío a USCIS."},
+{block:"Ensamble y envío", q:"\"¿Ya se envió mi caso a inmigración?\"",
+ correct:P.mgm, opts:[P.mgm,P.dv,P.writing,P.rfe],
+ explain:"Si MGM Review ya autorizó y envió el caso, esa es la frase de estatus correcta."},
+{block:"Ensamble y envío", q:"\"¿Cuándo se hizo la última revisión antes de que USCIS recibiera mi expediente?\"",
+ correct:P.mgm, opts:[P.mgm,P.openers,P.incoming,P.marketing],
+ explain:"La última revisión antes del envío es MGM Review, alrededor del Día +45."},
+
+{block:"Post-envío USCIS", q:"\"Me llegó una carta de USCIS y no sé qué significa el número de recibo. ¿Qué me puedes decir?\"",
+ correct:P.incoming, opts:[P.incoming,P.mgm,P.packets,P.aprobacion],
+ explain:"Incoming Mail da seguimiento a las notificaciones de USCIS y explica el prefijo del recibo (EAC/LIN/IOE)."},
+{block:"Post-envío USCIS", q:"\"¿Cómo sé en qué oficina está mi caso ahora que ya se envió?\"",
+ correct:P.incoming, opts:[P.incoming,P.casereview,P.writing,P.noid],
+ explain:"El prefijo del número de recibo, gestionado desde Incoming Mail, indica la oficina responsable."},
+{block:"Post-envío USCIS", q:"\"Mi número de recibo empieza con LIN, ¿eso qué significa?\"",
+ correct:P.incoming, opts:[P.incoming,P.dv,P.precase,P.rfe],
+ explain:"LIN corresponde a la oficina de Nebraska; esta información la maneja Incoming Mail."},
+{block:"Post-envío USCIS", q:"\"Ya pasó tiempo desde que se envió mi caso, ¿cómo le doy seguimiento a cualquier carta que llegue de USCIS?\"",
+ correct:P.incoming, opts:[P.incoming,P.openers,P.pwi,P.marketing],
+ explain:"Incoming Mail da seguimiento a toda notificación o requerimiento emitido por USCIS tras el envío."},
+{block:"Post-envío USCIS", q:"\"¡Me llegó una carta que dice que aprobaron mi caso!\"",
+ correct:P.aprobacion, opts:[P.aprobacion,P.mgm,P.rfe,P.incoming],
+ explain:"Es la Aprobación: USCIS otorgó el beneficio migratorio, la conclusión exitosa del proceso."},
+{block:"Post-envío USCIS", q:"\"USCIS ya tomó una decisión final y fue positiva, ¿qué me puedes confirmar?\"",
+ correct:P.aprobacion, opts:[P.aprobacion,P.packets,P.noid,P.wca],
+ explain:"Una decisión final positiva de USCIS corresponde al estatus de Aprobación."},
+{block:"Post-envío USCIS", q:"\"¿Ya se resolvió mi caso de manera favorable?\"",
+ correct:P.aprobacion, opts:[P.aprobacion,P.casereview,P.dv,P.marketing],
+ explain:"Una resolución favorable de USCIS se comunica como Aprobación."},
+{block:"Post-envío USCIS", q:"\"Me llegó una carta de USCIS pidiendo evidencia adicional, ¿qué significa eso?\"",
+ correct:P.rfe, opts:[P.rfe,P.aprobacion,P.noid,P.mgm],
+ explain:"Es un RFE (Request for Evidence): USCIS pide más información y el caso regresa a Operaciones para responder."},
+{block:"Post-envío USCIS", q:"\"Dicen que necesitan más documentos para completar mi caso, ¿qué va a pasar ahora?\"",
+ correct:P.rfe, opts:[P.rfe,P.packets,P.incoming,P.writing],
+ explain:"Solicitar documentos adicionales tras el envío corresponde a un RFE, no a una etapa previa al envío."},
+{block:"Post-envío USCIS", q:"\"¿Es grave que me hayan pedido más evidencia?\"",
+ correct:P.rfe, opts:[P.rfe,P.noid,P.precase,P.openers],
+ explain:"Un RFE es normal y manejable: pide evidencia adicional dentro de un plazo definido, sin ser una negativa."},
+{block:"Post-envío USCIS", q:"\"Me llegó una carta que dice que tienen intención de negar mi caso, ¡me estoy asustando!\"",
+ correct:P.noid, opts:[P.noid,P.rfe,P.aprobacion,P.casereview],
+ explain:"Es un NOID (Notice of Intent to Deny): requiere una respuesta legal urgente; una respuesta exitosa puede llevar a la Aprobación."},
+{block:"Post-envío USCIS", q:"\"¿Qué tan urgente es responder esta notificación de intención de negar?\"",
+ correct:P.noid, opts:[P.noid,P.mgm,P.packets,P.dv],
+ explain:"Un NOID exige respuesta legal urgente, a diferencia de otras etapas del proceso."},
+{block:"Post-envío USCIS", q:"\"¿Todavía hay esperanza si USCIS dice que planea negar mi caso?\"",
+ correct:P.noid, opts:[P.noid,P.writing,P.wca,P.incoming],
+ explain:"Sí: ante un NOID, una respuesta legal exitosa puede llevar a la Aprobación; se le explica el estatus con calma y claridad."},
+
+{block:"Casos especiales", q:"\"La verdad no recuerdo haber firmado nada, solo vi un anuncio en redes y dejé mis datos. ¿Ya tengo un caso abierto?\"",
+ correct:P.marketing, opts:[P.marketing,P.openers,P.dv,P.pwi],
+ explain:"Sin contrato firmado, la persona sigue en la etapa de Marketing & Captación: aún no hay un caso abierto formalmente."},
+];
+
+// ===================== BANCO 2: LECTURA DE NOTAS DEL SISTEMA (50) =====================
+const NOTE_QUESTIONS = [
+{block:"Antes del contrato", notes:[{dept:"OPENERS", date:"02/08/2026", text:"Se aplicó cuestionario inicial. Cliente cumple con elementos clave del caso. Se agenda cita con D.V. Specialist para el 05/08/2026."}],
+ correct:P.openers, opts:[P.openers,P.dv,P.pwi,P.mgm],
+ explain:"La nota es de Openers: cuestionario inicial aplicado y cita agendada con D.V. Specialist."},
+{block:"Antes del contrato", notes:[{dept:"OPENERS", date:"03/08/2026", text:"Primera llamada de extracción completada. Se identifican elementos clave del posible caso. Cita con D.V. Specialist confirmada."}],
+ correct:P.openers, opts:[P.openers,P.wca,P.packets,P.aprobacion],
+ explain:"Es una nota de Openers: primera llamada de extracción y agenda de cita."},
+{block:"Antes del contrato", notes:[{dept:"OPENERS", date:"04/08/2026", text:"Cuestionario inicial aplicado vía telefónica. Prospecto verificado, pendiente cita de evaluación con especialista."}],
+ correct:P.openers, opts:[P.openers,P.precase,P.incoming,P.rfe],
+ explain:"El cuestionario inicial y la verificación del prospecto corresponden a Openers."},
+
+{block:"Extracción legal", notes:[{dept:"D.V. SPECIALIST", date:"05/08/2026", text:"Cliente cerró contrato. Plan de pagos seleccionado: mensualidades. Estrategia legal definida. Caso abierto oficialmente (Día 0)."}],
+ correct:P.dv, opts:[P.dv,P.openers,P.pwi,P.mgm],
+ explain:"La nota confirma el cierre de contrato y el Día 0, propios de D.V. Specialist."},
+{block:"Extracción legal", notes:[{dept:"D.V. SPECIALIST", date:"05/08/2026", text:"Cuestionario de elegibilidad y admisibilidad aplicado. Cliente califica. Contrato firmado el día de hoy."}],
+ correct:P.dv, opts:[P.dv,P.pwi,P.precase,P.aprobacion],
+ explain:"Aplicar el cuestionario de elegibilidad y firmar el contrato es función de D.V. Specialist."},
+{block:"Extracción legal", notes:[{dept:"D.V. SPECIALIST", date:"06/08/2026", text:"Cierre de venta completado. Se define estrategia legal y se selecciona plan de pago de 12 mensualidades."}],
+ correct:P.dv, opts:[P.dv,P.casereview,P.incoming,P.noid],
+ explain:"Definir la estrategia legal y el plan de pagos es parte del cierre con D.V. Specialist."},
+
+{block:"Extracción legal", notes:[{dept:"PWI", date:"09/08/2026", text:"Entrevista de extracción completada vía videollamada. I-Forms aplicados. Investigación del abuso documentada."}],
+ correct:P.pwi, opts:[P.pwi,P.dv,P.wca,P.mgm],
+ explain:"La aplicación de I-Forms y la entrevista de extracción son función de Pre Welcome Interview (PWI)."},
+{block:"Extracción legal", notes:[{dept:"PWI", date:"10/08/2026", text:"Se contactó al cliente para agendar videollamada de extracción. Cliente confirmado para entrevista PWI."}],
+ correct:P.pwi, opts:[P.pwi,P.writing,P.packets,P.aprobacion],
+ explain:"Preparar y confirmar la videollamada de extracción sigue siendo parte de la etapa PWI."},
+{block:"Extracción legal", notes:[{dept:"PWI", date:"11/08/2026", text:"I-Forms llenados en su totalidad. Nota de entrevista lista para turnar a Welcome Call Attorney."}],
+ correct:P.pwi, opts:[P.pwi,P.openers,P.casereview,P.rfe],
+ explain:"La nota confirma la entrevista y los I-Forms completos, propios de PWI."},
+
+{block:"Extracción legal", notes:[{dept:"WELCOME CALL ATTORNEY (LSU)", date:"20/08/2026", text:"Abogado revisó elegibilidad, carácter moral y antecedentes. Primer consejo legal formal emitido. Caso consolidado."}],
+ correct:P.wca, opts:[P.wca,P.dv,P.casereview,P.aprobacion],
+ explain:"El primer consejo legal formal y la revisión de antecedentes son del Welcome Call Attorney."},
+{block:"Extracción legal", notes:[{dept:"WELCOME CALL ATTORNEY (LSU)", date:"21/08/2026", text:"LSU Call realizado. No se detectan barreras legales significativas. Se autoriza avanzar a redacción."}],
+ correct:P.wca, opts:[P.wca,P.pwi,P.writing,P.mgm],
+ explain:"El LSU Call es el Welcome Call Attorney, donde se revisan barreras legales."},
+{block:"Extracción legal", notes:[{dept:"WELCOME CALL ATTORNEY (LSU)", date:"22/08/2026", text:"Revisión de antecedentes completa. Abogado da visto bueno preliminar y primer consejo legal."}],
+ correct:P.wca, opts:[P.wca,P.precase,P.packets,P.rfe],
+ explain:"La revisión de antecedentes y el primer consejo legal corresponden al Welcome Call Attorney."},
+
+{block:"Redacción y calidad", notes:[{dept:"WRITING & ANALYSIS", date:"25/08/2026", text:"Redacción de Declaración (DCL) en proceso. Cover Letter en borrador. Pendiente finalizar antes de turnar a FORMAS."}],
+ correct:P.writing, opts:[P.writing,P.pwi,P.precase,P.aprobacion],
+ explain:"La redacción de la Declaración y la Cover Letter es tarea de Writing & Analysis Experts."},
+{block:"Redacción y calidad", notes:[{dept:"WRITING & ANALYSIS", date:"26/08/2026", text:"Se estructura la nota de entrevista en Declaración formal. Avance del documento: 60%."}],
+ correct:P.writing, opts:[P.writing,P.dv,P.casereview,P.mgm],
+ explain:"Estructurar la nota de entrevista en la Declaración es función de Writing & Analysis Experts."},
+{block:"Redacción y calidad", notes:[{dept:"WRITING & ANALYSIS", date:"27/08/2026", text:"Declaración y Cover Letter en redacción activa por el equipo de escritores."}],
+ correct:P.writing, opts:[P.writing,P.packets,P.incoming,P.rfe],
+ explain:"Es una nota de redacción activa, propia de Writing & Analysis Experts."},
+
+{block:"Redacción y calidad", notes:[{dept:"PRE CASE REVIEW (FORMAS)", date:"29/08/2026", text:"Revisión integral del paquete en curso. Se solicita al cliente comprobante de domicilio faltante."}],
+ correct:P.precase, opts:[P.precase,P.writing,P.mgm,P.aprobacion],
+ explain:"Solicitar documentos faltantes durante la revisión integral es función de Pre Case Review (FORMAS)."},
+{block:"Redacción y calidad", notes:[{dept:"PRE CASE REVIEW (FORMAS)", date:"30/08/2026", text:"Control de calidad del expediente antes de Case Review Call. Documentación en verificación."}],
+ correct:P.precase, opts:[P.precase,P.pwi,P.packets,P.rfe],
+ explain:"El control de calidad antes del Case Review Call corresponde a Pre Case Review."},
+{block:"Redacción y calidad", notes:[{dept:"PRE CASE REVIEW (FORMAS)", date:"31/08/2026", text:"Paquete en revisión FORMAS. Pendiente confirmar recepción de identificación oficial del cliente."}],
+ correct:P.precase, opts:[P.precase,P.casereview,P.incoming,P.noid],
+ explain:"La nota indica revisión del equipo FORMAS (Pre Case Review), pendiente de un documento."},
+
+{block:"Redacción y calidad", notes:[{dept:"CASE REVIEW CALL", date:"03/09/2026", text:"Videollamada con abogado firmante agendada. Objetivo: validar paquete completo con el cliente."}],
+ correct:P.casereview, opts:[P.casereview,P.wca,P.precase,P.mgm],
+ explain:"La videollamada de validación con el abogado firmante es el Case Review Call."},
+{block:"Redacción y calidad", notes:[{dept:"CASE REVIEW CALL", date:"04/09/2026", text:"Se realizó revisión en videollamada con abogado firmante y cliente. Pendiente VoBo final."}],
+ correct:P.casereview, opts:[P.casereview,P.writing,P.packets,P.aprobacion],
+ explain:"Es una nota del Case Review Call, donde se revisa el paquete junto con el cliente."},
+{block:"Redacción y calidad", notes:[{dept:"CASE REVIEW CALL", date:"04/09/2026", text:"Abogado firmante revisó el paquete junto con el cliente en videollamada; se detectaron ajustes menores."}],
+ correct:P.casereview, opts:[P.casereview,P.pwi,P.incoming,P.rfe],
+ explain:"La nota documenta la videollamada del Case Review Call, aunque haya ajustes pendientes."},
+
+{block:"Ensamble y envío", notes:[{dept:"PACKETS", date:"08/09/2026", text:"Se aplican correcciones indicadas por abogado firmante. Documentación reintegrada. Ensamblaje final en proceso."}],
+ correct:P.packets, opts:[P.packets,P.precase,P.mgm,P.aprobacion],
+ explain:"Aplicar correcciones del abogado firmante y ensamblar el paquete es función de Packets."},
+{block:"Ensamble y envío", notes:[{dept:"PACKETS", date:"09/09/2026", text:"Ajustes post Case Review Call aplicados. Paquete en ensamblaje, pendiente turnar a MGM Review."}],
+ correct:P.packets, opts:[P.packets,P.casereview,P.incoming,P.rfe],
+ explain:"Los ajustes posteriores al Case Review Call los aplica Packets, antes de MGM Review."},
+{block:"Ensamble y envío", notes:[{dept:"PACKETS", date:"10/09/2026", text:"Se integra comprobante adicional del cliente al expediente. Paquete casi listo para revisión final."}],
+ correct:P.packets, opts:[P.packets,P.writing,P.wca,P.noid],
+ explain:"Integrar documentación adicional al paquete final es tarea de Packets."},
+
+{block:"Ensamble y envío", notes:[{dept:"MGM REVIEW", date:"13/09/2026", text:"Revisión final de Declaración, documentación e I-Forms por Lic. María Guadalupe Mendoza. Todo correcto. Autorizado envío a USCIS."}],
+ correct:P.mgm, opts:[P.mgm,P.casereview,P.packets,P.noid],
+ explain:"La revisión final y autorización de envío las hace MGM Review."},
+{block:"Ensamble y envío", notes:[{dept:"MGM REVIEW", date:"14/09/2026", text:"Expediente revisado y aprobado internamente. Se procede a envío a USCIS (Día +45)."}],
+ correct:P.mgm, opts:[P.mgm,P.wca,P.precase,P.aprobacion],
+ explain:"Es MGM Review, en el hito del Día +45, previo al envío a USCIS."},
+{block:"Ensamble y envío", notes:[{dept:"MGM REVIEW", date:"14/09/2026", text:"VoBo final de la abogada firmante en El Paso, TX. Caso enviado oficialmente a USCIS."}],
+ correct:P.mgm, opts:[P.mgm,P.dv,P.writing,P.rfe],
+ explain:"El VoBo final y el envío oficial a USCIS son de MGM Review."},
+
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"20/09/2026", text:"Recibo de USCIS registrado, prefijo LIN (Nebraska). Sin notificaciones adicionales por el momento."}],
+ correct:P.incoming, opts:[P.incoming,P.mgm,P.packets,P.aprobacion],
+ explain:"El registro del recibo y el seguimiento post-envío corresponden a Incoming Mail."},
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"21/09/2026", text:"Número de recibo confirmado: EAC-xxxxxxxxx (Vermont). Caso en seguimiento post-envío."}],
+ correct:P.incoming, opts:[P.incoming,P.casereview,P.writing,P.noid],
+ explain:"El seguimiento del número de recibo lo maneja Incoming Mail."},
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"22/09/2026", text:"Notificación electrónica recibida, prefijo IOE. Caso en monitoreo, sin resolución aún."}],
+ correct:P.incoming, opts:[P.incoming,P.dv,P.precase,P.rfe],
+ explain:"El monitoreo de notificaciones electrónicas (IOE) es función de Incoming Mail."},
+
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"25/09/2026", text:"USCIS emitió Notice of Approval. Beneficio migratorio otorgado."}],
+ correct:P.aprobacion, opts:[P.aprobacion,P.incoming,P.rfe,P.mgm],
+ explain:"El Notice of Approval significa que el caso fue aprobado."},
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"26/09/2026", text:"Resolución final recibida: caso APROBADO por USCIS."}],
+ correct:P.aprobacion, opts:[P.aprobacion,P.packets,P.noid,P.wca],
+ explain:"La resolución final de aprobación es el estatus de Aprobación."},
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"27/09/2026", text:"Aprobación confirmada en el sistema de USCIS. Caso cerrado con éxito."}],
+ correct:P.aprobacion, opts:[P.aprobacion,P.casereview,P.dv,P.marketing],
+ explain:"El cierre exitoso del caso corresponde al estatus de Aprobación."},
+
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"28/09/2026", text:"USCIS emitió Request for Evidence (RFE). Se turna a Operaciones para preparar respuesta dentro del plazo."}],
+ correct:P.rfe, opts:[P.rfe,P.aprobacion,P.noid,P.mgm],
+ explain:"El RFE pide evidencia adicional y el caso se turna a Operaciones para responder."},
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"29/09/2026", text:"Notificación de RFE recibida. Plazo de respuesta: 30 días. Caso reasignado a Operaciones."}],
+ correct:P.rfe, opts:[P.rfe,P.packets,P.incoming,P.writing],
+ explain:"La notificación de RFE con plazo de respuesta es el estatus de RFE."},
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"30/09/2026", text:"USCIS solicita evidencia adicional sobre el caso. En preparación de respuesta legal."}],
+ correct:P.rfe, opts:[P.rfe,P.noid,P.precase,P.openers],
+ explain:"Solicitar evidencia adicional, sin ser una intención de negar, corresponde al RFE."},
+
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"02/10/2026", text:"USCIS emitió Notice of Intent to Deny (NOID). Requiere respuesta legal urgente. Equipo legal notificado."}],
+ correct:P.noid, opts:[P.noid,P.rfe,P.aprobacion,P.casereview],
+ explain:"El Notice of Intent to Deny (NOID) exige una respuesta legal urgente."},
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"03/10/2026", text:"Notificación de intención de negar recibida. Prioridad alta, respuesta en curso."}],
+ correct:P.noid, opts:[P.noid,P.mgm,P.packets,P.dv],
+ explain:"La intención de negar de USCIS es el estatus de NOID, de prioridad alta."},
+{block:"Post-envío USCIS", notes:[{dept:"INCOMING MAIL", date:"04/10/2026", text:"NOID registrado en el sistema. Abogado asignado está preparando la respuesta urgente."}],
+ correct:P.noid, opts:[P.noid,P.writing,P.wca,P.incoming],
+ explain:"El registro de un NOID con respuesta legal en preparación es el estatus de NOID."},
+
+{block:"Lectura de expediente", notes:[
+   {dept:"OPENERS", date:"01/08/2026", text:"Cuestionario inicial aplicado. Cita agendada con D.V. Specialist."},
+   {dept:"D.V. SPECIALIST", date:"03/08/2026", text:"Contrato firmado. Plan de pago seleccionado. Día 0 registrado."}],
+ correct:P.dv, opts:[P.dv,P.openers,P.pwi,P.mgm],
+ explain:"Aunque hay una nota anterior de Openers, la nota más reciente (03/08) es de D.V. Specialist, que ya cerró el trato: ese es el estatus vigente."},
+{block:"Lectura de expediente", notes:[
+   {dept:"PWI", date:"20/07/2026", text:"Entrevista completada, I-Forms aplicados."},
+   {dept:"WELCOME CALL ATTORNEY (LSU)", date:"05/08/2026", text:"LSU Call realizado, primer consejo legal emitido."}],
+ correct:P.wca, opts:[P.wca,P.pwi,P.writing,P.mgm],
+ explain:"La nota más reciente (05/08) corresponde al Welcome Call Attorney; ese es el estatus actual, no la entrevista de PWI ya superada."},
+{block:"Lectura de expediente", notes:[
+   {dept:"WRITING & ANALYSIS", date:"02/08/2026", text:"Declaración en redacción."},
+   {dept:"PRE CASE REVIEW (FORMAS)", date:"09/08/2026", text:"Paquete en control de calidad, se solicita documento faltante."}],
+ correct:P.precase, opts:[P.precase,P.writing,P.casereview,P.mgm],
+ explain:"La nota del 09/08 (Pre Case Review) es la más reciente: el caso ya avanzó de redacción a control de calidad."},
+{block:"Lectura de expediente", notes:[
+   {dept:"CASE REVIEW CALL", date:"10/08/2026", text:"Videollamada realizada, se detectan correcciones."},
+   {dept:"PACKETS", date:"12/08/2026", text:"Correcciones aplicadas, paquete en ensamblaje final."}],
+ correct:P.packets, opts:[P.packets,P.casereview,P.precase,P.mgm],
+ explain:"La nota más reciente (12/08) es de Packets, aplicando ya las correcciones detectadas en el Case Review Call."},
+{block:"Lectura de expediente", notes:[
+   {dept:"PACKETS", date:"15/08/2026", text:"Paquete ensamblado, turnado a revisión final."},
+   {dept:"MGM REVIEW", date:"18/08/2026", text:"Revisión final completa. Autorizado envío a USCIS."}],
+ correct:P.mgm, opts:[P.mgm,P.packets,P.incoming,P.aprobacion],
+ explain:"La nota más reciente (18/08) confirma que MGM Review ya autorizó y envió el caso a USCIS."},
+{block:"Lectura de expediente", notes:[
+   {dept:"MGM REVIEW", date:"20/08/2026", text:"Caso enviado a USCIS."},
+   {dept:"INCOMING MAIL", date:"22/08/2026", text:"Recibo confirmado, prefijo EAC. En seguimiento."}],
+ correct:P.incoming, opts:[P.incoming,P.mgm,P.rfe,P.aprobacion],
+ explain:"La nota más reciente (22/08) ya es de Incoming Mail, dando seguimiento con el número de recibo."},
+{block:"Lectura de expediente", notes:[
+   {dept:"INCOMING MAIL", date:"22/08/2026", text:"Recibo confirmado, prefijo LIN. Caso en seguimiento, sin notificación adicional."},
+   {dept:"MGM REVIEW", date:"30/07/2026", text:"Revisión final completa. Autorizado envío a USCIS."}],
+ correct:P.incoming, opts:[P.incoming,P.mgm,P.rfe,P.aprobacion],
+ explain:"Cuidado con el orden: aunque la nota de MGM Review aparece después en la lista, su fecha (30/jul) es anterior a la de Incoming Mail (22/ago), que es la vigente."},
+{block:"Lectura de expediente", notes:[
+   {dept:"INCOMING MAIL", date:"01/09/2026", text:"USCIS emitió NOID. Requiere respuesta urgente."},
+   {dept:"INCOMING MAIL", date:"10/09/2026", text:"Se recibió RFE adicional sobre el mismo trámite."}],
+ correct:P.rfe, opts:[P.rfe,P.noid,P.aprobacion,P.mgm],
+ explain:"La nota del 10/09 (RFE) es más reciente que la del NOID (01/09); el estatus vigente a comunicar es el del RFE."},
+{block:"Lectura de expediente", notes:[
+   {dept:"D.V. SPECIALIST", date:"05/08/2026", text:"Contrato firmado, Día 0."},
+   {dept:"OPENERS", date:"01/08/2026", text:"Cuestionario aplicado, cita agendada."}],
+ correct:P.dv, opts:[P.dv,P.openers,P.pwi,P.wca],
+ explain:"Aunque la nota de Openers aparece después en la lista, es la más antigua (01/08); la nota vigente es la de D.V. Specialist (05/08)."},
+{block:"Lectura de expediente", notes:[
+   {dept:"PACKETS", date:"28/08/2026", text:"Ajustes aplicados, ensamblaje final."},
+   {dept:"MGM REVIEW", date:"30/08/2026", text:"Caso enviado a USCIS."}],
+ correct:P.mgm, opts:[P.mgm,P.packets,P.incoming,P.casereview],
+ explain:"La nota del 30/08 (MGM Review) es la más reciente: el caso ya fue enviado a USCIS."},
+{block:"Lectura de expediente", notes:[
+   {dept:"WRITING & ANALYSIS", date:"10/07/2026", text:"Declaración en redacción."}],
+ correct:P.writing, opts:[P.writing,P.precase,P.casereview,P.packets],
+ explain:"Aunque hayan pasado varias semanas sin nota nueva, el estatus que se debe comunicar es el de la última nota registrada; si el cliente requiere más detalle, se puede escalar a Callbacks."},
+];
+
+// ===================== ESTADO =====================
+let examType = 'calls';
+let selectedMode = "full";
+let activeQuestions = [];
+let currentIndex = 0;
+let userAnswers = [];
+let score = 0;
+let answeredCurrent = false;
+
+function currentBank(){ return examType === 'calls' ? CALL_QUESTIONS : NOTE_QUESTIONS; }
+
+function rebuildBlockPicker(){
+  const bank = currentBank();
+  const blocks = [...new Set(bank.map(q=>q.block))];
+  const picker = document.getElementById('block-picker');
+  picker.innerHTML = '';
+  blocks.forEach(b=>{
+    const count = bank.filter(q=>q.block===b).length;
+    const row = document.createElement('label');
+    row.className = 'block-row';
+    row.innerHTML = `<span><input type="checkbox" class="block-check" value="${b}" checked style="margin-right:8px"><b>${b}</b></span><span>${count} preguntas</span>`;
+    picker.appendChild(row);
+  });
+}
+rebuildBlockPicker();
+
+function selectExam(type){
+  examType = type;
+  document.querySelectorAll('.mode-btn[data-exam]').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.mode-btn[data-exam="${type}"]`).classList.add('active');
+  rebuildBlockPicker();
+}
+
+function selectMode(mode){
+  selectedMode = mode;
+  document.querySelectorAll('.mode-btn[data-mode]').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.mode-btn[data-mode="${mode}"]`).classList.add('active');
+  document.getElementById('block-picker').classList.toggle('hidden', mode!=='block');
+}
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function prepareQuestion(raw){
+  const shuffledOpts = shuffle(raw.opts);
+  const correctIdx = shuffledOpts.indexOf(raw.correct);
+  return {block:raw.block, q:raw.q, notes:raw.notes, opts:shuffledOpts, correct:correctIdx, explain:raw.explain};
+}
+
+function startQuiz(){
+  const bank = currentBank();
+  let pool;
+  if(selectedMode==='full'){
+    pool = bank;
+  } else {
+    const checked = [...document.querySelectorAll('.block-check:checked')].map(c=>c.value);
+    pool = bank.filter(q=>checked.includes(q.block));
+    if(pool.length===0){ alert('Selecciona al menos un grupo de etapas para practicar.'); return; }
+  }
+  activeQuestions = shuffle(pool).map(prepareQuestion);
+  currentIndex = 0;
+  score = 0;
+  userAnswers = [];
+  document.getElementById('screen-start').classList.add('hidden');
+  document.getElementById('screen-results').classList.add('hidden');
+  document.getElementById('screen-quiz').classList.remove('hidden');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  answeredCurrent = false;
+  const q = activeQuestions[currentIndex];
+  document.getElementById('progress-label').textContent = `${currentIndex+1} / ${activeQuestions.length}`;
+  document.getElementById('progress-fill').style.width = `${(currentIndex/activeQuestions.length)*100}%`;
+  document.getElementById('score-pill').textContent = `Aciertos: ${score}`;
+  document.getElementById('q-cat').textContent = q.block;
+
+  const body = document.getElementById('q-body');
+  const instr = document.getElementById('q-instr');
+
+  if(q.notes){
+    let html = `<div class="notes-wrap"><div class="notes-label">🗂️ Notas del sistema</div>`;
+    q.notes.forEach(n=>{
+      html += `<div class="note-card">
+        <div class="note-top"><span class="note-dept">${n.dept}</span><span class="note-date">${n.date}</span></div>
+        <div class="note-text">"${n.text}"</div>
+      </div>`;
+    });
+    html += `</div>`;
+    body.innerHTML = html;
+    instr.textContent = "Un cliente llama preguntando por su caso. Con base en estas notas, ¿qué estatus le das?";
+  } else {
+    body.innerHTML = `<div class="call-box"><div class="who"><span class="ic">☎️</span>Cliente en llamada</div><p>${q.q}</p></div>`;
+    instr.textContent = "¿Cuál es la respuesta de estatus correcta?";
+  }
+
+  const optList = document.getElementById('opt-list');
+  optList.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((opt, idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="letter">${letters[idx]}</span><span>${opt}</span>`;
+    btn.onclick = ()=>selectAnswer(idx);
+    optList.appendChild(btn);
+  });
+
+  document.getElementById('feedback').classList.remove('show','wrong');
+  document.getElementById('btn-next').classList.remove('ready');
+  document.getElementById('btn-next').textContent = currentIndex === activeQuestions.length-1 ? 'Ver resultados →' : 'Siguiente →';
+}
+
+function selectAnswer(idx){
+  if(answeredCurrent) return;
+  answeredCurrent = true;
+  const q = activeQuestions[currentIndex];
+  const opts = document.querySelectorAll('.opt');
+  const isCorrect = idx === q.correct;
+  if(isCorrect) score++;
+
+  opts.forEach((el, i)=>{
+    el.classList.add('disabled');
+    if(i === q.correct) el.classList.add('correct');
+    else if(i === idx) el.classList.add('incorrect');
+    else el.classList.add('dim');
+    el.onclick = null;
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.classList.add('show');
+  fb.classList.toggle('wrong', !isCorrect);
+  document.getElementById('fb-title').textContent = isCorrect ? '✓ Estatus correcto' : '✕ Estatus incorrecto';
+  document.getElementById('fb-text').textContent = q.explain;
+
+  document.getElementById('score-pill').textContent = `Aciertos: ${score}`;
+  document.getElementById('btn-next').classList.add('ready');
+
+  userAnswers.push({q, selectedIdx: idx, correct: isCorrect});
+
+}
+
+function nextQuestion(){
+  if(!answeredCurrent) return;
+  currentIndex++;
+  if(currentIndex >= activeQuestions.length){
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults(){
+  document.getElementById('screen-quiz').classList.add('hidden');
+  document.getElementById('screen-results').classList.remove('hidden');
+
+  const total = activeQuestions.length;
+  const pct = Math.round((score/total)*100);
+  document.getElementById('result-score').innerHTML = `${score}<span> / ${total}</span>`;
+
+
+  const tag = document.getElementById('result-tag');
+  tag.classList.remove('tag-great','tag-mid','tag-low');
+  if(pct >= 85){ tag.classList.add('tag-great'); tag.textContent = `¡Excelente! ${pct}% — Listo para dar estatus en llamadas reales`; }
+  else if(pct >= 65){ tag.classList.add('tag-mid'); tag.textContent = `Vas bien — ${pct}% — Repasa las etapas falladas`; }
+  else { tag.classList.add('tag-low'); tag.textContent = `${pct}% — Recomendado repasar la guía completa`; }
+
+  const usedBlocks = [...new Set(activeQuestions.map(q=>q.block))];
+  const breakdown = document.getElementById('breakdown');
+  breakdown.innerHTML = '';
+  usedBlocks.forEach(b=>{
+    const inBlock = userAnswers.filter(a=>a.q.block===b);
+    if(inBlock.length===0) return;
+    const correctCount = inBlock.filter(a=>a.correct).length;
+    const p = Math.round((correctCount/inBlock.length)*100);
+    const row = document.createElement('div');
+    row.className = 'bd-row';
+    row.innerHTML = `<span class="bd-label">${b}</span><div class="bd-track"><div class="bd-fill" style="width:${p}%"></div></div><span class="bd-val">${correctCount}/${inBlock.length}</span>`;
+    breakdown.appendChild(row);
+  });
+
+  const reviewWrap = document.getElementById('review-wrap');
+  reviewWrap.innerHTML = '';
+  const missed = userAnswers.filter(a=>!a.correct);
+  if(missed.length > 0){
+    const title = document.createElement('div');
+    title.style.cssText = 'font-family:Cormorant Garamond,serif;font-weight:700;font-size:18px;color:var(--navy);margin:22px 0 6px;border-top:1px solid var(--card-border);padding-top:20px';
+    title.textContent = `Para repasar (${missed.length})`;
+    reviewWrap.appendChild(title);
+    missed.forEach(a=>{
+      const item = document.createElement('div');
+      item.className = 'review-item';
+      let qDesc = '';
+      if(a.q.notes){
+        qDesc = a.q.notes.map(n=>`[${n.dept} · ${n.date}] "${n.text}"`).join(' &nbsp;→&nbsp; ');
+      } else {
+        qDesc = `Cliente: ${a.q.q}`;
+      }
+      item.innerHTML = `
+        <div class="review-q">${qDesc}</div>
+        <div class="review-your">Tu respuesta: ${a.q.opts[a.selectedIdx]}</div>
+        <div class="review-correct">Estatus correcto: ${a.q.opts[a.q.correct]}</div>
+        <div class="review-explain">${a.q.explain}</div>
+      `;
+      reviewWrap.appendChild(item);
+    });
+  } else {
+    reviewWrap.innerHTML = '<p style="text-align:center;color:var(--green);font-weight:600;margin-top:20px">¡Diste el estatus correcto en todos los casos! 🎉</p>';
+  }
+}
+</script>
+</body>
+</html>
