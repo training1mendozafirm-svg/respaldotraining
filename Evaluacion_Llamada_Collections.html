@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación de llamada Collections</title>
+<style>
+  :root{
+    --navy:#0f2a4a;
+    --navy-dark:#0a1d33;
+    --gold:#c9a227;
+    --green:#2e9e5b;
+    --yellow:#e8a53d;
+    --red:#d9483d;
+    --gray:#8a94a3;
+    --bg:#eef1f5;
+    --card:#ffffff;
+    --text:#1c2733;
+    --muted:#6b7684;
+    --border:#e2e6ec;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI', Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom:60px;
+  }
+  header{
+    background:linear-gradient(135deg, var(--navy-dark), var(--navy));
+    color:#fff;
+    padding:22px 30px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    position:sticky;
+    top:0;
+    z-index:50;
+    box-shadow:0 2px 10px rgba(0,0,0,0.15);
+  }
+  header h1{
+    margin:0;
+    font-size:22px;
+    letter-spacing:0.3px;
+  }
+  .nav-tabs{
+    display:flex;
+    gap:8px;
+    margin-top:4px;
+  }
+  .nav-tab{
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.25);
+    color:#fff;
+    padding:7px 14px;
+    border-radius:8px;
+    font-size:12.5px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .nav-tab:hover{background:rgba(255,255,255,0.22);}
+  .nav-tab.active{background:var(--gold); border-color:var(--gold); color:var(--navy-dark);}
+  .header-sub{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    font-size:13px;
+    color:#cdd9ea;
+  }
+  .progress-wrap{
+    flex:1;
+    min-width:220px;
+    background:rgba(255,255,255,0.15);
+    border-radius:20px;
+    height:10px;
+    overflow:hidden;
+    margin:0 14px;
+  }
+  .progress-bar{
+    height:100%;
+    background:var(--gold);
+    width:0%;
+    transition:width .25s ease;
+  }
+  .container{
+    max-width:900px;
+    margin:24px auto;
+    padding:0 16px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 1px 4px rgba(20,30,50,0.08);
+    border:1px solid var(--border);
+    padding:20px 22px;
+  }
+  .card h2{
+    margin:0 0 14px 0;
+    font-size:16px;
+    color:var(--navy);
+    border-bottom:2px solid var(--gold);
+    display:inline-block;
+    padding-bottom:4px;
+  }
+  .datos-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:700px){
+    .datos-grid{grid-template-columns:1fr;}
+  }
+  .field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--muted);
+    margin-bottom:5px;
+  }
+  .field input, .field textarea{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-size:14px;
+    font-family:inherit;
+    background:#fbfcfd;
+  }
+  .field input:focus, .field textarea:focus{
+    outline:none;
+    border-color:var(--navy);
+    background:#fff;
+  }
+  .field.invalid input, .field.invalid textarea{
+    border-color:var(--red);
+    background:#fff5f4;
+  }
+
+  .leyenda{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    font-size:12.5px;
+    color:var(--muted);
+    margin-bottom:14px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+  }
+  .leyenda-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-weight:600;
+  }
+  .dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    display:inline-block;
+  }
+  .dot-3{background:var(--green);}
+  .dot-2{background:var(--yellow);}
+  .dot-1{background:var(--red);}
+
+  .grupo-titulo{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--navy);
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    margin:16px 0 8px 0;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+  }
+  .grupo-titulo:first-child{
+    margin-top:0;
+    padding-top:0;
+    border-top:none;
+  }
+
+  .criterio-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:10px 4px;
+    border-bottom:1px solid var(--border);
+    flex-wrap:wrap;
+  }
+  .criterio-row:last-child{border-bottom:none;}
+  .criterio-texto{
+    flex:1;
+    min-width:200px;
+    font-size:14px;
+    line-height:1.35;
+  }
+  .criterio-row.pendiente .criterio-texto{color:var(--text);}
+  .criterio-row.answered{
+    background:#fafcfe;
+    border-radius:8px;
+  }
+  .criterio-row{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .criterio-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .opciones{
+    display:flex;
+    gap:6px;
+    flex-shrink:0;
+  }
+  .opt-btn{
+    width:42px;
+    height:36px;
+    border-radius:8px;
+    border:1.5px solid var(--border);
+    background:#fff;
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+    color:var(--muted);
+    transition:all .15s ease;
+  }
+  .opt-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  }
+  .opt-btn.sel-2.active{background:var(--green);border-color:var(--green);color:#fff;}
+  .opt-btn.sel-1.active{background:var(--yellow);border-color:var(--yellow);color:#fff;}
+  .opt-btn.sel-0.active{background:var(--red);border-color:var(--red);color:#fff;}
+  .opt-btn.sel-na.active{background:var(--gray);border-color:var(--gray);color:#fff;}
+
+  textarea{resize:vertical;min-height:36px;}
+  #observacionesGenerales{min-height:80px;}
+
+  .acciones{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:6px;
+  }
+  .btn{
+    padding:12px 22px;
+    border-radius:10px;
+    border:none;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:transform .1s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 4px 10px rgba(0,0,0,0.12);}
+  .btn-primary{background:var(--navy); color:#fff;}
+  .btn-secondary{background:#fff; color:var(--navy); border:1.5px solid var(--navy);}
+  .btn-danger{background:#fff; color:var(--red); border:1.5px solid var(--red);}
+
+  .resultado{
+    display:none;
+    text-align:center;
+  }
+  .resultado.show{display:block;}
+  .resultado .pct{
+    font-size:46px;
+    font-weight:800;
+    color:var(--navy);
+    margin:6px 0;
+  }
+  .resultado .clasificacion{
+    display:inline-block;
+    padding:6px 18px;
+    border-radius:20px;
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:10px;
+  }
+  .clasif-sobresaliente{background:#e3f6ea;color:var(--green);}
+  .clasif-competente{background:#eaf3fc;color:#2f6fb8;}
+  .clasif-desarrollo{background:#fdf1e0;color:var(--yellow);}
+  .clasif-refuerzo{background:#fbeae9;color:var(--red);}
+
+  .resultado-detalle{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+    margin-top:10px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .resultado-detalle strong{display:block;font-size:18px;color:var(--text);}
+
+  .badge-final{
+    margin-top:16px;
+    display:inline-block;
+    padding:10px 24px;
+    border-radius:10px;
+    font-weight:800;
+    font-size:15px;
+  }
+  .badge-aprobado{background:var(--green);color:#fff;}
+  .badge-refuerzo{background:var(--red);color:#fff;}
+
+  .resumen-colaborador{
+    font-size:14px;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .resumen-colaborador strong{color:var(--text);}
+
+  .resultado-columnas{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:16px;
+    margin-top:24px;
+    text-align:left;
+  }
+  @media (max-width:700px){
+    .resultado-columnas{grid-template-columns:1fr;}
+  }
+  .resultado-col{
+    background:#fafcfe;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 16px;
+  }
+  .resultado-col h3{
+    margin:0 0 10px 0;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+  }
+  .resultado-col-fortalezas h3{color:var(--green);}
+  .resultado-col-mejora h3{color:var(--yellow);}
+  .resultado-col-nocumple h3{color:var(--red);}
+  .resultado-col ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13px;
+    color:var(--text);
+    line-height:1.5;
+  }
+  .resultado-col ul:empty::before{
+    content:"Sin elementos en esta categoría.";
+    color:var(--muted);
+    font-style:italic;
+    list-style:none;
+    margin-left:-18px;
+  }
+
+  .toast{
+    position:fixed;
+    top:14px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--red);
+    color:#fff;
+    padding:12px 20px;
+    border-radius:10px;
+    font-size:13.5px;
+    font-weight:600;
+    box-shadow:0 4px 14px rgba(0,0,0,0.2);
+    z-index:200;
+    display:none;
+    max-width:90%;
+    text-align:center;
+  }
+  .toast.show{display:block;}
+
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(15,23,42,0.5);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:300;
+    padding:20px;
+  }
+  .modal-overlay.show{display:flex;}
+  .modal-box{
+    background:#fff;
+    border-radius:14px;
+    padding:22px 24px;
+    max-width:380px;
+    width:100%;
+    box-shadow:0 10px 40px rgba(0,0,0,0.25);
+  }
+  .modal-title{
+    font-size:16px;
+    font-weight:700;
+    color:var(--navy);
+    margin-bottom:8px;
+  }
+  .modal-message{
+    font-size:13.5px;
+    color:var(--muted);
+    line-height:1.5;
+    margin-bottom:14px;
+    white-space:pre-line;
+  }
+  .modal-input{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-size:14px;
+    font-family:inherit;
+    margin-bottom:16px;
+    box-sizing:border-box;
+  }
+  .modal-input:focus{
+    outline:none;
+    border-color:var(--navy);
+  }
+  .modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+  }
+
+  @media print{
+    header{position:static; box-shadow:none;}
+    .acciones, .toast, .nav-tabs, .modal-overlay{display:none !important;}
+    body{background:#fff;}
+    .card{box-shadow:none; border:1px solid #ccc;}
+  }
+
+  /* Vista de resultados por colaborador */
+  #vistaResultados{display:none;}
+  #vistaResultados.show{display:block;}
+  .buscador-colab{
+    display:flex;
+    gap:10px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .buscador-colab input{
+    flex:1;
+    min-width:200px;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-size:14px;
+  }
+  .estado-carga{
+    text-align:center;
+    color:var(--muted);
+    font-size:13.5px;
+    padding:20px;
+  }
+  .lista-colaboradores{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:700px){
+    .lista-colaboradores{grid-template-columns:1fr;}
+  }
+  .colab-card{
+    background:#fafcfe;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 16px;
+    cursor:pointer;
+    transition:box-shadow .15s ease, transform .1s ease;
+  }
+  .colab-card:hover{
+    box-shadow:0 3px 10px rgba(20,30,50,0.1);
+    transform:translateY(-1px);
+  }
+  .colab-card h3{
+    margin:0 0 6px 0;
+    font-size:15px;
+    color:var(--navy);
+  }
+  .colab-card .colab-meta{
+    font-size:12.5px;
+    color:var(--muted);
+    display:flex;
+    justify-content:space-between;
+  }
+  .colab-card .colab-pct{
+    font-weight:800;
+    font-size:20px;
+    color:var(--navy);
+  }
+  .detalle-colab{display:none;}
+  .detalle-colab.show{display:block;}
+  .volver-btn{
+    background:none;
+    border:none;
+    color:var(--navy);
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+    margin-bottom:14px;
+    padding:0;
+  }
+  .detalle-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:16px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--border);
+  }
+  .detalle-header h2{border:none; margin:0; padding:0;}
+  .detalle-pct-grande{font-size:38px; font-weight:800; color:var(--navy);}
+  table.historial-tabla{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+    margin-top:8px;
+  }
+  table.historial-tabla th{
+    text-align:left;
+    color:var(--muted);
+    font-size:11.5px;
+    text-transform:uppercase;
+    padding:6px 8px;
+    border-bottom:2px solid var(--border);
+  }
+  table.historial-tabla td{
+    padding:8px;
+    border-bottom:1px solid var(--border);
+  }
+  .resumen-frecuencias{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:20px;
+  }
+  @media (max-width:700px){
+    .resumen-frecuencias{grid-template-columns:1fr;}
+  }
+  .freq-item{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    font-size:13px;
+    padding:6px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .freq-item .freq-count{
+    font-weight:700;
+    color:var(--navy);
+    flex-shrink:0;
+  }
+
+  .evaluaciones-detalle{
+    margin-top:24px;
+  }
+  .eval-detalle-card{
+    background:#fafcfe;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .eval-detalle-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    cursor:pointer;
+  }
+  .eval-detalle-header .eval-meta{
+    font-size:13px;
+    color:var(--muted);
+  }
+  .eval-detalle-header .eval-pct{
+    font-weight:800;
+    font-size:16px;
+    color:var(--navy);
+  }
+  .eval-detalle-body{
+    display:none;
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--border);
+  }
+  .eval-detalle-body.show{display:block;}
+  .eval-criterio-item{
+    padding:8px 0;
+    border-bottom:1px solid var(--border);
+    font-size:13px;
+  }
+  .eval-criterio-item:last-child{border-bottom:none;}
+  .eval-criterio-item .ec-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .eval-criterio-item .ec-texto{flex:1; font-weight:600; color:var(--text);}
+  .eval-criterio-item .ec-badge{
+    flex-shrink:0;
+    width:22px;
+    height:22px;
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:12px;
+    color:#fff;
+  }
+  .ec-badge.b3{background:var(--green);}
+  .ec-badge.b2{background:var(--yellow);}
+  .ec-badge.b1{background:var(--red);}
+  .ec-badge.bna{background:var(--gray);}
+  .eval-criterio-item .ec-obs{
+    margin-top:4px;
+    color:var(--muted);
+    font-style:italic;
+    line-height:1.4;
+  }
+  .eval-otros-campos{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--border);
+    font-size:13px;
+  }
+  .eval-otros-campos div{margin-bottom:6px;}
+  .eval-otros-campos strong{color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-message" id="modalMessage"></div>
+    <input type="password" id="modalInput" class="modal-input" style="display:none;" autocomplete="off">
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="modalCancelBtn" type="button">Cancelar</button>
+      <button class="btn btn-primary" id="modalConfirmBtn" type="button">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <h1>Evaluación de llamada Collections</h1>
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tabEvaluar" onclick="cambiarVista('evaluar')">Nueva evaluación</button>
+    <button class="nav-tab" id="tabResultados" onclick="cambiarVista('resultados')">Resultados por colaborador</button>
+  </div>
+  <div class="header-sub">
+    <span>11 criterios · <span id="contestadosLabel">0</span> contestados · <span id="pendientesLabel">11</span> pendientes</span>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <span id="scoreMini">0%</span>
+  </div>
+</header>
+
+<div class="container" id="vistaEvaluacion">
+
+  <!-- Datos generales -->
+  <div class="card">
+    <h2>Datos de la evaluación</h2>
+    <div class="datos-grid" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="field" id="fEvaluador">
+        <label>Nombre de quien evalúa *</label>
+        <input type="text" id="evaluador" placeholder="Nombre completo">
+      </div>
+      <div class="field" id="fEvaluado">
+        <label>Nombre de la persona evaluada *</label>
+        <input type="text" id="evaluado" placeholder="Nombre completo">
+      </div>
+      <div class="field" id="fFecha">
+        <label>Fecha de evaluación *</label>
+        <input type="date" id="fecha">
+      </div>
+    </div>
+  </div>
+
+  <!-- Criterios -->
+  <div class="card">
+    <h2>Criterios de evaluación</h2>
+    <div class="leyenda">
+      <span class="leyenda-item"><span class="dot dot-3"></span>3 = Fortaleza</span>
+      <span class="leyenda-item"><span class="dot dot-2"></span>2 = Oportunidad de mejora</span>
+      <span class="leyenda-item"><span class="dot dot-1"></span>1 = No cumple</span>
+    </div>
+
+    <div class="grupo-titulo">Apertura y comunicación</div>
+    <div class="criterio-row" data-id="c1"><div class="criterio-top"><div class="criterio-texto">1. Se presenta de forma clara, profesional y explica el propósito de la llamada.</div><div class="opciones"></div></div></div>
+    <div class="criterio-row" data-id="c2"><div class="criterio-top"><div class="criterio-texto">2. Su speech se escucha natural, seguro y no leído.</div><div class="opciones"></div></div></div>
+    <div class="criterio-row" data-id="c3"><div class="criterio-top"><div class="criterio-texto">3. Mantiene un tono de voz profesional, claro y adecuado durante toda la llamada.</div><div class="opciones"></div></div></div>
+
+    <div class="grupo-titulo">Manejo del cliente</div>
+    <div class="criterio-row" data-id="c4"><div class="criterio-top"><div class="criterio-texto">4. Genera rapport, confianza y demuestra empatía con el cliente.</div><div class="opciones"></div></div></div>
+    <div class="criterio-row" data-id="c5"><div class="criterio-top"><div class="criterio-texto">5. Escucha activamente, evita interrumpir y confirma que comprendió correctamente.</div><div class="opciones"></div></div></div>
+    <div class="criterio-row" data-id="c6"><div class="criterio-top"><div class="criterio-texto">6. Mantiene el control de la conversación sin mostrarse rígido, cortante o confrontativo.</div><div class="opciones"></div></div></div>
+    <div class="criterio-row" data-id="c7"><div class="criterio-top"><div class="criterio-texto">7. Maneja adecuadamente dudas, emociones, resistencia u objeciones del cliente.</div><div class="opciones"></div></div></div>
+
+    <div class="grupo-titulo">Negociación y cierre</div>
+    <div class="criterio-row" data-id="c8"><div class="criterio-top"><div class="criterio-texto">8. Identifica la necesidad del cliente y adapta su explicación o propuesta.</div><div class="opciones"></div></div></div>
+    <div class="criterio-row" data-id="c9"><div class="criterio-top"><div class="criterio-texto">9. Negocia con claridad, ética y seguridad, sin presionar ni prometer resultados.</div><div class="opciones"></div></div></div>
+    <div class="criterio-row" data-id="c10"><div class="criterio-top"><div class="criterio-texto">10. Realiza un cierre claro, confirma acuerdos y establece correctamente los siguientes pasos.</div><div class="opciones"></div></div></div>
+    <div class="criterio-row" data-id="c13"><div class="criterio-top"><div class="criterio-texto">11. Ofrece autopay al cliente.</div><div class="opciones"></div></div></div>
+    <div class="criterio-row" data-id="cobro"><div class="criterio-top"><div class="criterio-texto">¿Se realizó el cobro?</div><div class="opciones">
+      <button type="button" class="opt-btn sel-2" onclick="seleccionarCobro('Sí', this)">Sí</button>
+      <button type="button" class="opt-btn sel-0" onclick="seleccionarCobro('No', this)">No</button>
+    </div></div></div>
+  </div>
+
+  <!-- Observaciones -->
+  <div class="card">
+    <h2>Observaciones generales</h2>
+    <div class="field" id="fFortalezas" style="margin-bottom:12px;">
+      <label>Fortalezas identificadas *</label>
+      <input type="text" id="fortalezas" placeholder="Ejemplo: manejo de objeciones, rapport, claridad...">
+    </div>
+    <div class="field" id="fAreaOportunidad" style="margin-bottom:12px;">
+      <label>Principal área de oportunidad *</label>
+      <input type="text" id="areaOportunidad" placeholder="Ejemplo: negociación, control de llamada, cierre...">
+    </div>
+    <div class="field">
+      <label>Observaciones adicionales del agente</label>
+      <textarea id="observacionesGenerales" placeholder="Registra conductas específicas, frases utilizadas, contexto de la llamada y recomendaciones concretas..."></textarea>
+    </div>
+    <div class="field" style="margin-top:12px;">
+      <label>Palabras o frases no permitidas detectadas</label>
+      <textarea id="palabrasRestringidas" placeholder="Ejemplo: screen strategy, promesas de aprobación, afirmaciones no autorizadas..."></textarea>
+    </div>
+  </div>
+
+  <!-- Acciones -->
+  <div class="acciones">
+    <button class="btn btn-primary" onclick="finalizarEvaluacion()">Finalizar evaluación</button>
+  </div>
+
+  <!-- Resultado -->
+  <div class="card resultado" id="resultadoCard">
+    <h2>Resultado final</h2>
+    <div id="resumenColaborador" class="resumen-colaborador"></div>
+    <div class="clasificacion" id="clasificacionTag">—</div>
+    <div class="pct" id="pctFinal">0%</div>
+    <div class="resultado-detalle">
+      <div><strong id="puntosObtenidos">0</strong>Puntos obtenidos</div>
+      <div><strong id="puntosMaximos">0</strong>Puntos máximos</div>
+    </div>
+    <div class="badge-final" id="badgeFinal">—</div>
+
+    <div class="resultado-columnas">
+      <div class="resultado-col resultado-col-fortalezas">
+        <h3>Fortalezas identificadas</h3>
+        <ul id="listaFortalezas"></ul>
+      </div>
+      <div class="resultado-col resultado-col-mejora">
+        <h3>Oportunidades de mejora</h3>
+        <ul id="listaMejora"></ul>
+      </div>
+      <div class="resultado-col resultado-col-nocumple">
+        <h3>Áreas a reforzar (no cumple)</h3>
+        <ul id="listaNoCumple"></ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="container" id="vistaResultados">
+
+  <div class="card" id="listaVistaCard">
+    <h2>Resultados por colaborador</h2>
+    <div class="buscador-colab">
+      <input type="text" id="buscarColaborador" placeholder="Buscar por colaborador..." oninput="filtrarColaboradores()">
+      <button class="btn btn-secondary" onclick="cargarResultados()">Actualizar</button>
+    </div>
+    <div id="estadoCarga" class="estado-carga">Cargando resultados...</div>
+    <div class="lista-colaboradores" id="listaColaboradores"></div>
+  </div>
+
+  <div class="card detalle-colab" id="detalleColabCard">
+    <button class="volver-btn" onclick="volverALista()">← Volver a la lista</button>
+    <div class="detalle-header">
+      <div>
+        <h2 id="detalleNombre">—</h2>
+        <span style="font-size:12.5px;color:var(--muted);" id="detalleConteo">0 evaluaciones</span>
+      </div>
+      <div class="detalle-pct-grande" id="detallePctPromedio">0%</div>
+    </div>
+
+    <table class="historial-tabla">
+      <thead>
+        <tr><th>Fecha</th><th>Hora de envío</th><th>Evaluador</th><th>Puntaje</th><th>%</th><th>Clasificación</th></tr>
+      </thead>
+      <tbody id="historialBody"></tbody>
+    </table>
+
+    <div class="resumen-frecuencias">
+      <div>
+        <h3 style="font-size:13px;color:var(--green);text-transform:uppercase;">Fortalezas más frecuentes</h3>
+        <div id="freqFortalezas"></div>
+      </div>
+      <div>
+        <h3 style="font-size:13px;color:var(--red);text-transform:uppercase;">Áreas a reforzar más frecuentes</h3>
+        <div id="freqNoCumple"></div>
+      </div>
+    </div>
+
+    <div class="evaluaciones-detalle">
+      <h3 style="font-size:13px;color:var(--navy);text-transform:uppercase;margin-bottom:10px;">Detalle completo por evaluación</h3>
+      <div id="evaluacionesDetalle"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ============================================================
+  // ALMACENAMIENTO LOCAL: si el archivo se abre fuera de Claude.ai, las
+  // evaluaciones se guardan en este navegador (localStorage) para que la
+  // pestaña "Resultados por colaborador" funcione en este mismo equipo.
+  // ============================================================
+  if(typeof window.storage === 'undefined'){
+    window.storage = {
+      get: async function(key){
+        let v = null;
+        try{ v = localStorage.getItem('tmlf_' + key); }catch(e){}
+        if(v === null) throw new Error('not found');
+        return { key: key, value: v };
+      },
+      set: async function(key, value){
+        localStorage.setItem('tmlf_' + key, value);
+        return { key: key, value: value };
+      }
+    };
+  }
+
+  // ============================================================
+  // ACCESO RESTRINGIDO: pestaña de resultados solo para administrador
+  // Cambia esta contraseña según lo necesites.
+  // ============================================================
+  const ADMIN_PASSWORD = 'contraseña';
+  let accesoAdminConcedido = false;
+
+  async function cambiarVista(vista){
+    const evalTab = document.getElementById('tabEvaluar');
+    const resTab = document.getElementById('tabResultados');
+    const evalView = document.getElementById('vistaEvaluacion');
+    const resView = document.getElementById('vistaResultados');
+    if(vista === 'evaluar'){
+      evalTab.classList.add('active');
+      resTab.classList.remove('active');
+      evalView.style.display = 'flex';
+      resView.classList.remove('show');
+      return;
+    }
+
+    if(!accesoAdminConcedido){
+      const intento = await mostrarModal({
+        title:'Acceso restringido',
+        message:'Esta sección es solo para administradores.\nIngresa la contraseña para continuar:',
+        showInput:true,
+        confirmLabel:'Ingresar'
+      });
+      if(intento === null) return;
+      if(intento !== ADMIN_PASSWORD){
+        mostrarToast('Contraseña incorrecta. Acceso denegado.');
+        return;
+      }
+      accesoAdminConcedido = true;
+    }
+
+    evalTab.classList.remove('active');
+    resTab.classList.add('active');
+    evalView.style.display = 'none';
+    resView.classList.add('show');
+    volverALista();
+    cargarResultados();
+  }
+
+  // Nota: este formulario guarda el estado en memoria durante la sesión.
+  // No se usa localStorage/sessionStorage (no soportado en este entorno de artifacts).
+  const criterios = ['c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','c13'];
+  const criterioTextos = {
+    c1:'Se presenta de forma clara, profesional y explica el propósito de la llamada.',
+    c2:'Su speech se escucha natural, seguro y no leído.',
+    c3:'Mantiene un tono de voz profesional, claro y adecuado durante toda la llamada.',
+    c4:'Genera rapport, confianza y demuestra empatía con el cliente.',
+    c5:'Escucha activamente, evita interrumpir y confirma que comprendió correctamente.',
+    c6:'Mantiene el control de la conversación sin mostrarse rígido, cortante o confrontativo.',
+    c7:'Maneja adecuadamente dudas, emociones, resistencia u objeciones del cliente.',
+    c8:'Identifica la necesidad del cliente y adapta su explicación o propuesta.',
+    c9:'Negocia con claridad, ética y seguridad, sin presionar ni prometer resultados.',
+    c10:'Realiza un cierre claro, confirma acuerdos y establece correctamente los siguientes pasos.',
+    c13:'Ofrece autopay al cliente.'
+  };
+  const respuestas = {}; // { c1: '3'|'2'|'1' }
+
+  const opcionesConfig = [
+    {val:'3', label:'3', cls:'sel-2'},
+    {val:'2', label:'2', cls:'sel-1'},
+    {val:'1', label:'1', cls:'sel-0'}
+  ];
+
+  // Construir botones de opciones
+  document.querySelectorAll('.criterio-row').forEach(row=>{
+    const id = row.getAttribute('data-id');
+    if(id === 'cobro') return; // campo Sí/No, no es un criterio de puntaje 3-2-1
+    const opcionesDiv = row.querySelector('.criterio-top .opciones');
+    opcionesConfig.forEach(op=>{
+      const btn = document.createElement('button');
+      btn.type='button';
+      btn.className = `opt-btn ${op.cls}`;
+      btn.textContent = op.label;
+      btn.onclick = ()=>seleccionar(id, op.val, row);
+      opcionesDiv.appendChild(btn);
+    });
+  });
+
+  let cobroRealizado = null; // 'Sí' | 'No'
+
+  function seleccionarCobro(val, btn){
+    cobroRealizado = val;
+    const row = btn.closest('.criterio-row');
+    row.classList.add('answered');
+    row.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function seleccionar(id, val, row){
+    respuestas[id] = val;
+    row.classList.add('answered');
+    // actualizar estilos activos
+    const btns = row.querySelectorAll('.opt-btn');
+    btns.forEach(b=>b.classList.remove('active'));
+    const idx = opcionesConfig.findIndex(o=>o.val===val);
+    btns[idx].classList.add('active');
+    actualizarProgreso();
+  }
+
+  function actualizarProgreso(){
+    const contestados = Object.keys(respuestas).length;
+    const pendientes = criterios.length - contestados;
+    document.getElementById('contestadosLabel').textContent = contestados;
+    document.getElementById('pendientesLabel').textContent = pendientes;
+    document.getElementById('progressBar').style.width = (contestados/criterios.length*100)+'%';
+
+    // Mini score en header (referencial, solo si hay respuestas)
+    const {puntosObtenidos, puntosMaximos} = calcularPuntaje();
+    const pct = puntosMaximos>0 ? Math.round((puntosObtenidos/puntosMaximos)*100) : 0;
+    document.getElementById('scoreMini').textContent = pct + '%';
+  }
+
+  function calcularPuntaje(){
+    let puntosObtenidos = 0;
+    let puntosMaximos = 0;
+    criterios.forEach(id=>{
+      const r = respuestas[id];
+      if(r === undefined) return;
+      puntosObtenidos += parseInt(r,10);
+      puntosMaximos += 3;
+    });
+    return {puntosObtenidos, puntosMaximos};
+  }
+
+  function mostrarToast(msg){
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'), 3200);
+  }
+
+  // Modal propio: los diálogos nativos prompt()/confirm() están bloqueados
+  // dentro del sandbox de artifacts, así que se reemplazan por este componente.
+  let modalResolve = null;
+  function mostrarModal({title='', message='', showInput=false, confirmLabel='Aceptar', cancelLabel='Cancelar'}){
+    const overlay = document.getElementById('modalOverlay');
+    const input = document.getElementById('modalInput');
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalMessage').textContent = message;
+    document.getElementById('modalConfirmBtn').textContent = confirmLabel;
+    document.getElementById('modalCancelBtn').textContent = cancelLabel;
+    input.style.display = showInput ? 'block' : 'none';
+    input.value = '';
+    overlay.classList.add('show');
+    if(showInput) setTimeout(()=>input.focus(), 60);
+    return new Promise(resolve=>{ modalResolve = resolve; });
+  }
+  function cerrarModal(valor){
+    document.getElementById('modalOverlay').classList.remove('show');
+    if(modalResolve){ modalResolve(valor); modalResolve = null; }
+  }
+  document.getElementById('modalCancelBtn').addEventListener('click', ()=>cerrarModal(null));
+  document.getElementById('modalConfirmBtn').addEventListener('click', ()=>{
+    const input = document.getElementById('modalInput');
+    cerrarModal(input.style.display !== 'none' ? input.value : true);
+  });
+  document.getElementById('modalInput').addEventListener('keydown', e=>{
+    if(e.key === 'Enter') document.getElementById('modalConfirmBtn').click();
+  });
+
+  function validarCampo(id, valor){
+    const field = document.getElementById(id);
+    if(!valor || valor.trim()===''){
+      field.classList.add('invalid');
+      return false;
+    }
+    field.classList.remove('invalid');
+    return true;
+  }
+
+  async function finalizarEvaluacion(){
+    const evaluador = document.getElementById('evaluador').value;
+    const evaluado = document.getElementById('evaluado').value;
+    const fecha = document.getElementById('fecha').value;
+    const fortalezas = document.getElementById('fortalezas').value;
+    const areaOportunidad = document.getElementById('areaOportunidad').value;
+
+    const v1 = validarCampo('fEvaluador', evaluador);
+    const v2b = validarCampo('fEvaluado', evaluado);
+    const v3 = validarCampo('fFecha', fecha);
+    const v4 = validarCampo('fFortalezas', fortalezas);
+    const v5 = validarCampo('fAreaOportunidad', areaOportunidad);
+
+    const contestados = Object.keys(respuestas).length;
+    const pendientes = criterios.length - contestados;
+
+    if(!v1 || !v2b || !v3 || !v4 || !v5){
+      mostrarToast('Completa los datos generales y los campos de fortalezas y área de oportunidad.');
+      return;
+    }
+
+    if(pendientes > 0){
+      mostrarToast(`Faltan ${pendientes} criterio(s) por contestar.`);
+      return;
+    }
+
+    if(cobroRealizado === null){
+      mostrarToast('Selecciona si se realizó el cobro o no.');
+      document.querySelector('.criterio-row[data-id="cobro"]').scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+
+    const {puntosObtenidos, puntosMaximos} = calcularPuntaje();
+    const pct = puntosMaximos > 0 ? (puntosObtenidos/puntosMaximos*100) : 0;
+    const pctRedondeado = Math.round(pct*10)/10;
+
+    let clasificacion, clasClass;
+    if(pct >= 90){ clasificacion='Sobresaliente'; clasClass='clasif-sobresaliente'; }
+    else if(pct >= 85){ clasificacion='Competente'; clasClass='clasif-competente'; }
+    else if(pct >= 75){ clasificacion='En desarrollo'; clasClass='clasif-desarrollo'; }
+    else { clasificacion='Requiere reforzamiento'; clasClass='clasif-refuerzo'; }
+
+    const aprobado = pct >= 85;
+
+    document.getElementById('resumenColaborador').innerHTML =
+      `<strong>${evaluado}</strong> · Evaluado por ${evaluador} · ${fecha} · Cobro realizado: <strong>${cobroRealizado}</strong>`;
+
+    document.getElementById('pctFinal').textContent = pctRedondeado + '%';
+    const tag = document.getElementById('clasificacionTag');
+    tag.textContent = clasificacion;
+    tag.className = 'clasificacion ' + clasClass;
+
+    document.getElementById('puntosObtenidos').textContent = puntosObtenidos;
+    document.getElementById('puntosMaximos').textContent = puntosMaximos;
+
+    const badge = document.getElementById('badgeFinal');
+    badge.textContent = aprobado ? 'APROBADO' : 'REQUIERE REFORZAMIENTO';
+    badge.className = 'badge-final ' + (aprobado ? 'badge-aprobado' : 'badge-refuerzo');
+
+    // Construir listas de fortalezas / oportunidades de mejora / no cumple según criterios
+    const listaFortalezas = document.getElementById('listaFortalezas');
+    const listaMejora = document.getElementById('listaMejora');
+    const listaNoCumple = document.getElementById('listaNoCumple');
+    listaFortalezas.innerHTML = '';
+    listaMejora.innerHTML = '';
+    listaNoCumple.innerHTML = '';
+
+    criterios.forEach(id=>{
+      const val = respuestas[id];
+      const li = document.createElement('li');
+      li.textContent = criterioTextos[id];
+      if(val === '3') listaFortalezas.appendChild(li);
+      else if(val === '2') listaMejora.appendChild(li.cloneNode(true));
+      else if(val === '1') listaNoCumple.appendChild(li.cloneNode(true));
+    });
+
+    const card = document.getElementById('resultadoCard');
+    card.classList.add('show');
+    card.scrollIntoView({behavior:'smooth', block:'start'});
+
+    // Guardar en el almacenamiento del artefacto para la vista de "Resultados por colaborador"
+    const fortalezasIds = criterios.filter(id=>respuestas[id]==='3').map(id=>criterioTextos[id]);
+    const mejoraIds = criterios.filter(id=>respuestas[id]==='2').map(id=>criterioTextos[id]);
+    const noCumpleIds = criterios.filter(id=>respuestas[id]==='1').map(id=>criterioTextos[id]);
+
+    const camposCriterios = {};
+    criterios.forEach(id=>{
+      camposCriterios[`puntaje_${id}`] = respuestas[id] || '';
+    });
+
+    const registro = {
+      id: `eval_${Date.now()}_${Math.random().toString(36).slice(2,8)}`,
+      timestamp: new Date().toISOString(),
+      evaluador, evaluado, fecha,
+      puntosObtenidos, puntosMaximos,
+      porcentaje: pctRedondeado,
+      clasificacion,
+      aprobado: aprobado ? 'Sí' : 'No',
+      cobroRealizado,
+      fortalezasTexto: fortalezas,
+      areaOportunidadTexto: areaOportunidad,
+      observaciones: document.getElementById('observacionesGenerales').value,
+      palabrasRestringidas: document.getElementById('palabrasRestringidas').value,
+      criteriosFortaleza: fortalezasIds.join(' | '),
+      criteriosMejora: mejoraIds.join(' | '),
+      criteriosNoCumple: noCumpleIds.join(' | '),
+      ...camposCriterios
+    };
+
+    // Se guarda en el almacenamiento propio del artefacto para la vista de
+    // "Resultados por colaborador".
+    await guardarEvaluacionEnStorage(registro);
+
+  }
+
+  // Almacenamiento propio del artefacto: todas las evaluaciones se guardan en
+  // una sola llave compartida (shared:true) para que cualquier persona que
+  // abra este mismo artefacto pueda consultarlas desde "Resultados por colaborador".
+  const STORAGE_KEY = 'evaluaciones-registro';
+
+  async function guardarEvaluacionEnStorage(registro){
+    if(typeof window.storage === 'undefined'){
+      console.warn('window.storage no disponible en este entorno (fuera de Claude.ai). El registro no se guardó en la vista de "Resultados por colaborador".');
+      return;
+    }
+    try{
+      let lista = [];
+      try{
+        const actual = await window.storage.get(STORAGE_KEY, true);
+        if(actual && actual.value) lista = JSON.parse(actual.value);
+      } catch(err){
+        lista = []; // aún no existe la llave
+      }
+      lista.push(registro);
+      await window.storage.set(STORAGE_KEY, JSON.stringify(lista), true);
+    } catch(err){
+      console.error('Error guardando la evaluación:', err);
+      mostrarToast('No se pudo guardar el registro. Intenta de nuevo.');
+    }
+  }
+
+  function imprimir(){
+    window.print();
+  }
+
+  async function limpiarFormulario(){
+    const ok = await mostrarModal({
+      title:'Confirmar',
+      message:'¿Seguro que deseas limpiar todo el formulario?',
+      confirmLabel:'Sí, limpiar',
+      cancelLabel:'Cancelar'
+    });
+    if(!ok) return;
+    document.getElementById('evaluador').value='';
+    document.getElementById('evaluado').value='';
+    document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+    document.getElementById('fortalezas').value='';
+    document.getElementById('areaOportunidad').value='';
+    document.getElementById('observacionesGenerales').value='';
+    document.getElementById('palabrasRestringidas').value='';
+
+    for(const key in respuestas) delete respuestas[key];
+    cobroRealizado = null;
+    document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.criterio-row').forEach(r=>r.classList.remove('answered'));
+    document.querySelectorAll('.field').forEach(f=>f.classList.remove('invalid'));
+
+    document.getElementById('resultadoCard').classList.remove('show');
+    document.getElementById('listaFortalezas').innerHTML = '';
+    document.getElementById('listaMejora').innerHTML = '';
+    document.getElementById('listaNoCumple').innerHTML = '';
+    document.getElementById('resumenColaborador').innerHTML = '';
+    actualizarProgreso();
+  }
+
+  // Inicializar fecha automática
+  document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+  actualizarProgreso();
+
+  // ============================================================
+  // VISTA: Resultados por colaborador
+  // ============================================================
+  let datosSheet = [];
+
+  async function cargarResultados(){
+    const estado = document.getElementById('estadoCarga');
+    const lista = document.getElementById('listaColaboradores');
+    lista.innerHTML = '';
+    estado.style.display = 'block';
+    estado.textContent = 'Cargando resultados...';
+
+    if(typeof window.storage === 'undefined'){
+      estado.textContent = 'Esta vista solo está disponible cuando el formulario se abre dentro de Claude.ai.';
+      return;
+    }
+
+    try{
+      let registros = [];
+      try{
+        const actual = await window.storage.get(STORAGE_KEY, true);
+        if(actual && actual.value) registros = JSON.parse(actual.value);
+      } catch(err){
+        registros = []; // aún no hay ninguna evaluación guardada
+      }
+      datosSheet = registros;
+      estado.style.display = 'none';
+      if(datosSheet.length === 0){
+        estado.style.display = 'block';
+        estado.textContent = 'Aún no hay evaluaciones registradas.';
+      }
+      renderListaColaboradores(datosSheet);
+    } catch(err){
+      estado.textContent = 'No se pudieron cargar los resultados. Intenta de nuevo.';
+      console.error(err);
+    }
+  }
+
+  function agruparPorColaborador(datos){
+    const grupos = {};
+    datos.forEach(r=>{
+      const nombre = r.evaluado || 'Sin nombre';
+      if(!grupos[nombre]) grupos[nombre] = [];
+      grupos[nombre].push(r);
+    });
+    return grupos;
+  }
+
+  function renderListaColaboradores(datos){
+    const grupos = agruparPorColaborador(datos);
+    const lista = document.getElementById('listaColaboradores');
+    lista.innerHTML = '';
+
+    const nombres = Object.keys(grupos).sort((a,b)=>a.localeCompare(b));
+    if(nombres.length === 0){
+      lista.innerHTML = '<div class="estado-carga">Aún no hay evaluaciones registradas.</div>';
+      return;
+    }
+
+    nombres.forEach(nombre=>{
+      const evals = grupos[nombre];
+      const promedio = evals.reduce((sum,e)=>sum + parseFloat(e.porcentaje||0), 0) / evals.length;
+      const card = document.createElement('div');
+      card.className = 'colab-card';
+      card.innerHTML = `
+        <h3>${nombre}</h3>
+        <div class="colab-meta">
+          <span>${evals.length} evaluación(es)</span>
+          <span class="colab-pct">${Math.round(promedio*10)/10}%</span>
+        </div>`;
+      card.onclick = ()=>mostrarDetalleColaborador(nombre, evals);
+      lista.appendChild(card);
+    });
+  }
+
+  function filtrarColaboradores(){
+    const texto = document.getElementById('buscarColaborador').value.toLowerCase();
+    const grupos = agruparPorColaborador(datosSheet);
+    const filtrados = {};
+    Object.keys(grupos).forEach(nombre=>{
+      if(nombre.toLowerCase().includes(texto)) filtrados[nombre] = grupos[nombre];
+    });
+    renderListaColaboradores(Object.values(filtrados).flat());
+  }
+
+  function contarFrecuencias(evals, campo){
+    const conteo = {};
+    evals.forEach(e=>{
+      const items = (e[campo] || '').split(' | ').map(s=>s.trim()).filter(Boolean);
+      items.forEach(item=>{
+        conteo[item] = (conteo[item] || 0) + 1;
+      });
+    });
+    return Object.entries(conteo).sort((a,b)=>b[1]-a[1]);
+  }
+
+  function mostrarDetalleColaborador(nombre, evals){
+    document.getElementById('listaVistaCard').style.display = 'none';
+    const detalle = document.getElementById('detalleColabCard');
+    detalle.classList.add('show');
+
+    document.getElementById('detalleNombre').textContent = nombre;
+    document.getElementById('detalleConteo').textContent = `${evals.length} evaluación(es)`;
+
+    const promedio = evals.reduce((sum,e)=>sum + parseFloat(e.porcentaje||0), 0) / evals.length;
+    document.getElementById('detallePctPromedio').textContent = Math.round(promedio*10)/10 + '%';
+
+    // Ordenar por fecha descendente
+    const ordenados = [...evals].sort((a,b)=> (b.fecha||'').localeCompare(a.fecha||''));
+    const tbody = document.getElementById('historialBody');
+    tbody.innerHTML = '';
+    ordenados.forEach(e=>{
+      const tr = document.createElement('tr');
+      const horaEnvio = e.timestamp ? new Date(e.timestamp).toLocaleString('es-MX', {dateStyle:'short', timeStyle:'short'}) : '—';
+      tr.innerHTML = `
+        <td>${e.fecha||''}</td>
+        <td>${horaEnvio}</td>
+        <td>${e.evaluador||''}</td>
+        <td>${e.puntosObtenidos||0}/${e.puntosMaximos||0}</td>
+        <td>${e.porcentaje||0}%</td>
+        <td>${e.clasificacion||''}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    const freqFortalezas = contarFrecuencias(evals, 'criteriosFortaleza');
+    const freqNoCumple = contarFrecuencias(evals, 'criteriosNoCumple');
+
+    const fortDiv = document.getElementById('freqFortalezas');
+    fortDiv.innerHTML = freqFortalezas.length
+      ? freqFortalezas.map(([texto,count])=>`<div class="freq-item"><span>${texto}</span><span class="freq-count">${count}</span></div>`).join('')
+      : '<div class="estado-carga">Sin fortalezas registradas aún.</div>';
+
+    const nocDiv = document.getElementById('freqNoCumple');
+    nocDiv.innerHTML = freqNoCumple.length
+      ? freqNoCumple.map(([texto,count])=>`<div class="freq-item"><span>${texto}</span><span class="freq-count">${count}</span></div>`).join('')
+      : '<div class="estado-carga">Sin áreas a reforzar registradas aún.</div>';
+
+    renderEvaluacionesDetalle(ordenados);
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  function renderEvaluacionesDetalle(ordenados){
+    const cont = document.getElementById('evaluacionesDetalle');
+    cont.innerHTML = '';
+
+    ordenados.forEach((e, idx)=>{
+      const card = document.createElement('div');
+      card.className = 'eval-detalle-card';
+
+      const horaEnvio = e.timestamp ? new Date(e.timestamp).toLocaleString('es-MX', {dateStyle:'short', timeStyle:'short'}) : '—';
+
+      const criteriosHtml = criterios.map(id=>{
+        const val = e['puntaje_' + id];
+        const obs = e['observacion_' + id];
+        const badgeClass = val === '3' ? 'b3' : val === '2' ? 'b2' : val === '1' ? 'b1' : 'bna';
+        const badgeLabel = val || '—';
+        return `
+          <div class="eval-criterio-item">
+            <div class="ec-top">
+              <div class="ec-texto">${escapeHtml(criterioTextos[id])}</div>
+              <div class="ec-badge ${badgeClass}">${badgeLabel}</div>
+            </div>
+            ${obs ? `<div class="ec-obs">${escapeHtml(obs)}</div>` : ''}
+          </div>`;
+      }).join('');
+
+      card.innerHTML = `
+        <div class="eval-detalle-header" onclick="this.nextElementSibling.classList.toggle('show')">
+          <div class="eval-meta">${e.fecha||''} · Enviado: ${horaEnvio} · ${e.evaluador||''}</div>
+          <div class="eval-pct">${e.porcentaje||0}% — ${e.clasificacion||''}</div>
+        </div>
+        <div class="eval-detalle-body">
+          ${criteriosHtml}
+          <div class="eval-otros-campos">
+            <div><strong>Fortalezas identificadas:</strong> ${escapeHtml(e.fortalezasTexto)||'—'}</div>
+            <div><strong>Área de oportunidad:</strong> ${escapeHtml(e.areaOportunidadTexto)||'—'}</div>
+            <div><strong>Cobro realizado:</strong> ${escapeHtml(e.cobroRealizado)||'—'}</div>
+            <div><strong>Observaciones adicionales:</strong> ${escapeHtml(e.observaciones)||'—'}</div>
+            <div><strong>Palabras restringidas detectadas:</strong> ${escapeHtml(e.palabrasRestringidas)||'—'}</div>
+          </div>
+        </div>`;
+      cont.appendChild(card);
+    });
+  }
+
+  function volverALista(){
+    document.getElementById('detalleColabCard').classList.remove('show');
+    document.getElementById('listaVistaCard').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
