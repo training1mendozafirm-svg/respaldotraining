@@ -1,0 +1,2336 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Elegibilidad Migratoria | TMLF Learning Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --ink:#0f1923;--slate:#5a6a7a;--steel:#6b8fa8;--ice:#8db8d8;
+  --gold:#c9a84c;--gold-bg:rgba(201,168,76,.09);
+  --white:#fff;--bg:#eef1f5;--shadow:0 8px 28px rgba(15,25,35,.11);--radius:16px;
+  --nav-h:56px;--sidebar-w:280px;
+  --green:#1e6641;--green-bg:rgba(30,102,65,.08);
+  --red:#8b2c2c;--red-bg:rgba(180,50,50,.08);
+  --amber:#7a5200;--amber-bg:rgba(180,130,0,.09);
+  --accent:#1a3a5c;--accent2:#2e5c8a;
+  --sidebar-bg:#0d1e2e;
+  --purple:#7c3aed;--blue:#1a3a5c;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+.topnav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav-h);background:rgba(10,18,28,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);display:flex;align-items:center;padding:0 18px;gap:10px}
+.topnav .brand{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;white-space:nowrap;letter-spacing:.3px;display:flex;align-items:center;gap:10px}
+.topnav .brand .seal{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.08));border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.topnav .brand span{color:var(--gold)}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topnav-pill{padding:5px 14px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.28);color:rgba(201,168,76,.9)}
+.sidebar-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px}
+@media(max-width:900px){.sidebar-toggle{display:block}}
+.app-shell{display:flex;min-height:100vh;padding-top:var(--nav-h)}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);position:fixed;top:var(--nav-h);bottom:0;left:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;border-right:1px solid rgba(201,168,76,.07);z-index:200;transition:transform .3s ease}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:3px}
+.sidebar-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sidebar-header .sh-label{font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px}
+.sidebar-header .sh-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.88);font-weight:600;line-height:1.3}
+.sb-group{padding:8px 0}
+.sb-group-label{padding:6px 16px 3px;font-size:8.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.sb-divider{margin:4px 14px 6px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.18),transparent)}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:all .18s;position:relative;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.045)}
+.sb-item.active{background:rgba(141,184,216,.09)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.sb-item.locked{opacity:.42;cursor:not-allowed}
+.sb-item.locked:hover{background:none}
+.sb-item.completed .sb-num{background:var(--green)!important;color:#fff!important}
+.sb-num{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);transition:all .18s}
+.sb-item.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item:hover:not(.locked) .sb-num{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+.sb-text{flex:1;min-width:0}
+.sb-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);line-height:1.3;transition:color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item.active .sb-name{color:rgba(255,255,255,.92)}
+.sb-item:hover:not(.locked) .sb-name{color:rgba(255,255,255,.82)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.sb-item.overview .sb-num{background:rgba(141,184,216,.13);color:var(--ice)}
+.sb-item.overview.active .sb-num{background:var(--ice);color:var(--ink)}
+.sb-item.exam .sb-num{background:rgba(201,168,76,.14);color:var(--gold)}
+.sb-item.exam.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item.exam .sb-name{color:rgba(255,210,80,.55)}
+.sb-item.exam.active .sb-name{color:rgba(255,210,80,.92)}
+.sb-item.practice .sb-num{background:rgba(30,102,65,.14);color:#4ade80}
+.sb-item.practice.active .sb-num{background:var(--green);color:#fff}
+.sb-item.practice .sb-name{color:rgba(74,222,128,.55)}
+.sb-item.practice.active .sb-name{color:rgba(74,222,128,.92)}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.45)}
+  .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+  .sb-overlay.show{display:block}
+}
+.progress-bar-wrap{position:fixed;top:var(--nav-h);left:0;right:0;z-index:299;height:3px;background:rgba(255,255,255,.06)}
+.progress-bar-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--ice));transition:width .5s ease;width:0%}
+.main{margin-left:var(--sidebar-w);flex:1;padding:26px 26px 60px;max-width:1000px}
+@media(max-width:900px){.main{margin-left:0;padding:18px 14px 50px}}
+.header{background:linear-gradient(135deg,#0b1f35 0%,#0e2540 45%,#1a3a5c 100%);color:#fff;border-radius:20px;padding:38px 34px 32px;box-shadow:0 16px 40px rgba(10,20,35,.22);position:relative;overflow:hidden;margin-bottom:22px}
+.header::before{content:'';position:absolute;top:-60px;right:-40px;width:270px;height:270px;border:1.5px solid rgba(201,168,76,.1);border-radius:50%;animation:pulse 5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:.85}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.header-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:12px}
+.header-badge .dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+h1{font-family:'Cormorant Garamond',serif;font-size:32px;letter-spacing:.4px;position:relative;z-index:1;font-weight:700;line-height:1.15}
+.subtitle{font-size:14px;opacity:.78;max-width:60ch;position:relative;z-index:1;margin-top:6px}
+.header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.header-meta-item{display:flex;align-items:center;gap:6px;padding:5px 13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:11.5px}
+.header-meta-item span:first-child{opacity:.58}
+.header-meta-item strong{font-weight:700}
+.panel{display:none;animation:fadeUp .28s ease both}
+.panel.active{display:block}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:9px;margin-bottom:18px}
+.stat-card{background:var(--white);border-radius:13px;padding:15px;border:1px solid rgba(107,143,168,.16);text-align:center}
+.stat-card .stat-val{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--accent);line-height:1}
+.stat-card .stat-label{font-size:10.5px;color:var(--slate);margin-top:4px;font-weight:600}
+.block{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(107,143,168,.15);overflow:hidden;margin-bottom:14px}
+.block:last-child{margin-bottom:0}
+.block .btitle{display:flex;align-items:center;gap:10px;padding:15px 18px;background:linear-gradient(180deg,rgba(141,184,216,.16),rgba(141,184,216,.02));border-bottom:1px solid rgba(107,143,168,.13)}
+.block .btitle .bicon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.block .btitle h3{font-size:15.5px;color:var(--ink);font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.2px;flex:1}
+.block .btitle .mod-badge{margin-left:auto;padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;flex-shrink:0}
+.badge-core{background:rgba(26,58,92,.09);color:#1a3a5c;border:1px solid rgba(26,58,92,.17)}
+.badge-warn{background:rgba(139,44,44,.08);color:#8b2c2c;border:1px solid rgba(139,44,44,.17)}
+.badge-green{background:rgba(30,102,65,.08);color:#1e6641;border:1px solid rgba(30,102,65,.17)}
+.badge-gold{background:rgba(201,168,76,.09);color:#7a5200;border:1px solid rgba(201,168,76,.2)}
+.badge-exam{background:linear-gradient(135deg,rgba(201,168,76,.16),rgba(201,168,76,.05));color:#7a5200;border:1px solid rgba(201,168,76,.28)}
+.badge-purple{background:rgba(124,58,237,.08);color:#7c3aed;border:1px solid rgba(124,58,237,.2)}
+.block .bbody{padding:18px}
+.block .bbody p{margin:0 0 10px;font-size:13.5px}
+.block .bbody p:last-child{margin-bottom:0}
+.sdiv{display:flex;align-items:center;gap:11px;margin:20px 0 13px}
+.sdiv .l{flex:1;height:1px;background:linear-gradient(90deg,rgba(107,143,168,.28),transparent)}
+.sdiv .l:last-child{background:linear-gradient(270deg,rgba(107,143,168,.28),transparent)}
+.sdiv .t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--slate);white-space:nowrap}
+.lo-callout{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.13);margin-bottom:13px}
+.lo-callout .lo-icon{font-size:17px;flex-shrink:0;margin-top:1px}
+.lo-callout .lo-text{font-size:12.5px;color:var(--slate);line-height:1.55}
+.lo-callout .lo-text strong{color:var(--ink);display:block;margin-bottom:2px;font-size:13px}
+details.block-accordion{border:none;background:none;padding:0;margin:8px 0 0}
+details.block-accordion+details.block-accordion{margin-top:7px}
+.block-accordion-header{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.04),rgba(107,143,168,.08));border:1px solid rgba(107,143,168,.15);transition:all .2s;user-select:none}
+.block-accordion-header::-webkit-details-marker{display:none}
+details.block-accordion[open] .block-accordion-header{border-radius:11px 11px 0 0;border-bottom-color:transparent;background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.12))}
+.block-accordion-header:hover{background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.13))}
+.bac-left{display:flex;align-items:center;gap:11px}
+.bac-num{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bac-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.bac-title{font-size:13.5px;font-weight:700;color:var(--ink)}
+.bac-arrow{font-size:11px;color:var(--slate);transition:transform .2s;flex-shrink:0}
+details.block-accordion[open] .bac-arrow{transform:rotate(90deg)}
+.bac-body{padding:14px 16px 16px;border:1px solid rgba(107,143,168,.15);border-top:none;border-radius:0 0 11px 11px;background:rgba(242,244,247,.45)}
+.ev-list{margin:8px 0 0;padding:0 0 0 15px;font-size:13px;line-height:1.7}
+.ev-list li{margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chip{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:600;background:rgba(141,184,216,.13);border:1px solid rgba(107,143,168,.17);color:var(--ink)}
+.chip.green{background:var(--green-bg);border-color:rgba(30,102,65,.17);color:var(--green)}
+.chip.amber{background:var(--amber-bg);border-color:rgba(180,130,0,.19);color:var(--amber)}
+.chip.dark{background:rgba(15,25,35,.07);border-color:rgba(15,25,35,.12);color:var(--ink)}
+.chip.gold{background:var(--gold-bg);border-color:rgba(201,168,76,.2);color:#7a5200}
+.chip.red{background:rgba(180,50,50,.08);border-color:rgba(180,50,50,.18);color:#8b2c2c}
+.chip.blue{background:rgba(37,99,235,.09);border-color:rgba(37,99,235,.18);color:#1a3a5c}
+.chip.purple{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.2);color:#7c3aed}
+.alert{margin-top:10px;padding:10px 13px;border-radius:10px;font-size:12.5px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.alert.warn{background:var(--amber-bg);border:1px solid rgba(180,130,0,.19);color:var(--amber)}
+.alert.danger{background:var(--red-bg);border:1px solid rgba(180,50,50,.17);color:var(--red)}
+.alert.success{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}
+.alert.info{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.18);color:var(--ink)}
+.alert.blue{background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);color:#1a3a5c}
+.alert.purple{background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);color:#7c3aed}
+.alert.gold{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);color:var(--amber)}
+.alert-icon{flex-shrink:0;margin-top:1px}
+.alert strong{font-weight:700}
+.principle{margin-top:13px;padding:14px 17px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.03),rgba(141,184,216,.06));border:1px solid rgba(107,143,168,.17);border-left:3px solid var(--accent)}
+.principle p{margin:0;font-size:14px;font-weight:600;font-style:italic;font-family:'Cormorant Garamond',serif;line-height:1.55;color:var(--ink)}
+.ob-list{display:grid;grid-template-columns:1fr;gap:6px;margin-top:9px}
+@media(min-width:600px){.ob-list{grid-template-columns:1fr 1fr}}
+.ob-item{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:10px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.16);transition:all .2s}
+.ob-item:hover{transform:translateX(3px);background:rgba(141,184,216,.16)}
+.ob-num{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px}
+.ob-item span{font-size:12.5px;font-weight:600;line-height:1.4}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px}
+@media(max-width:700px){.three-col{grid-template-columns:1fr}}
+@media(max-width:600px){.two-col{grid-template-columns:1fr}}
+.mini-card{padding:13px;border-radius:11px;border:1px solid rgba(107,143,168,.15);background:rgba(107,143,168,.04)}
+.mini-card h4{font-size:12.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px;color:var(--ink);font-weight:700}
+.mini-card p,.mini-card li{font-size:12px;color:var(--slate);line-height:1.6}
+.mini-card ul{padding-left:15px}
+.info-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.5px;border-radius:11px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.info-table th{background:var(--accent);color:#fff;padding:11px 14px;text-align:left;font-weight:700;font-size:11.5px}
+.info-table td{padding:10px 14px;border-bottom:1px solid rgba(107,143,168,.12)}
+.info-table tr:nth-child(even) td{background:rgba(107,143,168,.04)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:hover td{background:rgba(141,184,216,.08)}
+.mod-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:6px;margin-bottom:13px}
+.mod-meta-item{padding:8px 12px;border-radius:9px;background:rgba(107,143,168,.055);border:1px solid rgba(107,143,168,.13)}
+.mod-meta-item .label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.mod-meta-item .value{font-size:12.5px;font-weight:700;color:var(--ink)}
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:2px}
+.ov-card{background:var(--white);border-radius:12px;padding:14px;border:1px solid rgba(107,143,168,.15);cursor:pointer;transition:all .22s;display:flex;flex-direction:column;gap:4px;position:relative}
+.ov-card:hover{transform:translateY(-3px);box-shadow:0 7px 20px rgba(15,25,35,.1);border-color:var(--ice)}
+.ov-card .ov-icon{font-size:20px;margin-bottom:2px}
+.ov-card .ov-name{font-size:12.5px;font-weight:700;color:var(--ink)}
+.ov-card .ov-desc{font-size:10.5px;color:var(--slate)}
+.section-head{margin-bottom:18px}
+.section-head h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ink);line-height:1.2}
+.section-head p{font-size:13.5px;color:var(--slate);margin-top:5px;max-width:65ch}
+.section-head .sh-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;background:var(--gold-bg);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.mod-nav-bar{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid rgba(107,143,168,.15)}
+.mod-nav-btn{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.mod-nav-prev{background:rgba(107,143,168,.1);color:var(--slate);border:1px solid rgba(107,143,168,.2)}
+.mod-nav-prev:hover{background:rgba(107,143,168,.2)}
+.mod-nav-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(26,58,92,.2)}
+.mod-nav-next:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,58,92,.3)}
+.mod-nav-next:disabled{opacity:.4;cursor:not-allowed}
+/* comparison 3-col table */
+.comp-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px}
+.comp-table th{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:10px 12px;text-align:left;font-size:11px}
+.comp-table td{padding:10px 12px;border-bottom:1px solid rgba(107,143,168,.14);vertical-align:top}
+.comp-table tr:nth-child(even) td{background:rgba(107,143,168,.04)}
+/* CASE CARD */
+.case-card{border:1px solid rgba(107,143,168,.18);border-radius:13px;padding:15px;margin-top:12px;background:rgba(107,143,168,.03)}
+.case-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.case-avatar{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.case-name{font-weight:700;font-size:13.5px;color:var(--ink)}
+.case-sub{font-size:11px;color:var(--slate)}
+.case-desc{font-size:13px;color:var(--ink);margin:6px 0 10px;padding:10px 12px;background:var(--white);border-radius:9px;border:1px solid rgba(107,143,168,.13)}
+.case-q{margin-top:10px}
+.case-q-text{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:7px}
+.q-opt{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;border-radius:9px;border:1.5px solid rgba(107,143,168,.2);margin-bottom:6px;cursor:pointer;transition:all .15s;font-size:12.5px;background:var(--white)}
+.q-opt:hover{border-color:var(--ice);background:rgba(141,184,216,.06)}
+.q-opt.selected{border-color:var(--accent2);background:rgba(46,92,138,.08)}
+.q-opt.correct{border-color:var(--green);background:var(--green-bg)}
+.q-opt.incorrect{border-color:var(--red);background:var(--red-bg)}
+.q-opt.disabled{cursor:default}
+.q-opt .opt-mark{width:18px;height:18px;border-radius:5px;border:1.5px solid rgba(107,143,168,.35);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;margin-top:1px}
+.q-opt.selected .opt-mark{background:var(--accent2);border-color:var(--accent2)}
+.q-opt.correct .opt-mark{background:var(--green);border-color:var(--green)}
+.q-opt.incorrect .opt-mark{background:var(--red);border-color:var(--red)}
+.q-feedback{display:none;margin-top:6px;padding:9px 11px;border-radius:8px;font-size:12px;line-height:1.5}
+.q-feedback.show{display:block}
+.q-feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(30,102,65,.2)}
+.q-feedback.fail{background:var(--red-bg);color:var(--red);border:1px solid rgba(180,50,50,.2)}
+.act-btn{padding:9px 20px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif;margin-top:12px;margin-right:8px}
+.act-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(26,58,92,.22)}
+.act-btn.primary:hover{transform:translateY(-1px)}
+.act-btn.ghost{background:rgba(107,143,168,.12);color:var(--slate);border:1px solid rgba(107,143,168,.2)}
+.act-btn.ghost:hover{background:rgba(107,143,168,.2)}
+.act-summary{display:none;margin-top:12px;padding:12px 15px;border-radius:11px;font-size:13px;font-weight:700;text-align:center}
+.act-summary.show{display:block}
+.act-summary.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(30,102,65,.2)}
+.act-summary.warn{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(180,130,0,.2)}
+.act-summary.fail{background:var(--red-bg);color:var(--red);border:1px solid rgba(180,50,50,.2)}
+.tag-legal{background:rgba(26,58,92,.09);color:#1a3a5c;border:1px solid rgba(26,58,92,.18);padding:2px 8px;border-radius:6px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.tag-exc{background:rgba(201,168,76,.12);color:#7a5200;border:1px solid rgba(201,168,76,.25);padding:2px 8px;border-radius:6px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.tag-int{background:rgba(139,44,44,.08);color:#8b2c2c;border:1px solid rgba(139,44,44,.2);padding:2px 8px;border-radius:6px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+/* lab template */
+.lab-field{margin-top:10px}
+.lab-field label{display:block;font-size:11.5px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.lab-field textarea{width:100%;min-height:52px;padding:9px 11px;border-radius:9px;border:1.5px solid rgba(107,143,168,.25);font-family:'DM Sans',sans-serif;font-size:12.5px;resize:vertical;background:var(--white)}
+.lab-field textarea:focus{outline:none;border-color:var(--accent2)}
+.lab-reveal{display:none;margin-top:10px;padding:12px 14px;border-radius:10px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.18);font-size:12.5px}
+.lab-reveal.show{display:block}
+.lab-reveal h5{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);margin-bottom:4px}
+.lab-reveal p{margin-bottom:8px;font-size:12.5px}
+/* exam */
+.exam-progress{position:sticky;top:calc(var(--nav-h) + 6px);z-index:50;background:rgba(238,241,245,.9);backdrop-filter:blur(6px);padding:8px 0;margin-bottom:6px}
+.exam-q-block{background:var(--white);border-radius:13px;padding:16px;border:1px solid rgba(107,143,168,.15);margin-bottom:12px}
+.exam-q-num{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.exam-q-text{font-size:13.5px;font-weight:700;margin-bottom:10px;color:var(--ink)}
+.result-card{display:none;margin-top:16px;padding:26px;border-radius:16px;text-align:center;background:var(--white);border:1px solid rgba(107,143,168,.18);box-shadow:var(--shadow)}
+.result-card.show{display:block}
+.result-score{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:800;line-height:1}
+.result-score.pass{color:var(--green)}
+.result-score.fail{color:var(--red)}
+.result-label{font-size:16px;font-weight:800;margin-top:6px;letter-spacing:.4px}
+.result-msg{font-size:13px;color:var(--slate);margin-top:8px;max-width:50ch;margin-left:auto;margin-right:auto}
+.result-stats{display:flex;justify-content:center;gap:26px;margin-top:16px}
+.result-stat{text-align:center}
+.result-stat .rv{font-size:22px;font-weight:800;color:var(--accent)}
+.result-stat .rl{font-size:10px;text-transform:uppercase;color:var(--slate);letter-spacing:.4px}
+.review-list{margin-top:6px}
+.review-item{font-size:11.5px;padding:6px 0;border-bottom:1px dashed rgba(107,143,168,.2)}
+footer.tmlf-foot{text-align:center;font-size:10.5px;color:var(--slate);opacity:.6;margin-top:30px}
+
+
+/* ══ KEYWORD HIGHLIGHTS ══ */
+mark.kw{background:none;padding:1px 5px;border-radius:5px;font-weight:700;font-family:inherit;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+mark.kw-term{background:rgba(26,58,92,.1);color:#12324f;border:1px solid rgba(26,58,92,.18)}
+mark.kw-num{background:rgba(180,50,50,.09);color:#8b2c2c;border:1px solid rgba(180,50,50,.2)}
+mark.kw-date{background:rgba(180,130,0,.12);color:#7a5200;border:1px solid rgba(180,130,0,.24)}
+mark.kw-concept{background:rgba(30,102,65,.1);color:#175236;border:1px solid rgba(30,102,65,.2)}
+mark.kw-gold{background:rgba(201,168,76,.16);color:#7a5200;border:1px solid rgba(201,168,76,.32)}
+
+/* ══ MODULE ACCENT COLORS ══ */
+.mc-1 .bicon,.mc-1.bicon{background:linear-gradient(135deg,#1a3a5c,#2e5c8a)!important}
+.mc-2 .bicon,.mc-2.bicon{background:linear-gradient(135deg,#0f5c8a,#3a8dc0)!important}
+.mc-3 .bicon,.mc-3.bicon{background:linear-gradient(135deg,#8b2c2c,#b8524f)!important}
+.mc-4 .bicon,.mc-4.bicon{background:linear-gradient(135deg,#5b3a91,#8a5fc9)!important}
+.mc-5 .bicon,.mc-5.bicon{background:linear-gradient(135deg,#7a5200,#c9a84c)!important}
+.mc-6 .bicon,.mc-6.bicon{background:linear-gradient(135deg,#0f6b5c,#2f9d8a)!important}
+.mc-7 .bicon,.mc-7.bicon{background:linear-gradient(135deg,#1e6641,#3fa66c)!important}
+.panel-mc-1 .section-head h2{color:#1a3a5c}
+.panel-mc-2 .section-head h2{color:#0f5c8a}
+.panel-mc-3 .section-head h2{color:#8b2c2c}
+.panel-mc-4 .section-head h2{color:#5b3a91}
+.panel-mc-5 .section-head h2{color:#7a5200}
+.panel-mc-6 .section-head h2{color:#0f6b5c}
+.panel-mc-7 .section-head h2{color:#1e6641}
+.panel-mc-1 .sh-badge{background:rgba(26,58,92,.09);border-color:rgba(26,58,92,.25);color:#1a3a5c}
+.panel-mc-2 .sh-badge{background:rgba(15,92,138,.09);border-color:rgba(15,92,138,.25);color:#0f5c8a}
+.panel-mc-3 .sh-badge{background:rgba(139,44,44,.09);border-color:rgba(139,44,44,.25);color:#8b2c2c}
+.panel-mc-4 .sh-badge{background:rgba(91,58,145,.09);border-color:rgba(91,58,145,.25);color:#5b3a91}
+.panel-mc-5 .sh-badge{background:rgba(201,168,76,.14);border-color:rgba(201,168,76,.32);color:#7a5200}
+.panel-mc-6 .sh-badge{background:rgba(15,107,92,.09);border-color:rgba(15,107,92,.25);color:#0f6b5c}
+.panel-mc-7 .sh-badge{background:rgba(30,102,65,.09);border-color:rgba(30,102,65,.25);color:#1e6641}
+
+/* ══ MODULE PILL (badge junto al numero de bloque) ══ */
+.mod-pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-left:8px;vertical-align:middle}
+
+/* ══ LABORATORIO — VISTA DE LIBRO (BOOK VIEW) ══ */
+.book-progress{display:flex;align-items:center;gap:10px;margin:14px 0 4px;padding:10px 15px;background:var(--accent);border-radius:11px}
+.book-prog-label{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.book-prog-track{flex:1;height:5px;background:rgba(255,255,255,.15);border-radius:5px;overflow:hidden}
+.book-prog-fill{height:100%;background:var(--gold);border-radius:5px;transition:width .35s ease}
+.book-prog-count{font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.book-viewer{min-height:120px}
+.book-page{animation:fadeUp .25s ease both}
+.book-nav{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px;flex-wrap:wrap}
+.book-btn{display:flex;align-items:center;gap:6px;padding:10px 20px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.book-btn-prev{background:rgba(107,143,168,.12);color:var(--slate);border:1.5px solid rgba(107,143,168,.22)}
+.book-btn-prev:hover:not(:disabled){background:rgba(107,143,168,.22);color:var(--ink)}
+.book-btn-prev:disabled{opacity:.35;cursor:default}
+.book-btn-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(26,58,92,.25)}
+.book-btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,58,92,.32)}
+.book-btn-next.bp-done{background:linear-gradient(135deg,var(--green),#2d9d62)}
+.book-dots{display:flex;gap:6px;align-items:center}
+.book-dot{width:8px;height:8px;border-radius:50%;background:rgba(107,143,168,.3);cursor:pointer;transition:all .2s;border:none;padding:0}
+.book-dot:hover{background:rgba(107,143,168,.5)}
+.book-dot.bd-active{background:var(--accent);width:22px;border-radius:5px}
+.book-dot.bd-done{background:var(--green)}
+
+.mc-8 .bicon,.mc-8.bicon{background:linear-gradient(135deg,#6b3410,#b8622f)!important}
+.panel-mc-8 .section-head h2{color:#6b3410}
+.panel-mc-8 .sh-badge{background:rgba(107,52,16,.09);border-color:rgba(107,52,16,.25);color:#6b3410}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <div class="seal">🎓</div>
+    TMLF <span>Learning Center</span>
+  </div>
+  <div class="topnav-right">
+    <div class="topnav-pill">Elegibilidad Migratoria</div>
+  </div>
+</nav>
+
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="globalProgress"></div></div>
+<div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
+<div class="app-shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sh-label">TMLF Learning Center</div>
+      <div class="sh-title">Elegibilidad Migratoria</div>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Inicio</div>
+      <div class="sb-item overview active" id="nav-inicio" onclick="showPanel('inicio')">
+        <div class="sb-num">🏠</div>
+        <div class="sb-text"><div class="sb-name">Inicio</div><div class="sb-sub">Presentación del training</div></div>
+      </div>
+      <div class="sb-item overview" id="nav-instrucciones" onclick="showPanel('instrucciones')">
+        <div class="sb-num">📋</div>
+        <div class="sb-text"><div class="sb-name">Instrucciones</div><div class="sb-sub">Cómo usar este training</div></div>
+      </div>
+      <div class="sb-item overview" id="nav-ruta" onclick="showPanel('ruta')">
+        <div class="sb-num">🗺️</div>
+        <div class="sb-text"><div class="sb-name">Ruta de Aprendizaje</div><div class="sb-sub">Mapa del training</div></div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Módulos del Training</div>
+      
+      <div class="sb-item" id="nav-mod1" onclick="showPanel('mod1')">
+        <div class="sb-num">1</div>
+        <div class="sb-text">
+          <div class="sb-name">¿Qué es la Elegibilidad?</div>
+          <div class="sb-sub">Conceptos base</div>
+        </div>
+      </div>
+      <div class="sb-item" id="nav-mod2" onclick="showPanel('mod2')">
+        <div class="sb-num">2</div>
+        <div class="sb-text">
+          <div class="sb-name">Casos dentro de EE.UU.</div>
+          <div class="sb-sub">AOS · 245(i) · PIP</div>
+        </div>
+      </div>
+      <div class="sb-item" id="nav-mod3" onclick="showPanel('mod3')">
+        <div class="sb-num">3</div>
+        <div class="sb-text">
+          <div class="sb-name">Procesos Humanitarios</div>
+          <div class="sb-sub">VAWA · Visa U · Visa T</div>
+        </div>
+      </div>
+      <div class="sb-item" id="nav-mod4" onclick="showPanel('mod4')">
+        <div class="sb-num">4</div>
+        <div class="sb-text">
+          <div class="sb-name">Casos fuera de EE.UU.</div>
+          <div class="sb-sub">K-1 · Consular · Waivers</div>
+        </div>
+      </div>
+      <div class="sb-item" id="nav-mod5" onclick="showPanel('mod5')">
+        <div class="sb-num">5</div>
+        <div class="sb-text">
+          <div class="sb-name">Ciudadanía</div>
+          <div class="sb-sub">N-400 · N-600</div>
+        </div>
+      </div>
+      <div class="sb-item" id="nav-mod6" onclick="showPanel('mod6')">
+        <div class="sb-num">6</div>
+        <div class="sb-text">
+          <div class="sb-name">Necesito Información</div>
+          <div class="sb-sub">FOIA</div>
+        </div>
+      </div>
+      <div class="sb-item" id="nav-mod7" onclick="showPanel('mod7')">
+        <div class="sb-num">7</div>
+        <div class="sb-text">
+          <div class="sb-name">Renovación / Reposición</div>
+          <div class="sb-sub">DACA · I-751 · I-90</div>
+        </div>
+      </div>
+      <div class="sb-item" id="nav-mod8" onclick="showPanel('mod8')">
+        <div class="sb-num">8</div>
+        <div class="sb-text">
+          <div class="sb-name">Waivers</div>
+          <div class="sb-sub">I-601 · I-601A · I-212 · EOIR</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Integración y Cierre</div>
+      <div class="sb-item practice" id="nav-laboratorio" onclick="showPanel('laboratorio')">
+        <div class="sb-num">🧪</div>
+        <div class="sb-text"><div class="sb-name">Laboratorio de Elegibilidad</div><div class="sb-sub">Caso integrador</div></div>
+      </div>
+      <div class="sb-item exam" id="nav-evaluacion" onclick="showPanel('evaluacion')">
+        <div class="sb-num">🎯</div>
+        <div class="sb-text"><div class="sb-name">Evaluación Final</div><div class="sb-sub">20 preguntas · 85% para aprobar</div></div>
+      </div>
+      <div class="sb-item" id="nav-resultados" onclick="showPanel('resultados')">
+        <div class="sb-num">📊</div>
+        <div class="sb-text"><div class="sb-name">Resultados</div><div class="sb-sub">Tu desempeño</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+<div class="panel active" id="panel-inicio">
+  <div class="header">
+    <div class="header-badge"><div class="dot"></div>TMLF Academy · Learning Center</div>
+    <h1>Elegibilidad Migratoria</h1>
+    <div class="subtitle">Identificación de beneficios, criterios, excepciones e información necesaria para el análisis inicial de casos</div>
+    <div class="header-meta">
+      <div class="header-meta-item"><span>Nivel</span> <strong>Básico – Intermedio</strong></div>
+      <div class="header-meta-item"><span>Módulos</span> <strong>7 + Laboratorio</strong></div>
+      <div class="header-meta-item"><span>Evaluación</span> <strong>20 preguntas · <mark class="kw kw-num">85%</mark> para aprobar</strong></div>
+      <div class="header-meta-item"><span>Formato</span> <strong>Autogestionado</strong></div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-val">7</div><div class="stat-label">Módulos</div></div>
+    <div class="stat-card"><div class="stat-val">21+</div><div class="stat-label">Casos prácticos</div></div>
+    <div class="stat-card"><div class="stat-val">6</div><div class="stat-label">Casos integradores</div></div>
+    <div class="stat-card"><div class="stat-val">20</div><div class="stat-label">Preguntas finales</div></div>
+    <div class="stat-card"><div class="stat-val"><mark class="kw kw-num">85%</mark></div><div class="stat-label">Mínimo aprobatorio</div></div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon">🎯</div><h3>Objetivo General</h3><div class="mod-badge badge-core">Programa</div></div>
+    <div class="bbody">
+      <p>Al finalizar este training, el participante será capaz de <strong>analizar casos migratorios</strong> para determinar la <mark class="kw kw-concept">elegibilidad</mark> del cliente, identificando el posible beneficio migratorio, los criterios que deben cumplirse, las excepciones aplicables y la información adicional necesaria para realizar un análisis adecuado.</p>
+      <div class="principle">
+        <p>"Ser elegible no significa que el caso será aprobado."</p>
+        <div class="principle-sub">Elegibilidad, <mark class="kw kw-concept">admisibilidad</mark> y aprobación son conceptos distintos. Este principio se refuerza en cada módulo del training.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon">🧭</div><h3>Principios que guían el análisis</h3><div class="mod-badge badge-gold">Recuerda siempre</div></div>
+    <div class="bbody">
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>El análisis se realiza criterio por criterio, nunca por impresión general.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>No se asume un beneficio solo por una característica aislada del cliente.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Cuando falte información, debe identificarse antes de concluir cualquier cosa.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Una persona puede ser elegible para un beneficio y no para otro.</span></div>
+        <div class="ob-item"><div class="ob-num">5</div><span>Elegibilidad, <mark class="kw kw-concept">admisibilidad</mark> y aprobación son conceptos diferentes.</span></div>
+        <div class="ob-item"><div class="ob-num">6</div><span>Nunca se promete una aprobación ni se afirma que alguien "califica" sin información completa.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:22px">
+    <button class="act-btn primary" onclick="showPanel('instrucciones')" style="margin:0">Comenzar → Ver Instrucciones</button>
+  </div>
+  <footer class="tmlf-foot">TMLF Academy · The Mendoza Law Firm · Elegibilidad Migratoria</footer>
+</div>
+
+<div class="panel" id="panel-instrucciones">
+  <div class="section-head">
+    <div class="sh-badge">Antes de comenzar</div>
+    <h2>Instrucciones del Training</h2>
+    <p>Lee con atención antes de iniciar los módulos.</p>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon">⚙️</div><h3>Cómo funciona el training</h3></div>
+    <div class="bbody">
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Los módulos se desbloquean de forma progresiva: debes completar las actividades de un módulo para avanzar al siguiente.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Abrir un módulo no lo marca como completado. Debes resolver los ejercicios de comprobación ("Analiza el Caso") incluidos en cada uno.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Tu progreso se guarda automáticamente en este navegador (localStorage). Puedes cerrar y continuar después.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Después del Módulo 7 encontrarás el "Laboratorio de Elegibilidad", con casos integradores.</span></div>
+        <div class="ob-item"><div class="ob-num">5</div><span>La Evaluación Final tiene 20 preguntas y requiere <mark class="kw kw-num">85%</mark> para aprobar.</span></div>
+        <div class="ob-item"><div class="ob-num">6</div><span>Puedes reintentar cualquier actividad o la evaluación cuantas veces sea necesario.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon">🏷️</div><h3>Cómo leer las etiquetas</h3></div>
+    <div class="bbody">
+      <p>A lo largo del training encontrarás etiquetas que distinguen el tipo de información. Esta distinción es crítica para el análisis correcto de un caso:</p>
+      <div class="chips" style="margin-top:10px">
+        <span class="tag-legal">Criterio Legal</span>
+        <span class="tag-exc">Excepción</span>
+        <span class="tag-int">Política Interna</span>
+      </div>
+      <div class="alert info" style="margin-top:12px"><span class="alert-icon">ℹ️</span><div><strong>Importante:</strong> una <mark class="kw kw-num">política interna</mark> del despacho NUNCA debe presentarse ni entenderse como una regla de USCIS. Son criterios operativos internos de TMLF, no requisitos legales.</div></div>
+      <div class="two-col" style="margin-top:8px">
+        <div class="mini-card"><h4>🔵 Alertas azules</h4><p>Definiciones y conceptos.</p></div>
+        <div class="mini-card"><h4>🟡 Alertas ámbar</h4><p>Precauciones o advertencias.</p></div>
+        <div class="mini-card"><h4>🟢 Alertas verdes</h4><p>Criterios cumplidos o buenas prácticas.</p></div>
+        <div class="mini-card"><h4>🔴 Alertas rojas</h4><p>Riesgos o prohibiciones.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon">⚠️</div><h3>Lenguaje del análisis</h3></div>
+    <div class="bbody">
+      <p>Al analizar un caso, el vocabulario correcto importa. En este training, y en tu trabajo diario, utiliza expresiones prudentes:</p>
+      <div class="chips">
+        <span class="chip green">"posible beneficio"</span>
+        <span class="chip green">"podría existir <mark class="kw kw-concept">elegibilidad</mark>"</span>
+        <span class="chip amber">"se requiere información adicional"</span>
+        <span class="chip amber">"no es posible concluir todavía"</span>
+        <span class="chip blue">"debe analizarse criterio por criterio"</span>
+      </div>
+      <div class="alert danger" style="margin-top:10px"><span class="alert-icon">⛔</span><div>Nunca prometas una aprobación ni afirmes que un cliente "califica" cuando falte información para confirmarlo.</div></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar" style="border-top:none;padding-top:0">
+    <button class="mod-nav-btn mod-nav-prev" onclick="showPanel('inicio')">← Inicio</button>
+    <button class="mod-nav-btn mod-nav-next" onclick="showPanel('ruta')">Ruta de Aprendizaje →</button>
+  </div>
+</div>
+
+<div class="panel" id="panel-ruta">
+  <div class="section-head">
+    <div class="sh-badge">Mapa del training</div>
+    <h2>Ruta de Aprendizaje</h2>
+    <p>Estos son los siete módulos que componen el programa, seguidos del Laboratorio de Elegibilidad y la Evaluación Final.</p>
+  </div>
+  <div class="overview-grid">
+    <div class="ov-card" onclick="tryGo('mod1')"><div class="ov-icon">📘</div><div class="ov-name">M1 · ¿Qué es la Elegibilidad?</div><div class="ov-desc">Conceptos, criterios y excepciones</div></div>
+    <div class="ov-card" onclick="tryGo('mod2')"><div class="ov-icon">🇺🇸</div><div class="ov-name">M2 · Casos dentro de EE.UU.</div><div class="ov-desc">AOS 245(a) · 245(i) · <mark class="kw kw-term">Parole in Place</mark></div></div>
+    <div class="ov-card" onclick="tryGo('mod3')"><div class="ov-icon">🤝</div><div class="ov-name">M3 · Procesos Humanitarios</div><div class="ov-desc"><mark class="kw kw-term">VAWA</mark> · <mark class="kw kw-term">Visa U</mark> · <mark class="kw kw-term">Visa T</mark></div></div>
+    <div class="ov-card" onclick="tryGo('mod4')"><div class="ov-icon">✈️</div><div class="ov-name">M4 · Casos fuera de EE.UU.</div><div class="ov-desc">K-1 · <mark class="kw kw-term">Proceso Consular</mark> · Waivers</div></div>
+    <div class="ov-card" onclick="tryGo('mod5')"><div class="ov-icon">🇺🇸</div><div class="ov-name">M5 · Ciudadanía</div><div class="ov-desc"><mark class="kw kw-term">N-400</mark> · <mark class="kw kw-term">N-600</mark></div></div>
+    <div class="ov-card" onclick="tryGo('mod6')"><div class="ov-icon">📁</div><div class="ov-name">M6 · Necesito Información</div><div class="ov-desc"><mark class="kw kw-term">FOIA</mark></div></div>
+    <div class="ov-card" onclick="tryGo('mod7')"><div class="ov-icon">🔄</div><div class="ov-name">M7 · Renovación / Reposición</div><div class="ov-desc"><mark class="kw kw-term">DACA</mark> · <mark class="kw kw-term">I-751</mark> · <mark class="kw kw-term">I-90</mark></div></div>
+    <div class="ov-card" onclick="tryGo('mod8')"><div class="ov-icon">🤝</div><div class="ov-name">M8 · Waivers</div><div class="ov-desc">I-601 · I-601A · I-212 · EOIR</div></div>
+    <div class="ov-card" onclick="tryGo('laboratorio')"><div class="ov-icon">🧪</div><div class="ov-name">Laboratorio de Elegibilidad</div><div class="ov-desc">Casos integradores</div></div>
+    <div class="ov-card" onclick="tryGo('evaluacion')"><div class="ov-icon">🎯</div><div class="ov-name">Evaluación Final</div><div class="ov-desc">20 preguntas · <mark class="kw kw-num">85%</mark></div></div>
+  </div>
+  <div class="alert info" style="margin-top:16px"><span class="alert-icon">🔒</span><div>Los módulos bloqueados se habilitan al completar las actividades del módulo anterior.</div></div>
+  <div class="mod-nav-bar" style="border-top:none;padding-top:0">
+    <button class="mod-nav-btn mod-nav-prev" onclick="showPanel('instrucciones')">← Instrucciones</button>
+    <button class="mod-nav-btn mod-nav-next" onclick="showPanel('mod1')">Comenzar Módulo 1 →</button>
+  </div>
+</div>
+
+<div class="panel panel-mc-1" id="panel-mod1">
+  <div class="section-head">
+    <div class="sh-badge">Módulo 1</div>
+    <h2>¿Qué es la Elegibilidad?</h2>
+    <p>Objetivo: distinguir el concepto de <mark class="kw kw-concept">elegibilidad</mark>, comprender su función dentro del análisis migratorio e identificar la diferencia entre <mark class="kw kw-concept">elegibilidad</mark>, <mark class="kw kw-concept">admisibilidad</mark> y aprobación de un caso.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración estimada</div><div class="value">20 min</div></div>
+    <div class="mod-meta-item"><div class="label">Casos prácticos</div><div class="value">3</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Básico</div></div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-1">1</div><h3>¿Qué es la <mark class="kw kw-concept">elegibilidad</mark>?</h3><div class="mod-badge badge-core">Definición</div></div>
+    <div class="bbody">
+      <div class="alert blue"><span class="alert-icon">📘</span><div><strong>Definición</strong> La elegibilidad es el conjunto de criterios establecidos por la ley que determinan si una persona puede solicitar un beneficio migratorio.</div></div>
+      <div class="principle" style="margin-top:12px"><p>"¿La ley permite que esta persona solicite este beneficio?"</p></div>
+      <p style="margin-top:12px">La elegibilidad <strong>no garantiza</strong> que el beneficio será aprobado. Únicamente determina si el cliente pertenece al grupo que la ley contempla para presentar esa solicitud.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-1">2</div><h3>¿Por qué existe la elegibilidad?</h3></div>
+    <div class="bbody">
+      <p>No todas las personas tienen la misma historia ni enfrentan las mismas circunstancias. Por ello las leyes migratorias de EE.UU. crearon distintos beneficios para atender situaciones específicas. Cada beneficio tiene criterios propios porque fue diseñado para proteger o beneficiar a un grupo determinado.</p>
+      <div class="chips">
+        <span class="chip blue"><mark class="kw kw-term">VAWA</mark> → víctimas de violencia familiar</span>
+        <span class="chip blue"><mark class="kw kw-term">Visa U</mark> → víctimas de ciertos delitos</span>
+        <span class="chip blue"><mark class="kw kw-term">Visa T</mark> → víctimas de trata de personas</span>
+        <span class="chip blue"><mark class="kw kw-term">Adjustment of Status</mark> → residencia desde EE.UU.</span>
+        <span class="chip blue"><mark class="kw kw-term">Visa K-1</mark> → prometido(a) de USC</span>
+      </div>
+      <div class="principle" style="margin-top:12px"><p>Una persona puede ser elegible para un beneficio y no para otro.</p></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-1">3</div><h3>Criterios y excepciones</h3></div>
+    <div class="bbody">
+      <details class="block-accordion" open>
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">A</div><div><div class="bac-label">Concepto</div><div class="bac-title">Criterios de elegibilidad</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>Son las condiciones que la ley exige para que una persona pueda solicitar un beneficio migratorio. Cada beneficio tiene criterios distintos porque cada uno busca resolver una situación diferente. <span class="tag-legal">Criterio legal</span></p></div>
+      </details>
+      <details class="block-accordion">
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">B</div><div><div class="bac-label">Concepto</div><div class="bac-title">Excepciones</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>Situaciones específicas en las que la propia ley permite aplicar reglas distintas a la regla general. No eliminan los criterios de elegibilidad; modifican la forma en que algunos se aplican. Cada <mark class="kw kw-gold">excepción</mark> debe estar expresamente prevista por la ley o regulación correspondiente. <span class="tag-exc">Excepción</span></p></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-1">⚖️</div><h3>Elegibilidad vs. Admisibilidad vs. Aprobación</h3><div class="mod-badge badge-gold">Comparación</div></div>
+    <div class="bbody">
+      <table class="comp-table">
+        <tr><th>Concepto</th><th>Pregunta principal</th><th>Lo que determina</th></tr>
+        <tr><td><strong>Elegibilidad</strong></td><td>¿La ley permite que esta persona solicite el beneficio?</td><td>Si el cliente pertenece al grupo que la ley contempla y cumple con los criterios para solicitarlo</td></tr>
+        <tr><td><strong>Admisibilidad</strong></td><td>¿Existe alguna causal (salud pública, crimen, seguridad nacional, carga pública, barras migratorias) que impida al cliente ingresar o ajustar estatus?</td><td>Si el cliente puede ser admitido a Estados Unidos o si requiere un <mark class="kw kw-term">waiver</mark></td></tr>
+        <tr><td><strong>Aprobación</strong></td><td>¿USCIS o el oficial consular decide otorgar el beneficio?</td><td>La decisión final de la autoridad, que depende de la evidencia, la discreción y el análisis completo del expediente</td></tr>
+      </table>
+      <div class="alert warn"><span class="alert-icon">⚠️</span><div>La elegibilidad NO determina si el caso será aprobado, si el cliente es admisible, si necesita un <mark class="kw kw-term">waiver</mark>, si existen causales de inadmisibilidad, si la evidencia será suficiente, ni si USCIS ejercerá favorablemente su discreción.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-1">❓</div><h3>¿Qué preguntas responde la elegibilidad?</h3></div>
+    <div class="bbody">
+      <div class="two-col">
+        <div class="mini-card"><h4>✅ Sí responde</h4><ul>
+          <li>¿Existe un beneficio migratorio que pueda aplicar a este caso?</li>
+          <li>¿El cliente pertenece al grupo protegido por ese beneficio?</li>
+          <li>¿Cumple con los criterios que establece la ley?</li>
+          <li>¿Existe alguna <mark class="kw kw-gold">excepción</mark> que pueda favorecerlo?</li>
+        </ul></div>
+        <div class="mini-card"><h4>❌ NO responde</h4><ul>
+          <li>Si el caso será aprobado</li>
+          <li>Si la persona es admisible</li>
+          <li>Si necesita un <mark class="kw kw-term">waiver</mark></li>
+          <li>Si existen causales de inadmisibilidad</li>
+          <li>Si la evidencia presentada será suficiente</li>
+          <li>Si USCIS ejercerá favorablemente su discreción</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-1">🧪</div><h3>Analiza el Caso</h3><div class="mod-badge badge-practice">Actividad</div></div>
+    <div class="bbody">
+      <p>Lee cada caso hipotético y responde con base únicamente en los criterios de elegibilidad estudiados en este módulo.</p>
+      <div id="m1-case1"></div>
+      <div id="m1-case2"></div>
+      <div id="m1-case3"></div>
+      <button class="act-btn primary" onclick="checkCaseGroup('m1',3)">Verificar respuestas</button>
+      <button class="act-btn ghost" id="m1-retry" style="display:none" onclick="resetCaseGroup('m1',3)">Reintentar</button>
+      <div class="act-summary" id="m1-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="showPanel('ruta')">← Ruta de Aprendizaje</button>
+    <button class="mod-nav-btn mod-nav-next" id="m1-next" onclick="tryGo('mod2')">Continuar a Módulo 2 →</button>
+  </div>
+</div>
+
+<div class="panel panel-mc-2" id="panel-mod2">
+  <div class="section-head">
+    <div class="sh-badge">Módulo 2</div>
+    <h2>Casos dentro de Estados Unidos</h2>
+    <p>Objetivo: identificar los requisitos de elegibilidad para los principales beneficios que pueden solicitarse desde EE.UU. y distinguir cuándo corresponde un <mark class="kw kw-term">Adjustment of Status</mark>, <mark class="kw kw-term">INA <mark class="kw kw-term">§245(i)</mark></mark> o <mark class="kw kw-term">Parole in Place</mark>.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración estimada</div><div class="value">30 min</div></div>
+    <div class="mod-meta-item"><div class="label">Casos prácticos</div><div class="value">3</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Intermedio</div></div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-2">🇺🇸</div><h3>Regular <mark class="kw kw-term">Adjustment of Status</mark> — <mark class="kw kw-term">INA <mark class="kw kw-term">§245(a)</mark></mark> — Form <mark class="kw kw-term">I-485</mark></h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>El <mark class="kw kw-term">Adjustment of Status</mark> (AOS) es el proceso mediante el cual una persona físicamente en EE.UU. puede solicitar convertirse en residente permanente legal sin salir del país. Depende de una <strong>petición familiar base</strong> (generalmente un <mark class="kw kw-term">I-130</mark> aprobado o concurrente) presentada por un USC o LPR que acredite el vínculo familiar calificado.</p>
+      <details class="block-accordion" open>
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">Criterio legal</div><div class="bac-title">Inspeccionado y admitido, o en parole</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>El cliente debe haber ingresado después de ser inspeccionado por un oficial de inmigración y haber sido admitido o puesto en parole. <span class="tag-legal">Criterio legal</span></p></div>
+      </details>
+      <details class="block-accordion">
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">Criterio legal + Política interna</div><div class="bac-title">Presencia física en EE.UU.</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>El solicitante debe estar presente en EE.UU. al momento de presentar la solicitud. <span class="tag-legal">Criterio legal</span></p>
+        <div class="alert danger" style="margin-top:8px"><span class="alert-icon">🏢</span><div><strong>Regla interna de TMLF:</strong> presencia continua mínima de <mark class="kw kw-date">6 meses</mark> en EE.UU. <span class="tag-int">Política interna</span> — no es un requisito de USCIS.</div></div></div>
+      </details>
+      <details class="block-accordion">
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">Criterio legal</div><div class="bac-title">Elegible para una visa de inmigrante</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>Debe existir una categoría migratoria que permita obtener la residencia permanente. <span class="tag-legal">Criterio legal</span></p></div>
+      </details>
+      <details class="block-accordion">
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">4</div><div><div class="bac-label">Criterio legal</div><div class="bac-title">Visa de inmigrante disponible</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>Cuando la ley lo requiera, la visa debe estar disponible al presentar la solicitud y al momento de que USCIS decida. <span class="tag-legal">Criterio legal</span></p></div>
+      </details>
+      <details class="block-accordion">
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">5</div><div><div class="bac-label">Criterio legal</div><div class="bac-title">Admisibilidad</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>Salud pública, crímenes, seguridad nacional, carga pública y barras migratorias. <span class="tag-legal">Criterio legal</span></p></div>
+      </details>
+      <div class="alert gold" style="margin-top:10px"><span class="alert-icon">🥇</span><div><strong>Excepciones (USCIS Policy Manual):</strong> algunos solicitantes quedan exentos de ciertas limitaciones o barras al ajuste según la categoría bajo la cual soliciten: auto-peticionarios <mark class="kw kw-term">VAWA</mark>, determinados familiares inmediatos de USC, personas elegibles bajo <mark class="kw kw-term">INA <mark class="kw kw-term">§245(i)</mark></mark>, y otras categorías con exenciones específicas. <span class="tag-exc">Excepción</span></div></div>
+
+      <table class="info-table">
+        <tr><th>Rol</th><th>Formulario clave</th><th>Responsabilidad</th></tr>
+        <tr><td><strong>Peticionario</strong> (USC o LPR que inicia el proceso)</td><td><mark class="kw kw-term">I-130</mark></td><td>Probar la relación familiar y su estatus legal</td></tr>
+        <tr><td><strong>Beneficiario</strong> (el extranjero que recibe el beneficio)</td><td><mark class="kw kw-term">I-485</mark></td><td>Demostrar elegibilidad para la residencia (<mark class="kw kw-concept">admisibilidad</mark>)</td></tr>
+        <tr><td><strong>Patrocinador</strong> (quien garantiza financieramente)</td><td><mark class="kw kw-term">I-864</mark></td><td>Probar ingresos al 125% de las pautas federales de pobreza</td></tr>
+      </table>
+      <p>Generalmente el Peticionario es el Patrocinador principal. Si no tiene ingresos suficientes, se puede añadir un <strong><mark class="kw kw-term">joint sponsor</mark></strong>. La verificación de ingresos se realiza por medio de los taxes.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-2">§</div><h3><mark class="kw kw-term">Adjustment of Status</mark> bajo <mark class="kw kw-term">INA <mark class="kw kw-term">§245(i)</mark></mark></h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Permite que determinadas personas ajusten estatus aun sin cumplir algunos requisitos generales del <mark class="kw kw-term">§245(a)</mark>, siempre que cumplan las condiciones específicas de la ley.</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Ser un extranjero <strong>"<mark class="kw kw-term">grandfathered</mark>"</strong>: beneficiario principal o derivado de una petición de inmigrante o certificación laboral calificada.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Existir una petición o certificación laboral calificada, presentada dentro del periodo permitido y <strong>"<mark class="kw kw-term">approvable when filed</mark>"</strong>.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Presencia física cuando corresponda: peticiones presentadas entre el 15 de enero de 1998 y el 30 de abril de 2001 requieren demostrar presencia física el 21 de diciembre de 2000.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Tener una base migratoria actual y vigente para ajustar estatus, además de estar protegido por la sección 245(i).</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-2">🎖️</div><h3><mark class="kw kw-term">Parole in Place</mark> (<mark class="kw kw-term">PIP</mark>)</h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Beneficio discrecional otorgado por USCIS que permite a ciertas personas ya presentes en EE.UU., pero que no fueron admitidas o inspeccionadas legalmente al ingresar, recibir un estatus de parole sin salir del país.</p>
+      <p><strong>Finalidad:</strong> evitar la separación familiar permitiendo al beneficiario permanecer legalmente en EE.UU. sin salir del país, para posteriormente poder ajustar su estatus.</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Encontrarse físicamente en Estados Unidos.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Ser un solicitante de admisión (generalmente ingresó sin haber sido admitido).</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Ser familiar de un miembro de las Fuerzas Armadas de EE.UU.</span></div>
+      </div>
+      <p style="margin-top:10px"><strong>¿Quién puede solicitarlo?</strong> Cónyuges, padres e hijos de: militares activos, reservistas seleccionados, o veteranos dados de baja honorablemente o bajo condiciones honorables.</p>
+      <p><strong>El <mark class="kw kw-term">PIP</mark> no otorga</strong> residencia permanente, visa ni estatus migratorio permanente. Sí puede permitir permanecer legalmente durante el periodo autorizado, obtener autorización de empleo (si es elegible) y, en algunos casos, facilitar un futuro ajuste de estatus.</p>
+      <div class="alert danger"><span class="alert-icon">⛔</span><div><strong>El <mark class="kw kw-term">PIP</mark> NO es un documento de viaje.</strong> Salir de EE.UU. anula automáticamente el beneficio y cancela la autorización de permanencia. El cliente se expone a negación de reingreso y barras migratorias. No debe viajar al extranjero hasta obtener la residencia permanente.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-2">🧪</div><h3>Analiza el Caso</h3><div class="mod-badge badge-practice">Actividad</div></div>
+    <div class="bbody">
+      <p>Con la información proporcionada, responde basándote únicamente en los criterios estudiados en este módulo. No se revela la respuesta hasta que selecciones tu análisis.</p>
+      <div id="m2-case1"></div>
+      <div id="m2-case2"></div>
+      <div id="m2-case3"></div>
+      <button class="act-btn primary" onclick="checkCaseGroup('m2',3)">Verificar respuestas</button>
+      <button class="act-btn ghost" id="m2-retry" style="display:none" onclick="resetCaseGroup('m2',3)">Reintentar</button>
+      <div class="act-summary" id="m2-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="tryGo('mod1')">← Módulo 1</button>
+    <button class="mod-nav-btn mod-nav-next" id="m2-next" onclick="tryGo('mod3')">Continuar a Módulo 3 →</button>
+  </div>
+</div>
+
+<div class="panel panel-mc-3" id="panel-mod3">
+  <div class="section-head">
+    <div class="sh-badge">Módulo 3</div>
+    <h2>Procesos Humanitarios</h2>
+    <p>Objetivo: distinguir los criterios de elegibilidad para <mark class="kw kw-term">VAWA</mark>, <mark class="kw kw-term">Visa U</mark> y <mark class="kw kw-term">Visa T</mark>, identificando el tipo de víctima protegida por cada beneficio y las diferencias entre ellos.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración estimada</div><div class="value">35 min</div></div>
+    <div class="mod-meta-item"><div class="label">Casos prácticos</div><div class="value">3</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Intermedio</div></div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-3">🛡️</div><h3>Violence Against Women Act (<mark class="kw kw-term">VAWA</mark>)</h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Permite que determinados familiares de ciudadanos estadounidenses o residentes permanentes legales que han sufrido abuso presenten una <strong>autopetición</strong> para obtener un beneficio migratorio, sin depender de la participación o consentimiento del agresor.</p>
+      <details class="block-accordion" open>
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">1</div><div><div class="bac-label">Criterio legal</div><div class="bac-title">Relación familiar calificada</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body">
+          <ul class="ev-list">
+            <li>Cónyuge de un ciudadano estadounidense</li>
+            <li>Cónyuge de un residente permanente legal</li>
+            <li>Hijo de un ciudadano estadounidense</li>
+            <li>Hijo de un residente permanente legal</li>
+            <li>Padre de un ciudadano estadounidense que tenga al menos <mark class="kw kw-date">21 años</mark></li>
+          </ul>
+          <div class="alert danger" style="margin-top:8px"><span class="alert-icon">🏢</span><div><strong>Política interna:</strong> por política de TMLF, no se llevan casos de "Padre de un ciudadano estadounidense que tenga al menos <mark class="kw kw-date">21 años</mark>". <span class="tag-int">Política interna</span></div></div>
+        </div>
+      </details>
+      <details class="block-accordion">
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">2</div><div><div class="bac-label">Criterio legal</div><div class="bac-title">Abuso o crueldad extrema</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>Debe demostrarse battery (violencia física) o extreme cruelty por parte del familiar calificado. USCIS aclara que la crueldad extrema no se limita al abuso físico y puede comprender otras formas de maltrato. <span class="tag-legal">Criterio legal</span></p></div>
+      </details>
+      <details class="block-accordion">
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">3</div><div><div class="bac-label">Criterio legal</div><div class="bac-title">Residencia con el agresor</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>El solicitante debe demostrar que reside o residió con el agresor. <span class="tag-legal">Criterio legal</span></p></div>
+      </details>
+      <details class="block-accordion">
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">4</div><div><div class="bac-label">Criterio legal</div><div class="bac-title">Matrimonio de buena fe (casos por cónyuge)</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>El matrimonio debe haberse celebrado de buena fe y no con el propósito de evadir las leyes migratorias. <span class="tag-legal">Criterio legal</span></p></div>
+      </details>
+      <details class="block-accordion">
+        <summary class="block-accordion-header"><div class="bac-left"><div class="bac-num">5</div><div><div class="bac-label">Criterio legal</div><div class="bac-title">Buen carácter moral</div></div></div><div class="bac-arrow">▶</div></summary>
+        <div class="bac-body"><p>Cuando la ley lo requiere, debe demostrarse buen carácter moral durante el periodo establecido para la adjudicación. <span class="tag-legal">Criterio legal</span></p></div>
+      </details>
+
+      <div class="alert gold" style="margin-top:10px"><span class="alert-icon">🥇</span><div><strong>Excepciones:</strong> el divorcio y la muerte del agresor no eliminan la posibilidad de autopeticionar. <span class="tag-exc">Excepción</span></div></div>
+      <div class="alert danger"><span class="alert-icon">⏰</span><div><strong>Deadline:</strong> el divorcio o la muerte del agresor genera un plazo límite de <strong><mark class="kw kw-date">2 años</mark></strong>.</div></div>
+      <div class="alert danger"><span class="alert-icon">🏢</span><div><strong>Política interna:</strong> el caso debe iniciarse al menos <mark class="kw kw-date">6 meses</mark> antes del vencimiento del <mark class="kw kw-num">deadline</mark> para poder realizar el proceso interno. <span class="tag-int">Política interna</span></div></div>
+      <div class="alert warn"><span class="alert-icon">⚠️</span><div><strong>Riesgo de <mark class="kw kw-num">rejection</mark>:</strong> una <mark class="kw kw-num">rejection</mark> de USCIS significa que la solicitud no fue aceptada para procesamiento por falta de un requisito técnico básico (firma, pago incorrecto, formulario desactualizado, información incompleta). USCIS devuelve el paquete sin revisar el mérito, no cobra la tarifa y permite corregir y reenviar — pero se toma como no presentado, lo cual puede afectar el <mark class="kw kw-num">deadline</mark>.</div></div>
+      <p style="margin-top:10px"><mark class="kw kw-term">VAWA</mark> cuenta con diversas exenciones dentro del proceso de ajuste de estatus que no aplican a otras categorías migratorias.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-3">🆓</div><h3><mark class="kw kw-term">Visa U</mark></h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Estatus no inmigrante creado para proteger a víctimas de determinados delitos que hayan sufrido un daño sustancial y que hayan colaborado, colaboren o sean útiles para las autoridades en la investigación o persecución del delito.</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Haber sido víctima de un delito calificado incluido en la lista prevista por la ley.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Haber sufrido abuso físico o mental sustancial a causa del delito.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Poseer información sobre la actividad delictiva.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Haber sido, ser, o ser probable que sea útil a las autoridades en la investigación o persecución.</span></div>
+        <div class="ob-item"><div class="ob-num">5</div><span>Que el delito haya ocurrido en Estados Unidos (requisito territorial).</span></div>
+        <div class="ob-item"><div class="ob-num">6</div><span>Contar con una certificación válida — Formulario <mark class="kw kw-term">I-918 Suplemento B</mark> — emitida por una autoridad certificadora (policía, fiscal, juez).</span></div>
+      </div>
+      <div class="alert danger" style="margin-top:10px"><span class="alert-icon">🏢</span><div><strong>Reglas internas de TMLF:</strong> no se llevan delitos de acecho o chantaje. En crímenes de violencia doméstica, solo será aplicable para mujeres víctimas o parejas del mismo sexo. <span class="tag-int">Política interna</span></div></div>
+      <div class="alert gold"><span class="alert-icon">🥇</span><div><strong>Excepciones:</strong> reglas especiales para solicitantes menores de <mark class="kw kw-date">16 años</mark>, y disposiciones especiales para personas que no pueden proporcionar información debido a una discapacidad. <span class="tag-exc">Excepción</span></div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-3">🆓</div><h3><mark class="kw kw-term">Visa T</mark></h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Estatus no inmigrante destinado a proteger a víctimas de formas graves de trata de personas y fortalecer la investigación y persecución de este delito, brindando protección a las víctimas.</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Haber sido víctima de una forma grave de trata de personas conforme a la definición legal.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Encontrarse físicamente en EE.UU., Samoa Americana, la Mancomunidad de las Islas Marianas del Norte, o en un puerto de entrada debido a la trata.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Cumplir con solicitudes razonables de asistencia en la investigación o persecución.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Demostrar que sufriría dificultades extremas con daño grave e inusual (<mark class="kw kw-term">extreme hardship</mark> involving unusual and severe harm) si fuera removido.</span></div>
+        <div class="ob-item"><div class="ob-num">5</div><span>Ser admisible o reunir los requisitos para solicitar el beneficio correspondiente cuando exista una causal aplicable.</span></div>
+      </div>
+      <div class="alert gold" style="margin-top:10px"><span class="alert-icon">🥇</span><div><strong>Excepciones:</strong> menores de <mark class="kw kw-date">18 años</mark> al momento de la victimización no están obligados a cumplir con el requisito de cooperación. Tampoco quienes no pueden cooperar debido a un trauma físico o psicológico. <span class="tag-exc">Excepción</span></div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-3">📊</div><h3>Comparación: <mark class="kw kw-term">VAWA</mark> vs. <mark class="kw kw-term">Visa U</mark> vs. <mark class="kw kw-term">Visa T</mark></h3><div class="mod-badge badge-gold">Tabla comparativa</div></div>
+    <div class="bbody">
+      <table class="comp-table">
+        <tr><th>Elemento</th><th>VAWA</th><th>Visa U</th><th>Visa T</th></tr>
+        <tr><td>Persona protegida</td><td>Familiar calificado víctima de abuso</td><td>Víctima de delito calificado</td><td>Víctima de forma grave de trata</td></tr>
+        <tr><td>Conducta / situación principal</td><td>Battery o extreme cruelty</td><td>Daño físico o mental sustancial por el delito</td><td>Trata de personas</td></tr>
+        <tr><td>Relación requerida</td><td>Cónyuge / hijo / padre de USC o LPR</td><td>No requiere relación familiar con el agresor</td><td>No requiere relación familiar con el tratante</td></tr>
+        <tr><td>Cooperación con autoridades</td><td>No requerida</td><td>Requerida (certificación I-918 Supl. B)</td><td>Requerida (con excepciones por edad/trauma)</td></tr>
+        <tr><td>Presencia física</td><td>No es criterio explícito del módulo</td><td>No es criterio explícito del módulo</td><td>Sí, relacionada con la trata</td></tr>
+        <tr><td>Excepción relevante</td><td>Divorcio o muerte del agresor (<mark class="kw kw-num">deadline</mark> <mark class="kw kw-date">2 años</mark>)</td><td>Menores de <mark class="kw kw-date">16 años</mark> / discapacidad</td><td>Menores de <mark class="kw kw-date">18 años</mark> / trauma físico o psicológico</td></tr>
+        <tr><td>Información faltante típica</td><td>Fecha del divorcio o deceso, evidencia de abuso</td><td>Certificación I-918 Supl. B, denuncia formal</td><td>Evidencia de cooperación razonable o <mark class="kw kw-gold">excepción</mark> aplicable</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-3">🧪</div><h3>Analiza el Caso</h3><div class="mod-badge badge-practice">Actividad</div></div>
+    <div class="bbody">
+      <div id="m3-case1"></div>
+      <div id="m3-case2"></div>
+      <div id="m3-case3"></div>
+      <button class="act-btn primary" onclick="checkCaseGroup('m3',3)">Verificar respuestas</button>
+      <button class="act-btn ghost" id="m3-retry" style="display:none" onclick="resetCaseGroup('m3',3)">Reintentar</button>
+      <div class="act-summary" id="m3-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="tryGo('mod2')">← Módulo 2</button>
+    <button class="mod-nav-btn mod-nav-next" id="m3-next" onclick="tryGo('mod4')">Continuar a Módulo 4 →</button>
+  </div>
+</div>
+
+<div class="panel panel-mc-4" id="panel-mod4">
+  <div class="section-head">
+    <div class="sh-badge">Módulo 4</div>
+    <h2>Casos fuera de Estados Unidos</h2>
+    <p>Objetivo: identificar los requisitos para <mark class="kw kw-term">Visa K-1</mark>, <mark class="kw kw-term">Proceso Consular</mark> y Waivers, diferenciando cuándo corresponde cada procedimiento.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración estimada</div><div class="value">30 min</div></div>
+    <div class="mod-meta-item"><div class="label">Casos prácticos</div><div class="value">3</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Intermedio</div></div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-4">💍</div><h3><mark class="kw kw-term">Visa K-1</mark> (Prometido/a)</h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Visa de no inmigrante que permite que el prometido(a) extranjero de un ciudadano estadounidense viaje a EE.UU. con el propósito de contraer matrimonio dentro de los <strong><mark class="kw kw-date">90 días</mark></strong> siguientes a su admisión. Después del matrimonio, podrá solicitar el <mark class="kw kw-term">Adjustment of Status</mark> si reúne los requisitos legales.</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>El peticionario debe ser ciudadano estadounidense (Formulario I-129F).</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Ambas personas deben tener capacidad legal para contraer matrimonio (ninguna casada con otra persona).</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Intención real de contraer matrimonio dentro de los <mark class="kw kw-date">90 días</mark> posteriores al ingreso.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Haberse conocido personalmente durante los dos años anteriores a la presentación de la petición.</span></div>
+      </div>
+      <div class="alert gold" style="margin-top:10px"><span class="alert-icon">🥇</span><div><strong>Excepciones</strong> al requisito de haberse conocido personalmente: cuando el encuentro violaría costumbres estrictas y de larga tradición de la cultura o práctica social del prometido(a), o cuando ocasionaría dificultades extremas al ciudadano estadounidense. <span class="tag-exc">Excepción</span></div></div>
+      <div class="alert info"><span class="alert-icon">👶</span><div><strong>Aplicación K-2 (hijos menores):</strong> los hijos menores del beneficiario, solteros y menores de 21 años, pueden acompañar al inmigrante. Regla crítica: cuando uno de los padres del menor sea USC por nacimiento, no se puede contemplar como derivado K-2.</div></div>
+      <div class="alert danger"><span class="alert-icon">⛔</span><div>Si el beneficiario permanece en EE.UU. sin casarse en el periodo concedido, o se casa con una persona distinta a quien lo peticionó, contraviene los términos de la visa y se expone a deportación.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-4">🏛️</div><h3><mark class="kw kw-term">Proceso Consular</mark></h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Procedimiento mediante el cual una persona obtiene una visa de inmigrante fuera de EE.UU. para ingresar como residente permanente legal. A diferencia del Adjustment of Status, el beneficiario permanece fuera de EE.UU. mientras se lleva a cabo el trámite ante el Departamento de Estado, gestionado a través del <strong>National Visa Center (NVC)</strong> y que culmina con una entrevista ante un oficial consular.</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Contar con una petición de inmigrante aprobada (familiar <mark class="kw kw-term">I-130</mark>, empleo I-140, inversionista I-526, u otra categoría especial o humanitaria).</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Cumplir con los requisitos de la categoría migratoria correspondiente.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Tener una visa de inmigrante disponible cuando la categoría esté sujeta a límites numéricos.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Completar el procedimiento establecido por el Departamento de Estado (NVC y consulado/embajada).</span></div>
+      </div>
+      <table class="info-table">
+        <tr><th>Etapa</th><th>Descripción</th></tr>
+        <tr><td>Petición inicial</td><td>Peticionario presenta I-130 ante USCIS para establecer la relación familiar</td></tr>
+        <tr><td>NVC</td><td>Recopilación de documentos civiles, pago de tarifas y presentación del <mark class="kw kw-term">I-864</mark></td></tr>
+        <tr><td>Entrevista Consular</td><td>Examen médico y entrevista presencial ante oficial consular</td></tr>
+        <tr><td>Aprobación y entrada</td><td>Si aprueba, el beneficiario recibe la visa de inmigrante</td></tr>
+      </table>
+      <div class="alert warn"><span class="alert-icon">⚠️</span><div>Cualquier inconsistencia en la entrevista consular puede impactar directamente en la aprobación final. Requiere preparación documental rigurosa.</div></div>
+      <div class="alert gold"><span class="alert-icon">🥇</span><div><strong>Excepciones:</strong> los familiares inmediatos de ciudadanos estadounidenses no están sujetos a disponibilidad de visas. Algunas categorías especiales cuentan con procedimientos distintos establecidos por la ley. <span class="tag-exc">Excepción</span></div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-4">🤝</div><h3>Waivers (Perdones migratorios)</h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <div class="principle"><p>El <mark class="kw kw-term">waiver</mark> no crea una nueva categoría migratoria ni sustituye los criterios de elegibilidad del beneficio principal.</p></div>
+      <p style="margin-top:10px">Cuando durante el <mark class="kw kw-term">Proceso Consular</mark> se identifica una causal de inadmisibilidad, y la ley lo permite, el solicitante puede presentar un <mark class="kw kw-term">waiver</mark> para pedir el perdón de esa causal antes o durante el proceso migratorio.</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>El solicitante debe ser elegible para la visa de inmigrante — primero debe cumplir con todos los requisitos del beneficio migratorio solicitado.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Debe existir una causal de inadmisibilidad prevista por la ley.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>La ley debe permitir un <mark class="kw kw-term">waiver</mark> para esa causal específica — no todas las causales tienen perdón.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Cumplir con los requisitos específicos del <mark class="kw kw-term">waiver</mark> correspondiente (cada tipo tiene requisitos distintos).</span></div>
+      </div>
+      <div class="alert gold"><span class="alert-icon">🥇</span><div><strong>Excepciones:</strong> algunas categorías humanitarias cuentan con reglas especiales para determinados waivers. <span class="tag-exc">Excepción</span></div></div>
+      <div class="alert danger"><span class="alert-icon">⛔</span><div>Algunas causales de inadmisibilidad <strong>nunca pueden ser perdonadas</strong>. La disponibilidad del <mark class="kw kw-term">waiver</mark> siempre depende de la disposición legal aplicable.</div></div>
+      <div class="alert blue" style="margin-top:10px"><span class="alert-icon">ℹ️</span><div>Los tipos específicos de waiver (I-601, I-601A, I-212) y las Cortes de Inmigración (EOIR) se estudian a fondo en el <strong>Módulo 8 — Waivers</strong>.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-4">🧪</div><h3>Analiza el Caso</h3><div class="mod-badge badge-practice">Actividad</div></div>
+    <div class="bbody">
+      <p>En cada caso identifica el posible proceso, el criterio que parece cumplirse, la información faltante, un posible problema de inadmisibilidad, y si puede concluirse que existe un waiver.</p>
+      <div id="m4-case1"></div>
+      <div id="m4-case2"></div>
+      <div id="m4-case3"></div>
+      <button class="act-btn primary" onclick="checkCaseGroup('m4',3)">Verificar respuestas</button>
+      <button class="act-btn ghost" id="m4-retry" style="display:none" onclick="resetCaseGroup('m4',3)">Reintentar</button>
+      <div class="act-summary" id="m4-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="tryGo('mod3')">← Módulo 3</button>
+    <button class="mod-nav-btn mod-nav-next" id="m4-next" onclick="tryGo('mod5')">Continuar a Módulo 5 →</button>
+  </div>
+</div>
+
+<div class="panel panel-mc-5" id="panel-mod5">
+  <div class="section-head">
+    <div class="sh-badge">Módulo 5</div>
+    <h2>Ciudadanía</h2>
+    <p>Objetivo: distinguir los requisitos de elegibilidad para <mark class="kw kw-term">Naturalización</mark> (<mark class="kw kw-term">N-400</mark>) y Certificado de Ciudadanía (<mark class="kw kw-term">N-600</mark>), identificando la diferencia entre obtener la ciudadanía y demostrar una ciudadanía ya adquirida.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración estimada</div><div class="value">25 min</div></div>
+    <div class="mod-meta-item"><div class="label">Casos prácticos</div><div class="value">3</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Intermedio</div></div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-5">🇺🇸</div><h3><mark class="kw kw-term">Naturalización</mark> — Formulario <mark class="kw kw-term">N-400</mark></h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Proceso legal mediante el cual un residente permanente (LPR) solicita convertirse en ciudadano de EE.UU. Es el paso final en el camino a la ciudadanía y otorga todos los derechos y obligaciones de un ciudadano americano, incluyendo el derecho al voto y la capacidad de peticionar familiares con mayor prioridad.</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Ser residente permanente legal.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Periodo de residencia permanente: <mark class="kw kw-date">5 años</mark>, o <mark class="kw kw-date">3 años</mark> si presenta con base en matrimonio con USC y cumple los requisitos correspondientes.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Residencia continua durante el periodo exigido por la ley antes de presentar la solicitud.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Presencia física durante el tiempo mínimo requerido.</span></div>
+        <div class="ob-item"><div class="ob-num">5</div><span>Haber residido el tiempo requerido dentro del estado o distrito de USCIS correspondiente.</span></div>
+        <div class="ob-item"><div class="ob-num">6</div><span>Demostrar buen carácter moral durante el periodo legal aplicable.</span></div>
+        <div class="ob-item"><div class="ob-num">7</div><span>Demostrar conocimiento del idioma inglés (leer, escribir y hablar inglés básico), salvo <mark class="kw kw-gold">excepción</mark> aplicable.</span></div>
+        <div class="ob-item"><div class="ob-num">8</div><span>Aprobar el examen de educación cívica sobre historia y gobierno de EE.UU.</span></div>
+        <div class="ob-item"><div class="ob-num">9</div><span>Demostrar apego a los principios de la Constitución.</span></div>
+        <div class="ob-item"><div class="ob-num">10</div><span>Prestar el Juramento de Lealtad, como regla general.</span></div>
+      </div>
+      <div class="alert gold" style="margin-top:10px"><span class="alert-icon">🥇</span><div><strong>Excepciones:</strong> exenciones del requisito de inglés por edad y años como residente permanente (reglas 50/20 y 55/15); exención de inglés y educación cívica por discapacidad física, del desarrollo o mental, cuando se cumplen los requisitos legales; disposiciones especiales para miembros o veteranos de las Fuerzas Armadas. <span class="tag-exc">Excepción</span></div></div>
+      <div class="alert warn"><span class="alert-icon">⚠️</span><div>Es vital que la información del <mark class="kw kw-term">N-400</mark> coincida exactamente con la Green Card. Cualquier discrepancia puede generar retrasos, RFE o incluso negación, ya que USCIS cruza todos los datos con el historial oficial del solicitante.</div></div>
+      <div class="alert danger"><span class="alert-icon">🚩</span><div><strong>Red flag:</strong> antecedentes penales, problemas con impuestos o periodos largos fuera del país hacen que la evaluación se vuelva mucho más compleja.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-5">📜</div><h3>Certificado de Ciudadanía — Formulario <mark class="kw kw-term">N-600</mark></h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p><strong>El <mark class="kw kw-term">N-600</mark> no otorga la ciudadanía.</strong> Su finalidad es permitir que una persona obtenga un documento oficial que demuestre que ya adquirió o derivó la ciudadanía estadounidense conforme a la ley.</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Haber adquirido la ciudadanía al nacer, o haberla derivado automáticamente.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Cumplir con los requisitos de la ley vigente al momento en que ocurrió la adquisición o derivación.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Demostrar la relación con el padre ciudadano cuando la ciudadanía deriva de uno o ambos padres.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Cumplir con requisitos de edad, residencia y custodia cuando la ley lo exija (menor de 18 años, residencia en EE.UU., custodia legal y física del padre ciudadano, según el caso).</span></div>
+      </div>
+      <div class="alert gold" style="margin-top:10px"><span class="alert-icon">🥇</span><div><strong>Excepciones / variantes:</strong> la elegibilidad varía según la forma en que se adquirió la ciudadanía — al nacer, o derivada después del nacimiento — y según la versión de la ley vigente en la fecha de nacimiento y los hechos relevantes. <span class="tag-exc">Excepción</span></div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-5">📊</div><h3><mark class="kw kw-term">N-400</mark> vs. <mark class="kw kw-term">N-600</mark></h3><div class="mod-badge badge-gold">Comparación</div></div>
+    <div class="bbody">
+      <table class="comp-table">
+        <tr><th></th><th>N-400 — <mark class="kw kw-term">Naturalización</mark></th><th>N-600 — Certificado de Ciudadanía</th></tr>
+        <tr><td><strong>Qué hace</strong></td><td>Obtener la ciudadanía mediante un proceso de naturalización</td><td>Demostrar una ciudadanía previamente adquirida o derivada</td></tr>
+        <tr><td><strong>Punto de partida</strong></td><td>Residente permanente legal</td><td>Persona que ya es ciudadana por nacimiento o derivación</td></tr>
+        <tr><td><strong>Resultado</strong></td><td>Otorga la ciudadanía</td><td>Documenta una ciudadanía ya existente; no la otorga</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-5">🧪</div><h3>Analiza el Caso</h3><div class="mod-badge badge-practice">Actividad</div></div>
+    <div class="bbody">
+      <div id="m5-case1"></div>
+      <div id="m5-case2"></div>
+      <div id="m5-case3"></div>
+      <button class="act-btn primary" onclick="checkCaseGroup('m5',3)">Verificar respuestas</button>
+      <button class="act-btn ghost" id="m5-retry" style="display:none" onclick="resetCaseGroup('m5',3)">Reintentar</button>
+      <div class="act-summary" id="m5-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="tryGo('mod4')">← Módulo 4</button>
+    <button class="mod-nav-btn mod-nav-next" id="m5-next" onclick="tryGo('mod6')">Continuar a Módulo 6 →</button>
+  </div>
+</div>
+
+<div class="panel panel-mc-6" id="panel-mod6">
+  <div class="section-head">
+    <div class="sh-badge">Módulo 6</div>
+    <h2>Necesito Información</h2>
+    <p>Objetivo: comprender el uso de <mark class="kw kw-term">FOIA</mark> como herramienta para obtener expedientes migratorios y distinguir que no constituye un beneficio migratorio, sino un mecanismo de acceso a información.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración estimada</div><div class="value">15 min</div></div>
+    <div class="mod-meta-item"><div class="label">Casos prácticos</div><div class="value">3</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Básico</div></div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-6">📁</div><h3><mark class="kw kw-term">FOIA</mark></h3><div class="mod-badge badge-core">Herramienta de consulta</div></div>
+    <div class="bbody">
+      <p>Herramienta fundamental que permite solicitar y obtener copias de expedientes y registros que están en manos del gobierno federal (USCIS, ICE, CBP y otras agencias).</p>
+      <div class="chips">
+        <span class="chip blue">Acreditación de identidad del solicitante</span>
+        <span class="chip blue">Solicitud del interesado o su representante legal</span>
+        <span class="chip blue">No requiere estatus migratorio específico</span>
+      </div>
+      <div class="alert blue" style="margin-top:10px"><span class="alert-icon">ℹ️</span><div>"Aunque no otorga beneficios migratorios, <mark class="kw kw-term">FOIA</mark> es fundamental para construir casos informados y evitar inconsistencias."</div></div>
+      <div class="alert danger"><span class="alert-icon">⛔</span><div><strong><mark class="kw kw-term">FOIA</mark> permite obtener información o expedientes; no concede estatus, residencia, visa, permiso de trabajo ni ciudadanía.</strong></div></div>
+
+      <table class="info-table">
+        <tr><th>Agencia</th><th>¿Para qué se solicita?</th><th>¿Qué información puede obtenerse?</th></tr>
+        <tr><td><strong>USCIS</strong></td><td>Conocer el historial migratorio del cliente y los expedientes presentados</td><td>Copias de formularios (I-130, <mark class="kw kw-term">I-485</mark>, I-360, N-400, etc.), decisiones, RFEs, NOIDs, entrevistas, documentos enviados, expedientes A-File y registros de beneficios</td></tr>
+        <tr><td><strong>CBP</strong></td><td>Verificar ingresos, salidas e inspecciones en puertos de entrada</td><td>Historial de entradas y salidas (I-94), registros de inspección, documentos emitidos al ingresar, expedientes de inadmisibilidad, expedited removal y contactos con oficiales fronterizos</td></tr>
+        <tr><td><strong>FBI</strong></td><td>Verificar antecedentes penales federales y registros biométricos</td><td>Historial de arrestos e investigaciones federales, huellas dactilares y antecedentes (Identity History Summary). No contiene todos los expedientes migratorios</td></tr>
+        <tr><td><strong>DHS</strong> (Office of the General Counsel / Secretary)</td><td>Obtener registros cuando no se sabe qué componente los posee o el expediente involucra varias agencias</td><td>Documentos administrativos y comunicaciones internas; muchas solicitudes terminan siendo remitidas al componente correspondiente</td></tr>
+        <tr><td><strong>ICE</strong></td><td>Conocer información relacionada con detenciones o cumplimiento migratorio</td><td>Registros de detención, órdenes de supervisión, expedientes de deportación, órdenes de captura, entrevistas y procesos de remoción</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-6">🧪</div><h3>Analiza el Caso</h3><div class="mod-badge badge-practice">Actividad</div></div>
+    <div class="bbody">
+      <p>Determina si <mark class="kw kw-term">FOIA</mark> aplica, para qué se usaría, qué información se busca, y por qué no debe confundirse con un beneficio migratorio.</p>
+      <div id="m6-case1"></div>
+      <div id="m6-case2"></div>
+      <div id="m6-case3"></div>
+      <button class="act-btn primary" onclick="checkCaseGroup('m6',3)">Verificar respuestas</button>
+      <button class="act-btn ghost" id="m6-retry" style="display:none" onclick="resetCaseGroup('m6',3)">Reintentar</button>
+      <div class="act-summary" id="m6-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="tryGo('mod5')">← Módulo 5</button>
+    <button class="mod-nav-btn mod-nav-next" id="m6-next" onclick="tryGo('mod7')">Continuar a Módulo 7 →</button>
+  </div>
+</div>
+
+<div class="panel panel-mc-7" id="panel-mod7">
+  <div class="section-head">
+    <div class="sh-badge">Módulo 7</div>
+    <h2>Renovación, Reposición y Corrección</h2>
+    <p>Objetivo: identificar cuándo corresponde utilizar <mark class="kw kw-term">DACA</mark>, <mark class="kw kw-term">I-751</mark> e <mark class="kw kw-term">I-90</mark>, diferenciando la finalidad de cada uno y los supuestos en los que aplican.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración estimada</div><div class="value">25 min</div></div>
+    <div class="mod-meta-item"><div class="label">Casos prácticos</div><div class="value">3</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Intermedio</div></div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-7">👤</div><h3><mark class="kw kw-term">DACA</mark> — Deferred Action for Childhood Arrivals</h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Programa de acción diferida establecido en 2012 que ofrece protección temporal contra la deportación a personas que llegaron a EE.UU. siendo niños de manera no autorizada. No es un estatus migratorio permanente ni una vía directa hacia la residencia o ciudadanía, sino una medida de alivio administrativo renovable cada dos años.</p>
+      <div class="two-col">
+        <div class="mini-card"><h4>✅ Qué SÍ es</h4><ul>
+          <li>Acción diferida — protección temporal contra deportación</li>
+          <li>Autorización de empleo (EAD)</li>
+          <li>Acceso a Advance Parole (casos específicos)</li>
+          <li>Renovable cada <mark class="kw kw-date">2 años</mark></li>
+        </ul></div>
+        <div class="mini-card"><h4>❌ Qué NO es</h4><ul>
+          <li>No es un estatus legal permanente</li>
+          <li>No es una residencia permanente</li>
+          <li>No es una vía directa a la ciudadanía</li>
+        </ul></div>
+      </div>
+      <div class="sdiv"><div class="l"></div><div class="t">Criterios de elegibilidad</div><div class="l"></div></div>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Llegada a EE.UU. antes de los 16 años.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Residencia continua desde el 15 de junio de 2007 hasta la fecha de solicitud.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Estar presente en EE.UU. y no tener ningún estatus legal para el 15 de junio de 2012.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span>Cumplir requisitos educativos o equivalentes.</span></div>
+        <div class="ob-item"><div class="ob-num">5</div><span>Sin antecedentes penales graves.</span></div>
+      </div>
+      <div class="alert blue" style="margin-top:10px"><span class="alert-icon">ℹ️</span><div><mark class="kw kw-term">DACA</mark> no otorga estatus permanente, pero representa una herramienta clave de protección y estabilidad temporal para los beneficiarios.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-7">📝</div><h3>Formulario <mark class="kw kw-term">I-751</mark> — Eliminación de condiciones</h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Proceso para eliminar las condiciones de la residencia permanente de <mark class="kw kw-date">2 años</mark> obtenida a través del matrimonio con un ciudadano o residente permanente. Se presenta durante los <strong><mark class="kw kw-date">90 días</mark> previos</strong> al vencimiento de la tarjeta condicional, y su aprobación otorga una Green Card de <mark class="kw kw-date">10 años</mark> sin condiciones.</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span>Residencia condicional vigente.</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span>Presentarse dentro de los <mark class="kw kw-date">90 días</mark> previos al vencimiento de los dos años de residencia condicional.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span>Matrimonio de buena fe.</span></div>
+      </div>
+      <div class="alert gold"><span class="alert-icon">🥇</span><div><strong>Excepción:</strong> si el matrimonio terminó (divorcio, muerte del cónyuge, o abuso doméstico), el beneficiario puede solicitar una exención para presentar el <mark class="kw kw-term">I-751</mark> por sí solo, sin necesidad de la firma del cónyuge. <span class="tag-exc">Excepción</span></div></div>
+      <div class="alert danger"><span class="alert-icon">⛔</span><div><strong>Consecuencia crítica:</strong> si el proceso no se presenta a tiempo, el beneficiario pierde su estatus legal y puede entrar en proceso de deportación.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-7">🆔</div><h3>Formulario <mark class="kw kw-term">I-90</mark> — Renovación, reposición o corrección</h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Solicitud para reemplazar o renovar el documento físico de residencia permanente (Green Card) de <strong><mark class="kw kw-date">10 años</mark></strong>. Se usa cuando el documento original ha sido perdido, robado, dañado, contiene errores, o cuando se acerca su fecha de vencimiento. Es importante distinguirlo del <mark class="kw kw-term">I-751</mark>, que aplica exclusivamente para tarjetas de <mark class="kw kw-date">2 años</mark> (residencia condicional por matrimonio).</p>
+      <table class="info-table">
+        <tr><th>Motivo</th><th>Descripción</th></tr>
+        <tr><td>Pérdida, robo o destrucción</td><td>La tarjeta física ya no está en posesión del residente</td></tr>
+        <tr><td>Tarjeta dañada</td><td>El documento está deteriorado o con información ilegible</td></tr>
+        <tr><td>Error administrativo</td><td>Información incorrecta emitida por USCIS (error del gobierno)</td></tr>
+        <tr><td>Cambios legales</td><td>El residente cambió legalmente su nombre</td></tr>
+        <tr><td>Vencimiento o renovación</td><td>La Green Card de <mark class="kw kw-date">10 años</mark> está por vencer o ya venció</td></tr>
+      </table>
+      <div class="alert warn"><span class="alert-icon">⚠️</span><div>Si la tarjeta es de 2 años, usualmente <strong>no</strong> se usa el <mark class="kw kw-term">I-90</mark>, sino el I-751 para eliminar condiciones.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-7">📊</div><h3>Diferenciación de procesos</h3><div class="mod-badge badge-gold">Tabla comparativa</div></div>
+    <div class="bbody">
+      <table class="comp-table">
+        <tr><th>Proceso</th><th>Finalidad</th><th>Documento / situación relacionada</th><th>Qué NO otorga</th></tr>
+        <tr><td><strong><mark class="kw kw-term">DACA</mark></strong></td><td>Protección temporal contra deportación y EAD</td><td>Llegada antes de los 16 años; residencia continua desde 2007</td><td>Estatus legal permanente, residencia, vía a la ciudadanía</td></tr>
+        <tr><td><strong>I-751</strong></td><td>Eliminar condiciones de residencia por matrimonio</td><td>Green Card condicional de 2 años por matrimonio</td><td>No es aplicable a Green Card de <mark class="kw kw-date">10 años</mark></td></tr>
+        <tr><td><strong><mark class="kw kw-term">I-90</mark></strong></td><td>Renovar, reponer o corregir el documento físico</td><td>Green Card de 10 años perdida, dañada, con error o por vencer</td><td>No elimina condiciones de residencia condicional</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-7">🧪</div><h3>Analiza el Caso</h3><div class="mod-badge badge-practice">Actividad</div></div>
+    <div class="bbody">
+      <div id="m7-case1"></div>
+      <div id="m7-case2"></div>
+      <div id="m7-case3"></div>
+      <button class="act-btn primary" onclick="checkCaseGroup('m7',3)">Verificar respuestas</button>
+      <button class="act-btn ghost" id="m7-retry" style="display:none" onclick="resetCaseGroup('m7',3)">Reintentar</button>
+      <div class="act-summary" id="m7-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="tryGo('mod6')">← Módulo 6</button>
+    <button class="mod-nav-btn mod-nav-next" id="m7-next" onclick="tryGo('mod8')">Continuar a Módulo 8 →</button>
+  </div>
+</div>
+
+<div class="panel panel-mc-8" id="panel-mod8">
+  <div class="section-head">
+    <div class="sh-badge">Módulo 8</div>
+    <h2>Waivers</h2>
+    <p>Objetivo: identificar las principales solicitudes de perdón migratorio (I-601, I-601A e I-212), comprendiendo la finalidad de cada una y distinguiendo las causales para las que pueden utilizarse.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Duración estimada</div><div class="value">20 min</div></div>
+    <div class="mod-meta-item"><div class="label">Casos prácticos</div><div class="value">3</div></div>
+    <div class="mod-meta-item"><div class="label">Nivel</div><div class="value">Intermedio</div></div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-8">🤝</div><h3>Waivers — Perdón de causales de inadmisibilidad</h3><div class="mod-badge badge-core">Beneficio</div></div>
+    <div class="bbody">
+      <p>Los <mark class="kw kw-term">waivers</mark> (perdones migratorios) son solicitudes formales para que USCIS o el Departamento de Estado perdonen causales de inadmisibilidad que impiden a una persona obtener un beneficio migratorio. La mayoría de los waivers requieren demostrar que la negativa causaría un <mark class="kw kw-term">perjuicio extremo (extreme hardship)</mark> a un familiar calificado en EE.UU. Existen tres tipos principales: el I-601 (perdón general), el I-601A (presencia ilegal únicamente) y el I-212 (permiso de reingreso tras deportación).</p>
+      <div class="three-col">
+        <div class="mini-card"><h4>📄 <mark class="kw kw-term">I-601</mark> — Perdón General</h4><p>"Perdón" estándar para cuando se determina que el solicitante es inadmisible por: fraude migratorio, antecedentes penales, o salud pública. Se tramita desde dentro de EE.UU.</p></div>
+        <div class="mini-card"><h4>📄 <mark class="kw kw-term">I-601A</mark> — Presencia Ilegal</h4><p>Se utiliza si la única razón de inadmisibilidad es la presencia ilegal. Fue creado estratégicamente para reducir el tiempo de separación familiar.</p><div class="alert blue" style="margin-top:8px"><span class="alert-icon">✅</span><div><strong>Ventaja estratégica:</strong> se tramita desde dentro de EE.UU., evitando largos periodos de separación familiar mientras se resuelve la inadmisibilidad.</div></div></div>
+        <div class="mini-card"><h4>📄 <mark class="kw kw-term">I-212</mark> — Permiso de Reingreso</h4><p>Solicitud basada en un permiso de reingreso después de haber sido deportado o removido. Se utiliza cuando una persona quiere regresar legalmente antes de que expire su castigo (<mark class="kw kw-date">5</mark>, 10, 20 años o permanente).</p></div>
+      </div>
+      <div class="alert gold" style="margin-top:10px"><span class="alert-icon">🥇</span><div><strong>El éxito de un waiver depende de la argumentación del perjuicio extremo.</strong> Es un proceso altamente técnico y estratégico. La correcta documentación del hardship es el eje central de cualquier waiver exitoso.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-8">⚖️</div><h3>Cortes de Inmigración (EOIR)</h3><div class="mod-badge badge-purple">Herramienta de consulta</div></div>
+    <div class="bbody">
+      <p>La <mark class="kw kw-term">Executive Office for Immigration Review (EOIR)</mark> es la agencia del Departamento de Justicia (DOJ) encargada de administrar las Cortes de Inmigración y la Board of Immigration Appeals (BIA). Los jueces de inmigración conocen y resuelven procedimientos de remoción (deportación) y determinan la elegibilidad de las personas para determinados beneficios o formas de alivio migratorio cuando el caso se encuentra bajo su jurisdicción.</p>
+      <div class="alert blue"><span class="alert-icon">💡</span><div><strong>¿Por qué es importante verificar si un cliente tiene corte?</strong> La existencia de un proceso ante la Corte de Inmigración puede afectar la estrategia legal, los tiempos del caso y la autoridad competente para resolver determinadas solicitudes migratorias. Es indispensable identificar desde el inicio si el cliente tiene audiencias programadas y conocer el estado de su procedimiento.</div></div>
+      <div class="two-col">
+        <div class="mini-card"><h4>⚖️ Individual Hearing (Audiencia Individual)</h4><p>Audiencia ante un juez de inmigración en la que el solicitante presenta su caso completo: se ofrece evidencia, declaran los testigos (cuando los hay), el solicitante rinde testimonio y el juez analiza los hechos y la ley. <strong>Objetivo:</strong> resolver el fondo del caso mediante pruebas y testimonios.</p></div>
+        <div class="mini-card"><h4>⚖️ Merits Hearing (Audiencia de Méritos)</h4><p>Audiencia principal en la que el juez evalúa el mérito del caso y decide si concede o niega el beneficio. En la práctica suele usarse como sinónimo de Individual Hearing. <strong>Objetivo:</strong> determinar si el solicitante cumple los requisitos legales para el beneficio.</p></div>
+      </div>
+      <div class="alert danger" style="margin-top:10px"><span class="alert-icon">🏢</span><div><strong>Política interna del despacho:</strong> como política interna, TMLF no acepta nuevos casos cuando el cliente tenga una <mark class="kw kw-date">Individual Hearing</mark> programada dentro de los próximos <mark class="kw kw-date">6 meses</mark>, o una <mark class="kw kw-date">Merits Hearing</mark> programada dentro de los próximos <mark class="kw kw-date">18 meses</mark>. Esto se debe a los tiempos de recopilación de evidencia, preparación del expediente, revisión legal y estrategia del caso. <span class="tag-int">Política interna</span></div></div>
+      <div class="alert warn"><span class="alert-icon">⚠️</span><div>Esta es una política interna del despacho y <strong>no</strong> constituye un requisito establecido por la ley ni por EOIR. Su finalidad es asegurar que cada caso cuente con el tiempo suficiente para ser preparado de manera adecuada.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon mc-8">🧪</div><h3>Analiza el Caso</h3><div class="mod-badge badge-practice">Actividad</div></div>
+    <div class="bbody">
+      <p>Identifica qué tipo de waiver (I-601, I-601A o I-212) correspondería analizar en cada situación.</p>
+      <div id="m8-case1"></div>
+      <div id="m8-case2"></div>
+      <div id="m8-case3"></div>
+      <button class="act-btn primary" onclick="checkCaseGroup('m8',3)">Verificar respuestas</button>
+      <button class="act-btn ghost" id="m8-retry" style="display:none" onclick="resetCaseGroup('m8',3)">Reintentar</button>
+      <div class="act-summary" id="m8-summary"></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="tryGo('mod7')">← Módulo 7</button>
+    <button class="mod-nav-btn mod-nav-next" id="m8-next" onclick="tryGo('laboratorio')">Ir al Laboratorio de Elegibilidad →</button>
+  </div>
+</div>
+
+<div class="panel" id="panel-laboratorio">
+  <div class="section-head">
+    <div class="sh-badge">Caso integrador</div>
+    <h2>Laboratorio de Elegibilidad</h2>
+    <p>Aplica lo aprendido en los 7 módulos. En cada caso, identifica el objetivo del cliente, determina si existe un posible beneficio o herramienta, distingue los criterios presentes de los pendientes, señala información faltante, distingue elegibilidad de <mark class="kw kw-concept">admisibilidad</mark>, detecta excepciones y evita afirmar que el caso será aprobado. Emite siempre una conclusión preliminar prudente.</p>
+  </div>
+
+  <div class="alert warn"><span class="alert-icon">⚠️</span><div>La retroalimentación de cada caso se muestra únicamente después de que registres tu propio análisis. Utiliza la plantilla para estructurar tu respuesta.</div></div>
+
+  
+      
+  <div class="book-progress">
+    <div class="book-prog-label">Caso</div>
+    <div class="book-prog-track"><div class="book-prog-fill" id="lab-book-fill" style="width:16.66%"></div></div>
+    <div class="book-prog-count" id="lab-book-count">1 / 6</div>
+  </div>
+  <div class="book-viewer" id="lab-book-viewer">
+<div class="book-page" data-book-index="1" style="display:block"><div class="case-card">
+        <div class="case-head"><div class="case-avatar">C</div><div><div class="case-name">Camila Veásquez</div><div class="case-sub">28 años · Colombiana</div></div></div>
+        <div class="case-desc">Camila está casada con un residente permanente legal. Refiere haber sufrido agresiones físicas por parte de su esposo durante el matrimonio, con quien convivió hasta hace 8 meses cuando se divorciaron.</div>
+        <div class="lab-field"><label>Posible beneficio</label><textarea id="lab1-f1" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios identificados</label><textarea id="lab1-f2" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios pendientes</label><textarea id="lab1-f3" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Información adicional necesaria</label><textarea id="lab1-f4" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible excepción</label><textarea id="lab1-f5" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible tema de inadmisibilidad</label><textarea id="lab1-f6" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Conclusión preliminar</label><textarea id="lab1-f7" placeholder="Escribe tu análisis..."></textarea></div>
+        <button class="act-btn ghost" onclick="toggleLabReveal(1)">Ver retroalimentación sugerida</button>
+        <div class="lab-reveal" id="lab1-reveal"></div>
+      </div></div><div class="book-page" data-book-index="2" style="display:none"><div class="case-card">
+        <div class="case-head"><div class="case-avatar">R</div><div><div class="case-name">Ricardo Peralta</div><div class="case-sub">34 años · Mexicano</div></div></div>
+        <div class="case-desc">Ricardo ingresó a EE.UU. sin inspección hace <mark class="kw kw-date">5 años</mark>. Actualmente tiene una petición familiar I-130 aprobada presentada por su esposa, ciudadana estadounidense. No indica si tiene alguna orden de deportación previa.</div>
+        <div class="lab-field"><label>Posible beneficio</label><textarea id="lab2-f1" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios identificados</label><textarea id="lab2-f2" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios pendientes</label><textarea id="lab2-f3" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Información adicional necesaria</label><textarea id="lab2-f4" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible excepción</label><textarea id="lab2-f5" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible tema de inadmisibilidad</label><textarea id="lab2-f6" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Conclusión preliminar</label><textarea id="lab2-f7" placeholder="Escribe tu análisis..."></textarea></div>
+        <button class="act-btn ghost" onclick="toggleLabReveal(2)">Ver retroalimentación sugerida</button>
+        <div class="lab-reveal" id="lab2-reveal"></div>
+      </div></div><div class="book-page" data-book-index="3" style="display:none"><div class="case-card">
+        <div class="case-head"><div class="case-avatar">V</div><div><div class="case-name">Valentina Cruz</div><div class="case-sub">19 años · Hondureña</div></div></div>
+        <div class="case-desc">Valentina fue víctima de un delito de robo con violencia hace dos años y colaboró con la investigación policial en su momento. No cuenta aún con la certificación de la autoridad correspondiente.</div>
+        <div class="lab-field"><label>Posible beneficio</label><textarea id="lab3-f1" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios identificados</label><textarea id="lab3-f2" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios pendientes</label><textarea id="lab3-f3" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Información adicional necesaria</label><textarea id="lab3-f4" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible excepción</label><textarea id="lab3-f5" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible tema de inadmisibilidad</label><textarea id="lab3-f6" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Conclusión preliminar</label><textarea id="lab3-f7" placeholder="Escribe tu análisis..."></textarea></div>
+        <button class="act-btn ghost" onclick="toggleLabReveal(3)">Ver retroalimentación sugerida</button>
+        <div class="lab-reveal" id="lab3-reveal"></div>
+      </div></div><div class="book-page" data-book-index="4" style="display:none"><div class="case-card">
+        <div class="case-head"><div class="case-avatar">A</div><div><div class="case-name">Andrés Rodríguez</div><div class="case-sub">41 años · Guatemalteco</div></div></div>
+        <div class="case-desc">Andrés tiene una petición de inmigrante aprobada basada en empleo y actualmente se encuentra tramitando su proceso ante el National Visa Center. Durante el llenado de sus formularios menciona antecedentes penales por un delito menor hace 10 años.</div>
+        <div class="lab-field"><label>Posible beneficio</label><textarea id="lab4-f1" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios identificados</label><textarea id="lab4-f2" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios pendientes</label><textarea id="lab4-f3" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Información adicional necesaria</label><textarea id="lab4-f4" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible excepción</label><textarea id="lab4-f5" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible tema de inadmisibilidad</label><textarea id="lab4-f6" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Conclusión preliminar</label><textarea id="lab4-f7" placeholder="Escribe tu análisis..."></textarea></div>
+        <button class="act-btn ghost" onclick="toggleLabReveal(4)">Ver retroalimentación sugerida</button>
+        <div class="lab-reveal" id="lab4-reveal"></div>
+      </div></div><div class="book-page" data-book-index="5" style="display:none"><div class="case-card">
+        <div class="case-head"><div class="case-avatar">I</div><div><div class="case-name">Ismael Torres</div><div class="case-sub">24 años · Salvadoreño</div></div></div>
+        <div class="case-desc">Ismael llegó a EE.UU. a los 10 años. Ha residido de forma continua desde entonces y actualmente cuenta con DACA vigente que vence en 3 meses. Desea saber si puede solicitar la residencia permanente directamente.</div>
+        <div class="lab-field"><label>Posible beneficio</label><textarea id="lab5-f1" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios identificados</label><textarea id="lab5-f2" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios pendientes</label><textarea id="lab5-f3" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Información adicional necesaria</label><textarea id="lab5-f4" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible excepción</label><textarea id="lab5-f5" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible tema de inadmisibilidad</label><textarea id="lab5-f6" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Conclusión preliminar</label><textarea id="lab5-f7" placeholder="Escribe tu análisis..."></textarea></div>
+        <button class="act-btn ghost" onclick="toggleLabReveal(5)">Ver retroalimentación sugerida</button>
+        <div class="lab-reveal" id="lab5-reveal"></div>
+      </div></div><div class="book-page" data-book-index="6" style="display:none"><div class="case-card">
+        <div class="case-head"><div class="case-avatar">R</div><div><div class="case-name">Renata Juárez</div><div class="case-sub">30 años · Peruana</div></div></div>
+        <div class="case-desc">Renata es residente permanente desde hace 4 años y está casada con un ciudadano estadounidense desde hace <mark class="kw kw-date">3 años</mark>. Desea saber si ya puede solicitar la naturalización.</div>
+        <div class="lab-field"><label>Posible beneficio</label><textarea id="lab6-f1" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios identificados</label><textarea id="lab6-f2" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Criterios pendientes</label><textarea id="lab6-f3" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Información adicional necesaria</label><textarea id="lab6-f4" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible excepción</label><textarea id="lab6-f5" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Posible tema de inadmisibilidad</label><textarea id="lab6-f6" placeholder="Escribe tu análisis..."></textarea></div>
+        <div class="lab-field"><label>Conclusión preliminar</label><textarea id="lab6-f7" placeholder="Escribe tu análisis..."></textarea></div>
+        <button class="act-btn ghost" onclick="toggleLabReveal(6)">Ver retroalimentación sugerida</button>
+        <div class="lab-reveal" id="lab6-reveal"></div>
+      </div></div>
+  </div>
+  <div class="book-nav">
+    <button class="book-btn book-btn-prev" id="lab-book-prev" onclick="labBookPrev()" disabled>← Caso anterior</button>
+    <div class="book-dots" id="lab-book-dots"></div>
+    <button class="book-btn book-btn-next" id="lab-book-next" onclick="labBookNext()">Siguiente caso →</button>
+  </div>
+
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="tryGo('mod7')">← Módulo 7</button>
+    <button class="mod-nav-btn mod-nav-next" onclick="unlockExam()">Continuar a Evaluación Final →</button>
+  </div>
+</div>
+
+<div class="panel" id="panel-evaluacion">
+  <div class="section-head">
+    <div class="sh-badge">Evaluación Final</div>
+    <h2>Evaluación Integradora</h2>
+    <p>20 preguntas que cubren proporcionalmente los siete módulos del training. Se requiere <strong><mark class="kw kw-num">85%</mark></strong> o más para aprobar. Las respuestas correctas no se muestran hasta enviar la evaluación.</p>
+  </div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Preguntas</div><div class="value">20</div></div>
+    <div class="mod-meta-item"><div class="label">Mínimo aprobatorio</div><div class="value">85%</div></div>
+    <div class="mod-meta-item"><div class="label">Intentos</div><div class="value">Ilimitados</div></div>
+  </div>
+  <div id="exam-questions"></div>
+  <button class="act-btn primary" id="exam-submit" onclick="examSubmit()">Enviar Evaluación</button>
+  <button class="act-btn ghost" id="exam-retry" style="display:none" onclick="examReset()">Reintentar Evaluación</button>
+
+  <div class="result-card" id="exam-result">
+    <div class="result-score" id="exam-score-val">0%</div>
+    <div class="result-label" id="exam-result-label"></div>
+    <div class="result-msg" id="exam-result-msg"></div>
+    <div class="result-stats">
+      <div class="result-stat"><div class="rv" id="exam-correct">0</div><div class="rl">Correctas</div></div>
+      <div class="result-stat"><div class="rv" id="exam-incorrect">0</div><div class="rl">Incorrectas</div></div>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar">
+    <button class="mod-nav-btn mod-nav-prev" onclick="tryGo('laboratorio')">← Laboratorio</button>
+    <button class="mod-nav-btn mod-nav-next" onclick="tryGo('resultados')">Ver Resultados →</button>
+  </div>
+</div>
+
+<div class="panel" id="panel-resultados">
+  <div class="section-head">
+    <div class="sh-badge">Cierre del training</div>
+    <h2>Resultados</h2>
+    <p>Resumen de tu desempeño en Elegibilidad Migratoria.</p>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon">📊</div><h3>Tu progreso</h3></div>
+    <div class="bbody">
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-val" id="res-mods">0/7</div><div class="stat-label">Módulos completados</div></div>
+        <div class="stat-card"><div class="stat-val" id="res-exam">—</div><div class="stat-label">Puntaje evaluación</div></div>
+        <div class="stat-card"><div class="stat-val" id="res-status">—</div><div class="stat-label">Estatus</div></div>
+      </div>
+      <div id="res-review" class="review-list"></div>
+      <div class="alert info" id="res-recommend" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon">🧭</div><h3>Recuerda siempre</h3></div>
+    <div class="bbody">
+      <div class="principle"><p>Ser elegible no significa que el caso será aprobado.</p></div>
+      <p style="margin-top:10px">Elegibilidad, admisibilidad y aprobación son conceptos diferentes. El análisis siempre se realiza criterio por criterio, identificando la información faltante antes de concluir.</p>
+    </div>
+  </div>
+
+  <div class="mod-nav-bar" style="justify-content:center;border-top:none">
+    <button class="mod-nav-btn mod-nav-next" onclick="showPanel('inicio')">← Volver al Inicio</button>
+  </div>
+  <footer class="tmlf-foot">TMLF Academy · The Mendoza Law Firm · Elegibilidad Migratoria</footer>
+</div>
+
+  </main>
+</div>
+
+<script>
+
+/* ============================================================
+   ESTADO GLOBAL Y NAVEGACION
+   ============================================================ */
+var PANEL_ORDER = ['inicio','instrucciones','ruta','mod1','mod2','mod3','mod4','mod5','mod6','mod7','laboratorio','evaluacion','resultados'];
+var MOD_ORDER = ['mod1','mod2','mod3','mod4','mod5','mod6','mod7','mod8'];
+
+var trainingState = {
+  unlocked: {inicio:true, instrucciones:true, ruta:true, mod1:true, mod2:true, mod3:true, mod4:true, mod5:true, mod6:true, mod7:true, mod8:true, laboratorio:true, evaluacion:true, resultados:true},
+  completed: {},
+  examScore: null,
+  examCompleted: false
+};
+
+function loadState(){
+  try{
+    var raw = localStorage.getItem('tmlf_elegibilidad_state');
+    if(raw){
+      var saved = JSON.parse(raw);
+      trainingState.unlocked = Object.assign(trainingState.unlocked, saved.unlocked||{});
+      trainingState.completed = saved.completed || {};
+      trainingState.examScore = saved.examScore != null ? saved.examScore : null;
+      trainingState.examCompleted = !!saved.examCompleted;
+    }
+  }catch(e){ console.warn('No se pudo cargar el progreso guardado', e); }
+}
+function saveState(){
+  try{ localStorage.setItem('tmlf_elegibilidad_state', JSON.stringify(trainingState)); }
+  catch(e){ console.warn('No se pudo guardar el progreso', e); }
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sbOverlay').classList.toggle('show');
+}
+
+function showPanel(id){
+  var panels = document.querySelectorAll('.panel');
+  for(var i=0;i<panels.length;i++){ panels[i].classList.remove('active'); }
+  var target = document.getElementById('panel-'+id);
+  if(target) target.classList.add('active');
+  var navs = document.querySelectorAll('.sb-item');
+  for(var j=0;j<navs.length;j++){ navs[j].classList.remove('active'); }
+  var nav = document.getElementById('nav-'+id);
+  if(nav) nav.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sbOverlay').classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+  updateSidebarState();
+}
+
+function tryGo(id){
+  showPanel(id);
+}
+
+function unlockPanel(id){
+  trainingState.unlocked[id] = true;
+  var nav = document.getElementById('nav-'+id);
+  if(nav){
+    nav.classList.remove('locked');
+    nav.onclick = function(){ showPanel(id); };
+  }
+  saveState();
+}
+
+function markModuleCompleted(modId){
+  trainingState.completed[modId] = true;
+  var nav = document.getElementById('nav-'+modId);
+  if(nav) nav.classList.add('completed');
+  var idx = MOD_ORDER.indexOf(modId);
+  var nextBtn = document.getElementById(modId.replace('mod','m')+'-next');
+  if(nextBtn) nextBtn.disabled = false;
+  if(idx > -1 && idx < MOD_ORDER.length-1){
+    unlockPanel(MOD_ORDER[idx+1]);
+  } else if(modId === MOD_ORDER[MOD_ORDER.length-1]){
+    unlockPanel('laboratorio');
+  }
+  updateProgress();
+  saveState();
+}
+
+function unlockExam(){
+  unlockPanel('evaluacion');
+  showPanel('evaluacion');
+  updateProgress();
+}
+
+function updateSidebarState(){
+  for(var id in trainingState.unlocked){
+    if(trainingState.unlocked[id]){
+      var nav = document.getElementById('nav-'+id);
+      if(nav && nav.classList.contains('locked')){
+        nav.classList.remove('locked');
+        nav.onclick = (function(pid){ return function(){ showPanel(pid); }; })(id);
+      }
+    }
+  }
+  for(var m in trainingState.completed){
+    var n = document.getElementById('nav-'+m);
+    if(n) n.classList.add('completed');
+  }
+  if(trainingState.examCompleted){
+    unlockPanel('resultados');
+    var ne = document.getElementById('nav-evaluacion');
+    if(ne && trainingState.examScore>=85) ne.classList.add('completed');
+  }
+}
+
+function updateProgress(){
+  var totalUnits = MOD_ORDER.length + 1; // 7 modulos + examen
+  var done = 0;
+  MOD_ORDER.forEach(function(m){ if(trainingState.completed[m]) done++; });
+  if(trainingState.examCompleted) done++;
+  var pct = Math.round((done/totalUnits)*100);
+  var bar = document.getElementById('globalProgress');
+  if(bar) bar.style.width = pct+'%';
+}
+
+/* ============================================================
+   MOTOR DE ACTIVIDADES "ANALIZA EL CASO"
+   ============================================================ */
+var caseRegistry = {}; // groupId -> [{qEl ids, correct, answered}]
+
+function renderCase(containerId, data, groupId){
+  var el = document.getElementById(containerId);
+  if(!el) return;
+  var html = '<div class="case-card"><div class="case-head"><div class="case-avatar">'+data.name.charAt(0)+'</div><div><div class="case-name">'+data.name+'</div><div class="case-sub">'+data.sub+'</div></div></div>';
+  html += '<div class="case-desc">'+data.desc+'</div>';
+  data.questions.forEach(function(q, qi){
+    var qId = containerId+'-q'+qi;
+    html += '<div class="case-q"><div class="case-q-text">'+q.text+'</div><div id="'+qId+'">';
+    q.options.forEach(function(opt, oi){
+      html += '<div class="q-opt" data-val="'+oi+'" onclick="caseSelect(this,\''+qId+'\',\''+groupId+'\')"><div class="opt-mark"></div><div>'+opt+'</div></div>';
+    });
+    html += '</div><div class="q-feedback" id="'+qId+'-fb"></div></div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function caseSelect(el, qId, groupId){
+  if(el.parentElement.classList.contains('locked-q')) return;
+  var opts = document.querySelectorAll('#'+qId+' .q-opt');
+  opts.forEach(function(o){ o.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function checkCaseGroup(groupId, numCases){
+  var data = CASE_DATA[groupId];
+  var totalQ = 0, correctQ = 0;
+  data.forEach(function(caseData, ci){
+    var containerId = groupId+'-case'+(ci+1);
+    caseData.questions.forEach(function(q, qi){
+      var qId = containerId+'-q'+qi;
+      totalQ++;
+      var sel = document.querySelector('#'+qId+' .q-opt.selected');
+      var opts = document.querySelectorAll('#'+qId+' .q-opt');
+      var selVal = sel ? parseInt(sel.dataset.val) : -1;
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        var v = parseInt(o.dataset.val);
+        if(v === q.correct) o.classList.add('correct');
+        else if(v === selVal && selVal !== q.correct) o.classList.add('incorrect');
+      });
+      var fb = document.getElementById(qId+'-fb');
+      var isCorrect = (selVal === q.correct);
+      if(isCorrect) correctQ++;
+      if(fb){
+        fb.className = 'q-feedback show '+(isCorrect?'ok':'fail');
+        fb.textContent = isCorrect ? ('\u2705 '+q.fbCorrect) : ('\u274C '+q.fbWrong);
+      }
+    });
+  });
+  var pct = Math.round((correctQ/totalQ)*100);
+  var summary = document.getElementById(groupId+'-summary');
+  var retryBtn = document.getElementById(groupId+'-retry');
+  if(summary){
+    summary.classList.add('show');
+    var isCoreModuleGroup = /^m[1-8]$/.test(groupId);
+    if(pct>=50){
+      summary.className='act-summary show ok';
+      summary.textContent = isCoreModuleGroup ? (pct+'% correcto \u2014 Actividad completada. Puedes avanzar al siguiente m\u00f3dulo.') : (pct+'% correcto \u2014 Actividad complementaria completada.');
+      if(isCoreModuleGroup){
+        var modId = 'mod'+groupId.replace('m','');
+        markModuleCompleted(modId);
+      }
+    } else {
+      summary.className='act-summary show fail';
+      summary.textContent = pct+'% correcto \u2014 Repasa el contenido del m\u00f3dulo e int\u00e9ntalo de nuevo.';
+    }
+  }
+  if(retryBtn) retryBtn.style.display='inline-block';
+  var submitBtn = document.querySelector('button[onclick="checkCaseGroup(\''+groupId+'\',3)"]');
+  if(submitBtn) submitBtn.style.display='none';
+}
+
+function resetCaseGroup(groupId, numCases){
+  var data = CASE_DATA[groupId];
+  data.forEach(function(caseData, ci){
+    renderCase(groupId+'-case'+(ci+1), caseData, groupId);
+  });
+  var summary = document.getElementById(groupId+'-summary');
+  if(summary){ summary.classList.remove('show'); summary.className='act-summary'; }
+  var retryBtn = document.getElementById(groupId+'-retry');
+  if(retryBtn) retryBtn.style.display='none';
+  var submitBtn = document.querySelector('button[onclick="checkCaseGroup(\''+groupId+'\',3)"]');
+  if(submitBtn) submitBtn.style.display='inline-block';
+}
+
+function initAllCases(){
+  for(var groupId in CASE_DATA){
+    CASE_DATA[groupId].forEach(function(caseData, ci){
+      renderCase(groupId+'-case'+(ci+1), caseData, groupId);
+    });
+  }
+}
+
+/* ============================================================
+   LABORATORIO DE ELEGIBILIDAD
+   ============================================================ */
+function toggleLabReveal(n){
+  var rev = document.getElementById('lab'+n+'-reveal');
+  if(!rev) return;
+  if(rev.classList.contains('show')){ rev.classList.remove('show'); return; }
+  var d = LAB_DATA[n];
+  rev.innerHTML = '<h5>Retroalimentaci\u00f3n sugerida</h5>'+
+    '<p><strong>Posible beneficio:</strong> '+d.beneficio+'</p>'+
+    '<p><strong>Criterios identificados:</strong> '+d.criteriosOk+'</p>'+
+    '<p><strong>Criterios pendientes:</strong> '+d.criteriosPend+'</p>'+
+    '<p><strong>Informaci\u00f3n adicional necesaria:</strong> '+d.infoFaltante+'</p>'+
+    '<p><strong>Posible excepci\u00f3n:</strong> '+d.excepcion+'</p>'+
+    '<p><strong>Posible tema de inadmisibilidad:</strong> '+d.inadmisibilidad+'</p>'+
+    '<p style="margin-bottom:0"><strong>Conclusi\u00f3n preliminar:</strong> '+d.conclusion+'</p>';
+  rev.classList.add('show');
+}
+
+var CASE_DATA = {};
+
+CASE_DATA['m1'] = [
+  { name:"María López", sub:"29 años · Mexicana · Caso 1",
+    desc:"Está casada con un ciudadano estadounidense y desea obtener la residencia permanente.",
+    questions:[
+      { text:"¿Qué puede concluirse con la información disponible?",
+        options:["El caso será aprobado sin necesidad de más análisis","María no es elegible para ningún beneficio migratorio","Existe un posible beneficio que debe analizarse a fondo","No es necesario revisar ninguna información adicional"],
+        correct:2,
+        fbCorrect:"El matrimonio con un USC sugiere un posible beneficio, pero deben analizarse todos los criterios antes de concluir.",
+        fbWrong:"La información disponible solo permite identificar un posible beneficio; no autoriza afirmar aprobación ni descartar elegibilidad." },
+      { text:"¿Qué información adicional se requiere antes de concluir?",
+        options:["Únicamente su fecha de nacimiento y lugar de origen","El nombre completo y ocupación actual de su cónyuge","Su forma de ingreso y el estado de la petición familiar","La cantidad exacta de hijos que tiene la pareja"],
+        correct:2,
+        fbCorrect:"Se requiere conocer la forma de ingreso y el estatus de la petición familiar para determinar la vía migratoria aplicable.",
+        fbWrong:"Sin conocer la forma de ingreso y el estatus de la petición, no puede determinarse la vía migratoria aplicable." } ]},
+  { name:"Luis Herrera", sub:"38 años · Hondureño · Caso 2",
+    desc:"Quiere obtener un permiso de trabajo porque lleva diez años viviendo en Estados Unidos.",
+    questions:[
+      { text:"¿El tiempo viviendo en EE.UU. por sí solo crea elegibilidad?",
+        options:["No, el tiempo de residencia no genera por sí solo un criterio","Sí, tras diez años se obtiene automáticamente un permiso","Sí, siempre que haya declarado impuestos cada año","No aplica análisis alguno; se niega de inmediato"],
+        correct:0,
+        fbCorrect:"El tiempo viviendo en EE.UU. no es, por sí mismo, un criterio de elegibilidad para un beneficio específico.",
+        fbWrong:"El tiempo de residencia por sí solo no crea elegibilidad; debe existir un beneficio cuyos criterios se cumplan." },
+      { text:"¿Cuál es la conclusión prudente en este momento?",
+        options:["Se le debe negar cualquier tipo de ayuda legal","No es posible concluir aún; debe explorarse otro beneficio","Se aprueba el permiso de trabajo de inmediato","Se le informa que califica automáticamente para VAWA"],
+        correct:1,
+        fbCorrect:"Se requiere información adicional para identificar si existe algún beneficio aplicable a su situación real.",
+        fbWrong:"No debe negarse la ayuda sin explorar alternativas, ni afirmarse una aprobación o beneficio sin fundamento." } ]},
+  { name:"Ana Rodríguez", sub:"24 años · Guatemalteca · Caso 3",
+    desc:"Fue víctima de violencia doméstica por parte de su esposo, residente permanente.",
+    questions:[
+      { text:"¿Qué tipo de beneficio podría existir según lo estudiado?",
+        options:["Ningún beneficio posible, ya que ella no es ciudadana","La ciudadanía estadounidense de forma automática e inmediata","Únicamente un permiso de turista de corta duración","Un beneficio para víctimas de abuso por un familiar calificado"],
+        correct:3,
+        fbCorrect:"Al ser víctima de abuso por un familiar LPR, podría existir un posible beneficio tipo VAWA, sujeto a análisis completo.",
+        fbWrong:"La situación apunta hacia un beneficio para víctimas de abuso por un familiar calificado, no hacia los demás resultados." } ]}
+];
+
+CASE_DATA['m2'] = [
+  { name:"Carlos Méndez", sub:"35 años · Mexicano · Caso 1",
+    desc:"Entró con visa de turista, está casado con una ciudadana estadounidense y permanece en EE.UU. No se indica si fue inspeccionado y admitido.",
+    questions:[
+      { text:"¿Qué información falta para continuar el análisis?",
+        options:["El nombre completo y edad exacta de su esposa","El número total de hijos que tiene la pareja","Confirmar si fue inspeccionado y admitido al ingresar","La dirección actual completa de su domicilio"],
+        correct:2,
+        fbCorrect:"Es indispensable confirmar la inspección y admisión, criterio central del §245(a).",
+        fbWrong:"El dato crítico faltante es la inspección y admisión al ingresar, requisito central del §245(a)." },
+      { text:"Con la visa de turista mencionada, ¿qué puede asumirse?",
+        options:["Que definitivamente no es elegible para ningún beneficio","Que automáticamente califica para el ajuste de estatus","Que probablemente fue inspeccionado, pero debe confirmarse formalmente","Que necesita presentar una Visa U de inmediato"],
+        correct:2,
+        fbCorrect:"Haber entrado con visa de turista sugiere una posible inspección y admisión, pero debe confirmarse antes de concluir.",
+        fbWrong:"No puede asumirse elegibilidad automática ni descartarla; debe confirmarse el dato de inspección y admisión." } ]},
+  { name:"Rosa Martínez", sub:"42 años · Salvadoreña · Caso 2",
+    desc:"Entró sin inspección y su hijo sirve actualmente en el Ejército de EE.UU.",
+    questions:[
+      { text:"¿Qué posible beneficio debe identificarse?",
+        options:["Naturalización inmediata sin necesidad de más requisitos","Una Visa K-1 por prometido ciudadano estadounidense","Posible Parole in Place, por ser familiar de un militar activo","Un formulario I-90 para reponer su tarjeta"],
+        correct:2,
+        fbCorrect:"Al ser madre de un militar activo e ingresar sin inspección, corresponde analizar un posible Parole in Place.",
+        fbWrong:"El perfil (ingreso sin inspección + familiar militar) apunta a un posible Parole in Place, no a los demás beneficios." },
+      { text:"Si obtuviera el PIP, ¿qué advertencia es fundamental?",
+        options:["Que puede viajar libremente al extranjero sin riesgo","Que el PIP otorga la residencia permanente de inmediato","Que no es un documento de viaje y salir anula el beneficio","Que ya no necesita ningún trámite migratorio adicional"],
+        correct:2,
+        fbCorrect:"El PIP no es un documento de viaje; salir de EE.UU. anula el beneficio y puede generar barras migratorias.",
+        fbWrong:"El PIP NO permite viajar libremente ni otorga residencia permanente; salir de EE.UU. anula el beneficio." } ]},
+  { name:"Jorge Castillo", sub:"51 años · Hondureño · Caso 3",
+    desc:"Tiene una petición familiar presentada en marzo de 2001 y actualmente existe una petición aprobada a su favor.",
+    questions:[
+      { text:"¿Qué vía migratoria debe analizarse primero?",
+        options:["Una Visa K-1 por compromiso matrimonial reciente","La naturalización directa sin residencia permanente previa","Una solicitud FOIA para obtener su expediente","INA §245(i), por la fecha de presentación de la petición"],
+        correct:3,
+        fbCorrect:"La fecha de presentación (marzo 2001, dentro del periodo legal) apunta a un posible §245(i), sujeto a verificar los demás criterios.",
+        fbWrong:"La fecha de la petición hace pensar en un posible §245(i); las demás opciones no corresponden a este perfil." },
+      { text:"¿Qué más se necesita confirmar antes de concluir?",
+        options:["Únicamente su nacionalidad y lugar de nacimiento","El color y la fecha de vencimiento de su tarjeta","Que la petición fuera approvable when filed y su base actual","Nada más; el caso ya está completo"],
+        correct:2,
+        fbCorrect:"Deben confirmarse ambos requisitos adicionales del §245(i): que la petición haya sido approvable when filed y exista base migratoria vigente.",
+        fbWrong:"Sin verificar estos dos elementos no puede concluirse la elegibilidad bajo §245(i)." } ]}
+];
+
+CASE_DATA['m3'] = [
+  { name:"Paola Sánchez", sub:"30 años · Colombiana · Caso 1",
+    desc:"Su esposo, ciudadano estadounidense, la agredió física y emocionalmente durante varios años.",
+    questions:[
+      { text:"¿Qué posible beneficio corresponde analizar?",
+        options:["Posible Visa T, por presunta trata de personas","Posible VAWA, por relación calificada con USC y abuso","Posible Visa U, sin necesidad de más análisis","Ningún beneficio, porque ella se encuentra casada"],
+        correct:1,
+        fbCorrect:"Es cónyuge de un USC y refiere abuso, por lo que corresponde analizar un posible VAWA verificando los demás criterios.",
+        fbWrong:"El perfil corresponde a un posible VAWA (relación calificada más abuso), no a Visa T ni Visa U." },
+      { text:"¿Qué información falta antes de concluir?",
+        options:["Si convivió con el agresor y si el matrimonio fue de buena fe","Nada más, ella ya es elegible sin condiciones","Únicamente su número de pasaporte vigente","El nombre completo de los padres de Paola"],
+        correct:0,
+        fbCorrect:"Se requiere confirmar la residencia con el agresor y la buena fe del matrimonio, criterios legales de VAWA.",
+        fbWrong:"Sin confirmar convivencia y buena fe matrimonial no puede concluirse elegibilidad." } ]},
+  { name:"Miguel Torres", sub:"27 años · Mexicano · Caso 2",
+    desc:"Fue víctima de un robo con violencia y nunca denunció el delito ante la policía.",
+    questions:[
+      { text:"¿Qué elemento crítico falta para un posible Visa U?",
+        options:["Su edad exacta y lugar de nacimiento","El tipo de arma utilizada durante el robo","Nada falta, el caso ya calificó por completo","La cooperación con autoridades y la certificación I-918"],
+        correct:3,
+        fbCorrect:"Sin denuncia ni certificación de una autoridad, falta el elemento de cooperación, esencial para la Visa U.",
+        fbWrong:"El elemento faltante es la cooperación con autoridades y la certificación I-918 Suplemento B." },
+      { text:"¿Cuál es la conclusión prudente?",
+        options:["Se niega el caso de forma definitiva e inmediata","Se aprueba automáticamente sin certificación alguna","No existe ningún beneficio posible en este escenario","No es posible concluir aún; debe explorarse la cooperación futura"],
+        correct:3,
+        fbCorrect:"Debe explorarse si aún puede cooperar o certificar el delito antes de descartar el beneficio.",
+        fbWrong:"No debe cerrarse el caso de forma definitiva sin explorar la posibilidad de cooperación." } ]},
+  { name:"Daniela Flores", sub:"21 años · Hondureña · Caso 3",
+    desc:"Fue obligada a trabajar sin recibir salario y logró escapar de sus tratantes.",
+    questions:[
+      { text:"¿Qué posible beneficio corresponde analizar?",
+        options:["Posible VAWA, por relación familiar calificada","Posible Visa T, por ser víctima de una forma grave de trata","El Proceso Consular ante una embajada estadounidense","Un Certificado de Ciudadanía mediante el N-600"],
+        correct:1,
+        fbCorrect:"La situación descrita corresponde a un posible caso de trata de personas, por lo que se analiza la Visa T.",
+        fbWrong:"El perfil de trata laboral corresponde a un posible Visa T, no a VAWA ni a los otros procesos." } ]}
+];
+
+CASE_DATA['m4'] = [
+  { name:"Fernanda Ruiz", sub:"26 años · Peruana · Caso 1",
+    desc:"Su prometido, ciudadano estadounidense, desea casarse con ella en Estados Unidos.",
+    questions:[
+      { text:"¿Qué proceso corresponde analizar?",
+        options:["Proceso Consular por una petición familiar aprobada","Posible Visa K-1, para viajar y casarse en EE.UU.","El Adjustment of Status de forma directa","Un formulario I-90 por vencimiento de tarjeta"],
+        correct:1,
+        fbCorrect:"Al tratarse de un prometido USC que desea que ella viaje para casarse en EE.UU., corresponde analizar la Visa K-1.",
+        fbWrong:"El escenario descrito corresponde a la Visa K-1, no al Proceso Consular por petición familiar ni al AOS directo." },
+      { text:"¿Qué información falta confirmar?",
+        options:["Nada más; ambos ya califican de forma automática","Únicamente el color de ojos del prometido","Si se conocieron en persona y su capacidad legal para casarse","La dirección exacta donde se realizará la boda"],
+        correct:2,
+        fbCorrect:"Deben confirmarse los criterios legales de la K-1: encuentro personal reciente y capacidad legal para casarse.",
+        fbWrong:"Sin confirmar el encuentro personal reciente y la capacidad legal, no puede concluirse elegibilidad." } ]},
+  { name:"José Morales", sub:"41 años · Mexicano · Caso 2",
+    desc:"Su hermano, ciudadano estadounidense, tiene una petición aprobada y espera su entrevista en el consulado.",
+    questions:[
+      { text:"¿Qué proceso corresponde analizar?",
+        options:["Una posible Visa K-1 por compromiso matrimonial","El Parole in Place por familiar militar activo","El Proceso Consular, al encontrarse fuera de EE.UU.","La eliminación de condiciones mediante el I-751"],
+        correct:2,
+        fbCorrect:"Al encontrarse fuera de EE.UU. con una petición aprobada en trámite ante el consulado, corresponde el Proceso Consular.",
+        fbWrong:"El escenario corresponde al Proceso Consular, dado que José se encuentra fuera de EE.UU. con petición aprobada." },
+      { text:"¿Qué debe verificarse por tratarse de petición de hermano?",
+        options:["Nada adicional, esta categoría no tiene límites","Si existe disponibilidad de visa, sujeta a límites numéricos","Únicamente el tipo de sangre del solicitante","El estado civil actual del hermano peticionario"],
+        correct:1,
+        fbCorrect:"A diferencia de familiares inmediatos, la categoría de hermanos sí está sujeta a disponibilidad de visa.",
+        fbWrong:"Debe verificarse la disponibilidad de visa, ya que la categoría de hermanos no está exenta de límites numéricos." } ]},
+  { name:"Luis Ortega", sub:"36 años · Guatemalteco · Caso 3",
+    desc:"Durante su entrevista consular le informaron que es inadmisible por presencia ilegal.",
+    questions:[
+      { text:"¿Qué debe analizarse ahora?",
+        options:["Que el caso ya no tiene ninguna solución posible","Si la ley permite solicitar un waiver para esa causal","Que automáticamente se le otorgará la visa solicitada","Que debe iniciar de inmediato una Visa K-1"],
+        correct:1,
+        fbCorrect:"Ante una causal de inadmisibilidad, debe verificarse si la ley permite un waiver para esa causal.",
+        fbWrong:"No puede concluirse que el caso no tiene solución ni que se otorgará automáticamente; debe analizarse el waiver." },
+      { text:"¿Qué principio debe recordarse sobre los waivers?",
+        options:["El waiver reemplaza por completo la necesidad de ser elegible","El waiver aplica automáticamente a cualquier causal existente","El waiver no sustituye los criterios del beneficio principal","El waiver solo puede solicitarse fuera de EE.UU."],
+        correct:2,
+        fbCorrect:"Correcto. El waiver únicamente perdona una causal de inadmisibilidad; no sustituye ni crea elegibilidad para el beneficio principal.",
+        fbWrong:"El waiver no reemplaza la elegibilidad ni aplica automáticamente; algunas causales nunca pueden perdonarse." } ]}
+];
+
+
+CASE_DATA['m8'] = [
+  { name:"Patricia Ramírez", sub:"37 años · Mexicana · Caso 1",
+    desc:"Durante su proceso migratorio se determinó inadmisibilidad por fraude migratorio.",
+    questions:[
+      { text:"¿Qué tipo de waiver corresponde analizar?",
+        options:["El I-601A, exclusivo para causales de presencia ilegal","El I-212, exclusivo para casos de deportación previa","Posible I-601, perdón general que cubre el fraude migratorio","Ningún waiver es aplicable al fraude migratorio"],
+        correct:2,
+        fbCorrect:"El I-601 es el perdón general que cubre, entre otras causales, el fraude migratorio.",
+        fbWrong:"El fraude migratorio corresponde analizarse bajo el I-601, no bajo el I-601A ni el I-212." } ]},
+  { name:"Miguel Castro", sub:"34 años · Hondureño · Caso 2",
+    desc:"Acumula presencia ilegal y realizará su entrevista consular próximamente.",
+    questions:[
+      { text:"¿Qué tipo de waiver corresponde analizar?",
+        options:["El I-601A, diseñado específicamente para presencia ilegal","El I-212, por una deportación previa registrada","Únicamente el I-601 sin ninguna otra opción","No requiere ningún tipo de waiver migratorio"],
+        correct:0,
+        fbCorrect:"El I-601A se utiliza cuando la única causal es la presencia ilegal, tramitándose desde dentro de EE.UU.",
+        fbWrong:"El escenario de presencia ilegal corresponde al I-601A, no al I-212 ni al I-601 general." } ]},
+  { name:"Ernesto López", sub:"46 años · Guatemalteco · Caso 3",
+    desc:"Fue deportado hace cuatro años y desea regresar legalmente a Estados Unidos.",
+    questions:[
+      { text:"¿Qué tipo de waiver corresponde analizar?",
+        options:["El I-601A, exclusivo para casos de presencia ilegal","El I-212, permiso de reingreso tras una deportación previa","Únicamente el I-601 sin ninguna otra opción","No es posible regresar bajo ninguna circunstancia"],
+        correct:1,
+        fbCorrect:"El I-212 es la solicitud de permiso de reingreso para quienes fueron deportados y desean regresar legalmente.",
+        fbWrong:"Al tratarse de una deportación previa, corresponde el I-212, no el I-601A ni el I-601." } ]}
+];
+
+CASE_DATA['m5'] = [
+  { name:"Pedro García", sub:"33 años · Mexicano · Caso 1",
+    desc:"Ha sido residente permanente durante seis años y desea convertirse en ciudadano estadounidense.",
+    questions:[
+      { text:"¿Qué formulario corresponde analizar?",
+        options:["El N-600, para certificar una ciudadanía derivada","El N-400, para iniciar el proceso de naturalización","El I-90, para renovar su tarjeta de residencia","El I-751, para eliminar condiciones matrimoniales"],
+        correct:1,
+        fbCorrect:"Al ser LPR y buscar convertirse en ciudadano, corresponde el proceso de Naturalización mediante el N-400.",
+        fbWrong:"El N-400 es el formulario correcto para naturalizarse; el N-600 es para quienes ya son ciudadanos por derivación." },
+      { text:"Con 6 años de residencia, ¿qué puede concluirse?",
+        options:["Ya es automáticamente ciudadano estadounidense","Cumple el periodo mínimo, pero deben verificarse los demás criterios","No cumple ningún requisito de naturalización","Debe esperar diez años más para aplicar"],
+        correct:1,
+        fbCorrect:"Cumple aparentemente el periodo mínimo de 5 años, pero se requiere revisar todos los demás criterios.",
+        fbWrong:"El tiempo de residencia es solo uno de varios criterios; no determina por sí solo la elegibilidad." } ]},
+  { name:"Emily Johnson", sub:"15 años · Estadounidense derivada · Caso 2",
+    desc:"Su padre obtuvo la ciudadanía cuando ella era menor y nunca solicitó un certificado.",
+    questions:[
+      { text:"¿Qué formulario corresponde analizar?",
+        options:["El N-400, para iniciar su naturalización directa","El N-600, para documentar una ciudadanía ya derivada","El I-90, para renovar su tarjeta de residencia","El I-751, por matrimonio con un ciudadano"],
+        correct:1,
+        fbCorrect:"Como la ciudadanía pudo haberse derivado automáticamente por su padre, corresponde el N-600 — no otorga la ciudadanía, la certifica.",
+        fbWrong:"El N-600 es el formulario correcto en casos de posible derivación; el N-400 es para naturalización de LPR." },
+      { text:"¿Qué información adicional se necesita?",
+        options:["Nada, se le expide el certificado de forma automática","Únicamente su número de teléfono actual","La relación con el padre y los requisitos vigentes en su momento","El país de nacimiento de su madre solamente"],
+        correct:2,
+        fbCorrect:"Deben confirmarse la relación jurídica con el padre y los requisitos de edad, residencia y custodia aplicables.",
+        fbWrong:"Sin verificar estos elementos no puede concluirse que la derivación de ciudadanía está completa." } ]},
+  { name:"Luis Ramírez", sub:"31 años · Salvadoreño · Caso 3",
+    desc:"Recibió su Green Card hace dos años y quiere solicitar la ciudadanía.",
+    questions:[
+      { text:"¿Qué puede concluirse sobre su elegibilidad para el N-400?",
+        options:["Ya es elegible sin ninguna condición adicional","Debe usar el N-600 en lugar del N-400","Debe presentar directamente un I-90 primero","Aún no cumple el periodo mínimo de residencia permanente"],
+        correct:3,
+        fbCorrect:"Con solo dos años como LPR, no cumple todavía el periodo mínimo exigido, salvo excepción aplicable.",
+        fbWrong:"El tiempo de residencia (2 años) es insuficiente frente al mínimo legal de 5 (o 3 por matrimonio con USC)." } ]}
+];
+
+CASE_DATA['m6'] = [
+  { name:"Sandra Pérez", sub:"45 años · Mexicana · Caso 1",
+    desc:"No recuerda cómo ingresó a Estados Unidos y necesita conocer su historial migratorio.",
+    questions:[
+      { text:"¿Aplica una solicitud FOIA en este caso?",
+        options:["Sí, para obtener registros de CBP y USCIS sobre su ingreso","No, FOIA no sirve en absoluto para este propósito","Sí, y además le otorgaría un estatus legal","No, primero necesita obtener una visa de turista"],
+        correct:0,
+        fbCorrect:"FOIA es la herramienta correcta para obtener registros de entradas y expedientes que reconstruyan su historial migratorio.",
+        fbWrong:"FOIA sí aplica aquí como herramienta de consulta; no otorga estatus ni requiere una visa previa." },
+      { text:"¿Qué debe recordarse siempre sobre FOIA?",
+        options:["FOIA es en sí misma un beneficio migratorio completo","FOIA sustituye por completo la necesidad de una petición","Permite obtener información; no concede estatus ni ciudadanía","FOIA otorga automáticamente un permiso de trabajo"],
+        correct:2,
+        fbCorrect:"Correcto. FOIA es exclusivamente una herramienta de acceso a información, no un beneficio migratorio.",
+        fbWrong:"FOIA nunca otorga estatus, visa, permiso de trabajo ni ciudadanía; solo brinda acceso a información." } ]},
+  { name:"Óscar Díaz", sub:"28 años · Hondureño · Caso 2",
+    desc:"Quiere solicitar una visa de turista por primera vez.",
+    questions:[
+      { text:"¿Aplica FOIA en este caso?",
+        options:["Sí, siempre debe solicitarse antes de cualquier trámite","Sí, porque FOIA acelera la visa de turista","No aplica porque FOIA solo es para ciudadanos","No aplica, ya que no existe un expediente previo relevante"],
+        correct:3,
+        fbCorrect:"Al ser su primer trámite, normalmente no existe expediente previo relevante que justifique una solicitud FOIA.",
+        fbWrong:"FOIA no es un paso obligatorio para toda solicitud ni acelera trámites; se usa cuando existe un expediente previo." } ]},
+  { name:"Andrea López", sub:"39 años · Colombiana · Caso 3",
+    desc:"Desea obtener copia de un expediente que USCIS utilizó en un proceso anterior.",
+    questions:[
+      { text:"¿Aplica una solicitud FOIA?",
+        options:["No, debe presentar una nueva petición para obtenerlo","Sí, pero solo si ella es ciudadana estadounidense","Sí, FOIA permite obtener copias de expedientes previos","No es posible obtener ese documento por ningún medio"],
+        correct:2,
+        fbCorrect:"FOIA es precisamente la herramienta para obtener copias de expedientes y documentos previamente utilizados por USCIS.",
+        fbWrong:"FOIA no requiere ciudadanía ni una nueva petición; es la vía correcta para acceder a expedientes previos." } ]}
+];
+
+CASE_DATA['m7'] = [
+  { name:"Martha Gómez", sub:"48 años · Mexicana · Caso 1",
+    desc:"Su Green Card de diez años vence el próximo mes.",
+    questions:[
+      { text:"¿Qué formulario corresponde?",
+        options:["El I-90, para renovar la Green Card de diez años","El I-751, para eliminar condiciones de residencia","El N-600, para certificar ciudadanía derivada","La renovación de DACA cada dos años"],
+        correct:0,
+        fbCorrect:"El I-90 es el formulario correcto para renovar una Green Card de 10 años por vencimiento.",
+        fbWrong:"El I-751 aplica solo a tarjetas condicionales de 2 años por matrimonio, no a una tarjeta de 10 años." } ]},
+  { name:"Juan Pérez", sub:"32 años · Guatemalteco · Caso 2",
+    desc:"Su residencia condicional por matrimonio vence en dos meses.",
+    questions:[
+      { text:"¿Qué formulario corresponde?",
+        options:["El I-90, por pérdida física de la tarjeta","El I-751, para eliminar condiciones por matrimonio","El N-400, de forma inmediata sin más requisitos","Una solicitud FOIA ante USCIS"],
+        correct:1,
+        fbCorrect:"Al tratarse de una residencia condicional de 2 años por matrimonio, corresponde el I-751 dentro de los 90 días previos.",
+        fbWrong:"El I-90 no elimina condiciones; el formulario correcto para tarjetas condicionales de 2 años es el I-751." },
+      { text:"¿Qué riesgo existe si no se presenta a tiempo?",
+        options:["Pierde su estatus legal y puede entrar en proceso de deportación","No pasa nada, puede presentarlo cuando lo desee","Se le otorga automáticamente la Green Card de 10 años","Debe iniciar de inmediato un trámite de asilo"],
+        correct:0,
+        fbCorrect:"Si el I-751 no se presenta a tiempo, el beneficiario pierde su estatus legal y enfrenta riesgo de deportación.",
+        fbWrong:"No presentar el I-751 a tiempo sí genera consecuencias graves: pérdida de estatus y riesgo de deportación." } ]},
+  { name:"Kevin Morales", sub:"26 años · Salvadoreño · Caso 3",
+    desc:"Cuenta con DACA vigente y su permiso vence en cuatro meses.",
+    questions:[
+      { text:"¿Qué corresponde en este caso?",
+        options:["Solicitar directamente el N-400 sin más trámite","La renovación de DACA, un beneficio renovable cada dos años","Presentar un I-751 por matrimonio","Solicitar el Proceso Consular fuera de EE.UU."],
+        correct:1,
+        fbCorrect:"DACA debe renovarse periódicamente cada 2 años; corresponde iniciar el trámite de renovación antes del vencimiento.",
+        fbWrong:"DACA no conduce directamente a la naturalización ni requiere I-751; corresponde únicamente su renovación." },
+      { text:"¿Qué debe recordarse sobre DACA?",
+        options:["No es una vía directa a la residencia ni a la ciudadanía","Es automáticamente convertible en residencia permanente","Otorga la ciudadanía estadounidense tras cuatro años","Sustituye por completo al Adjustment of Status"],
+        correct:0,
+        fbCorrect:"Correcto. DACA es una medida de protección temporal, no un camino directo hacia la residencia o la ciudadanía.",
+        fbWrong:"DACA nunca se convierte automáticamente en residencia ni ciudadanía, ni sustituye otros procesos migratorios." } ]}
+];
+
+var LAB_DATA = {
+  1: { beneficio:"Posible VAWA, por ser c\u00f3nyuge de un LPR y referir abuso f\u00edsico.",
+       criteriosOk:"Relaci\u00f3n familiar calificada (c\u00f3nyuge de LPR); posible abuso o crueldad extrema.",
+       criteriosPend:"Buena fe del matrimonio; buen car\u00e1cter moral durante el periodo aplicable.",
+       infoFaltante:"Evidencia del abuso; confirmar si convivi\u00f3 con el agresor y desde cu\u00e1ndo.",
+       excepcion:"Divorcio reciente (hace 8 meses) \u2014 aplica la excepci\u00f3n de divorcio, pero corre un deadline de 2 a\u00f1os y, por pol\u00edtica interna, el caso debe iniciarse con al menos 6 meses de anticipaci\u00f3n al vencimiento del plazo.",
+       inadmisibilidad:"No hay informaci\u00f3n suficiente para evaluarla a\u00fan.",
+       conclusion:"Podr\u00eda existir elegibilidad para VAWA; se requiere informaci\u00f3n adicional sobre convivencia y buena fe antes de concluir. No puede afirmarse que el caso ser\u00e1 aprobado." },
+  2: { beneficio:"Posible Adjustment of Status (INA \u00a7245(a)) por petici\u00f3n familiar aprobada de su esposa USC.",
+       criteriosOk:"Petici\u00f3n familiar (I-130) aprobada; presencia f\u00edsica en EE.UU.",
+       criteriosPend:"Inspecci\u00f3n y admisi\u00f3n o parole al ingresar \u2014 Ricardo entr\u00f3 sin inspecci\u00f3n, lo cual es un obst\u00e1culo central para el \u00a7245(a).",
+       infoFaltante:"Confirmar si existe alguna orden de deportaci\u00f3n previa; explorar si pudiera calificar bajo alguna excepci\u00f3n o v\u00eda alterna (p. ej. \u00a7245(i), si aplica alguna petici\u00f3n anterior).",
+       excepcion:"No se identifica a\u00fan una excepci\u00f3n aplicable con la informaci\u00f3n disponible; debe investigarse.",
+       inadmisibilidad:"El ingreso sin inspecci\u00f3n es, en s\u00ed mismo, un tema de inadmisibilidad relevante que debe analizarse junto con cualquier antecedente adicional.",
+       conclusion:"No es posible concluir todav\u00eda. El ingreso sin inspecci\u00f3n limita la v\u00eda directa del \u00a7245(a); se requiere m\u00e1s informaci\u00f3n antes de determinar el camino migratorio adecuado." },
+  3: { beneficio:"Posible Visa U, por ser v\u00edctima de un delito calificado (robo con violencia).",
+       criteriosOk:"V\u00edctima de delito calificado; colabor\u00f3 con la investigaci\u00f3n policial en su momento.",
+       criteriosPend:"Certificaci\u00f3n v\u00e1lida (I-918 Suplemento B) de una autoridad certificadora.",
+       infoFaltante:"Determinar si a\u00fan puede obtenerse la certificaci\u00f3n de la autoridad correspondiente, y el detalle del da\u00f1o f\u00edsico o mental sufrido.",
+       excepcion:"Por su edad (19 a\u00f1os) no aplica la excepci\u00f3n para menores de 16 a\u00f1os; no se identifica otra excepci\u00f3n con la informaci\u00f3n disponible.",
+       inadmisibilidad:"No hay informaci\u00f3n suficiente para evaluarla a\u00fan.",
+       conclusion:"Podr\u00eda existir elegibilidad para Visa U; la pieza cr\u00edtica pendiente es la certificaci\u00f3n I-918 Suplemento B. No puede concluirse sin ese documento." },
+  4: { beneficio:"Proceso Consular en tr\u00e1mite (petici\u00f3n de empleo aprobada); posible necesidad de waiver.",
+       criteriosOk:"Petici\u00f3n de inmigrante aprobada basada en empleo; tr\u00e1mite activo ante el NVC.",
+       criteriosPend:"Confirmar disponibilidad de visa y verificar si el antecedente penal genera causal de inadmisibilidad.",
+       infoFaltante:"Detalles del delito menor (naturaleza, fecha, disposici\u00f3n legal) para determinar si constituye causal de inadmisibilidad y si existe waiver disponible.",
+       excepcion:"No se identifica a\u00fan una excepci\u00f3n espec\u00edfica; depende del tipo de delito.",
+       inadmisibilidad:"Posible causal de inadmisibilidad por antecedentes penales, que debe analizarse antes de continuar el proceso consular.",
+       conclusion:"No es posible concluir todav\u00eda. Debe investigarse el antecedente penal a fondo para determinar si existe una causal de inadmisibilidad y si la ley permite solicitar un waiver (por ejemplo, I-601)." },
+  5: { beneficio:"DACA vigente; no existe v\u00eda directa a la residencia permanente a partir de DACA por s\u00ed sola.",
+       criteriosOk:"Lleg\u00f3 antes de los 16 a\u00f1os; residencia continua desde una edad temprana; cuenta con DACA vigente.",
+       criteriosPend:"No se ha identificado una base migratoria independiente (por ejemplo, petici\u00f3n familiar) que permita ajustar estatus.",
+       infoFaltante:"Investigar si existe alg\u00fan familiar USC o LPR que pudiera peticionarlo, o alguna otra v\u00eda migratoria aplicable.",
+       excepcion:"No se identifica excepci\u00f3n aplicable con la informaci\u00f3n disponible.",
+       inadmisibilidad:"No hay informaci\u00f3n suficiente para evaluarla a\u00fan.",
+       conclusion:"DACA no es una v\u00eda directa a la residencia permanente. Debe priorizarse la renovaci\u00f3n oportuna de DACA y explorarse si existe alguna otra base migratoria disponible; no puede concluirse un camino hacia la residencia con la informaci\u00f3n actual." },
+  6: { beneficio:"Posible Naturalizaci\u00f3n (N-400) por matrimonio con USC, sujeta a verificar tiempo de residencia.",
+       criteriosOk:"Casada con USC; posible aplicaci\u00f3n de la regla de 3 a\u00f1os en lugar de 5.",
+       criteriosPend:"Con 4 a\u00f1os como LPR y 3 a\u00f1os de matrimonio, aparenta cumplir el periodo m\u00ednimo de 3 a\u00f1os, pero deben verificarse residencia continua, presencia f\u00edsica, buen car\u00e1cter moral, ingl\u00e9s y educaci\u00f3n c\u00edvica.",
+       infoFaltante:"Confirmar que ha mantenido el matrimonio y la convivencia durante el periodo requerido, y que no existen ausencias prolongadas de EE.UU.",
+       excepcion:"Podr\u00eda aplicar la regla de 3 a\u00f1os por matrimonio con USC, sujeta a confirmaci\u00f3n de los requisitos espec\u00edficos.",
+       inadmisibilidad:"No hay informaci\u00f3n suficiente para evaluarla a\u00fan.",
+       conclusion:"Podr\u00eda existir elegibilidad para el N-400 bajo la regla de 3 a\u00f1os; se requiere confirmar el resto de los criterios antes de concluir que puede presentar la solicitud." }
+};
+
+var EXAM_DATA = [
+{ mod:"M1", text:"¿Cuál es la pregunta principal que responde la elegibilidad?",
+  options:["¿Será aprobado el caso al final del proceso?","¿Es la persona admisible para ingresar al país?","¿La ley permite que esta persona solicite el beneficio?","¿Necesita un waiver para continuar su trámite?"], correct:2,
+  fbOk:"Correcto. La elegibilidad responde si la ley permite que la persona solicite el beneficio.",
+  fbFail:"La pregunta central de la elegibilidad es si la ley permite solicitar el beneficio (Módulo 1)." },
+{ mod:"M1", text:"Luis basa su solicitud únicamente en diez años viviendo en EE.UU. ¿Qué principio aplica?",
+  options:["El tiempo de residencia no crea por sí solo elegibilidad","Diez años de residencia otorgan automáticamente un beneficio","Debe negarse cualquier tipo de ayuda migratoria","Se le debe informar que ya es residente permanente"], correct:0,
+  fbOk:"Correcto. El tiempo viviendo en EE.UU. no es, por sí mismo, un criterio de elegibilidad.",
+  fbFail:"El principio del Módulo 1 establece que el tiempo de residencia por sí solo no genera elegibilidad." },
+{ mod:"M1", text:"¿Qué diferencia a la admisibilidad de la elegibilidad?",
+  options:["Ambos conceptos son exactamente lo mismo en la práctica","La admisibilidad siempre se analiza antes que la elegibilidad","La admisibilidad evalúa causales que impiden el ingreso o ajuste","La admisibilidad únicamente aplica a solicitantes menores de edad"], correct:2,
+  fbOk:"Correcto. Son conceptos distintos: elegibilidad (puede solicitar) vs. admisibilidad (existen causales que lo impiden).",
+  fbFail:"La elegibilidad y la admisibilidad son conceptos diferentes, según lo estudiado en el Módulo 1." },
+{ mod:"M2", text:"¿Cuál es un criterio legal central del Adjustment of Status bajo §245(a)?",
+  options:["Haber sido inspeccionado y admitido, o puesto en parole","Tener más de diez años de residencia en EE.UU.","Hablar inglés de forma completamente fluida","Contar con un título universitario estadounidense"], correct:0,
+  fbOk:"Correcto. La inspección y admisión (o parole) es un criterio legal central del §245(a).",
+  fbFail:"El §245(a) exige haber sido inspeccionado y admitido, o puesto en parole (Módulo 2)." },
+{ mod:"M2", text:"¿Qué distingue al Parole in Place de la residencia permanente?",
+  options:["El PIP es exactamente idéntico a la Green Card","El PIP permite viajar libremente sin ninguna restricción","El PIP no otorga residencia, visa ni estatus permanente","El PIP otorga la ciudadanía tras dos años de espera"], correct:2,
+  fbOk:"Correcto. El PIP no otorga residencia permanente, visa ni estatus migratorio permanente.",
+  fbFail:"El PIP únicamente permite permanencia legal temporal; no otorga residencia (Módulo 2)." },
+{ mod:"M2", text:"Según la política interna del Módulo 2, ¿qué se exige adicionalmente?",
+  options:["Presencia continua mínima de seis meses en Estados Unidos","Un depósito bancário de cinco mil dólares estadounidenses","Contar con un seguro médico privado vigente","Haber completado un curso formal de idioma inglés"], correct:0,
+  fbOk:"Correcto. Es una política interna de TMLF (no un requisito de USCIS): presencia mínima de 6 meses.",
+  fbFail:"La regla interna de TMLF exige presencia continua mínima de 6 meses en EE.UU. (Módulo 2)." },
+{ mod:"M3", text:"¿Cuál es la política interna sobre VAWA de “padre de un ciudadano”?",
+  options:["Se aceptan todos los casos sin ninguna restricción","TMLF no lleva casos de padre de un USC mayor de 21 años","Solo se aceptan si el padre tiene más de 65 años","Se requiere una doble certificación consular previa"], correct:1,
+  fbOk:"Correcto. Es una política interna: TMLF no lleva casos de padre de un USC mayor de 21 años (Módulo 3).",
+  fbFail:"Por política interna, TMLF no lleva casos de padre de un USC de al menos 21 años (Módulo 3)." },
+{ mod:"M3", text:"¿Qué documento certifica la cooperación de la víctima en la Visa U?",
+  options:["El Formulario I-918 Suplemento B","El Formulario I-130 de petición familiar","El Formulario N-400 de naturalización","El Formulario I-90 de reposición"], correct:0,
+  fbOk:"Correcto. El I-918 Suplemento B es la certificación de la autoridad competente.",
+  fbFail:"El I-918 Suplemento B es el formulario de certificación requerido para la Visa U (Módulo 3)." },
+{ mod:"M3", text:"¿Qué excepción aplica en la Visa T sobre la cooperación con autoridades?",
+  options:["Todos los solicitantes deben cooperar sin ninguna excepción","La excepción solo aplica a solicitantes de sexo femenino","Solo aplica si existe una sentencia penal firme y definitiva","Menores de 18 años o víctimas de trauma severo están exentos"], correct:3,
+  fbOk:"Correcto. Existen excepciones al requisito de cooperación por edad o por trauma físico o psicológico.",
+  fbFail:"La Visa T exime del requisito de cooperación a menores de 18 años y víctimas de trauma severo (Módulo 3)." },
+{ mod:"M4", text:"¿Qué principio debe recordarse siempre sobre los waivers?",
+  options:["El waiver reemplaza cualquier requisito legal de elegibilidad","Todas las causales de inadmisibilidad tienen perdón disponible","El waiver únicamente puede tramitarse dentro de EE.UU.","El waiver no sustituye los criterios del beneficio principal"], correct:3,
+  fbOk:"Correcto. El waiver únicamente perdona una causal específica; no sustituye la elegibilidad del beneficio principal.",
+  fbFail:"El waiver no crea una nueva categoría ni sustituye la elegibilidad del beneficio principal (Módulo 4)." },
+{ mod:"M5", text:"¿Qué periodo de residencia exige el N-400 por matrimonio con USC?",
+  options:["Cinco años siempre, sin ninguna excepción disponible","Un año únicamente, sin importar otros factores","Diez años completos como residente permanente legal","Tres años, cuando se cumplen los requisitos correspondientes"], correct:3,
+  fbOk:"Correcto. La regla especial por matrimonio con USC reduce el periodo a 3 años.",
+  fbFail:"El periodo general es de 5 años, pero se reduce a 3 por matrimonio con USC (Módulo 5)." },
+{ mod:"M5", text:"¿Qué diferencia fundamental existe entre el N-400 y el N-600?",
+  options:["Ambos formularios otorgan la ciudadanía por igual","El N-600 es para residentes permanentes que se naturalizan","El N-400 otorga ciudadanía; el N-600 solo la documenta","El N-400 únicamente puede usarse siendo menor de edad"], correct:2,
+  fbOk:"Correcto. El N-400 otorga la ciudadanía; el N-600 solo certifica una ciudadanía ya existente.",
+  fbFail:"El N-600 no otorga la ciudadanía: solo documenta una ya adquirida o derivada (Módulo 5)." },
+{ mod:"M6", text:"¿Qué es correcto afirmar sobre FOIA?",
+  options:["Es un beneficio migratorio que otorga la residencia permanente","Sustituye por completo la necesidad de una petición familiar","Permite obtener información; no concede ningún estatus migratorio","Solo puede solicitarlo un ciudadano estadounidense"], correct:2,
+  fbOk:"Correcto. FOIA es una herramienta de acceso a información, no un beneficio migratorio.",
+  fbFail:"FOIA únicamente permite obtener información o expedientes; no otorga beneficios migratorios (Módulo 6)." },
+{ mod:"M6", text:"¿A qué agencia corresponde dirigir el FOIA por registros de puertos de entrada?",
+  options:["A CBP, encargada de las inspecciones fronterizas","Al FBI, encargado de antecedentes penales federales","Únicamente al DHS Office of the Secretary","A ninguna, ese registro no puede obtenerse"], correct:0,
+  fbOk:"Correcto. CBP administra los registros de entradas, salidas e inspecciones en puertos de entrada.",
+  fbFail:"El historial de entradas y salidas en puertos de entrada corresponde solicitarlo a CBP (Módulo 6)." },
+{ mod:"M7", text:"¿Cuál es la principal diferencia entre el I-751 y el I-90?",
+  options:["Ambos formularios son completamente intercambiables entre sí","El I-90 elimina condiciones de residencia por matrimonio","El I-751 se usa para tarjetas de residencia perdidas","El I-751 elimina condiciones; el I-90 renueva la tarjeta de 10 años"], correct:3,
+  fbOk:"Correcto. El I-751 aplica a residencias condicionales de 2 años; el I-90 a la Green Card de 10 años.",
+  fbFail:"El I-751 y el I-90 tienen propósitos distintos según el tipo de tarjeta (Módulo 7)." },
+{ mod:"M7", text:"¿Qué es correcto afirmar sobre DACA?",
+  options:["Otorga la residencia permanente de forma automática","Es exactamente idéntica a poseer una Green Card","Es renovable cada dos años y no otorga estatus permanente","Sustituye por completo al proceso de naturalización"], correct:2,
+  fbOk:"Correcto. DACA es una protección temporal renovable, sin vía directa a residencia o ciudadanía.",
+  fbFail:"DACA no otorga estatus permanente ni es una vía directa a la residencia o ciudadanía (Módulo 7)." },
+{ mod:"M8", text:"¿Cuál waiver se utiliza cuando la única causal es presencia ilegal?",
+  options:["El I-212, exclusivo para casos de deportación previa","El I-601 general, sin importar la causal específica","Ningún waiver aplica para la presencia ilegal","El I-601A, tramitado desde dentro de Estados Unidos"], correct:3,
+  fbOk:"Correcto. El I-601A se diseñó específicamente para causales de presencia ilegal.",
+  fbFail:"El I-601A es el waiver específico para presencia ilegal, tramitado desde dentro de EE.UU. (Módulo 8)." },
+{ mod:"M8", text:"Según la política interna del despacho sobre las Cortes de Inmigración, ¿qué aplica?",
+  options:["Se aceptan todos los casos sin importar la fecha de audiencia","Solo se rechazan casos con audiencias ya vencidas","La política únicamente aplica a audiencias de fianza","No se aceptan casos con Merits Hearing dentro de 18 meses"], correct:3,
+  fbOk:"Correcto. Por política interna, no se aceptan casos con Merits Hearing dentro de los próximos 18 meses.",
+  fbFail:"La política interna del despacho excluye casos con Merits Hearing programada dentro de 18 meses (Módulo 8)." },
+{ mod:"Integrador", text:"Un cliente cumple criterios aparentes pero falta evidencia documental. ¿Qué expresión es adecuada?",
+  options:["“Podría existir elegibilidad; se requiere información adicional”","“El cliente ya calificó y el caso será aprobado”","“El caso no tiene absolutamente ninguna posibilidad”","“No es necesario revisar ningún documento más”"], correct:0,
+  fbOk:"Correcto. El lenguaje prudente reconoce una posible elegibilidad sin prometer aprobación.",
+  fbFail:"Debe usarse un lenguaje prudente que reconozca la posible elegibilidad sin prometer aprobación." },
+{ mod:"Integrador", text:"¿Por qué es incorrecto asumir un beneficio por una característica aislada del cliente?",
+  options:["Porque esa característica nunca es relevante para ningún caso","Porque solo importa la nacionalidad de origen del cliente","Porque cada beneficio requiere analizar todos sus criterios","Porque una característica aislada siempre aprueba el caso"], correct:2,
+  fbOk:"Correcto. El análisis debe hacerse criterio por criterio; una característica aislada no determina la elegibilidad completa.",
+  fbFail:"Una característica aislada no basta: deben analizarse todos los criterios del beneficio en cuestión." }
+];
+
+var examAnswers = {};
+
+function renderExam(){
+  var container = document.getElementById('exam-questions');
+  if(!container) return;
+  var html = '';
+  EXAM_DATA.forEach(function(q, i){
+    var qId = 'q'+i;
+    html += '<div class="exam-q-block"><div class="exam-q-num">Pregunta '+(i+1)+' de 20 \u00b7 '+q.mod+'</div>';
+    html += '<div class="exam-q-text">'+q.text+'</div><div id="exam-'+qId+'">';
+    q.options.forEach(function(opt, oi){
+      html += '<div class="q-opt" data-val="'+oi+'" onclick="examSel(this,\''+qId+'\')"><div class="opt-mark"></div><div>'+opt+'</div></div>';
+    });
+    html += '</div><div class="q-feedback" id="exam-fb-'+qId+'"></div></div>';
+  });
+  container.innerHTML = html;
+}
+
+function examSel(el, qId){
+  if(el.classList.contains('disabled')) return;
+  var opts = document.querySelectorAll('#exam-'+qId+' .q-opt');
+  opts.forEach(function(o){ o.classList.remove('selected'); });
+  el.classList.add('selected');
+  examAnswers[qId] = parseInt(el.dataset.val);
+}
+
+function examSubmit(){
+  var total = EXAM_DATA.length, correct = 0;
+  var weakMods = {};
+  EXAM_DATA.forEach(function(q, i){
+    var qId = 'q'+i;
+    var ua = examAnswers[qId], ca = q.correct;
+    var opts = document.querySelectorAll('#exam-'+qId+' .q-opt');
+    opts.forEach(function(o){
+      o.classList.add('disabled');
+      var v = parseInt(o.dataset.val);
+      if(v === ca) o.classList.add('correct');
+      else if(v === ua && ua !== ca) o.classList.add('incorrect');
+    });
+    var fb = document.getElementById('exam-fb-'+qId);
+    var isOk = (ua === ca);
+    if(isOk) correct++; else { weakMods[q.mod] = (weakMods[q.mod]||0)+1; }
+    if(fb){
+      fb.className = 'q-feedback show '+(isOk?'ok':'fail');
+      fb.textContent = isOk ? q.fbOk : q.fbFail;
+    }
+  });
+  var pct = Math.round((correct/total)*100);
+  var pass = pct >= 85;
+  var resultCard = document.getElementById('exam-result');
+  resultCard.classList.add('show');
+  var scoreEl = document.getElementById('exam-score-val');
+  scoreEl.textContent = pct+'%';
+  scoreEl.className = 'result-score '+(pass?'pass':'fail');
+  document.getElementById('exam-result-label').textContent = pass ? '\u2705 APROBADO' : '\u274C REQUIERE REFORZAMIENTO';
+  document.getElementById('exam-result-msg').textContent = pass ?
+    ('\u00a1Felicidades! Superaste la evaluaci\u00f3n final de Elegibilidad Migratoria con '+pct+'%. Se requiere 85% para aprobar.') :
+    ('Tu puntaje es '+pct+'%. Se requiere al menos 85% para aprobar. Repasa los m\u00f3dulos con mayor dificultad e int\u00e9ntalo de nuevo.');
+  document.getElementById('exam-correct').textContent = correct;
+  document.getElementById('exam-incorrect').textContent = total-correct;
+  document.getElementById('exam-submit').style.display = 'none';
+  document.getElementById('exam-retry').style.display = 'inline-block';
+  trainingState.examCompleted = true;
+  trainingState.examScore = pct;
+  trainingState.examWeakMods = weakMods;
+  var navExam = document.getElementById('nav-evaluacion');
+  if(navExam && pass) navExam.classList.add('completed');
+  unlockPanel('resultados');
+  updateProgress();
+  renderResultados();
+  saveState();
+  resultCard.scrollIntoView({behavior:'smooth'});
+}
+
+function examReset(){
+  examAnswers = {};
+  document.getElementById('exam-result').classList.remove('show');
+  EXAM_DATA.forEach(function(q, i){
+    var qId = 'q'+i;
+    document.querySelectorAll('#exam-'+qId+' .q-opt').forEach(function(o){ o.className = 'q-opt'; });
+    var fb = document.getElementById('exam-fb-'+qId);
+    if(fb) fb.className = 'q-feedback';
+  });
+  document.getElementById('exam-submit').style.display = 'inline-block';
+  document.getElementById('exam-retry').style.display = 'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ============================================================
+   RESULTADOS
+   ============================================================ */
+function renderResultados(){
+  var doneCount = 0;
+  MOD_ORDER.forEach(function(m){ if(trainingState.completed[m]) doneCount++; });
+  var elMods = document.getElementById('res-mods');
+  if(elMods) elMods.textContent = doneCount+'/7';
+  var elExam = document.getElementById('res-exam');
+  var elStatus = document.getElementById('res-status');
+  if(trainingState.examCompleted){
+    if(elExam) elExam.textContent = trainingState.examScore+'%';
+    if(elStatus) elStatus.textContent = trainingState.examScore>=85 ? 'Aprobado' : 'Requiere reforzamiento';
+  } else {
+    if(elExam) elExam.textContent = '\u2014';
+    if(elStatus) elStatus.textContent = 'Pendiente';
+  }
+  var review = document.getElementById('res-review');
+  var recommend = document.getElementById('res-recommend');
+  if(review){
+    var names = {mod1:'M1 \u00bfQu\u00e9 es la Elegibilidad?',mod2:'M2 Casos dentro de EE.UU.',mod3:'M3 Procesos Humanitarios',mod4:'M4 Casos fuera de EE.UU.',mod5:'M5 Ciudadan\u00eda',mod6:'M6 Necesito Informaci\u00f3n',mod7:'M7 Renovaci\u00f3n / Reposici\u00f3n'};
+    var html = '';
+    MOD_ORDER.forEach(function(m){
+      var status = trainingState.completed[m] ? '\u2705 Completado' : '\u23F3 Pendiente';
+      html += '<div class="review-item">'+names[m]+' \u2014 '+status+'</div>';
+    });
+    review.innerHTML = html;
+  }
+  if(recommend){
+    if(trainingState.examCompleted && trainingState.examScore < 85 && trainingState.examWeakMods){
+      var weak = Object.keys(trainingState.examWeakMods).sort(function(a,b){return trainingState.examWeakMods[b]-trainingState.examWeakMods[a];});
+      recommend.innerHTML = '<span class="alert-icon">\U0001F4CB</span><div><strong>M\u00f3dulos sugeridos para repaso:</strong> '+weak.join(', ')+'</div>';
+    } else if(trainingState.examCompleted && trainingState.examScore>=85){
+      recommend.innerHTML = '<span class="alert-icon">\U0001F389</span><div>Has completado exitosamente el training de Elegibilidad Migratoria.</div>';
+    } else {
+      recommend.innerHTML = '<span class="alert-icon">\u2139\uFE0F</span><div>Completa la Evaluaci\u00f3n Final para ver tu retroalimentaci\u00f3n completa.</div>';
+    }
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+
+/* ============================================================
+   LABORATORIO — VISTA DE LIBRO
+   ============================================================ */
+var LAB_TOTAL = 6;
+var labBookIndex = 1;
+var labBookViewed = {1:true};
+
+function renderLabDots(){
+  var wrap = document.getElementById('lab-book-dots');
+  if(!wrap) return;
+  var html = '';
+  for(var i=1;i<=LAB_TOTAL;i++){
+    var cls = 'book-dot';
+    if(i===labBookIndex) cls += ' bd-active';
+    else if(labBookViewed[i]) cls += ' bd-done';
+    html += '<button class="'+cls+'" onclick="labBookGoTo('+i+')" aria-label="Ir al caso '+i+'"></button>';
+  }
+  wrap.innerHTML = html;
+}
+
+function updateLabBookUI(){
+  document.querySelectorAll('#lab-book-viewer .book-page').forEach(function(p){
+    var idx = parseInt(p.dataset.bookIndex);
+    p.style.display = (idx === labBookIndex) ? 'block' : 'none';
+  });
+  var fill = document.getElementById('lab-book-fill');
+  if(fill) fill.style.width = Math.round((labBookIndex/LAB_TOTAL)*100)+'%';
+  var count = document.getElementById('lab-book-count');
+  if(count) count.textContent = labBookIndex+' / '+LAB_TOTAL;
+  var prevBtn = document.getElementById('lab-book-prev');
+  if(prevBtn) prevBtn.disabled = (labBookIndex === 1);
+  var nextBtn = document.getElementById('lab-book-next');
+  if(nextBtn){
+    if(labBookIndex === LAB_TOTAL){
+      nextBtn.textContent = '\u2705 Finalizar Laboratorio';
+      nextBtn.classList.add('bp-done');
+    } else {
+      nextBtn.textContent = 'Siguiente caso \u2192';
+      nextBtn.classList.remove('bp-done');
+    }
+  }
+  renderLabDots();
+}
+
+function labBookGoTo(n){
+  if(n < 1 || n > LAB_TOTAL) return;
+  labBookIndex = n;
+  labBookViewed[n] = true;
+  updateLabBookUI();
+  var viewer = document.getElementById('lab-book-viewer');
+  if(viewer) viewer.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function labBookNext(){
+  if(labBookIndex < LAB_TOTAL){
+    labBookGoTo(labBookIndex+1);
+  } else {
+    unlockExam();
+  }
+}
+
+function labBookPrev(){
+  if(labBookIndex > 1) labBookGoTo(labBookIndex-1);
+}
+
+
+function initApp(){
+  loadState();
+  updateLabBookUI();
+  initAllCases();
+  renderExam();
+  updateSidebarState();
+  updateProgress();
+  renderResultados();
+  MOD_ORDER.forEach(function(m){
+    if(trainingState.completed[m]){
+      var nextBtn = document.getElementById(m.replace('mod','m')+'-next');
+      if(nextBtn) nextBtn.disabled = false;
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded', initApp);
+
+</script>
+</body>
+</html>
