@@ -1,0 +1,2405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radar Estratégico – Análisis de Call Back | TMLF</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --navy: #0B1A2E;
+    --navy-mid: #122240;
+    --navy-light: #1A3055;
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-dim: rgba(201,168,76,0.15);
+    --cream: #F5F0E8;
+    --text-main: #E8E2D9;
+    --text-muted: #8A9BB0;
+    --success: #2ECC71;
+    --warning: #F39C12;
+    --danger: #E74C3C;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(201,168,76,0.2);
+    --radius: 12px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(26,48,85,0.8) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app-container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Screen 1 and 3 scroll normally */
+  #screen1, #screen3 {
+    flex: 1;
+    color: var(--text-main);
+    overflow: visible;
+  }
+  #screen3.active {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex: none !important;
+  }
+
+  /* Header */
+  .module-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    backdrop-filter: blur(10px);
+  }
+  .module-header .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .module-header .score-live {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .score-badge {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 15px;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .progress-wrap {
+    width: 140px;
+  }
+  .progress-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .progress-bar-outer {
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 3px;
+    transition: width 0.6s ease;
+    width: 0%;
+  }
+
+  /* Screens */
+  .screen { display: none; animation: fadeIn 0.4s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+
+  /* ───── SCREEN 1 ───── */
+  .intro-hero {
+    text-align: center;
+    padding: 40px 20px 30px;
+  }
+  .tag-pill {
+    display: inline-block;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .intro-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.2;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+  .intro-hero h1 span { color: var(--gold); }
+  .intro-hero .subtitle {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+
+  .context-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  .context-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--gold);
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+  .context-card p {
+    font-size: 16px;
+    color: var(--text-main);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+
+  .instructions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .instruction-item {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .instruction-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .instruction-text {
+    font-size: 15px;
+    color: var(--text-main);
+    line-height: 1.6;
+  }
+  .instruction-text strong { color: var(--gold-light); display: block; margin-bottom: 4px; }
+
+  .alert-box {
+    background: rgba(201,168,76,0.08);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .alert-box strong { color: var(--gold); }
+
+  /* ───── SCREEN 2 – SPLIT LAYOUT ───── */
+
+  /* Full-screen layout for screen2 */
+  #screen2 {
+    display: none;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+    overflow: hidden;
+  }
+  #screen2.active { display: flex; }
+
+  /* Sticky video bar */
+  .video-sticky {
+    flex-shrink: 0;
+    background: var(--navy-mid);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .video-header {
+    padding: 7px 16px;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .video-header h3 { font-size: 15px; font-weight: 600; color: var(--gold); letter-spacing: 0.5px; }
+  .video-status { font-size: 14px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+  .dot-anim { width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:0.4; transform:scale(1.3); } }
+
+  .video-embed-wrap {
+    position: relative; width: 100%; height: 28vh; min-height: 160px; background: #000;
+  }
+  .video-embed-wrap iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:none; }
+
+  /* ── TWO-COLUMN SPLIT PANEL ── */
+  .split-panel {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    gap: 8px;
+  }
+
+  /* LEFT: sticky button list */
+  .btn-column {
+    width: 200px;
+    flex-shrink: 0;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .btn-column-header {
+    padding: 10px 12px 8px;
+    border-bottom: 1px solid var(--glass-border);
+    flex-shrink: 0;
+  }
+  .btn-column-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--cream);
+    margin-bottom: 2px;
+  }
+  .btn-column-header p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+  .strategy-btn-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .strategy-btn-list::-webkit-scrollbar { width: 3px; }
+  .strategy-btn-list::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+
+  /* Each button is now a full-width row */
+  .strat-btn {
+    width: 100%;
+    padding: 7px 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 7px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .strat-btn:hover { border-color: var(--gold); background: var(--gold-dim); }
+  .strat-btn.active { border-color: var(--gold); background: var(--gold-dim); }
+  .strat-btn .sb-check {
+    width: 13px; height: 13px;
+    border: 1.5px solid var(--text-muted);
+    border-radius: 3px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.18s;
+  }
+  .strat-btn.active .sb-check { background: var(--gold); border-color: var(--gold); }
+  .strat-btn.is-correct .sb-check { background: var(--success); border-color: var(--success); }
+  .strat-btn.is-incorrect .sb-check { background: var(--danger); border-color: var(--danger); }
+  .strat-btn .sb-check svg { display: none; }
+  .strat-btn.active .sb-check svg,
+  .strat-btn.is-correct .sb-check svg,
+  .strat-btn.is-incorrect .sb-check svg { display: block; }
+  .strat-btn .sb-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.3;
+    flex: 1;
+  }
+  .strat-btn.is-correct  { border-color: var(--success) !important; background: rgba(46,204,113,0.1) !important; }
+  .strat-btn.is-correct .sb-name { color: #7ee8a2; }
+  .strat-btn.is-incorrect { border-color: var(--danger) !important; background: rgba(231,76,60,0.08) !important; }
+  .strat-btn.is-incorrect .sb-name { color: #f08080; }
+
+  /* Divider label inside btn list */
+  .btn-divider {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-muted);
+    padding: 6px 2px 2px;
+    opacity: 0.6;
+  }
+
+  /* Submit button inside left column */
+  .btn-column-footer {
+    padding: 8px;
+    border-top: 1px solid var(--glass-border);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .btn-column-footer .btn-primary,
+  .btn-column-footer .btn-secondary {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 15px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* RIGHT: scrollable forms */
+  .forms-column {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 2px;
+    padding-bottom: 8px;
+  }
+  .forms-column::-webkit-scrollbar { width: 4px; }
+  .forms-column::-webkit-scrollbar-track { background: transparent; }
+  .forms-column::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+
+  /* Empty state for forms column */
+  .forms-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-muted);
+    gap: 10px;
+    padding: 40px 20px;
+    opacity: 0.6;
+  }
+  .forms-empty .fe-icon { font-size: 36px; }
+  .forms-empty p { font-size: 15px; line-height: 1.6; max-width: 220px; }
+
+  /* Strategy cards in right column */
+  .strategy-item {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.25s;
+    display: none;
+    flex-shrink: 0;
+  }
+  .strategy-item.selected { border-color: var(--gold);    background: var(--gold-dim);           display: block; }
+  .strategy-item.correct  { border-color: var(--success); background: rgba(46,204,113,0.06);     display: block; }
+  .strategy-item.incorrect{ border-color: var(--danger);  background: rgba(231,76,60,0.06);      display: block; }
+
+  /* Instant feedback toast */
+  .instant-feedback {
+    display: none;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 16px 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .strategy-item.correct   .instant-feedback { display: flex; color: #7ee8a2; }
+  .strategy-item.incorrect .instant-feedback { display: flex; color: #f08080; }
+  .instant-feedback .if-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Analysis form area */
+  .analysis-forms-area { display: contents; }
+
+  /* Results strategy list */
+  .results-strategy-list { margin-bottom: 28px; }
+  .results-strategy-list h3 {
+    font-family: 'Playfair Display', serif; font-size: 20px; color: var(--cream);
+    margin-bottom: 6px; padding-bottom: 10px; border-bottom: 1px solid var(--glass-border);
+  }
+  .results-strategy-list .rs-subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 16px; }
+  .rs-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 16px; border-radius: 10px; margin-bottom: 8px;
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+  }
+  .rs-row.rs-hit   { border-color: rgba(46,204,113,0.4);  background: rgba(46,204,113,0.05); }
+  .rs-row.rs-miss  { border-color: rgba(201,168,76,0.25); background: rgba(201,168,76,0.03); }
+  .rs-row.rs-wrong { border-color: rgba(231,76,60,0.3);   background: rgba(231,76,60,0.04);  }
+  .rs-badge { width:28px; height:28px; border-radius:50%; font-size: 15px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .rs-hit  .rs-badge { background: rgba(46,204,113,0.2);  }
+  .rs-miss .rs-badge { background: rgba(201,168,76,0.15); }
+  .rs-wrong .rs-badge { background: rgba(231,76,60,0.15); }
+  .rs-content { flex: 1; }
+  .rs-name { font-size: 15px; font-weight:600; color:var(--cream); margin-bottom:3px; }
+  .rs-hit  .rs-name  { color: #7ee8a2; }
+  .rs-miss .rs-name  { color: var(--gold-light); }
+  .rs-wrong .rs-name { color: #f08080; }
+  .rs-desc { font-size: 15px; color:var(--text-muted); line-height:1.5; }
+  .rs-label { font-size: 13px; text-transform:uppercase; letter-spacing:1px; padding:2px 8px; border-radius:10px; display:inline-block; margin-bottom:4px; }
+  .rs-hit  .rs-label { background:rgba(46,204,113,0.15);  color:var(--success); border:1px solid rgba(46,204,113,0.3); }
+  .rs-miss .rs-label { background:rgba(201,168,76,0.12);  color:var(--gold);    border:1px solid rgba(201,168,76,0.3); }
+  .rs-wrong .rs-label { background:rgba(231,76,60,0.1);   color:var(--danger);  border:1px solid rgba(231,76,60,0.3); }
+
+  .strategy-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .strategy-card-header:hover { background: rgba(255,255,255,0.03); }
+
+  .strategy-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .remove-btn {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(231,76,60,0.15);
+    border: 1px solid rgba(231,76,60,0.3);
+    color: var(--danger);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: monospace;
+    transition: all 0.2s;
+  }
+  .remove-btn:hover { background: rgba(231,76,60,0.3); }
+
+  .strategy-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--cream);
+  }
+  .strategy-hint {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  /* Analysis panel — always open when card visible */
+  .analysis-panel {
+    display: block;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--glass-border);
+  }
+  .analysis-panel h4 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    margin: 12px 0 10px;
+  }
+
+  .analysis-field {
+    margin-bottom: 16px;
+  }
+  .analysis-field label {
+    display: block;
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .analysis-field label span.req { color: var(--gold); }
+  .analysis-field textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text-main);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 60px;
+    transition: border-color 0.25s;
+  }
+  .analysis-field textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+  .analysis-field textarea.error {
+    border-color: var(--danger);
+  }
+  .char-counter {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 4px;
+  }
+  .char-counter.ok { color: var(--success); }
+  .char-counter.warn { color: var(--warning); }
+
+  /* Classification */
+  .classification-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .class-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .class-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .class-btn.active-good { background: rgba(46,204,113,0.15); border-color: var(--success); color: var(--success); }
+  .class-btn.active-warn { background: rgba(243,156,18,0.15); border-color: var(--warning); color: var(--warning); }
+  .class-btn.active-bad  { background: rgba(231,76,60,0.15); border-color: var(--danger); color: var(--danger); }
+
+  .field-error {
+    font-size: 14px;
+    color: var(--danger);
+    margin-top: 4px;
+    display: none;
+  }
+  .field-error.show { display: block; }
+
+  /* ───── SCREEN 3 – RESULTS ───── */
+  .results-hero {
+    text-align: center;
+    padding: 8px 20px 24px;
+  }
+  .results-hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(var(--gold) 0%, var(--gold) 0%, rgba(255,255,255,0.1) 0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    position: relative;
+  }
+  .score-circle::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    background: var(--navy);
+  }
+  .score-number {
+    position: relative;
+    z-index: 1;
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .score-number span { font-size: 17px; color: var(--text-muted); }
+
+  .breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 24px 0;
+  }
+  .breakdown-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    text-align: center;
+  }
+  .breakdown-card .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .breakdown-card .lbl {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .feedback-section {
+    margin-bottom: 24px;
+  }
+  .feedback-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--cream);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  .feedback-item {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 14px;
+  }
+  .feedback-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .feedback-icon.found { background: rgba(46,204,113,0.15); }
+  .feedback-icon.missed { background: rgba(231,76,60,0.15); }
+  .feedback-content h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .feedback-content p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .found-tag {
+    display: inline-block;
+    background: rgba(46,204,113,0.15);
+    color: var(--success);
+    font-size: 13px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    border: 1px solid rgba(46,204,113,0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .missed-tag {
+    display: inline-block;
+    background: rgba(231,76,60,0.1);
+    color: var(--danger);
+    font-size: 13px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    border: 1px solid rgba(231,76,60,0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Reflection */
+  .reflection-section {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .reflection-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .reflection-q {
+    margin-bottom: 18px;
+  }
+  .reflection-q label {
+    display: block;
+    font-size: 15px;
+    color: var(--cream);
+    font-weight: 500;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .reflection-q textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text-main);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.25s;
+  }
+  .reflection-q textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 14px 36px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(201,168,76,0.35);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-secondary:hover {
+    background: var(--gold-dim);
+  }
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .completion-banner {
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .completion-banner h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .completion-banner p {
+    font-size: 15px;
+    color: var(--text-muted);
+  }
+
+  /* Tooltip for quality hint */
+  .quality-hint {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* Validation message */
+  .validation-msg {
+    background: rgba(231,76,60,0.1);
+    border: 1px solid rgba(231,76,60,0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 15px;
+    color: #f08080;
+    margin-top: 12px;
+    display: none;
+  }
+  .validation-msg.show { display: block; }
+
+  /* ── STRATEGY MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--navy-mid);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    animation: modalIn 0.2s ease;
+  }
+  .modal-box::-webkit-scrollbar { width: 5px; }
+  .modal-box::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 3px; }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--glass-border);
+    gap: 12px;
+  }
+  .modal-header-info { flex: 1; }
+  .modal-badge {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .modal-badge.correct  { background: rgba(46,204,113,0.15); color: var(--success); border: 1px solid rgba(46,204,113,0.3); }
+  .modal-badge.incorrect { background: rgba(231,76,60,0.1);  color: var(--danger);  border: 1px solid rgba(231,76,60,0.3); }
+  .modal-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.3;
+  }
+  .modal-hint {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+  .modal-close {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-muted);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    line-height: 1;
+  }
+  .modal-close:hover { background: rgba(231,76,60,0.2); color: var(--danger); border-color: var(--danger); }
+
+  .modal-body { padding: 18px 20px 20px; }
+
+  /* Feedback-only mode (distractors) */
+  .modal-feedback-only {
+    background: rgba(231,76,60,0.07);
+    border: 1px solid rgba(231,76,60,0.25);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 15px;
+    color: #f08080;
+    line-height: 1.65;
+  }
+  .modal-feedback-only .mfo-icon { font-size: 20px; margin-bottom: 8px; display: block; }
+
+  /* Form fields inside modal */
+  .modal-body .analysis-field { margin-bottom: 14px; }
+  .modal-body .analysis-field label {
+    display: block;
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  .modal-body .analysis-field textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text-main);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 70px;
+    transition: border-color 0.25s;
+  }
+  .modal-body .analysis-field textarea:focus { outline: none; border-color: var(--gold); }
+  .modal-body .analysis-field textarea.error { border-color: var(--danger); }
+
+  .modal-footer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  .modal-btn-save {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .modal-btn-save:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,168,76,0.35); }
+  .modal-btn-cancel {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .modal-btn-cancel:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* Screen 3 score ring animation */
+  @keyframes ringFill {
+    from { background: conic-gradient(var(--gold) 0%, rgba(255,255,255,0.1) 0%); }
+  }
+</style>
+</head>
+
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- HEADER -->
+  <div class="module-header">
+    <div class="logo">The Mendoza Law Firm</div>
+    <div class="score-live">
+      <div class="progress-wrap">
+        <div class="progress-label">Progreso</div>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progressBar"></div>
+        </div>
+      </div>
+      <div class="score-badge">Puntos: <span id="liveScore">0</span>/100</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       PANTALLA 1 – CONTEXTO E INSTRUCCIONES
+  ════════════════════════════════════════ -->
+  <div class="screen active" id="screen1">
+
+    <div class="intro-hero">
+      <div class="tag-pill">Módulo de Análisis Estratégico</div>
+      <h1>Radar Estratégico<br><span>Análisis de Llamada Legal</span></h1>
+      <p class="subtitle">Desarrolla tu capacidad para identificar y analizar las estrategias de comunicación que facilitan la obtención de información sensible en Call Backs.</p>
+    </div>
+
+    <div class="context-card">
+      <h3>📋 Contexto de la llamada</h3>
+      <p>En este ejercicio analizarás una llamada real de <strong>19 minutos y 19 segundos</strong> realizada por la abogada <strong>María Guadalupe Mendoza</strong>.</p>
+      <p>La llamada aborda temas sensibles relacionados con situaciones de violencia, historial migratorio y circunstancias personales que son relevantes para determinar la elegibilidad de la cliente bajo distintas vías legales (VAWA, Visa U, Visa T).</p>
+      <p>Tu tarea es analizar <strong>cómo</strong> la abogada logra que la cliente comparta esta información delicada, identificando las estrategias específicas de comunicación que emplea.</p>
+    </div>
+
+    <div class="instructions-grid">
+      <div style="grid-column: 1 / -1; margin-bottom: 4px;">
+        <h3 style="font-family: 'Playfair Display', serif; font-size: 17px; color: var(--gold); letter-spacing: 0.5px;">Instrucciones</h3>
+      </div>
+      <div class="instruction-item">
+        <div class="instruction-number">1</div>
+        <div class="instruction-text">
+          <strong>Observa el video completo</strong>
+          Presta atención a frases específicas, pausas, validaciones y estructuras de pregunta que utiliza la abogada.
+        </div>
+      </div>
+      <div class="instruction-item">
+        <div class="instruction-number">2</div>
+        <div class="instruction-text">
+          <strong>Identifica mínimo 8 de 12 estrategias</strong>
+          El video contiene 12 estrategias. Debes identificar al menos 8. Las incorrectas no restan puntos.
+        </div>
+      </div>
+      <div class="instruction-item">
+        <div class="instruction-number">3</div>
+        <div class="instruction-text">
+          <strong>Documenta evidencia concreta</strong>
+          Por cada estrategia, escribe la frase exacta o conducta observable que la evidencia.
+        </div>
+      </div>
+      <div class="instruction-item">
+        <div class="instruction-number">4</div>
+        <div class="instruction-text">
+          <strong>Analiza el impacto</strong>
+          Explica cómo esa estrategia facilita específicamente que la cliente comparta información sensible.
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-box">
+      <strong>⚠️ Importante:</strong> El análisis debe basarse en <strong>evidencia observable</strong> — frases textuales o conductas concretas — no en interpretaciones generales. Un buen análisis conecta la conducta con su efecto psicológico en la disposición de la cliente a compartir información.
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goToScreen(2)">
+        Comenzar ejercicio →
+      </button>
+    </div>
+
+  </div><!-- /screen1 -->
+
+
+  <!-- ═══════════════════════════════════════
+       PANTALLA 2 – VIDEO + INTERACCIÓN
+  ════════════════════════════════════════ -->
+  <div class="screen" id="screen2">
+
+    <!-- ── VIDEO ── -->
+    <div class="video-sticky">
+      <div class="video-header">
+        <h3>🎬 Call Back – Temas Sensibles | María Guadalupe Mendoza</h3>
+        <div class="video-status"><div class="dot-anim"></div><span>19:19 min</span></div>
+      </div>
+      <div class="video-embed-wrap">
+        <iframe src="https://www.canva.com/design/DAHBmttEh7c/eDH9w7YdxiFVcnI6CwZK7Q/watch?embed"
+          allowfullscreen="allowfullscreen" allow="fullscreen; autoplay"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Call Back - Temas Sensibles"></iframe>
+      </div>
+    </div>
+
+    <!-- ── SPLIT PANEL ── -->
+    <div class="split-panel">
+
+      <!-- LEFT: sticky button list -->
+      <div class="btn-column">
+        <div class="btn-column-header">
+          <h3>Estrategias</h3>
+          <p>Selecciona las estrategias observadas en la llamada. <strong>8 de las 12 correctas</strong> son suficientes para aprobar.</p>
+        </div>
+
+        <div class="strategy-btn-list" id="strategyBtnGrid">
+          <div class="btn-divider">Selecciona las que observaste en la llamada</div>
+
+          <button class="strat-btn" id="btn_s1" onclick="toggleStrategy('s1')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Transparencia intencional</span>
+          </button>
+          <button class="strat-btn" id="btn_s2" onclick="toggleStrategy('s2')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Validación de frustraciones</span>
+          </button>
+          <button class="strat-btn" id="btn_s3" onclick="toggleStrategy('s3')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Escucha activa empática</span>
+          </button>
+          <button class="strat-btn" id="btn_s4" onclick="toggleStrategy('s4')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Clarificación legal externa</span>
+          </button>
+          <button class="strat-btn" id="btn_s5" onclick="toggleStrategy('s5')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Credibilidad profesional</span>
+          </button>
+          <button class="strat-btn" id="btn_s6" onclick="toggleStrategy('s6')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Gestión de expectativas</span>
+          </button>
+          <button class="strat-btn" id="btn_s7" onclick="toggleStrategy('s7')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Empatía y acción</span>
+          </button>
+          <button class="strat-btn" id="btn_s8" onclick="toggleStrategy('s8')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Lenguaje emocional</span>
+          </button>
+          <button class="strat-btn" id="btn_s9" onclick="toggleStrategy('s9')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Honestidad e incertidumbre</span>
+          </button>
+          <button class="strat-btn" id="btn_s10" onclick="toggleStrategy('s10')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Cualificación estratégica</span>
+          </button>
+          <button class="strat-btn" id="btn_s11" onclick="toggleStrategy('s11')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Elementos clave del caso</span>
+          </button>
+          <button class="strat-btn" id="btn_s12" onclick="toggleStrategy('s12')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Recuperación de confianza</span>
+          </button>
+
+          <button class="strat-btn" id="btn_d1" onclick="toggleStrategy('d1')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Preguntas cerradas directivas</span>
+          </button>
+          <button class="strat-btn" id="btn_d2" onclick="toggleStrategy('d2')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Normalización del proceso</span>
+          </button>
+          <button class="strat-btn" id="btn_d3" onclick="toggleStrategy('d3')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Confidencialidad formal</span>
+          </button>
+          <button class="strat-btn" id="btn_d4" onclick="toggleStrategy('d4')">
+            <span class="sb-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0B1A2E" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="sb-name">Oferta de tiempo amplio</span>
+          </button>
+        </div>
+
+        <div class="btn-column-footer">
+          <div class="validation-msg" id="globalValidationMsg" style="margin:0;font-size: 14px;">
+            ⚠ Completa todos los análisis antes de continuar.
+          </div>
+          <button class="btn-secondary" onclick="goToScreen(1)" style="width:100%;padding:7px;font-size: 14px;">← Volver</button>
+          <button class="btn-primary" onclick="submitAnalysis()" style="width:100%;padding:8px;font-size: 15px;">Finalizar →</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: scrollable forms -->
+      <div class="forms-column" id="analysisForms">
+
+        <!-- Empty state -->
+        <div class="forms-empty" id="formsEmptyState">
+          <div class="fe-icon">☑️</div>
+          <p>Selecciona una estrategia de la lista para abrir su formulario de análisis aquí.</p>
+        </div>
+
+        <!-- S1 -->
+        <div class="strategy-item" id="s1">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s1')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Transparencia intencional</div><div class="strategy-hint">Explica una acción antes de realizarla para proteger la confianza</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s1_evidence" placeholder='Ej: "Te voy a estar mirando, pero también si miro para acá es porque tengo el expediente en mi pantalla..."' oninput="updateCounter('s1_evidence','s1_ec')"></textarea><div class="char-counter" id="s1_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s1_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s1_justif" placeholder="¿Por qué esta conducta es transparencia intencional?..." oninput="updateCounter('s1_justif','s1_jc')"></textarea><div class="char-counter" id="s1_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s1_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s1_ifb">
+            <span class="if-icon" id="s1_ifb_icon"></span>
+            <span id="s1_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S2 -->
+        <div class="strategy-item" id="s2">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s2')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Validación inmediata de frustraciones y emociones</div><div class="strategy-hint">Reconoce preocupaciones antes de avanzar</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s2_evidence" placeholder='Ej: "Entiendo que tienes algunas preocupaciones fuertes y quiero entenderlo de su propia boca..."' oninput="updateCounter('s2_evidence','s2_ec')"></textarea><div class="char-counter" id="s2_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s2_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s2_justif" placeholder="¿Por qué es validación de frustraciones?..." oninput="updateCounter('s2_justif','s2_jc')"></textarea><div class="char-counter" id="s2_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s2_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s2_ifb">
+            <span class="if-icon" id="s2_ifb_icon"></span>
+            <span id="s2_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S3 -->
+        <div class="strategy-item" id="s3">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s3')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Escucha activa empática</div><div class="strategy-hint">Permite expresión completa sin interrumpir</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s3_evidence" placeholder="Describe el momento en que la abogada sostiene el espacio sin interrumpir..." oninput="updateCounter('s3_evidence','s3_ec')"></textarea><div class="char-counter" id="s3_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s3_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s3_justif" placeholder="¿Por qué es escucha activa empática?..." oninput="updateCounter('s3_justif','s3_jc')"></textarea><div class="char-counter" id="s3_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s3_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s3_ifb">
+            <span class="if-icon" id="s3_ifb_icon"></span>
+            <span id="s3_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S4 -->
+        <div class="strategy-item" id="s4">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s4')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Clarificación legal con referencia externa</div><div class="strategy-hint">Aclara el proceso citando ejemplo de otro abogado</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s4_evidence" placeholder="Describe cuando la abogada explica el proceso de visa y menciona a otro abogado..." oninput="updateCounter('s4_evidence','s4_ec')"></textarea><div class="char-counter" id="s4_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s4_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s4_justif" placeholder="¿Por qué es clarificación legal con referencia externa?..." oninput="updateCounter('s4_justif','s4_jc')"></textarea><div class="char-counter" id="s4_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s4_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s4_ifb">
+            <span class="if-icon" id="s4_ifb_icon"></span>
+            <span id="s4_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S5 -->
+        <div class="strategy-item" id="s5">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s5')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Credibilidad por experiencia profesional</div><div class="strategy-hint">"Yo entiendo completamente... a lo largo de mi carrera..."</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s5_evidence" placeholder='Ej: "yo entiendo completamente... a lo largo de mi carrera mi experiencia es..."' oninput="updateCounter('s5_evidence','s5_ec')"></textarea><div class="char-counter" id="s5_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s5_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s5_justif" placeholder="¿Por qué es credibilidad por experiencia?..." oninput="updateCounter('s5_justif','s5_jc')"></textarea><div class="char-counter" id="s5_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s5_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s5_ifb">
+            <span class="if-icon" id="s5_ifb_icon"></span>
+            <span id="s5_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S6 -->
+        <div class="strategy-item" id="s6">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s6')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Gestión de expectativas con contexto político</div><div class="strategy-hint">"La estrategia de Trump es meter miedo..."</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s6_evidence" placeholder='Ej: "por lo menos en la administración de Trump... parece que la estrategia es meter miedo..."' oninput="updateCounter('s6_evidence','s6_ec')"></textarea><div class="char-counter" id="s6_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s6_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s6_justif" placeholder="¿Por qué es gestión de expectativas?..." oninput="updateCounter('s6_justif','s6_jc')"></textarea><div class="char-counter" id="s6_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s6_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s6_ifb">
+            <span class="if-icon" id="s6_ifb_icon"></span>
+            <span id="s6_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S7 -->
+        <div class="strategy-item" id="s7">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s7')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Balance entre empatía y acción</div><div class="strategy-hint">Valida emoción y redirige a datos concretos del caso</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s7_evidence" placeholder='Ej: "yo no creo que haya algo malo en su caso de Visa T... se están tardando 2-3 años"' oninput="updateCounter('s7_evidence','s7_ec')"></textarea><div class="char-counter" id="s7_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s7_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s7_justif" placeholder="¿Por qué es balance entre empatía y acción?..." oninput="updateCounter('s7_justif','s7_jc')"></textarea><div class="char-counter" id="s7_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s7_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s7_ifb">
+            <span class="if-icon" id="s7_ifb_icon"></span>
+            <span id="s7_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S8 -->
+        <div class="strategy-item" id="s8">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s8')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Uso estratégico de lenguaje emocional</div><div class="strategy-hint">"Yo tengo clientes que son un poco molestos conmigo..."</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s8_evidence" placeholder='Ej: "Yo tengo clientes que son un poco molestos conmigo... metieron sus casos en 2021, 2022..."' oninput="updateCounter('s8_evidence','s8_ec')"></textarea><div class="char-counter" id="s8_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s8_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s8_justif" placeholder="¿Por qué es lenguaje emocional estratégico?..." oninput="updateCounter('s8_justif','s8_jc')"></textarea><div class="char-counter" id="s8_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s8_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s8_ifb">
+            <span class="if-icon" id="s8_ifb_icon"></span>
+            <span id="s8_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S9 -->
+        <div class="strategy-item" id="s9">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s9')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Honestidad sobre la incertidumbre</div><div class="strategy-hint">"Obviamente no soy Dios, yo no sé..."</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s9_evidence" placeholder='Ej: "obviamente no soy Dios, yo no sé quién va a ser el siguiente presidente..."' oninput="updateCounter('s9_evidence','s9_ec')"></textarea><div class="char-counter" id="s9_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s9_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s9_justif" placeholder="¿Por qué es honestidad sobre la incertidumbre?..." oninput="updateCounter('s9_justif','s9_jc')"></textarea><div class="char-counter" id="s9_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s9_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s9_ifb">
+            <span class="if-icon" id="s9_ifb_icon"></span>
+            <span id="s9_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S10 -->
+        <div class="strategy-item" id="s10">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s10')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Preguntas de cualificación estratégica</div><div class="strategy-hint">"¿Usted está casada legalmente, correcto?"</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s10_evidence" placeholder='Ej: "Usted está casada legalmente, ¿correcto?"' oninput="updateCounter('s10_evidence','s10_ec')"></textarea><div class="char-counter" id="s10_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s10_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s10_justif" placeholder="¿Por qué es una pregunta de cualificación estratégica?..." oninput="updateCounter('s10_justif','s10_jc')"></textarea><div class="char-counter" id="s10_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s10_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s10_ifb">
+            <span class="if-icon" id="s10_ifb_icon"></span>
+            <span id="s10_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S11 -->
+        <div class="strategy-item" id="s11">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s11')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Identificación de elementos clave del caso</div><div class="strategy-hint">"A lo mejor tienes una forma bajo la ley 245 I..."</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s11_evidence" placeholder='Ej: "A lo mejor tienes una forma bajo la ley 245 I... voy a tener que revisar ese petición..."' oninput="updateCounter('s11_evidence','s11_ec')"></textarea><div class="char-counter" id="s11_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s11_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s11_justif" placeholder="¿Por qué es identificación de elementos clave?..." oninput="updateCounter('s11_justif','s11_jc')"></textarea><div class="char-counter" id="s11_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s11_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s11_ifb">
+            <span class="if-icon" id="s11_ifb_icon"></span>
+            <span id="s11_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- S12 -->
+        <div class="strategy-item" id="s12">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('s12')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Recuperación de confianza y compromiso personal</div><div class="strategy-hint">"Déjenme revisar esos dos temas..."</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel">
+            <h4>Análisis de la estrategia</h4>
+            <div class="analysis-field"><label>Frase textual o conducta concreta <span class="req">*</span></label><textarea id="s12_evidence" placeholder='Ej: "déjenme revisar esos dos temas y luego vamos a estar en comunicación..."' oninput="updateCounter('s12_evidence','s12_ec')"></textarea><div class="char-counter" id="s12_ec">0 / mín. 20 caracteres</div><div class="field-error" id="s12_ev_err">⚠ Mínimo 50 caracteres.</div></div>
+            <div class="analysis-field"><label>Justificación <span class="req">*</span></label><textarea id="s12_justif" placeholder="¿Por qué es recuperación de confianza?..." oninput="updateCounter('s12_justif','s12_jc')"></textarea><div class="char-counter" id="s12_jc">0 / mín. 20 caracteres</div><div class="field-error" id="s12_jv_err">⚠ Mínimo 90 caracteres.</div></div>
+            
+            
+          <div class="instant-feedback" id="s12_ifb">
+            <span class="if-icon" id="s12_ifb_icon"></span>
+            <span id="s12_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- D1 -->
+        <div class="strategy-item" id="d1">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('d1')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Uso de preguntas cerradas directivas</div><div class="strategy-hint">Preguntas sí/no para controlar el flujo</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel"></div>
+          <div class="instant-feedback" id="d1_ifb">
+            <span class="if-icon" id="d1_ifb_icon"></span>
+            <span id="d1_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- D2 -->
+        <div class="strategy-item" id="d2">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('d2')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Normalización del proceso legal</div><div class="strategy-hint">Presenta preguntas sensibles como rutinarias</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel"></div>
+          <div class="instant-feedback" id="d2_ifb">
+            <span class="if-icon" id="d2_ifb_icon"></span>
+            <span id="d2_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- D3 -->
+        <div class="strategy-item" id="d3">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('d3')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Confidencialidad y privilegio abogado-cliente</div><div class="strategy-hint">Declaración formal del privilegio legal</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel"></div>
+          <div class="instant-feedback" id="d3_ifb">
+            <span class="if-icon" id="d3_ifb_icon"></span>
+            <span id="d3_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+        <!-- D4 -->
+        <div class="strategy-item" id="d4">
+          <div class="strategy-card-header">
+            <div class="strategy-card-title">
+              <button class="remove-btn" onclick="toggleStrategy('d4')" title="Deseleccionar">✕</button>
+              <div><div class="strategy-name">Oferta de tiempo sustancial</div><div class="strategy-hint">Propuesta de entrevistas de 2-3 horas desde el inicio</div></div>
+            </div>
+          </div>
+          <div class="analysis-panel"></div>
+          <div class="instant-feedback" id="d4_ifb">
+            <span class="if-icon" id="d4_ifb_icon"></span>
+            <span id="d4_ifb_text"></span>
+          </div>
+        </div>
+        </div>
+
+      </div><!-- /analysis-forms-area = forms-column -->
+
+    </div><!-- /split-panel -->
+
+  </div><!-- /screen2 -->
+
+
+  <!-- ═══════════════════════════════════════
+       PANTALLA 3 – RESULTADOS
+  ════════════════════════════════════════ -->
+  <div class="screen" id="screen3">
+
+    <div class="results-hero">
+      <div class="tag-pill">Análisis completado</div>
+      <h2>Resultados del Radar Estratégico</h2>
+
+      <div class="score-circle" id="scoreCircle">
+        <div class="score-number" id="finalScoreDisplay">0<span>/100</span></div>
+      </div>
+
+      <div id="scoreComment" style="font-size: 16px; color:var(--text-muted); max-width:440px; margin: 0 auto;"></div>
+    </div>
+
+    <div class="breakdown-grid">
+      <div class="breakdown-card">
+        <div class="val" id="pts_id">0</div>
+        <div class="lbl">Identificación base (8 correctas = 100)</div>
+      </div>
+      <div class="breakdown-card">
+        <div class="val" id="pts_ev">0</div>
+        <div class="lbl">Análisis escrito (bonus)</div>
+      </div>
+      <div class="breakdown-card">
+        <div class="val" id="pts_ql">0</div>
+        <div class="lbl">Bonus / Penalización</div>
+      </div>
+    </div>
+
+    <!-- Lista de estrategias de la abogada -->
+    <div class="feedback-section results-strategy-list">
+      <h3>📋 Lo que la abogada hizo en esta llamada</h3>
+      <div class="rs-subtitle">✅ = estrategia que identificaste &nbsp;|&nbsp; ◻️ = estrategia que no detectaste &nbsp;|&nbsp; ❌ = selección incorrecta</div>
+      <div id="feedbackList"></div>
+    </div>
+
+    <!-- Reflexión final -->
+    <div class="reflection-section">
+      <h3>🪞 Reflexión final obligatoria</h3>
+      <div class="reflection-q">
+        <label>1. ¿Qué hizo la abogada que facilitó la apertura emocional de la cliente? Identifica los momentos clave.</label>
+        <textarea id="ref1" placeholder="Describe los elementos específicos de la conducta de la abogada que generaron confianza y apertura..."></textarea>
+      </div>
+      <div class="reflection-q">
+        <label>2. ¿Qué hubieras hecho diferente para profundizar aún más en la obtención de información sensible?</label>
+        <textarea id="ref2" placeholder="Propón estrategias o ajustes específicos que podrían haber intensificado la apertura de la cliente..."></textarea>
+      </div>
+      <div class="validation-msg" id="reflectionValidationMsg">
+        ⚠ Por favor completa las dos preguntas de reflexión antes de finalizar el módulo.
+      </div>
+    </div>
+
+    <div class="completion-banner" id="completionBanner" style="display:none;">
+      <h3>🏆 Módulo completado exitosamente</h3>
+      <p>Tu progreso ha sido registrado. Continúa practicando estas estrategias en tus consultas.</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goToScreen(2)">← Revisar análisis</button>
+      <button class="btn-primary" onclick="finishModule()">Finalizar módulo ✓</button>
+    </div>
+
+  </div><!-- /screen3 -->
+
+<!-- ═══════════════════════════════════════
+     STRATEGY MODAL
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="stratModal" onclick="modalOverlayClick(event)">
+  <div class="modal-box" id="stratModalBox">
+
+    <div class="modal-header">
+      <div class="modal-header-info">
+        <span class="modal-badge" id="modalBadge"></span>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-hint"  id="modalHint"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal(false)" title="Cerrar">✕</button>
+    </div>
+
+    <div class="modal-body" id="modalBody"></div>
+
+    <div class="modal-footer" id="modalFooter"></div>
+
+  </div>
+</div>
+
+</div><!-- /app-container -->
+
+<script>
+// ═══════════════════════════════════════
+//  DATA & STATE
+// ═══════════════════════════════════════
+
+// Key strategies: s1–s12 are CORRECT (isKey: true); d1–d4 are DISTRACTORS (isKey: false)
+const STRATEGIES = {
+  s1: {
+    name: 'Transparencia intencional',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. La abogada explicó proactivamente por qué miraba a otro lado (el expediente en pantalla) antes de que la cliente pudiera malinterpretarlo. Esta transparencia preventiva protege la conexión y permite que la cliente se enfoque en compartir, no en descifrar intenciones.',
+    feedbackMissed: '❌ No detectada. La abogada advirtió al inicio que miraría el expediente en pantalla para que la cliente no pensara que la ignoraba. Anticipar y explicar acciones ambiguas es clave para mantener la confianza desde el primer minuto de la llamada.'
+  },
+  s2: {
+    name: 'Validación inmediata de frustraciones y emociones',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. La abogada usó frases como "Lo siento", "Lo entiendo totalmente" para reconocer las emociones de la cliente antes de avanzar. Validar primero, resolver después — ese orden es lo que abre la disposición a compartir información sensible.',
+    feedbackMissed: '❌ No detectada. A lo largo de la llamada la abogada reconoció abiertamente la frustración y el miedo de la cliente con frases como "Lo siento" y "Lo entiendo totalmente". Esta validación inmediata evita que la emoción bloquee la comunicación y prepara el terreno para preguntas difíciles.'
+  },
+  s3: {
+    name: 'Escucha activa empática',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. La abogada permitió que la cliente contara su historia completa — el incidente del arma, la relación abusiva, las condiciones laborales — sin interrumpirla. Escuchar sin cortar es lo que permite que emerja la información más valiosa para el caso.',
+    feedbackMissed: '❌ No detectada. La abogada dejó que la cliente narrara situaciones complejas sin apresurarla. Esta escucha sin interrupciones es fundamental: los detalles más útiles legalmente (abuso, coerción, condiciones laborales) suelen aparecer cuando el cliente siente que tiene espacio para hablar.'
+  },
+  s4: {
+    name: 'Clarificación legal con referencia externa',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. Ante las dudas de la cliente, la abogada explicó las diferencias entre visas y los tipos de perdones disponibles, incluyendo referencias a cómo otros abogados manejan casos similares. Esto reduce la incertidumbre y genera confianza en el criterio profesional.',
+    feedbackMissed: '❌ No detectada. La abogada aclaró activamente qué visas tienen perdones más amplios para superar problemas como deportaciones anteriores o uso de documentos falsos. Dar contexto legal concreto transforma la confusión en claridad y motiva a la cliente a revelar más detalles de su situación.'
+  },
+  s5: {
+    name: 'Credibilidad por experiencia profesional',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. La abogada mencionó que consultaría con ex-fiscales de ICE de su firma con 20 años de experiencia. Anclar la empatía y las decisiones en trayectoria real hace que la cliente confíe en que está en manos de alguien que genuinamente conoce el sistema.',
+    feedbackMissed: '❌ No detectada. La abogada señaló que su firma cuenta con ex-fiscales de ICE con 20 años de experiencia para consultar casos complejos. Esta credibilidad institucional y personal reduce el miedo al sistema y aumenta la disposición de la cliente a compartir detalles comprometedores.'
+  },
+  s6: {
+    name: 'Gestión de expectativas con contexto político',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. La abogada contextualizó la situación dentro del clima político actual: "Ahora no son jueces de inmigración, son jueces de deportación." Nombrar el ambiente hostil como factor externo convierte el miedo difuso en algo comprensible, con la abogada como aliada.',
+    feedbackMissed: '❌ No detectada. La abogada explicó que en la era Trump los tiempos cambian, que los jueces de inmigración actúan como jueces de deportación, y que los casos antiguos generalmente no reciben investigación. Este encuadre realista ayuda a la cliente a entender su situación sin falsas esperanzas.'
+  },
+  s7: {
+    name: 'Balance entre empatía y acción',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. Después de validar el miedo de la cliente, la abogada pivotó hacia soluciones concretas: transformó las amenazas del esposo en potencial evidencia legal. Este movimiento de lo emocional a lo estratégico le devuelve agencia a la cliente.',
+    feedbackMissed: '❌ No detectada. La abogada no solo escuchó el miedo de la cliente — lo convirtió en herramienta legal. Explicó cómo las amenazas del esposo podían documentarse como evidencia. Ese pivote de la emoción a la acción es una de las habilidades más importantes en estas llamadas.'
+  },
+  s8: {
+    name: 'Uso estratégico de lenguaje emocional',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. La abogada usó frases como "Me imagino que estás pasando por mucho", "Estás en todo tu derecho de sentir eso", "Lo siento mucho por el miedo y el pánico." Este lenguaje emocional crea conexión genuina y normaliza la experiencia de la cliente sin minimizarla.',
+    feedbackMissed: '❌ No detectada. A lo largo de la llamada, la abogada verbalizó empatía con frases directas: "Los abusos, me imagino que estás pasando por mucho." Usar lenguaje emocional específico — no genérico — es lo que diferencia una escucha real de una escucha protocolar.'
+  },
+  s9: {
+    name: 'Honestidad sobre la incertidumbre',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. La abogada dijo claramente: "No soy Dios. No te puedo dar las fechas exactas", pero ofreció rangos realistas basados en experiencia. Reconocer los límites del conocimiento genera más confianza que prometer resultados inciertos.',
+    feedbackMissed: '❌ No detectada. En lugar de prometer fechas exactas, la abogada fue honesta: "No soy Dios", pero dio estimados realistas (3 a 8 meses) y explicó los factores variables. Evitar promesas falsas es lo que construye credibilidad a largo plazo con el cliente.'
+  },
+  s10: {
+    name: 'Preguntas de cualificación estratégica',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. La abogada hizo preguntas directas para identificar elementos que califican para diferentes visas: "¿Cuál ha sido el peor trabajo que has tenido?", "¿Fuiste víctima de un delito?", "¿Has sufrido violencia doméstica?" Cada pregunta tenía un propósito legal claro.',
+    feedbackMissed: '❌ No detectada. La abogada usó preguntas estratégicas para explorar elegibilidad: sobre violencia, condiciones laborales, control económico. Estas preguntas directas pero respetuosas son las que permiten identificar elementos clave para Visa T, Visa U o VAWA.'
+  },
+  s11: {
+    name: 'Identificación de elementos clave del caso',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. La abogada investigó sistemáticamente: horas trabajadas, pagos recibidos, accidentes laborales, rol doméstico, coerción económica. Esta recolección metódica construye el cuadro completo necesario para determinar la mejor vía legal para el caso.',
+    feedbackMissed: '❌ No detectada. La abogada exploró activamente condiciones laborales extremas, control económico, amenazas y coerción — todos elementos que califican para visas distintas. Identificar estos patrones de forma sistemática es lo que permite ofrecer alternativas legales que el cliente no conocía.'
+  },
+  s12: {
+    name: 'Recuperación de confianza y compromiso personal',
+    isKey: true, correctClass: 'good',
+    feedbackFound: '✅ Correcto. La abogada escuchó todas las quejas sin defenderse, reconoció errores directamente, y luego pivotó: "Déjeme revisar el expediente" y propuso entrevistas de 2-3 horas. Este compromiso personal concreto transforma la frustración en una nueva oportunidad de confianza.',
+    feedbackMissed: '❌ No detectada. Ante las quejas de la cliente, la abogada no se defendió — escuchó, reconoció y propuso. Ofreció revisar personalmente el expediente y dedicar 2-3 horas a una entrevista profunda. Ese nivel de compromiso explícito es lo que recupera una relación deteriorada.'
+  },
+  // ── DISTRACTORES ──
+  d1: {
+    name: 'Uso de preguntas cerradas directivas',
+    isKey: false, correctClass: 'warn',
+    feedbackFound: '⚠️ Esta no es una estrategia clave de esta llamada. La abogada usó principalmente preguntas abiertas y exploratorias para obtener información. Las pocas preguntas cerradas que aparecen (como confirmar estado civil) corresponden mejor a "Preguntas de cualificación estratégica". Revisa esa categoría.',
+    feedbackMissed: null
+  },
+  d2: {
+    name: 'Normalización del proceso legal',
+    isKey: false, correctClass: 'warn',
+    feedbackFound: '⚠️ Esta estrategia no se observa claramente en esta llamada. La abogada no enmarcó las preguntas sensibles como "parte normal del proceso" — su enfoque fue más personalizado: validar la emoción específica de esta cliente, no normalizar dentro de un protocolo estándar.',
+    feedbackMissed: null
+  },
+  d3: {
+    name: 'Confidencialidad y privilegio abogado-cliente',
+    isKey: false, correctClass: 'warn',
+    feedbackFound: '⚠️ En esta llamada la abogada no realizó una declaración formal del privilegio legal. Su construcción de confianza se basó en transparencia, validación emocional y compromiso personal — no en garantías formales de confidencialidad. Considera si lo que observaste corresponde a otra estrategia.',
+    feedbackMissed: null
+  },
+  d4: {
+    name: 'Oferta de tiempo sustancial',
+    isKey: false, correctClass: 'warn',
+    feedbackFound: '⚠️ La oferta de 2-3 horas sí aparece en la llamada, pero como parte de la estrategia de "Recuperación de confianza y compromiso personal", no como estrategia independiente de manejo de tiempo. Si identificaste ese momento, revisa si corresponde mejor a esa categoría.',
+    feedbackMissed: null
+  }
+};
+
+let state = {
+  selected: {},
+  classes: {},
+  score: 0,
+  breakdown: { id: 0, ev: 0, cls: 0, ql: 0 }
+};
+
+// ═══════════════════════════════════════
+//  SCORM API WRAPPER
+// ═══════════════════════════════════════
+const SCORM = {
+  api: null,
+  version: null,
+
+  find() {
+    if (window.API_1484_11) { this.api = window.API_1484_11; this.version = '2004'; return true; }
+    if (window.API)          { this.api = window.API;          this.version = '1.2';  return true; }
+    // Search parent frames
+    let win = window.parent;
+    for (let i = 0; i < 10 && win && win !== win.parent; i++) {
+      try {
+        if (win.API_1484_11) { this.api = win.API_1484_11; this.version = '2004'; return true; }
+        if (win.API)         { this.api = win.API;          this.version = '1.2';  return true; }
+      } catch(e) {}
+      win = win.parent;
+    }
+    return false;
+  },
+
+  init() {
+    if (!this.find()) return false;
+    try {
+      if (this.version === '1.2')  this.api.LMSInitialize('');
+      if (this.version === '2004') this.api.Initialize('');
+      return true;
+    } catch(e) { return false; }
+  },
+
+  get(key) {
+    if (!this.api) return '';
+    try {
+      if (this.version === '1.2')  return this.api.LMSGetValue(key) || '';
+      if (this.version === '2004') return this.api.GetValue(key) || '';
+    } catch(e) { return ''; }
+  },
+
+  set(key, val) {
+    if (!this.api) return;
+    try {
+      if (this.version === '1.2')  this.api.LMSSetValue(key, val);
+      if (this.version === '2004') this.api.SetValue(key, val);
+    } catch(e) {}
+  },
+
+  commit() {
+    if (!this.api) return;
+    try {
+      if (this.version === '1.2')  this.api.LMSCommit('');
+      if (this.version === '2004') this.api.Commit('');
+    } catch(e) {}
+  },
+
+  finish() {
+    if (!this.api) return;
+    try {
+      if (this.version === '1.2')  { this.api.LMSCommit(''); this.api.LMSFinish(''); }
+      if (this.version === '2004') { this.api.Commit('');     this.api.Terminate(''); }
+    } catch(e) {}
+  }
+};
+
+// ═══════════════════════════════════════
+//  SAVE / RESTORE RESPONSES
+// ═══════════════════════════════════════
+const STORAGE_KEY = 'tmlf_radar_callbackv1';
+
+function collectResponses() {
+  const responses = {};
+  const allIds = [...Object.keys(STRATEGIES)];
+  allIds.forEach(sid => {
+    responses[sid] = {
+      selected:  !!state.selected[sid],
+      cls:       state.classes[sid] || '',
+      evidence:  (document.getElementById(sid + '_evidence') || {}).value || '',
+      justif:    (document.getElementById(sid + '_justif')   || {}).value || ''
+    };
+  });
+  // Reflection answers
+  responses._ref1 = (document.getElementById('ref1') || {}).value || '';
+  responses._ref2 = (document.getElementById('ref2') || {}).value || '';
+  responses._ref3 = (document.getElementById('ref3') || {}).value || '';
+  responses._score = state.score;
+  responses._breakdown = state.breakdown;
+  return responses;
+}
+
+function saveProgress() {
+  const data = JSON.stringify(collectResponses());
+  // 1. SCORM suspend_data (max 4096 chars for 1.2, 64000 for 2004)
+  try {
+    if (SCORM.api) {
+      const key = SCORM.version === '1.2' ? 'cmi.suspend_data' : 'cmi.suspend_data';
+      SCORM.set(key, data.substring(0, SCORM.version === '1.2' ? 4096 : 64000));
+      SCORM.set(SCORM.version === '1.2' ? 'cmi.core.lesson_status' : 'cmi.completion_status', 'incomplete');
+      SCORM.commit();
+    }
+  } catch(e) {}
+  // 2. localStorage fallback
+  try { localStorage.setItem(STORAGE_KEY, data); } catch(e) {}
+}
+
+function restoreProgress() {
+  let raw = '';
+  // Try SCORM first
+  try {
+    if (SCORM.api) raw = SCORM.get('cmi.suspend_data');
+  } catch(e) {}
+  // Fallback to localStorage
+  if (!raw) {
+    try { raw = localStorage.getItem(STORAGE_KEY) || ''; } catch(e) {}
+  }
+  if (!raw) return;
+
+  try {
+    const data = JSON.parse(raw);
+    Object.keys(STRATEGIES).forEach(sid => {
+      const r = data[sid];
+      if (!r) return;
+      // Restore text fields
+      ['evidence','justif'].forEach(f => {
+        const el = document.getElementById(sid + '_' + f);
+        if (el && r[f]) { el.value = r[f]; }
+      });
+      // Restore counter displays
+      ['evidence','justif'].forEach(f => {
+        const suffixes = { evidence: 'ec', justif: 'jc' };
+        updateCounter(sid + '_' + f, sid + '_' + suffixes[f]);
+      });
+      // Restore classification
+      if (r.cls) setClass(sid, r.cls);
+      // Restore selection with correct visual state
+      if (r.selected) {
+        state.selected[sid] = true;
+        const card = document.getElementById(sid);
+        const btn  = document.getElementById('btn_' + sid);
+        const strat = STRATEGIES[sid];
+        if (card) {
+          if (strat.isKey) {
+            card.classList.add('correct');
+            if (btn) btn.classList.add('is-correct');
+          } else {
+            card.classList.add('incorrect');
+            if (btn) btn.classList.add('is-incorrect');
+          }
+        }
+      }
+    });
+    // Restore reflection
+    if (data._ref1 && document.getElementById('ref1')) document.getElementById('ref1').value = data._ref1;
+    if (data._ref2 && document.getElementById('ref2')) document.getElementById('ref2').value = data._ref2;
+    if (data._ref3 && document.getElementById('ref3')) document.getElementById('ref3').value = data._ref3;
+
+    updateLiveScore();
+    // Hide empty state if any selections restored
+    const anyVisible = Object.keys(state.selected).some(k => state.selected[k]);
+    const emptyEl = document.getElementById('formsEmptyState');
+    if (emptyEl && anyVisible) emptyEl.style.display = 'none';
+  } catch(e) {}
+}
+
+// Auto-save every 30 seconds and on any interaction
+let autoSaveTimer = null;
+function scheduleAutoSave() {
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(saveProgress, 2000); // debounce 2s
+}
+
+// ═══════════════════════════════════════
+//  UI NAVIGATION
+// ═══════════════════════════════════════
+function goToScreen(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen' + n).classList.add('active');
+  // En screen3 el app-container no necesita ser flex para evitar espacio vacío
+  const appContainer = document.querySelector('.app-container');
+  if (n === 3) {
+    appContainer.style.display = 'block';
+  } else {
+    appContainer.style.display = '';
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateProgress(n);
+  saveProgress();
+}
+
+function updateProgress(screen) {
+  const pct = screen === 1 ? 5 : screen === 2 ? 50 : 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+// ═══════════════════════════════════════
+//  STRATEGY TOGGLE
+// ═══════════════════════════════════════
+// ═══════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════
+let modalCurrentId = null;
+
+function openModal(id) {
+  modalCurrentId = id;
+  const strat  = STRATEGIES[id];
+  const badge  = document.getElementById('modalBadge');
+  const title  = document.getElementById('modalTitle');
+  const hint   = document.getElementById('modalHint');
+  const body   = document.getElementById('modalBody');
+  const footer = document.getElementById('modalFooter');
+
+  title.textContent = strat.name;
+
+  if (!strat.isKey) {
+    // DISTRACTOR: feedback only
+    badge.textContent = 'No ocurre en esta llamada';
+    badge.className   = 'modal-badge incorrect';
+    hint.textContent  = '';
+    body.innerHTML = `<div class="modal-feedback-only">
+      <span class="mfo-icon">⚠️</span>
+      ${strat.feedbackFound.replace(/^⚠️\s*/, '')}
+    </div>`;
+    footer.innerHTML = `<button class="modal-btn-cancel" onclick="closeModal(false)">Entendido — quitar selección</button>`;
+  } else {
+    // CORRECT STRATEGY: show analysis form
+    badge.textContent = '✅ Estrategia identificada';
+    badge.className   = 'modal-badge correct';
+    hint.textContent  = 'Completa el análisis para registrar esta estrategia.';
+
+    const evVal  = (document.getElementById(id + '_evidence') || {}).value || '';
+    const jVal   = (document.getElementById(id + '_justif')   || {}).value || '';
+
+    body.innerHTML = `
+      <div class="analysis-field">
+        <label>Frase textual o conducta concreta observada <span class="req">*</span></label>
+        <textarea id="m_${id}_evidence" placeholder="Cita la frase o describe la conducta exacta del video..." oninput="updateCounter('m_${id}_evidence','m_${id}_ec')">${evVal}</textarea>
+        <div class="char-counter" id="m_${id}_ec">${evVal.length} / mín. 20 caracteres</div>
+        <div class="field-error" id="m_${id}_ev_err">⚠ Mínimo 50 caracteres.</div>
+      </div>
+      <div class="analysis-field">
+        <label>Justificación: ¿por qué corresponde a esta estrategia? <span class="req">*</span></label>
+        <textarea id="m_${id}_justif" placeholder="Explica por qué esta conducta es esta estrategia..." oninput="updateCounter('m_${id}_justif','m_${id}_jc')">${jVal}</textarea>
+        <div class="char-counter" id="m_${id}_jc">${jVal.length} / mín. 20 caracteres</div>
+        <div class="field-error" id="m_${id}_jv_err">⚠ Mínimo 90 caracteres.</div>
+      </div>`;
+
+    footer.innerHTML = `
+      <button class="modal-btn-cancel" onclick="closeModal(false)">Cancelar</button>
+      <button class="modal-btn-save"   onclick="saveModalAndClose('${id}')">Guardar →</button>`;
+  }
+
+  document.getElementById('stratModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+
+function saveModalAndClose(id) {
+  const evEl = document.getElementById(`m_${id}_evidence`);
+  const jEl  = document.getElementById(`m_${id}_justif`);
+  let valid  = true;
+
+  [{ el: evEl, errId: `m_${id}_ev_err` }, { el: jEl, errId: `m_${id}_jv_err` }].forEach(({el, errId}) => {
+    const err = document.getElementById(errId);
+    if (!el || el.value.trim().length < 20) {
+      if (el) el.classList.add('error');
+      if (err) err.classList.add('show');
+      valid = false;
+    } else {
+      if (el) el.classList.remove('error');
+      if (err) err.classList.remove('show');
+    }
+  });
+
+  if (!valid) return;
+
+  // Copy to hidden textareas for scoring/saving
+  const hEv = document.getElementById(id + '_evidence');
+  const hJ  = document.getElementById(id + '_justif');
+  if (hEv) hEv.value = evEl.value;
+  if (hJ)  hJ.value  = jEl.value;
+
+  updateLiveScore();
+  scheduleAutoSave();
+  closeModal(true);
+}
+
+function closeModal(saved) {
+  const id = modalCurrentId;
+  document.getElementById('stratModal').classList.remove('open');
+  document.body.style.overflow = '';
+
+  if (!saved && id) {
+    deselectStrategy(id);
+  }
+  modalCurrentId = null;
+}
+
+function modalOverlayClick(e) {
+  if (e.target === document.getElementById('stratModal')) closeModal(false);
+}
+
+function deselectStrategy(id) {
+  state.selected[id] = false;
+  delete state.classes[id];
+  const card = document.getElementById(id);
+  const btn  = document.getElementById('btn_' + id);
+  if (card) card.classList.remove('selected','correct','incorrect');
+  if (btn)  btn.classList.remove('active','is-correct','is-incorrect');
+  clearErrors(id);
+  updateLiveScore();
+  scheduleAutoSave();
+}
+
+// ═══════════════════════════════════════
+//  STRATEGY TOGGLE
+// ═══════════════════════════════════════
+function toggleStrategy(id) {
+  if (state.selected[id]) {
+    deselectStrategy(id);
+    return;
+  }
+
+  const strat = STRATEGIES[id];
+  state.selected[id] = true;
+
+  const card = document.getElementById(id);
+  const btn  = document.getElementById('btn_' + id);
+
+  if (strat.isKey) {
+    if (card) { card.classList.remove('incorrect'); card.classList.add('correct'); }
+    if (btn)  { btn.classList.remove('is-incorrect'); btn.classList.add('is-correct'); }
+  } else {
+    if (card) { card.classList.remove('correct'); card.classList.add('incorrect'); }
+    if (btn)  { btn.classList.remove('is-correct'); btn.classList.add('is-incorrect'); }
+  }
+
+  updateLiveScore();
+  scheduleAutoSave();
+  openModal(id);
+}
+
+function clearErrors(id) {
+  ['ev', 'jv', 'iv', 'cls'].forEach(t => {
+    const err = document.getElementById(id + '_' + t + '_err');
+    if (err) err.classList.remove('show');
+  });
+}
+
+// ═══════════════════════════════════════
+//  CHARACTER COUNTER
+// ═══════════════════════════════════════
+function updateCounter(textareaId, counterId) {
+  const ta = document.getElementById(textareaId);
+  const counter = document.getElementById(counterId);
+  if (!ta || !counter) return;
+  const len = ta.value.length;
+  // Determine min based on field id
+  const minC = 20;
+  counter.textContent = len + ' / mín. ' + minC + ' caracteres';
+  counter.className = 'char-counter' + (len >= minC ? ' ok' : len > minC/2 ? ' warn' : '');
+  updateLiveScore();
+  scheduleAutoSave();
+}
+
+// ═══════════════════════════════════════
+//  CLASSIFICATION
+// ═══════════════════════════════════════
+function setClass(stratId, cls) {
+  state.classes[stratId] = cls;
+  ['good','warn','bad'].forEach(c => {
+    const btn = document.getElementById(stratId + '_cls_' + c);
+    if (btn) btn.className = 'class-btn';
+  });
+  const active = document.getElementById(stratId + '_cls_' + cls);
+  if (active) active.className = 'class-btn active-' + cls;
+  const err = document.getElementById(stratId + '_cls_err');
+  if (err) err.classList.remove('show');
+  updateLiveScore();
+  scheduleAutoSave();
+}
+
+// ═══════════════════════════════════════
+//  LIVE SCORE CALCULATION
+// ═══════════════════════════════════════
+const ANALYTIC_KEYWORDS = [
+  'porque','ya que','esto permite','esto genera','esto facilita',
+  'genera','facilita','disminuye','aumenta','reduce','permite',
+  'efecto','impacto','consecuencia','resultado','por lo tanto',
+  'por ende','lo cual','lo que','de esta forma','de este modo',
+  'en consecuencia','propicia','favorece','inhibe','crea'
+];
+
+function analyzeQuality(texts) {
+  const combined = texts.join(' ').toLowerCase();
+  let hits = 0;
+  ANALYTIC_KEYWORDS.forEach(kw => { if (combined.includes(kw)) hits++; });
+  if (hits >= 5) return 10;
+  if (hits >= 2) return 5;
+  return 0;
+}
+
+function updateLiveScore() {
+  // ── IDENTIFICACIÓN ──
+  // Cada estrategia correcta vale 12.5 pts (8 correctas = 100 base)
+  // Correctas 9-12 suman bonus de 5 pts cada una (por encima de 100)
+  const correctSelected = Object.keys(STRATEGIES).filter(k => STRATEGIES[k].isKey && state.selected[k]);
+  const correctCount = correctSelected.length;
+
+  const basePts  = Math.min(correctCount, 8) * 12.5;   // 0–100
+  const bonusPts = Math.max(0, correctCount - 8) * 5;  // 5 por cada extra sobre 8
+
+  // ── ANÁLISIS ESCRITO ──
+  // Evidencia ≥ 20 chars → +2 pts | Justificación ≥ 20 chars → +2 pts
+  // Máx 4 pts por estrategia × 8 estrategias = 32 pts bonus
+  let pts_ev = 0;
+  const qualityTexts = [];
+  correctSelected.forEach(sid => {
+    const ev  = (document.getElementById(sid + '_evidence') || {}).value || '';
+    const jus = (document.getElementById(sid + '_justif')  || {}).value || '';
+    if (ev.trim().length  >= 20) pts_ev += 2;
+    if (jus.trim().length >= 20) pts_ev += 2;
+    qualityTexts.push(ev, jus);
+  });
+
+  // ── PENALIZACIÓN ──
+  // -5 pts por cada distractor seleccionado
+  const wrongCount = Object.keys(STRATEGIES).filter(k => !STRATEGIES[k].isKey && state.selected[k]).length;
+  const penalty = wrongCount * 5;
+
+  // ── TOTAL ──
+  const pts_id = Math.round(basePts);
+  const total  = Math.max(0, Math.round(basePts + bonusPts + pts_ev - penalty));
+
+  state.score     = total;
+  state.breakdown = { id: pts_id, bonus: bonusPts, ev: pts_ev, penalty: penalty };
+
+  document.getElementById('liveScore').textContent = total;
+}
+
+// ═══════════════════════════════════════
+//  VALIDATION & SUBMIT
+// ═══════════════════════════════════════
+function validateAnalysis() {
+  let valid = true;
+  const selectedKeys = Object.keys(STRATEGIES).filter(k => state.selected[k]);
+  if (selectedKeys.length === 0) return true;
+
+  selectedKeys.forEach(sid => {
+    if (!STRATEGIES[sid].isKey) return; // distractors need no form
+    const fields  = ['evidence', 'justif'];
+    const errIds  = ['ev', 'jv'];
+    const minLens = [20, 20];
+    fields.forEach((f, i) => {
+      const minLen = minLens[i];
+      const ta    = document.getElementById(sid + '_' + f);
+      const errEl = document.getElementById(sid + '_' + errIds[i] + '_err');
+      if (ta && ta.value.trim().length < minLen) {
+        ta.classList.add('error');
+        if (errEl) errEl.classList.add('show');
+        valid = false;
+      } else {
+        if (ta)    ta.classList.remove('error');
+        if (errEl) errEl.classList.remove('show');
+      }
+    });
+
+  });
+  return valid;
+}
+
+function submitAnalysis() {
+  const valid = validateAnalysis();
+  const msgEl = document.getElementById('globalValidationMsg');
+  if (!valid) {
+    msgEl.classList.add('show');
+    const firstErr = document.querySelector('.field-error.show');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  msgEl.classList.remove('show');
+  updateLiveScore();
+  saveProgress();
+  buildResultsScreen();
+  goToScreen(3);
+}
+
+// ═══════════════════════════════════════
+//  RESULTS SCREEN
+// ═══════════════════════════════════════
+
+// What the lawyer did in this call — concise descriptions for the results list
+const LAWYER_ACTIONS = {
+  s1:  'Explicó proactivamente que miraría el expediente en pantalla para que la cliente no malinterpretara su conducta.',
+  s2:  'Usó frases como "Lo siento" y "Lo entiendo totalmente" para reconocer las emociones antes de avanzar.',
+  s3:  'Permitió que la cliente narrara su historia completa — abuso, condiciones laborales, incidentes — sin interrumpirla.',
+  s4:  'Explicó las diferencias entre visas y los tipos de perdones disponibles, con referencias a casos similares.',
+  s5:  'Mencionó que consultaría con ex-fiscales de ICE de su firma con 20 años de experiencia en estos casos.',
+  s6:  'Contextualizó los miedos dentro del clima político: "Ahora no son jueces de inmigración, son jueces de deportación."',
+  s7:  'Después de validar el miedo, pivotó hacia lo concreto: transformó las amenazas del esposo en potencial evidencia legal.',
+  s8:  'Usó lenguaje emocional directo: "Me imagino que estás pasando por mucho", "Estás en todo tu derecho de sentir eso."',
+  s9:  'Fue honesta sobre los límites: "No soy Dios. No te puedo dar las fechas exactas", pero dio rangos realistas (3-8 meses).',
+  s10: 'Hizo preguntas directas de cualificación: "¿Fuiste víctima de un delito?", "¿Has sufrido violencia doméstica?"',
+  s11: 'Investigó sistemáticamente horas trabajadas, pagos, accidentes laborales y coerción económica para construir el cuadro legal.',
+  s12: 'Reconoció errores sin defenderse, propuso entrevistas de 2-3 horas y se comprometió a revisar el expediente personalmente.'
+};
+
+function buildResultsScreen() {
+  try {
+  const breakdown = state.breakdown || { id: 0, bonus: 0, ev: 0, penalty: 0 };
+  const { id, bonus, ev, penalty } = breakdown;
+  const total = state.score || 0;
+
+  document.getElementById('finalScoreDisplay').innerHTML = total + (total > 100 ? '<span style="font-size:13px;color:var(--gold)"> 🏆</span>' : '<span>/100</span>');
+  document.getElementById('pts_id').textContent  = id;
+  document.getElementById('pts_ev').textContent  = ev > 0 ? '+' + ev : ev;
+  document.getElementById('pts_ql').textContent  = bonus > 0 ? '+' + bonus : (penalty > 0 ? '-' + penalty : '0');
+
+  const circle = document.getElementById('scoreCircle');
+  circle.style.background = `conic-gradient(var(--gold) ${total * 3.6}deg, rgba(255,255,255,0.08) ${total * 3.6}deg)`;
+
+  const comment = document.getElementById('scoreComment');
+  const keyHits = Object.keys(STRATEGIES).filter(k => STRATEGIES[k].isKey && state.selected[k]).length;
+  if (keyHits >= 10)       comment.textContent = '¡Excelente! Identificaste ' + keyHits + ' de 12 estrategias. Análisis muy completo.';
+  else if (keyHits >= 8)   comment.textContent = 'Buen trabajo. Identificaste ' + keyHits + ' de 12 estrategias — cumples el objetivo mínimo de 8.';
+  else if (keyHits >= 5)   comment.textContent = 'Identificaste ' + keyHits + ' de 12 estrategias. Necesitas al menos 8 para aprobar. Revisa las no detectadas.';
+  else                     comment.textContent = 'Identificaste solo ' + keyHits + ' de 12 estrategias. Vuelve a ver el video con las estrategias en mente.';
+
+  // ── FULL STRATEGY LIST: what the lawyer did ──
+  const listEl = document.getElementById('feedbackList');
+  listEl.innerHTML = '';
+
+  // Count hits
+  const keyIds = Object.keys(STRATEGIES).filter(k => STRATEGIES[k].isKey);
+  const hits   = keyIds.filter(k => state.selected[k]).length;
+
+  // Header summary
+  listEl.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:14px 16px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);">
+      <div style="font-size:32px;font-family:'Playfair Display',serif;color:var(--gold);font-weight:700;">${hits}<span style="font-size:16px;color:var(--text-muted)">/12</span></div>
+      <div>
+        <div style="font-size:15px;font-weight:600;color:var(--cream);">Estrategias identificadas correctamente</div>
+        <div style="font-size:14px;color:var(--text-muted);">Necesitas 8 de 12 para aprobar. A continuación, todo lo que hizo la abogada.</div>
+      </div>
+    </div>`;
+
+  // One row per key strategy
+  keyIds.forEach(sid => {
+    const strat      = STRATEGIES[sid];
+    const wasCorrect = !!state.selected[sid];
+    const rowClass   = wasCorrect ? 'rs-hit' : 'rs-miss';
+    const badge      = wasCorrect ? '✅' : '◻️';
+    const label      = wasCorrect ? 'Identificaste esta estrategia' : 'No la identificaste';
+
+    const row = document.createElement('div');
+    row.className = `rs-row ${rowClass}`;
+    row.innerHTML = `
+      <div class="rs-badge">${badge}</div>
+      <div class="rs-content">
+        <div class="rs-label">${label}</div>
+        <div class="rs-name">${strat.name}</div>
+        <div class="rs-desc">${LAWYER_ACTIONS[sid]}</div>
+        ${wasCorrect ? '' : `<div style="margin-top:6px;font-size:13px;color:#f0c070;font-style:italic;">${strat.feedbackMissed}</div>`}
+      </div>`;
+    listEl.appendChild(row);
+  });
+
+  // Distractors selected (incorrect choices)
+  const wrongPicks = Object.keys(STRATEGIES).filter(k => !STRATEGIES[k].isKey && state.selected[k]);
+  if (wrongPicks.length > 0) {
+    const divider = document.createElement('div');
+    divider.innerHTML = `<div style="font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--danger);margin:20px 0 10px;font-weight:600;">⚠ Selecciones incorrectas</div>`;
+    listEl.appendChild(divider);
+
+    wrongPicks.forEach(sid => {
+      const strat = STRATEGIES[sid];
+      const row   = document.createElement('div');
+      row.className = 'rs-row rs-wrong';
+      row.innerHTML = `
+        <div class="rs-badge">❌</div>
+        <div class="rs-content">
+          <div class="rs-label">No ocurre en esta llamada</div>
+          <div class="rs-name">${strat.name}</div>
+          <div class="rs-desc">${strat.feedbackFound.replace(/^⚠️\s*/, '')}</div>
+        </div>`;
+      listEl.appendChild(row);
+    });
+  }
+  } catch(e) { console.error('buildResultsScreen error:', e); }
+}
+
+// ═══════════════════════════════════════
+//  FINISH MODULE
+// ═══════════════════════════════════════
+function finishModule() {
+  const r1    = document.getElementById('ref1').value.trim();
+  const r2    = document.getElementById('ref2').value.trim();
+  const msgEl = document.getElementById('reflectionValidationMsg');
+
+  if (r1.length < 30 || r2.length < 30) {
+    msgEl.classList.add('show');
+    return;
+  }
+  msgEl.classList.remove('show');
+
+  document.getElementById('completionBanner').style.display = 'block';
+
+  // Final save with completion status
+  saveProgress();
+
+  // Report to SCORM LMS
+  try {
+    if (SCORM.api) {
+      if (SCORM.version === '1.2') {
+        SCORM.set('cmi.core.score.raw',    String(state.score));
+        SCORM.set('cmi.core.score.min',    '0');
+        SCORM.set('cmi.core.score.max',    '100');
+        SCORM.set('cmi.core.lesson_status', state.score >= 60 ? 'passed' : 'failed');
+      } else {
+        SCORM.set('cmi.score.raw',        String(state.score));
+        SCORM.set('cmi.score.min',        '0');
+        SCORM.set('cmi.score.max',        '100');
+        SCORM.set('cmi.score.scaled',     String(state.score / 100));
+        SCORM.set('cmi.success_status',   state.score >= 60 ? 'passed' : 'failed');
+        SCORM.set('cmi.completion_status','completed');
+      }
+      SCORM.finish();
+    }
+  } catch(e) {}
+
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('liveScore').textContent = state.score;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+window.addEventListener('beforeunload', saveProgress);
+setInterval(saveProgress, 30000); // auto-save every 30s
+
+SCORM.init();
+goToScreen(1);
+restoreProgress();
+</script>
+</body>
+</html>
