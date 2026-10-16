@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador Entrevista VAWA — TMLF PWI</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--nv:#0F1B2D;--nm:#1B2D45;--nl:#243750;--gd:#C9A84C;--gl:#E8C97A;--ic:#EEF4FB;--im:#D4E3F5;--rd:#C0392B;--rl:#FADBD8;--gr:#1E6641;--gl2:#D5F0E3;--am:#8B5E00;--al:#FEF3D0;--tx:#0F1B2D;--tm:#3A4D62;--ts:#6B7E94;--bd:#C8D8E8;--bg:#F5F8FC;--w:#fff;--mo:'IBM Plex Mono',monospace;--sa:'IBM Plex Sans',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:var(--sa);background:var(--bg);color:var(--tx);height:100%;line-height:1.6;font-size:14px}
+.app{display:flex;flex-direction:column;height:100%;min-height:640px}
+.hdr{background:var(--nv);padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;height:50px;border-bottom:2.5px solid var(--gd);flex-shrink:0}
+.logo{font-family:var(--mo);font-size:11px;color:var(--gd);letter-spacing:.1em}
+.hdr-r{display:flex;align-items:center;gap:12px}
+.dots{display:flex;gap:5px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.13);transition:background .3s}
+.dot.done{background:var(--gd)}.dot.act{background:var(--gl);box-shadow:0 0 0 2px rgba(201,168,76,.22)}
+.hs{font-family:var(--mo);font-size:11px;color:rgba(255,255,255,.35)}
+.body{display:flex;flex:1;overflow:hidden}
+.side{width:230px;flex-shrink:0;background:var(--w);border-right:1px solid var(--bd);overflow-y:auto;padding:.85rem 0}
+.sl{font-family:var(--mo);font-size:9px;color:var(--ts);letter-spacing:.1em;text-transform:uppercase;padding:0 1rem .4rem;display:block;border-bottom:1px solid var(--bd);margin-bottom:.65rem}
+.cb{display:block;width:calc(100% - 1.2rem);margin:0 .6rem 5px;text-align:left;background:none;border:1px solid var(--bd);border-radius:6px;padding:9px 11px;cursor:pointer;transition:all .2s;position:relative}
+.cb:hover{border-color:var(--gd);background:#FBF8F0}
+.cb.act{border-color:var(--gd);background:#FBF8F0;border-left:3px solid var(--gd)}
+.cb.dn{border-color:var(--gr);background:var(--gl2)}
+.cnu{font-family:var(--mo);font-size:9px;color:var(--ts)}
+.cnm{font-size:12px;font-weight:500;color:var(--tx);margin:2px 0}
+.ctg{font-size:9px;font-family:var(--mo);padding:1px 5px;border-radius:2px;background:var(--im);color:var(--tm);display:inline-block;margin-top:2px}
+.cbg{position:absolute;top:8px;right:8px;font-family:var(--mo);font-size:10px;color:var(--gr);font-weight:500}
+.sbox{margin:.65rem;background:var(--nv);border-radius:6px;padding:10px 12px}
+.sr{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.sr:last-child{margin:0}
+.slb{font-size:11px;color:rgba(255,255,255,.38)}
+.sv{font-family:var(--mo);font-size:12px;color:var(--gd);font-weight:500}
+/* concept badges */
+.badge-row{padding:0 .75rem .5rem;display:flex;flex-direction:column;gap:4px}
+.badge{font-size:9px;font-family:var(--mo);padding:3px 7px;border-radius:3px;letter-spacing:.04em}
+.b-red{background:var(--rl);color:var(--rd)}
+.b-ora{background:var(--al);color:var(--am)}
+.b-gr{background:var(--gl2);color:var(--gr)}
+.b-blu{background:var(--im);color:#1a4f8a}
+.cnt{flex:1;overflow-y:auto;padding:1.5rem}
+.sc{display:none;animation:fi .3s ease}.sc.vs{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* Welcome */
+.hero{background:var(--nv);border-radius:10px;padding:2.25rem 2.5rem;margin-bottom:1.25rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;border:35px solid rgba(201,168,76,.07)}
+.eyeb{font-family:var(--mo);font-size:10px;color:var(--gd);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem}
+.h1{font-size:28px;font-weight:300;color:var(--w);line-height:1.2;margin-bottom:.6rem}
+.h1 strong{font-weight:600;color:var(--gl)}
+.sub{font-size:13px;color:rgba(255,255,255,.5);max-width:500px;line-height:1.65}
+.wg{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:1.25rem 0}
+.wc{background:var(--w);border:1px solid var(--bd);border-radius:8px;padding:1rem}
+.wi{font-size:18px;margin-bottom:.35rem}
+.wt{font-size:12px;font-weight:600;margin-bottom:.25rem}
+.wd{font-size:11px;color:var(--ts);line-height:1.5}
+.btn-go{background:var(--gd);color:var(--nv);border:none;border-radius:7px;padding:12px 28px;font-family:var(--sa);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-go:hover{background:var(--gl);transform:translateY(-1px)}
+/* Case */
+.cbar{background:var(--w);border:1px solid var(--bd);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem}
+.cbl{flex:1}
+.ce{font-family:var(--mo);font-size:9px;color:var(--ts);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
+.cn2{font-size:16px;font-weight:600;color:var(--tx);margin-bottom:2px}
+.cs{font-size:11px;color:var(--tm)}
+.dif{font-family:var(--mo);font-size:9px;padding:3px 9px;border-radius:3px;flex-shrink:0}
+.db{background:var(--gl2);color:var(--gr)}.dm{background:var(--al);color:var(--am)}.dh{background:var(--rl);color:var(--rd)}
+.pips{display:flex;gap:4px;margin-bottom:1rem}
+.pip{height:3px;flex:1;border-radius:2px;background:var(--bd)}.pip.dn{background:var(--gr)}.pip.ac{background:var(--gd)}
+/* Expediente */
+.exp{background:var(--w);border:1px solid var(--bd);border-radius:7px;margin-bottom:1rem;overflow:hidden}
+.exh{background:var(--nv);padding:8px 13px;display:flex;align-items:center;justify-content:space-between}
+.exhl{font-family:var(--mo);font-size:9px;color:var(--gd);letter-spacing:.1em;text-transform:uppercase}
+.ext{font-size:10px;color:rgba(255,255,255,.35);cursor:pointer;background:none;border:none;font-family:var(--mo)}
+.exb{padding:.85rem 1.25rem}
+.exg{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.ef label{font-size:9px;font-weight:500;color:var(--ts);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:1px}
+.ef p{font-size:11px;color:var(--tx);line-height:1.4}
+.edv{border:none;border-top:1px solid var(--bd);margin:.65rem 0}
+.iss-row{display:flex;flex-wrap:wrap;gap:4px}
+.it{font-size:9px;padding:2px 6px;border-radius:2px;font-family:var(--mo)}
+.i-r{background:var(--rl);color:var(--rd)}.i-o{background:var(--al);color:var(--am)}.i-g{background:var(--gl2);color:var(--gr)}.i-b{background:var(--im);color:#1a4f8a}
+/* Pre-Draft BOT */
+.bot{background:var(--nv);border-radius:7px;margin-bottom:1rem;overflow:hidden}
+.bot-h{padding:8px 13px;display:flex;align-items:center;gap:7px;border-bottom:1px solid rgba(255,255,255,.08)}
+.bot-icon{font-size:13px}
+.bot-hl{font-family:var(--mo);font-size:9px;color:var(--gd);letter-spacing:.1em;text-transform:uppercase}
+.bot-body{padding:.85rem 1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+.bot-col label{font-size:9px;font-weight:500;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:.4rem}
+.bot-item{font-size:11px;color:rgba(255,255,255,.75);line-height:1.5;margin-bottom:.3rem;padding-left:.75rem;position:relative}
+.bot-item::before{content:'•';position:absolute;left:0;color:var(--gd)}
+.bot-item.ok::before{color:var(--gr)}
+.bot-item.warn::before{color:var(--rd)}
+/* Chat */
+.chat{background:var(--w);border:1px solid var(--bd);border-radius:7px;margin-bottom:1rem;overflow:hidden}
+.chh{background:var(--nm);padding:9px 13px;display:flex;align-items:center;gap:9px}
+.av{width:28px;height:28px;border-radius:50%;background:var(--gd);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--nv);flex-shrink:0}
+.chn{font-size:12px;font-weight:500;color:var(--w)}.chi{font-size:10px;color:rgba(255,255,255,.35)}
+.msgs{padding:.85rem;max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:.7rem}
+.msg{display:flex;gap:8px}
+.mav{width:23px;height:23px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0;margin-top:2px}
+.mc .mav{background:var(--gd);color:var(--nv)}.ma .mav{background:var(--nv);color:var(--w)}.ms .mav{background:var(--nm);color:rgba(255,255,255,.6)}
+.bbl{max-width:440px;padding:7px 12px;border-radius:8px;font-size:12px;line-height:1.65}
+.mc .bbl{background:var(--ic);border:1px solid var(--bd)}
+.ma .bbl{background:var(--nl);color:rgba(255,255,255,.88)}
+.ms .bbl{background:var(--nm);color:rgba(255,255,255,.6);font-style:italic;font-size:11px}
+.mdr{font-size:9px;font-weight:500;color:var(--ts);margin-bottom:1px}
+.ma .mdr{color:rgba(255,255,255,.35)}.ms .mdr{color:rgba(255,255,255,.3)}
+.manswered{display:flex;justify-content:flex-end}
+.abg{font-size:10px;font-family:var(--mo);padding:2px 8px;border-radius:3px}
+/* Decision */
+.ds{background:var(--w);border:1px solid var(--bd);border-radius:7px;padding:1.25rem;margin-bottom:1rem}
+.dqt{font-family:var(--mo);font-size:9px;color:var(--ts);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+/* skill tag */
+.skill-tag{display:inline-block;font-family:var(--mo);font-size:9px;padding:2px 6px;border-radius:3px;margin-bottom:8px}
+.sk-abus{background:var(--rl);color:var(--rd)}
+.sk-oros{background:var(--al);color:var(--am)}
+.sk-prac{background:var(--im);color:#1a4f8a}
+.sk-evid{background:var(--gl2);color:var(--gr)}
+.sk-bot{background:#e8d5f5;color:#5a1a8a}
+.dq2{font-size:13px;font-weight:500;color:var(--tx);line-height:1.55;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid var(--bd)}
+.og{display:flex;flex-direction:column;gap:8px}
+.ob{width:100%;text-align:left;background:var(--bg);border:1.5px solid var(--bd);border-radius:7px;padding:10px 14px;cursor:pointer;font-family:var(--sa);font-size:12px;color:var(--tx);line-height:1.55;display:flex;gap:10px;align-items:flex-start;transition:all .2s}
+.ob:hover:not(:disabled){border-color:var(--nv);background:var(--w)}.ob:disabled{cursor:default}
+.ob.correct{border-color:var(--gr)!important;background:var(--gl2)!important;color:var(--gr)!important}
+.ob.wrong{border-color:var(--rd)!important;background:var(--rl)!important;color:var(--rd)!important}
+.ob.neutral{border-color:var(--bd);opacity:.4}
+.ol{font-family:var(--mo);font-size:10px;font-weight:500;width:17px;flex-shrink:0;margin-top:1px}
+/* Feedback */
+.fp{border-radius:7px;padding:1.1rem 1.25rem;margin-bottom:1rem;display:none;animation:fi .4s ease}
+.fp.vs{display:block}
+.fp.correct{background:var(--gl2);border:1.5px solid var(--gr)}.fp.wrong{background:var(--rl);border:1.5px solid var(--rd)}
+.fh{display:flex;align-items:center;gap:8px;margin-bottom:.55rem}
+.fi2{font-size:16px}.ft2{font-size:13px;font-weight:600}
+.fp.correct .ft2{color:var(--gr)}.fp.wrong .ft2{color:var(--rd)}
+.ftx{font-size:12px;line-height:1.7;color:var(--tx);margin-bottom:.55rem}
+.ftip{padding:.6rem .85rem;background:rgba(0,0,0,.04);border-radius:5px;font-size:11px;color:var(--tm);line-height:1.55}
+.ftip strong{color:var(--tx);font-weight:600}
+/* Nav */
+.nav{display:flex;gap:10px;margin-bottom:2rem}
+.bnn{background:var(--nv);color:var(--w);border:none;border-radius:7px;padding:11px 22px;font-family:var(--sa);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.bnn:hover:not(:disabled){background:var(--nm)}.bnn:disabled{opacity:.35;cursor:default}
+.b2{background:transparent;color:var(--tx);border:1px solid var(--bd);border-radius:7px;padding:11px 22px;font-family:var(--sa);font-size:13px;cursor:pointer}
+.b2:hover{border-color:var(--nv)}
+/* Results */
+.rh{background:var(--nv);border-radius:10px;padding:2.5rem;margin-bottom:1.25rem;text-align:center}
+.rsco{font-family:var(--mo);font-size:58px;font-weight:500;color:var(--gd);line-height:1;margin-bottom:.4rem}
+.rlb{font-size:13px;color:rgba(255,255,255,.4)}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem}
+.rcard{background:var(--w);border:1px solid var(--bd);border-radius:8px;padding:1rem;text-align:center}
+.rv2{font-family:var(--mo);font-size:24px;font-weight:500;color:var(--tx);margin-bottom:2px}
+.rl2{font-size:10px;color:var(--ts)}
+.ri{background:var(--w);border:1px solid var(--bd);border-radius:6px;padding:.85rem 1rem;display:flex;gap:10px;align-items:flex-start;margin-bottom:.55rem}
+.riq{font-size:12px;font-weight:500;color:var(--tx);margin-bottom:2px}
+.rid{font-size:11px;color:var(--ts);line-height:1.5}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hdr">
+  <div class="logo">TMLF · Simulador Entrevista VAWA · PWI</div>
+  <div class="hdr-r">
+    <span class="hs" id="hs"></span>
+    <div class="dots"><div class="dot" id="d0"></div><div class="dot" id="d1"></div><div class="dot" id="d2"></div></div>
+  </div>
+</header>
+<div class="body">
+<aside class="side">
+  <span class="sl">Casos</span>
+  <button class="cb" id="sb0" onclick="lc(0)">
+    <div class="cnu">Caso 01 · Básico</div>
+    <div class="cnm">Mariana Vega</div>
+    <span class="ctg">SPOUSE·Abusómetro·7 Oros</span>
+  </button>
+  <button class="cb" id="sb1" onclick="lc(1)">
+    <div class="cnu">Caso 02 · Intermedio</div>
+    <div class="cnm">Pedro Salinas</div>
+    <span class="ctg">SPOUSE·Evidencias·Pre-Draft</span>
+  </button>
+  <button class="cb" id="sb2" onclick="lc(2)">
+    <div class="cnu">Caso 03 · Complejo</div>
+    <div class="cnm">Carmen Ríos</div>
+    <span class="ctg">PARENT·Prácticas·Estrategia</span>
+  </button>
+  <div style="padding:.5rem .75rem .25rem">
+    <div class="badge-row">
+      <span style="font-size:9px;color:var(--ts);font-family:var(--mo);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px">Habilidades evaluadas</span>
+      <span class="badge b-red">Abusómetro</span>
+      <span class="badge b-ora">7 Oros</span>
+      <span class="badge b-blu">Preguntas Abiertas</span>
+      <span class="badge b-gr">Evidencias</span>
+    </div>
+  </div>
+  <div class="sbox">
+    <div class="sr"><span class="slb">Completados</span><span class="sv" id="sc">0/3</span></div>
+    <div class="sr"><span class="slb">Correctas</span><span class="sv" id="sq">0/15</span></div>
+    <div class="sr"><span class="slb">Precisión</span><span class="sv" id="sp">—</span></div>
+  </div>
+</aside>
+
+<main class="cnt">
+
+<!-- WELCOME -->
+<div class="sc vs" id="sw">
+  <div class="hero">
+    <div class="eyeb">TMLF Learning Center · Equipo PWI · Training Entrevista VAWA</div>
+    <h1 class="h1">Simulador de<br><strong>Entrevista VAWA</strong></h1>
+    <p class="sub">Tres casos reales de intake. Leerás la transcripción de la conversación con el cliente y tomarás 5 decisiones de entrevista por caso: clasificación de abusos, formulación de preguntas, aplicación de los 7 Oros, gestión de evidencias y estrategia con el Pre-Draft.</p>
+  </div>
+  <div class="wg">
+    <div class="wc"><div class="wi">🎙️</div><div class="wt">Conversación real</div><div class="wd">Fragmentos de intake simulados con la naturalidad y complejidad de los casos reales del equipo PWI.</div></div>
+    <div class="wc"><div class="wi">⚖️</div><div class="wt">5 decisiones por caso</div><div class="wd">Abusómetro, 7 Oros, preguntas abiertas, solicitud de evidencias y uso del Pre-Draft BOT.</div></div>
+    <div class="wc"><div class="wi">💬</div><div class="wt">Feedback técnico</div><div class="wd">Cada decisión incluye la herramienta aplicada, el principio del training y la razón del error o acierto.</div></div>
+  </div>
+  <button class="btn-go" onclick="lc(0)">Comenzar — Caso 01 →</button>
+</div>
+
+<!-- CASE -->
+<div class="sc" id="sc2"><div id="cc"></div></div>
+
+<!-- RESULTS -->
+<div class="sc" id="sr">
+  <div class="rh"><div class="rsco" id="rsc">—</div><div class="rlb">Puntuación final · 15 decisiones de entrevista</div></div>
+  <div class="rgrid">
+    <div class="rcard"><div class="rv2" id="rco">0</div><div class="rl2">Correctas</div></div>
+    <div class="rcard"><div class="rv2" id="rto">0</div><div class="rl2">Total</div></div>
+    <div class="rcard"><div class="rv2" id="rca">0/3</div><div class="rl2">Casos</div></div>
+  </div>
+  <div id="rv"></div>
+  <div style="margin-top:1rem"><button class="btn-go" onclick="resetAll()">Reiniciar →</button></div>
+</div>
+
+</main>
+</div>
+</div>
+<script>
+const C=[
+/* ════════════════════════════════════════════════
+   CASO 1 — MARIANA VEGA
+   VAWA SPOUSE · Abusómetro · 7 Oros · Evidencias · Preguntas abiertas
+════════════════════════════════════════════════ */
+{id:0,name:"Mariana Vega",sub:"VAWA SPOUSE · Clasificación Abusómetro · 7 Oros · Preguntas abiertas",dif:"db",difl:"Básico",ini:"MV",
+exp:{n:"Mariana Vega, 36 años",or:"México",tipo:"VAWA SPOUSE",abusador:"Ricardo Vega, USC por nacimiento",rel:"Casados 2016. Separados hace 4 meses.",hijos:"Diego, 9 años",previo:"Intake realizado. Pre-Draft generado por BOT."},
+bot:{cubiertos:["Datos de background completos","Evento 1: golpe con correa en 2022 (mencionado)","Control económico (mencionado sin desarrollar)"],faltantes:["Detalle del evento de correa — sin 7 Oros","Eventos adicionales de violencia física","Evidencias médicas o de policía no confirmadas","Amenazas verbales no exploradas"]},
+is:[{t:"Violencia física confirmada",c:"i-r"},{t:"Control económico — faltante",c:"i-o"},{t:"Diego presente en eventos",c:"i-o"},{t:"Sin evidencias confirmadas",c:"i-b"}],
+msgs:[
+{r:"c",t:"Hola, buenas tardes. Sí, la puedo escuchar. Pues... es que es difícil hablar de todo esto pero ya sé que tengo que hacerlo para el caso."},
+{r:"a",t:"Mariana, gracias por estar aquí. Todo lo que hablemos hoy queda entre nosotros. Antes de empezar, ¿revisó los documentos que le pedimos traer hoy?"},
+{r:"c",t:"Sí traje algunas fotos que le tomé a mis brazos después de una vez que me pegó con la correa. Y tengo los estados de cuenta que muestran que él me quitaba todo el dinero. Ricardo me dejaba con 20 dólares para la semana para todo."},
+{r:"a",t:"Eso es muy importante, Mariana. Vamos a hablar de todo eso con detalle. Cuénteme sobre las veces que él la golpeó."},
+{r:"c",t:"Pues la vez de la correa fue la peor, creo. Pero también me empujaba seguido, me jalaba del pelo. Y una vez me agarró del cuello... no muy fuerte pero me agarró. En otra ocasión agarró un plato y lo azotó en la pared, justo al lado de mi cabeza. Y siempre le gritaba a Diego cuando se portaba mal, lo asustaba mucho."}
+],
+steps:[
+{cm:{r:"s",t:"[DECISIÓN 1 — Abusómetro y priorización de eventos]"},
+sk:"sk-abus",skl:"Abusómetro",
+q:"Mariana menciona cinco situaciones: (a) golpes con correa, (b) empujones frecuentes, (c) jalones de pelo, (d) la agarró del cuello, (e) aventó un plato cerca de su cabeza. ¿Cómo los clasificas en el Abusómetro y cuál priorizas para desarrollar primero?",
+opts:[
+"(a) Rojo, (b) Naranja, (c) Naranja, (d) Rojo — estrangulamiento, (e) Naranja. Priorizas (d) primero porque el estrangulamiento es el abuso más contundente y potencialmente más grave como rojo, aunque la correa y el plato también son rojos que se desarrollarán inmediatamente después.",
+"(a) Rojo, (b) Naranja, (c) Amarillo, (d) Rojo — estrangulamiento, (e) Amarillo. Priorizas (a) primero porque la correa ya tiene evidencia fotográfica y es el punto más fácil de demostrar ante USCIS, lo cual hace que sea estratégicamente el mejor punto de partida.",
+"Todos los eventos son equivalentes y deben desarrollarse en orden cronológico — de lo más antiguo a lo más reciente — para que el relato tenga coherencia narrativa y sea más fácil de redactar en la DCL.",
+"(a) Naranja, (b) Verde, (c) Amarillo, (d) Naranja, (e) Amarillo. Los empujones y jalones no son suficientemente graves para VAWA; solo la correa y el cuello merecen desarrollo porque tienen un nivel de contundencia claro para migración."
+],cor:0,
+sk2:"Abusómetro + Priorización",
+fc:"Correcto. El estrangulamiento — aunque Mariana lo minimice diciendo 'no muy fuerte' — es siempre ROJO y debe priorizarse primero: es potencialmente el abuso más grave desde la perspectiva médico-legal. Los golpes con correa también son ROJO (violencia física con objeto). El plato es NARANJA (intimidación violenta con objeto). Empujones y jalones son NARANJA. El criterio de priorización es siempre contundencia primero, no evidencia disponible ni cronología.",
+fw:"Incorrecto. El criterio correcto de priorización es contundencia según el Abusómetro, no disponibilidad de evidencia ni cronología. El estrangulamiento — aunque Mariana lo minimice — es siempre ROJO y es el abuso más grave. Priorizarlo sobre la correa es la decisión técnicamente correcta, independientemente de qué tenga más evidencia disponible en ese momento.",
+tip:"Herramienta: Abusómetro. Principio: de lo más contundente a lo menos. El estrangulamiento ('me agarró del cuello') es ROJO sin importar la intensidad que refiera la víctima — las víctimas frecuentemente minimizan. La evidencia disponible es un factor secundario, no el criterio de priorización."},
+
+{cm:{r:"s",t:"[DECISIÓN 2 — Fase de INICIO con los 7 Oros]"},
+sk:"sk-oros",skl:"7 Oros — Inicio",
+q:"Vas a desarrollar el evento del estrangulamiento ('me agarró del cuello'). Mariana lo mencionó de pasada. ¿Cuál es la secuencia correcta para la fase de INICIO de los 7 Oros?",
+opts:[
+"'Mariana, cuénteme exactamente lo que pasó ese día: ¿qué le hizo él con las manos, dónde la agarró, cuánta presión sintió, pudo respirar?' — así obtienes los detalles físicos más contundentes del evento desde el principio y construyes la narrativa con precisión.",
+"'Mariana, cuénteme sobre esa vez que él la agarró del cuello. ¿Qué sintió usted en ese momento? ¿Pensó que podía hacerle más daño?' — así empiezas por el impacto emocional, que es lo que más recordará para la DCL.",
+"'Mariana, necesito que me cuente más sobre esa vez que la agarró del cuello. ¿Cuándo fue eso aproximadamente? ¿Dónde estaban cuando pasó? ¿Qué estaba ocurriendo antes de que él hiciera eso?' — estableces el contexto temporal, espacial y el antecedente del evento.",
+"'Mariana, ¿hubo algún testigo cuando la agarró del cuello? ¿Diego estaba en la casa? ¿Llamó a alguien después?' — es importante identificar de inmediato quién puede corroborar el evento."
+],cor:2,
+sk2:"7 Oros — Fase Inicio",
+fc:"Correcto. La fase de INICIO establece el contexto del evento antes de profundizar: ¿cuándo? (temporalidad), ¿dónde? (contexto espacial), y ¿qué pasaba antes? (antecedente). Solo después de establecer ese contexto se profundiza en el desarrollo del evento. Las preguntas de la opción correcta son abiertas, no sugieren ni dirigen la respuesta.",
+fw:"Incorrecto. La fase de INICIO de los 7 Oros establece el contexto temporal, espacial y el antecedente del evento — no el impacto emocional (eso es CIERRE), ni los detalles físicos del acto (eso es DESARROLLO), ni los testigos (eso también es DESARROLLO). Mezclar fases desde el inicio rompe la estructura y puede generar una narrativa incompleta o desordenada.",
+tip:"Herramienta: 7 Oros — INICIO. Las tres preguntas clave: ¿Cuándo? ¿Dónde? ¿Qué pasaba antes? Solo cuando el contexto está establecido se avanza al DESARROLLO del evento."},
+
+{cm:{r:"c",t:"Sí, esa vez de la correa fue en el 2022, en la cocina. Yo estaba lavando los trastes y él llegó tomado. Empezó a gritarme que la casa estaba sucia y que yo no servía para nada. Y de repente agarró la correa de cuero del perro y me empezó a pegar en los brazos y en la espalda."},
+sk:"sk-evid",skl:"Evidencias",
+cm2:{r:"s",t:"[DECISIÓN 3 — Solicitud de evidencias durante el evento]"},
+q:"Mariana ya mencionó al inicio que tiene fotos de sus brazos después de la golpiza con la correa. En este momento de la narración, ¿cuál es la intervención correcta respecto a las evidencias?",
+opts:[
+"Dejas que Mariana termine de relatar completamente el evento y al cierre le preguntas formalmente por todas las evidencias disponibles — fotos, reportes, testigos — en un bloque de preguntas al final de la entrevista, para no interrumpir el flujo narrativo en este momento.",
+"Continúas desarrollando el evento con los 7 Oros y en la siguiente sesión le pides a Mariana que envíe las fotos por correo; es mejor obtener primero toda la narrativa y gestionar las evidencias en llamadas de seguimiento para no perder concentración.",
+"Aprovechas el momento en que ella nombra el evento que ya tiene documentado: 'Mariana, usted me mencionó que tiene fotos de sus brazos de esa vez. ¿Las tiene disponibles hoy? ¿En qué fecha las tomó? ¿Las tomó ella misma o alguien más?' — y confirmas la evidencia en el contexto del evento.",
+"Interrumpes el relato de inmediato y dedicas varios minutos a revisar las fotos en ese momento, porque la evidencia es prioritaria y debe examinarse antes de continuar con la narrativa para garantizar su autenticidad."
+],cor:2,
+sk2:"Evidencias — Momento estratégico",
+fc:"Correcto. La solicitud de evidencias se hace DURANTE el evento, en el momento en que el cliente la menciona o en que el evento lo hace evidente. Mariana ya señaló al inicio que tiene fotos. Este es el momento de confirmar los detalles de esa evidencia: cuándo se tomaron, cómo están guardadas, quién las tomó. Así la solicitud tiene contexto y significado para la narrativa.",
+fw:"Incorrecto. La máxima prioridad en evidencias dicta que la solicitud no se deja para el final ni para llamadas de seguimiento. Cuando el cliente menciona una evidencia o cuando el evento la sugiere claramente, la solicitud se hace en ese momento: tiene más impacto narrativo y el cliente recuerda el contexto con mayor nitidez. Dejarla para después genera el riesgo de que no se recupere.",
+tip:"Herramienta: Prioridad de Evidencias. Momentos estratégicos: DURANTE el evento, cuando el cliente la menciona o el hecho la sugiere. La solicitud tiene contexto, es natural y el cliente está mentalmente en el evento."},
+
+{cm:{r:"c",t:"Las fotos están en mi teléfono, las tomé yo misma al día siguiente. Se ven moretones en los dos brazos. También fui al médico esa semana pero no le dije lo que pasó, le dije que me había caído."},
+sk:"sk-prac",skl:"Preguntas Abiertas",
+cm2:{r:"s",t:"[DECISIÓN 4 — Pregunta abierta vs. cerrada]"},
+q:"Mariana acaba de decir 'fui al médico esa semana pero no le dije lo que pasó'. Quieres explorar esa visita médica para potencial evidencia. ¿Cuál es la intervención más adecuada?",
+opts:[
+"'¿El médico le tomó fotos de los moretones o levantó algún reporte de la visita?' — preguntas directamente por los tipos de evidencia que más te interesan para el caso, así obtienes rápidamente la información específica que necesitas sin rodeos.",
+"'¿El médico no le preguntó nada raro cuando vio los moretones? ¿No sospechó algo?' — exploras si hubo alguna interacción que pueda servir como evidencia indirecta del abuso sin necesidad de preguntarlo directamente.",
+"'Cuénteme sobre esa visita al médico. ¿Cómo fue? ¿Qué le revisaron?' — invitas a Mariana a narrar la experiencia médica en sus propias palabras, lo que puede revelar detalles sobre la visita, los registros generados y el estado físico documentado.",
+"'¿Por qué no le dijo la verdad al médico? ¿Tenía miedo de que Ricardo se enterara?' — exploras la razón del ocultamiento, que es importante para entender el patrón de control y miedo que ejercía el abusador sobre la víctima."
+],cor:2,
+sk2:"Preguntas Abiertas",
+fc:"Correcto. La pregunta abierta 'Cuénteme sobre esa visita al médico' invita a Mariana a narrar la experiencia con sus propias palabras. Esto puede revelar detalles sobre qué se documentó, si hay expediente médico, qué vio el médico, en qué hospital fue. Las preguntas cerradas de las otras opciones limitan la respuesta a lo que el agente ya asume que ocurrió.",
+fw:"Incorrecto. Las preguntas de las otras opciones son cerradas o dirigidas: anticipan la respuesta, sugieren lo que el agente espera encontrar o dirigen hacia una conclusión específica. La pregunta abierta 'Cuénteme sobre esa visita' da a Mariana espacio para narrar detalles que el agente no anticipó, incluyendo el nombre del hospital, la fecha, qué examinó el médico y qué quedó documentado.",
+tip:"Herramienta: Preguntas Abiertas. Principio: NO se responden con sí/no, invitan a la narrativa propia. 'Cuénteme...' y 'Descríbame...' son las formas más efectivas para explorar eventos y potenciales evidencias sin dirigir la respuesta."},
+
+{cm:{r:"c",t:"Pues me revisaron los brazos, anotaron los moretones en el expediente y me preguntaron si alguien me había lastimado. Le dije que no. Tengo el papel del hospital todavía por ahí."},
+sk:"sk-oros",skl:"7 Oros — Cierre",
+cm2:{r:"s",t:"[DECISIÓN 5 — Fase de CIERRE con los 7 Oros]"},
+q:"Acabas de desarrollar el evento de los golpes con correa. Entras a la fase de CIERRE de los 7 Oros. ¿Cuáles son las preguntas correctas para esta fase?",
+opts:[
+"'¿Cuándo fue exactamente ese día? ¿Qué hora era aproximadamente? ¿Ricardo había bebido otras veces antes de golpearla?' — estableces los detalles de tiempo y contexto para que el relato quede completo antes de cerrar el evento y pasar al siguiente.",
+"'¿Cómo terminó esa situación? ¿Quedó con alguna lesión además de los moretones? ¿Esto había pasado antes con la correa u objetos similares? ¿Cada cuánto le pegaba de esa forma? ¿Qué sintió usted cuando terminó todo?' — cierras con consecuencias, sistematización y cierre emocional.",
+"'¿Llamó a la policía esa vez? ¿Tiene el número del hospital para que pueda solicitar el expediente? ¿La atendió algún médico específico que recuerde?' — te concentras en confirmar y gestionar todas las evidencias disponibles del evento antes de cerrarlo.",
+"'¿Diego vio lo que pasó? ¿Había alguien más en la casa en ese momento? ¿Hay vecinos que pudieran haber escuchado?' — identificas posibles testigos del evento, que son un tipo de evidencia que puede fortalecer el caso significativamente."
+],cor:1,
+sk2:"7 Oros — Fase Cierre",
+fc:"Correcto. El CIERRE de los 7 Oros cubre: cómo terminó la situación, las consecuencias físicas y emocionales, la sistematización del abuso (¿cada cuándo ocurría?), y el cierre emocional (¿qué sintió/pensó?). También es momento de reforzar evidencias, pero el cierre no se reduce solo a eso. La sistematización es especialmente importante porque convierte un evento aislado en un patrón de abuso.",
+fw:"Incorrecto. El CIERRE de los 7 Oros no es únicamente gestión de evidencias ni exploración de testigos ni establecimiento de detalles de tiempo — eso corresponde al INICIO y DESARROLLO. El CIERRE cubre: ¿cómo terminó?, consecuencias físicas y emocionales, sistematización del abuso, y cierre emocional. Todas esas dimensiones juntas completan el evento narrativamente.",
+tip:"Herramienta: 7 Oros — Fase CIERRE. Preguntas clave: ¿Cómo terminó? ¿Quedó con lesiones? ¿Esto había pasado antes? ¿Cada cuánto ocurría? ¿Qué sintió/pensó? La sistematización convierte un evento en un patrón y es uno de los aportes más importantes del cierre."}
+]},
+
+/* ════════════════════════════════════════════════
+   CASO 2 — PEDRO SALINAS
+   VAWA SPOUSE · Pre-Draft · Regla 80/20 · Abusómetro graduable · 7 Oros DESARROLLO
+════════════════════════════════════════════════ */
+{id:1,name:"Pedro Salinas",sub:"VAWA SPOUSE · Pre-Draft BOT · Regla 80/20 · Abuso graduable · 7 Oros Desarrollo",dif:"dm",difl:"Intermedio",ini:"PS",
+exp:{n:"Pedro Salinas, 42 años",or:"Guatemala",tipo:"VAWA SPOUSE",abusador:"Amanda Torres, LPR (residente permanente)",rel:"Casados 2015. Conviven actualmente.",hijos:"Sin hijos menores",previo:"Intake completo. BOT Pre-Draft generado."},
+bot:{cubiertos:["Background completo","Episodio 2020: Amanda lo empujó y rompió su celular (mencionado)","Control económico severo: Pedro sin acceso a cuentas"],faltantes:["Episodio 2020 — sin 7 Oros aplicados","Amenazas verbales — mencionadas pero sin ejemplos","Coacción sexual — señalada en Intake sin desarrollar","Evidencias de control financiero no confirmadas"]},
+is:[{t:"Abusador LPR (no USC)",c:"i-b"},{t:"Control financiero — documentar",c:"i-o"},{t:"Coacción sexual — explorar",c:"i-r"},{t:"Sin 7 Oros en ningún evento",c:"i-o"}],
+msgs:[
+{r:"c",t:"Sí, hola. Estoy aquí. Pues no sé por dónde empezar... es que Amanda siempre me dice que yo exagero todo y que si lo cuento voy a quedar como el malo."},
+{r:"a",t:"Pedro, lo que usted sienta es válido y estamos aquí para escucharlo. Nadie va a juzgar lo que vivió. ¿Pudo revisar los documentos de las cuentas bancarias que le pedimos?"},
+{r:"c",t:"Sí, traje los estados de cuenta. Ella nunca me dejaba ver cuánto teníamos. Me daba una cantidad fija a la semana — 30 dólares — y si me pasaba aunque fuera un dólar, se ponía furiosa. Una vez me gritó en la calle que era un mantenido y que sin ella yo no tendría nada en este país. Oiga y otra cosa que quiero contarle, es que un amigo mío del trabajo está pasando algo parecido con su esposa y quería preguntarle si él también podría..."},
+{r:"a",t:"Pedro, entiendo, pero hoy necesitamos concentrarnos completamente en su caso — que es lo más urgente. Cuénteme más sobre lo que vivía con Amanda."},
+{r:"c",t:"Sí, disculpe. Pues el tema del dinero era horrible. Y también ella me amenazaba con que si la dejaba iba a llamar a migración y a decir que yo la había golpeado a ella, para que me deportaran a mí. Eso me tenía muy asustado. Y en el 2020 hubo una vez que llegué tarde del trabajo y ella me empujó contra la pared y aventó mi celular al suelo y lo rompió."}
+],
+steps:[
+{cm:{r:"s",t:"[DECISIÓN 1 — Uso correcto del Pre-Draft BOT]"},
+sk:"sk-bot",skl:"Pre-Draft BOT",
+q:"El BOT indica que el Intake ya cubrió el episodio del 2020 (empujón + celular roto) pero no lo desarrolló con 7 Oros. Pedro menciona ese episodio ahora. ¿Cuál es el uso correcto del Pre-Draft en este momento?",
+opts:[
+"Le pides a Pedro que te cuente el episodio del 2020 desde el principio, como si no hubiera nada en el expediente, para obtener una versión fresca y completa que sea más confiable que la del Intake, ya que los detalles pueden haber cambiado con el tiempo.",
+"Dado que el episodio ya fue mencionado en el Intake, lo consideras documentado y lo corroboras con una pregunta breve: '¿Fue solo esa vez?' — y dedicas el tiempo de la sesión a explorar la coacción sexual, que el BOT marcó como faltante crítico y que es un abuso mucho más contundente.",
+"Aplicas los 7 Oros completos al episodio del 2020 antes de explorar cualquier otro tema, porque es el único evento físico confirmado y debes asegurarte de que quede completamente desarrollado antes de avanzar a otros abusos menos claros.",
+"Ignoras el episodio del 2020 porque el BOT ya lo marcó como cubierto y concentras toda la entrevista en los faltantes que el reporte identificó como prioritarios: amenazas verbales, coacción sexual y evidencias financieras."
+],cor:1,
+sk2:"Pre-Draft BOT — Uso estratégico",
+fc:"Correcto. El Pre-Draft identifica la coacción sexual como faltante crítico no desarrollado — y es el abuso más contundente (potencialmente ROJO) que aún no tiene narrativa. El episodio del 2020, aunque no tiene 7 Oros, ya está en el expediente: se corrobora brevemente. La entrevista debe concentrarse en lo que el BOT marcó como prioritario y que tiene mayor contundencia.",
+fw:"Incorrecto. El Pre-Draft BOT existe precisamente para evitar redundancias. Los eventos documentados en el Intake no se preguntan de cero — se corroboran brevemente. Ignorar el Pre-Draft y pedir que Pedro repita todo desperdicia tiempo de entrevista y puede agotarlo antes de llegar a los faltantes más importantes. El faltante más crítico aquí es la coacción sexual, que el BOT identificó como no desarrollada.",
+tip:"Herramienta: Pre-Draft BOT. Principio: corroborar lo documentado, profundizar los faltantes. El criterio de prioridad es la contundencia del faltante según el Abusómetro — la coacción sexual (potencial ROJO) es prioritaria sobre un episodio físico menor ya referido."},
+
+{cm:{r:"c",t:"Sí, ese episodio del empujón pasó una sola vez. Pero las amenazas eran constantes. Y... hay algo más que me cuesta mucho trabajo decir. Amanda me obligaba a tener relaciones cuando yo no quería. Me decía que era mi obligación como esposo y si me negaba se ponía muy agresiva, me insultaba, me decía que si no lo hacía ella iba a buscar a alguien que sí lo hiciera y que me iba a dejar en la calle."},
+sk:"sk-abus",skl:"Abusómetro — Clasificación",
+cm2:{r:"s",t:"[DECISIÓN 2 — Clasificar la coacción sexual en el Abusómetro]"},
+q:"Pedro describe que Amanda lo obligaba a tener relaciones cuando él no quería, con amenazas de abandono, insultos y amenazas de buscarse a otro. ¿Cuál es la clasificación correcta y la implicación para la entrevista?",
+opts:[
+"Es un abuso AMARILLO — coerción sexual sin violencia física — que aporta contexto al caso pero que por sí solo tiene poco peso ante USCIS. Se incluye en la DCL como elemento secundario para enriquecer la narrativa del patrón de control, pero no merece desarrollo extenso con 7 Oros.",
+"Es un abuso NARANJA en su nivel base — coerción sexual — pero con los agravantes que Pedro describe (amenazas de abandono, insultos, amenazas de sustitución) puede trabajarse con mayor contundencia. Debe desarrollarse con 7 Oros con atención especial al patrón y la frecuencia.",
+"Es un abuso ROJO automático — cualquier forma de coerción sexual es violación bajo la ley migratoria — por lo que se prioriza sobre todos los demás elementos del caso y debe desarrollarse primero que la información del episodio de 2020 o las amenazas de deportación.",
+"Es un abuso VERDE porque Pedro no describe violencia física durante las relaciones sexuales. Sin agresión física que acompañe la coerción, USCIS no reconoce este tipo de conducta como abuso suficiente para fundamentar una petición VAWA."
+],cor:1,
+sk2:"Abusómetro — Coerción sexual + Agravantes",
+fc:"Correcto. La coerción sexual es NARANJA en su nivel base según el Abusómetro. Con los agravantes que Pedro describe — amenazas de abandono, insultos durante los episodios, amenazas de sustitución y el patrón de sistematización — el abuso puede elevarse en contundencia. Los agravantes son el principio de los abusos graduables: detectarlos y desarrollarlos es responsabilidad del agente. Se trabaja con 7 Oros con foco en la frecuencia y el patrón.",
+fw:"Incorrecto. La coerción sexual es NARANJA (no ROJO automático, no AMARILLO, no VERDE). Las amenazas de abandono, insultos y amenaza de sustitución son agravantes que elevan la contundencia — principio de los abusos graduables del Abusómetro. Ignorarlos o minimizarlos es perder una oportunidad de fortalecer el caso. Sin agresión física, la coerción sexual sigue siendo abuso reconocible para VAWA.",
+tip:"Herramienta: Abusómetro — Abusos Graduables (G). Los agravantes elevan la contundencia: sistematización, patrón, amenazas adicionales, contexto de control. Detectar y desarrollar los agravantes en la entrevista es una habilidad central del agente PWI."},
+
+{cm:{r:"c",t:"Sí, eso pasaba bastante seguido. Diría que dos o tres veces al mes. Siempre cuando ella quería y yo no. Y cuando me negaba me gritaba, me insultaba, me decía que yo era una vergüenza de hombre, que ninguna mujer me iba a querer. Una vez hasta aventó cosas."},
+sk:"sk-oros",skl:"7 Oros — Desarrollo",
+cm2:{r:"s",t:"[DECISIÓN 3 — Fase de DESARROLLO con los 7 Oros]"},
+q:"Estás en la fase de DESARROLLO del evento de coacción sexual que Pedro acaba de describir. ¿Cuál es la secuencia de preguntas correcta para esta fase?",
+opts:[
+"'¿Cómo se sentía usted en esos momentos? ¿Tenía miedo de que ella lo lastimara físicamente? ¿Le afectó psicológicamente a largo plazo?' — exploras el impacto emocional y psicológico del abuso, que es fundamental para construir el argumento de Extreme Cruelty en la DCL.",
+"'¿Cómo fue esa dinámica exactamente? ¿Qué le decía Amanda cuando usted se negaba? ¿Qué pasaba después? ¿Cómo terminaban esos episodios?' — obtienes la secuencia del evento, el diálogo del abusador y el desarrollo cronológico del hecho en las palabras de Pedro.",
+"'¿Hay algún testigo de que eso ocurría? ¿Vivían con alguien más? ¿Hay mensajes o audios donde ella le diga esas cosas?' — priorizas la búsqueda de evidencias en este momento, ya que sin documentación la coacción sexual es difícil de probar ante USCIS.",
+"'¿Cuándo fue la primera vez que eso pasó? ¿Cómo comenzó la relación entre ustedes?' — estableces el antecedente histórico del patrón para construir un contexto cronológico completo que dé solidez al relato de coerción sistemática."
+],cor:1,
+sk2:"7 Oros — Fase Desarrollo",
+fc:"Correcto. La fase de DESARROLLO obtiene el núcleo del relato: qué pasó, cómo pasó, el diálogo del abusador, la secuencia de acciones. Las preguntas de la opción correcta exploran exactamente eso — sin sugerir, sin dirigir, invitando a Pedro a narrar la dinámica en sus propias palabras.",
+fw:"Incorrecto. La fase de DESARROLLO es el núcleo del relato del evento: qué pasó, cómo pasó, qué decía el abusador, cómo se desarrolló la secuencia. El impacto emocional corresponde al CIERRE. Las evidencias se gestionan durante o al cierre del evento, no en el medio del desarrollo. El antecedente histórico es parte del INICIO. Mezclar fases produce narrativas incompletas y entrevistas poco estructuradas.",
+tip:"Herramienta: 7 Oros — Fase DESARROLLO. Preguntas clave: ¿Qué pasó?, ¿Cómo pasó?, ¿Qué decía mientras hacía eso?, diálogos textuales, secuencia cronológica del evento. El objetivo es que Pedro narre el hecho completo sin que el agente dirija el contenido."},
+
+{cm:{r:"c",t:"Pues ella llegaba y me decía que quería... y yo a veces le decía que estaba cansado del trabajo. Entonces ella empezaba: 'Para qué te tengo aquí si no me sirves', 'Eres un inútil', y me empezaba a gritar. Una vez agarró un vaso y lo tiró al suelo. Yo le tenía miedo, la verdad. Hacía lo que ella quería para que se calmara."},
+sk:"sk-prac",skl:"Regla 80/20",
+cm2:{r:"s",t:"[DECISIÓN 4 — Aplicar la regla 80/20 y redirigir]"},
+q:"Pedro lleva 18 minutos narrando. Acaba de terminar de describir la dinámica de la coacción. Ahora empieza a hablar de problemas con el arrendador de su departamento y de una disputa con un vecino que 'también le ha causado estrés'. La información no está vinculada al abuso. ¿Cuál es la intervención correcta?",
+opts:[
+"Lo escuchas en silencio por 5 minutos más antes de redirigir, porque el 80% del tiempo es de Pedro y interrumpirlo antes de ese umbral violaría el principio de la regla 80/20, que está diseñado para que el cliente se sienta con libertad de hablar.",
+"Interrumpes de inmediato y le dices claramente que el tema del vecino no es útil para el caso y que necesitan concentrarse en el abuso, ya que el tiempo de la entrevista es limitado y no pueden desperdiciarlo en temas irrelevantes.",
+"Esperas a que Pedro haga una pausa natural en el relato y redirigues con calma: 'Pedro, lo escucho, y también quiero asegurarme de que cubramos todo lo importante para su caso. ¿Me puede contar más sobre las amenazas de deportación que me mencionó antes?' — retomas el faltante del BOT de forma natural.",
+"Dejas que Pedro hable del vecino y del arrendador por el tiempo que necesite, ya que esa información puede estar relacionada con el patrón de estrés que el abuso generó y puede aportar contexto útil para la narrativa de las consecuencias."
+],cor:2,
+sk2:"Regla 80/20 — Redirección",
+fc:"Correcto. La regla 80/20 no significa permitir que el cliente divague indefinidamente en temas no vinculados al abuso. El agente redirige con naturalidad cuando la información no está conectada al caso — espera una pausa y retoma los faltantes del BOT de forma fluida y empática, sin cortar abruptamente ni confrontar al cliente.",
+fw:"Incorrecto. La regla 80/20 establece que el cliente habla el 80% del tiempo sobre temas vinculados al abuso, no que el agente deba escuchar cualquier contenido sin redirección. Cuando el cliente divaga, el agente redirige con naturalidad hacia los faltantes prioritarios. Hacerlo de forma confrontacional o dejarlo divagar sin límite compromete la entrevista.",
+tip:"Herramienta: Regla 80/20 + Naturalidad Conversacional. Principio: el agente redirige cuando la información no está vinculada al abuso, esperando una pausa natural y retomando con una pregunta abierta hacia el faltante prioritario del BOT."},
+
+{cm:{r:"c",t:"Sí, disculpe. Pues sí, las amenazas de que me iba a denunciar a migración eran seguido. Me decía: 'Si me dejas, llamo a ICE y les digo que tú me golpeabas a mí. En este país yo tengo papeles y tú no.' Eso me daba mucho miedo porque es verdad que ella tiene la green card y yo no tengo nada."},
+sk:"sk-abus",skl:"Abusómetro — Legal",
+cm2:{r:"s",t:"[DECISIÓN 5 — Clasificar amenaza de deportación y agravante con abuso previo]"},
+q:"Amanda amenaza a Pedro con denunciarlo falsamente ante ICE para que lo deporten. Pedro ya describió antes la coacción sexual. ¿Cómo clasificas la amenaza de deportación y cómo integras ambos abusos en la estrategia de narrativa?",
+opts:[
+"La amenaza de deportación es NARANJA (abuso legal de tipo amenaza) y la coacción sexual es NARANJA base. Como ambos son del mismo nivel, se desarrollan en paralelo con igual profundidad y se presentan en la DCL como un patrón integrado de control sin jerarquía entre ellos.",
+"La amenaza de deportación es AMARILLA porque las amenazas verbales de carácter legal requieren que el abusador haya iniciado un trámite formal — una simple amenaza sin acción concreta no alcanza el nivel de abuso contundente para VAWA.",
+"La amenaza de deportación es ROJA (abuso legal — intento de deportación como mecanismo de control) y es un agravante que eleva la coacción sexual: Pedro realizaba lo que Amanda demandaba para evitar ser deportado, lo que convierte ambos abusos en un patrón de control integrado que debe desarrollarse mostrando esa conexión.",
+"La amenaza de deportación es NARANJA y la coacción sexual queda desvinculada porque son tipos de abuso distintos — sexual y legal — que USCIS evalúa por separado. Mezclarlos narrativamente puede confundir al oficial de adjudicación."
+],cor:2,
+sk2:"Abusómetro — Abuso Legal + Integración narrativa",
+fc:"Correcto. Las amenazas de deportación como mecanismo de control son ROJAS en el Abusómetro (abuso legal — intento de deportación). Y la conexión que Pedro establece — hacía lo que Amanda quería para evitar ser deportado — convierte ambos abusos en un patrón integrado de control: la amenaza legal refuerza y agrava la coacción sexual. Mostrar esa conexión en la narrativa fortalece significativamente el caso.",
+fw:"Incorrecto. Las amenazas de deportación como herramienta de control son ROJAS — no AMARILLAS ni NARANJAS. No requieren que el abusador haya iniciado trámites formales; la amenaza como mecanismo de sometimiento es suficiente. Y la conexión entre la coacción sexual y las amenazas de deportación — Pedro cedía sexualmente para no ser deportado — es un patrón integrado que fortalece ambos abusos narrativamente.",
+tip:"Herramienta: Abusómetro — Categoría Legal. Las amenazas de deportación como control son ROJO. Principio de integración narrativa: cuando dos abusos están funcionalmente conectados (uno refuerza al otro), la DCL debe mostrar esa conexión. Hace el caso más sólido y coherente."}
+]},
+
+/* ════════════════════════════════════════════════
+   CASO 3 — CARMEN RÍOS
+   VAWA PARENT · Abuso verde vs. naranja · 7 Oros completo · Evidencias · BOT
+════════════════════════════════════════════════ */
+{id:2,name:"Carmen Ríos",sub:"VAWA PARENT · Verde vs. abuso real · 7 Oros completo · Estrategia BOT",dif:"dh",difl:"Complejo",ini:"CR",
+exp:{n:"Carmen Ríos, 58 años",or:"El Salvador",tipo:"VAWA PARENT",abusador:"Tomás Ríos, 34 años, USC por naturalización",rel:"Tomás es hijo de Carmen. Carmen vive con Tomás desde 2018.",hijos:"N/A — peticionaria es la madre",previo:"Intake con información parcial. BOT generó Pre-Draft con faltantes críticos."},
+bot:{cubiertos:["Background completo","Convivencia con Tomás documentada","Insultos y gritos mencionados brevemente"],faltantes:["Evento físico referido ('me empujó una vez') — sin 7 Oros","Control económico — sin documentar","Un arma mencionada en Intake ('siempre tiene una pistola') — no desarrollado","Evidencias: ninguna confirmada"]},
+is:[{t:"PARENT — hijo USC",c:"i-b"},{t:"Arma mencionada — faltante ROJO",c:"i-r"},{t:"Control económico — explorar",c:"i-o"},{t:"Sin evidencias confirmadas",c:"i-o"}],
+msgs:[
+{r:"c",t:"Sí, aquí estoy. Ay señorita, es que me da mucha vergüenza hablar de esto. Mi propio hijo haciéndome esto a mí."},
+{r:"a",t:"Carmen, no tiene que sentir vergüenza. Usted viene a contar su experiencia y eso requiere mucho valor. ¿Pudo traer algún documento hoy?"},
+{r:"c",t:"Traje unas fotos que me tomé en el baño cuando Tomás me empujó y me caí. También tengo unos mensajes de texto donde me dice cosas muy feas. Ay, y es que él no me deja salir de la casa sin preguntarle. Si llego aunque sea 10 minutos tarde me grita y me insulta horrible. Y también se va los fines de semana con sus amigos sin decirme nada. Y una vez escuché que le dijo a su novia que soy 'un estorbo que le cayó del cielo'."},
+{r:"a",t:"Carmen, toda esa información es importante. Vamos a ir paso a paso para que quede todo bien documentado. Cuénteme sobre las veces que él la ha lastimado físicamente."},
+{r:"c",t:"Pues una vez me empujó cuando le dije que quería llamar a mi hermana en El Salvador. Me empujó contra la puerta del cuarto y me caí. Me golpeé la cadera. Eso fue el año pasado. Y en otra ocasión, cuando le pedí dinero para comprar medicamento, agarró la pistola que siempre tiene en el cajón y la puso encima de la mesa mientras me decía que le tenía hartos los nervios."}
+],
+steps:[
+{cm:{r:"s",t:"[DECISIÓN 1 — Distinguir verde de abuso real y priorizar]"},
+sk:"sk-abus",skl:"Abusómetro — Verde vs. Abuso",
+q:"Carmen menciona varias situaciones: (a) no la deja salir sin permiso, (b) la grita si llega tarde, (c) se va los fines de semana sin decirle, (d) le dijo a la novia que es 'un estorbo', (e) la empujó y se golpeó la cadera, (f) sacó una pistola mientras le decía que la tenía harta. ¿Qué incluyes como abuso y en qué orden priorizas?",
+opts:[
+"Todo lo que Carmen describe es abuso relevante para VAWA y debe desarrollarse con igual profundidad, porque cualquier conducta que cause malestar a la víctima puede ser utilizada en la DCL para mostrar el patrón de maltrato que Tomás ejerce sobre su madre.",
+"Priorizas (f) pistola — ROJO; luego (e) empujón con caída — NARANJA/ROJO con agravante médico; luego (a) no dejarla salir y (b) gritos — NARANJA como control y abuso verbal. Excluyes (c) salir los fines de semana y (d) el comentario a la novia — categoría verde.",
+"Priorizas (e) el empujón porque ya hay fotos y evidencia física clara, y (d) el comentario a la novia porque afectó emocionalmente a Carmen. Los otros elementos son contexto secundario que se incluye brevemente al final de la entrevista.",
+"Priorizas (b) los gritos y (a) el control de salidas porque son los más sistemáticos y frecuentes, y la sistematización es lo que hace un caso sólido ante USCIS. Los eventos físicos aislados como (e) o (f) tienen menos peso por su carácter esporádico."
+],cor:1,
+sk2:"Abusómetro — Verde vs. Abuso + Priorización",
+fc:"Correcto. La pistola sobre la mesa como intimidación mientras le habla es ROJA — uso de arma como amenaza. El empujón con caída y golpe en la cadera es NARANJA con agravante médico potencial. El control de salidas y los insultos sistemáticos son NARANJA. Salir los fines de semana (adulto autónomo) y el comentario a la novia son VERDE — incluirlos como abuso debilitaría la credibilidad del caso. La priorización siempre va de mayor a menor contundencia.",
+fw:"Incorrecto. No toda conducta desagradable es abuso para VAWA. Salir los fines de semana y hacer comentarios negativos a terceros son categoría VERDE — conducta de adulto autónomo sin intención de daño o control. Incluirlos como abuso puede debilitar la credibilidad del caso ante USCIS. El criterio de priorización no es la frecuencia ni la disponibilidad de evidencia, sino la contundencia según el Abusómetro.",
+tip:"Herramienta: Abusómetro — Categoría Verde. Conductas de adulto autónomo sin intención de daño no son abuso bajo VAWA. Incluirlas en la DCL puede generar contradicciones y afectar la credibilidad. Excluirlas es una decisión técnica del agente, no una opinión."},
+
+{cm:{r:"c",t:"Lo de la pistola me aterró. Yo solo le había pedido dinero para mi medicina y él fue, sacó la pistola del cajón y la puso sobre la mesa. Me dijo: 'Carmen, usted me tiene los nervios destrozados. Yo no pedí que viniera a vivir conmigo y no voy a seguir aguantando.' Y se quedó viendo la pistola mientras me hablaba."},
+sk:"sk-oros",skl:"7 Oros — Inicio",
+cm2:{r:"s",t:"[DECISIÓN 2 — Iniciar el evento de la pistola con los 7 Oros]"},
+q:"El evento de la pistola es el faltante más crítico según el BOT — es ROJO y está sin desarrollar. Carmen acaba de describirlo. ¿Cómo inicias el desarrollo formal del evento con los 7 Oros?",
+opts:[
+"'Carmen, ¿Tomás ha amenazado a alguien más con esa pistola? ¿Sabe si tiene permiso para tenerla? ¿La pistola sigue en el cajón o la movió después?' — obtienes información sobre el arma que puede ser relevante como evidencia adicional del peligro que representa.",
+"'Carmen, necesito que me cuente esa situación con más detalle desde el principio. ¿Cuándo fue eso exactamente? ¿En qué parte de la casa estaban cuando él sacó la pistola? ¿Qué estaba pasando antes de que usted le pidiera el dinero?' — estableces el contexto temporal, espacial y el antecedente del evento.",
+"'Carmen, ¿qué sintió usted cuando vio la pistola sobre la mesa? ¿Pensó que le podía disparar? ¿Corrió o se quedó paralizada?' — explores el impacto emocional inmediato, que es fundamental para demostrar el nivel de terror que el abuso generó.",
+"'¿Había alguien más en la casa cuando pasó eso? ¿Algún vecino pudo haber escuchado? ¿Hay cámaras de seguridad en el edificio?' — identificas posibles testigos o evidencias contextuales antes de profundizar en el evento."
+],cor:1,
+sk2:"7 Oros — Fase Inicio",
+fc:"Correcto. La fase de INICIO establece el contexto del evento antes de profundizar: ¿cuándo? (temporalidad), ¿dónde? (contexto espacial), ¿qué estaba pasando antes? (antecedente). Solo con ese contexto establecido se avanza al DESARROLLO. Las preguntas de la opción correcta son abiertas y no dirigen el contenido de la respuesta de Carmen.",
+fw:"Incorrecto. La fase de INICIO no es el momento para explorar el impacto emocional (CIERRE), identificar testigos (DESARROLLO) ni obtener información sobre el arma como evidencia (DESARROLLO-CIERRE). El INICIO establece el contexto: cuándo, dónde, qué pasaba antes. Saltarse el INICIO y entrar directo al DESARROLLO o CIERRE produce eventos narrativamente incompletos y desordenados en la DCL.",
+tip:"Herramienta: 7 Oros — INICIO. Preguntas: ¿Cuándo fue? ¿Dónde estaban? ¿Qué pasaba antes? Este orden no es arbitrario — establece la verosimilitud del relato y permite que el DESARROLLO tenga contexto claro."},
+
+{cm:{r:"c",t:"Fue en noviembre del año pasado, en la sala. Era sábado por la tarde. Yo había estado todo el día con dolor de rodilla y en la mañana le había pedido que me llevara a la farmacia pero me dijo que no tenía tiempo. En la tarde le volví a pedir y ahí fue cuando se enojó y sacó la pistola."},
+sk:"sk-oros",skl:"7 Oros — Desarrollo",
+cm2:{r:"s",t:"[DECISIÓN 3 — Fase de DESARROLLO: diálogos y secuencia]"},
+q:"Carmen estableció el contexto (noviembre, sala, sábado, la pidió que la llevara a la farmacia). Ahora entras al DESARROLLO del evento de la pistola. ¿Cuál es la intervención más adecuada?",
+opts:[
+"'Carmen, descríbame exactamente lo que pasó cuando él fue al cajón. ¿Qué dijo usted en ese momento? ¿Qué le contestó él? ¿Qué hizo con la pistola después de ponerla en la mesa?' — obtienes la secuencia de acciones y los diálogos del evento tal como ocurrieron.",
+"'Carmen, ¿usted tiene miedo de que Tomás pueda dispararle algún día? ¿Ha pensado en salir de esa casa? ¿Tiene a dónde ir si la situación se pone más peligrosa?' — evalúas el nivel de riesgo actual y exploras las opciones de seguridad que Carmen tiene disponibles.",
+"'Carmen, ¿cuántas veces en total Tomás ha sacado la pistola? ¿Hay un patrón de que la usa para asustarla cuando le pide cosas? ¿Cuándo fue la primera vez que lo hizo?' — estableces la sistematización del abuso para demostrar que no es un evento aislado sino un patrón.",
+"'Carmen, ¿alguien en su familia sabe que Tomás tiene esa pistola? ¿Le ha contado a alguien sobre lo que pasó ese día? ¿Guardó algún mensaje o foto de esa situación?' — identificas testigos y evidencias antes de continuar con el desarrollo del evento."
+],cor:0,
+sk2:"7 Oros — Fase Desarrollo",
+fc:"Correcto. La fase de DESARROLLO obtiene el núcleo del relato: la secuencia de acciones, los diálogos exactos del abusador y la víctima, los movimientos, lo que hizo con la pistola. 'Descríbame exactamente lo que pasó' más las preguntas de secuencia y diálogo son las intervenciones correctas para esta fase.",
+fw:"Incorrecto. El DESARROLLO del evento es el momento de obtener la secuencia de acciones y los diálogos textuales del evento — no de evaluar el riesgo actual (eso es una evaluación separada), no de establecer sistematización (eso es CIERRE), ni de gestionar testigos y evidencias (eso se hace al CIERRE o durante el evento cuando surge naturalmente). Cada fase de los 7 Oros tiene un propósito específico.",
+tip:"Herramienta: 7 Oros — Fase DESARROLLO. Preguntas: ¿Qué pasó?, ¿Cómo pasó?, ¿Qué le decía mientras hacía eso?, diálogos textuales del abusador, secuencia de acciones. El objetivo es que Carmen narre el evento completo en sus propias palabras con el nivel de detalle que la DCL requiere."},
+
+{cm:{r:"c",t:"Él abrió el cajón, sacó la pistola y la puso en la mesa sin decir nada. Luego me dijo lo que le conté, que yo le tenía los nervios destrozados. Yo me quedé paralizada. No dije nada. Me fui al cuarto y cerré la puerta. Me quedé temblando un buen rato. Eso duró como 20 minutos, luego él guardó la pistola y se fue a su cuarto."},
+sk:"sk-evid",skl:"Evidencias — Cierre",
+cm2:{r:"s",t:"[DECISIÓN 4 — Solicitar evidencias al cierre del evento]"},
+q:"Acabas de desarrollar el evento de la pistola. Antes de cerrar emocionalmente el evento, ¿cuál es la intervención correcta para la gestión de evidencias?",
+opts:[
+"Cierras el evento emocionalmente primero ('¿Qué sintió usted en ese momento?') y dejas la gestión de evidencias para una llamada de seguimiento, ya que preguntarle ahora sobre documentos puede interrumpir el flujo emocional y afectar la confianza que Carmen depositó en la sesión.",
+"'Carmen, justo antes de continuar — ¿existe alguna forma de que ese momento quedara registrado? ¿Hay cámaras en la casa de Tomás? ¿Le contó a alguien sobre eso ese mismo día o los días siguientes, por mensaje de texto o llamada? ¿Guardó algo de esa situación?' — buscas evidencias mientras el evento está fresco y Carmen está contextualizada.",
+"Pasas directamente al siguiente evento — el empujón con caída — porque ya tienes fotos de ese evento y es más urgente documentarlo formalmente, mientras que la pistola no tiene evidencia disponible y no vale la pena insistir.",
+"Le preguntas a Carmen si puede recuperar la pistola de Tomás para presentarla como evidencia física del evento, ya que un objeto físico relacionado con el abuso tiene un valor probatorio mayor que cualquier declaración testimonial."
+],cor:1,
+sk2:"Evidencias — Al cierre del evento",
+fc:"Correcto. Al cierre de cada evento se refuerza la búsqueda de evidencias: ¿quedó algo registrado?, ¿le contó a alguien?, ¿hay mensajes, fotos, testigos? La gestión de evidencias no se deja para el final de la entrevista ni para llamadas de seguimiento si puede hacerse en el momento. La pistola puede tener evidencia indirecta: mensajes del día del evento, personas a quienes Carmen lo contó.",
+fw:"Incorrecto. La gestión de evidencias es prioritaria y no se deja para llamadas de seguimiento ni se descarta porque no haya evidencia obvia. Al cierre del evento se busca evidencia indirecta: ¿le contó a alguien por mensaje?, ¿hay cámaras?, ¿llamó a alguien después? Tampoco es apropiado pedirle a Carmen que recupere el arma — sería un riesgo para su seguridad.",
+tip:"Herramienta: Evidencias — Momento al cierre del evento. No toda evidencia es directa. La evidencia indirecta — mensajes, testimonios de personas a quienes se les contó, registros de llamadas del día — también fortalece el caso. La solicitud al cierre del evento tiene contexto y relevancia narrativa."},
+
+{cm:{r:"c",t:"Sí, ese día le mandé un mensaje a mi hermana en El Salvador y le dije que Tomás me había asustado mucho con una pistola. Tengo ese mensaje guardado. Y una vecina que vive en el departamento de enfrente me vio salir llorando y me preguntó si estaba bien. Ella sabe que Tomás me trata mal."},
+sk:"sk-oros",skl:"7 Oros — Cierre emocional",
+cm2:{r:"s",t:"[DECISIÓN 5 — Cierre emocional y sistematización del evento]"},
+q:"Carmen reveló evidencias importantes: el mensaje a su hermana y la vecina testigo. Ahora hay que cerrar el evento completamente con los 7 Oros. ¿Cuál es la intervención de cierre correcta?",
+opts:[
+"'Carmen, ya tenemos todo lo que necesitamos de este evento. Ahora cuénteme sobre el empujón que mencionó.' — avanzas al siguiente evento sin perder tiempo, porque ya tienes el relato del evento y las evidencias identificadas, y el tiempo de entrevista es limitado.",
+"'Carmen, ¿cómo terminó esa situación ese día después de que Tomás guardó la pistola? ¿Quedó con alguna consecuencia física o emocional de ese episodio? ¿Esto de la pistola había pasado antes? ¿Qué sintió usted en ese momento y en los días siguientes?' — cierras con consecuencias, sistematización y cierre emocional.",
+"'Carmen, ¿Tomás sabe que usted le contó a su hermana sobre la pistola? ¿Ha tenido represalias desde entonces? ¿La vecina estaría dispuesta a declarar formalmente?' — evalúas el riesgo actual y la disponibilidad de la testigo antes de cerrar el evento.",
+"'Carmen, ¿por qué cree que Tomás actúa así con usted? ¿Qué cree que le pasa a su hijo para tratarla de esa manera?' — exploras directamente la comprensión de Carmen sobre las motivaciones de Tomás para construir el argumento de Extreme Cruelty."
+],cor:1,
+sk2:"7 Oros — Fase Cierre completo",
+fc:"Correcto. El CIERRE cubre todas sus dimensiones: ¿cómo terminó el evento?, consecuencias físicas y emocionales, sistematización (¿había pasado antes con la pistola?), y cierre emocional (¿qué sintió?). Estas preguntas completan el evento narrativamente y dan a la DCL el material para construir el argumento de Extreme Cruelty. El evento no está cerrado hasta que se cubren todas estas dimensiones.",
+fw:"Incorrecto. El CIERRE de los 7 Oros no se puede omitir por urgencia de tiempo, no se reduce a evaluar el riesgo actual, y la pregunta '¿por qué cree que Tomás actúa así?' es la pregunta prohibida directa — activa culpa y defensividad. El cierre debe cubrir: ¿cómo terminó?, consecuencias, sistematización y cierre emocional. Sin él, el evento queda narrativamente incompleto en la DCL.",
+tip:"Herramienta: 7 Oros — Fase CIERRE. ADVERTENCIA: La pregunta ¿por qué? NUNCA se hace directa a víctimas. Se reformula: '¿Qué cree que estaba pasando con él en ese momento?' Principio del Cierre: consecuencias + sistematización + cierre emocional = evento completo para la DCL."}
+]}
+];
+
+let S={cur:null,step:0,correct:0,answered:0,done:0,scores:{},ans:false,hist:[]};
+
+function upd(){
+  const pct=S.answered>0?Math.round(S.correct/S.answered*100):0;
+  document.getElementById('sc').textContent=`${S.done}/3`;
+  document.getElementById('sq').textContent=`${S.correct}/${S.answered||15}`;
+  document.getElementById('sp').textContent=S.answered>0?`${pct}%`:'—';
+  document.getElementById('hs').textContent=S.answered>0?`${S.correct}/${S.answered} (${pct}%)`:'';
+  C.forEach((_,i)=>{
+    const b=document.getElementById(`sb${i}`);b.classList.remove('act','dn');
+    if(S.scores[i]!==undefined){b.classList.add('dn');let bd=b.querySelector('.cbg');if(!bd){bd=document.createElement('span');bd.className='cbg';b.appendChild(bd);}bd.textContent=`${S.scores[i]}/5`;}
+    if(S.cur===i)b.classList.add('act');
+  });
+  for(let i=0;i<3;i++){const d=document.getElementById(`d${i}`);d.className='dot';if(S.scores[i]!==undefined)d.classList.add('done');else if(S.cur===i)d.classList.add('act');}
+}
+
+function show(id){document.querySelectorAll('.sc').forEach(s=>s.classList.remove('vs'));document.getElementById(id).classList.add('vs');}
+function lc(ci){S.cur=ci;S.step=0;S.ans=false;upd();show('sc2');render();}
+
+function render(){
+  const cs=C[S.cur],st=cs.steps[S.step];
+  let msgs=[...cs.msgs];
+  for(let i=0;i<S.step;i++){
+    if(cs.steps[i].cm2)msgs.push(cs.steps[i].cm2);
+    msgs.push({r:'x',si:i});
+  }
+  msgs.push(st.cm);
+  if(st.cm2)msgs.push(st.cm2);
+
+  const mh=msgs.map(m=>{
+    if(m.r==='x'){const h=S.hist.find(h=>h.c===S.cur&&h.s===m.si);const ok=h?.ok;return `<div class="manswered"><span class="abg" style="background:${ok?'var(--gl2)':'var(--rl)'};color:${ok?'var(--gr)':'var(--rd)'}">${ok?'✓':'✗'} Decisión ${m.si+1} ${ok?'correcta':'incorrecta'}</span></div>`;}
+    const isc=m.r==='c';const iss=m.r==='s';
+    if(iss)return `<div class="msg ms"><div class="mav">⚙</div><div><div class="mdr">Sistema</div><div class="bbl">${m.t}</div></div></div>`;
+    return `<div class="msg ${isc?'mc':'ma'}"><div class="mav">${isc?cs.ini:'A'}</div><div><div class="mdr">${isc?cs.name:'Agente'}</div><div class="bbl">${m.t}</div></div></div>`;
+  }).join('');
+
+  const ph=cs.steps.map((_,i)=>`<div class="pip${i<S.step?' dn':i===S.step?' ac':''}"></div>`).join('');
+  const ish=cs.is.map(x=>`<span class="it ${x.c}">${x.t}</span>`).join('');
+  const oh=st.opts.map((o,i)=>`<button class="ob" id="o${i}" onclick="sel(${i})"><span class="ol">${['A','B','C','D'][i]}</span><span>${o}</span></button>`).join('');
+  const nxt=S.step<cs.steps.length-1?`Siguiente decisión (${S.step+2}/5) →`:S.cur<C.length-1?'Siguiente caso →':'Ver resultados →';
+
+  // BOT section
+  const botHTML=`<div class="bot">
+    <div class="bot-h"><span class="bot-icon">🤖</span><span class="bot-hl">Reporte BOT Pre-Draft</span></div>
+    <div class="bot-body">
+      <div><label>Temas cubiertos en Intake</label>${cs.bot.cubiertos.map(x=>`<div class="bot-item ok">${x}</div>`).join('')}</div>
+      <div><label>Faltantes prioritarios</label>${cs.bot.faltantes.map(x=>`<div class="bot-item warn">${x}</div>`).join('')}</div>
+    </div>
+  </div>`;
+
+  document.getElementById('cc').innerHTML=`
+<div class="cbar"><div class="cbl"><div class="ce">Caso ${S.cur+1}/3 · Decisión ${S.step+1}/5</div><div class="cn2">${cs.name}</div><div class="cs">${cs.sub}</div></div><span class="dif ${cs.dif}">${cs.difl}</span></div>
+<div class="pips">${ph}</div>
+<div class="exp"><div class="exh"><span class="exhl">Expediente del cliente</span><button class="ext" onclick="tg()">▼</button></div><div class="exb" id="exb"><div class="exg"><div class="ef"><label>Cliente</label><p>${cs.exp.n}</p></div><div class="ef"><label>Origen</label><p>${cs.exp.or}</p></div><div class="ef"><label>Tipo de caso</label><p>${cs.exp.tipo}</p></div><div class="ef"><label>Abusador</label><p>${cs.exp.abusador}</p></div><div class="ef"><label>Relación</label><p>${cs.exp.rel}</p></div><div class="ef"><label>Notas</label><p>${cs.exp.previo}</p></div></div><hr class="edv"><div><label style="font-size:9px;font-weight:500;color:var(--ts);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:4px">Issues identificados</label><div class="iss-row">${ish}</div></div></div></div>
+${botHTML}
+<div class="chat"><div class="chh"><div class="av">${cs.ini}</div><div><div class="chn">${cs.name}</div><div class="chi">Transcripción de entrevista — simulada</div></div></div><div class="msgs" id="cm">${mh}</div></div>
+<div class="ds"><div class="dqt">Decisión de entrevista ${S.step+1}/5</div><span class="skill-tag ${st.sk}">${st.skl}</span><div class="dq2">${st.q}</div><div class="og">${oh}</div></div>
+<div class="fp" id="fp"><div class="fh"><span class="fi2" id="fi"></span><span class="ft2" id="ft"></span></div><div class="ftx" id="fb"></div><div class="ftip" id="ftip"></div></div>
+<div class="nav"><button class="bnn" id="bn" onclick="nx()" disabled>${nxt}</button><button class="b2" onclick="show('sw')">← Inicio</button></div>`;
+
+  const cm=document.getElementById('cm');if(cm)cm.scrollTop=cm.scrollHeight;
+}
+
+function tg(){const b=document.getElementById('exb');const btn=document.querySelector('.ext');if(b.style.display==='none'){b.style.display='';btn.textContent='▼';}else{b.style.display='none';btn.textContent='▶';}}
+
+function sel(i){
+  if(S.ans)return;S.ans=true;
+  const st=C[S.cur].steps[S.step];const ok=i===st.cor;
+  if(ok)S.correct++;S.answered++;
+  S.hist.push({c:S.cur,s:S.step,ok,ch:i});
+  st.opts.forEach((_,j)=>{const b=document.getElementById(`o${j}`);b.disabled=true;if(j===st.cor)b.classList.add('correct');else if(j===i&&!ok)b.classList.add('wrong');else b.classList.add('neutral');});
+  const fp=document.getElementById('fp');fp.classList.remove('correct','wrong');fp.classList.add('vs',ok?'correct':'wrong');
+  document.getElementById('fi').textContent=ok?'✓':'✗';
+  document.getElementById('ft').textContent=ok?'Decisión correcta':'Decisión incorrecta';
+  document.getElementById('fb').textContent=ok?st.fc:st.fw;
+  document.getElementById('ftip').innerHTML=`<strong>${st.sk2}:</strong> ${st.tip}`;
+  document.getElementById('bn').disabled=false;upd();
+}
+
+function nx(){
+  const cs=C[S.cur];
+  if(S.step<cs.steps.length-1){S.step++;S.ans=false;render();document.querySelector('.cnt').scrollTo(0,0);}
+  else{const cc=S.hist.filter(h=>h.c===S.cur&&h.ok).length;S.scores[S.cur]=cc;S.done++;upd();if(S.cur<C.length-1){lc(S.cur+1);}else{showRes();}}
+}
+
+function showRes(){
+  show('sr');
+  const pct=Math.round(S.correct/S.answered*100);
+  document.getElementById('rsc').textContent=`${pct}%`;
+  document.getElementById('rco').textContent=S.correct;
+  document.getElementById('rto').textContent=S.answered;
+  document.getElementById('rca').textContent=`${S.done}/3`;
+  const bc=C.map((cs,i)=>{const sc=S.scores[i]||0;const p=Math.round(sc/5*100);return `<div style="background:var(--w);border:1px solid var(--bd);border-radius:6px;padding:.75rem .9rem;margin-bottom:.4rem;display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:11px;font-weight:600">${cs.name}</div><div style="font-size:10px;color:var(--ts)">${cs.sub}</div></div><span style="font-family:var(--mo);font-size:12px;font-weight:500;color:${sc>=4?'var(--gr)':sc>=3?'var(--am)':'var(--rd)'}">${sc}/5 (${p}%)</span></div>`;}).join('');
+  const skMap={'sk-abus':'Abusómetro','sk-oros':'7 Oros','sk-prac':'Preguntas Abiertas','sk-evid':'Evidencias','sk-bot':'Pre-Draft BOT'};
+  const rh=S.hist.map(h=>{const cs=C[h.c],st=cs.steps[h.s];const dt=h.ok?'Decisión correcta.':'Seleccionada: "'+st.opts[h.ch].substring(0,55)+'..." — Correcta: "'+st.opts[st.cor].substring(0,55)+'..."';return `<div class="ri"><div style="font-size:13px;color:${h.ok?'var(--gr)':'var(--rd)'};flex-shrink:0">${h.ok?'✓':'✗'}</div><div><div class="riq">Caso ${h.c+1} — ${cs.name} · D.${h.s+1} · <span style="font-family:var(--mo);font-size:10px">${st.skl}</span></div><div class="rid">${dt}</div></div></div>`;}).join('');
+  document.getElementById('rv').innerHTML=`
+    <div style="background:var(--w);border:1px solid var(--bd);border-radius:7px;padding:.9rem 1rem;margin-bottom:1rem">
+      <p style="font-size:10px;font-family:var(--mo);color:var(--ts);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.6rem">Resultado por caso</p>${bc}
+    </div>
+    <p style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:.65rem">Revisión detallada</p>${rh}`;
+  upd();
+}
+
+function resetAll(){
+  S={cur:null,step:0,correct:0,answered:0,done:0,scores:{},ans:false,hist:[]};
+  document.querySelectorAll('.cb').forEach(b=>{b.classList.remove('dn','act');const bd=b.querySelector('.cbg');if(bd)bd.remove();});
+  upd();show('sw');
+}
+</script>
+</body>
+</html>
