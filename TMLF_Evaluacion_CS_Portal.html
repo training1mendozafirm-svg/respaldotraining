@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación CS — Customer Service Operations · TMLF</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d10; --sf: #13151a; --sf2: #1a1d24; --sf3: #22262f;
+  --bd: rgba(255,255,255,0.07); --bd2: rgba(255,255,255,0.13);
+  --tx: #e6e8eb; --tx2: #9396a0; --tx3: #52555f;
+  --gold: #c9a84c; --gl: #e8c96a;
+  --gd: rgba(201,168,76,0.12); --gb: rgba(201,168,76,0.3);
+  --cyan: #3aada4; --cd: rgba(58,173,164,0.12);
+  --red: #e05252; --rd: rgba(224,82,82,0.12); --rb: rgba(224,82,82,0.28);
+  --green: #4caf82; --grd: rgba(76,175,130,0.12);
+  --r: 10px; --rl: 14px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+}
+body {
+  background: var(--bg);
+  color: var(--tx);
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* ── TopNav ── */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 56px;
+  background: var(--sf);
+  border-bottom: 1px solid var(--bd);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(16px, 3vw, 40px);
+}
+.nav-brand { display: flex; align-items: center; gap: 12px; }
+.nav-seal {
+  width: 36px; height: 36px; border-radius: 7px;
+  background: var(--gd); border: 1px solid var(--gb);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-weight: 700;
+  font-size: 14px; color: var(--gold);
+}
+.nav-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(13px, 1.2vw, 17px); font-weight: 700; color: var(--tx);
+}
+.nav-sub { font-size: clamp(10px, 0.9vw, 13px); color: var(--tx3); margin-top: 1px; }
+.nav-badge {
+  font-size: clamp(9px, 0.75vw, 11px); font-weight: 600; letter-spacing: .06em;
+  padding: 3px 10px; border-radius: 20px;
+  background: var(--gd); color: var(--gold); border: 1px solid var(--gb);
+  font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Main layout — ocupa todo el ancho ── */
+.main-wrap {
+  padding-top: 56px;
+  min-height: 100vh;
+  width: 100%;
+  display: flex; flex-direction: column; align-items: stretch;
+}
+
+/* ── Intro screen ── */
+.intro-screen {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 64px) clamp(20px, 4vw, 60px) 40px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+.intro-icon {
+  width: 76px; height: 76px; border-radius: var(--rl);
+  background: var(--gd); border: 1px solid var(--gb);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; margin-bottom: 24px;
+}
+.intro-kicker {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(11px, 1vw, 13px); font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 12px;
+}
+.intro-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 48px); font-weight: 800; color: var(--tx);
+  line-height: 1.15; margin-bottom: 16px;
+}
+.intro-desc {
+  font-size: clamp(14px, 1.2vw, 17px); color: var(--tx2); line-height: 1.75;
+  max-width: 600px; margin: 0 auto 32px;
+}
+.intro-meta {
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 40px;
+}
+.meta-pill {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--sf2); border: 1px solid var(--bd);
+  border-radius: 20px; padding: 6px 14px;
+  font-size: clamp(12px, 1vw, 14px); color: var(--tx2);
+}
+.meta-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+.meta-dot.cyan { background: var(--cyan); }
+.meta-dot.red  { background: var(--red); }
+.btn-start {
+  background: var(--gold); color: #0b0d10;
+  border: none; border-radius: var(--r);
+  padding: 14px 44px;
+  font-size: clamp(14px, 1.2vw, 17px); font-weight: 600;
+  font-family: 'DM Sans', sans-serif; cursor: pointer;
+  transition: background .15s, transform .1s; letter-spacing: .02em;
+}
+.btn-start:hover { background: var(--gl); transform: translateY(-1px); }
+
+/* ── Quiz container — ancho completo con padding lateral ── */
+.quiz-container {
+  display: none;
+  width: 100%;
+  padding: clamp(24px, 3vw, 40px) clamp(20px, 5vw, 80px) 80px;
+}
+
+/* ── Progress ── */
+.progress-bar-wrap { margin-bottom: 28px; display: flex; flex-direction: column; gap: 8px; }
+.progress-meta { display: flex; justify-content: space-between; align-items: center; }
+.prog-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(10px, 0.9vw, 12px); font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--tx3);
+}
+.prog-counter {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(13px, 1.1vw, 15px); font-weight: 600; color: var(--gold);
+}
+.progress-track { height: 3px; background: var(--sf3); border-radius: 2px; overflow: hidden; }
+.progress-fill {
+  height: 100%; background: var(--gold); border-radius: 2px;
+  transition: width .4s cubic-bezier(.4,0,.2,1); width: 0%;
+}
+
+/* ── Question card ── */
+.question-card {
+  background: var(--sf); border: 1px solid var(--bd);
+  border-radius: var(--rl);
+  padding: clamp(20px, 2.5vw, 36px) clamp(20px, 2.5vw, 36px) clamp(20px, 2vw, 30px);
+  margin-bottom: 16px; animation: cardIn .2s ease;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.q-category {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(10px, 0.8vw, 12px); font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--tx3); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 7px;
+}
+.q-cat-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+.q-cat-dot.cyan { background: var(--cyan); }
+.q-cat-dot.red  { background: var(--red); }
+.q-case {
+  background: var(--sf2); border: 1px solid var(--bd2);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: clamp(12px, 1.5vw, 18px) clamp(14px, 1.8vw, 22px);
+  margin-bottom: 18px;
+  font-size: clamp(13px, 1.1vw, 16px); color: var(--tx2);
+  font-style: italic; line-height: 1.7;
+}
+.q-case.cyan-border { border-left-color: var(--cyan); }
+.q-case.red-border  { border-left-color: var(--red); }
+.q-case strong { font-style: normal; color: var(--tx); font-weight: 500; }
+.q-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(17px, 1.8vw, 24px); font-weight: 600; color: var(--tx);
+  line-height: 1.4; margin-bottom: 24px;
+}
+
+/* ── Options ── */
+.options-grid { display: flex; flex-direction: column; gap: 10px; }
+.opt-btn {
+  width: 100%; text-align: left;
+  background: var(--sf2); border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: clamp(12px, 1.2vw, 16px) clamp(14px, 1.5vw, 20px);
+  cursor: pointer; color: var(--tx);
+  font-size: clamp(13px, 1.1vw, 16px); font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: flex-start; gap: 14px;
+  transition: border-color .12s, background .12s;
+  line-height: 1.55;
+}
+.opt-btn:hover:not(:disabled) { border-color: var(--bd2); background: var(--sf3); }
+.opt-btn:disabled { cursor: default; }
+.opt-letter {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--sf3); border: 1px solid var(--bd2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(11px, 0.9vw, 13px); font-weight: 700; color: var(--tx3);
+  flex-shrink: 0; margin-top: 2px;
+  transition: background .12s, border-color .12s, color .12s;
+}
+.opt-btn.selected        { border-color: var(--gold); background: var(--gd); }
+.opt-btn.selected .opt-letter { background: var(--gold); border-color: var(--gold); color: #0b0d10; }
+.opt-btn.correct         { border-color: var(--green); background: var(--grd); }
+.opt-btn.correct .opt-letter  { background: var(--green); border-color: var(--green); color: #0b0d10; }
+.opt-btn.incorrect       { border-color: var(--red); background: var(--rd); }
+.opt-btn.incorrect .opt-letter { background: var(--red); border-color: var(--red); color: #fff; }
+.opt-btn.show-correct    { border-color: var(--green); background: var(--grd); }
+.opt-btn.show-correct .opt-letter { background: var(--green); border-color: var(--green); color: #0b0d10; }
+
+/* ── Feedback ── */
+.feedback-box {
+  display: none; margin-top: 16px; border-radius: var(--r);
+  padding: clamp(12px, 1.2vw, 18px) clamp(14px, 1.5vw, 20px);
+  font-size: clamp(13px, 1.1vw, 16px); line-height: 1.7; border: 1px solid;
+}
+.feedback-box.correct  { background: var(--grd); border-color: rgba(76,175,130,0.3); color: #7ee8b8; display: block; }
+.feedback-box.incorrect { background: var(--rd); border-color: var(--rb); color: #ff9090; display: block; }
+.feedback-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(10px, 0.8vw, 12px); font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; opacity: .8;
+}
+.feedback-text { color: var(--tx); }
+.feedback-text strong { color: var(--gl); font-weight: 600; }
+.feedback-box.incorrect .feedback-text strong { color: #ffbf7f; }
+
+/* ── Nav buttons ── */
+.quiz-nav { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.btn-next {
+  background: var(--gold); color: #0b0d10;
+  border: none; border-radius: var(--r);
+  padding: 12px 32px;
+  font-size: clamp(13px, 1.1vw, 16px); font-weight: 600;
+  font-family: 'DM Sans', sans-serif; cursor: pointer;
+  transition: background .15s; display: none;
+}
+.btn-next:hover { background: var(--gl); }
+
+/* ── Results ── */
+.results-screen {
+  display: none;
+  width: 100%;
+  padding: clamp(32px, 4vw, 56px) clamp(20px, 5vw, 80px) 80px;
+  animation: cardIn .3s ease;
+}
+.results-header { text-align: center; margin-bottom: 40px; }
+.results-icon {
+  width: 80px; height: 80px; border-radius: var(--rl);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 38px; margin: 0 auto 18px;
+}
+.results-icon.pass { background: var(--grd); }
+.results-icon.fail { background: var(--rd); }
+.results-kicker {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(11px, 1vw, 13px); font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px;
+}
+.results-kicker.pass { color: var(--green); }
+.results-kicker.fail { color: var(--red); }
+.results-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 3vw, 38px); font-weight: 800; color: var(--tx);
+  line-height: 1.2; margin-bottom: 10px;
+}
+.results-score-big {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(56px, 8vw, 96px); font-weight: 800; line-height: 1;
+  margin: 22px 0 6px;
+}
+.results-score-big.pass { color: var(--green); }
+.results-score-big.fail { color: var(--red); }
+.results-score-sub { font-size: clamp(13px, 1.1vw, 16px); color: var(--tx3); }
+.results-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 14px; margin: 32px 0;
+  max-width: 700px; margin-left: auto; margin-right: auto;
+}
+.res-card { background: var(--sf); border: 1px solid var(--bd); border-radius: var(--r); padding: 20px; text-align: center; }
+.res-card-val { font-family: 'Playfair Display', serif; font-size: clamp(24px, 3vw, 34px); font-weight: 700; margin-bottom: 5px; }
+.res-card-val.gold  { color: var(--gold); }
+.res-card-val.green { color: var(--green); }
+.res-card-val.red   { color: var(--red); }
+.res-card-label { font-size: clamp(11px, 0.9vw, 13px); color: var(--tx3); }
+.results-divider { height: 1px; background: var(--bd); margin: 32px 0; }
+.results-section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(11px, 0.9vw, 13px); font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--tx3); margin-bottom: 14px;
+}
+.review-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 12px 0; border-bottom: 1px solid var(--bd);
+  font-size: clamp(13px, 1.1vw, 16px);
+}
+.review-item:last-child { border-bottom: none; }
+.review-indicator {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+}
+.review-indicator.c { background: var(--grd); color: var(--green); }
+.review-indicator.w { background: var(--rd); color: var(--red); }
+.review-qtext { color: var(--tx2); line-height: 1.55; flex: 1; }
+.review-qnum {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(10px, 0.8vw, 12px); font-weight: 700;
+  color: var(--tx3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 3px;
+}
+.btn-retry {
+  display: block; width: 100%; max-width: 500px; margin: 28px auto 0;
+  background: var(--sf2); border: 1px solid var(--bd2); border-radius: var(--r);
+  padding: 14px 24px; font-size: clamp(14px, 1.2vw, 17px); font-weight: 600;
+  font-family: 'DM Sans', sans-serif; color: var(--tx); cursor: pointer; text-align: center;
+  transition: background .15s, border-color .15s;
+}
+.btn-retry:hover { background: var(--sf3); border-color: var(--gold); color: var(--gold); }
+
+@media (max-width: 600px) {
+  .results-cards { grid-template-columns: 1fr 1fr; }
+  .nav-badge { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- TopNav -->
+<header class="topnav">
+  <div class="nav-brand">
+    <div class="nav-seal">M</div>
+    <div>
+      <div class="nav-title">Evaluación CS — Árbol de Decisiones</div>
+      <div class="nav-sub">The Mendoza Law Firm · Mendoza Learning Center</div>
+    </div>
+  </div>
+  <span class="nav-badge">Customer Service · 2026</span>
+</header>
+
+<div class="main-wrap">
+
+  <!-- INTRO -->
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-icon">☎</div>
+    <div class="intro-kicker">Evaluación práctica · Customer Service Operations</div>
+    <h1 class="intro-title">Árbol de Decisiones<br>Customer Service TMLF</h1>
+    <p class="intro-desc">Esta evaluación valida tu dominio de los protocolos, flujos, speeches y reglas operativas del portal CS. Cada pregunta está basada en un caso práctico real o escenario de llamada.</p>
+    <div class="intro-meta">
+      <div class="meta-pill"><div class="meta-dot"></div>22 preguntas de opción múltiple</div>
+      <div class="meta-pill"><div class="meta-dot cyan"></div>Casos prácticos reales</div>
+      <div class="meta-pill"><div class="meta-dot red"></div>Puntaje mínimo: 80%</div>
+      <div class="meta-pill"><div class="meta-dot"></div>Sin límite de tiempo</div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Comenzar evaluación →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-container" id="quizContainer">
+    <div class="progress-bar-wrap">
+      <div class="progress-meta">
+        <span class="prog-label">Progreso</span>
+        <span class="prog-counter" id="progCounter">Pregunta 1 de 22</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+    <div id="questionArea"></div>
+    <div class="quiz-nav">
+      <button class="btn-next" id="btnNext">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-screen" id="resultsScreen">
+    <div class="results-header">
+      <div class="results-icon" id="resIcon"></div>
+      <div class="results-kicker" id="resKicker"></div>
+      <div class="results-title" id="resTitle"></div>
+      <div class="results-score-big" id="resScore"></div>
+      <div class="results-score-sub" id="resSub"></div>
+    </div>
+    <div class="results-cards">
+      <div class="res-card">
+        <div class="res-card-val gold" id="resTotal">22</div>
+        <div class="res-card-label">Preguntas totales</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-val green" id="resCorrect">—</div>
+        <div class="res-card-label">Respuestas correctas</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-val red" id="resWrong">—</div>
+        <div class="res-card-label">Respuestas incorrectas</div>
+      </div>
+    </div>
+    <div class="results-divider"></div>
+    <div class="results-section-title">Revisión por pregunta</div>
+    <div id="reviewList"></div>
+    <button class="btn-retry" onclick="retryQuiz()">↺ Volver a intentar</button>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  // ── FLUJO BASE ──
+  {
+    cat: "Flujo base — Llamada perfecta",
+    catColor: "gold",
+    num: 1,
+    caseText: "Un cliente llama a la firma por primera vez. Al contestar, el asesor de CS dice: <strong>«Buenos días, aquí la firma de la abogada María Mendoza, le atiende Karla.»</strong>",
+    question: "¿Qué error cometió el asesor y cuál es la acción correcta?",
+    options: [
+      "No cometió ningún error; esa es una forma aceptada de identificar a la firma cuando el cliente llama por primera vez.",
+      "Usó una variante prohibida del nombre de la firma y no proporcionó su nombre completo. El saludo debe decir exactamente «The Mendoza Law Firm» y el nombre completo del asesor.",
+      "El error fue no confirmar el idioma del cliente antes de saludar, ya que algunos clientes prefieren atención en inglés desde el inicio.",
+      "Debió presentarse primero con su nombre completo antes de mencionar el nombre de la firma, según el orden del saludo corporativo."
+    ],
+    correct: 1,
+    feedback: "El protocolo prohíbe usar variantes como «firma de la abogada María Mendoza». El saludo obligatorio es: <strong>«Buenos días/tardes/noches, gracias por comunicarse a The Mendoza Law Firm, le atiende [nombre completo].»</strong>"
+  },
+  {
+    cat: "Flujo base — Candados de seguridad",
+    catColor: "gold",
+    num: 2,
+    caseText: "El asesor pregunta: <strong>«¿Me puede dar su nombre completo?»</strong> El cliente lo proporciona. El asesor le pide únicamente su número de cliente y procede a dar información del caso.",
+    question: "¿Qué falla operativa hay en este escenario?",
+    options: [
+      "Ninguna falla; verificar nombre completo y número de cliente cumple con los requisitos mínimos de seguridad del protocolo.",
+      "El asesor debió solicitar primero el motivo de la llamada antes de aplicar los filtros de seguridad, ese es el orden correcto.",
+      "Faltó el tercer filtro de seguridad: teléfono registrado, correo electrónico o dirección física. Sin los 3 filtros completos no puede darse información del caso.",
+      "El asesor debió pedir primero el número de cliente antes que el nombre, ya que ese es el orden establecido en el protocolo de verificación."
+    ],
+    correct: 2,
+    feedback: "Los <strong>3 filtros de seguridad son obligatorios</strong>: (1) nombre completo, (2) número de cliente o fecha de nacimiento, y (3) teléfono registrado, correo o dirección física. Si no se verifican los tres, no se proporciona información del caso."
+  },
+  {
+    cat: "Flujo base — Tiempos de espera",
+    catColor: "gold",
+    num: 3,
+    caseText: "El asesor puso al cliente en espera para revisar su caso. Ya pasaron 5 minutos y todavía está revisando el expediente en TramCase.",
+    question: "¿Qué debe hacer el asesor según el protocolo de tiempos de espera?",
+    options: [
+      "Continuar revisando sin interrumpir, ya que el cliente aceptó esperar cuando el asesor solicitó los minutos al inicio de la revisión.",
+      "Terminar la llamada de inmediato, obtener toda la información necesaria y devolver la llamada al cliente cuando esté listo.",
+      "Regresar con el cliente antes de que se cumplan los 3 minutos del bloque, actualizarlo y solicitar otro bloque si aún necesita más tiempo de revisión.",
+      "El límite permitido son 5 minutos en total; mientras no se supere ese tiempo, el protocolo no se viola y puede continuar revisando."
+    ],
+    correct: 2,
+    feedback: "El <strong>límite máximo por bloque de espera es 3 minutos</strong>. Si el asesor necesita más tiempo, debe regresar antes de cumplirse los 3 minutos, dar una actualización y solicitar otro bloque. No se puede dejar al cliente en espera indefinida."
+  },
+  {
+    cat: "Flujo base — Documentación",
+    catColor: "gold",
+    num: 4,
+    caseText: "Al finalizar una llamada, el asesor anota en TramCase: <strong>«Cliente llamó sobre su caso. Se le informó.»</strong> Luego se despide del cliente sin completar el Registro de llamadas.",
+    question: "¿Qué principio operativo se está violando y cuál es la consecuencia?",
+    options: [
+      "No se viola ningún principio; una nota breve en TramCase es suficiente para dejar constancia de la interacción con el cliente.",
+      "Se viola el principio de documentación completa. La nota omite los campos obligatorios (Reason, Solution, Behavior, CN) y falta el Registro de llamadas, que es un registro independiente de TramCase.",
+      "El error principal es que el asesor no ofreció asistencia adicional antes de iniciar la documentación, ese es el paso omitido.",
+      "Documentar durante la llamada mientras el cliente espera es el error; el protocolo indica hacerlo únicamente después de despedirse."
+    ],
+    correct: 1,
+    feedback: "La nota en TramCase debe incluir: <strong>título correcto / Reason / Solution / Type of case / Behavior / CN / Internal note</strong> si aplica. Además, el Registro de llamadas debe completarse por separado. La regla de oro es: <strong>«Lo que no está documentado no existe.»</strong>"
+  },
+  // ── MOTIVOS DE LLAMADA ──
+  {
+    cat: "Estatus de caso — Atraso USCIS",
+    catColor: "cyan",
+    num: 5,
+    caseText: "Una clienta llama porque su caso lleva más tiempo del estimado según los tiempos de USCIS. El asesor verifica y confirma que sí hay un atraso.",
+    question: "¿Cuál es la acción correcta que debe tomar el asesor?",
+    options: [
+      "Explicar a la clienta que los tiempos de USCIS son estimativos y que no existe ninguna acción adicional que la firma pueda tomar en este momento.",
+      "Mostrar o compartir la página oficial de USCIS (los tiempos cambian diariamente), documentar el atraso en TramCase y coordinar con el TL la escalación a Back Office bajo «Needs packet speed up» antes de ofrecérsela a la clienta.",
+      "Escalar directamente a Back Office bajo «Needs packet speed up» sin consultar al TL, ya que el atraso confirmado en TramCase es criterio suficiente para proceder sin autorización adicional.",
+      "Agendar de inmediato una callback con el área legal para que un abogado explique el atraso, sin documentar la llamada actual ni involucrar al TL en este momento."
+    ],
+    correct: 1,
+    feedback: "Cuando se confirma un atraso, el asesor puede <strong>mostrar o compartir la página de USCIS</strong> para que la clienta vea que los tiempos cambian diariamente. La escalación a Back Office bajo «Needs packet speed up» <strong>requiere coordinación y autorización del TL</strong> antes de ofrecerse al cliente. También se documenta el atraso en TramCase y se verifica si aplica Missing Receipt o E-Request."
+  },
+  {
+    cat: "Información confidencial — TramCase",
+    catColor: "red",
+    num: 6,
+    caseText: "El asesor abre TramCase y ve que el caso del cliente tiene un RFE (Request for Evidence) registrado. El cliente llama preguntando: <strong>«¿Qué está pasando con mi caso?»</strong>",
+    question: "¿Qué debe hacer el asesor con esa información?",
+    options: [
+      "Informar al cliente sobre el RFE de forma general para que pueda comenzar a preparar documentos mientras espera una llamada con el área legal.",
+      "No mencionar el RFE. Ofrecer una callback con el área legal y agendarla directamente en el portal de agendas, sin necesidad de autorización previa del TL.",
+      "No mencionar el RFE, pero esperar a que el TL autorice explícitamente la callback antes de poder agendarla en el portal de agendas.",
+      "Preguntar al cliente si ya recibió algún aviso de USCIS y, dependiendo de su respuesta, decidir si mencionar o no el RFE registrado en TramCase."
+    ],
+    correct: 1,
+    feedback: "Los <strong>RFEs no se informan directamente al cliente desde CS</strong>. El asesor no debe mencionarlo. Corresponde al Escenario A: el cliente no sabe y el asesor lo ve en TramCase o Dropbox. La respuesta correcta es: <strong>«Lo que podemos hacer es agendar una llamada con el área legal para que le den un estatus detallado de su caso.»</strong> Con el cambio de protocolo, el asesor <strong>agenda la callback directamente en el portal de agendas, sin necesidad de autorización previa del TL.</strong>"
+  },
+  {
+    cat: "Solicitud de expediente — File Request",
+    catColor: "gold",
+    num: 7,
+    caseText: "Un cliente llama indicando que tiene una corte migratoria próxima y necesita su expediente para presentarlo a su abogado externo.",
+    question: "Según el protocolo, ¿cuál es el nivel de escalación y qué información adicional debe recabar el asesor?",
+    options: [
+      "Nivel LOW. Confirmar el correo del cliente, documentar la solicitud en TramCase y notificar al TL de forma estándar sin urgencia adicional.",
+      "Nivel HIGH. Recopilar nombre, teléfono y correo del abogado externo, más el tipo y fecha de la corte. El envío del expediente requiere aprobación de MGM/Wendy antes de cualquier acción.",
+      "Nivel MEDIUM. Documentar la solicitud como urgente en el Registro de llamadas y escalar por el formulario sin necesidad de datos adicionales del abogado externo.",
+      "Nivel CRITICAL. Escalar directamente a Dirección sin pasar por el TL, ya que la corte próxima convierte automáticamente el caso en una emergencia de máxima prioridad."
+    ],
+    correct: 1,
+    feedback: "Cuando hay <strong>abogado externo involucrado, el nivel es HIGH</strong>. El asesor debe recopilar: nombre completo, teléfono y correo del abogado, tipo de corte y fecha. El envío del expediente a abogado externo <strong>requiere aprobación de MGM/Wendy</strong> antes de cualquier acción. Si el cliente menciona un Bar Number, escala a CRITICAL. Esta situación corresponde al Escenario C (el cliente pide el documento): se trata como <strong>File Request</strong> y, además, el asesor <strong>agenda la callback correspondiente</strong> directamente en el portal de agendas."
+  },
+  {
+    cat: "Cancelaciones y reembolsos",
+    catColor: "gold",
+    num: 8,
+    caseText: "Un cliente llama furioso queriendo cancelar su contrato. Después de 2 minutos de contención VDPC, el cliente sigue insistiendo: <strong>«Ya no quiero seguir, quiero mi dinero de regreso y quiero saber cuánto me van a regresar.»</strong>",
+    question: "¿Qué debe responder el asesor respecto al monto del reembolso?",
+    options: [
+      "Calcular un monto aproximado revisando el contrato en TramCase para darle al cliente una cifra orientativa y evitar que la llamada se prolongue más.",
+      "Decirle que la política de la firma no contempla reembolsos para cancelaciones solicitadas por el cliente fuera del período inicial del contrato.",
+      "Indicar que esa información se le comunicará en la llamada que recibirá del área de Cancelaciones, ya que no puede darse ningún monto sin que exista nota de «CASE CANCELED» en TramCase.",
+      "Poner al cliente en un bloque de espera de 3 minutos para consultar el contrato en TramCase y proporcionarle el monto exacto del reembolso disponible."
+    ],
+    correct: 2,
+    feedback: "<strong>Nunca dar montos ni tiempos de reembolso sin que exista una nota previa de «CASE CANCELED» en TramCase.</strong> La respuesta correcta es: <strong>«Esa información se le dará en la llamada que va a recibir»</strong> del área de Cancelaciones. El tiempo de reembolso estándar es 30-45 días hábiles a la misma tarjeta."
+  },
+  {
+    cat: "Pago de mensualidad — LawPay",
+    catColor: "cyan",
+    num: 9,
+    caseText: "El cliente desea pagar su mensualidad de $300 USD. El asesor ya tiene abierto LawPay con los datos del cliente y está a punto de procesar el cobro.",
+    question: "¿Qué fraseología obligatoria debe decir el asesor ANTES de procesar el pago?",
+    options: [
+      "«¿Me puede confirmar su método de pago y los últimos cuatro dígitos de su tarjeta antes de continuar con el proceso?»",
+      "«Le voy a realizar el cobro de $300 correspondiente a su mensualidad del mes en curso, ¿está usted de acuerdo con esto?»",
+      "«¿Me autoriza realizar el cobro por el monto de $300 USD por concepto de pago mensual o mensualidad para el caso a nombre de [nombre completo del titular]? ¿Lo autoriza?»",
+      "«Voy a procesar su pago en este momento, ¿tiene alguna pregunta antes de que lo haga o prefiere continuar de inmediato?»"
+    ],
+    correct: 2,
+    feedback: "La <strong>fraseología de autorización es obligatoria</strong> antes de procesar cualquier cobro. Debe decirse exactamente: <strong>«¿Me autoriza realizar el cobro por el monto de $[monto] USD por concepto de pago mensual o mensualidad para el caso a nombre de [nombre completo del titular del caso]? ¿Lo autoriza?»</strong> Después del cobro: copiar comprobante, dejarlo en TramCase y enviarlo por texto al cliente."
+  },
+  {
+    cat: "Reagendar citas",
+    catColor: "cyan",
+    num: 10,
+    caseText: "Son las 3 PM del jueves. Un cliente llama para reagendar su Intake que está programado para las 9 AM del viernes.",
+    question: "¿Qué debe hacer el asesor?",
+    options: [
+      "Reagendar directamente por el formulario como «Reagendar Intake DVS», ya que los asesores de CS no tienen límite de reagendamientos y pueden gestionarlo sin restricción horaria.",
+      "Verificar que entre las 3 PM del jueves y las 9 AM del viernes hay 18 horas, lo que sí cumple la regla de 12 horas; puede proceder con la reagenda por el formulario correspondiente.",
+      "Informar al cliente que ya no es posible reagendar a menos de 24 horas de la cita y que deberá asistir en el horario ya agendado originalmente.",
+      "Cancelar la cita actual sin reagendar y enviar una nota al área de DVS para que ellos coordinen una nueva fecha con el cliente en los próximos días."
+    ],
+    correct: 1,
+    feedback: "La <strong>regla de las 12 horas</strong> establece que toda reagenda debe hacerse con mínimo 12 horas de anticipación. De 3 PM del jueves a 9 AM del viernes hay 18 horas, por lo que SÍ cumple la regla. El asesor puede proceder por el formulario seleccionando «Reagendar Intake DVS» e informar al cliente que será contactado para confirmar la nueva cita."
+  },
+  // ── TERCERAS PERSONAS Y SITUACIONES ESPECIALES ──
+  {
+    cat: "Información confidencial — Lo que NO se dice al cliente",
+    catColor: "red",
+    num: 11,
+    caseText: "El asesor revisa TramCase y encuentra que el caso del cliente tiene registrada una <strong>NTA (Notice to Appear)</strong>. El cliente llama diciendo que ya lo sabe porque lo vio en la página de USCIS y pide que le confirmen qué significa y cuál es el siguiente paso.",
+    question: "¿Cuál es la acción correcta del asesor ante esta situación?",
+    options: [
+      "Confirmar que sí hay una NTA registrada y explicar brevemente qué es, ya que el cliente ya lo sabe por cuenta propia desde la página oficial de USCIS.",
+      "No confirmar ni ampliar lo que el cliente vio. Indicar que se realizará la escalación correspondiente al área de Removals para que el equipo legal le oriente, sin dar interpretaciones.",
+      "Explicar al cliente que una NTA es el inicio de un proceso de remoción y que debe presentarse a la audiencia, para que pueda prepararse con anticipación.",
+      "Preguntar al cliente qué fue exactamente lo que vio en la página de USCIS antes de confirmar o negar cualquier información registrada en TramCase."
+    ],
+    correct: 1,
+    feedback: "Aunque el cliente ya lo haya visto en la página de USCIS, el asesor <strong>no debe confirmar, ampliar ni interpretar la NTA</strong>. La NTA se escala a <strong>Removals</strong> (no a Callbacks). La respuesta correcta es: <strong>«Vamos a hacer la escalación correspondiente para que el área legal pueda orientarle.»</strong> Nunca especular sobre consecuencias legales ni dar interpretaciones de documentos migratorios."
+  },
+  {
+    cat: "Travel Call — Viaje",
+    catColor: "gold",
+    num: 12,
+    caseText: "Una clienta con caso VAWA quiere viajar fuera de EE.UU. Tiene su EAD vigente con 8 meses de vigencia restante. El EAD indica «Serves as I-512 Advance Parole». No tiene aprobación de I-131.",
+    question: "¿Puede viajar la clienta?",
+    options: [
+      "Sí puede viajar porque tiene EAD activo con la leyenda Advance Parole, que es el documento principal que autoriza la salida y reingreso al país.",
+      "No puede viajar. La vigencia del EAD es inferior a los 11 meses requeridos y además no cuenta con la aprobación de I-131. Ambos requisitos son obligatorios y ninguno se cumple.",
+      "Puede viajar siempre que informe a la firma con al menos 72 horas de anticipación y obtenga una autorización verbal del área de Callbacks antes de salir.",
+      "Sí puede viajar porque la leyenda «Serves as I-512» en el EAD funciona como sustituto válido de la aprobación de I-131 en casos de VAWA activos."
+    ],
+    correct: 1,
+    feedback: "Para poder viajar, el cliente debe cumplir <strong>TODOS</strong> los requisitos. En este caso hay dos fallas: (1) <strong>vigencia del EAD menor a 11 meses</strong> (tiene 8) y (2) <strong>no tiene aprobación de I-131</strong>. Cualquiera de las dos razones impide el viaje. El asesor informa empáticamente que no es recomendable viajar en este momento."
+  },
+  {
+    cat: "Preguntas sobre Trump / VAWA",
+    catColor: "cyan",
+    num: 13,
+    caseText: "Un cliente nervioso pregunta: <strong>«Con todo lo de Trump, ¿van a cancelar mi caso de VAWA? Me dijeron que ya no aprueban nada.»</strong>",
+    question: "¿Cuál es el enfoque correcto del asesor para responder esta situación?",
+    options: [
+      "Reconocer que la administración Trump sí puede afectar los procesos VAWA y que los tiempos se extenderán, pero que la firma continuará trabajando en el caso sin cambios.",
+      "Decirle que no existe ningún riesgo legal porque VAWA es una ley federal que ninguna administración puede modificar ni cancelar, y que su caso está completamente protegido.",
+      "Validar la preocupación, mencionar la experiencia de la abogada durante la primera administración Trump con casos de NTA, destacar la ventaja del estado actual del caso y recomendar seguir las redes oficiales de la abogada para mantenerse informado.",
+      "Escalar de inmediato la llamada al TL porque el protocolo prohíbe a los asesores de CS abordar temas relacionados con política migratoria o administración de gobierno."
+    ],
+    correct: 2,
+    feedback: "El speech establece reconocer los cambios, pero recordar que <strong>en la primera administración Trump la abogada también ganó casos con NTA</strong>, destacando sus 14+ años de experiencia. El asesor adapta la frase «afortunadamente» al estado del caso y recomienda seguir las redes de la abogada."
+  },
+  {
+    cat: "Habeas Corpus / Mandamus",
+    catColor: "gold",
+    num: 14,
+    caseText: "Un cliente recibió una llamada del área de Psicología/Filtros informándole sobre la Mandamus. Ahora llama a CS preguntando: <strong>«¿Con la Mandamus me garantizan que me van a aprobar el caso?»</strong>",
+    question: "¿Cuál es la respuesta correcta del asesor?",
+    options: [
+      "«Sí, presentar la Mandamus obliga a USCIS a resolver el caso favorablemente y eso prácticamente garantiza la aprobación del trámite pendiente.»",
+      "«No podemos garantizar ningún resultado; todo depende del criterio del juez federal que reciba el caso de Mandamus en el tribunal correspondiente.»",
+      "«No. La Mandamus solo puede obligar a USCIS a emitir una decisión, pero no garantiza aprobación. La llamada que recibió fue informativa; no tiene que decidir nada ahora.»",
+      "Escalar la pregunta al TL porque responder sobre los alcances legales de la Mandamus corresponde exclusivamente al área de Litigation, no a CS."
+    ],
+    correct: 2,
+    feedback: "La respuesta correcta del mini-FAQ es: <strong>«No. La Mandamus solo puede obligar a inmigración a emitir una decisión.»</strong> El asesor también debe aclarar que la llamada fue solo informativa y que no hay obligación de decidir. Las reglas para CS son: informar, no persuadir; no prometer resultados; no ofrecer costos."
+  },
+  {
+    cat: "Canalización — Case Review",
+    catColor: "cyan",
+    num: 15,
+    caseText: "Un cliente con caso en <strong>Área 4 (WAE's)</strong> llama preguntando en qué etapa se encuentra su proceso.",
+    question: "¿Qué speech debe usar el asesor con el cliente para describir esta etapa?",
+    options: [
+      "«Su caso está en seguimiento activo por parte del equipo, quien estará al pendiente de cualquier avance y se comunicará con usted próximamente.»",
+      "«Se trabaja en el análisis de su declaración y redacción de documentos. Su caso está avanzando; en caso de requerirse algo adicional, el equipo lo contactará.»",
+      "«Su caso está siendo ensamblado con la documentación completa y pronto estará listo para continuar con la siguiente etapa del proceso.»",
+      "«Su caso está en proceso de revisión y análisis detallado a cargo del equipo especializado. Si se detecta algún conflicto vinculado con su área, se canalizará de inmediato.»"
+    ],
+    correct: 1,
+    feedback: "Para el <strong>Área 4 · WAE's</strong>, el speech correcto es: <strong>«Se trabaja en el análisis de su declaración y redacción de documentos. Su caso está avanzando.»</strong> Si durante la revisión de TramCase se detecta algún conflicto vinculado con el área, se canaliza al equipo correspondiente. Siempre verificar las últimas notas antes de informar al cliente."
+  },
+  // ── EMERGENCIAS ──
+  {
+    cat: "Emergencia — Cliente detenido por ICE",
+    catColor: "red",
+    num: 16,
+    caseText: "Llama la esposa de un cliente, muy alterada, informando que su esposo fue detenido por agentes de ICE hace dos horas frente a su trabajo. Ella no sabe a dónde se lo llevaron ni qué agencia exactamente intervino.",
+    question: "¿Qué información crítica debe recopilar el asesor durante esta llamada y cómo debe proceder?",
+    options: [
+      "Pedir únicamente el nombre completo del detenido y el número de caso, registrarlo en TramCase y cerrar la llamada para que el área de Removals tome el control del seguimiento.",
+      "Contener emocionalmente a la esposa con VDPC, recopilar: nombre completo del detenido, hora y lugar de la detención, agencia que intervino, a dónde creen que fue trasladado y un número de contacto adicional. Notificar al TL de inmediato y hacer triple registro.",
+      "Indicar a la esposa que llame directamente al área de Removals, ya que CS no tiene autorización para gestionar casos de detención activa sin que el titular esté en la línea.",
+      "Pedir a la esposa que espere en línea mientras el asesor localiza el expediente completo en TramCase y consulta con el TL, aunque eso tome más de un bloque de espera."
+    ],
+    correct: 1,
+    feedback: "En detenciones activas, el asesor debe <strong>recopilar toda la información disponible</strong>: nombre del detenido, hora y lugar de detención, agencia que intervino, posible destino y contacto adicional del familiar. Aplicar VDPC para contener la angustia. El protocolo exige: (1) notificar al TL de inmediato, (2) recopilar información crítica, (3) triple registro: TramCase + Registro de llamadas (Emergencias → Detained) + Back Office. No asumir representación automática."
+  },
+  {
+    cat: "Emergencia — Cita con ICE",
+    catColor: "red",
+    num: 17,
+    caseText: "Una cliente llama informando que recibió un documento de ICE citándola a presentarse en sus oficinas en 4 días. Quiere saber si debe ir.",
+    question: "¿Qué debe decirle el asesor?",
+    options: [
+      "Indicarle que debe presentarse porque es una citación oficial de ICE y no asistir puede generar consecuencias legales negativas para su caso migratorio.",
+      "Decirle que no se preocupe porque con un caso activo en la firma ninguna citación de ICE tiene validez legal inmediata que la obligue a presentarse.",
+      "Indicarle que no debe presentarse hasta que un abogado de la firma revise el documento. Recopilar detalles de la cita y el documento, escalar a Back Office y registrar como ICE Appointment, y canalizar a Courts and Removal.",
+      "Pedirle que fotografíe el documento y lo envíe por TramCase, confirmar que lo recibió y cerrar la llamada, ya que el área de Removals revisará el caso sin necesidad de más información."
+    ],
+    correct: 2,
+    feedback: "Speech mandatorio: <strong>«Por favor, no presentarse hasta que un abogado de nuestro equipo le indique lo contrario.»</strong> El procedimiento incluye: notificar al TL (es emergencia), indagación exhaustiva del documento, escalación doble (Back Office + Registro → ICE Appointment) y canalizar a Courts and Removal."
+  },
+  {
+    cat: "Emergencia — Bar Complaint",
+    catColor: "red",
+    num: 18,
+    caseText: "Durante una llamada, el cliente dice: <strong>«Voy a presentar una queja ante el Colegio de Abogados (Bar Complaint) y ya tengo a un abogado externo que me va a ayudar.»</strong>",
+    question: "¿Cuál es la clasificación de riesgo y el protocolo del asesor?",
+    options: [
+      "Nivel MEDIUM. Escalar al TL por Slack, ofrecer una disculpa al cliente y continuar la llamada documentando la inconformidad en el Registro de llamadas.",
+      "Nivel CRITICAL. No colgar la llamada. Escalar al TL de inmediato mientras mantiene al cliente en línea, documentar frases exactas y hora en tiempo real, y que el TL escale a Dirección y MGM.",
+      "Nivel HIGH. Colgar la llamada cortésmente, documentar la amenaza completa en TramCase y reportar el incidente al TL una vez cerrada la interacción con el cliente.",
+      "Nivel LOW. Ofrecer una disculpa sincera al cliente, agendar una callback con la abogada para abordar sus preocupaciones y registrar la situación en el Registro de llamadas."
+    ],
+    correct: 1,
+    feedback: "Una amenaza de <strong>Bar Complaint es nivel CRITICAL</strong>. El protocolo: (1) <strong>NO colgar la llamada</strong>, (2) notificar al TL de inmediato manteniéndose en línea, (3) documentar en tiempo real: frases clave, amenaza, hora, estatus del caso. El TL escala a Dirección + MGM. NUNCA admitir errores, negligencia o responsabilidad legal."
+  },
+  // ── HERRAMIENTAS ──
+  {
+    cat: "Metodología VDPC",
+    catColor: "cyan",
+    num: 19,
+    caseText: "Un cliente dice: <strong>«Llevan dos años y no han resuelto nada. Yo ya no tengo nada más que decir.»</strong> El asesor responde de inmediato: <strong>«Le entiendo. Los tiempos de USCIS actualmente son de 18 a 24 meses y su caso va en el mes 22, lo cual significa que técnicamente todavía está dentro del rango...»</strong>",
+    question: "¿Qué etapa de la metodología VDPC está omitiendo el asesor con esta respuesta?",
+    options: [
+      "Está omitiendo el Cierre, porque no orientó al cliente hacia un futuro positivo ni ofreció acompañamiento al finalizar su explicación técnica.",
+      "Está omitiendo la Disculpa y saltando directo a datos técnicos. Con un cliente en ese nivel de agotamiento, la carga de información rompe la contención en lugar de ayudar.",
+      "Está omitiendo la verificación de tiempos en la hoja oficial antes de citar cifras de USCIS, lo cual es una violación a la regla de no informar plazos de memoria.",
+      "No está omitiendo ninguna etapa; decir «le entiendo» activa la Validación y los datos técnicos corresponden al Puente hacia la solución, que es el siguiente paso correcto."
+    ],
+    correct: 1,
+    feedback: "El cliente no dijo «estoy molesto» — dijo que ya no tiene nada más que decir: está agotado y desconectado. La respuesta técnica inmediata omite la <strong>Disculpa</strong> y llega demasiado pronto al dato. La VDPC exige: Validación genuina → Disculpa breve → Puente a la acción. <strong>A mayor molestia o agotamiento → menor explicación, puente más rápido.</strong> Cargar de información en ese momento cierra al cliente en lugar de abrirlo."
+  },
+  {
+    cat: "Notas en TramCase — Estructura",
+    catColor: "gold",
+    num: 20,
+    caseText: "El asesor atendió una llamada saliente (outbound) que surgió desde una tarea de ClickUp del equipo de Textos. Al documentar en TramCase, usa el título: <strong>«Outgoing Call / Case status»</strong>.",
+    question: "¿Es correcto ese título de nota para este tipo de llamada?",
+    options: [
+      "Sí, ese título es válido para todo tipo de llamadas salientes sin importar cuál fue el origen interno que generó la necesidad de contactar al cliente.",
+      "No. Cuando la llamada proviene de una tarea de ClickUp del equipo de Textos, el título correcto es «Outgoing Call / Chat Request», que identifica el origen específico de esa interacción.",
+      "El título de la nota en TramCase no es relevante para el registro siempre que el cuerpo contenga los campos obligatorios completos: Reason, Solution, Behavior y CN.",
+      "No es correcto, pero el título adecuado para cualquier llamada outbound es simplemente «Outgoing Call», sin agregar ningún segundo elemento descriptivo después."
+    ],
+    correct: 1,
+    feedback: "El protocolo distingue el tipo de llamada saliente: cuando proviene de una <strong>tarea de ClickUp del equipo de Chat/Textos</strong>, el título obligatorio es <strong>«Outgoing Call / Chat Request»</strong>, no el genérico «Outgoing Call / Case status». Este formato permite identificar que la llamada tuvo origen en una solicitud de chat."
+  },
+  // ── DROPBOX Y AGENDA DE CALLBACK ──
+  {
+    cat: "Dropbox — Acceso y escalación",
+    catColor: "gold",
+    num: 21,
+    caseText: "El asesor consulta Dropbox y, dentro de la carpeta <strong>7. SUBMISSION ATTY USCIS</strong>, encuentra un documento que corresponde a una <strong>Decision negativa</strong> del caso. El cliente no ha mencionado nada al respecto y solo pregunta por el estatus general de su caso.",
+    question: "¿Qué debe hacer el asesor?",
+    options: [
+      "Compartir el contenido del documento con el cliente, ya que ahora los asesores de CS sí tienen acceso a Dropbox y pueden ver esa información directamente.",
+      "No mencionar la Decision. Ofrecer una callback con el área legal y agendarla directamente en el portal de agendas, sin necesidad de autorización previa del TL.",
+      "Notificar primero al TL por Slack y esperar su autorización explícita antes de poder ofrecer o agendar cualquier callback con el cliente.",
+      "Indicarle al cliente que revise directamente Dropbox, ya que esa carpeta contiene toda la información oficial y actualizada de su caso."
+    ],
+    correct: 1,
+    feedback: "Tener acceso a Dropbox <strong>no significa que la información se pueda compartir</strong> con el cliente. Este es el Escenario A: el cliente no sabe y el asesor lo ve en TramCase o Dropbox. No se menciona el documento negativo; se ofrece una callback con abogado y el asesor <strong>la agenda directamente en el portal de agendas, sin necesidad de autorización previa del TL.</strong>"
+  },
+  {
+    cat: "Dropbox — Recibos de USCIS",
+    catColor: "cyan",
+    num: 22,
+    caseText: "Un cliente pide que le confirmen el contenido de dos avisos de USCIS que ve en su carpeta: un <strong>I-797C de cita de biométricos</strong> y un <strong>I-797E</strong>.",
+    question: "¿Qué debe hacer el asesor con cada uno?",
+    options: [
+      "Compartir ambos, ya que los dos son avisos I-797 y todos los tipos de I-797 se pueden compartir libremente con el cliente.",
+      "Compartir el de biométricos (es información de cita, permitida) y NO compartir el I-797E, ya que corresponde a un RFE y siempre se escala mediante la agenda de callback.",
+      "No compartir ninguno de los dos, ya que ningún documento de USCIS puede compartirse directamente con el cliente bajo ninguna circunstancia.",
+      "Compartir el I-797E porque el cliente ya lo tiene en su carpeta, y no compartir el de biométricos porque esa información se considera confidencial."
+    ],
+    correct: 1,
+    feedback: "Los recibos <strong>iniciales, aprobaciones (I-797/A/B), envío de tarjeta o documento (I-797D), citas de biométricos y prima facie SÍ se pueden compartir</strong>. Lo que <strong>NUNCA se comparte</strong> son decisions, rejections, <strong>RFEs (I-797E)</strong> y NOIDs — estos siempre disparan el flujo de agenda de callback. Un I-797C puede corresponder a varias acciones, por lo que siempre hay que verificar la acción específica indicada antes de compartirlo."
+  }
+];
+
+let currentQ = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+let answered = false;
+
+function startQuiz() {
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('quizContainer').style.display = 'block';
+  document.getElementById('btnNext').onclick = nextQuestion;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  document.getElementById('btnNext').style.display = 'none';
+  updateProgress();
+  const q = QUESTIONS[currentQ];
+  const catDotClass = q.catColor === 'cyan' ? 'cyan' : q.catColor === 'red' ? 'red' : '';
+  const caseClass = q.catColor === 'cyan' ? 'cyan-border' : q.catColor === 'red' ? 'red-border' : '';
+  const letters = ['A','B','C','D'];
+  const optionsHTML = q.options.map((opt, i) => `
+    <button class="opt-btn" id="opt-${i}" onclick="selectOption(${i})">
+      <span class="opt-letter">${letters[i]}</span>
+      <span>${opt}</span>
+    </button>
+  `).join('');
+  document.getElementById('questionArea').innerHTML = `
+    <div class="question-card">
+      <div class="q-category">
+        <div class="q-cat-dot ${catDotClass}"></div>
+        ${q.cat}
+      </div>
+      <div class="q-case ${caseClass}">${q.caseText}</div>
+      <div class="q-text">${q.question}</div>
+      <div class="options-grid">${optionsHTML}</div>
+      <div class="feedback-box" id="feedbackBox">
+        <div class="feedback-label" id="feedbackLabel"></div>
+        <div class="feedback-text" id="feedbackText"></div>
+      </div>
+    </div>
+  `;
+}
+
+function selectOption(idx) {
+  if (answered) return;
+  answered = true;
+  answers[currentQ] = idx;
+  const q = QUESTIONS[currentQ];
+  const isCorrect = idx === q.correct;
+  const letters = ['A','B','C','D'];
+  // Disable all options
+  for (let i = 0; i < q.options.length; i++) {
+    const btn = document.getElementById(`opt-${i}`);
+    btn.disabled = true;
+    if (i === idx && isCorrect) { btn.classList.add('correct'); }
+    else if (i === idx && !isCorrect) { btn.classList.add('incorrect'); }
+    else if (i === q.correct && !isCorrect) { btn.classList.add('show-correct'); }
+  }
+  // Feedback
+  const fb = document.getElementById('feedbackBox');
+  const lbl = document.getElementById('feedbackLabel');
+  const txt = document.getElementById('feedbackText');
+  if (isCorrect) {
+    fb.className = 'feedback-box correct';
+    lbl.textContent = '✓ Respuesta correcta';
+    txt.innerHTML = q.feedback;
+  } else {
+    fb.className = 'feedback-box incorrect';
+    lbl.textContent = `✕ Incorrecto — La correcta era ${letters[q.correct]}`;
+    txt.innerHTML = q.feedback;
+  }
+  // Show next button
+  const btnNext = document.getElementById('btnNext');
+  btnNext.style.display = 'block';
+  if (currentQ < QUESTIONS.length - 1) {
+    btnNext.textContent = 'Siguiente →';
+    btnNext.onclick = nextQuestion;
+  } else {
+    btnNext.textContent = 'Ver resultados →';
+    btnNext.onclick = showResults;
+  }
+}
+
+function nextQuestion() {
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    renderQuestion();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  } else {
+    showResults();
+  }
+}
+
+function showResultsDirect() {
+  showResults();
+}
+
+function updateProgress() {
+  const pct = (currentQ / QUESTIONS.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progCounter').textContent = `Pregunta ${currentQ + 1} de ${QUESTIONS.length}`;
+}
+
+function showResults() {
+  document.getElementById('quizContainer').style.display = 'none';
+  const rs = document.getElementById('resultsScreen');
+  rs.style.display = 'block';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  let correct = 0;
+  answers.forEach((a, i) => { if (a === QUESTIONS[i].correct) correct++; });
+  const wrong = QUESTIONS.length - correct;
+  const pct = Math.round((correct / QUESTIONS.length) * 100);
+  const pass = pct >= 80;
+
+  document.getElementById('resIcon').innerHTML = pass ? '🏅' : '📋';
+  document.getElementById('resIcon').className = `results-icon ${pass ? 'pass' : 'fail'}`;
+  document.getElementById('resKicker').textContent = pass ? 'Evaluación aprobada' : 'Evaluación no aprobada';
+  document.getElementById('resKicker').className = `results-kicker ${pass ? 'pass' : 'fail'}`;
+  document.getElementById('resTitle').textContent = pass ? '¡Buen dominio del protocolo CS!' : 'Refuerza los protocolos indicados';
+  document.getElementById('resScore').textContent = pct + '%';
+  document.getElementById('resScore').className = `results-score-big ${pass ? 'pass' : 'fail'}`;
+  document.getElementById('resSub').textContent = `Puntaje mínimo requerido: 80% · Obtenido: ${pct}%`;
+  document.getElementById('resCorrect').textContent = correct;
+  document.getElementById('resWrong').textContent = wrong;
+
+  // Review list
+  const reviewList = document.getElementById('reviewList');
+  const letters = ['A','B','C','D'];
+  reviewList.innerHTML = QUESTIONS.map((q, i) => {
+    const userAns = answers[i];
+    const isC = userAns === q.correct;
+    return `<div class="review-item">
+      <div class="review-indicator ${isC ? 'c' : 'w'}">${isC ? '✓' : '✕'}</div>
+      <div class="review-qtext">
+        <div class="review-qnum">P${i+1} · ${q.cat}</div>
+        ${q.question}
+        ${!isC ? `<div style="margin-top:4px;font-size:11px;color:var(--tx3)">Tu respuesta: ${letters[userAns]} · Correcta: ${letters[q.correct]}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function retryQuiz() {
+  currentQ = 0;
+  answers = new Array(QUESTIONS.length).fill(null);
+  answered = false;
+  document.getElementById('resultsScreen').style.display = 'none';
+  document.getElementById('quizContainer').style.display = 'block';
+  renderQuestion();
+  window.scrollTo({top: 52, behavior: 'smooth'});
+}
+
+</script>
+</body>
+</html>
