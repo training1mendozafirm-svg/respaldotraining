@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Estratégica · Comunicación con Clientes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --navy: #0b1e3d;
+    --navy-mid: #142850;
+    --navy-light: #1e3a5f;
+    --cream: #f5f0e8;
+    --white: #ffffff;
+    --text-muted: rgba(245,240,232,0.6);
+    --accent-red: #c0392b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    padding: 60px 40px 50px;
+    text-align: center;
+    background: linear-gradient(160deg, #0d2347 0%, #0b1e3d 60%, #081525 100%);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.15) 0%, transparent 65%);
+  }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  /* ─── PROGRESS ─── */
+  .progress-bar-wrap {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .progress-pip {
+    width: 32px;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.15);
+    transition: background 0.4s;
+    cursor: pointer;
+  }
+  .progress-pip.active { background: var(--gold); }
+  .progress-pip.done { background: rgba(201,168,76,0.45); }
+  .progress-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    position: relative;
+  }
+
+  /* ─── NAV TABS ─── */
+  .tabs-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 30px 20px 0;
+    flex-wrap: wrap;
+  }
+  .tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 30px;
+    border: 1.5px solid rgba(201,168,76,0.25);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .tab:hover { border-color: var(--gold); color: var(--cream); }
+  .tab.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .tab .tab-icon { font-size: 16px; }
+  .tab .tab-num {
+    font-size: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 1px 6px;
+  }
+  .tab.active .tab-num { background: rgba(11,30,61,0.3); }
+
+  /* ─── CONTENT AREA ─── */
+  .content-area {
+    max-width: 900px;
+    margin: 30px auto 60px;
+    padding: 0 20px;
+  }
+
+  .section {
+    display: none;
+    animation: fadeUp 0.4s ease both;
+  }
+  .section.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .section-header .icon-big {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .section-header h2 span { color: var(--gold); }
+  .section-header p {
+    color: var(--text-muted);
+    font-size: 14px;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ─── STRATEGY CARDS ─── */
+  .cards-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .strategy-card {
+    background: linear-gradient(135deg, rgba(20,40,80,0.8) 0%, rgba(11,30,61,0.9) 100%);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .strategy-card:hover {
+    border-color: rgba(201,168,76,0.55);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .strategy-card.expanded {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 1px rgba(201,168,76,0.3);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+  }
+  .card-num {
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #a07820);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .card-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--cream);
+  }
+  .card-icon { font-size: 22px; }
+  .card-chevron {
+    color: var(--gold);
+    font-size: 18px;
+    transition: transform 0.3s;
+    margin-left: 8px;
+  }
+  .strategy-card.expanded .card-chevron { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    padding: 0 20px 20px;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .strategy-card.expanded .card-body { display: block; }
+
+  .card-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+    margin-bottom: 18px;
+  }
+
+  /* ─── ITEMS INSIDE CARD ─── */
+  .strategy-items { display: flex; flex-direction: column; gap: 12px; }
+  .strategy-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    border-left: 3px solid transparent;
+    transition: all 0.25s;
+  }
+  .strategy-item:hover {
+    background: rgba(201,168,76,0.08);
+    border-left-color: var(--gold);
+  }
+  .item-bullet {
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    margin-top: 1px;
+  }
+  .item-text {
+    font-size: 14px;
+    color: rgba(245,240,232,0.88);
+    line-height: 1.65;
+  }
+  .item-text strong {
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+
+  /* ─── QUOTE PILL ─── */
+  .quote-pill {
+    margin-top: 8px;
+    padding: 8px 14px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 8px;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .quote-pill::before { content: '"'; margin-right: 2px; }
+  .quote-pill::after { content: '"'; margin-left: 2px; }
+
+  /* ─── QUIZ ─── */
+  .quiz-wrap {
+    background: rgba(20,40,80,0.6);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 18px;
+    padding: 28px 24px;
+    position: relative;
+  }
+  .quiz-progress-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .quiz-progress-text span { color: var(--gold); font-weight: 600; }
+  .quiz-q {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 22px;
+    color: var(--cream);
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .quiz-option {
+    padding: 13px 18px;
+    border: 1.5px solid rgba(201,168,76,0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--cream);
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .quiz-option:hover:not([disabled]) {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.07);
+  }
+  .quiz-option.correct {
+    border-color: #27ae60;
+    background: rgba(39,174,96,0.12);
+    color: #6ddc9a;
+  }
+  .quiz-option.incorrect {
+    border-color: var(--accent-red);
+    background: rgba(192,57,43,0.1);
+    color: #e57373;
+  }
+  .opt-letter {
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .quiz-feedback {
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+    margin-top: 4px;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb {
+    background: rgba(39,174,96,0.12);
+    border: 1px solid rgba(39,174,96,0.3);
+    color: #6ddc9a;
+  }
+  .quiz-feedback.incorrect-fb {
+    background: rgba(192,57,43,0.1);
+    border: 1px solid rgba(192,57,43,0.3);
+    color: #e57373;
+  }
+  .btn {
+    padding: 12px 28px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), #a07820);
+    color: var(--navy);
+  }
+  .btn-gold:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+  }
+  .btn-outline:hover { background: rgba(201,168,76,0.1); }
+  .quiz-score-wrap { text-align: center; padding: 30px 10px; }
+  .quiz-score-wrap .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+  .quiz-score-wrap p { color: var(--text-muted); font-size: 14px; margin: 10px 0 24px; }
+
+  /* ─── SCENARIO ─── */
+  .scenario-card {
+    background: linear-gradient(135deg, rgba(20,40,80,0.8), rgba(11,30,61,0.9));
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .scenario-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .scenario-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.9);
+    font-style: italic;
+    border-left: 3px solid var(--gold);
+    padding-left: 16px;
+    margin-bottom: 18px;
+  }
+  .scenario-q {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 14px;
+  }
+  .scenario-choices { display: flex; flex-direction: column; gap: 10px; }
+  .scenario-choice {
+    padding: 12px 16px;
+    border: 1.5px solid rgba(201,168,76,0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--cream);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    text-align: left;
+    transition: all 0.25s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .scenario-choice:hover:not([disabled]) {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.07);
+  }
+  .scenario-choice.chosen-correct {
+    border-color: #27ae60;
+    background: rgba(39,174,96,0.12);
+    color: #6ddc9a;
+  }
+  .scenario-choice.chosen-wrong {
+    border-color: var(--accent-red);
+    background: rgba(192,57,43,0.1);
+    color: #e57373;
+  }
+  .scenario-choice.reveal-correct {
+    border-color: rgba(39,174,96,0.5);
+    color: rgba(109,220,154,0.7);
+  }
+  .scenario-explain {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: rgba(201,168,76,0.08);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--gold-light);
+    line-height: 1.6;
+    display: none;
+  }
+  .scenario-explain.show { display: block; }
+
+  /* ─── GLOSSARY ─── */
+  .gloss-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .gloss-card {
+    background: rgba(20,40,80,0.6);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 12px;
+    padding: 18px 16px;
+    transition: all 0.3s;
+  }
+  .gloss-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    background: rgba(20,40,80,0.8);
+  }
+  .gloss-term {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .gloss-def {
+    font-size: 13px;
+    color: rgba(245,240,232,0.75);
+    line-height: 1.65;
+  }
+
+  /* ─── CHECKLIST ─── */
+  .checklist { display: flex; flex-direction: column; gap: 12px; }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: rgba(20,40,80,0.5);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .check-item:hover { border-color: rgba(201,168,76,0.4); }
+  .check-item.checked {
+    background: rgba(39,174,96,0.08);
+    border-color: rgba(39,174,96,0.35);
+  }
+  .check-box {
+    min-width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid rgba(201,168,76,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.25s;
+  }
+  .check-item.checked .check-box {
+    background: #27ae60;
+    border-color: #27ae60;
+    color: white;
+  }
+  .check-label { font-size: 14px; color: rgba(245,240,232,0.85); line-height: 1.5; }
+  .check-item.checked .check-label { color: var(--text-muted); text-decoration: line-through; }
+  .checklist-progress {
+    text-align: center;
+    padding: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .checklist-progress span { color: var(--gold); font-weight: 700; font-size: 16px; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 12px;
+    color: rgba(245,240,232,0.3);
+    letter-spacing: 1px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  footer span { color: var(--gold); }
+
+  /* ─── RESPONSIVE ─── */
+  @media(max-width: 600px) {
+    .hero { padding: 40px 20px 36px; }
+    .tabs-container { gap: 6px; }
+    .tab { padding: 8px 12px; font-size: 12px; }
+    .content-area { margin: 20px auto 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Mendoza Law Firm · Capacitación</div>
+  <h1>Estrategias de<br><span>Comunicación Efectiva</span></h1>
+  <p>Domina las técnicas clave para guiar consultas con clientes en casos de inmigración, protección de víctimas y trauma.</p>
+  <div class="progress-bar-wrap" id="mainPips"></div>
+  <div class="progress-label" id="progressLabel">Sección 1 de 5</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-container">
+  <button class="tab active" onclick="showSection(0)" data-idx="0">
+    <span class="tab-icon">🔍</span> Exploración <span class="tab-num">5</span>
+  </button>
+  <button class="tab" onclick="showSection(1)" data-idx="1">
+    <span class="tab-icon">💬</span> Información Sensible <span class="tab-num">6</span>
+  </button>
+  <button class="tab" onclick="showSection(2)" data-idx="2">
+    <span class="tab-icon">❤️</span> Emociones <span class="tab-num">6</span>
+  </button>
+  <button class="tab" onclick="showSection(3)" data-idx="3">
+    <span class="tab-icon">🎯</span> Escenarios
+  </button>
+  <button class="tab" onclick="showSection(4)" data-idx="4">
+    <span class="tab-icon">✅</span> Evaluación
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 0 — EXPLORACIÓN MULTI-ESTRATÉGICA
+════════════════════════════════════════════════ -->
+<div class="content-area">
+<div class="section active" id="sec-0">
+  <div class="section-header">
+    <span class="icon-big">🔍</span>
+    <h2>Exploración <span>Multi-Estratégica</span></h2>
+    <p>No te limites al caso original. Explora activamente todas las alternativas legales disponibles para maximizar las opciones del cliente.</p>
+  </div>
+  <div class="cards-grid">
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">1</div>
+        <div class="card-title">Enfoque Multi-Estratégico</div>
+        <div class="card-icon">🗺️</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">💡</div>
+            <div class="item-text">En lugar de limitarse al caso original, <strong>explora activamente alternativas</strong> como Visa T, Visa U o Writ of Mandamus que puedan ser más favorables.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">⚖️</div>
+            <div class="item-text">Cada caso puede tener múltiples caminos legales. <strong>Tu responsabilidad es identificar el más favorable</strong> según el perfil del cliente.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">2</div>
+        <div class="card-title">Preguntas de Cualificación Estratégicas</div>
+        <div class="card-icon">❓</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">🗣️</div>
+            <div class="item-text">Formula preguntas que revelen elementos clave para diferentes visas:</div>
+          </div>
+          <div class="quote-pill">¿Cuál ha sido el peor trabajo que has tenido?</div>
+          <div class="quote-pill">¿Usted fue víctima de un delito?</div>
+          <div class="quote-pill">¿Usted ha sufrido violencia doméstica?</div>
+          <div class="strategy-item" style="margin-top:8px">
+            <div class="item-bullet">🎯</div>
+            <div class="item-text">Estas preguntas abren <strong>puertas legales distintas</strong> (Visa T para trata, Visa U para delitos, VAWA para violencia doméstica).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">3</div>
+        <div class="card-title">Identificación de Elementos Clave</div>
+        <div class="card-icon">🔑</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">🔎</div>
+            <div class="item-text">Busca <strong>sistemáticamente</strong> indicadores de diferentes visas: condiciones laborales extremas, control económico, coerción, amenazas.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">📋</div>
+            <div class="item-text">Cada elemento identificado puede ser la diferencia entre <strong>ganar o perder un caso</strong>. No asumas — investiga.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">4</div>
+        <div class="card-title">Explicación de Perdones y Visas</div>
+        <div class="card-icon">📜</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">✅</div>
+            <div class="item-text">Explica claramente qué visas tienen <strong>perdones más amplios</strong> para superar problemas como deportaciones anteriores o uso de documentos falsos.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">📣</div>
+            <div class="item-text">El cliente necesita entender sus opciones reales. <strong>Un passado complicado no siempre cierra puertas</strong> si se usa la estrategia correcta.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">5</div>
+        <div class="card-title">Consulta de Expertos</div>
+        <div class="card-icon">👨‍⚖️</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">🏛️</div>
+            <div class="item-text">Menciona que consultarás con <strong>ex-fiscales de ICE</strong> en la firma (20 años de experiencia), transmitiendo confianza y capacidad estratégica.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">💼</div>
+            <div class="item-text">El cliente debe saber que tiene un <strong>equipo completo</strong>, no solo a un abogado trabajando en solitario.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 1 — OBTENCIÓN DE INFORMACIÓN SENSIBLE
+════════════════════════════════════════════════ -->
+<div class="section" id="sec-1">
+  <div class="section-header">
+    <span class="icon-big">💬</span>
+    <h2>Obtención de <span>Información Sensible</span></h2>
+    <p>El cliente debe sentirse seguro para compartir información crítica. Cada técnica aquí está diseñada para facilitar ese proceso con respeto y profundidad.</p>
+  </div>
+  <div class="cards-grid">
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">1</div>
+        <div class="card-title">Preguntas Directas pero Respetuosas</div>
+        <div class="card-icon">🤝</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">⚡</div>
+            <div class="item-text">Sobre temas delicados como violencia sexual, sé <strong>franco pero cuidadoso</strong>. Evitar el tema no ayuda al cliente.</div>
+          </div>
+          <div class="quote-pill">¿Te obligaron a tener relaciones con él o has sufrido violaciones?</div>
+          <div class="strategy-item" style="margin-top:8px">
+            <div class="item-bullet">🧭</div>
+            <div class="item-text">La pregunta directa, hecha con respeto, da al cliente <strong>permiso para hablar</strong> de algo que quizás nunca ha podido nombrar.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">2</div>
+        <div class="card-title">Profundización Narrativa</div>
+        <div class="card-icon">📖</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">⏳</div>
+            <div class="item-text">Permite que el cliente cuente su <strong>historia completa</strong> sin apresurarlo. El incidente del arma, el accidente laboral, la relación abusiva — cada detalle importa.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">🎙️</div>
+            <div class="item-text">El silencio y las pausas son herramientas válidas. <strong>No llenar cada espacio</strong> con preguntas permite que emerja información voluntaria.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">3</div>
+        <div class="card-title">Parafraseo para Confirmar</div>
+        <div class="card-icon">🔄</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">🗣️</div>
+            <div class="item-text">Repite lo que entendiste para <strong>validar y mostrar que escuchaste</strong>. Esto también confirma detalles legalmente relevantes.</div>
+          </div>
+          <div class="quote-pill">Entiendo que él decía: "Eres mi esposa y es tu obligación"</div>
+          <div class="strategy-item" style="margin-top:8px">
+            <div class="item-bullet">✍️</div>
+            <div class="item-text">El parafraseo convierte la narrativa del cliente en <strong>lenguaje legal documentable</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">4</div>
+        <div class="card-title">Exploración de Patrones</div>
+        <div class="card-icon">🧩</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">🔬</div>
+            <div class="item-text">Pregunta sobre <strong>roles domésticos, control económico y amenazas específicas</strong>.</div>
+          </div>
+          <div class="quote-pill">¿Te sentiste como una sirviente en casa?</div>
+          <div class="strategy-item" style="margin-top:8px">
+            <div class="item-bullet">📌</div>
+            <div class="item-text">Los patrones de abuso son <strong>evidencia de trata o violencia doméstica</strong>, no incidentes aislados.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">5</div>
+        <div class="card-title">Investigación Sistemática de Condiciones</div>
+        <div class="card-icon">🏗️</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">⏰</div>
+            <div class="item-text">Pregunta sobre horas trabajadas, pagos recibidos, condiciones de trabajo y accidentes para construir el <strong>cuadro completo de trata laboral</strong>.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">💰</div>
+            <div class="item-text">Los detalles económicos (salario negado, retención de documentos, deudas) son <strong>elementos constitutivos de la Visa T</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">6</div>
+        <div class="card-title">No Dejar Nada a la Interpretación</div>
+        <div class="card-icon">🎯</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">❗</div>
+            <div class="item-text">Siempre pide aclaración cuando algo no es claro. <strong>Las ambigüedades en el expediente pueden costar el caso</strong>.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">📝</div>
+            <div class="item-text">"¿Puedes explicarme más sobre eso?" es una frase poderosa que <strong>abre espacio a detalles cruciales</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 2 — MANEJO DE EMOCIONES
+════════════════════════════════════════════════ -->
+<div class="section" id="sec-2">
+  <div class="section-header">
+    <span class="icon-big">❤️</span>
+    <h2>Manejo de <span>Emociones</span> del Cliente</h2>
+    <p>La consulta efectiva equilibra empatía genuina con acción concreta. El cliente necesita sentirse escuchado y, al mismo tiempo, avanzar.</p>
+  </div>
+  <div class="cards-grid">
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">1</div>
+        <div class="card-title">Seguridad del Cliente</div>
+        <div class="card-icon">🛡️</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">🔒</div>
+            <div class="item-text">Al <strong>inicio y durante la llamada</strong>, asegúrate de que el cliente esté en un lugar seguro donde pueda hablar libremente.</div>
+          </div>
+          <div class="quote-pill">¿Estás en un lugar donde puedes hablar con privacidad ahora mismo?</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">2</div>
+        <div class="card-title">Escucha Activa Empática</div>
+        <div class="card-icon">👂</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">❤️</div>
+            <div class="item-text">Permite que el cliente exprese <strong>completamente su frustración, dolor o desesperación</strong> sin interrumpir prematuramente.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">⏸️</div>
+            <div class="item-text">Interrumpir demasiado pronto <strong>cierra la comunicación</strong> y el cliente siente que no es escuchado.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">3</div>
+        <div class="card-title">Validación Inmediata de Emociones</div>
+        <div class="card-icon">💛</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">✨</div>
+            <div class="item-text">Reconoce abiertamente las demoras o problemas <strong>sin minimizar la experiencia del cliente</strong>.</div>
+          </div>
+          <div class="quote-pill">Lo siento mucho por el miedo y el pánico que has sentido</div>
+          <div class="quote-pill">Lo entiendo totalmente. Estás en todo tu derecho de sentirte así</div>
+          <div class="quote-pill">Me imagino que estás pasando por mucho</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">4</div>
+        <div class="card-title">Balance entre Empatía y Acción</div>
+        <div class="card-icon">⚖️</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">🔄</div>
+            <div class="item-text">Después de validar emociones, <strong>pivota rápidamente hacia soluciones concretas</strong>. La empatía sin acción no resuelve el caso.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">💪</div>
+            <div class="item-text"><strong>Transforma el miedo en herramienta legal</strong>: las amenazas del agresor pueden convertirse en evidencia a favor del cliente.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">5</div>
+        <div class="card-title">Gestión de Expectativas</div>
+        <div class="card-icon">📅</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">🎯</div>
+            <div class="item-text"><strong>Honestidad sobre incertidumbre:</strong> evita promesas falsas que destruyen la confianza a largo plazo.</div>
+          </div>
+          <div class="quote-pill">No soy Dios. No te puedo dar las fechas exactas</div>
+          <div class="quote-pill">Se va a tardar entre 3 hasta 8 meses más o menos</div>
+          <div class="strategy-item" style="margin-top:8px">
+            <div class="item-bullet">🌐</div>
+            <div class="item-text">Contextualiza el entorno político actual: <strong>"Ahora no son jueces de inmigración, son jueces de deportación"</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">6</div>
+        <div class="card-title">Recuperación de la Confianza</div>
+        <div class="card-icon">🤝</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-divider"></div>
+        <div class="strategy-items">
+          <div class="strategy-item">
+            <div class="item-bullet">🙏</div>
+            <div class="item-text">Escucha todas las quejas <strong>sin defenderte inmediatamente</strong>. Permite la catarsis completa del cliente.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">👩‍⚖️</div>
+            <div class="item-text">Involucramiento personal: <strong>"Déjeme revisar el expediente"</strong>, ofrece entrevistas de 2-3 horas para demostrar compromiso real.</div>
+          </div>
+          <div class="strategy-item">
+            <div class="item-bullet">🔀</div>
+            <div class="item-text">Propón <strong>opciones nuevas</strong> que podrían ser más efectivas — el cambio de estrategia demuestra adaptación, no fracaso.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 3 — ESCENARIOS
+════════════════════════════════════════════════ -->
+<div class="section" id="sec-3">
+  <div class="section-header">
+    <span class="icon-big">🎯</span>
+    <h2>Práctica con <span>Escenarios Reales</span></h2>
+    <p>Analiza estas situaciones y elige la respuesta más efectiva según las estrategias aprendidas.</p>
+  </div>
+
+  <!-- Scenario 1 -->
+  <div class="scenario-card">
+    <div class="scenario-label">Escenario 01 · Exploración</div>
+    <div class="scenario-text">Un cliente llega pidiendo renovar su DACA. Durante la conversación menciona que trabajó 14 horas diarias sin pago, que su jefe le quitaba su pasaporte y que lo amenazaba con llamar a migración si se quejaba.</div>
+    <div class="scenario-q">¿Cuál es la acción más estratégica?</div>
+    <div class="scenario-choices">
+      <button class="scenario-choice" onclick="chooseScenario(this, false, 0)">
+        <span>A</span> Procesar solo la renovación de DACA como el cliente solicitó, ya que eso es lo que pidió.
+      </button>
+      <button class="scenario-choice" onclick="chooseScenario(this, true, 0)">
+        <span>B</span> Explorar activamente si estos hechos califican para una Visa T, sin abandonar el DACA.
+      </button>
+      <button class="scenario-choice" onclick="chooseScenario(this, false, 0)">
+        <span>C</span> Referir el caso a otro abogado especializado en trata laboral.
+      </button>
+    </div>
+    <div class="scenario-explain" id="exp-0">
+      ✅ <strong>Correcto:</strong> El enfoque multi-estratégico indica que debes explorar alternativas aunque el cliente no las haya pedido. Las condiciones descritas (confiscación de pasaporte, amenazas, trabajo sin pago) son elementos constitutivos de trata laboral — exactamente lo que califica para Visa T. Ignorarlos sería una negligencia estratégica.
+    </div>
+  </div>
+
+  <!-- Scenario 2 -->
+  <div class="scenario-card">
+    <div class="scenario-label">Escenario 02 · Emociones</div>
+    <div class="scenario-text">Un cliente llama muy molesto porque llevan 8 meses esperando respuesta de USCIS. Dice: "Ustedes se llevaron mi dinero y no han hecho nada. Estoy desesperado, ya no puedo más."</div>
+    <div class="scenario-q">¿Cuál es la respuesta más efectiva?</div>
+    <div class="scenario-choices">
+      <button class="scenario-choice" onclick="chooseScenario(this, false, 1)">
+        <span>A</span> Explicar inmediatamente los tiempos de USCIS y los trámites realizados para defenderse de la acusación.
+      </button>
+      <button class="scenario-choice" onclick="chooseScenario(this, false, 1)">
+        <span>B</span> Decirle que los tiempos son normales y que otros casos tardan aún más.
+      </button>
+      <button class="scenario-choice" onclick="chooseScenario(this, true, 1)">
+        <span>C</span> Primero validar su frustración completamente, luego pivota hacia acciones concretas y compromiso personal.
+      </button>
+    </div>
+    <div class="scenario-explain" id="exp-1">
+      ✅ <strong>Correcto:</strong> La estrategia MGM indica: primero manejar la emoción, luego guiar con neutralidad, luego mover hacia solución. Defenderse de inmediato o minimizar su experiencia ("otros tardan más") destruye la confianza. Validar primero ("Lo entiendo totalmente, es desesperante") y luego proponer acciones concretas ("Déjeme revisar el expediente hoy mismo") recupera la relación.
+    </div>
+  </div>
+
+  <!-- Scenario 3 -->
+  <div class="scenario-card">
+    <div class="scenario-label">Escenario 03 · Información Sensible</div>
+    <div class="scenario-text">Una clienta menciona vagamente que "su esposo era muy controlador" y que "a veces se ponía muy bravo". Parece incomoda hablando del tema y hace pausas largas.</div>
+    <div class="scenario-q">¿Cuál es el abordaje correcto?</div>
+    <div class="scenario-choices">
+      <button class="scenario-choice" onclick="chooseScenario(this, false, 2)">
+        <span>A</span> No indagar más para no incomodarla. Si ella quiere contar más, lo hará sola.
+      </button>
+      <button class="scenario-choice" onclick="chooseScenario(this, true, 2)">
+        <span>B</span> Hacer preguntas directas pero respetuosas sobre violencia, control económico y coerción, dándole espacio para responder.
+      </button>
+      <button class="scenario-choice" onclick="chooseScenario(this, false, 2)">
+        <span>C</span> Cambiar el tema para que se sienta más cómoda y regresar al asunto migratorio principal.
+      </button>
+    </div>
+    <div class="scenario-explain" id="exp-2">
+      ✅ <strong>Correcto:</strong> La estrategia de obtención de información sensible requiere profundización narrativa y preguntas directas pero respetuosas. Las pausas y la vaguedad muchas veces indican que hay más que contar pero el cliente necesita "permiso" para hacerlo. Preguntar directamente ("¿Él te controlaba económicamente? ¿Sufriste violencia física o sexual?") con un tono cálido abre esa puerta legalmente crucial.
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 4 — EVALUACIÓN / QUIZ
+════════════════════════════════════════════════ -->
+<div class="section" id="sec-4">
+  <div class="section-header">
+    <span class="icon-big">✅</span>
+    <h2>Evaluación <span>Final</span></h2>
+    <p>Comprueba tu comprensión de las estrategias clave. ¡Necesitas 70% para aprobar!</p>
+  </div>
+  <div class="quiz-wrap" id="quizWrap">
+    <div id="quizContainer"></div>
+  </div>
+
+  <div style="margin-top: 32px;">
+    <div class="section-header" style="margin-bottom:20px">
+      <h2 style="font-size:20px">Lista de <span>Verificación</span> Pre-Consulta</h2>
+    </div>
+    <div class="checklist" id="checklist">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-label">✔ Confirmar que el cliente está en un lugar seguro y privado</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-label">✔ Revisar el expediente antes de la llamada</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-label">✔ Preparar preguntas de cualificación para identificar alternativas de visa</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-label">✔ Tener lista la explicación de perdones para problemas previos (deportaciones, documentos)</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-label">✔ Estar preparado para escuchar sin interrumpir durante la narrativa del cliente</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-label">✔ Conocer los tiempos actuales de procesamiento en el contexto político vigente</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-label">✔ Tener frases de validación emocional listas para usar en momentos de crisis</div>
+      </div>
+    </div>
+    <div class="checklist-progress" id="checkProgress">
+      <span id="checkCount">0</span> / 7 completados
+    </div>
+  </div>
+</div>
+
+</div><!-- /content-area -->
+
+<footer>
+  <span>Mendoza Law Firm</span> · Guía Estratégica de Comunicación · Uso interno exclusivo
+</footer>
+
+<script>
+// ─── PIPS ───
+const totalSections = 5;
+function buildPips() {
+  const wrap = document.getElementById('mainPips');
+  wrap.innerHTML = '';
+  for (let i = 0; i < totalSections; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'progress-pip' + (i === 0 ? ' active' : '');
+    pip.onclick = () => showSection(i);
+    wrap.appendChild(pip);
+  }
+}
+buildPips();
+
+function showSection(idx) {
+  document.querySelectorAll('.section').forEach((s, i) => {
+    s.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+  const pips = document.querySelectorAll('.progress-pip');
+  pips.forEach((p, i) => {
+    p.classList.remove('active', 'done');
+    if (i < idx) p.classList.add('done');
+    if (i === idx) p.classList.add('active');
+  });
+  const labels = ['Sección 1 de 5', 'Sección 2 de 5', 'Sección 3 de 5', 'Sección 4 de 5', 'Sección 5 de 5'];
+  document.getElementById('progressLabel').textContent = labels[idx];
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── CARD TOGGLE ───
+function toggleCard(card) {
+  const wasOpen = card.classList.contains('expanded');
+  document.querySelectorAll('.strategy-card').forEach(c => c.classList.remove('expanded'));
+  if (!wasOpen) card.classList.add('expanded');
+}
+
+// ─── SCENARIO ───
+function chooseScenario(btn, isCorrect, idx) {
+  const parent = btn.closest('.scenario-card');
+  const buttons = parent.querySelectorAll('.scenario-choice');
+  buttons.forEach(b => { b.disabled = true; });
+
+  if (isCorrect) {
+    btn.classList.add('chosen-correct');
+  } else {
+    btn.classList.add('chosen-wrong');
+    buttons.forEach(b => {
+      if (b.onclick.toString().includes('true')) b.classList.add('reveal-correct');
+    });
+  }
+
+  const exp = document.getElementById('exp-' + idx);
+  exp.classList.add('show');
+}
+
+// ─── QUIZ ───
+const questions = [
+  {
+    q: "¿Cuál es el propósito principal de las 'preguntas de cualificación estratégicas'?",
+    options: [
+      "Evaluar si el cliente puede pagar los honorarios",
+      "Identificar elementos que califiquen para diferentes tipos de visas",
+      "Determinar el nivel educativo del cliente",
+      "Verificar la legalidad de su entrada al país"
+    ],
+    correct: 1,
+    explanation: "Las preguntas de cualificación (¿fue víctima de un delito?, ¿sufrió violencia doméstica?) sirven para identificar qué tipo de visa es aplicable: Visa U, Visa T, VAWA, etc."
+  },
+  {
+    q: "Un cliente está muy molesto y siente que no lo han atendido bien. ¿Cuál debe ser tu primer paso?",
+    options: [
+      "Explicar inmediatamente los pasos legales realizados para justificar el trabajo",
+      "Decirle que su caso es complicado y que debe tener paciencia",
+      "Escuchar todas sus quejas sin defenderte, permitir la catarsis completa",
+      "Transferir la llamada a un supervisor"
+    ],
+    correct: 2,
+    explanation: "La recuperación de confianza requiere primero escuchar sin defenderse. El cliente necesita sentirse escuchado antes de estar listo para recibir información."
+  },
+  {
+    q: "¿Por qué es importante NO prometer fechas exactas de resolución de casos?",
+    options: [
+      "Porque el abogado no conoce bien los tiempos de USCIS",
+      "Para evitar compromisos legales por escrito",
+      "Para mantener la honestidad y gestionar expectativas reales — los tiempos dependen de múltiples factores",
+      "Porque los clientes siempre olvidan las fechas prometidas"
+    ],
+    correct: 2,
+    explanation: "La gestión honesta de expectativas ('No soy Dios, no puedo dar fechas exactas') construye confianza a largo plazo. Las promesas falsas destruyen la relación cuando no se cumplen."
+  },
+  {
+    q: "Una clienta menciona vagamente 'problemas' con su esposo sin entrar en detalles. ¿Cuál es la estrategia correcta?",
+    options: [
+      "Respetar su privacidad y no profundizar",
+      "Cambiar el tema para que se sienta cómoda",
+      "Hacer preguntas directas pero respetuosas sobre control, violencia y coerción",
+      "Asumir que es violencia doméstica y proceder con VAWA"
+    ],
+    correct: 2,
+    explanation: "La profundización narrativa y las preguntas directas son necesarias. Asumir sin preguntar es tan erróneo como no indagar. El cliente necesita 'permiso' para hablar de temas sensibles."
+  },
+  {
+    q: "¿Cómo se transforma un elemento de miedo (amenazas del agresor) en una herramienta legal?",
+    options: [
+      "Ignorándolo para no revictimizar al cliente",
+      "Usándolo como evidencia documentable a favor del cliente en el caso",
+      "Reportándolo directamente a las autoridades sin consultar al cliente",
+      "Mencionándolo solo si el oficial de USCIS lo pregunta"
+    ],
+    correct: 1,
+    explanation: "El balance entre empatía y acción incluye transformar elementos de miedo en herramientas legales. Las amenazas documentadas son evidencia valiosa que puede fortalecer el caso."
+  },
+  {
+    q: "¿Cuál de las siguientes frases MEJOR refleja la gestión emocional efectiva con un cliente?",
+    options: [
+      "Su caso es muy complicado. Otros clientes tienen situaciones peores.",
+      "Lo siento mucho. Lo entiendo totalmente. Estás en todo tu derecho de sentirte así.",
+      "Entiendo, pero necesitamos ser objetivos y enfocarnos en los hechos.",
+      "Esas emociones son normales. Todos los clientes se sienten así al inicio."
+    ],
+    correct: 1,
+    explanation: "La validación inmediata y genuina ('Lo entiendo totalmente, estás en todo tu derecho') es más efectiva que comparar, normalizar en abstracto o pedir objetividad prematuramente."
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function renderQuiz() {
+  const container = document.getElementById('quizContainer');
+  if (currentQ >= questions.length) {
+    const pct = Math.round((score / questions.length) * 100);
+    const passed = pct >= 70;
+    container.innerHTML = `
+      <div class="quiz-score-wrap">
+        <span class="score-num">${pct}%</span>
+        <p>${score} de ${questions.length} respuestas correctas</p>
+        <p style="color: ${passed ? '#6ddc9a' : '#e57373'}; font-weight:600; font-size:16px; margin-bottom:20px">
+          ${passed ? '🎉 ¡Aprobado! Dominas las estrategias clave.' : '📚 Necesitas repasar algunas estrategias. ¡Inténtalo de nuevo!'}
+        </p>
+        <button class="btn btn-gold" onclick="resetQuiz()">Reintentar Quiz</button>
+      </div>`;
+    return;
+  }
+  const q = questions[currentQ];
+  const letters = ['A', 'B', 'C', 'D'];
+  container.innerHTML = `
+    <div class="quiz-progress-text">Pregunta <span>${currentQ + 1}</span> de <span>${questions.length}</span></div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-options">
+      ${q.options.map((opt, i) => `
+        <button class="quiz-option" onclick="answerQuiz(this, ${i})">
+          <span class="opt-letter">${letters[i]}</span> ${opt}
+        </button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="qfeedback"></div>
+    <div style="text-align:right; margin-top:16px">
+      <button class="btn btn-gold" id="nextBtn" style="display:none" onclick="nextQuestion()">
+        ${currentQ < questions.length - 1 ? 'Siguiente →' : 'Ver Resultado'}
+      </button>
+    </div>`;
+  answered = false;
+}
+
+function answerQuiz(btn, idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[currentQ];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach(o => o.disabled = true);
+  const fb = document.getElementById('qfeedback');
+  if (idx === q.correct) {
+    btn.classList.add('correct');
+    score++;
+    fb.className = 'quiz-feedback correct-fb show';
+    fb.innerHTML = '✅ ' + q.explanation;
+  } else {
+    btn.classList.add('incorrect');
+    opts[q.correct].classList.add('correct');
+    fb.className = 'quiz-feedback incorrect-fb show';
+    fb.innerHTML = '❌ ' + q.explanation;
+  }
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  currentQ++;
+  renderQuiz();
+}
+
+function resetQuiz() {
+  currentQ = 0;
+  score = 0;
+  answered = false;
+  renderQuiz();
+}
+
+renderQuiz();
+
+// ─── CHECKLIST ───
+function toggleCheck(item) {
+  item.classList.toggle('checked');
+  const total = document.querySelectorAll('.check-item').length;
+  const done = document.querySelectorAll('.check-item.checked').length;
+  document.getElementById('checkCount').textContent = done;
+}
+</script>
+</body>
+</html>
