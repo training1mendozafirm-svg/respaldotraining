@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía de Ampliación Estratégica — PreCase TMLF</title>
+  <style>
+/* =============================================
+   GUÍA AMPLIACIÓN ESTRATÉGICA — TMLF
+   Design: Refined Legal Professional
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+  --navy: #1B3A6B;
+  --navy-dark: #122A52;
+  --navy-light: #EBF2FA;
+  --gold: #C9A84C;
+  --gold-light: #FDF6E3;
+  --white: #FFFFFF;
+  --gray-50: #F8F9FA;
+  --gray-100: #F0F2F5;
+  --gray-200: #E2E8F0;
+  --gray-400: #94A3B8;
+  --gray-600: #475569;
+  --gray-800: #1E293B;
+  --sidebar-w: 240px;
+  --radius: 10px;
+  --shadow: 0 2px 16px rgba(27,58,107,0.10);
+  --shadow-lg: 0 8px 32px rgba(27,58,107,0.15);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--gray-100);
+  color: var(--gray-800);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* =============================================
+   LAYOUT
+   ============================================= */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--navy-dark);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.sidebar-header {
+  padding: 24px 16px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-logo {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.sidebar-firm {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+}
+
+.sidebar-sub {
+  color: rgba(255,255,255,0.45);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.nav-items {
+  list-style: none;
+  padding: 12px 0;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.07);
+  border-left-color: rgba(201,168,76,0.4);
+}
+
+.nav-item.visited {
+  opacity: 1;
+}
+
+.nav-item.active {
+  background: rgba(201,168,76,0.12);
+  border-left-color: var(--gold);
+}
+
+.nav-item.completed {
+  opacity: 0.8;
+}
+
+.nav-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.nav-label {
+  color: rgba(255,255,255,0.75);
+  font-size: 12px;
+  line-height: 1.3;
+  flex: 1;
+}
+
+.nav-item.active .nav-label { color: var(--gold); font-weight: 600; }
+
+.nav-check {
+  color: #4CAF50;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* MAIN */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#main-content {
+  flex: 1;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 0 60px;
+}
+
+/* =============================================
+   SECTION HEADER
+   ============================================= */
+.section-header {
+  padding: 28px 36px 20px;
+  color: white;
+  border-radius: 0 0 var(--radius) var(--radius);
+  margin-bottom: 0;
+}
+
+.section-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-big-icon {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+}
+
+.section-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.9);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-top: 6px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Progress dots */
+.sub-progress {
+  display: flex;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.sub-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transition: all 0.2s;
+}
+.sub-dot.active { background: white; transform: scale(1.3); }
+.sub-dot.done { background: rgba(255,255,255,0.7); }
+
+/* =============================================
+   SECTION BODY
+   ============================================= */
+.section-body {
+  padding: 28px 36px 32px;
+  border-radius: 0 0 var(--radius) var(--radius);
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--gray-200);
+}
+
+/* =============================================
+   SCRIPT BOX
+   ============================================= */
+.script-box {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  box-shadow: var(--shadow);
+}
+
+.script-box p {
+  color: var(--gray-600);
+  font-style: italic;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.script-box blockquote {
+  color: var(--gray-800);
+  font-size: 15.5px;
+  line-height: 1.75;
+  font-style: normal;
+  border: none;
+  padding: 0;
+}
+
+.script-box blockquote strong {
+  color: var(--navy);
+}
+
+/* =============================================
+   QUESTIONS
+   ============================================= */
+.questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.question-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.question-card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+}
+
+.q-number {
+  min-width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.q-text {
+  font-size: 15.5px;
+  color: var(--gray-800);
+  line-height: 1.6;
+}
+
+/* =============================================
+   NOTE BOX
+   ============================================= */
+.note-box {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-left: 4px solid #F59E0B;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #92400E;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+/* =============================================
+   DECISION TREE
+   ============================================= */
+.decision-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.decision-card {
+  border: 2px solid;
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.decision-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.decision-condition {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.decision-sub {
+  font-size: 14px;
+  color: var(--gray-600);
+  background: rgba(255,255,255,0.6);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.decision-action {
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+/* =============================================
+   NAV BUTTONS
+   ============================================= */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 28px;
+  border-top: 1px solid var(--gray-200);
+}
+
+.btn {
+  padding: 11px 28px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.2px;
+}
+
+.btn-primary {
+  background: var(--navy);
+  color: white;
+  box-shadow: 0 2px 8px rgba(27,58,107,0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(27,58,107,0.35);
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: var(--gray-100);
+  color: var(--gray-600);
+  border: 1px solid var(--gray-200);
+}
+
+.btn-secondary:hover {
+  background: var(--gray-200);
+}
+
+.btn-large {
+  padding: 14px 40px;
+  font-size: 17px;
+}
+
+/* =============================================
+   INTRO SCREEN
+   ============================================= */
+.intro-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 52px 40px 48px;
+}
+
+.intro-logo { font-size: 52px; margin-bottom: 14px; }
+
+.intro-firm {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.intro-area {
+  color: var(--gray-400);
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+
+.intro-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  color: var(--navy);
+  line-height: 1.25;
+  max-width: 600px;
+  margin-bottom: 10px;
+}
+
+.intro-subtitle {
+  color: var(--gray-600);
+  font-size: 16px;
+  max-width: 520px;
+  margin-bottom: 28px;
+}
+
+.intro-divider {
+  width: 60px;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 2px;
+  margin-bottom: 32px;
+}
+
+.intro-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 36px;
+  width: 100%;
+}
+
+.intro-card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  text-align: left;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.intro-card span { font-size: 24px; display: block; margin-bottom: 8px; }
+.intro-card strong { color: var(--navy); font-size: 14px; display: block; margin-bottom: 6px; }
+.intro-card p { color: var(--gray-600); font-size: 13px; line-height: 1.5; }
+
+/* =============================================
+   COMPLETION SCREEN
+   ============================================= */
+.completion-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 64px 40px;
+}
+
+.completion-icon { font-size: 60px; margin-bottom: 20px; }
+
+.completion-screen h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.completion-screen > p {
+  color: var(--gray-600);
+  font-size: 16px;
+  margin-bottom: 28px;
+}
+
+.completion-summary {
+  display: flex;
+  gap: 32px;
+  background: var(--navy-light);
+  border-radius: var(--radius);
+  padding: 20px 40px;
+  margin-bottom: 24px;
+}
+
+.comp-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.comp-stat span {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--navy);
+  font-family: 'Playfair Display', serif;
+}
+
+.comp-stat label {
+  font-size: 13px;
+  color: var(--gray-600);
+}
+
+.completion-note {
+  color: var(--gray-400);
+  font-size: 13px;
+  margin-bottom: 28px;
+  font-style: italic;
+}
+
+/* =============================================
+   SCROLLBAR
+   ============================================= */
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 720px) {
+  :root { --sidebar-w: 200px; }
+  .section-header, .section-body { padding: 20px; }
+  .intro-cards { grid-template-columns: 1fr; }
+  .intro-title { font-size: 22px; }
+  .section-title { font-size: 17px; }
+}
+
+@media (max-width: 500px) {
+  .sidebar { width: 60px; }
+  .main { margin-left: 60px; }
+  .nav-label, .nav-check, .sidebar-firm, .sidebar-sub { display: none; }
+  .sidebar-header { padding: 12px 8px; }
+}
+
+</style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- SIDEBAR NAV -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">⚖️</div>
+        <div class="sidebar-firm">The Mendoza<br>Law Firm</div>
+        <div class="sidebar-sub">PreCase — Entrenamiento</div>
+      </div>
+      <ul class="nav-items" id="nav-items">
+        <!-- Rendered by JS -->
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+      <div id="main-content">
+        <!-- Rendered by JS -->
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+// SCORM 1.2 API Wrapper
+var SCORM = (function() {
+  var API = null;
+  var initialized = false;
+
+  function findAPI(win) {
+    var attempts = 0;
+    while (win.API == null && win.parent != null && win.parent != win) {
+      attempts++;
+      if (attempts > 7) return null;
+      win = win.parent;
+    }
+    return win.API;
+  }
+
+  function getAPI() {
+    var win = window;
+    var api = findAPI(win);
+    if (!api && win.opener) api = findAPI(win.opener);
+    return api;
+  }
+
+  function init() {
+    API = getAPI();
+    if (!API) {
+      console.warn("SCORM API not found — running in standalone mode.");
+      return false;
+    }
+    var result = API.LMSInitialize("");
+    initialized = (result === "true" || result === true);
+    return initialized;
+  }
+
+  function setValue(key, value) {
+    if (!API || !initialized) return;
+    API.LMSSetValue(key, value);
+    API.LMSCommit("");
+  }
+
+  function getValue(key) {
+    if (!API || !initialized) return "";
+    return API.LMSGetValue(key);
+  }
+
+  function complete() {
+    setValue("cmi.core.lesson_status", "completed");
+    setValue("cmi.core.score.raw", "100");
+    setValue("cmi.core.exit", "");
+    if (API && initialized) {
+      API.LMSFinish("");
+    }
+  }
+
+  function markInProgress() {
+    setValue("cmi.core.lesson_status", "incomplete");
+  }
+
+  return { init, setValue, getValue, complete, markInProgress };
+})();
+
+</script>
+  <script>
+// =============================================
+// GUÍA DE AMPLIACIÓN ESTRATÉGICA — PreCase TMLF
+// App Logic
+// =============================================
+
+const SECTIONS = [
+  {
+    id: "intro",
+    title: "Bienvenida",
+    icon: "⚖️",
+    type: "intro"
+  },
+  {
+    id: "bloque1",
+    title: "Bloque 1\nIngreso y Cruce",
+    icon: "🌎",
+    type: "section",
+    color: "navy",
+    subsections: [
+      {
+        title: "Guión de Apertura",
+        type: "script",
+        content: `<p>Utiliza estas palabras exactas o adáptalas naturalmente al iniciar la llamada:</p>
+        <blockquote>
+          "El objetivo de esta llamada es <strong>ampliar y fortalecer la estrategia de trabajo de su caso</strong>. Para ello, voy a realizarle una serie de preguntas sobre las situaciones que ha vivido después de su último cruce, ya que también son muy importantes para su caso."
+          <br><br>
+          "Estas están enfocadas a <strong>su cruce, a conocer un poco de su historial laboral</strong>, en caso de que haya sido vulnerado de alguna manera, y así mismo, conocer un poco de <strong>su dinámica familiar</strong>."
+          <br><br>
+          "Quizás algunas de estas preguntas pueden sonar <strong>parecidas o hasta repetitivas</strong> con respecto a otras que ya ha respondido antes. También, puede que en algunos momentos estas preguntas <strong>toquen temas sensibles o emocionalmente difíciles</strong>. Esto no es para incomodarle, pero forma parte de un protocolo diseñado para comprender mejor su situación y presentar su caso de la manera más completa y sólida posible."
+        </blockquote>`
+      },
+      {
+        title: "Contexto del País de Origen",
+        type: "questions",
+        note: "Sondear Hardship en cada respuesta",
+        questions: [
+          "¿Podría describir brevemente su situación en su país de origen?",
+          "Actualmente, ¿existe alguna situación de riesgo que le impida regresar a su país de origen, o por la que considere que usted o su familia se encuentren en peligro?",
+          "¿Qué perdería si tuviera que regresar a su país de origen? ¿Tendría empleo, vivienda o familia allí?"
+        ]
+      },
+      {
+        title: "Condiciones y Forma del Cruce",
+        type: "questions",
+        questions: [
+          "Con relación al modo en que usted ingresó a EUA, ¿cruzó con la intención de obtener una mejor vida, o fue traído/a mediante engaños o amenazas?",
+          "¿Cuántas veces ha ingresado a los Estados Unidos?",
+          "¿De qué forma y en qué año ingresó usted a los EUA? (Si son más de una entrada, basta con mencionar todas las previas y solo describir a detalle el último cruce.)",
+          "¿Podría indicar qué relación tenía con la persona que lo introdujo a los EUA?"
+        ]
+      },
+      {
+        title: "Árbol de Decisión — ¿A dónde dirigir el caso?",
+        type: "decision",
+        branches: [
+          {
+            condition: "La persona que lo introdujo es un <strong>familiar</strong>",
+            subquestion: "¿Esta persona es ciudadano americano o cuenta con residencia legal?",
+            action: "Pasar a → Bloque 3: VAWA Cónyuge / Visa T DV",
+            color: "blue",
+            icon: "👨‍👩‍👧"
+          },
+          {
+            condition: "No hay relación familiar y <strong>usó un coyote</strong>",
+            subquestion: null,
+            action: "Pasar a → Bloque 2: Visa T Coyote",
+            color: "orange",
+            icon: "🚶"
+          },
+          {
+            condition: "El/la cliente <strong>cruzó por su cuenta</strong> (sin coyote ni familiar)",
+            subquestion: null,
+            action: "Pasar a → Bloque 4: Visa T Laboral  ó  Bloque 3: VAWA Cónyuge",
+            color: "green",
+            icon: "🧭"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "bloque2",
+    title: "Bloque 2\nVisa T Coyote",
+    icon: "⚠️",
+    type: "section",
+    color: "orange",
+    badge: "Solo si usó coyote",
+    subsections: [
+      {
+        title: "Primer Contacto y Promesas",
+        type: "questions",
+        questions: [
+          "¿Cómo fue el primer contacto con esta persona? ¿Qué le prometió?",
+          "¿Fue el mismo coyote durante todo el cruce, o este le entregó a otras personas?"
+        ]
+      },
+      {
+        title: "Condiciones del Traslado",
+        type: "questions",
+        questions: [
+          "¿Cómo fue el traslado? (A pie, en vehículo particular, en camiones...) ¿Cuánto tiempo duró?",
+          "¿Llegó a ser retenido en alguna casa, bodega o cuarto durante su cruce? ¿En qué condiciones estaba el lugar?",
+          "¿Era usted menor de edad cuando fue introducido/a a los Estados Unidos?"
+        ]
+      },
+      {
+        title: "Coerción y Riesgo Personal",
+        type: "questions",
+        questions: [
+          "Durante su proceso de cruce, ¿le obligaron a realizar alguna actividad o servicio en contra de su voluntad? De ser así, ¿cómo se le obligó?",
+          "¿Llegó a temer por su vida o su integridad en algún momento? ¿Por qué?",
+          "¿Cómo terminó esta situación?"
+        ]
+      }
+    ]
+  },
+  {
+    id: "bloque3",
+    title: "Bloque 3\nVAWA Cónyuge / Visa T DV",
+    icon: "💙",
+    type: "section",
+    color: "blue",
+    badge: "Familiar USC/LPR o cónyuge",
+    subsections: [
+      {
+        title: "Estado Civil y Vínculo con Peticionario",
+        type: "questions",
+        note: "Comenzar siempre por esta pregunta antes de profundizar en abuso.",
+        questions: [
+          "Actualmente, ¿usted tiene pareja?"
+        ]
+      },
+      {
+        title: "Árbol de Decisión — Estado Conyugal",
+        type: "decision",
+        branches: [
+          {
+            condition: "Responde <strong>SÍ</strong> — actualmente casado/a",
+            subquestion: "¿Desde cuándo? ¿Cuál es el estatus legal de su pareja? (ciudadana, residente, irregular)",
+            action: "Si la pareja es USC o LPR → pasar directamente a pregunta de abuso (3.2)",
+            color: "green",
+            icon: "💍"
+          },
+          {
+            condition: "Responde <strong>NO</strong> — no está actualmente casado/a",
+            subquestion: "¿Alguna vez llegó a estar casado/a con una persona ciudadana o residente? ¿Hace cuánto tiempo fue?",
+            action: "Si fue hace menos de 2 años → pasar a pregunta de abuso (3.2)\nSi fue hace más de 2 años o nunca → solo preguntar lo resaltado",
+            color: "orange",
+            icon: "📋"
+          },
+          {
+            condition: "Sin relaciones de pareja <strong>en EUA</strong>",
+            subquestion: null,
+            action: "Pasar a → Bloque 3B: VAWA Hijo/a",
+            color: "gray",
+            icon: "➡️"
+          }
+        ]
+      },
+      {
+        title: "3.2 — Indicadores de Violencia y Abuso",
+        type: "questions",
+        note: "Si NO se detectan indicios de abuso → pasar a Bloque 6: Family Petition",
+        questions: [
+          "¿Su pareja llegó a gritarle, insultarle y/o amenazarle? ¿Podría dar ejemplos?",
+          "Actualmente, ¿cómo es/era su relación con esta persona? ¿Cómo la conoció? ¿Vivieron juntos en algún momento? ¿Cómo comenzaron a relacionarse?",
+          "Además de lo que nos ha compartido, ¿alguna vez esta persona le ha sometido a violencia física o sexual?",
+          "¿Alguna vez su pareja le amenazó con dar aviso a las autoridades sobre su situación migratoria cuando no obtiene algo de usted?",
+          "¿En algún momento le obligó a trabajar o prestar servicios de tipo laboral, sexual o personal en contra de su voluntad? Por ejemplo: a tener relaciones sexuales, a embarazarse, a hacer labores del hogar, a trabajar en determinado lugar, a no tener contacto con sus familiares. Si su respuesta es sí, ¿podría describir la situación?",
+          "¿Su pareja lo ha obligado a trabajar y le ha quitado el dinero que usted gana? ¿Le ha obligado a llevar a cabo actividades del hogar de forma extenuante?",
+          "¿Cómo terminó esta situación?"
+        ]
+      }
+    ]
+  },
+  {
+    id: "bloque3b",
+    title: "Bloque 3B\nVAWA Hijo/a",
+    icon: "👶",
+    type: "section",
+    color: "purple",
+    badge: "Sin vínculo conyugal USC/LPR",
+    subsections: [
+      {
+        title: "Identificación de Hijos/as",
+        type: "questions",
+        note: "Si no tiene hijos/hijastros USC mayores de edad → pasar directamente a Bloque 4: Visa T Laboral",
+        questions: [
+          "¿Tiene usted hijos que sean ciudadanos norteamericanos o residentes? ¿Me puede compartir sus nombres, fechas y lugares de nacimiento?"
+        ]
+      },
+      {
+        title: "Dinámica Familiar y Abuso",
+        type: "questions",
+        note: "Si NO se detectan indicios de abuso → pasar a Bloque 6: Family Petition",
+        questions: [
+          "Actualmente, ¿viven con usted? ¿Cómo es la relación con sus hijos? ¿Ha sido de esta forma todo el tiempo? (Enfocarse particularmente en los mayores de edad.)",
+          "¿Su hijo/hijastro le grita, le insulta, le amenaza o es grosero/a con usted? ¿Podría dar ejemplos?",
+          "Alguna vez, ¿le han violentado físicamente, psicológicamente o verbalmente cualquiera de sus hijos? ¿Qué edad tenía él/ella durante estos eventos?",
+          "¿Qué acciones tiene su hijo/a? Es decir, ¿cómo lo/la trata? ¿Qué le hace/dice?",
+          "¿Su hijo/a le amenaza constantemente con dar aviso a las autoridades sobre su situación migratoria cuando no obtiene algo de usted?"
+        ]
+      }
+    ]
+  },
+  {
+    id: "bloque4",
+    title: "Bloque 4\nVisa T Laboral",
+    icon: "🏗️",
+    type: "section",
+    color: "red",
+    badge: "Cruce propio o complemento",
+    subsections: [
+      {
+        title: "Condiciones Laborales",
+        type: "questions",
+        note: "Si la respuesta es 'sí' a cualquiera de estas → profundizar: ¿Cómo lo obligaban?",
+        questions: [
+          "En alguno de los empleos que ha tenido desde su último ingreso a los EUA, ¿alguna vez fue obligado/a a trabajar horas extra? ¿A realizar labores que le hacían sentir incómodo/a o en peligro? ¿A cumplir con funciones que no le correspondían? ¿A trabajar sin el equipo de protección necesario?",
+          "¿Qué actividades desempeñaba en este trabajo? ¿Con qué horarios? ¿En qué condiciones? ¿Se le informó desde un inicio que cubriría todas estas actividades?"
+        ]
+      },
+      {
+        title: "Control Económico",
+        type: "questions",
+        note: "Si retenían su sueldo → preguntar: ¿Quién lo hacía? (empleador, cónyuge, hijos)",
+        questions: [
+          "Con relación a las preguntas anteriores, ¿recibió un pago por las actividades que llevaba a cabo? De ser el caso, ¿era mayor al salario mínimo? ¿Le retenían parte de su sueldo o controlaban sus cuentas o fuentes de ingreso?"
+        ]
+      },
+      {
+        title: "Aislamiento y Actos Ilícitos",
+        type: "questions",
+        questions: [
+          "¿Durante estos eventos fue usted aislado/a? Si la respuesta es positiva, ¿podría describirnos las condiciones de su aislamiento?",
+          "¿Alguna vez fue obligado/a como parte de su trabajo a cometer actos ilícitos o delitos? De ser así, ¿cuál(es)?",
+          "¿Cómo terminó esta situación?"
+        ]
+      }
+    ]
+  },
+  {
+    id: "bloque5",
+    title: "Bloque 5\nVisa U",
+    icon: "🚨",
+    type: "section",
+    color: "crimson",
+    subsections: [
+      {
+        title: "Identificación del Delito",
+        type: "questions",
+        note: "Si la respuesta es NO → pasar directamente a Bloque 6: Otros Alivios",
+        questions: [
+          "Dentro de los Estados Unidos, ¿ha sido usted víctima o testigo directo de algún delito, o de alguna situación donde su vida o la de alguien cercano haya estado en peligro?"
+        ]
+      },
+      {
+        title: "Desarrollo del Evento",
+        type: "questions",
+        note: "Solo si la respuesta anterior fue SÍ. Desarrollar ampliamente:",
+        questions: [
+          "¿Qué pasó exactamente?",
+          "¿Cuándo ocurrió?",
+          "¿Cómo sucedió?",
+          "¿Por qué cree que le ocurrió a usted?"
+        ]
+      },
+      {
+        title: "Denuncia y Cooperación",
+        type: "decision",
+        branches: [
+          {
+            condition: "<strong>SÍ</strong> denunció ante la policía",
+            subquestion: null,
+            action: "¿En qué fecha? / ¿Cuenta con ese reporte? / ¿Participó en el proceso? / ¿Cuál fue el resultado? / ¿Se castigó al responsable? / ¿Le pagaron daños y perjuicios?",
+            color: "green",
+            icon: "📋"
+          },
+          {
+            condition: "<strong>NO</strong> denunció",
+            subquestion: null,
+            action: "¿Estaría dispuesto/a a colaborar con las autoridades? / ¿Por qué no lo haría?",
+            color: "orange",
+            icon: "❓"
+          }
+        ]
+      },
+      {
+        title: "Daños Derivados",
+        type: "questions",
+        questions: [
+          "¿Tiene o tuvo daños físicos, económicos o psicológicos derivados de los hechos narrados? ¿Cuáles?"
+        ]
+      }
+    ]
+  },
+  {
+    id: "bloque55",
+    title: "Seguimiento\nVisa T",
+    icon: "📋",
+    type: "section",
+    color: "teal",
+    badge: "Solo si se indagó Visa T",
+    subsections: [
+      {
+        title: "Preguntas de Cierre — Visa T",
+        type: "questions",
+        note: "Aplicar ÚNICAMENTE cuando se haya trabajado algún tipo de Visa T (Coyote, Laboral o DV)",
+        questions: [
+          "Si fuera necesario, ¿estaría dispuesto/a a denunciar esta situación ante las autoridades?",
+          "¿Actualmente tiene o tuvo alguna consecuencia de esta situación? (Indagar en orden: cuestiones físicas, psicológicas, económicas, familiares.)",
+          "¿Dentro de los EUA ha cometido algún delito o tiene algún ticket de tránsito?",
+          "¿Dentro de los EUA ha hecho uso de algún documento falso para trabajar y/o acceder a ciertos programas de asistencia, beneficios o servicios proporcionados por el gobierno? De ser el caso, ¿cuál? ¿Cómo lo consiguió?",
+          "¿Ha sido arrestado/a, acusado/a o condenado/a? (Detalles completos, fechas y resultados.)"
+        ]
+      }
+    ]
+  },
+  {
+    id: "bloque6",
+    title: "Bloque 6\nOtros Alivios",
+    icon: "🏛️",
+    type: "section",
+    color: "gold",
+    subsections: [
+      {
+        title: "6A — Family Petition",
+        type: "questions",
+        note: "Verificar que ya se tiene: tipo de ingreso, tiempo en EUA, historial limpio, hijos, vínculo con peticionario, hardship.",
+        questions: [
+          "¿Cuál ha sido su historial migratorio? Enliste todas las entradas y salidas del país.",
+          "¿Ha presentado peticiones migratorias antes, o alguien lo ha pedido a usted?",
+          "¿Su familiar estaría dispuesto a ayudarle con sus papeles migratorios?",
+          "¿Tienen cuentas bancarias, seguros, contratos o bienes juntos?",
+          "¿Tienen chats, llamadas, transferencias o evidencia de comunicación continua?"
+        ]
+      },
+      {
+        title: "6B — Parole In Place",
+        type: "questions",
+        note: "Verificar que ya se tiene: ingreso sin inspección, tiempo en EUA, historial limpio, hijos, hardship.",
+        questions: [
+          "¿Es usted cónyuge, hijo/a o padre/madre de un miembro activo o veterano del ejército de EE. UU.?",
+          "¿Hay evidencia de esta relación? (acta de matrimonio, nacimiento, etc.)",
+          "¿Su familiar militar cree que estaría dispuesto a pedirlo/a?",
+          "Si le deportan, ¿le afectaría negativamente a su familiar militar? ¿Cómo?"
+        ]
+      },
+      {
+        title: "6C — Asilo",
+        type: "questions",
+        note: "Verificar que ya se tienen: razones de salida del país, admisibilidad, familia en EUA, necesidades especiales de hijos.",
+        questions: [
+          "En su país de origen, ¿hay problemas de narcotráfico? Si es así, ¿su familia recibió amenazas, daños o fue víctima de abusos por parte de personas peligrosas? ¿Podría identificar quién les causó ese daño?",
+          "En su país, ¿alguna vez fue perseguido/a por su raza o grupo étnico; por su religión o creencias; por su nacionalidad; por opinión política (real o percibida); o por su pertenencia a algún grupo social? (Ej: mujeres víctimas de violencia doméstica, personas LGBTQ+, familiares de alguien, exmiembros de pandilla, etc.)",
+          "¿Reportó lo ocurrido a la policía o a alguna otra autoridad? ¿Qué hicieron las autoridades cuando usted pidió ayuda?",
+          "¿Podría haberse mudado a otra parte del país para estar a salvo? ¿Por qué sí o por qué no? Si tuviera que regresar hoy, ¿qué cree que le pasaría? ¿Sus hijos irían con usted o le visitarían?"
+        ]
+      },
+      {
+        title: "6D — Waiver 601-A",
+        type: "questions",
+        note: "Verificar que ya se tiene información sobre hardship directo y a familiares. Si no tiene padres o cónyuge USC/LPR → finalizar indagación.",
+        questions: [
+          "¿Tiene padres o cónyuge ciudadanos/as o residentes permanentes?",
+          "Su pariente: ¿tiene o ha tenido diagnósticos médicos importantes? ¿Ha sido diagnosticado/a con depresión, ansiedad, PTSD u otro trastorno? ¿Qué síntomas tiene y desde cuándo? ¿Ha recibido terapia o tratamiento psiquiátrico? ¿Toma medicamentos? (Indagar dosis y costo mensual.)",
+          "¿Usted participa en el cuidado de su familiar? ¿Cómo? ¿Cómo afecta la posible separación su estabilidad emocional diaria?",
+          "Detallar gastos mensuales: ingresos del cliente y familiares, y desglose de gastos fijos.",
+          "¿Qué gastos no podrían pagarse sin usted? ¿Cuántas personas dependen económicamente o físicamente de usted? ¿Quién cuidaría de ellos?",
+          "En el supuesto de que se le negara el caso, ¿cómo cambiaría su vida? (Indagar: salud, economía, familia y nivel emocional.)"
+        ]
+      }
+    ]
+  }
+];
+
+// =============================================
+// STATE
+// =============================================
+let currentSection = 0;
+let currentSub = 0;
+let visitedSections = new Set([0]);
+let completedSections = new Set();
+
+// =============================================
+// RENDER ENGINE
+// =============================================
+
+function renderNav() {
+  const nav = document.getElementById('nav-items');
+  nav.innerHTML = '';
+  SECTIONS.forEach((sec, i) => {
+    const li = document.createElement('li');
+    li.className = 'nav-item' + (i === currentSection ? ' active' : '') + (completedSections.has(i) ? ' completed' : '') + (visitedSections.has(i) ? ' visited' : '');
+    li.innerHTML = `
+      <span class="nav-icon">${sec.icon}</span>
+      <span class="nav-label">${sec.title.replace('\n', '<br>')}</span>
+      ${completedSections.has(i) ? '<span class="nav-check">✓</span>' : ''}
+    `;
+    li.addEventListener('click', () => goToSection(i));
+    nav.appendChild(li);
+  });
+}
+
+function renderSection() {
+  const sec = SECTIONS[currentSection];
+  const main = document.getElementById('main-content');
+
+  if (sec.type === 'intro') {
+    main.innerHTML = renderIntro();
+    return;
+  }
+
+  const colorMap = {
+    navy: '#1B3A6B', orange: '#D4741A', blue: '#1A5276',
+    purple: '#6C3483', red: '#922B21', crimson: '#7B241C',
+    teal: '#0E6655', gold: '#7D6608'
+  };
+  const bgMap = {
+    navy: '#EBF2FA', orange: '#FEF9EF', blue: '#EBF5FB',
+    purple: '#F5EEF8', red: '#FDEDEC', crimson: '#FDEDEC',
+    teal: '#E8F8F5', gold: '#FDFBE9'
+  };
+
+  const color = colorMap[sec.color] || '#1B3A6B';
+  const bg = bgMap[sec.color] || '#F5F8FF';
+  const subs = sec.subsections || [];
+  const sub = subs[currentSub] || null;
+
+  let progressHTML = '';
+  if (subs.length > 1) {
+    progressHTML = `<div class="sub-progress">
+      ${subs.map((s,i) => `<div class="sub-dot ${i === currentSub ? 'active' : ''} ${i < currentSub ? 'done' : ''}" title="${s.title}"></div>`).join('')}
+    </div>`;
+  }
+
+  let bodyHTML = '';
+  if (sub) {
+    if (sub.type === 'script') bodyHTML = renderScript(sub, color);
+    else if (sub.type === 'questions') bodyHTML = renderQuestions(sub, color);
+    else if (sub.type === 'decision') bodyHTML = renderDecision(sub);
+  }
+
+  main.innerHTML = `
+    <div class="section-header" style="background: ${color}">
+      <div class="section-header-inner">
+        <span class="section-big-icon">${sec.icon}</span>
+        <div>
+          <div class="section-title">${sec.title.replace('\n', ' — ')}</div>
+          ${sec.badge ? `<div class="section-badge">${sec.badge}</div>` : ''}
+        </div>
+      </div>
+      ${progressHTML}
+    </div>
+    <div class="section-body" style="background: ${bg}">
+      ${sub ? `<h2 class="sub-title" style="color:${color}">${sub.title}</h2>` : ''}
+      ${bodyHTML}
+      <div class="nav-buttons">
+        ${currentSub > 0 || currentSection > 0 ? `<button class="btn btn-secondary" onclick="goBack()">← Anterior</button>` : '<div></div>'}
+        <button class="btn btn-primary" style="background:${color}" onclick="goNext()">
+          ${isLastStep() ? '✓ Finalizar Módulo' : 'Siguiente →'}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderIntro() {
+  return `
+    <div class="intro-screen">
+      <div class="intro-logo">⚖️</div>
+      <div class="intro-firm">THE MENDOZA LAW FIRM</div>
+      <div class="intro-area">PreCase — Área de Entrenamiento</div>
+      <h1 class="intro-title">Guía de Ampliación y Fortalecimiento Estratégico</h1>
+      <p class="intro-subtitle">Preguntas para la Redirección y Diversificación de Alivios Migratorios</p>
+      <div class="intro-divider"></div>
+      <div class="intro-cards">
+        <div class="intro-card">
+          <span>🎯</span>
+          <strong>Objetivo</strong>
+          <p>Ampliar la estrategia del caso identificando alivios migratorios adicionales mediante preguntas estructuradas.</p>
+        </div>
+        <div class="intro-card">
+          <span>🗺️</span>
+          <strong>Estructura</strong>
+          <p>8 bloques temáticos con árboles de decisión para redirigir el caso al alivio correcto en cada etapa.</p>
+        </div>
+        <div class="intro-card">
+          <span>📌</span>
+          <strong>Uso</strong>
+          <p>Consulta durante la llamada de segunda revisión con el cliente. Sigue las instrucciones de redirección en cada bloque.</p>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-large" onclick="goNext()">Comenzar Guía →</button>
+    </div>
+  `;
+}
+
+function renderScript(sub, color) {
+  return `<div class="script-box">${sub.content}</div>`;
+}
+
+function renderQuestions(sub, color) {
+  let html = '';
+  if (sub.note) html += `<div class="note-box">📌 ${sub.note}</div>`;
+  html += '<div class="questions-list">';
+  sub.questions.forEach((q, i) => {
+    html += `<div class="question-card">
+      <div class="q-number" style="background:${color}">${i + 1}</div>
+      <div class="q-text">${q}</div>
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderDecision(sub) {
+  const colorMap = {
+    green: { bg: '#E8F8F2', border: '#27AE60', text: '#1A6B3C', btn: '#27AE60' },
+    orange: { bg: '#FEF5E7', border: '#E67E22', text: '#784212', btn: '#E67E22' },
+    blue: { bg: '#EBF5FB', border: '#2E86C1', text: '#1B4F72', btn: '#2E86C1' },
+    gray: { bg: '#F2F3F4', border: '#7F8C8D', text: '#2C3E50', btn: '#7F8C8D' },
+    purple: { bg: '#F5EEF8', border: '#8E44AD', text: '#6C3483', btn: '#8E44AD' }
+  };
+
+  let html = '';
+  if (sub.note) html += `<div class="note-box">📌 ${sub.note}</div>`;
+  html += '<div class="decision-grid">';
+
+  sub.branches.forEach(b => {
+    const c = colorMap[b.color] || colorMap.blue;
+    html += `<div class="decision-card" style="background:${c.bg}; border-color:${c.border}">
+      <div class="decision-icon">${b.icon}</div>
+      <div class="decision-condition" style="color:${c.text}">${b.condition}</div>
+      ${b.subquestion ? `<div class="decision-sub">❓ ${b.subquestion}</div>` : ''}
+      <div class="decision-action" style="background:${c.btn}">➤ ${b.action}</div>
+    </div>`;
+  });
+
+  html += '</div>';
+  return html;
+}
+
+// =============================================
+// NAVIGATION
+// =============================================
+
+function goToSection(i) {
+  completedSections.add(currentSection);
+  currentSection = i;
+  currentSub = 0;
+  visitedSections.add(i);
+  renderNav();
+  renderSection();
+  window.scrollTo(0, 0);
+  SCORM.markInProgress();
+}
+
+function isLastStep() {
+  const sec = SECTIONS[currentSection];
+  const subs = (sec.subsections || []);
+  return currentSection === SECTIONS.length - 1 && (subs.length === 0 || currentSub === subs.length - 1);
+}
+
+function goNext() {
+  const sec = SECTIONS[currentSection];
+  const subs = sec.subsections || [];
+
+  if (subs.length > 0 && currentSub < subs.length - 1) {
+    currentSub++;
+    renderSection();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  completedSections.add(currentSection);
+
+  if (currentSection < SECTIONS.length - 1) {
+    currentSection++;
+    currentSub = 0;
+    visitedSections.add(currentSection);
+    renderNav();
+    renderSection();
+    window.scrollTo(0, 0);
+    SCORM.markInProgress();
+  } else {
+    completedSections.add(currentSection);
+    renderNav();
+    showCompletion();
+    SCORM.complete();
+  }
+}
+
+function goBack() {
+  const sec = SECTIONS[currentSection];
+  if (currentSub > 0) {
+    currentSub--;
+    renderSection();
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (currentSection > 0) {
+    currentSection--;
+    const prevSec = SECTIONS[currentSection];
+    currentSub = (prevSec.subsections || []).length - 1;
+    if (currentSub < 0) currentSub = 0;
+    renderNav();
+    renderSection();
+    window.scrollTo(0, 0);
+  }
+}
+
+function showCompletion() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="completion-screen">
+      <div class="completion-icon">✅</div>
+      <h1>Guía Completada</h1>
+      <p>Has revisado todos los bloques de la guía de ampliación estratégica.</p>
+      <div class="completion-summary">
+        <div class="comp-stat"><span>${SECTIONS.length}</span><label>Bloques revisados</label></div>
+        <div class="comp-stat"><span>${completedSections.size}</span><label>Secciones completadas</label></div>
+      </div>
+      <p class="completion-note">Este módulo ha sido registrado como completado en Moodle.</p>
+      <button class="btn btn-primary btn-large" onclick="restartModule()">↺ Revisar desde el inicio</button>
+    </div>
+  `;
+}
+
+function restartModule() {
+  currentSection = 0;
+  currentSub = 0;
+  visitedSections = new Set([0]);
+  completedSections = new Set();
+  renderNav();
+  renderSection();
+  window.scrollTo(0, 0);
+}
+
+// =============================================
+// INIT
+// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+  SCORM.init();
+  renderNav();
+  renderSection();
+});
+
+</script>
+</body>
+</html>
