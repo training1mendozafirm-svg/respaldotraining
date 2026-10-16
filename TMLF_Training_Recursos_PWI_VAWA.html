@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Training Operativo: Recursos PWI VAWA | TMLF Learning Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1e1a14;--slate:#6b7c68;--steel:#7a9e7e;
+  --sage:#7a9e7e;--sage-dark:#4d7a52;--sage-light:#c8deca;
+  --pale:#e8f0e9;--pale2:#d4e6d5;
+  --gold:#b8922a;--gold-bg:rgba(184,146,42,.09);
+  --beige:#f2ece3;--beige2:#e8ddd0;--sand:#d4c4ae;
+  --cafe:#8b6f5e;--cafe-dark:#5c4433;
+  --warm-white:#faf8f4;--bg:#f0ece5;
+  --shadow:0 8px 28px rgba(30,26,20,.1);--radius:16px;
+  --nav-h:56px;--sidebar-w:268px;
+  --green-hi:#2d6a35;--green-bg:rgba(45,106,53,.08);
+  --red:#7a2c2c;--red-bg:rgba(160,50,50,.08);
+  --amber:#7a5200;--amber-bg:rgba(180,130,0,.09);
+  --sidebar-bg:#1a1912;
+  --link-color:#4d7a52;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+
+/* ══ TOP NAV ══ */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav-h);background:rgba(26,25,18,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(120,158,120,.14);display:flex;align-items:center;padding:0 18px;gap:10px}
+.topnav .brand{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;white-space:nowrap;letter-spacing:.3px;display:flex;align-items:center;gap:10px}
+.topnav .brand .seal{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(120,158,120,.3),rgba(120,158,120,.08));border:1px solid rgba(120,158,120,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.topnav .brand span{color:var(--sage-light)}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topnav-pill{padding:5px 14px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(120,158,120,.12);border:1px solid rgba(120,158,120,.28);color:rgba(180,210,180,.9)}
+.sidebar-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px}
+@media(max-width:900px){.sidebar-toggle{display:block}}
+
+/* ══ PROGRESS BAR ══ */
+.progress-bar-wrap{position:fixed;top:var(--nav-h);left:0;right:0;z-index:299;height:3px;background:rgba(255,255,255,.06)}
+.progress-bar-fill{height:3px;background:linear-gradient(90deg,var(--sage),var(--sage-light));transition:width .5s ease;width:0%}
+
+/* ══ SHELL ══ */
+.app-shell{display:flex;min-height:100vh;padding-top:var(--nav-h)}
+
+/* ══ SIDEBAR ══ */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);position:fixed;top:var(--nav-h);bottom:0;left:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;border-right:1px solid rgba(120,158,120,.08);z-index:200;transition:transform .3s ease}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:3px}
+.sidebar-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sidebar-header .sh-label{font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:3px}
+.sidebar-header .sh-title{font-family:'Cormorant Garamond',serif;font-size:14.5px;color:rgba(255,255,255,.85);font-weight:600;line-height:1.3}
+.sb-group{padding:8px 0}
+.sb-group-label{padding:6px 16px 3px;font-size:8.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.22)}
+.sb-divider{margin:4px 14px 6px;height:1px;background:linear-gradient(90deg,rgba(120,158,120,.2),transparent)}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:all .18s;position:relative;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.04)}
+.sb-item.active{background:rgba(120,158,120,.09)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--sage);border-radius:0 3px 3px 0}
+.sb-num{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);transition:all .18s}
+.sb-item.active .sb-num{background:var(--sage);color:#fff}
+.sb-text{flex:1;min-width:0}
+.sb-name{font-size:11.5px;font-weight:600;color:rgba(255,255,255,.48);line-height:1.3;transition:color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item.active .sb-name{color:rgba(255,255,255,.9)}
+.sb-item:hover:not(.locked) .sb-name{color:rgba(255,255,255,.75)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.26);margin-top:1px}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.45)}
+  .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+  .sb-overlay.show{display:block}
+}
+
+/* ══ MAIN ══ */
+.main{margin-left:var(--sidebar-w);flex:1;padding:26px 26px 60px;max-width:100%}
+@media(max-width:900px){.main{margin-left:0;padding:18px 14px 50px}}
+
+/* ══ HEADER ══ */
+.header{background:linear-gradient(135deg,#1c2415 0%,#243020 45%,#2e3d28 100%);color:#fff;border-radius:20px;padding:42px 38px 36px;box-shadow:0 16px 40px rgba(10,20,10,.22);position:relative;overflow:hidden;margin-bottom:22px}
+.header::before{content:'';position:absolute;top:-60px;right:-40px;width:270px;height:270px;border:1.5px solid rgba(120,158,120,.12);border-radius:50%;animation:pulse 5s ease-in-out infinite}
+.header::after{content:'';position:absolute;bottom:-70px;right:90px;width:180px;height:180px;border:1.5px solid rgba(120,158,120,.07);border-radius:50%;animation:pulse 6s ease-in-out infinite .8s}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:.85}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.header-seal{position:absolute;top:26px;right:34px;width:62px;height:62px;border:1.5px solid rgba(120,158,120,.22);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;opacity:.5}
+.header-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:rgba(120,158,120,.14);border:1px solid rgba(120,158,120,.32);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:12px}
+.header-badge .dot{width:5px;height:5px;background:var(--sage-light);border-radius:50%}
+h1{font-family:'Cormorant Garamond',serif;font-size:34px;letter-spacing:.4px;position:relative;z-index:1;font-weight:700;line-height:1.15}
+.subtitle{font-size:13.5px;opacity:.72;max-width:54ch;position:relative;z-index:1;margin-top:6px}
+.header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.header-meta-item{display:flex;align-items:center;gap:6px;padding:5px 13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:11.5px}
+.header-meta-item span:first-child{opacity:.55}
+
+/* ══ PANELS ══ */
+.panel{display:none;animation:fadeUp .28s ease both}
+.panel.active{display:block}
+
+/* ══ PAGE TITLE ══ */
+.page-title{margin-bottom:18px}
+.page-title .pt-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate);margin-bottom:4px}
+.page-title h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.page-title .pt-sub{font-size:13px;color:var(--slate);margin-top:3px}
+
+/* ══ BLOCKS ══ */
+.block{background:var(--warm-white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(122,158,126,.15);overflow:hidden;margin-bottom:14px}
+.block .btitle{display:flex;align-items:center;gap:10px;padding:15px 18px;background:linear-gradient(180deg,rgba(200,222,202,.2),rgba(200,222,202,.04));border-bottom:1px solid rgba(122,158,126,.14)}
+.block .btitle .bicon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.block .btitle h3{font-size:15px;color:var(--ink);font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.2px;flex:1}
+.block .btitle .mod-badge{margin-left:auto;padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;flex-shrink:0}
+.block .bbody{padding:18px}
+.block .bbody p{margin:0 0 10px;font-size:13.5px;color:var(--ink)}
+.block .bbody p:last-child{margin-bottom:0}
+
+.block.b-sage{border-color:rgba(122,158,126,.22);background:#f4f8f4}
+.block.b-sage .btitle{background:rgba(122,158,126,.1);border-bottom-color:rgba(122,158,126,.15)}
+.block.b-beige{border-color:rgba(184,146,42,.2);background:#fdf9f0}
+.block.b-beige .btitle{background:rgba(184,146,42,.08);border-bottom-color:rgba(184,146,42,.14)}
+.block.b-beige .btitle h3{color:#5a3e00}
+.block.b-error{border-color:rgba(139,44,44,.18);background:#fff5f5}
+.block.b-error .btitle{background:rgba(139,44,44,.06);border-bottom-color:rgba(139,44,44,.12)}
+.block.b-error .btitle h3{color:#7a2c2c}
+.block.b-cafe{border-color:rgba(139,111,94,.2);background:#fdf5ef}
+.block.b-cafe .btitle{background:rgba(139,111,94,.07);border-bottom-color:rgba(139,111,94,.13)}
+.block.b-cafe .btitle h3{color:#5c4433}
+.block.b-eval{border-color:rgba(120,158,120,.28);background:linear-gradient(135deg,#f3f8f3,#eef5ee)}
+.block.b-eval .btitle{background:rgba(120,158,120,.14);border-bottom-color:rgba(120,158,120,.2)}
+
+/* ══ BADGES ══ */
+.badge-sage{background:rgba(122,158,126,.09);color:#2d6a35;border:1px solid rgba(122,158,126,.2)}
+.badge-warn{background:rgba(139,44,44,.08);color:#7a2c2c;border:1px solid rgba(139,44,44,.17)}
+.badge-gold{background:rgba(184,146,42,.09);color:#7a5200;border:1px solid rgba(184,146,42,.2)}
+.badge-cafe{background:rgba(139,111,94,.08);color:#5c4433;border:1px solid rgba(139,111,94,.18)}
+
+/* ══ ALERTS ══ */
+.alert{margin-top:10px;padding:10px 13px;border-radius:10px;font-size:12.5px;display:flex;align-items:flex-start;gap:9px;line-height:1.55}
+.alert.warn{background:var(--amber-bg);border:1px solid rgba(180,130,0,.19);color:var(--amber)}
+.alert.danger{background:var(--red-bg);border:1px solid rgba(180,50,50,.17);color:var(--red)}
+.alert.success{background:var(--green-bg);border:1px solid rgba(45,106,53,.17);color:var(--green-hi)}
+.alert.info{background:rgba(122,158,126,.07);border:1px solid rgba(122,158,126,.18);color:#2d4a30}
+.alert.sand{background:rgba(212,196,174,.18);border:1px solid rgba(212,196,174,.4);color:var(--cafe-dark)}
+.alert-icon{flex-shrink:0;margin-top:1px}
+.alert strong{font-weight:700}
+
+/* ══ DIVIDERS ══ */
+.sdiv{display:flex;align-items:center;gap:11px;margin:20px 0 13px}
+.sdiv .l{flex:1;height:1px;background:linear-gradient(90deg,rgba(122,158,126,.3),transparent)}
+.sdiv .l:last-child{background:linear-gradient(270deg,rgba(122,158,126,.3),transparent)}
+.sdiv .t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--slate);white-space:nowrap}
+
+/* ══ STAT CARDS ══ */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;margin-bottom:18px}
+.stat-card{background:var(--warm-white);border-radius:13px;padding:15px;border:1px solid rgba(122,158,126,.16);text-align:center;transition:transform .2s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-card .stat-val{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--sage-dark);line-height:1}
+.stat-card .stat-label{font-size:11px;color:var(--slate);margin-top:4px;font-weight:600}
+
+/* ══ OB LIST ══ */
+.ob-list{display:grid;grid-template-columns:1fr;gap:6px;margin-top:9px}
+@media(min-width:600px){.ob-list{grid-template-columns:1fr 1fr}}
+.ob-item{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:10px;background:rgba(200,222,202,.12);border:1px solid rgba(122,158,126,.16);transition:all .2s}
+.ob-item:hover{transform:translateX(3px);background:rgba(200,222,202,.22)}
+.ob-num{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px}
+.ob-item span{font-size:12.5px;font-weight:600;line-height:1.4}
+
+/* ══ TWO/THREE COL ══ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px}
+@media(max-width:700px){.three-col{grid-template-columns:1fr}}
+@media(max-width:600px){.two-col{grid-template-columns:1fr}}
+.mini-card{padding:13px;border-radius:11px;border:1px solid rgba(122,158,126,.16);background:rgba(200,222,202,.06)}
+.mini-card h4{font-size:12.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px;color:var(--ink);font-weight:700}
+.mini-card p,.mini-card li{font-size:12px;color:var(--slate);line-height:1.6}
+.mini-card ul{padding-left:15px}
+.mini-card.beige{background:rgba(242,236,227,.35);border-color:var(--sand)}
+.mini-card.cafe{background:rgba(139,111,94,.05);border-color:rgba(139,111,94,.18)}
+
+/* ══ ACCORDIONS ══ */
+details.block-accordion{border:none;background:none;padding:0;margin:8px 0 0}
+details.block-accordion+details.block-accordion{margin-top:7px}
+.block-accordion-header{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-radius:11px;background:linear-gradient(135deg,rgba(30,26,20,.03),rgba(122,158,126,.09));border:1px solid rgba(122,158,126,.16);transition:all .2s;user-select:none}
+.block-accordion-header::-webkit-details-marker{display:none}
+details.block-accordion[open] .block-accordion-header{border-radius:11px 11px 0 0;border-bottom-color:transparent;background:linear-gradient(135deg,rgba(30,26,20,.05),rgba(122,158,126,.14))}
+.block-accordion-header:hover{background:linear-gradient(135deg,rgba(30,26,20,.05),rgba(122,158,126,.14))}
+.bac-left{display:flex;align-items:center;gap:11px}
+.bac-num{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bac-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.bac-title{font-size:13.5px;font-weight:700;color:var(--ink)}
+.bac-arrow{font-size:11px;color:var(--slate);transition:transform .2s;flex-shrink:0}
+details.block-accordion[open] .bac-arrow{transform:rotate(90deg)}
+.bac-body{padding:14px 16px 16px;border:1px solid rgba(122,158,126,.16);border-top:none;border-radius:0 0 11px 11px;background:rgba(244,248,244,.6)}
+
+/* ══ CHIPS ══ */
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chip{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:600;background:rgba(200,222,202,.18);border:1px solid rgba(122,158,126,.2);color:var(--ink)}
+.chip.sage{background:var(--green-bg);border-color:rgba(45,106,53,.18);color:var(--green-hi)}
+.chip.amber{background:var(--amber-bg);border-color:rgba(180,130,0,.2);color:var(--amber)}
+.chip.red{background:var(--red-bg);border-color:rgba(180,50,50,.2);color:var(--red)}
+.chip.beige{background:rgba(242,236,227,.5);border-color:var(--sand);color:var(--cafe-dark)}
+.chip.cafe{background:rgba(139,111,94,.08);border-color:rgba(139,111,94,.2);color:var(--cafe-dark)}
+
+/* ══ PRINCIPLE / CALLOUT ══ */
+.principle{margin-top:13px;padding:14px 17px;border-radius:11px;background:linear-gradient(135deg,rgba(244,248,244,.6),rgba(200,222,202,.1));border:1px solid rgba(122,158,126,.2);border-left:3px solid var(--sage)}
+.principle p{margin:0;font-size:14px;font-weight:600;font-style:italic;font-family:'Cormorant Garamond',serif;line-height:1.55;color:var(--ink)}
+.principle .principle-sub{font-weight:500;color:var(--slate);margin-top:4px;font-style:normal;font-family:'DM Sans',sans-serif;font-size:12px}
+
+/* ══ INFO TABLE ══ */
+.info-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.5px;border-radius:11px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.info-table th{background:var(--sage-dark);color:#fff;padding:11px 14px;text-align:left;font-weight:700;font-size:11.5px}
+.info-table td{padding:10px 14px;border-bottom:1px solid rgba(122,158,126,.12);color:var(--ink)}
+.info-table tr:nth-child(even) td{background:rgba(122,158,126,.05)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:hover td{background:rgba(200,222,202,.14)}
+
+/* ══ TIMELINE / CRONOGRAMA ══ */
+.timeline{display:flex;flex-direction:column;gap:0;margin-top:11px;position:relative}
+.timeline::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--sage-dark),var(--sage),var(--sage-light));border-radius:2px}
+.tl-item{display:flex;gap:15px;padding:0 0 16px;position:relative}
+.tl-dot{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;box-shadow:0 3px 9px rgba(45,106,53,.25);font-family:'Barlow Condensed',sans-serif}
+.tl-content{padding:10px 14px;background:var(--warm-white);border-radius:10px;border:1px solid rgba(122,158,126,.16);flex:1;transition:all .2s}
+.tl-content:hover{border-color:var(--sage);transform:translateX(3px)}
+.tl-stage{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:3px}
+.tl-content h4{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 3px}
+.tl-content p{font-size:11.5px;color:var(--slate);margin:0}
+.tl-resource{display:inline-block;margin-top:5px;font-size:10.5px;font-weight:700;color:var(--sage-dark);background:rgba(122,158,126,.1);padding:2px 8px;border-radius:5px}
+
+/* ══ STEP LIST ══ */
+.step-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.step-item{display:flex;gap:12px;padding:10px 13px;border-radius:10px;background:rgba(200,222,202,.08);border:1px solid rgba(122,158,126,.12);transition:background .2s}
+.step-item:hover{background:rgba(200,222,202,.16)}
+.step-n{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text{font-size:12.5px;line-height:1.5;flex:1}
+.step-text strong{color:var(--sage-dark)}
+
+/* ══ HIGHLIGHT MARKS ══ */
+mark.hi{background:rgba(184,146,42,.2);color:#5a3e00;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(184,146,42,.45)}
+mark.hi-sage{background:rgba(122,158,126,.15);color:#1a4d20;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(122,158,126,.4)}
+mark.hi-red{background:rgba(180,40,40,.11);color:#7a1a1a;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(180,40,40,.38)}
+
+/* ══ CHECKLIST ══ */
+.checklist{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:9px;border:1px solid rgba(122,158,126,.15);background:var(--warm-white);cursor:pointer;transition:all .18s}
+.cl-item:hover{background:rgba(200,222,202,.12)}
+.cl-item.checked{background:rgba(45,106,53,.06);border-color:rgba(45,106,53,.2)}
+.cl-check{width:20px;height:20px;border-radius:5px;border:2px solid rgba(122,158,126,.4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;transition:all .18s}
+.cl-item.checked .cl-check{background:var(--sage-dark);border-color:var(--sage-dark);color:#fff}
+.cl-text{font-size:12.5px;flex:1;line-height:1.4}
+.cl-item.checked .cl-text{color:var(--slate);text-decoration:line-through;text-decoration-color:rgba(122,158,126,.5)}
+
+/* ══ FLOW CARD ══ */
+.flow-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.flow-step{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:88px}
+.flow-icon{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px rgba(45,106,53,.2)}
+.flow-label{font-size:10.5px;font-weight:700;text-align:center;color:var(--slate);max-width:88px;line-height:1.3}
+.flow-arrow{font-size:18px;color:rgba(122,158,126,.5);flex-shrink:0;margin-top:-16px}
+
+/* ══ COMPETENCY TABLE ══ */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+@media(max-width:700px){.comp-grid{grid-template-columns:1fr}}
+.comp-card{padding:12px;border-radius:10px;border:1px solid rgba(122,158,126,.16);background:rgba(244,248,244,.5);transition:transform .2s}
+.comp-card:hover{transform:translateY(-2px)}
+.comp-icon{font-size:22px;margin-bottom:6px}
+.comp-title{font-size:12px;font-weight:700;color:var(--sage-dark);margin-bottom:4px}
+.comp-desc{font-size:11.5px;color:var(--slate);line-height:1.5}
+.comp-badge{margin-top:8px;display:inline-block;font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:5px;background:rgba(45,106,53,.1);color:var(--green-hi);border:1px solid rgba(45,106,53,.18)}
+
+/* ══ QUESTION CARDS ══ */
+.q-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.q-item{padding:11px 14px;border-radius:10px;border:1px solid rgba(122,158,126,.16);background:rgba(200,222,202,.07);display:flex;gap:10px;align-items:flex-start}
+.q-num{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--sage);flex-shrink:0;line-height:1;width:22px}
+.q-text{font-size:13px;color:var(--ink);line-height:1.5}
+
+/* ══ LINK BUTTON ══ */
+.link-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:9px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff;font-size:12.5px;font-weight:700;text-decoration:none;margin-top:10px;transition:opacity .2s}
+.link-btn:hover{opacity:.88}
+
+/* ══ OVERVIEW INTRO CARD ══ */
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:600px){.intro-grid{grid-template-columns:1fr}}
+.intro-card{padding:16px;border-radius:12px;border:1px solid rgba(122,158,126,.17);background:var(--warm-white)}
+.intro-card .ic-icon{font-size:26px;margin-bottom:8px}
+.intro-card h4{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.intro-card p{font-size:12.5px;color:var(--slate);line-height:1.55}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <div class="seal">⚖</div>
+    TMLF <span>Learning Center</span>
+  </div>
+  <div class="topnav-right">
+    <span class="topnav-pill">PWI VAWA</span>
+    <span class="topnav-pill" style="display:none" id="pill-progress">0%</span>
+  </div>
+</nav>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="pbar"></div></div>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sb-overlay" id="sb-overlay" onclick="toggleSidebar()"></div>
+
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sh-label">Training Operativo</div>
+      <div class="sh-title">Recursos Pre-Welcome Interview VAWA</div>
+    </div>
+    <div class="sb-group">
+      <div class="sb-group-label">Navegación</div>
+      <div class="sb-item active" data-panel="overview" onclick="showPanel('overview',this)">
+        <div class="sb-num">◎</div>
+        <div class="sb-text"><div class="sb-name">Descripción General</div></div>
+      </div>
+      <div class="sb-item" data-panel="cronograma" onclick="showPanel('cronograma',this)">
+        <div class="sb-num">0</div>
+        <div class="sb-text"><div class="sb-name">Mapa Cronológico</div><div class="sb-sub">10 etapas operativas</div></div>
+      </div>
+      <div class="sb-divider"></div>
+      <div class="sb-group-label">Recursos Operativos</div>
+      <div class="sb-item" data-panel="r1" onclick="showPanel('r1',this)">
+        <div class="sb-num">1</div>
+        <div class="sb-text"><div class="sb-name">Notas TramCase</div><div class="sb-sub">Codificación de contactos</div></div>
+      </div>
+      <div class="sb-item" data-panel="r2" onclick="showPanel('r2',this)">
+        <div class="sb-num">2</div>
+        <div class="sb-text"><div class="sb-name">Speechs & Guidelines</div><div class="sb-sub">Agenda y videollamada</div></div>
+      </div>
+      <div class="sb-item" data-panel="r3" onclick="showPanel('r3',this)">
+        <div class="sb-num">3</div>
+        <div class="sb-text"><div class="sb-name">SMS Operativos</div><div class="sb-sub">Plantillas y criterios</div></div>
+      </div>
+      <div class="sb-item" data-panel="r4" onclick="showPanel('r4',this)">
+        <div class="sb-num">4</div>
+        <div class="sb-text"><div class="sb-name">Checklist & Suficiencia</div><div class="sb-sub">Documentos y calidad</div></div>
+      </div>
+      <div class="sb-item" data-panel="r5" onclick="showPanel('r5',this)">
+        <div class="sb-num">5</div>
+        <div class="sb-text"><div class="sb-name">Mendoza Hub</div><div class="sb-sub">Formas migratorias</div></div>
+      </div>
+      <div class="sb-item" data-panel="r6" onclick="showPanel('r6',this)">
+        <div class="sb-num">6</div>
+        <div class="sb-text"><div class="sb-name">Guías de Entrevista</div><div class="sb-sub">Evidencias y testigos</div></div>
+      </div>
+      <div class="sb-item" data-panel="r7" onclick="showPanel('r7',this)">
+        <div class="sb-num">7</div>
+        <div class="sb-text"><div class="sb-name">Dropbox & Documentos</div><div class="sb-sub">Orden documental</div></div>
+      </div>
+      <div class="sb-item" data-panel="r8" onclick="showPanel('r8',this)">
+        <div class="sb-num">8</div>
+        <div class="sb-text"><div class="sb-name">Antifraude Preventivo</div><div class="sb-sub">Riesgo e intervención</div></div>
+      </div>
+      <div class="sb-item" data-panel="r9" onclick="showPanel('r9',this)">
+        <div class="sb-num">9</div>
+        <div class="sb-text"><div class="sb-name">Fondos Institucionales</div><div class="sb-sub">Imagen en videollamada</div></div>
+      </div>
+      <div class="sb-item" data-panel="r10" onclick="showPanel('r10',this)">
+        <div class="sb-num">10</div>
+        <div class="sb-text"><div class="sb-name">Supervisión & Cierre</div><div class="sb-sub">Control de calidad</div></div>
+      </div>
+      <div class="sb-divider"></div>
+      <div class="sb-group-label">Cierre</div>
+      <div class="sb-item" data-panel="escenarios" onclick="showPanel('escenarios',this)">
+        <div class="sb-num">★</div>
+        <div class="sb-text"><div class="sb-name">Escenarios Especiales</div></div>
+      </div>
+      <div class="sb-item" data-panel="flujo" onclick="showPanel('flujo',this)">
+        <div class="sb-num">▶</div>
+        <div class="sb-text"><div class="sb-name">Flujo Operativo</div></div>
+      </div>
+      <div class="sb-item" data-panel="cierre" onclick="showPanel('cierre',this)">
+        <div class="sb-num">✓</div>
+        <div class="sb-text"><div class="sb-name">Evaluación & Cierre</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-seal">🌿</div>
+      <div class="header-badge"><span class="dot"></span> TMLF Learning Center · Área PWI VAWA</div>
+      <h1>Training Operativo<br>Recursos de Pre-Welcome Interview VAWA</h1>
+      <p class="subtitle">Manual de entrenamiento cronológico y operativo para el uso de herramientas, guías, registros y controles de calidad durante la atención al cliente.</p>
+      <div class="header-meta">
+        <div class="header-meta-item"><span>📋</span><strong>Tipo</strong>&nbsp;Training Operativo</div>
+        <div class="header-meta-item"><span>🗂</span><strong>Área</strong>&nbsp;Pre-Welcome Interview VAWA</div>
+        <div class="header-meta-item"><span>📦</span><strong>Recursos</strong>&nbsp;10 operativos</div>
+        <div class="header-meta-item"><span>🎯</span><strong>Módulos</strong>&nbsp;1 (multi-sección)</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: OVERVIEW ═══════════════════ -->
+    <div class="panel active" id="panel-overview">
+      <div class="page-title">
+        <div class="pt-label">Punto de partida</div>
+        <h2>Descripción General del Training</h2>
+        <div class="pt-sub">Propósito, objetivos y estructura del entrenamiento operativo PWI VAWA</div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-val">10</div><div class="stat-label">Recursos Operativos</div></div>
+        <div class="stat-card"><div class="stat-val">10</div><div class="stat-label">Etapas del Proceso</div></div>
+        <div class="stat-card"><div class="stat-val">15</div><div class="stat-label">Pasos del Flujo</div></div>
+        <div class="stat-card"><div class="stat-val">8</div><div class="stat-label">Criterios de Dominio</div></div>
+      </div>
+
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">📋</div>
+          <h3>Propósito del Training</h3>
+          <span class="mod-badge badge-sage">Fundamento</span>
+        </div>
+        <div class="bbody">
+          <p>Este training tiene como finalidad que el colaborador del área de Pre-Welcome Interview VAWA comprenda el conjunto completo de recursos operativos que se emplean dentro de la rutina operativa y en las interacciones con el cliente, y que sea capaz de emplearlos en el <mark class="hi">momento correcto, con claridad, consistencia y criterio</mark>.</p>
+          <p>No se trata solo de conocer nombres de herramientas; se trata de entender el <mark class="hi-sage">flujo real de trabajo</mark>, la lógica de cada contacto y la forma en que cada recurso impacta la calidad del caso.</p>
+          <div class="alert info"><span class="alert-icon">🌿</span><div>Los contenidos fueron <strong>reorganizados cronológicamente</strong> para que el colaborador visualice el proceso tal como sucede en operación: preparación interna, llamada de agenda, videollamada, recolección de información, solicitud de evidencias, registros en plataforma y seguimiento.</div></div>
+        </div>
+      </div>
+
+      <div class="block b-sage">
+        <div class="btitle">
+          <div class="bicon">🎯</div>
+          <h3>Objetivo General</h3>
+          <span class="mod-badge badge-sage">Core</span>
+        </div>
+        <div class="bbody">
+          <div class="principle"><p>Dominar paso a paso el uso operativo de las herramientas, guías, formatos y registros del área PWI VAWA para ejecutar contactos con el cliente de manera profesional, documentada y alineada a los estándares de calidad de la firma.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="btitle">
+          <div class="bicon">🔎</div>
+          <h3>Objetivos Específicos</h3>
+          <span class="mod-badge badge-cafe">Detalle</span>
+        </div>
+        <div class="bbody">
+          <div class="ob-list">
+            <div class="ob-item"><div class="ob-num">1</div><span>Identificar qué recurso corresponde a cada momento del proceso con el cliente.</span></div>
+            <div class="ob-item"><div class="ob-num">2</div><span>Ejecutar la llamada de agenda y videollamada utilizando speechs y guidelines sin sonar leído.</span></div>
+            <div class="ob-item"><div class="ob-num">3</div><span>Solicitar documentación y evidencias con base en checklist y suficiencia del caso.</span></div>
+            <div class="ob-item"><div class="ob-num">4</div><span>Registrar correctamente la interacción en TramCase: notas, códigos y fechas compromiso.</span></div>
+            <div class="ob-item"><div class="ob-num">5</div><span>Utilizar Mendoza Hub para obtener suficiencia de información para el llenado de formas migratorias.</span></div>
+            <div class="ob-item"><div class="ob-num">6</div><span>Aplicar lineamientos de Dropbox, SMS, antifraude y supervisión como parte del flujo estándar.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block b-beige">
+        <div class="btitle">
+          <div class="bicon">🔗</div>
+          <h3>Recurso Documental de Operación</h3>
+          <span class="mod-badge badge-gold">Enlace externo</span>
+        </div>
+        <div class="bbody">
+          <p>El documento base de formatos y operación del área PWI VAWA se encuentra disponible en el siguiente enlace institucional:</p>
+          <a href="https://docs.google.com/document/d/106YsKcHE428YshVLKXIcZtH1OjirZ6Q90kErl-2OUuw/edit?usp=sharing" target="_blank" class="link-btn">📂 RECURSOS OPERATIVOS PWI VAWA INTERVIEW</a>
+          <div class="alert warn" style="margin-top:12px"><span class="alert-icon">⚠️</span><strong>Importante:</strong> Este enlace debe mantenerse actualizado. Consulta al Team Leader si el documento ha sido modificado o reubicado.</div>
+        </div>
+      </div>
+
+      <div class="intro-grid">
+        <div class="intro-card">
+          <div class="ic-icon">📞</div>
+          <h4>Preparación → Contacto</h4>
+          <p>El flujo inicia con la revisión del caso antes de cualquier llamada. Nada se improvisa: cada contacto tiene un recurso, un speech y una nota en TramCase.</p>
+        </div>
+        <div class="intro-card">
+          <div class="ic-icon">🎥</div>
+          <h4>Videollamada → Entrevista</h4>
+          <p>El bloque central incluye llenado de formas con Mendoza Hub, exploración de abuso y solicitud de evidencias. Se cierra con pendientes concretos y fecha compromiso.</p>
+        </div>
+        <div class="intro-card">
+          <div class="ic-icon">📁</div>
+          <h4>Seguimiento → Dropbox</h4>
+          <p>Todo lo acordado y recibido debe quedar en el repositorio con nomenclatura correcta. El expediente debe ser auditable por cualquier miembro del equipo.</p>
+        </div>
+        <div class="intro-card">
+          <div class="ic-icon">✅</div>
+          <h4>Supervisión → Calidad</h4>
+          <p>El Team Leader revisa mediante el form de supervisión que el trabajo no solo se haya hecho, sino que se haya hecho con suficiencia y trazabilidad completa.</p>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-top:18px">
+        <button onclick="showPanel('cronograma', document.querySelector('[data-panel=cronograma]'))" style="padding:10px 22px;border-radius:9px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px">Ver Mapa Cronológico →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: CRONOGRAMA ═══════════════════ -->
+    <div class="panel" id="panel-cronograma">
+      <div class="page-title">
+        <div class="pt-label">Estructura del proceso</div>
+        <h2>Mapa Cronológico del Proceso</h2>
+        <div class="pt-sub">Secuencia de 10 etapas operativas — de la preparación al control de calidad</div>
+      </div>
+
+      <div class="alert info"><span class="alert-icon">🌿</span>Antes de estudiar cada recurso por separado, entiende <strong>en qué momento exacto aparece dentro del flujo operativo</strong>. Este mapa resume el orden de uso en operación real.</div>
+
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🗺</div><h3>Secuencia Operativa Completa</h3></div>
+        <div class="bbody">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot">0</div>
+              <div class="tl-content">
+                <div class="tl-stage">Etapa inicial</div>
+                <h4>Preparación Interna</h4>
+                <p>Revisar caso, documentación previa y estrategia de entrevista. Llegar preparado al contacto.</p>
+                <span class="tl-resource">📝 Notas TramCase · Pre-Draft · Cuestionario · Checklist</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">1</div>
+              <div class="tl-content">
+                <div class="tl-stage">Primer contacto</div>
+                <h4>Agenda de Cita</h4>
+                <p>Explicar proceso, solicitar documentos y fijar cita. Indagar en conjunto con el cliente por evidencias y documentos. El objetivo es abordar cualquier solicitud posible y apoyar al cliente con dificultades de obtención.</p>
+                <span class="tl-resource">📞 Speech de agenda · Códigos · Checklist · SMS</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">2</div>
+              <div class="tl-content">
+                <div class="tl-stage">Post agenda</div>
+                <h4>Envío de Recordatorios y Listados</h4>
+                <p>Los envíos de mensajes buscan organizar información y documentos requeridos. El objetivo es que el cliente prepare y, en lo posible, envíe evidencias previo a la videollamada.</p>
+                <span class="tl-resource">📱 SMS post agenda · Listado de información · Fecha compromiso</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">3</div>
+              <div class="tl-content">
+                <div class="tl-stage">Inicio de videollamada</div>
+                <h4>Apertura y Revisión Documental</h4>
+                <p>Abrir videollamada, explicar dinámica, cuidar seguridad y profesionalismo. Encuadrar al cliente con indicaciones, luego revisar documentos y faltantes.</p>
+                <span class="tl-resource">🎥 Fondos institucionales · Códigos · Guideline de entrevista</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">4</div>
+              <div class="tl-content">
+                <div class="tl-stage">Bloque objetivo</div>
+                <h4>Recopilación de Información</h4>
+                <p>Obtener información suficiente para formas migratorias. Formulario avanzado y datos validados.</p>
+                <span class="tl-resource">🖥 Mendoza Hub · Checklist · Speech de llenado</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">5</div>
+              <div class="tl-content">
+                <div class="tl-stage">Bloque narrativo</div>
+                <h4>Desarrollo de Abuso y Evidencia</h4>
+                <p>Profundizar eventos y pedir soporte probatorio. Base narrativa y probatoria fortalecida.</p>
+                <span class="tl-resource">📋 Guideline de entrevista · Solicitud de evidencias · Testigos</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">6</div>
+              <div class="tl-content">
+                <div class="tl-stage">Cierre de llamada</div>
+                <h4>Cierre y Seguimiento</h4>
+                <p>Confirmar pendientes y fechas de entrega. Pendientes claros y trazables.</p>
+                <span class="tl-resource">📱 SMS de seguimiento / post entrevista</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">7</div>
+              <div class="tl-content">
+                <div class="tl-stage">Manejo de incidencias</div>
+                <h4>Incidencias Operativas</h4>
+                <p>Documentar incumplimientos o reprogramación. Historial operativo protegido.</p>
+                <span class="tl-resource">📝 SMS no contesta / no coopera / reagenda · Notas TramCase</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">8</div>
+              <div class="tl-content">
+                <div class="tl-stage">Intervención crítica</div>
+                <h4>Riesgo de Fraude</h4>
+                <p>Intervenir ante intención de mentir o fabricar. Riesgo contenido y escalado.</p>
+                <span class="tl-resource">🔴 Disclaimer antifraude · Reporte interno</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">9</div>
+              <div class="tl-content">
+                <div class="tl-stage">Organización</div>
+                <h4>Organización Documental</h4>
+                <p>Ordenar evidencias, audios, videos y entregables. Expediente limpio y localizable.</p>
+                <span class="tl-resource">📁 Dropbox · Nomenclatura definida</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">10</div>
+              <div class="tl-content">
+                <div class="tl-stage">Control final</div>
+                <h4>Control de Calidad</h4>
+                <p>Validar suficiencia y cumplimiento. Caso listo para siguiente etapa.</p>
+                <span class="tl-resource">✅ Forms de supervisión · Revisión Team Leader</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block b-beige" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">📊</div><h3>Tabla de Referencia Rápida</h3></div>
+        <div class="bbody">
+          <table class="info-table">
+            <thead><tr><th>Etapa</th><th>Momento</th><th>Recurso Principal</th><th>Resultado Esperado</th></tr></thead>
+            <tbody>
+              <tr><td><strong>0</strong></td><td>Preparación interna</td><td>TramCase, Dropbox, Checklist</td><td>Llegar preparado al contacto</td></tr>
+              <tr><td><strong>1</strong></td><td>Primer contacto / agenda</td><td>Speech agenda, SMS, Checklist</td><td>Cliente informado y cita agendada</td></tr>
+              <tr><td><strong>2</strong></td><td>Post agenda</td><td>SMS, listado, fecha compromiso</td><td>Cliente prepara documentos y evidencias</td></tr>
+              <tr><td><strong>3</strong></td><td>Inicio de videollamada</td><td>Fondos, guideline, códigos</td><td>Cliente encuadrado, documentos revisados</td></tr>
+              <tr><td><strong>4</strong></td><td>Recopilación de información</td><td>Mendoza Hub, checklist</td><td>Formulario avanzado y datos validados</td></tr>
+              <tr><td><strong>5</strong></td><td>Desarrollo de abuso</td><td>Guideline, evidencias, testigos</td><td>Base narrativa y probatoria fortalecida</td></tr>
+              <tr><td><strong>6</strong></td><td>Cierre y seguimiento</td><td>SMS post entrevista</td><td>Pendientes claros y trazables</td></tr>
+              <tr><td><strong>7</strong></td><td>Incidencias</td><td>SMS + Notas TramCase</td><td>Historial operativo protegido</td></tr>
+              <tr><td><strong>8</strong></td><td>Riesgo de fraude</td><td>Disclaimer antifraude</td><td>Riesgo contenido y escalado</td></tr>
+              <tr><td><strong>9</strong></td><td>Organización documental</td><td>Dropbox + Nomenclatura</td><td>Expediente limpio y localizable</td></tr>
+              <tr><td><strong>10</strong></td><td>Control de calidad</td><td>Forms de supervisión TL</td><td>Caso listo para siguiente etapa</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: RECURSO 1 ═══════════════════ -->
+    <div class="panel" id="panel-r1">
+      <div class="page-title">
+        <div class="pt-label">Recurso 1 · TramCase</div>
+        <h2>Notas de TramCase y Codificación del Contacto</h2>
+        <div class="pt-sub">Dos herramientas distintas: las notas son el registro escrito del caso; los códigos son información verbal que queda registrada en la comunicación</div>
+      </div>
+      <div class="alert info"><span class="alert-icon">📝</span>Las <strong>notas de TramCase</strong> y los <strong>códigos de contacto</strong> son recursos distintos. Las notas son el registro escrito oficial del trabajo realizado. Los códigos son información verbal que se enuncia en cada contacto para que quede correctamente identificado en el sistema. Ambos son obligatorios.</div>
+
+      <!-- SECCIÓN A: NOTAS DE TRAMCASE -->
+      <div class="sdiv" style="margin-top:18px"><div class="l"></div><div class="t">A · Notas de TramCase</div><div class="l"></div></div>
+
+      <div class="block b-sage">
+        <div class="btitle"><div class="bicon">📝</div><h3>¿Qué son y para qué sirven?</h3></div>
+        <div class="bbody">
+          <p>Las notas de TramCase son el <strong>registro oficial del trabajo realizado con el cliente</strong>. Permiten dejar trazabilidad, justificar acciones, proteger a la operación y asegurar que cualquier miembro del equipo pueda entender qué ocurrió en el último contacto.</p>
+          <p>El registro debe hacerse <mark class="hi">por cada contacto o intento de contacto con el cliente</mark> — no al final del día, sino de manera inmediata.</p>
+          <div class="alert info" style="margin-top:10px"><span class="alert-icon">ℹ️</span>Todas las notas se redactan <strong>en inglés</strong> y siguen una estructura estandarizada: <strong>SUBJECT</strong> (encabezado que identifica el área y el tipo de acción) + cuerpo de la nota.</div>
+        </div>
+      </div>
+
+      <div class="block b-beige">
+        <div class="btitle"><div class="bicon">📋</div><h3>Estructura y Plantillas de Notas — Psych PWI VAWA</h3><span class="mod-badge badge-gold">Referencia oficial</span></div>
+        <div class="bbody">
+          <p style="font-size:12.5px;color:var(--slate);margin-bottom:14px">El <strong>SUBJECT</strong> identifica el área: <mark class="hi-sage">PWI VAWA CDMX: Psych. NOMBRE DEL PSICÓLOGO.</mark> — seguido de la acción correspondiente. Esta no es una lista limitativa; si surge una situación distinta, se desarrolla con la misma estructura y en inglés.</p>
+
+          <table class="info-table">
+            <thead><tr><th>Situación</th><th>Estructura de la nota</th><th>Ejemplo</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Llamada al cliente, no contesta y le dejas mensaje de texto</strong></td>
+                <td>PWI VAWA CDMX: Psych. NOMBRE. Call the CL but NA left TM.</td>
+                <td style="color:var(--slate);font-size:11.5px">PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. Call the CL but NA left TM.</td>
+              </tr>
+              <tr>
+                <td><strong>Registro de agenda de entrevista</strong></td>
+                <td>PWI VAWA CDMX: Psych. NOMBRE. First VAWA Interview: Cliente / Abusador (son, wife, daughter, husband), fecha y hora (DC y MX).</td>
+                <td style="color:var(--slate);font-size:11.5px">PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. First VAWA Interview: Margarito Reyes Robles / Abuser (Wife) for May 15 at 01:00 pm DC / 12:00 pm CDMX.</td>
+              </tr>
+              <tr>
+                <td><strong>Entrevista terminada</strong></td>
+                <td>PWI VAWA CDMX: Psych. NOMBRE. Interview done: Cliente / Nombre del abusador (relación).</td>
+                <td style="color:var(--slate);font-size:11.5px">PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. Interview Done: Margarito Reyes Robles / Alondra Guzman Ruiz (Wife).</td>
+              </tr>
+              <tr>
+                <td><strong>Cliente pide cambiar la fecha</strong></td>
+                <td>PWI VAWA CDMX: Psych. NOMBRE. Interview Rescheduled: fecha y hora (DC y MX). Motivo del cambio.</td>
+                <td style="color:var(--slate);font-size:11.5px">PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. Interview Rescheduled: for May 15 at 01:00 pm DC / 12:00 pm CDMX. Because the abuser arrived at home.</td>
+              </tr>
+              <tr>
+                <td><strong>Entrevista no terminada, se agenda continuación</strong></td>
+                <td>PWI VAWA CDMX: Psych. NOMBRE. Interview will continue for fecha y hora (DC y MX), motivo.</td>
+                <td style="color:var(--slate);font-size:11.5px">PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. Interview will continue for May 15 at 01:00 pm DC / 12:00 pm CDMX. Because the client was busy.</td>
+              </tr>
+              <tr>
+                <td><strong>No contesta la llamada para agendar</strong></td>
+                <td>PWI VAWA CDMX: Psych. NOMBRE. Called CL but NA Left TM.</td>
+                <td style="color:var(--slate);font-size:11.5px">PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. Called CL but did not answer the call left a message for later scheduling.</td>
+              </tr>
+              <tr>
+                <td><strong>Nota enviada a filtros</strong></td>
+                <td>PWI VAWA CDMX: Psych. NOMBRE. Interview Sent to filter.</td>
+                <td style="color:var(--slate);font-size:11.5px">PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. Interview Sent to filter.</td>
+              </tr>
+              <tr>
+                <td><strong>Toma de testimonio de abuso (testigo)</strong></td>
+                <td>PWI VAWA CDMX: Psych. NOMBRE. The witness statement was taken from NOMBRE DEL TESTIGO.</td>
+                <td style="color:var(--slate);font-size:11.5px">PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. The witness statement was taken from Juan Herrera.</td>
+              </tr>
+              <tr>
+                <td><strong>Toma de carta de referencia</strong></td>
+                <td>PWI VAWA CDMX: Psych. NOMBRE. The reference letter was taken from NOMBRE.</td>
+                <td style="color:var(--slate);font-size:11.5px">PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. The reference letter was taken from Maria Luisa Herrera.</td>
+              </tr>
+              <tr>
+                <td><strong>Recepción y subida de evidencias a Dropbox</strong></td>
+                <td>PWI VAWA CDMX: Psych. NOMBRE. Evidence was received and uploaded to DB.</td>
+                <td style="color:var(--slate);font-size:11.5px">PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. Evidence was received and uploaded to DB.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="block">
+          <div class="btitle"><div class="bicon">✅</div><h3>Criterios Clave — Notas</h3></div>
+          <div class="bbody">
+            <div class="step-list">
+              <div class="step-item" style="gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:6px"></div><div class="step-text">La nota debe permitir que <strong>otra persona retome el caso</strong> sin volver a preguntarle todo al cliente.</div></div>
+              <div class="step-item" style="gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:6px"></div><div class="step-text">Todo compromiso del cliente con <strong>fecha concreta</strong>, no con expresiones ambiguas como "después" o "luego".</div></div>
+              <div class="step-item" style="gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:6px"></div><div class="step-text">Registrar de forma <strong>inmediata</strong>, por cada contacto o intento de contacto.</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="block b-error">
+          <div class="btitle"><div class="bicon" style="background:linear-gradient(135deg,#7a2c2c,#a03a3a)">⚠️</div><h3>Errores Frecuentes — Notas</h3></div>
+          <div class="bbody">
+            <div class="alert danger"><span class="alert-icon">✗</span>Dejar notas vagas como <em>"se habló con cliente"</em> sin indicar acuerdos, pendientes ni resultado.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Olvidar registrar <strong>fecha compromiso</strong> para evidencia o documentos.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Esperar al final del día para documentar, aumentando el riesgo de omisiones.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN B: CÓDIGOS DE CONTACTO -->
+      <div class="sdiv" style="margin-top:22px"><div class="l"></div><div class="t">B · Códigos de Contacto — Información Verbal</div><div class="l"></div></div>
+
+      <div class="alert sand"><span class="alert-icon">🎙</span>Los <strong>códigos son información verbal</strong> que se dice en el momento de cada contacto con el cliente para que quede registrada en la comunicación. No son texto que se escribe en la nota — se enuncian en voz durante la llamada o videollamada.</div>
+
+      <div class="block b-beige" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🔑</div><h3>Códigos Operativos VAWA</h3><span class="mod-badge badge-gold">Información verbal</span></div>
+        <div class="bbody">
+          <p style="margin-bottom:10px">Estructura: <mark class="hi">Código de visa + Modo de contacto + Tipo de contacto</mark>. En VAWA el identificador de visa es <strong>31</strong>.</p>
+          <table class="info-table">
+            <thead><tr><th>Estructura</th><th>Código</th><th>Interpretación</th></tr></thead>
+            <tbody>
+              <tr><td>31 + 1 + 3</td><td><strong>31.1.3</strong></td><td>VAWA + llamada + agenda</td></tr>
+              <tr><td>31 + 1 + 4</td><td><strong>31.1.4</strong></td><td>VAWA + llamada + reagenda</td></tr>
+              <tr><td>31 + 2 + 5PT1</td><td><strong>31.2.5PT1</strong></td><td>VAWA + videollamada + entrevista parte 1</td></tr>
+              <tr><td>31 + 1 + EW</td><td><strong>31.1.EW</strong></td><td>VAWA + llamada + testigo</td></tr>
+              <tr><td>31 + 1 + 8</td><td><strong>31.1.8</strong></td><td>VAWA + llamada + DAIR</td></tr>
+            </tbody>
+          </table>
+          <div class="alert info" style="margin-top:12px"><span class="alert-icon">ℹ️</span>Para que el contacto pueda codificarse correctamente, es indispensable <strong>mencionar el nombre completo del cliente</strong> al inicio de la presentación.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: RECURSO 2 ═══════════════════ -->
+    <div class="panel" id="panel-r2">
+      <div class="page-title">
+        <div class="pt-label">Recurso 2 · Speechs</div>
+        <h2>Speechs y Guidelines para Agenda y Videollamada</h2>
+        <div class="pt-sub">Estructura operativa para conducir cada contacto con el cliente de manera profesional y sin sonar leído</div>
+      </div>
+      <div class="alert info"><span class="alert-icon">🎙</span>Los speechs no deben sonar leídos — deben sonar <strong>naturales, comprendidos y adaptados al cliente</strong>. La flexibilidad no significa improvisación: todos los puntos sustanciales deben cubrirse.</div>
+
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🔢</div><h3>Paso a Paso Operativo</h3></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item"><div class="step-n">1</div><div class="step-text">En la llamada de agenda: <strong>presentación institucional</strong>, validación básica del contacto y explicación del objetivo.</div></div>
+            <div class="step-item"><div class="step-n">2</div><div class="step-text">Explica de forma comprensible cómo trabajará la firma la primera etapa del caso: información, documentos, evidencias y necesidad de videollamada.</div></div>
+            <div class="step-item"><div class="step-n">3</div><div class="step-text">Introduce el principio de <mark class="hi-sage">trabajo en equipo y preponderancia</mark>: entre más evidencias existan, más fuerte se vuelve el caso.</div></div>
+            <div class="step-item"><div class="step-n">4</div><div class="step-text">Mientras hablas, utiliza la <strong>checklist</strong> para revisar con el cliente qué documentos tiene, cuáles no y cuáles puede conseguir antes de la entrevista.</div></div>
+            <div class="step-item"><div class="step-n">5</div><div class="step-text">Confirma siempre <mark class="hi">calidad documental</mark>: fotos legibles, documentos completos, sin sombras, dedos, cortes ni borrosidad.</div></div>
+            <div class="step-item"><div class="step-n">6</div><div class="step-text">Agenda la videollamada estableciendo fecha y hora concreta. De ser posible, confirma el envío inmediato de documentos.</div></div>
+            <div class="step-item"><div class="step-n">7</div><div class="step-text">En la videollamada, usa el guideline de inicio: dinámica, pausas, toma de notas, <strong>seguridad del cliente</strong> y uso de IA para agilizar procesamiento.</div></div>
+            <div class="step-item"><div class="step-n">8</div><div class="step-text">Conduce la entrevista en dos bloques: <strong>llenado de formas / datos objetivos</strong> y <strong>exploración de historia de abuso / evidencias</strong>.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block b-beige">
+        <div class="btitle"><div class="bicon">📋</div><h3>Contenido Mínimo — Llamada de Agenda</h3><span class="mod-badge badge-gold">Obligatorio</span></div>
+        <div class="bbody">
+          <div class="checklist" id="cl-agenda">
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text">Presentación institucional con nombre del agente, nombre del cliente y referencia a The Mendoza Law Firm.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text">Explicación del carácter confidencial del proceso VAWA.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text">Descripción de que se trabajará mediante videollamada, salvo excepciones operativas.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text">Explicación de que el caso se fortalece con información, documentos, evidencias y testigos.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text">Revisión de checklist y solicitud de envío con fecha compromiso.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text">Advertencia sobre calidad de fotos y documentos.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text">Explicación de los dos bloques de la futura entrevista: formas migratorias e historia de abuso.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text">Mensaje preventivo de honestidad y prohibición de mentir o fabricar evidencia.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text">Confirmación de fecha y hora de la videollamada.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="block">
+          <div class="btitle"><div class="bicon">✅</div><h3>Criterios</h3></div>
+          <div class="bbody">
+            <div class="step-list">
+              <div class="step-item" style="gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:6px"></div><div class="step-text">Mantener un tono <strong>empático, profesional y dinámico</strong>.</div></div>
+              <div class="step-item" style="gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:6px"></div><div class="step-text">Parafrasear con seguridad, <strong>no depender visualmente de las guidelines</strong> a cada momento.</div></div>
+              <div class="step-item" style="gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:6px"></div><div class="step-text">El speech es <strong>estructura operativa, no lectura literal</strong>.</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="block b-error">
+          <div class="btitle"><div class="bicon" style="background:linear-gradient(135deg,#7a2c2c,#a03a3a)">⚠️</div><h3>Errores Frecuentes</h3></div>
+          <div class="bbody">
+            <div class="alert danger"><span class="alert-icon">✗</span>Leer el speech palabra por palabra, generando una interacción robótica.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Omitir puntos críticos por enfocarse solo en "caer bien" con el cliente.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>No aterrizar al cliente en tiempos, responsabilidades y necesidad de cooperación.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Hacer transiciones abruptas entre información migratoria y momentos difíciles sin preparar emocionalmente al cliente.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: RECURSO 3 ═══════════════════ -->
+    <div class="panel" id="panel-r3">
+      <div class="page-title">
+        <div class="pt-label">Recurso 3 · Mensajes</div>
+        <h2>SMS Operativos</h2>
+        <div class="pt-sub">Plantillas funcionales de contacto — nunca se envían sin revisión previa</div>
+      </div>
+      <div class="alert warn"><span class="alert-icon">⚠️</span>Los SMS son plantillas funcionales. <strong>Nunca deben enviarse "en automático"</strong> sin revisión. Cada mensaje requiere edición antes de su envío.</div>
+
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🔢</div><h3>Paso a Paso Operativo</h3></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item"><div class="step-n">1</div><div class="step-text">Después de la llamada de agenda, envía el SMS con documentos, información y <mark class="hi">fecha límite de entrega</mark> según checklist del caso.</div></div>
+            <div class="step-item"><div class="step-n">2</div><div class="step-text">Envía el mensaje con la información que el cliente debe tener lista para llenado de formas: direcciones, trabajos, fechas de matrimonio/divorcio, entradas/salidas, datos criminales y familiares.</div></div>
+            <div class="step-item"><div class="step-n">3</div><div class="step-text">Envía SMS para solicitar evidencias de abuso. El mensaje debe <strong>orientar sin prometer resultados ni inducir fabricación de prueba</strong>.</div></div>
+            <div class="step-item"><div class="step-n">4</div><div class="step-text">Utiliza SMS de <strong>confirmación de entrevista</strong> para recordar al cliente fecha, hora y preparación requerida.</div></div>
+            <div class="step-item"><div class="step-n">5</div><div class="step-text">Después de la videollamada, emplea el SMS post entrevista o de seguimiento para dar continuidad a evidencias y documentos pendientes.</div></div>
+            <div class="step-item"><div class="step-n">6</div><div class="step-text">Si el cliente <strong>no contesta, no coopera o reagenda</strong>, manda el mensaje específico y deja nota en TramCase inmediatamente.</div></div>
+            <div class="step-item"><div class="step-n">7</div><div class="step-text">Antes de enviar cualquier SMS: <mark class="hi-red">sustituye placeholders, valida ortografía, revisa nombres, fechas, proceso correcto y congruencia del contenido</mark>.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block b-beige">
+        <div class="btitle"><div class="bicon">🔍</div><h3>Elementos a Verificar Antes de Enviar</h3><span class="mod-badge badge-gold">Checklist obligatorio</span></div>
+        <div class="bbody">
+          <div class="checklist" id="cl-sms">
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text"><strong>Nombre completo del cliente</strong> — sin abreviaciones ni errores ortográficos.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text"><strong>Tipo de proceso correcto</strong> — verificado contra el expediente.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text"><strong>Lista de documentos</strong> — acorde a la checklist del caso, sin solicitar lo que no aplica.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text"><strong>Fecha y hora correctas</strong> de cita o entrega de documentos.</div></div>
+            <div class="cl-item" onclick="toggleCheck(this)"><div class="cl-check"></div><div class="cl-text"><strong>Redacción clara y sin errores</strong> — sin placeholders sin sustituir.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="mini-card beige" style="margin-top:10px">
+          <h4>📨 Criterios de Calidad</h4>
+          <ul>
+            <li>Cada SMS debe tener <strong>propósito claro</strong>: pedir, confirmar, recordar, advertir o cerrar.</li>
+            <li>La edición debe ser <strong>impecable</strong> antes del envío.</li>
+            <li>El mensaje debe reforzar el avance del caso sin generar confusión.</li>
+          </ul>
+        </div>
+        <div class="block b-error" style="margin-top:10px">
+          <div class="btitle"><div class="bicon" style="background:linear-gradient(135deg,#7a2c2c,#a03a3a)">⚠️</div><h3>Errores Frecuentes</h3></div>
+          <div class="bbody">
+            <div class="alert danger"><span class="alert-icon">✗</span>Enviar plantillas sin editar, con datos equivocados o genéricos.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Solicitar documentos que no corresponden al tipo de proceso.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>No documentar en TramCase el envío o resultado del contacto.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Mandar mensajes ambiguos sin fecha compromiso ni instrucción clara.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: RECURSO 4 ═══════════════════ -->
+    <div class="panel" id="panel-r4">
+      <div class="page-title">
+        <div class="pt-label">Recurso 4 · Checklist</div>
+        <h2>Checklist de Documentos y Suficiencia</h2>
+        <div class="pt-sub">Medir suficiencia, detectar vacíos y conducir la conversación de manera estratégica</div>
+      </div>
+      <div class="alert info"><span class="alert-icon">📋</span>PWI VAWA no solo sirve para "pedir papeles": sirve para <strong>medir suficiencia, detectar vacíos y conducir la conversación de manera estratégica</strong>.</div>
+
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🔢</div><h3>Paso a Paso Operativo</h3></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item"><div class="step-n">1</div><div class="step-text">Utiliza la checklist desde la <strong>llamada de agenda</strong> para confirmar qué ya existe y qué debe obtenerse antes de la videollamada.</div></div>
+            <div class="step-item"><div class="step-n">2</div><div class="step-text">Durante la videollamada, vuelve a usarla para validar si lo recibido está <mark class="hi">completo, correcto y legible</mark>.</div></div>
+            <div class="step-item"><div class="step-n">3</div><div class="step-text">Cuando el cliente no cuenta con un documento, <strong>no cierres el tema</strong> con un "después lo manda". Explora: ¿puede conseguirlo?, ¿en qué fecha?, ¿por qué vía?</div></div>
+            <div class="step-item"><div class="step-n">4</div><div class="step-text">Valida calidad documental: documentos completos, nítidos, legibles y <strong>coherentes con el caso</strong>.</div></div>
+            <div class="step-item"><div class="step-n">5</div><div class="step-text">Si el cliente muestra resistencia o demora, define si el documento es <mark class="hi-red">crítico para continuar</mark> o si debe escalarse con Team Leader.</div></div>
+            <div class="step-item"><div class="step-n">6</div><div class="step-text">Para VAWA, la checklist contempla <strong>documentos personales, de relación, evidencia de abuso y elementos de GMC</strong>.</div></div>
+            <div class="step-item"><div class="step-n">7</div><div class="step-text">Todo faltante debe terminar en una <mark class="hi">fecha compromiso</mark> y quedar asentado en TramCase.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="btitle"><div class="bicon">📁</div><h3>Suficiencia Documental VAWA — Referencia</h3></div>
+        <div class="bbody">
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">A</div><div><div class="bac-label">Documentos</div><div class="bac-title">Documentos Personales del Solicitante</div></div></div>
+              <span class="bac-arrow">›</span>
+            </summary>
+            <div class="bac-body">
+              <p style="font-size:12.5px;color:var(--slate);margin-bottom:8px">Acta de nacimiento, matrimonio o divorcio según corresponda. Documentación del estatus legal del abusador cuando exista o pueda localizarse.</p>
+            </div>
+          </details>
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">B</div><div><div class="bac-label">Bona Fide</div><div class="bac-title">Evidencia de Relación Bona Fide</div></div></div>
+              <span class="bac-arrow">›</span>
+            </summary>
+            <div class="bac-body">
+              <p style="font-size:12.5px;color:var(--slate);margin-bottom:8px">Contratos, cuentas conjuntas, bills, taxes, seguros, cartas, membresías, pólizas y demás documentos que acrediten la relación real.</p>
+            </div>
+          </details>
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">C</div><div><div class="bac-label">Abuso</div><div class="bac-title">Evidencia de Abuso</div></div></div>
+              <span class="bac-arrow">›</span>
+            </summary>
+            <div class="bac-body">
+              <div class="chips">
+                <span class="chip red">Mensajes de texto</span><span class="chip red">Notas de voz</span><span class="chip red">Fotos de daños</span><span class="chip red">Lesiones / moretones</span><span class="chip red">Reportes médicos</span><span class="chip red">Reportes policiales</span><span class="chip red">Órdenes de restricción</span><span class="chip red">Evidencia de control / vigilancia</span><span class="chip red">Testigos</span>
+              </div>
+            </div>
+          </details>
+          <details class="block-accordion">
+            <summary class="block-accordion-header">
+              <div class="bac-left"><div class="bac-num">D</div><div><div class="bac-label">GMC</div><div class="bac-title">Evidencia de Good Moral Character</div></div></div>
+              <span class="bac-arrow">›</span>
+            </summary>
+            <div class="bac-body">
+              <div class="chips">
+                <span class="chip sage">Cartas de referencia</span><span class="chip sage">Donaciones</span><span class="chip sage">Voluntariado</span><span class="chip sage">Cartas de iglesia / ONG</span><span class="chip sage">Driver License vigente</span><span class="chip sage">Cursos y actividades comunitarias</span>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="block b-error">
+        <div class="btitle"><div class="bicon" style="background:linear-gradient(135deg,#7a2c2c,#a03a3a)">⚠️</div><h3>Errores Frecuentes</h3></div>
+        <div class="bbody">
+          <div class="two-col">
+            <div class="alert danger"><span class="alert-icon">✗</span>Usar la checklist como lista mecánica sin explicar al cliente por qué se requiere cada elemento.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>No diferenciar entre un documento recomendable y uno crítico.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Aceptar fotos o escaneos de mala calidad.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>No actualizar la checklist después de recibir documentos.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: RECURSO 5 ═══════════════════ -->
+    <div class="panel" id="panel-r5">
+      <div class="page-title">
+        <div class="pt-label">Recurso 5 · Plataforma</div>
+        <h2>Formas Mendoza Hub</h2>
+        <div class="pt-sub">Concentra las preguntas necesarias para asegurar suficiencia de información para las formas migratorias</div>
+      </div>
+      <div class="alert info"><span class="alert-icon">🖥</span>Mendoza Hub aloja los formularios del proceso y concentra las preguntas que deben responderse en conjunto con el cliente. Su función es asegurar <strong>suficiencia de información para el llenado de formas migratorias</strong>.</div>
+
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🔢</div><h3>Paso a Paso Operativo</h3></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item"><div class="step-n">1</div><div class="step-text"><mark class="hi-sage">Antes de la videollamada</mark>, avanza la forma con toda la información ya disponible en TramCase, documentos previos y antecedentes del expediente.</div></div>
+            <div class="step-item"><div class="step-n">2</div><div class="step-text">Durante la entrevista, utiliza el formulario como <strong>guía estructurada</strong> para recabar datos faltantes y validar consistencia.</div></div>
+            <div class="step-item"><div class="step-n">3</div><div class="step-text">Inicia por datos básicos y background: nombre, fechas, lugares, datos del abusador, hijos, contacto y contexto general.</div></div>
+            <div class="step-item"><div class="step-n">4</div><div class="step-text">Cubre apartados de entradas/salidas, identidades alternas, posibles bars, <strong>historial criminal</strong>, situación familiar y cualquier otra información requerida.</div></div>
+            <div class="step-item"><div class="step-n">5</div><div class="step-text">Mantén la llamada ágil: sé <mark class="hi">claro, directo y ordenado</mark> para no desgastar al cliente en un proceso de llenado largo.</div></div>
+            <div class="step-item"><div class="step-n">6</div><div class="step-text">Cuando surja una inconsistencia, <strong>aclárala en el momento</strong> y deja nota para revisión posterior si es necesario.</div></div>
+            <div class="step-item"><div class="step-n">7</div><div class="step-text">Finaliza el bloque con una <strong>revisión rápida de datos sensibles</strong> o pendientes de confirmación.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="mini-card beige">
+          <h4>✅ Criterios de Calidad</h4>
+          <ul>
+            <li>La captura debe ser <strong>precisa, consistente y coherente</strong> con otros documentos del caso.</li>
+            <li>El entrevistador debe equilibrar <strong>velocidad con claridad</strong>.</li>
+          </ul>
+        </div>
+        <div class="mini-card cafe">
+          <h4>⚠️ Errores Frecuentes</h4>
+          <ul>
+            <li>Hacer preguntas desordenadas sin respetar la lógica del formulario.</li>
+            <li>No confirmar nombres, fechas o lugares sensibles.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="alert success" style="margin-top:14px"><span class="alert-icon">💡</span><strong>Nota operativa:</strong> Es importante aprovechar los documentos que ya tenemos a la mano —notas previas en TramCase, documentos en Dropbox, información del expediente— para agilizar la confirmación de datos en el formulario durante la videollamada. Esto reduce el tiempo de llenado y evita preguntar información que el cliente ya proporcionó anteriormente.</div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: RECURSO 6 ═══════════════════ -->
+    <div class="panel" id="panel-r6">
+      <div class="page-title">
+        <div class="pt-label">Recurso 6 · Entrevista</div>
+        <h2>Guías de Entrevista, Evidencias y Testigos</h2>
+        <div class="pt-sub">Construir la base narrativa y probatoria del caso de manera estratégica y humana</div>
+      </div>
+      <div class="alert info"><span class="alert-icon">🎯</span>La entrevista debe orientarse a obtener <strong>detalle útil y evidencia asociada</strong>, no solo relato emocional. Cada evento debe dejar una ruta probatoria.</div>
+
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🔢</div><h3>Paso a Paso Operativo</h3></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item"><div class="step-n">1</div><div class="step-text">Antes de iniciar, revisa notas previas, <strong>pre-draft, cuestionario</strong> y la estrategia de entrevista preparada.</div></div>
+            <div class="step-item"><div class="step-n">2</div><div class="step-text">Explica al cliente que pasarán a hablar de momentos difíciles y que la firma trabaja con <mark class="hi-sage">verdad, detalle y evidencia</mark>, nunca con exageración o fabricación.</div></div>
+            <div class="step-item"><div class="step-n">3</div><div class="step-text">Desarrolla los eventos con orden. <strong>Enumera verbalmente los eventos</strong> para que el procesamiento posterior identifique con claridad el inicio y cierre de cada uno.</div></div>
+            <div class="step-item"><div class="step-n">4</div><div class="step-text">Prioriza <mark class="hi">abusos más fuertes primero</mark> y desarrolla cada evento con detalle suficiente: qué pasó, cuándo, dónde, cómo, afectación, quién estuvo presente y qué evidencia existe.</div></div>
+            <div class="step-item"><div class="step-n">5</div><div class="step-text">En cada evento, pregunta si existe evidencia inmediata y si no, <strong>explora testigos</strong> o posibilidades de conseguirla.</div></div>
+            <div class="step-item"><div class="step-n">6</div><div class="step-text">Si la evidencia está a la mano, <strong>pide que la envíe en ese momento</strong>. Si no está disponible, fija fecha compromiso específica.</div></div>
+            <div class="step-item"><div class="step-n">7</div><div class="step-text">Utiliza la lista de evidencias como apoyo para orientar al cliente: mensajes, notas de voz, fotos, reportes médicos, policía, terapia, gastos, control, daños a propiedad, etc.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="btitle"><div class="bicon">🔴</div><h3>Evidencias de Abuso</h3></div>
+        <div class="bbody">
+          <div class="chips">
+            <span class="chip red">Mensajes con amenazas/insultos</span>
+            <span class="chip red">Notas de voz</span>
+            <span class="chip red">Fotos de objetos destruidos</span>
+            <span class="chip red">Fotos de lesiones/moretones</span>
+            <span class="chip red">Reportes médicos</span>
+            <span class="chip red">Reportes policiales</span>
+            <span class="chip red">Órdenes de restricción</span>
+            <span class="chip red">Evidencia de control/GPS</span>
+            <span class="chip red">Abuso económico (retiros, robo)</span>
+            <span class="chip red">Testigos con conocimiento directo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="block b-error" style="margin-top:14px">
+        <div class="btitle"><div class="bicon" style="background:linear-gradient(135deg,#7a2c2c,#a03a3a)">⚠️</div><h3>Errores Críticos en la Entrevista</h3></div>
+        <div class="bbody">
+          <div class="two-col">
+            <div class="alert danger"><span class="alert-icon">✗</span>Escuchar una historia fuerte pero <strong>no pedir evidencia asociada</strong>.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>No explorar testigos cuando no existe documento directo.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Permitir que el cliente narre de forma muy general <strong>sin concretar hechos</strong>.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Cerrar el evento sin dejar claro qué soporte existe o qué quedará pendiente.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: RECURSO 7 ═══════════════════ -->
+    <div class="panel" id="panel-r7">
+      <div class="page-title">
+        <div class="pt-label">Recurso 7 · Repositorio</div>
+        <h2>Dropbox y Orden Documental</h2>
+        <div class="pt-sub">Repositorio operativo para localización rápida, revisión por otras áreas y continuidad del caso</div>
+      </div>
+      <div class="alert info"><span class="alert-icon">📁</span>El valor de Dropbox no es solo "guardar archivos". Su valor real es permitir <strong>localización rápida, revisión por otras áreas y continuidad del caso sin desorden</strong>.</div>
+
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🔢</div><h3>Paso a Paso Operativo</h3></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item"><div class="step-n">1</div><div class="step-text">Sube los documentos siguiendo la <strong>estructura de carpetas establecida</strong> por el área.</div></div>
+            <div class="step-item"><div class="step-n">2</div><div class="step-text">Respeta la <mark class="hi">nomenclatura definida</mark> para que cualquier colaborador pueda identificar el contenido sin abrir archivo por archivo.</div></div>
+            <div class="step-item"><div class="step-n">3</div><div class="step-text">Verifica que archivos de <strong>audio y video sean reproducibles</strong>. Si no lo son, cambia el formato o deja constancia de la incidencia.</div></div>
+            <div class="step-item"><div class="step-n">4</div><div class="step-text">Evita duplicados, versiones confusas o <mark class="hi-red">archivos sin identificar</mark>.</div></div>
+            <div class="step-item"><div class="step-n">5</div><div class="step-text">Si recibes evidencia nueva después de la entrevista, <strong>súbela y vincúlala correctamente</strong>.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="mini-card beige">
+          <h4>✅ Criterios de Calidad</h4>
+          <ul>
+            <li>Todo archivo debe ser <strong>fácil de ubicar y entender</strong>.</li>
+            <li>La carpeta debe reflejar el <strong>trabajo realizado con el cliente</strong>.</li>
+            <li>Lo que se pide al cliente debe terminar <strong>resguardado correctamente</strong>.</li>
+          </ul>
+        </div>
+        <div class="block b-error">
+          <div class="btitle"><div class="bicon" style="background:linear-gradient(135deg,#7a2c2c,#a03a3a)">⚠️</div><h3>Errores Frecuentes</h3></div>
+          <div class="bbody">
+            <div class="alert danger"><span class="alert-icon">✗</span>Guardar archivos con nombres genéricos: <em>"foto1"</em>, <em>"audio nuevo"</em> o <em>"documento final final"</em>.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>No revisar si un video o audio abre correctamente.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Mezclar archivos del cliente en carpetas incorrectas.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Dejar evidencia recibida solo en mensaje de texto sin integrarla al repositorio.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: RECURSO 8 ═══════════════════ -->
+    <div class="panel" id="panel-r8">
+      <div class="page-title">
+        <div class="pt-label">Recurso 8 · Protección</div>
+        <h2>Antifraude Preventivo</h2>
+        <div class="pt-sub">Intervención firme y profesional ante indicios de intención de mentir, fabricar o exagerar evidencia</div>
+      </div>
+      <div class="alert danger" style="margin-bottom:14px"><span class="alert-icon">🔴</span>El recurso antifraude se emplea en <strong>cualquier momento del contacto</strong> cuando se detecten indicios de intención de mentir, exagerar, fabricar evidencia o construir hechos para "hacer pasar" el caso. Su uso es <strong>preventivo, correctivo y protector</strong> para la firma.</div>
+
+      <div class="block b-sage">
+        <div class="btitle"><div class="bicon">🔢</div><h3>Paso a Paso de Intervención</h3></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item"><div class="step-n">1</div><div class="step-text">Escucha con atención frases del cliente que indiquen deseo de que le digan <mark class="hi-red">"qué decir"</mark>, cómo mentir o cómo recrear evidencia.</div></div>
+            <div class="step-item"><div class="step-n">2</div><div class="step-text">En cuanto detectes el indicio, <strong>reencuadra la conversación de inmediato</strong> y explica que la firma solo trabaja con casos basados en la verdad.</div></div>
+            <div class="step-item"><div class="step-n">3</div><div class="step-text">Lee y envía el <mark class="hi">script preventivo antifraude por mensaje de texto</mark> mientras mantienes la llamada activa.</div></div>
+            <div class="step-item"><div class="step-n">4</div><div class="step-text">Pide al cliente que <strong>responda por escrito aceptando hablar con honestidad</strong> sobre los hechos de su caso.</div></div>
+            <div class="step-item"><div class="step-n">5</div><div class="step-text">Si persiste la intención de fraude, informa que la situación será <strong>reportada al área correspondiente</strong> y escala de inmediato por la vía institucional.</div></div>
+            <div class="step-item"><div class="step-n">6</div><div class="step-text">Documenta con precisión en TramCase lo ocurrido, <strong>sin adornar ni minimizar el riesgo</strong>.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block b-error">
+        <div class="btitle"><div class="bicon" style="background:linear-gradient(135deg,#7a2c2c,#a03a3a)">🚨</div><h3>Focos Rojos — Frases que Activan el Recurso</h3><span class="mod-badge badge-warn">Atención inmediata</span></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item" style="background:rgba(139,44,44,.06);border-color:rgba(139,44,44,.18)"><div style="font-size:18px;flex-shrink:0">🚩</div><div class="step-text"><em>"Usted dígame qué tengo que decir para arreglar."</em></div></div>
+            <div class="step-item" style="background:rgba(139,44,44,.06);border-color:rgba(139,44,44,.18)"><div style="font-size:18px;flex-shrink:0">🚩</div><div class="step-text"><em>"Póngale lo que necesita."</em></div></div>
+            <div class="step-item" style="background:rgba(139,44,44,.06);border-color:rgba(139,44,44,.18)"><div style="font-size:18px;flex-shrink:0">🚩</div><div class="step-text"><em>"Yo puedo provocar a mi familiar para obtener evidencia."</em></div></div>
+            <div class="step-item" style="background:rgba(139,44,44,.06);border-color:rgba(139,44,44,.18)"><div style="font-size:18px;flex-shrink:0">🚩</div><div class="step-text"><em>"Eso no pasó, pero si quiere lo decimos."</em></div></div>
+            <div class="step-item" style="background:rgba(139,44,44,.06);border-color:rgba(139,44,44,.18)"><div style="font-size:18px;flex-shrink:0">🚩</div><div class="step-text"><em>"Explíqueme qué responder y yo lo contesto así."</em></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="mini-card beige">
+          <h4>✅ Criterios de Intervención</h4>
+          <ul>
+            <li>La intervención debe ser <strong>firme, clara y profesional</strong>.</li>
+            <li>Todo riesgo potencial debe quedar <strong>documentado y escalado</strong>.</li>
+          </ul>
+        </div>
+        <div class="mini-card cafe">
+          <h4>⚠️ Errores Frecuentes</h4>
+          <ul>
+            <li>Ignorar comentarios del cliente por incomodidad o querer "salvar" el caso.</li>
+            <li>Explicar demasiado y terminar <strong>sugiriendo información imitable</strong>.</li>
+            <li>No enviar el texto preventivo ni pedir la respuesta de honestidad.</li>
+            <li>No escalar a tiempo un riesgo claro.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: RECURSO 9 ═══════════════════ -->
+    <div class="panel" id="panel-r9">
+      <div class="page-title">
+        <div class="pt-label">Recurso 9 · Imagen</div>
+        <h2>Fondos de Videollamada e Imagen Institucional</h2>
+        <div class="pt-sub">Estándar visual obligatorio que transmite formalidad, orden y pertenencia institucional</div>
+      </div>
+      <div class="alert info"><span class="alert-icon">🎥</span>Los fondos institucionales no son un detalle estético menor: <strong>transmiten formalidad, orden y pertenencia institucional</strong>. Refuerzan que el cliente está siendo atendido dentro de un proceso serio y controlado.</div>
+
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🔢</div><h3>Paso a Paso Operativo</h3></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item"><div class="step-n">1</div><div class="step-text"><strong>Antes de iniciar la videollamada</strong>, asegúrate de tener el fondo institucional correcto activo.</div></div>
+            <div class="step-item"><div class="step-n">2</div><div class="step-text">Verifica <mark class="hi">iluminación, encuadre, audio</mark> y que el entorno no genere distracciones o elementos impropios.</div></div>
+            <div class="step-item"><div class="step-n">3</div><div class="step-text">Mantén una presentación profesional acorde al <strong>estándar institucional</strong>.</div></div>
+            <div class="step-item"><div class="step-n">4</div><div class="step-text">Durante la llamada, <strong>evita cambiar de fondo</strong> o generar una imagen improvisada que reste seriedad.</div></div>
+            <div class="step-item"><div class="step-n">5</div><div class="step-text">Si la videollamada se corta o reinicia, cuida que al reconectar se <strong>mantenga el mismo estándar visual</strong>.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="mini-card beige">
+          <h4>✅ Criterios</h4>
+          <ul>
+            <li>La experiencia visual debe reflejar <strong>orden, seguridad y profesionalismo</strong>.</li>
+            <li>La forma también comunica <strong>calidad de servicio</strong>.</li>
+          </ul>
+        </div>
+        <div class="block b-error">
+          <div class="btitle"><div class="bicon" style="background:linear-gradient(135deg,#7a2c2c,#a03a3a)">⚠️</div><h3>Errores Frecuentes</h3></div>
+          <div class="bbody">
+            <div class="alert danger"><span class="alert-icon">✗</span>Iniciar videollamadas sin fondo institucional activo.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Fondo mal recortado, mala iluminación o ruidos innecesarios.</div>
+            <div class="alert danger"><span class="alert-icon">✗</span>Descuidar la imagen profesional por enfocarse solo en el contenido verbal.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: RECURSO 10 ═══════════════════ -->
+    <div class="panel" id="panel-r10">
+      <div class="page-title">
+        <div class="pt-label">Recurso 10 · Control</div>
+        <h2>Forms de Supervisión y Cierre del Ciclo Operativo</h2>
+        <div class="pt-sub">Control de calidad que permite a los Team Leaders verificar suficiencia y cumplimiento del caso</div>
+      </div>
+      <div class="alert info"><span class="alert-icon">✅</span>El form de supervisión verifica que el trabajo no solo se haya hecho, sino que se haya hecho <strong>con suficiencia</strong>. El colaborador debe interpretarlo como una <strong>etapa operativa más, no como un trámite ajeno</strong>.</div>
+
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🔢</div><h3>Paso a Paso Operativo</h3></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item"><div class="step-n">1</div><div class="step-text">Una vez concluida la etapa, el caso debe presentarse de forma <mark class="hi">ordenada</mark>, con notas, evidencias, seguimiento y formularios avanzados.</div></div>
+            <div class="step-item"><div class="step-n">2</div><div class="step-text">El Team Leader revisa mediante el form si la documentación entregada cumple con los <strong>estándares esperados</strong>.</div></div>
+            <div class="step-item"><div class="step-n">3</div><div class="step-text">La supervisión valida tanto <strong>contenido como proceso</strong>: qué se pidió, qué se recibió, cómo quedó documentado y qué sigue pendiente.</div></div>
+            <div class="step-item"><div class="step-n">4</div><div class="step-text">Si la supervisión detecta vacíos, el caso <strong>regresa con observaciones específicas</strong> que deben atenderse antes de avanzar.</div></div>
+            <div class="step-item"><div class="step-n">5</div><div class="step-text">El colaborador debe atender las observaciones del TL con <strong>precisión y sin minimizarlas</strong>.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="mini-card beige">
+          <h4>✅ Criterios</h4>
+          <ul>
+            <li>La supervisión debe encontrar un caso <strong>ordenado, no un rompecabezas</strong>.</li>
+          </ul>
+        </div>
+        <div class="mini-card cafe">
+          <h4>⚠️ Errores Frecuentes</h4>
+          <ul>
+            <li>Entregar casos con notas incompletas o sin trazabilidad.</li>
+            <li>Suponer que "como se habló con el cliente" ya se cumplió el objetivo.</li>
+            <li>No atender observaciones de supervisión con precisión.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: ESCENARIOS ═══════════════════ -->
+    <div class="panel" id="panel-escenarios">
+      <div class="page-title">
+        <div class="pt-label">Casos especiales</div>
+        <h2>Manejo Cronológico de Escenarios Especiales</h2>
+        <div class="pt-sub">Cómo actuar cuando el proceso no avanza de manera ideal</div>
+      </div>
+      <div class="alert info"><span class="alert-icon">📋</span>Estos escenarios son parte del entrenamiento porque <strong>afectan el tiempo de procesamiento y la trazabilidad</strong>. El colaborador debe conocerlos y saber actuar ante ellos.</div>
+
+      <div class="three-col" style="margin-top:14px">
+        <div class="block">
+          <div class="btitle"><div class="bicon">📵</div><h3>Cliente No Contesta</h3></div>
+          <div class="bbody">
+            <div class="step-list">
+              <div class="step-item"><div class="step-n">1</div><div class="step-text">Realiza el intento de contacto por la vía establecida.</div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-text">Envía el SMS correspondiente <strong>inmediatamente después</strong>.</div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-text">Deja nota en TramCase: fecha, hora, canal y resultado.</div></div>
+              <div class="step-item"><div class="step-n">4</div><div class="step-text">Mantén seguimiento puntual conforme al flujo del área.</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="block">
+          <div class="btitle"><div class="bicon">🙅</div><h3>Cliente No Coopera</h3></div>
+          <div class="bbody">
+            <div class="step-list">
+              <div class="step-item"><div class="step-n">1</div><div class="step-text">Explica nuevamente la importancia de la información y evidencias.</div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-text">Solicita <strong>fecha compromiso específica</strong>.</div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-text">Documenta en TramCase la falta de cooperación y el acuerdo alcanzado.</div></div>
+              <div class="step-item"><div class="step-n">4</div><div class="step-text">Si persiste, eleva conforme al protocolo del área.</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="block">
+          <div class="btitle"><div class="bicon">📅</div><h3>Reagenda</h3></div>
+          <div class="bbody">
+            <div class="step-list">
+              <div class="step-item"><div class="step-n">1</div><div class="step-text">Confirma la imposibilidad real del cliente para atender.</div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-text">Propón nueva <strong>fecha y hora concretas</strong>.</div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-text">Envía SMS de reagenda.</div></div>
+              <div class="step-item"><div class="step-n">4</div><div class="step-text">Actualiza la nota y la codificación del contacto.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: FLUJO ═══════════════════ -->
+    <div class="panel" id="panel-flujo">
+      <div class="page-title">
+        <div class="pt-label">Secuencia real</div>
+        <h2>Flujo Operativo Sugerido del Colaborador PWI VAWA</h2>
+        <div class="pt-sub">15 pasos en secuencia real de operación, del inicio al cierre del caso</div>
+      </div>
+      <div class="alert info"><span class="alert-icon">▶</span>El siguiente flujo resume cómo debería trabajar el colaborador en secuencia real durante el caso. Es la integración de todos los recursos en una sola cadena operativa.</div>
+
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🔄</div><h3>Los 15 Pasos del Flujo</h3></div>
+        <div class="bbody">
+          <div class="step-list">
+            <div class="step-item"><div class="step-n">1</div><div class="step-text">Revisar <strong>notas previas, TramCase, evidencia existente y Dropbox</strong>.</div></div>
+            <div class="step-item"><div class="step-n">2</div><div class="step-text">Preparar <strong>estrategia de entrevista</strong> y revisar checklist correspondiente.</div></div>
+            <div class="step-item"><div class="step-n">3</div><div class="step-text">Realizar <strong>llamada de agenda</strong> con speech comprendido y uso correcto de códigos.</div></div>
+            <div class="step-item"><div class="step-n">4</div><div class="step-text">Solicitar documentos, evidencias e información; <mark class="hi">fijar fecha compromiso</mark>.</div></div>
+            <div class="step-item"><div class="step-n">5</div><div class="step-text">Enviar <strong>SMS post agenda</strong> y listados necesarios.</div></div>
+            <div class="step-item"><div class="step-n">6</div><div class="step-text">Preparar <strong>Mendoza Hub</strong> antes de la videollamada.</div></div>
+            <div class="step-item"><div class="step-n">7</div><div class="step-text">Iniciar videollamada con <strong>fondo institucional, apertura profesional</strong> y explicación de dinámica.</div></div>
+            <div class="step-item"><div class="step-n">8</div><div class="step-text">Llenar formas con <mark class="hi-sage">información objetiva</mark> y validar inconsistencias.</div></div>
+            <div class="step-item"><div class="step-n">9</div><div class="step-text">Desarrollar <strong>entrevista de abuso</strong>, pedir evidencia y explorar testigos.</div></div>
+            <div class="step-item"><div class="step-n">10</div><div class="step-text">Cerrar llamada con <strong>pendientes concretos</strong>.</div></div>
+            <div class="step-item"><div class="step-n">11</div><div class="step-text">Enviar <strong>SMS post entrevista</strong> o de seguimiento.</div></div>
+            <div class="step-item"><div class="step-n">12</div><div class="step-text">Subir y ordenar <mark class="hi">evidencias en Dropbox</mark> con nomenclatura correcta.</div></div>
+            <div class="step-item"><div class="step-n">13</div><div class="step-text">Dejar <strong>notas completas en TramCase</strong>: acuerdos, pendientes, fechas compromiso.</div></div>
+            <div class="step-item"><div class="step-n">14</div><div class="step-text">Aplicar <strong>antifraude o manejo de incidencias</strong> si corresponde.</div></div>
+            <div class="step-item"><div class="step-n">15</div><div class="step-text">Entregar el caso a <strong>supervisión con trazabilidad completa</strong>.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PANEL: EVALUACIÓN & CIERRE ═══════════════════ -->
+    <div class="panel" id="panel-cierre">
+      <div class="page-title">
+        <div class="pt-label">Evaluación y cierre</div>
+        <h2>Evaluación Final y Criterios de Dominio</h2>
+        <div class="pt-sub">15 preguntas situacionales de opción múltiple + criterios de dominio esperados + conclusión operativa</div>
+      </div>
+
+      <!-- EVALUACIÓN: 15 PREGUNTAS OPCIÓN MÚLTIPLE -->
+      <div class="block b-beige">
+        <div class="btitle"><div class="bicon">📝</div><h3>Evaluación Final — 15 Preguntas Situacionales</h3><span class="mod-badge badge-gold">Opción múltiple</span></div>
+        <div class="bbody">
+          <p style="font-size:12.5px;color:var(--slate);margin-bottom:16px">Selecciona la respuesta correcta en cada situación. Las preguntas están basadas en escenarios reales del flujo PWI VAWA.</p>
+          <div id="quiz-container"></div>
+          <div id="quiz-result" style="display:none;margin-top:18px;padding:18px;border-radius:12px;border:1px solid rgba(122,158,126,.2);background:rgba(200,222,202,.1);text-align:center">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;color:var(--sage-dark)" id="quiz-score-num"></div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink);margin:6px 0 4px" id="quiz-score-label"></div>
+            <div style="font-size:12px;color:var(--slate)" id="quiz-score-msg"></div>
+            <button onclick="resetQuiz()" style="margin-top:14px;padding:9px 22px;border-radius:9px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff;border:none;font-size:12.5px;font-weight:700;cursor:pointer">Reintentar evaluación</button>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:16px" id="quiz-submit-wrap">
+            <button onclick="submitQuiz()" style="padding:10px 24px;border-radius:9px;background:linear-gradient(135deg,var(--sage-dark),var(--sage));color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer">Enviar respuestas →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRITERIOS DE DOMINIO -->
+      <div class="block b-eval" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🏆</div><h3>Criterios de Dominio Esperados</h3><span class="mod-badge badge-sage">Nivel: Logrado</span></div>
+        <div class="bbody">
+          <div class="comp-grid">
+            <div class="comp-card">
+              <div class="comp-icon">🎙</div>
+              <div class="comp-title">Usa speechs con naturalidad</div>
+              <div class="comp-desc">Explica proceso, solicita cooperación y agenda sin leer textualmente.</div>
+              <span class="comp-badge">✓ Logrado</span>
+            </div>
+            <div class="comp-card">
+              <div class="comp-icon">📋</div>
+              <div class="comp-title">Maneja checklist con criterio</div>
+              <div class="comp-desc">Detecta faltantes, calidades y fechas compromiso. Diferencia documentos indispensables de los no bloqueantes.</div>
+              <span class="comp-badge">✓ Logrado</span>
+            </div>
+            <div class="comp-card">
+              <div class="comp-icon">📝</div>
+              <div class="comp-title">Documenta bien en TramCase</div>
+              <div class="comp-desc">Notas claras en inglés, con estructura correcta y registro por cada contacto o intento.</div>
+              <span class="comp-badge">✓ Logrado</span>
+            </div>
+            <div class="comp-card">
+              <div class="comp-icon">🖥</div>
+              <div class="comp-title">Opera Mendoza Hub</div>
+              <div class="comp-desc">Llenado suficiente aprovechando documentos existentes y validación de datos sensibles.</div>
+              <span class="comp-badge">✓ Logrado</span>
+            </div>
+            <div class="comp-card">
+              <div class="comp-icon">🔍</div>
+              <div class="comp-title">Solicita evidencia estratégicamente</div>
+              <div class="comp-desc">Pide soporte por evento y explora testigos cuando no existe documento directo.</div>
+              <span class="comp-badge">✓ Logrado</span>
+            </div>
+            <div class="comp-card">
+              <div class="comp-icon">📱</div>
+              <div class="comp-title">Aplica SMS correctamente</div>
+              <div class="comp-desc">Plantillas siempre editadas, congruentes y oportunas.</div>
+              <span class="comp-badge">✓ Logrado</span>
+            </div>
+            <div class="comp-card">
+              <div class="comp-icon">📁</div>
+              <div class="comp-title">Cuida orden documental</div>
+              <div class="comp-desc">Dropbox ordenado con nombres correctos, archivos útiles y reproducibles.</div>
+              <span class="comp-badge">✓ Logrado</span>
+            </div>
+            <div class="comp-card">
+              <div class="comp-icon">🛡</div>
+              <div class="comp-title">Interviene riesgo de fraude</div>
+              <div class="comp-desc">Activa disclaimer, mensaje y escalamiento cuando corresponde.</div>
+              <span class="comp-badge">✓ Logrado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONCLUSIÓN -->
+      <div class="block b-sage" style="margin-top:14px">
+        <div class="btitle"><div class="bicon">🌿</div><h3>Conclusión Operativa</h3></div>
+        <div class="bbody">
+          <div class="principle">
+            <p>El área de Pre-Welcome Interview VAWA no trabaja con recursos aislados; trabaja con una cadena operativa. Cada herramienta tiene un momento, una lógica y una consecuencia sobre la calidad del caso.</p>
+            <p class="principle-sub" style="margin-top:10px">El dominio real del puesto no consiste en memorizar speechs o plantillas, sino en saber utilizarlos cronológicamente, con intención, con trazabilidad y con criterio profesional frente al cliente. Cuando el colaborador comprende esta secuencia, puede conducir mejor la experiencia del cliente, fortalecer la calidad del expediente y reducir errores operativos. Ese es el propósito central de este training.</p>
+          </div>
+          <div class="stat-row" style="margin-top:16px;margin-bottom:0">
+            <div class="stat-card"><div class="stat-val">10</div><div class="stat-label">Recursos dominados</div></div>
+            <div class="stat-card"><div class="stat-val">15</div><div class="stat-label">Pasos del flujo</div></div>
+            <div class="stat-card"><div class="stat-val">8</div><div class="stat-label">Criterios de dominio</div></div>
+            <div class="stat-card"><div class="stat-val">✓</div><div class="stat-label">Training completado</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const PANELS = ['overview','cronograma','r1','r2','r3','r4','r5','r6','r7','r8','r9','r10','escenarios','flujo','cierre'];
+const visited = new Set(['overview']);
+
+function showPanel(id, el){
+  PANELS.forEach(p=>{
+    const pan = document.getElementById('panel-'+p);
+    if(pan) pan.classList.remove('active');
+  });
+  const target = document.getElementById('panel-'+id);
+  if(target) target.classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  visited.add(id);
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+  const sidebar = document.getElementById('sidebar');
+  if(window.innerWidth <= 900 && sidebar.classList.contains('open')) toggleSidebar();
+}
+
+function updateProgress(){
+  const pct = Math.round((visited.size / PANELS.length)*100);
+  document.getElementById('pbar').style.width = pct+'%';
+  const pill = document.getElementById('pill-progress');
+  pill.textContent = pct+'%';
+  pill.style.display = 'inline-flex';
+}
+
+function toggleSidebar(){
+  const s = document.getElementById('sidebar');
+  const o = document.getElementById('sb-overlay');
+  s.classList.toggle('open');
+  o.classList.toggle('show');
+}
+
+function toggleCheck(el){
+  el.classList.toggle('checked');
+  const check = el.querySelector('.cl-check');
+  if(el.classList.contains('checked')){
+    check.textContent = '✓';
+  } else {
+    check.textContent = '';
+  }
+}
+
+// ═══════════════════ QUIZ ENGINE ═══════════════════
+const QUESTIONS = [
+  {q:"Estás por llamar a un cliente para agendar su entrevista. ¿Cuál es el primer paso correcto antes de marcar?",opts:["Abrir Mendoza Hub para preparar el formulario.","Revisar las notas previas en TramCase, pendientes, evidencia prometida e incidencias relevantes.","Enviar el SMS de agenda para que el cliente se prepare.","Confirmar el fondo institucional para la futura videollamada."],ans:1},
+  {q:"Al inicio de cada llamada con el cliente, ¿por qué es obligatorio mencionar su nombre completo?",opts:["Para personalizar la experiencia del cliente y generar rapport.","Porque es parte del speech de agenda institucional.","Porque es indispensable para que el contacto pueda codificarse correctamente en el sistema.","Para verificar que la persona al teléfono es el cliente correcto."],ans:2},
+  {q:"Llamas al cliente para agendar y no contesta. ¿Cuál es la nota correcta que debes dejar en TramCase?",opts:["VAWA CDMX: Psych. Carolina Sánchez. Cliente no disponible, se reintentará mañana.","PWI VAWA CDMX: Psych. Carolina Sánchez Martínez. Called CL but NA Left TM.","PWI VAWA CDMX: Psych. Carolina. Se llamó pero no contestó. Pendiente reagendar.","PWI VAWA CDMX: Called CL. NA. Left TM. Psych. Carolina Sánchez Martínez."],ans:1},
+  {q:"Terminas la entrevista completa con el cliente. ¿Cuál es la estructura correcta de la nota en TramCase?",opts:["PWI VAWA CDMX: Psych. NOMBRE. Interview Done: Nombre del cliente / Nombre del abusador (relación).","PWI VAWA CDMX: Psych. NOMBRE. Interview completed with client. Case ready for next step.","PWI VAWA: Psych. NOMBRE. Entrevista concluida. Cliente: NOMBRE. Abusador: NOMBRE.","PWI VAWA CDMX: NOMBRE DEL PSICÓLOGO. Interview Done. Client name / Abuser name."],ans:0},
+  {q:"Durante la llamada de agenda, el cliente menciona que no tiene algunos documentos. ¿Qué debe hacer el colaborador?",opts:["Reagendar la cita hasta que el cliente tenga todo listo.","Anotar los faltantes y cerrar el tema diciéndole que los mande 'cuando pueda'.","Explorar si puede conseguirlos, en qué fecha y por qué vía los enviará; fijar fecha compromiso.","Informar al Team Leader antes de continuar con la agenda."],ans:2},
+  {q:"Vas a enviar el SMS post agenda al cliente. ¿Cuál es el paso obligatorio antes de presionar 'enviar'?",opts:["Obtener autorización del Team Leader para el envío.","Verificar que el cliente haya revisado su checklist.","Sustituir todos los placeholders, validar nombre, tipo de proceso, fechas y redacción.","Esperar a que el cliente confirme por llamada que está listo para recibirlo."],ans:2},
+  {q:"Durante la videollamada, el cliente dice 'ese evento no pasó, pero si quiere lo decimos'. ¿Qué haces?",opts:["Cambias de tema para no incomodar al cliente y registras el evento como sucedió.","Reencuadras la conversación de inmediato, envías el script antifraude por SMS y pides respuesta escrita confirmando honestidad.","Le explicas que no es necesario incluir ese evento y continúas con la entrevista.","Lo reportas al área después de la llamada sin interrumpir el flujo."],ans:1},
+  {q:"Al desarrollar la entrevista de abuso, el cliente narra un evento muy fuerte pero no menciona ninguna evidencia. ¿Qué debes hacer?",opts:["Escuchar con atención y registrarlo tal como lo describe para construir la narrativa.","Pausar y explorar activamente si existe evidencia asociada o testigos para ese evento específico.","Continuar con el siguiente evento para no interrumpir el flujo emocional del cliente.","Sugerirle qué tipo de evidencia podría conseguir para ese evento."],ans:1},
+  {q:"Recibes evidencia del cliente después de terminada la entrevista. ¿Cuál es el procedimiento correcto?",opts:["Guardarla en la carpeta de descargas de tu computadora para subirla después.","Informarle al cliente que la enviará en la siguiente sesión.","Subirla a Dropbox y vincularla correctamente siguiendo la nomenclatura del área.","Reenviarla al Team Leader para que él la integre al expediente."],ans:2},
+  {q:"Terminas de preparar el caso y lo entregas a supervisión. El Team Leader detecta vacíos en las notas. ¿Qué corresponde hacer?",opts:["Explicarle al TL verbalmente lo que faltó documentar para agilizar el proceso.","Atender las observaciones con precisión antes de que el caso avance a la siguiente etapa.","Registrar las observaciones como una nota nueva en TramCase y marcar el caso como listo.","Solicitar al cliente los pendientes directamente sin pasar por revisión."],ans:1},
+  {q:"Antes de iniciar el bloque de entrevista de abuso durante la videollamada, ¿qué recursos debes haber revisado?",opts:["El SMS de seguimiento y el listado de evidencias del área.","El formulario de Mendoza Hub y los documentos recibidos en Dropbox.","Las notas previas, el pre-draft, el cuestionario y la estrategia de entrevista preparada.","El fondo institucional y el guideline de apertura de videollamada."],ans:2},
+  {q:"Estás llenando Mendoza Hub y el cliente da una fecha que no coincide con la que aparece en un documento que ya tienes. ¿Qué haces?",opts:["Registras la fecha que dice el cliente porque es su testimonio.","Aclaras la inconsistencia en ese momento y dejas nota para revisión posterior si es necesario.","Dejas ambas versiones registradas y el TL decidirá cuál usar.","Continúas avanzando para no interrumpir el ritmo de la entrevista."],ans:1},
+  {q:"Un colaborador guarda un video de evidencia con el nombre 'video_nuevo_2.mp4'. ¿Cuál es el problema con esa práctica?",opts:["El video debería guardarse en formato .mov, no .mp4.","Ese nombre no sigue la nomenclatura definida y dificulta la localización e identificación del archivo.","El video debería subirse primero a TramCase antes que a Dropbox.","No hay problema, cualquier nombre es válido mientras el archivo esté en la carpeta correcta."],ans:1},
+  {q:"El cliente no ha contestado dos intentos de contacto. ¿Cuál es la acción completa que debes ejecutar?",opts:["Esperar a que el cliente llame y registrar el intento mentalmente.","Llamar una tercera vez antes de dejar nota, para asegurarte de que realmente no contesta.","Realizar el intento, enviar el SMS correspondiente de inmediato y dejar nota en TramCase con fecha, hora, canal y resultado.","Informar al TL antes de tomar cualquier acción de seguimiento."],ans:2},
+  {q:"¿Cuál de los siguientes comportamientos refleja que un colaborador domina el uso del speech de agenda?",opts:["Lee el documento de speech en pantalla para no omitir ningún punto.","Improvisa la llamada adaptándola al humor del cliente sin seguir ninguna estructura.","Parafrasea con seguridad los puntos clave del speech sin depender visualmente de las guidelines, cubriendo todo el contenido mínimo.","Usa el speech de la sesión anterior sin editar porque el proceso es el mismo."],ans:2}
+];
+
+let userAnswers = new Array(QUESTIONS.length).fill(null);
+
+function buildQuiz() {
+  const container = document.getElementById('quiz-container');
+  if (!container) return;
+  container.innerHTML = '';
+  QUESTIONS.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.style.cssText = 'margin-bottom:14px;padding:14px 16px;border-radius:11px;border:1px solid rgba(122,158,126,.16);background:rgba(244,248,244,.5)';
+    const qHead = document.createElement('div');
+    qHead.style.cssText = 'display:flex;gap:10px;align-items:flex-start;margin-bottom:10px';
+    qHead.innerHTML = '<span style="font-family:Cormorant Garamond,serif;font-size:20px;font-weight:700;color:var(--sage);flex-shrink:0;line-height:1;width:22px">'+(qi+1)+'</span><span style="font-size:13px;font-weight:600;color:var(--ink);line-height:1.5">'+q.q+'</span>';
+    block.appendChild(qHead);
+    q.opts.forEach((opt, oi) => {
+      const label = document.createElement('label');
+      label.setAttribute('data-qi', qi);
+      label.setAttribute('data-oi', oi);
+      label.style.cssText = 'display:flex;align-items:flex-start;gap:9px;padding:8px 11px;border-radius:8px;margin-bottom:5px;cursor:pointer;border:1px solid rgba(122,158,126,.14);background:var(--warm-white);font-size:12.5px;color:var(--ink);transition:background .18s';
+      const inp = document.createElement('input');
+      inp.type = 'radio';
+      inp.name = 'q'+qi;
+      inp.value = oi;
+      inp.style.cssText = 'margin-top:3px;flex-shrink:0;accent-color:var(--sage-dark)';
+      inp.addEventListener('change', () => {
+        userAnswers[qi] = oi;
+        block.querySelectorAll('label').forEach((l, li) => {
+          l.style.background = li === oi ? 'rgba(122,158,126,.15)' : 'var(--warm-white)';
+          l.style.borderColor = li === oi ? 'rgba(122,158,126,.4)' : 'rgba(122,158,126,.14)';
+        });
+      });
+      label.appendChild(inp);
+      label.appendChild(document.createTextNode(' '+opt));
+      block.appendChild(label);
+    });
+    container.appendChild(block);
+  });
+}
+
+function submitQuiz() {
+  const unanswered = userAnswers.filter(a => a === null).length;
+  if (unanswered > 0) { alert('Tienes '+unanswered+' pregunta(s) sin responder. Por favor responde todas antes de enviar.'); return; }
+  let correct = 0;
+  QUESTIONS.forEach((q, qi) => {
+    const block = document.getElementById('quiz-container').children[qi];
+    const labels = block.querySelectorAll('label');
+    labels.forEach((lbl, li) => {
+      if (li === q.ans) { lbl.style.background='rgba(45,106,53,.1)'; lbl.style.borderColor='rgba(45,106,53,.35)'; lbl.style.fontWeight='700'; }
+      else if (li === userAnswers[qi] && li !== q.ans) { lbl.style.background='rgba(160,50,50,.08)'; lbl.style.borderColor='rgba(160,50,50,.3)'; }
+    });
+    if (userAnswers[qi] === q.ans) correct++;
+  });
+  const pct = Math.round((correct/QUESTIONS.length)*100);
+  const resultEl = document.getElementById('quiz-result');
+  document.getElementById('quiz-score-num').textContent = correct+' / '+QUESTIONS.length;
+  document.getElementById('quiz-score-label').textContent = pct>=80 ? '✓ Evaluación aprobada' : '✗ Se recomienda revisar el material';
+  document.getElementById('quiz-score-msg').textContent = pct>=80 ? 'Obtuviste '+pct+'% — Dominas los fundamentos operativos del área PWI VAWA.' : 'Obtuviste '+pct+'% — Revisa las secciones correspondientes y vuelve a intentarlo.';
+  resultEl.style.background = pct>=80 ? 'rgba(45,106,53,.08)' : 'rgba(160,50,50,.06)';
+  resultEl.style.borderColor = pct>=80 ? 'rgba(45,106,53,.2)' : 'rgba(160,50,50,.2)';
+  resultEl.style.display = 'block';
+  document.getElementById('quiz-submit-wrap').style.display = 'none';
+  document.querySelectorAll('#quiz-container input').forEach(i => i.disabled = true);
+  resultEl.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function resetQuiz() {
+  userAnswers = new Array(QUESTIONS.length).fill(null);
+  buildQuiz();
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-submit-wrap').style.display = 'flex';
+}
+
+buildQuiz();
+
+updateProgress();
+</script>
+</body>
+</html>
