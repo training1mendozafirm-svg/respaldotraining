@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Práctica — Calculadora de Adeudos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2A4A; --navy-deep:#101B33; --parchment:#F6F3EC; --card:#FFFFFF;
+    --brass:#A9803F; --brass-soft:#EFE3CB; --ink:#232A38; --slate:#5C6577; --line:#E3DECF;
+    --ok:#2F6F4F; --ok-soft:#E4F0EA; --warn:#9A4B2E; --warn-soft:#F6E9E1;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--parchment); font-family:'Inter',system-ui,sans-serif; color:var(--ink); padding:28px 16px 60px;}
+  .wrap{max-width:900px; margin:0 auto;}
+
+  header.top{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; border-bottom:2px solid var(--navy); padding-bottom:16px; margin-bottom:22px; flex-wrap:wrap;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--brass); font-weight:600; margin-bottom:6px;}
+  h1{font-family:'Fraunces',serif; font-weight:600; font-size:26px; margin:0; color:var(--navy-deep); letter-spacing:-0.01em;}
+  .sub{color:var(--slate); font-size:13.5px; max-width:520px; margin-top:6px; line-height:1.5;}
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:4px; padding:24px 24px 20px;}
+  .card + .card{margin-top:18px;}
+
+  /* Progress */
+  .progress-row{display:flex; align-items:center; gap:14px; margin-bottom:20px;}
+  .progress-track{flex:1; height:8px; background:var(--brass-soft); border-radius:20px; overflow:hidden;}
+  .progress-fill{height:100%; background:var(--navy); border-radius:20px; transition:width .25s ease;}
+  .progress-label{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--navy); font-weight:600; white-space:nowrap;}
+  .score-pill{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--slate); background:var(--brass-soft); padding:4px 10px; border-radius:20px; white-space:nowrap;}
+
+  /* Intro */
+  .intro h2{font-family:'Fraunces',serif; font-size:19px; color:var(--navy-deep); margin:0 0 10px;}
+  .intro p{font-size:14px; line-height:1.65; color:var(--slate); margin:0 0 10px;}
+  .intro ul{font-size:14px; line-height:1.7; color:var(--ink); padding-left:20px; margin:0 0 14px;}
+  .btn{
+    display:inline-block; background:var(--navy); color:#fff; border:none; padding:12px 22px;
+    border-radius:3px; font-family:'Inter',sans-serif; font-size:14px; font-weight:600; cursor:pointer;
+    transition:.12s;
+  }
+  .btn:hover{background:var(--navy-deep);}
+  .btn.secondary{background:transparent; color:var(--navy); border:1px solid var(--navy);}
+  .btn.secondary:hover{background:var(--brass-soft);}
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+  .btn:disabled{opacity:.45; cursor:not-allowed;}
+
+  /* Exercise data card */
+  .case-n{font-family:'IBM Plex Mono',monospace; font-size:11px; color:#fff; background:var(--navy); width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;}
+  .case-title{font-family:'Fraunces',serif; font-size:17px; font-weight:600; color:var(--navy); display:flex; align-items:center; margin:0 0 16px;}
+  .data-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px 20px;}
+  @media (max-width:600px){.data-grid{grid-template-columns:1fr;}}
+  .data-item{border-bottom:1px solid var(--line); padding:8px 0; font-size:13.5px; display:flex; justify-content:space-between; gap:10px;}
+  .data-item .l{color:var(--slate);}
+  .data-item .v{font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--ink); text-align:right;}
+
+  .answer-block{margin-top:22px; padding-top:18px; border-top:1px dashed var(--line);}
+  .answer-block label{display:block; font-size:13px; font-weight:600; color:var(--navy-deep); margin-bottom:8px;}
+  .money-wrap{position:relative; max-width:260px;}
+  .money-wrap span{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--slate); font-size:15px;}
+  .money-wrap input{width:100%; border:1px solid #CBC3AC; border-radius:3px; padding:11px 12px 11px 26px; font-family:'IBM Plex Mono',monospace; font-size:15px; background:#FDFCFA; color:var(--ink);}
+  .money-wrap input:focus{outline:none; border-color:var(--navy); box-shadow:0 0 0 3px rgba(27,42,74,0.12);}
+  .hint{font-size:11.5px; color:var(--slate); margin-top:6px;}
+
+  /* Feedback */
+  .feedback{margin-top:20px; padding:18px 20px; border-radius:4px; display:none;}
+  .feedback.show{display:block;}
+  .feedback.correct{background:var(--ok-soft); border:1px solid var(--ok);}
+  .feedback.incorrect{background:var(--warn-soft); border:1px solid var(--warn);}
+  .feedback-title{font-family:'Fraunces',serif; font-weight:600; font-size:15.5px; margin-bottom:10px;}
+  .feedback.correct .feedback-title{color:var(--ok);}
+  .feedback.incorrect .feedback-title{color:var(--warn);}
+  .breakdown{font-size:13px; color:var(--ink);}
+  .breakdown .line{display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid rgba(0,0,0,0.06);}
+  .breakdown .line:last-child{border-bottom:none; font-weight:700; padding-top:8px;}
+  .breakdown .v{font-family:'IBM Plex Mono',monospace;}
+  .mora-note{margin-top:10px; font-size:12px; color:var(--slate); font-style:italic;}
+
+  /* Results screen */
+  .results-hero{text-align:center; padding:10px 10px 6px;}
+  .results-hero .big{font-family:'Fraunces',serif; font-size:52px; font-weight:600; color:var(--navy-deep); margin:6px 0;}
+  .results-hero .status{display:inline-block; font-size:13px; font-weight:700; padding:5px 14px; border-radius:20px; margin-bottom:8px;}
+  .status.pass{background:var(--ok-soft); color:var(--ok);}
+  .status.fail{background:var(--warn-soft); color:var(--warn);}
+  .stats-row{display:flex; justify-content:center; gap:26px; margin:18px 0 6px; flex-wrap:wrap;}
+  .stat{text-align:center;}
+  .stat .num{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:700; color:var(--navy);}
+  .stat .lbl{font-size:11px; color:var(--slate); text-transform:uppercase; letter-spacing:.05em;}
+
+  .review-item{padding:12px 0; border-bottom:1px solid var(--line); font-size:13px;}
+  .review-item:last-child{border-bottom:none;}
+  .review-item .rt{font-weight:700; color:var(--warn); margin-bottom:4px;}
+  .review-item .rd{color:var(--slate);}
+  .review-item .rd b{color:var(--ink);}
+
+
+  footer{margin-top:26px; text-align:center; font-size:11.5px; color:var(--slate);}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <div class="eyebrow">Área de Cobranza · Capacitación</div>
+      <h1>Simulador — Calculadora de Adeudos</h1>
+      <div class="sub">50 ejercicios prácticos basados en la calculadora oficial. Resuelve cada caso y verifica tu respuesta antes de avanzar.</div>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <div class="card intro" id="screenIntro">
+    <h2>Antes de comenzar</h2>
+    <p>Se te presentarán 50 casos con los datos del esquema de pago de un cliente (igual que en la calculadora oficial). Tu tarea es calcular mentalmente o en papel el <b>total del adeudo</b> y capturarlo.</p>
+    <ul>
+      <li>El total = downpayment + adeudo del esquema (meses transcurridos × mensualidad, sin pasar del total de meses del esquema) + Gov Fees pendientes − pagos ya realizados.</li>
+      <li>Si el cargo moratorio aplica, es solo referencia: <b>no</b> se incluye en el total.</li>
+      <li>Tu respuesta se acepta con una tolerancia de ±$1.00 por redondeo.</li>
+      <li>Al terminar los 50 ejercicios se guardará tu calificación automáticamente en la plataforma.</li>
+    </ul>
+    <div class="btn-row">
+      <button class="btn" id="btnStart">Comenzar simulador</button>
+      <button class="btn secondary hidden" id="btnResume">Continuar donde me quedé</button>
+      <button class="btn secondary hidden" id="btnRestart">Empezar de nuevo</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screenQuiz" class="hidden">
+    <div class="progress-row">
+      <span class="progress-label" id="progLabel">Ejercicio 1 / 50</span>
+      <div class="progress-track"><div class="progress-fill" id="progFill" style="width:2%;"></div></div>
+      <span class="score-pill" id="scorePill">0 correctas</span>
+    </div>
+
+    <div class="card">
+      <div class="case-title"><span class="case-n" id="caseN">1</span>Datos del caso</div>
+      <div class="data-grid" id="dataGrid"></div>
+
+      <div class="answer-block">
+        <label for="userAnswer">¿Cuál es el total del adeudo (sin moratorio)?</label>
+        <div class="money-wrap"><span>$</span><input type="number" id="userAnswer" step="0.01" placeholder="0.00"></div>
+        <div class="hint">Usa la tabla de referencia de Gov Fees si el caso lo requiere.</div>
+        <div class="btn-row">
+          <button class="btn" id="btnCheck">Verificar respuesta</button>
+          <button class="btn secondary hidden" id="btnNext">Siguiente ejercicio →</button>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback">
+        <div class="feedback-title" id="feedbackTitle"></div>
+        <div class="breakdown" id="feedbackBreakdown"></div>
+        <div class="mora-note hidden" id="moraNote"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screenResults" class="hidden">
+    <div class="card results-hero">
+      <div class="status" id="resultStatus">—</div>
+      <div class="big" id="resultScore">0%</div>
+      <div class="stats-row">
+        <div class="stat"><div class="num" id="statCorrect">0</div><div class="lbl">Correctas</div></div>
+        <div class="stat"><div class="num" id="statIncorrect">0</div><div class="lbl">Incorrectas</div></div>
+        <div class="stat"><div class="num">50</div><div class="lbl">Total ejercicios</div></div>
+      </div>
+      <div class="btn-row" style="justify-content:center; margin-top:16px;">
+        <button class="btn secondary" id="btnRestart2">Reiniciar simulador</button>
+      </div>
+    </div>
+
+    <div class="card" id="reviewCard" style="margin-top:18px;">
+      <div class="case-title" style="margin-bottom:12px;">Repaso de ejercicios con error</div>
+      <div id="reviewList"></div>
+    </div>
+  </div>
+
+  <footer>Uso interno — Área de Cobranza. Simulador de práctica, no sustituye la calculadora oficial para casos reales.</footer>
+</div>
+
+<script>
+const CASES = [{"id": 1, "apertura": "2024-03-13", "corte": "2024-08-10", "mesesEsquema": 6, "mensualidad": 550, "downpayment": 5000, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "no", "mesesTrans": 4, "futuro": false, "mesesAdeudo": 4, "adeudoEsquema": 2200, "govFeesPend": 0, "totalBruto": 7200, "total": 7200, "moratorio": 0}, {"id": 2, "apertura": "2023-07-14", "corte": "2023-12-14", "mesesEsquema": 8, "mensualidad": 300, "downpayment": 5000, "govCharged": "si", "govMonto": 0, "pagado": 2869.74, "moraApplies": "si", "mesesTrans": 5, "futuro": false, "mesesAdeudo": 5, "adeudoEsquema": 1500, "govFeesPend": 0, "totalBruto": 6500, "total": 3630.26, "moratorio": 375}, {"id": 3, "apertura": "2023-10-19", "corte": "2024-02-16", "mesesEsquema": 15, "mensualidad": 700, "downpayment": 1500, "govCharged": "no", "govMonto": 1385, "pagado": 2170.75, "moraApplies": "si", "mesesTrans": 3, "futuro": false, "mesesAdeudo": 3, "adeudoEsquema": 2100, "govFeesPend": 1385, "totalBruto": 4985, "total": 2814.25, "moratorio": 225}, {"id": 4, "apertura": "2025-11-06", "corte": "2026-11-06", "mesesEsquema": 8, "mensualidad": 550, "downpayment": 0, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "no", "mesesTrans": 12, "futuro": false, "mesesAdeudo": 8, "adeudoEsquema": 4400, "govFeesPend": 0, "totalBruto": 4400, "total": 4400, "moratorio": 0}, {"id": 5, "apertura": "2023-08-22", "corte": "2024-07-22", "mesesEsquema": 20, "mensualidad": 750, "downpayment": 4000, "govCharged": "no", "govMonto": 3265, "pagado": 7749.7, "moraApplies": "si", "mesesTrans": 11, "futuro": false, "mesesAdeudo": 11, "adeudoEsquema": 8250, "govFeesPend": 3265, "totalBruto": 15515, "total": 7765.3, "moratorio": 825}, {"id": 6, "apertura": "2023-02-19", "corte": "2023-08-21", "mesesEsquema": 12, "mensualidad": 650, "downpayment": 2500, "govCharged": "si", "govMonto": 0, "pagado": 1487.88, "moraApplies": "si", "mesesTrans": 6, "futuro": false, "mesesAdeudo": 6, "adeudoEsquema": 3900, "govFeesPend": 0, "totalBruto": 6400, "total": 4912.12, "moratorio": 450}, {"id": 7, "apertura": "2024-03-16", "corte": "2025-02-13", "mesesEsquema": 15, "mensualidad": 700, "downpayment": 5000, "govCharged": "no", "govMonto": 465, "pagado": 4965.28, "moraApplies": "no", "mesesTrans": 10, "futuro": false, "mesesAdeudo": 10, "adeudoEsquema": 7000, "govFeesPend": 465, "totalBruto": 12465, "total": 7499.72, "moratorio": 0}, {"id": 8, "apertura": "2024-02-27", "corte": "2024-10-27", "mesesEsquema": 8, "mensualidad": 650, "downpayment": 5500, "govCharged": "si", "govMonto": 0, "pagado": 3261.4, "moraApplies": "si", "mesesTrans": 8, "futuro": false, "mesesAdeudo": 8, "adeudoEsquema": 5200, "govFeesPend": 0, "totalBruto": 10700, "total": 7438.6, "moratorio": 600}, {"id": 9, "apertura": "2025-11-27", "corte": "2026-12-29", "mesesEsquema": 18, "mensualidad": 550, "downpayment": 0, "govCharged": "no", "govMonto": 465, "pagado": 3021.99, "moraApplies": "si", "mesesTrans": 13, "futuro": false, "mesesAdeudo": 13, "adeudoEsquema": 7150, "govFeesPend": 465, "totalBruto": 7615, "total": 4593.01, "moratorio": 975}, {"id": 10, "apertura": "2023-05-05", "corte": "2024-01-02", "mesesEsquema": 10, "mensualidad": 400, "downpayment": 4000, "govCharged": "no", "govMonto": 3265, "pagado": 10065, "moraApplies": "no", "mesesTrans": 7, "futuro": false, "mesesAdeudo": 7, "adeudoEsquema": 2800, "govFeesPend": 3265, "totalBruto": 10065, "total": 0, "moratorio": 0}, {"id": 11, "apertura": "2024-09-09", "corte": "2025-12-09", "mesesEsquema": 15, "mensualidad": 800, "downpayment": 3500, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "si", "mesesTrans": 15, "futuro": false, "mesesAdeudo": 15, "adeudoEsquema": 12000, "govFeesPend": 0, "totalBruto": 15500, "total": 15500, "moratorio": 1125}, {"id": 12, "apertura": "2023-04-22", "corte": "2023-07-21", "mesesEsquema": 10, "mensualidad": 500, "downpayment": 0, "govCharged": "si", "govMonto": 0, "pagado": 454.91, "moraApplies": "no", "mesesTrans": 2, "futuro": false, "mesesAdeudo": 2, "adeudoEsquema": 1000, "govFeesPend": 0, "totalBruto": 1000, "total": 545.09, "moratorio": 0}, {"id": 13, "apertura": "2024-03-23", "corte": "2025-11-23", "mesesEsquema": 20, "mensualidad": 800, "downpayment": 5500, "govCharged": "si", "govMonto": 0, "pagado": 21500, "moraApplies": "no", "mesesTrans": 20, "futuro": false, "mesesAdeudo": 20, "adeudoEsquema": 16000, "govFeesPend": 0, "totalBruto": 21500, "total": 0, "moratorio": 0}, {"id": 14, "apertura": "2025-09-13", "corte": "2025-11-13", "mesesEsquema": 15, "mensualidad": 800, "downpayment": 3500, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "si", "mesesTrans": 2, "futuro": false, "mesesAdeudo": 2, "adeudoEsquema": 1600, "govFeesPend": 0, "totalBruto": 5100, "total": 5100, "moratorio": 150}, {"id": 15, "apertura": "2023-08-06", "corte": "2023-09-03", "mesesEsquema": 8, "mensualidad": 300, "downpayment": 5000, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "no", "mesesTrans": 0, "futuro": false, "mesesAdeudo": 0, "adeudoEsquema": 0, "govFeesPend": 0, "totalBruto": 5000, "total": 5000, "moratorio": 0}, {"id": 16, "apertura": "2024-10-01", "corte": "2025-06-01", "mesesEsquema": 8, "mensualidad": 750, "downpayment": 3500, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "no", "mesesTrans": 8, "futuro": false, "mesesAdeudo": 8, "adeudoEsquema": 6000, "govFeesPend": 0, "totalBruto": 9500, "total": 9500, "moratorio": 0}, {"id": 17, "apertura": "2024-10-12", "corte": "2026-02-12", "mesesEsquema": 18, "mensualidad": 650, "downpayment": 4000, "govCharged": "no", "govMonto": 580, "pagado": 0, "moraApplies": "si", "mesesTrans": 16, "futuro": false, "mesesAdeudo": 16, "adeudoEsquema": 10400, "govFeesPend": 580, "totalBruto": 14980, "total": 14980, "moratorio": 1200}, {"id": 18, "apertura": "2024-12-09", "corte": "2024-10-19", "mesesEsquema": 18, "mensualidad": 700, "downpayment": 0, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "no", "mesesTrans": 0, "futuro": true, "mesesAdeudo": 0, "adeudoEsquema": 0, "govFeesPend": 0, "totalBruto": 0, "total": 0, "moratorio": 0}, {"id": 19, "apertura": "2025-09-01", "corte": "2025-12-03", "mesesEsquema": 20, "mensualidad": 500, "downpayment": 4600, "govCharged": "no", "govMonto": 675, "pagado": 2820.41, "moraApplies": "no", "mesesTrans": 3, "futuro": false, "mesesAdeudo": 3, "adeudoEsquema": 1500, "govFeesPend": 675, "totalBruto": 6775, "total": 3954.59, "moratorio": 0}, {"id": 20, "apertura": "2025-06-21", "corte": "2026-08-21", "mesesEsquema": 10, "mensualidad": 450, "downpayment": 3500, "govCharged": "si", "govMonto": 0, "pagado": 2622.25, "moraApplies": "si", "mesesTrans": 14, "futuro": false, "mesesAdeudo": 10, "adeudoEsquema": 4500, "govFeesPend": 0, "totalBruto": 8000, "total": 5377.75, "moratorio": 750}, {"id": 21, "apertura": "2023-01-26", "corte": "2023-05-28", "mesesEsquema": 12, "mensualidad": 750, "downpayment": 3000, "govCharged": "no", "govMonto": 465, "pagado": 0, "moraApplies": "no", "mesesTrans": 4, "futuro": false, "mesesAdeudo": 4, "adeudoEsquema": 3000, "govFeesPend": 465, "totalBruto": 6465, "total": 6465, "moratorio": 0}, {"id": 22, "apertura": "2023-04-16", "corte": "2023-12-17", "mesesEsquema": 10, "mensualidad": 750, "downpayment": 0, "govCharged": "no", "govMonto": 465, "pagado": 0, "moraApplies": "no", "mesesTrans": 8, "futuro": false, "mesesAdeudo": 8, "adeudoEsquema": 6000, "govFeesPend": 465, "totalBruto": 6465, "total": 6465, "moratorio": 0}, {"id": 23, "apertura": "2025-02-13", "corte": "2025-05-13", "mesesEsquema": 10, "mensualidad": 800, "downpayment": 3000, "govCharged": "si", "govMonto": 0, "pagado": 1893.74, "moraApplies": "no", "mesesTrans": 3, "futuro": false, "mesesAdeudo": 3, "adeudoEsquema": 2400, "govFeesPend": 0, "totalBruto": 5400, "total": 3506.26, "moratorio": 0}, {"id": 24, "apertura": "2023-12-06", "corte": "2024-09-06", "mesesEsquema": 9, "mensualidad": 300, "downpayment": 1500, "govCharged": "no", "govMonto": 675, "pagado": 4875, "moraApplies": "no", "mesesTrans": 9, "futuro": false, "mesesAdeudo": 9, "adeudoEsquema": 2700, "govFeesPend": 675, "totalBruto": 4875, "total": 0, "moratorio": 0}, {"id": 25, "apertura": "2024-11-12", "corte": "2025-02-09", "mesesEsquema": 9, "mensualidad": 300, "downpayment": 5500, "govCharged": "si", "govMonto": 0, "pagado": 1339.71, "moraApplies": "no", "mesesTrans": 2, "futuro": false, "mesesAdeudo": 2, "adeudoEsquema": 600, "govFeesPend": 0, "totalBruto": 6100, "total": 4760.29, "moratorio": 0}, {"id": 26, "apertura": "2023-04-01", "corte": "2023-12-30", "mesesEsquema": 12, "mensualidad": 750, "downpayment": 3000, "govCharged": "no", "govMonto": 3265, "pagado": 12265, "moraApplies": "no", "mesesTrans": 8, "futuro": false, "mesesAdeudo": 8, "adeudoEsquema": 6000, "govFeesPend": 3265, "totalBruto": 12265, "total": 0, "moratorio": 0}, {"id": 27, "apertura": "2023-12-12", "corte": "2026-03-12", "mesesEsquema": 18, "mensualidad": 600, "downpayment": 4600, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "no", "mesesTrans": 27, "futuro": false, "mesesAdeudo": 18, "adeudoEsquema": 10800, "govFeesPend": 0, "totalBruto": 15400, "total": 15400, "moratorio": 0}, {"id": 28, "apertura": "2025-01-28", "corte": "2024-08-16", "mesesEsquema": 18, "mensualidad": 300, "downpayment": 1500, "govCharged": "si", "govMonto": 0, "pagado": 768.89, "moraApplies": "si", "mesesTrans": 0, "futuro": true, "mesesAdeudo": 0, "adeudoEsquema": 0, "govFeesPend": 0, "totalBruto": 1500, "total": 731.11, "moratorio": 0}, {"id": 29, "apertura": "2025-01-11", "corte": "2026-05-14", "mesesEsquema": 20, "mensualidad": 350, "downpayment": 4600, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "si", "mesesTrans": 16, "futuro": false, "mesesAdeudo": 16, "adeudoEsquema": 5600, "govFeesPend": 0, "totalBruto": 10200, "total": 10200, "moratorio": 1200}, {"id": 30, "apertura": "2023-02-17", "corte": "2024-10-17", "mesesEsquema": 18, "mensualidad": 650, "downpayment": 3000, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "no", "mesesTrans": 20, "futuro": false, "mesesAdeudo": 18, "adeudoEsquema": 11700, "govFeesPend": 0, "totalBruto": 14700, "total": 14700, "moratorio": 0}, {"id": 31, "apertura": "2025-09-26", "corte": "2026-05-28", "mesesEsquema": 18, "mensualidad": 700, "downpayment": 2500, "govCharged": "si", "govMonto": 0, "pagado": 0, "moraApplies": "no", "mesesTrans": 8, "futuro": false, "mesesAdeudo": 8, "adeudoEsquema": 5600, "govFeesPend": 0, "totalBruto": 8100, "total": 8100, "moratorio": 0}, {"id": 32, "apertura": "2023-07-15", "corte": "2023-11-15", "mesesEsquema": 14, "mensualidad": 350, "downpayment": 2000, "govCharged": "no", "govMonto": 580, "pagado": 4659.11, "moraApplies": "si", "mesesTrans": 4, "futuro": false, "mesesAdeudo": 4, "adeudoEsquema": 1400, "govFeesPend": 580, "totalBruto": 3980, "total": 0, "moratorio": 300}, {"id": 33, "apertura": "2024-03-09", "corte": "2024-12-09", "mesesEsquema": 9, "mensualidad": 450, "downpayment": 0, "govCharged": "no", "govMonto": 3590, "pagado": 8489.2, "moraApplies": "si", "mesesTrans": 9, "futuro": false, "mesesAdeudo": 9, "adeudoEsquema": 4050, "govFeesPend": 3590, "totalBruto": 7640, "total": 0, "moratorio": 675}, {"id": 34, "apertura": "2023-12-14", "corte": "2025-02-12", "mesesEsquema": 20, "mensualidad": 550, "downpayment": 3000, "govCharged": "si", "govMonto": 0, "pagado": 3237.75, "moraApplies": "no", "mesesTrans": 13, "futuro": false, "mesesAdeudo": 13, "adeudoEsquema": 7150, "govFeesPend": 0, "totalBruto": 10150, "total": 6912.25, "moratorio": 0}, {"id": 35, "apertura": "2024-08-23", "corte": "2025-01-24", "mesesEsquema": 6, "mensualidad": 500, "downpayment": 4600, "govCharged": "si", "govMonto": 0, "pagado": 7909.53, "moraApplies": "si", "mesesTrans": 5, "futuro": false, "mesesAdeudo": 5, "adeudoEsquema": 2500, "govFeesPend": 0, "totalBruto": 7100, "total": 0, "moratorio": 375}, {"id": 36, "apertura": "2023-02-09", "corte": "2023-05-08", "mesesEsquema": 12, "mensualidad": 400, "downpayment": 3500, "govCharged": "no", "govMonto": 1385, "pagado": 2316.02, "moraApplies": "si", "mesesTrans": 2, "futuro": false, "mesesAdeudo": 2, "adeudoEsquema": 800, "govFeesPend": 1385, "totalBruto": 5685, "total": 3368.98, "moratorio": 150}, {"id": 37, "apertura": "2024-12-11", "corte": "2025-07-13", "mesesEsquema": 8, "mensualidad": 400, "downpayment": 3500, "govCharged": "si", "govMonto": 0, "pagado": 6971.0, "moraApplies": "no", "mesesTrans": 7, "futuro": false, "mesesAdeudo": 7, "adeudoEsquema": 2800, "govFeesPend": 0, "totalBruto": 6300, "total": 0, "moratorio": 0}, {"id": 38, "apertura": "2024-02-20", "corte": "2024-04-20", "mesesEsquema": 10, "mensualidad": 300, "downpayment": 3000, "govCharged": "no", "govMonto": 3265, "pagado": 0, "moraApplies": "no", "mesesTrans": 2, "futuro": false, "mesesAdeudo": 2, "adeudoEsquema": 600, "govFeesPend": 3265, "totalBruto": 6865, "total": 6865, "moratorio": 0}, {"id": 39, "apertura": "2025-12-08", "corte": "2026-08-08", "mesesEsquema": 8, "mensualidad": 500, "downpayment": 0, "govCharged": "si", "govMonto": 0, "pagado": 4665.8, "moraApplies": "si", "mesesTrans": 8, "futuro": false, "mesesAdeudo": 8, "adeudoEsquema": 4000, "govFeesPend": 0, "totalBruto": 4000, "total": 0, "moratorio": 600}, {"id": 40, "apertura": "2025-04-10", "corte": "2025-10-09", "mesesEsquema": 18, "mensualidad": 550, "downpayment": 0, "govCharged": "no", "govMonto": 520, "pagado": 0, "moraApplies": "si", "mesesTrans": 5, "futuro": false, "mesesAdeudo": 5, "adeudoEsquema": 2750, "govFeesPend": 520, "totalBruto": 3270, "total": 3270, "moratorio": 375}, {"id": 41, "apertura": "2025-09-07", "corte": "2026-12-04", "mesesEsquema": 20, "mensualidad": 800, "downpayment": 5500, "govCharged": "no", "govMonto": 3590, "pagado": 20290, "moraApplies": "no", "mesesTrans": 14, "futuro": false, "mesesAdeudo": 14, "adeudoEsquema": 11200, "govFeesPend": 3590, "totalBruto": 20290, "total": 0, "moratorio": 0}, {"id": 42, "apertura": "2024-09-10", "corte": "2025-07-10", "mesesEsquema": 10, "mensualidad": 550, "downpayment": 2000, "govCharged": "si", "govMonto": 0, "pagado": 8483.69, "moraApplies": "no", "mesesTrans": 10, "futuro": false, "mesesAdeudo": 10, "adeudoEsquema": 5500, "govFeesPend": 0, "totalBruto": 7500, "total": 0, "moratorio": 0}, {"id": 43, "apertura": "2023-01-03", "corte": "2023-01-31", "mesesEsquema": 12, "mensualidad": 800, "downpayment": 3500, "govCharged": "no", "govMonto": 535, "pagado": 696.52, "moraApplies": "si", "mesesTrans": 0, "futuro": false, "mesesAdeudo": 0, "adeudoEsquema": 0, "govFeesPend": 535, "totalBruto": 4035, "total": 3338.48, "moratorio": 0}, {"id": 44, "apertura": "2023-03-09", "corte": "2024-03-08", "mesesEsquema": 18, "mensualidad": 700, "downpayment": 3000, "govCharged": "si", "govMonto": 0, "pagado": 11078.59, "moraApplies": "si", "mesesTrans": 11, "futuro": false, "mesesAdeudo": 11, "adeudoEsquema": 7700, "govFeesPend": 0, "totalBruto": 10700, "total": 0, "moratorio": 825}, {"id": 45, "apertura": "2024-03-01", "corte": "2024-10-31", "mesesEsquema": 14, "mensualidad": 700, "downpayment": 5500, "govCharged": "si", "govMonto": 0, "pagado": 1585.74, "moraApplies": "si", "mesesTrans": 7, "futuro": false, "mesesAdeudo": 7, "adeudoEsquema": 4900, "govFeesPend": 0, "totalBruto": 10400, "total": 8814.26, "moratorio": 525}, {"id": 46, "apertura": "2024-02-05", "corte": "2025-12-05", "mesesEsquema": 15, "mensualidad": 300, "downpayment": 2500, "govCharged": "no", "govMonto": 760, "pagado": 3217.26, "moraApplies": "si", "mesesTrans": 22, "futuro": false, "mesesAdeudo": 15, "adeudoEsquema": 4500, "govFeesPend": 760, "totalBruto": 7760, "total": 4542.74, "moratorio": 1125}, {"id": 47, "apertura": "2023-11-23", "corte": "2024-10-25", "mesesEsquema": 24, "mensualidad": 650, "downpayment": 1500, "govCharged": "no", "govMonto": 535, "pagado": 0, "moraApplies": "no", "mesesTrans": 11, "futuro": false, "mesesAdeudo": 11, "adeudoEsquema": 7150, "govFeesPend": 535, "totalBruto": 9185, "total": 9185, "moratorio": 0}, {"id": 48, "apertura": "2025-09-21", "corte": "2027-09-21", "mesesEsquema": 15, "mensualidad": 400, "downpayment": 4600, "govCharged": "si", "govMonto": 0, "pagado": 6322.0, "moraApplies": "no", "mesesTrans": 24, "futuro": false, "mesesAdeudo": 15, "adeudoEsquema": 6000, "govFeesPend": 0, "totalBruto": 10600, "total": 4278.0, "moratorio": 0}, {"id": 49, "apertura": "2025-12-21", "corte": "2026-01-19", "mesesEsquema": 10, "mensualidad": 800, "downpayment": 3000, "govCharged": "si", "govMonto": 0, "pagado": 3000, "moraApplies": "no", "mesesTrans": 0, "futuro": false, "mesesAdeudo": 0, "adeudoEsquema": 0, "govFeesPend": 0, "totalBruto": 3000, "total": 0, "moratorio": 0}, {"id": 50, "apertura": "2025-01-21", "corte": "2025-11-21", "mesesEsquema": 6, "mensualidad": 650, "downpayment": 2500, "govCharged": "si", "govMonto": 0, "pagado": 3354.45, "moraApplies": "no", "mesesTrans": 10, "futuro": false, "mesesAdeudo": 6, "adeudoEsquema": 3900, "govFeesPend": 0, "totalBruto": 6400, "total": 3045.55, "moratorio": 0}]
+;
+
+const TOTAL = CASES.length;
+const PASS_MARK = 70;
+const TOLERANCE = 1.00;
+const STORAGE_KEY = 'simuladorAdeudosState';
+
+let state = {
+  order: [],       // shuffled indices into CASES
+  currentIndex: 0,  // position within order
+  answers: {},      // caseId -> {userValue, correct}
+  finished: false
+};
+
+function fmt(n){
+  return '$' + Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function fmtDate(iso){
+  const [y,m,d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function shuffledOrder(){
+  const arr = CASES.map((c,i)=>i);
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function saveLocal(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return null;
+}
+function clearLocal(){
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+}
+
+function correctCount(){
+  return Object.values(state.answers).filter(a=>a.correct).length;
+}
+function answeredCount(){
+  return Object.keys(state.answers).length;
+}
+
+function goScreen(name){
+  document.getElementById('screenIntro').classList.toggle('hidden', name!=='intro');
+  document.getElementById('screenQuiz').classList.toggle('hidden', name!=='quiz');
+  document.getElementById('screenResults').classList.toggle('hidden', name!=='results');
+}
+
+function renderCase(){
+  const idx = state.order[state.currentIndex];
+  const c = CASES[idx];
+
+  document.getElementById('progLabel').textContent = `Ejercicio ${state.currentIndex+1} / ${TOTAL}`;
+  document.getElementById('progFill').style.width = (((state.currentIndex)/TOTAL)*100) + '%';
+  document.getElementById('scorePill').textContent = `${correctCount()} correctas de ${answeredCount()} respondidas`;
+  document.getElementById('caseN').textContent = state.currentIndex+1;
+
+  const grid = document.getElementById('dataGrid');
+  const govLine = c.govCharged === 'si'
+    ? 'Ya cobrados (no se suman)'
+    : `Pendientes — ${fmt(c.govMonto)}`;
+  const moraLine = c.moraApplies === 'si' ? 'Sí aplica (referencia, ver nota)' : 'No aplica';
+
+  grid.innerHTML = `
+    <div class="data-item"><span class="l">Fecha de apertura</span><span class="v">${fmtDate(c.apertura)}</span></div>
+    <div class="data-item"><span class="l">Fecha de corte</span><span class="v">${fmtDate(c.corte)}</span></div>
+    <div class="data-item"><span class="l">Meses que cubre el esquema</span><span class="v">${c.mesesEsquema}</span></div>
+    <div class="data-item"><span class="l">Mensualidad</span><span class="v">${fmt(c.mensualidad)}</span></div>
+    <div class="data-item"><span class="l">Downpayment</span><span class="v">${fmt(c.downpayment)}</span></div>
+    <div class="data-item"><span class="l">Gov Fees</span><span class="v">${govLine}</span></div>
+    <div class="data-item"><span class="l">Pagos realizados</span><span class="v">${fmt(c.pagado)}</span></div>
+    <div class="data-item"><span class="l">¿Cargo moratorio ($75/mes)?</span><span class="v">${moraLine}</span></div>
+  `;
+
+  const input = document.getElementById('userAnswer');
+  input.value = '';
+  input.disabled = false;
+  document.getElementById('btnCheck').classList.remove('hidden');
+  document.getElementById('btnCheck').disabled = false;
+  document.getElementById('btnNext').classList.add('hidden');
+  document.getElementById('feedback').className = 'feedback';
+
+  // If already answered (resume case), show it
+  if(state.answers[c.id] !== undefined){
+    showFeedback(c, state.answers[c.id].userValue, true);
+  }
+
+  input.focus();
+}
+
+function showFeedback(c, userValue, isReplay){
+  const diff = Math.abs(userValue - c.total);
+  const correct = diff <= TOLERANCE;
+
+  const fb = document.getElementById('feedback');
+  fb.classList.add('show');
+  fb.classList.toggle('correct', correct);
+  fb.classList.toggle('incorrect', !correct);
+
+  document.getElementById('feedbackTitle').textContent = correct
+    ? '✓ Correcto'
+    : `✗ Incorrecto — tu respuesta: ${fmt(userValue)}`;
+
+  const mesesTransTxt = c.futuro ? '0 (fecha de apertura futura)' : c.mesesTrans;
+  document.getElementById('feedbackBreakdown').innerHTML = `
+    <div class="line"><span>Meses transcurridos</span><span class="v">${mesesTransTxt}</span></div>
+    <div class="line"><span>Meses considerados en el adeudo</span><span class="v">${c.mesesAdeudo}</span></div>
+    <div class="line"><span>Adeudo del esquema (${c.mesesAdeudo} × ${fmt(c.mensualidad)})</span><span class="v">${fmt(c.adeudoEsquema)}</span></div>
+    <div class="line"><span>Downpayment</span><span class="v">${fmt(c.downpayment)}</span></div>
+    <div class="line"><span>Gov Fees pendientes</span><span class="v">${fmt(c.govFeesPend)}</span></div>
+    <div class="line"><span>Menos pagos realizados</span><span class="v">– ${fmt(c.pagado)}</span></div>
+    <div class="line"><span>Total del adeudo</span><span class="v">${fmt(c.total)}</span></div>
+  `;
+
+  const moraNote = document.getElementById('moraNote');
+  if(c.moraApplies === 'si'){
+    moraNote.classList.remove('hidden');
+    moraNote.textContent = `Cargo moratorio de referencia: ${fmt(c.moratorio)} (no se incluye en el total, se suma manualmente si corresponde).`;
+  } else {
+    moraNote.classList.add('hidden');
+  }
+
+  if(!isReplay){
+    document.getElementById('userAnswer').disabled = true;
+    document.getElementById('btnCheck').classList.add('hidden');
+    document.getElementById('btnNext').classList.remove('hidden');
+    document.getElementById('scorePill').textContent = `${correctCount()} correctas de ${answeredCount()} respondidas`;
+  }
+}
+
+document.getElementById('btnCheck').addEventListener('click', ()=>{
+  const idx = state.order[state.currentIndex];
+  const c = CASES[idx];
+  const raw = document.getElementById('userAnswer').value;
+  if(raw === ''){ return; }
+  const userValue = parseFloat(raw);
+  if(isNaN(userValue)) return;
+
+  const diff = Math.abs(userValue - c.total);
+  const correct = diff <= TOLERANCE;
+
+  state.answers[c.id] = { userValue, correct };
+  saveLocal();
+  showFeedback(c, userValue, false);
+});
+
+document.getElementById('btnNext').addEventListener('click', ()=>{
+  if(state.currentIndex < TOTAL - 1){
+    state.currentIndex++;
+    saveLocal();
+    renderCase();
+  } else {
+    finishQuiz();
+  }
+});
+
+function finishQuiz(){
+  state.finished = true;
+  saveLocal();
+
+  const correct = correctCount();
+  const incorrect = TOTAL - correct;
+  const pct = Math.round((correct/TOTAL)*100);
+  const passed = pct >= PASS_MARK;
+
+  document.getElementById('resultStatus').textContent = passed ? 'Aprobado' : 'No aprobado';
+  document.getElementById('resultStatus').className = 'status ' + (passed ? 'pass' : 'fail');
+  document.getElementById('resultScore').textContent = pct + '%';
+  document.getElementById('statCorrect').textContent = correct;
+  document.getElementById('statIncorrect').textContent = incorrect;
+
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '';
+  let anyWrong = false;
+  state.order.forEach((idx, pos)=>{
+    const c = CASES[idx];
+    const a = state.answers[c.id];
+    if(a && !a.correct){
+      anyWrong = true;
+      const div = document.createElement('div');
+      div.className = 'review-item';
+      div.innerHTML = `
+        <div class="rt">Ejercicio ${pos+1} — apertura ${fmtDate(c.apertura)}, corte ${fmtDate(c.corte)}</div>
+        <div class="rd">Tu respuesta: <b>${fmt(a.userValue)}</b> · Respuesta correcta: <b>${fmt(c.total)}</b></div>
+      `;
+      reviewList.appendChild(div);
+    }
+  });
+  document.getElementById('reviewCard').style.display = anyWrong ? 'block' : 'none';
+
+  goScreen('results');
+}
+
+function startNew(){
+  state = { order: shuffledOrder(), currentIndex:0, answers:{}, finished:false };
+  saveLocal();
+  goScreen('quiz');
+  renderCase();
+}
+
+function resumeExisting(saved){
+  state = saved;
+  goScreen('quiz');
+  renderCase();
+}
+
+document.getElementById('btnStart').addEventListener('click', startNew);
+document.getElementById('btnRestart').addEventListener('click', ()=>{ clearLocal(); startNew(); });
+document.getElementById('btnRestart2').addEventListener('click', ()=>{ clearLocal(); startNew(); goScreen('quiz'); });
+
+// Check for resumable state
+window.addEventListener('load', ()=>{
+  let saved = loadLocal();
+
+  if(saved && saved.order && saved.order.length === TOTAL && !saved.finished && answeredOk(saved)){
+    document.getElementById('btnResume').classList.remove('hidden');
+    document.getElementById('btnRestart').classList.remove('hidden');
+    document.getElementById('btnResume').addEventListener('click', ()=>resumeExisting(saved));
+  }
+});
+
+function answeredOk(saved){
+  return typeof saved.currentIndex === 'number' && saved.currentIndex < TOTAL;
+}
+
+window.addEventListener('beforeunload', ()=>{
+  if(!state.finished && state.order && state.order.length){
+  }
+});
+</script>
+</body>
+</html>
