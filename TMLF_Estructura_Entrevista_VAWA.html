@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Base Estructura de Entrevista VAWA | TMLF Learning Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f1923;--slate:#5a6a7a;--steel:#6b8fa8;--ice:#8db8d8;--gold:#c9a84c;--gold-bg:rgba(201,168,76,.09);--white:#fff;--bg:#eef1f5;--shadow:0 8px 28px rgba(15,25,35,.11);--radius:16px;--nav-h:56px;--sidebar-w:272px;--green:#1e6641;--green-bg:rgba(30,102,65,.08);--red:#8b2c2c;--red-bg:rgba(180,50,50,.08);--amber:#7a5200;--amber-bg:rgba(180,130,0,.09);--accent:#1a3a5c;--accent2:#2e5c8a;--sidebar-bg:#0d1e2e;--purple:#7c3aed}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+.topnav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav-h);background:rgba(10,18,28,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);display:flex;align-items:center;padding:0 18px;gap:10px}
+.topnav .brand{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;white-space:nowrap;letter-spacing:.3px;display:flex;align-items:center;gap:10px}
+.topnav .brand .seal{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.08));border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.topnav .brand span{color:var(--gold)}.topnav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topnav-pill{padding:5px 14px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.28);color:rgba(201,168,76,.9)}
+.sidebar-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px}
+@media(max-width:900px){.sidebar-toggle{display:block}}
+.app-shell{display:flex;min-height:100vh;padding-top:var(--nav-h)}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);position:fixed;top:var(--nav-h);bottom:0;left:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;border-right:1px solid rgba(201,168,76,.07);z-index:200;transition:transform .3s ease}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:3px}
+.sidebar-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sidebar-header .sh-label{font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px}
+.sidebar-header .sh-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.88);font-weight:600;line-height:1.3}
+.sb-group{padding:8px 0}.sb-group-label{padding:6px 16px 3px;font-size:8.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.sb-divider{margin:4px 14px 6px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.18),transparent)}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:all .18s;position:relative;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.045)}.sb-item.active{background:rgba(141,184,216,.09)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.sb-item.locked{opacity:.42;cursor:not-allowed}.sb-item.locked:hover{background:none}
+.sb-item.completed .sb-num{background:var(--green)!important;color:#fff!important}
+.sb-num{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);transition:all .18s}
+.sb-item.active .sb-num{background:var(--gold);color:var(--ink)}.sb-item:hover:not(.locked) .sb-num{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+.sb-text{flex:1;min-width:0}.sb-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);line-height:1.3;transition:color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item.active .sb-name{color:rgba(255,255,255,.92)}.sb-item:hover:not(.locked) .sb-name{color:rgba(255,255,255,.82)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.sb-item.overview .sb-num{background:rgba(141,184,216,.13);color:var(--ice)}.sb-item.overview.active .sb-num{background:var(--ice);color:var(--ink)}
+.sb-spec-banner{margin:6px 12px 2px;padding:7px 11px;border-radius:9px;background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.03));border:1px solid rgba(201,168,76,.16);display:flex;align-items:center;gap:7px}
+.sb-spec-banner .sbb-text{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(201,168,76,.75)}
+.sb-item.exam .sb-num{background:rgba(201,168,76,.14);color:var(--gold)}.sb-item.exam.active .sb-num{background:var(--gold);color:var(--ink)}
+.sb-item.exam .sb-name{color:rgba(255,210,80,.55)}.sb-item.exam.active .sb-name{color:rgba(255,210,80,.92)}
+.sb-item.practice .sb-num{background:rgba(30,102,65,.14);color:#4ade80}.sb-item.practice.active .sb-num{background:var(--green);color:#fff}
+.sb-item.practice .sb-name{color:rgba(74,222,128,.55)}.sb-item.practice.active .sb-name{color:rgba(74,222,128,.92)}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.45)}.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}.sb-overlay.show{display:block}}
+.progress-bar-wrap{position:fixed;top:var(--nav-h);left:0;right:0;z-index:299;height:3px;background:rgba(255,255,255,.06)}
+.progress-bar-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--ice));transition:width .5s ease;width:0%}
+.main{margin-left:var(--sidebar-w);flex:1;padding:26px 26px 60px;max-width:100%}
+@media(max-width:900px){.main{margin-left:0}}
+.header{background:linear-gradient(135deg,#0d1e2e 0%,#1a3a5c 55%,#2e5c8a 100%);border-radius:var(--radius);padding:30px 34px 28px;color:#fff;margin-bottom:20px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;bottom:-60px;right:60px;width:200px;height:200px;border:1.5px solid rgba(201,168,76,.1);border-radius:50%;animation:pulse 5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:.85}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.header-seal{position:absolute;top:26px;right:34px;width:62px;height:62px;border:1.5px solid rgba(201,168,76,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;opacity:.5;animation:pulse 4s ease-in-out infinite}
+.header-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:12px}
+.header-badge .dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+h1{font-family:'Cormorant Garamond',serif;font-size:36px;letter-spacing:.4px;position:relative;z-index:1;font-weight:700;line-height:1.15}
+.subtitle{font-size:14px;opacity:.76;max-width:52ch;position:relative;z-index:1;margin-top:6px}
+.header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.header-meta-item{display:flex;align-items:center;gap:6px;padding:5px 13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:11.5px}
+.header-meta-item span:first-child{opacity:.58}.header-meta-item strong{font-weight:700}
+.panel{display:none;animation:fadeUp .28s ease both}.panel.active{display:block}
+.page-title{margin-bottom:18px}.pt-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--steel);margin-bottom:4px}
+.page-title h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ink)}.page-title .pt-sub{font-size:13px;color:var(--slate);margin-top:4px}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:9px;margin-bottom:18px}
+.stat-card{background:var(--white);border-radius:13px;padding:15px;border:1px solid rgba(107,143,168,.16);text-align:center}
+.stat-card .stat-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--accent);line-height:1}.stat-card .stat-label{font-size:11px;color:var(--slate);margin-top:4px;font-weight:600}
+.block{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(107,143,168,.15);overflow:hidden;margin-bottom:14px}
+.block .btitle{display:flex;align-items:center;gap:10px;padding:15px 18px;background:linear-gradient(180deg,rgba(141,184,216,.16),rgba(141,184,216,.02));border-bottom:1px solid rgba(107,143,168,.13)}
+.block .btitle .bicon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.block .btitle h3{font-size:15.5px;color:var(--ink);font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.2px;flex:1}
+.block .btitle .mod-badge{margin-left:auto;padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;flex-shrink:0}
+.badge-core{background:rgba(26,58,92,.09);color:#1a3a5c;border:1px solid rgba(26,58,92,.17)}.badge-warn{background:rgba(139,44,44,.08);color:#8b2c2c;border:1px solid rgba(139,44,44,.17)}
+.badge-green{background:rgba(30,102,65,.08);color:#1e6641;border:1px solid rgba(30,102,65,.17)}.badge-gold{background:rgba(201,168,76,.09);color:#7a5200;border:1px solid rgba(201,168,76,.2)}
+.badge-exam{background:linear-gradient(135deg,rgba(201,168,76,.16),rgba(201,168,76,.05));color:#7a5200;border:1px solid rgba(201,168,76,.28)}
+.block .bbody{padding:18px}.block .bbody p{margin:0 0 10px;font-size:13.5px}.block .bbody p:last-child{margin-bottom:0}
+.sdiv{display:flex;align-items:center;gap:11px;margin:20px 0 13px}.sdiv .l{flex:1;height:1px;background:linear-gradient(90deg,rgba(107,143,168,.28),transparent)}.sdiv .l:last-child{background:linear-gradient(270deg,rgba(107,143,168,.28),transparent)}.sdiv .t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--slate);white-space:nowrap}
+.lo-callout{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.13);margin-bottom:13px}
+.lo-callout .lo-icon{font-size:17px;flex-shrink:0;margin-top:1px}.lo-callout .lo-text{font-size:12.5px;color:var(--slate);line-height:1.55}.lo-callout .lo-text strong{color:var(--ink);display:block;margin-bottom:2px;font-size:13px}
+details.acc{border:none;background:none;padding:0;margin:7px 0}
+.acc-hd{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:10px;background:linear-gradient(135deg,rgba(15,25,35,.04),rgba(107,143,168,.08));border:1px solid rgba(107,143,168,.15);transition:all .2s;user-select:none}
+.acc-hd::-webkit-details-marker{display:none}
+details.acc[open] .acc-hd{border-radius:10px 10px 0 0;border-bottom-color:transparent;background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.12))}
+.acc-hd:hover{background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.13))}
+.acc-l{display:flex;align-items:center;gap:10px}.acc-n{width:30px;height:30px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.acc-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}.acc-tit{font-size:13.5px;font-weight:700;color:var(--ink)}
+.acc-arr{font-size:11px;color:var(--slate);transition:transform .2s}details.acc[open] .acc-arr{transform:rotate(90deg)}
+.acc-body{padding:13px 15px 15px;border:1px solid rgba(107,143,168,.15);border-top:none;border-radius:0 0 10px 10px;background:rgba(242,244,247,.45)}
+.ev-list{margin:6px 0 0;padding:0 0 0 15px;font-size:13px;line-height:1.7}.ev-list li{margin-bottom:5px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.chip{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:600;background:rgba(141,184,216,.13);border:1px solid rgba(107,143,168,.17);color:var(--ink)}
+.chip.green{background:var(--green-bg);border-color:rgba(30,102,65,.17);color:var(--green)}.chip.amber{background:var(--amber-bg);border-color:rgba(180,130,0,.19);color:var(--amber)}
+.chip.red{background:rgba(180,50,50,.08);border-color:rgba(180,50,50,.18);color:#8b2c2c}.chip.blue{background:rgba(37,99,235,.09);border-color:rgba(37,99,235,.18);color:#1a3a5c}
+.chip.gold{background:var(--gold-bg);border-color:rgba(201,168,76,.2);color:#7a5200}
+.alert{margin-top:10px;padding:10px 13px;border-radius:10px;font-size:12.5px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.alert.warn{background:var(--amber-bg);border:1px solid rgba(180,130,0,.19);color:var(--amber)}.alert.danger{background:var(--red-bg);border:1px solid rgba(180,50,50,.17);color:var(--red)}
+.alert.success{background:var(--green-bg);border:1px solid rgba(30,102,65,.17);color:var(--green)}.alert.info{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.18);color:var(--ink)}
+.alert.blue{background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);color:#1a3a5c}.alert.gold{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);color:var(--amber)}
+.alert-icon{flex-shrink:0;margin-top:1px}.alert strong{font-weight:700}
+.principle{margin-top:13px;padding:14px 17px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.03),rgba(141,184,216,.06));border:1px solid rgba(107,143,168,.17);border-left:3px solid var(--accent)}
+.principle p{margin:0;font-size:14px;font-weight:600;font-style:italic;font-family:'Cormorant Garamond',serif;line-height:1.55;color:var(--ink)}
+.ob-list{display:grid;grid-template-columns:1fr;gap:6px;margin-top:9px}@media(min-width:600px){.ob-list{grid-template-columns:1fr 1fr}}
+.ob-item{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:10px;background:rgba(141,184,216,.08);border:1px solid rgba(107,143,168,.16);transition:all .2s}
+.ob-item:hover{transform:translateX(3px);background:rgba(141,184,216,.16)}.ob-num{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px}
+.ob-item span{font-size:12.5px;font-weight:600;line-height:1.4}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px}
+@media(max-width:700px){.three-col{grid-template-columns:1fr}}@media(max-width:600px){.two-col{grid-template-columns:1fr}}
+.mini-card{padding:13px;border-radius:11px;border:1px solid rgba(107,143,168,.15);background:rgba(107,143,168,.04)}
+.mini-card h4{font-size:12.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px;color:var(--ink);font-weight:700}.mini-card p,.mini-card li{font-size:12px;color:var(--slate);line-height:1.6}.mini-card ul{padding-left:15px}
+.info-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.5px;border-radius:11px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.info-table th{background:var(--accent);color:#fff;padding:11px 14px;text-align:left;font-weight:700;font-size:11.5px}.info-table td{padding:10px 14px;border-bottom:1px solid rgba(107,143,168,.12)}
+.info-table tr:nth-child(even) td{background:rgba(107,143,168,.04)}.info-table tr:last-child td{border-bottom:none}.info-table tr:hover td{background:rgba(141,184,216,.08)}
+.mod-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:6px;margin-bottom:13px}
+.mod-meta-item{padding:8px 12px;border-radius:9px;background:rgba(107,143,168,.055);border:1px solid rgba(107,143,168,.13)}
+.mod-meta-item .label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}.mod-meta-item .value{font-size:12.5px;font-weight:700;color:var(--ink)}
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:2px}
+.ov-card{background:var(--white);border-radius:12px;padding:14px;border:1px solid rgba(107,143,168,.15);cursor:pointer;transition:all .22s;display:flex;flex-direction:column;gap:4px;position:relative}
+.ov-card:hover{transform:translateY(-3px);box-shadow:0 7px 20px rgba(15,25,35,.1);border-color:var(--ice)}.ov-card .ov-icon{font-size:22px;margin-bottom:3px}
+.ov-card strong{font-size:12px;font-weight:700;color:var(--ink);line-height:1.3}.ov-card small{font-size:10.5px;color:var(--slate)}
+.ov-card.exam-card{background:linear-gradient(135deg,rgba(201,168,76,.05),rgba(201,168,76,.02));border-color:rgba(201,168,76,.18)}
+.ov-card.practice-card{background:linear-gradient(135deg,rgba(30,102,65,.05),rgba(30,102,65,.02));border-color:rgba(30,102,65,.18)}
+.progress-section{background:var(--white);border-radius:12px;padding:16px;border:1px solid rgba(107,143,168,.15);margin-bottom:14px}
+.progress-section h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:12px}
+.prog-track{display:flex;flex-direction:column;gap:8px}.prog-row{display:flex;align-items:center;gap:12px}
+.prog-label{font-size:11.5px;font-weight:600;color:var(--ink);min-width:110px}.prog-bar-outer{flex:1;height:7px;background:rgba(107,143,168,.14);border-radius:4px;overflow:hidden}
+.prog-bar-inner{height:7px;border-radius:4px;transition:width .8s ease}.prog-bar-inner.theory{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.prog-bar-inner.practice{background:linear-gradient(90deg,var(--green),#2d9d62)}.prog-bar-inner.eval{background:linear-gradient(90deg,var(--gold),#a07828)}
+.prog-pct{font-size:11px;font-weight:700;color:var(--slate);min-width:32px;text-align:right}
+.ck2-q{background:rgba(242,244,247,.6);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.ck2-qt{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.5}
+.ck2-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border-radius:8px;border:1.5px solid rgba(107,143,168,.18);background:var(--white);cursor:pointer;font-size:12.5px;transition:all .18s;line-height:1.4;margin-bottom:6px}
+.ck2-opt:hover{border-color:var(--purple);background:rgba(124,58,237,.05)}.ck2-opt.selected{border-color:var(--purple);background:rgba(124,58,237,.07)}
+.ck2-opt.correct{border-color:#1e6641;background:#d1fae5;pointer-events:none}.ck2-opt.incorrect{border-color:#8b2c2c;background:#fee2e2;pointer-events:none}
+.ck2-opt.disabled{pointer-events:none;opacity:.7}
+.ck2-radio{width:18px;height:18px;border-radius:50%;border:2px solid rgba(107,143,168,.3);flex-shrink:0;margin-top:1px;transition:all .18s}
+.ck2-opt.selected .ck2-radio{border-color:var(--purple);background:var(--purple)}
+.ck-fb{margin-top:7px;padding:9px 12px;border-radius:8px;font-size:12.5px;font-weight:600;display:none}
+.ck-fb.show{display:block}.ck-fb.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.2);color:var(--green)}.ck-fb.fail{background:var(--red-bg);border:1px solid rgba(180,50,50,.18);color:var(--red)}
+.ck-summary{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:700;display:none}
+.ck-summary.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.2);color:var(--green)}.ck-summary.warn{background:var(--amber-bg);border:1px solid rgba(180,130,0,.2);color:var(--amber)}.ck-summary.fail{background:var(--red-bg);border:1px solid rgba(180,50,50,.18);color:var(--red)}
+.ck-acts{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.btn-v{padding:10px 22px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.btn-v:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(26,58,92,.25)}
+.btn-r{padding:10px 20px;border-radius:9px;background:rgba(107,143,168,.12);color:var(--slate);font-size:13px;font-weight:700;border:1px solid rgba(107,143,168,.2);cursor:pointer;font-family:'DM Sans',sans-serif;display:none}
+.btn-nx{padding:10px 22px;border-radius:9px;background:linear-gradient(135deg,var(--green),#2d9d62);color:#fff;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:none;transition:all .2s}
+.btn-nx:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(30,102,65,.3)}
+.q-item{background:rgba(242,244,247,.6);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.q-num{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--steel);margin-bottom:6px}
+.q-text{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.5}
+.q-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border-radius:8px;border:1.5px solid rgba(107,143,168,.18);background:var(--white);cursor:pointer;font-size:12.5px;transition:all .18s;margin-bottom:7px;line-height:1.4}
+.q-opt:hover{border-color:var(--purple);background:rgba(124,58,237,.05)}.q-opt.selected{border-color:var(--purple);background:rgba(124,58,237,.07)}
+.q-opt.correct{border-color:#1e6641;background:#d1fae5;pointer-events:none}.q-opt.incorrect{border-color:#8b2c2c;background:#fee2e2;pointer-events:none}
+.q-opt.disabled{pointer-events:none;opacity:.7}.q-radio{width:16px;height:16px;border-radius:50%;border:2px solid rgba(107,143,168,.3);flex-shrink:0;margin-top:2px}
+.q-opt.selected .q-radio{border-color:var(--purple);background:var(--purple)}
+.q-fb{margin-top:6px;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;display:none}
+.q-fb.show{display:block}.q-fb.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.2);color:var(--green)}.q-fb.fail{background:var(--red-bg);border:1px solid rgba(180,50,50,.18);color:var(--red)}
+.exam-acts{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.btn-es{padding:12px 28px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#a07828);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.btn-es:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(180,130,0,.35)}
+.btn-er{padding:12px 24px;border-radius:10px;background:rgba(107,143,168,.12);color:var(--slate);font-size:14px;font-weight:700;border:1px solid rgba(107,143,168,.2);cursor:pointer;font-family:'DM Sans',sans-serif;display:none}
+.exam-result{background:linear-gradient(135deg,#0d1e2e,#1a3a5c);border-radius:var(--radius);padding:28px 32px;margin-top:20px;text-align:center;display:none}
+.exam-result.show{display:block;animation:fadeUp .35s ease}
+.res-score{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:700;line-height:1}
+.res-score.pass{color:#4ade80}.res-score.warn{color:var(--gold)}.res-score.fail{color:#f87171}
+#er-label{font-size:18px;font-weight:800;color:#fff;margin:8px 0 6px;letter-spacing:.5px}
+#er-msg{font-size:13px;color:rgba(255,255,255,.65);max-width:50ch;margin:0 auto;line-height:1.6}
+.res-stats{display:flex;justify-content:center;gap:24px;margin-top:18px}
+.rs-item{text-align:center}.rs-val{font-size:24px;font-weight:700;color:#fff;font-family:'Cormorant Garamond',serif}
+.rs-lbl{font-size:11px;color:rgba(255,255,255,.45);font-weight:600;letter-spacing:.4px;margin-top:2px}
+.crit{background:linear-gradient(135deg,rgba(15,25,35,.96),rgba(26,58,92,.97));border-radius:14px;padding:18px 22px;margin:16px 0;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(15,25,35,.18)}
+.crit::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.crit-lbl{font-size:9px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:rgba(201,168,76,.7);margin-bottom:8px}
+.crit-txt{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:#fff;line-height:1.3;text-transform:uppercase}
+.crit-txt em{font-style:normal;color:rgba(201,168,76,.95)}.crit-sub{font-size:12px;color:rgba(255,255,255,.58);margin-top:8px;line-height:1.55}.crit-sub strong{color:rgba(255,255,255,.82)}
+.block.b-c{border-color:rgba(201,168,76,.22);background:#fffdf0}.block.b-c .btitle{background:rgba(201,168,76,.08);border-bottom-color:rgba(201,168,76,.15)}.block.b-c .btitle h3{color:#7a5200}
+.block.b-g{border-color:rgba(30,102,65,.18);background:#f0fbf5}.block.b-g .btitle{background:rgba(30,102,65,.07);border-bottom-color:rgba(30,102,65,.12)}.block.b-g .btitle h3{color:#1e5c3a}
+.block.b-p{border-color:rgba(109,40,217,.16);background:#faf5ff}.block.b-p .btitle{background:rgba(109,40,217,.06);border-bottom-color:rgba(109,40,217,.12)}.block.b-p .btitle h3{color:#5b21b6}
+.block.b-e{border-color:rgba(139,44,44,.18);background:#fff5f5}.block.b-e .btitle{background:rgba(139,44,44,.06);border-bottom-color:rgba(139,44,44,.12)}.block.b-e .btitle h3{color:#8b2c2c}
+.block.b-ev{border-color:rgba(201,168,76,.35);background:linear-gradient(135deg,#fffdf0,#fff8e1)}.block.b-ev .btitle{background:rgba(201,168,76,.13);border-bottom-color:rgba(201,168,76,.22)}.block.b-ev .btitle h3{color:#7a5200}
+mark.hi{background:rgba(201,168,76,.22);color:#5a3e00;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(201,168,76,.5)}
+mark.hi-r{background:rgba(180,40,40,.12);color:#7a1a1a;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(180,40,40,.4)}
+mark.hi-b{background:rgba(37,99,235,.1);color:#1a3a8f;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(37,99,235,.35)}
+mark.hi-g{background:rgba(30,102,65,.1);color:#1a5234;border-radius:3px;padding:1px 5px;font-weight:700;border-bottom:2px solid rgba(30,102,65,.35)}
+.case-box{background:linear-gradient(135deg,#f8f9fb,#f2f4f8);border:1px solid rgba(15,25,35,.1);border-radius:14px;padding:18px 20px;margin-bottom:14px;position:relative}
+.case-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold);border-radius:14px 0 0 14px}
+.case-lbl{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.case-txt{font-size:14px;color:var(--ink);line-height:1.7;font-style:italic}
+.opt-btn{display:block;width:100%;text-align:left;padding:11px 16px;margin-bottom:7px;border-radius:10px;border:1.5px solid rgba(15,25,35,.1);background:var(--white);font-size:13px;cursor:pointer;transition:all .18s;color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.45}
+.opt-btn:hover{border-color:rgba(37,99,235,.35);background:rgba(37,99,235,.04);color:var(--accent)}.opt-btn.correct{border-color:rgba(30,102,65,.5);background:var(--green-bg);color:var(--green);pointer-events:none}.opt-btn.wrong{border-color:rgba(139,44,44,.4);background:var(--red-bg);color:var(--red);pointer-events:none}
+.abuso-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}@media(max-width:600px){.abuso-grid{grid-template-columns:1fr}}
+.abuso-card{border-radius:13px;padding:15px}.abuso-card.r{background:rgba(180,40,40,.07);border:2px solid rgba(180,40,40,.3)}.abuso-card.o{background:rgba(220,130,0,.07);border:2px solid rgba(220,130,0,.28)}.abuso-card.y{background:rgba(200,180,0,.07);border:2px solid rgba(200,180,0,.28)}.abuso-card.g{background:rgba(30,102,65,.06);border:2px solid rgba(30,102,65,.2)}
+.abuso-hd{display:flex;align-items:center;gap:8px;margin-bottom:8px}.adot{width:13px;height:13px;border-radius:50%;flex-shrink:0}
+.adot.r{background:#c0392b}.adot.o{background:#d97706}.adot.y{background:#ca8a04}.adot.g{background:#1e6641}
+.atit{font-size:13px;font-weight:800;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;text-transform:uppercase}
+.atit.r{color:#8b2c2c}.atit.o{color:#92400e}.atit.y{color:#713f12}.atit.g{color:#1e5c3a}
+.asub{font-size:10px;font-weight:700;color:var(--slate);margin-bottom:6px}
+.alist{list-style:none;padding:0;margin:0}.alist li{font-size:11.5px;color:var(--ink);padding:2px 0;border-bottom:1px solid rgba(0,0,0,.04);line-height:1.4}.alist li:last-child{border-bottom:none}.alist li::before{content:'→ ';color:var(--slate);font-size:10px}
+.oro-tl{display:flex;flex-direction:column;gap:0;margin-top:10px}
+.oro-it{display:flex;gap:12px;align-items:flex-start;position:relative}.oro-it+.oro-it::before{content:'';position:absolute;left:16px;top:-10px;height:10px;width:2px;background:rgba(107,143,168,.2)}
+.oro-c{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Barlow Condensed',sans-serif}
+.oro-b{flex:1;background:var(--white);border:1px solid rgba(107,143,168,.15);border-radius:10px;padding:9px 12px;margin-bottom:8px}
+.oro-b .ol{font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--steel);margin-bottom:2px}
+.oro-b .oq{font-size:13px;font-weight:700;color:var(--ink)}.oro-b .oh{font-size:11.5px;color:var(--slate);margin-top:3px;font-style:italic}
+.oro-b.f1{border-left:3px solid var(--accent)}.oro-b.f2{border-left:3px solid var(--purple)}.oro-b.f3{border-left:3px solid var(--green)}
+.fase-tag{font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:4px 11px;border-radius:20px;display:inline-block;margin:8px 0 5px}
+.fase-tag.f1{background:rgba(26,58,92,.1);color:var(--accent)}.fase-tag.f2{background:rgba(124,58,237,.1);color:var(--purple)}.fase-tag.f3{background:rgba(30,102,65,.1);color:var(--green)}
+.sim-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(107,143,168,.15);margin-bottom:18px;overflow:hidden}
+.sim-hdr{background:linear-gradient(135deg,#0d1e2e,#1a3a5c);padding:18px 22px;color:#fff}
+.sim-badge{font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:rgba(201,168,76,.8);margin-bottom:6px}
+.sim-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700}
+.sim-meta{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}.sim-tag{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7)}
+.sim-tag.rojo{background:rgba(180,40,40,.25);color:#fca5a5}.sim-tag.naranja{background:rgba(220,130,0,.2);color:#fcd34d}
+.sim-body{padding:20px 22px}.sim-q{font-size:13.5px;font-weight:700;color:var(--accent);margin:14px 0 10px;padding-top:14px;border-top:1px solid rgba(107,143,168,.1)}
+.sim-body .sim-q:first-of-type{margin-top:0;padding-top:0;border-top:none}
+.sim-fb{margin-top:12px;padding:13px 15px;border-radius:11px;font-size:13px;display:none}
+.sim-fb.show{display:block;animation:fadeUp .25s ease}
+.sim-fb.ok{background:var(--green-bg);border:1px solid rgba(30,102,65,.2);color:var(--green)}.sim-fb.fail{background:var(--red-bg);border:1px solid rgba(180,50,50,.18);color:var(--red)}
+.flow-n{background:var(--white);border:1.5px solid rgba(15,25,35,.1);border-radius:12px;padding:11px 16px;margin:0 auto 8px;max-width:540px;text-align:center;font-size:13px;color:var(--ink)}
+.flow-n.ok{border-color:rgba(30,102,65,.5);background:var(--green-bg);color:var(--green)}.flow-n.warn{border-color:rgba(201,168,76,.5);background:var(--gold-bg);color:var(--amber)}.flow-n.info{border-color:rgba(141,184,216,.5);background:rgba(141,184,216,.1);color:var(--accent2)}
+.flow-arr{text-align:center;font-size:16px;color:var(--slate);margin:2px 0;opacity:.5}
+.ovh{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px}
+.ovh-card{background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:flex-start;transition:all .2s}
+.ovh-card:hover{border-color:var(--ice);box-shadow:0 4px 12px rgba(15,25,35,.07)}
+.ovh-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ovh-tit{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.3}.ovh-desc{font-size:12px;color:var(--slate);line-height:1.45}
+.ei{display:flex;gap:13px;padding:13px 15px;background:var(--white);border:1px solid rgba(15,25,35,.08);border-radius:12px;margin-bottom:9px}
+.ei-ic{width:34px;height:34px;border-radius:9px;background:var(--red-bg);border:1px solid rgba(139,44,44,.2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ei-tit{font-size:13px;font-weight:700;color:var(--red);margin-bottom:3px}.ei-desc{font-size:12.5px;color:var(--slate);line-height:1.5}.ei-fix{font-size:12px;color:var(--green);margin-top:5px;font-weight:600}
+.mod-nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid rgba(107,143,168,.15)}
+.mnb{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.mnb-p{background:rgba(107,143,168,.1);color:var(--slate);border:1px solid rgba(107,143,168,.2)}.mnb-p:hover{background:rgba(107,143,168,.2)}
+.mnb-n{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(26,58,92,.2)}.mnb-n:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,58,92,.3)}
+.dist-bar{display:flex;border-radius:10px;overflow:hidden;height:36px;margin:14px 0}
+.dist-seg{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.dist-seg.t{background:linear-gradient(135deg,#1a3a5c,#2e5c8a);color:#fff;flex:20}.dist-seg.p{background:linear-gradient(135deg,#1e6641,#2d9d62);color:#fff;flex:70}.dist-seg.e{background:linear-gradient(135deg,var(--gold),#a07828);color:#fff;flex:10}
+</style>
+</head>
+<body>
+<!-- TOP NAV -->
+<nav class="topnav">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div class="brand"><div class="seal">⚖️</div><span>TMLF</span> Learning Center</div>
+  <div class="topnav-right"><div class="topnav-pill">PWI · Entrevista VAWA</div></div>
+</nav>
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="gp"></div></div>
+<div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sh-label">Training Oficial PWI</div>
+    <div class="sh-title">Base Estructura de Entrevista VAWA</div>
+  </div>
+  <div class="sb-group">
+    <div class="sb-item overview active" id="nav-instrucciones" onclick="showPanel('instrucciones')"><div class="sb-num">📋</div><div class="sb-text"><div class="sb-name">Instrucciones</div><div class="sb-sub">Cómo usar este training</div></div></div>
+    <div class="sb-item" id="nav-acerca" onclick="showPanel('acerca')"><div class="sb-num">📖</div><div class="sb-text"><div class="sb-name">Acerca del Programa</div><div class="sb-sub">Objetivo y perfil</div></div></div>
+    <div class="sb-item" id="nav-estructura" onclick="showPanel('estructura')"><div class="sb-num">🗺️</div><div class="sb-text"><div class="sb-name">Mapa del Training</div><div class="sb-sub">Módulos y progreso</div></div></div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-group">
+    <div class="sb-group-label">Módulos del Training</div>
+    <div class="sb-item" id="nav-mod1" onclick="showPanel('mod1')"><div class="sb-num">1</div><div class="sb-text"><div class="sb-name">Fundamentos VAWA</div><div class="sb-sub">Battery · Extreme Cruelty</div></div></div>
+    <div class="sb-item locked" id="nav-mod2" onclick="lockedMsg('mod2')"><div class="sb-num">2</div><div class="sb-text"><div class="sb-name">El Abusómetro</div><div class="sb-sub" id="sub-mod2">🔒 Completa Módulo 1</div></div></div>
+    <div class="sb-item locked" id="nav-mod3" onclick="lockedMsg('mod3')"><div class="sb-num">3</div><div class="sb-text"><div class="sb-name">Prácticas de Entrevista</div><div class="sb-sub" id="sub-mod3">🔒 Completa Módulo 2</div></div></div>
+    <div class="sb-item locked" id="nav-mod4" onclick="lockedMsg('mod4')"><div class="sb-num">4</div><div class="sb-text"><div class="sb-name">Los 7 Oros</div><div class="sb-sub" id="sub-mod4">🔒 Completa Módulo 3</div></div></div>
+    <div class="sb-item locked" id="nav-mod5" onclick="lockedMsg('mod5')"><div class="sb-num">5</div><div class="sb-text"><div class="sb-name">Gestión de Entrevista</div><div class="sb-sub" id="sub-mod5">🔒 Completa Módulo 4</div></div></div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-spec-banner"><span style="font-size:14px">⭐</span><div class="sbb-text">Cierre del Training</div></div>
+  <div class="sb-group">
+    <div class="sb-item exam" id="nav-evaluacion" onclick="showPanel('evaluacion')"><div class="sb-num">✦</div><div class="sb-text"><div class="sb-name">Evaluación Final</div><div class="sb-sub">20 preguntas · 80%</div></div></div>
+    <div class="sb-item practice" id="nav-simuladores" onclick="showPanel('simuladores')"><div class="sb-num">🔬</div><div class="sb-text"><div class="sb-name">Simuladores</div><div class="sb-sub">Casos prácticos</div></div></div>
+  </div>
+</aside>
+<main class="main">
+<!-- HEADER -->
+<div class="header">
+  <div class="header-seal">⚖️</div>
+  <div class="header-badge"><div class="dot"></div>TMLF Learning Center · Equipo PWI</div>
+  <h1>Base Estructura de Entrevista VAWA</h1>
+  <p class="subtitle">Guía oficial para conducir entrevistas VAWA con estructura, sensibilidad y eficacia. Battery · Extreme Cruelty · Abusómetro · 80/20 · 7 Oros.</p>
+  <div class="header-meta">
+    <div class="header-meta-item"><span>📚</span><strong>5 Módulos</strong></div>
+    <div class="header-meta-item"><span>📊</span><strong>Nivel: Intermedio</strong></div>
+    <div class="header-meta-item"><span>⏱️</span><strong>4–6 horas</strong></div>
+    <div class="header-meta-item"><span>🖥️</span><strong>Virtual / Auto-dirigido</strong></div>
+    <div class="header-meta-item"><span>📅</span><strong>v1.0 · 2025</strong></div>
+  </div>
+</div>
+<!-- PANEL INSTRUCCIONES -->
+<div class="panel active" id="panel-instrucciones">
+  <div class="page-title"><div class="pt-label">Inicio obligatorio</div><h2>Instrucciones del Training</h2><p class="pt-sub">Lee esta sección antes de comenzar.</p></div>
+  <div class="alert blue" style="margin-bottom:14px"><span class="alert-icon">📌</span><div><strong>Este training es obligatorio para todo colaborador del equipo PWI.</strong> Cubre la estructura completa de la entrevista VAWA desde los fundamentos legales hasta las herramientas prácticas.</div></div>
+  <div class="block"><div class="btitle"><div class="bicon">📋</div><h3>Cómo usar este training</h3><span class="mod-badge badge-core">Guía</span></div>
+  <div class="bbody"><div class="ob-list">
+    <div class="ob-item"><div class="ob-num">1</div><span>Completa los módulos <strong>en orden</strong>. Cada módulo desbloquea el siguiente al aprobar sus ejercicios con 75%.</span></div>
+    <div class="ob-item"><div class="ob-num">2</div><span>Al final de cada módulo encontrarás <strong>4 preguntas de verificación</strong>. Necesitas 3/4 correctas para avanzar.</span></div>
+    <div class="ob-item"><div class="ob-num">3</div><span>La <strong>Evaluación Final</strong> consta de 20 preguntas. El puntaje aprobatorio es del <strong>80% (16/20)</strong>.</span></div>
+    <div class="ob-item"><div class="ob-num">4</div><span>Los <strong>Simuladores</strong> representan el componente práctico (70%). Trabájalos después de la evaluación.</span></div>
+    <div class="ob-item"><div class="ob-num">5</div><span>Puedes <strong>reintentar</strong> cada módulo sin límite. Regresa al contenido y vuelve a intentarlo.</span></div>
+    <div class="ob-item"><div class="ob-num">6</div><span>Usa los acordeones para explorar el contenido a tu ritmo. Todo el material está disponible libremente.</span></div>
+  </div></div></div>
+  <div class="block b-c"><div class="btitle"><div class="bicon">⚖️</div><h3>¿Por qué es importante este training?</h3><span class="mod-badge badge-gold">Contexto</span></div>
+  <div class="bbody">
+    <p>Las entrevistas VAWA son el corazón del caso. La calidad de la narrativa obtenida determina directamente la solidez de la Declaración del Cliente (DCL) y el resultado del caso.</p>
+    <div class="crit"><div class="crit-lbl">Principio fundamental</div><div class="crit-txt">La entrevista <em>es</em> el caso.<br>Sin narrativa sólida, no hay DCL sólida.</div><div class="crit-sub">El entrevistador que domina las herramientas de este training convierte una llamada de trabajo en una herramienta legal de primer nivel.</div></div>
+    <div class="dist-bar"><div class="dist-seg t">20% Teoría</div><div class="dist-seg p">70% Práctica</div><div class="dist-seg e">10% Eval.</div></div>
+  </div></div>
+  <div class="mod-nav"><div></div><button class="mnb mnb-n" onclick="showPanel('acerca')">Acerca del Programa →</button></div>
+</div>
+
+<!-- PANEL ACERCA -->
+<div class="panel" id="panel-acerca">
+  <div class="page-title"><div class="pt-label">Programa</div><h2>Acerca del Training</h2><p class="pt-sub">Objetivos, perfil del participante y estructura general.</p></div>
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-val">5</div><div class="stat-label">Módulos</div></div>
+    <div class="stat-card"><div class="stat-val">20</div><div class="stat-label">Preguntas Eval.</div></div>
+    <div class="stat-card"><div class="stat-val">80%</div><div class="stat-label">Aprobatorio</div></div>
+    <div class="stat-card"><div class="stat-val">70%</div><div class="stat-label">Componente Práctico</div></div>
+  </div>
+  <div class="block"><div class="btitle"><div class="bicon">🎯</div><h3>Objetivos de Aprendizaje</h3><span class="mod-badge badge-core">Objetivos</span></div>
+  <div class="bbody"><div class="ob-list">
+    <div class="ob-item"><div class="ob-num">✓</div><span>Distinguir los tipos de caso VAWA (<mark class="hi-b">PARENT</mark> y <mark class="hi-b">SPOUSE</mark>) y sus implicaciones para la entrevista.</span></div>
+    <div class="ob-item"><div class="ob-num">✓</div><span>Identificar la distinción legal entre <mark class="hi-r">Battery</mark> y <mark class="hi">Extreme Cruelty</mark> y aplicarla en la valoración de la narrativa.</span></div>
+    <div class="ob-item"><div class="ob-num">✓</div><span>Clasificar abusos según el <mark class="hi">Abusómetro</mark> y priorizar correctamente por nivel de contundencia.</span></div>
+    <div class="ob-item"><div class="ob-num">✓</div><span>Conducir entrevistas con la estructura de <mark class="hi">7 Oros</mark> respetando la regla <mark class="hi-b">80/20</mark>.</span></div>
+    <div class="ob-item"><div class="ob-num">✓</div><span>Gestionar la búsqueda de evidencias de manera estratégica e integrada durante la entrevista.</span></div>
+    <div class="ob-item"><div class="ob-num">✓</div><span>Usar el <mark class="hi-b">Pre-Draft del BOT</mark> como herramienta central de preparación para la entrevista PWC.</span></div>
+  </div></div></div>
+  <div class="block b-g"><div class="btitle"><div class="bicon">👤</div><h3>Perfil del Participante</h3><span class="mod-badge badge-green">PWI Team</span></div>
+  <div class="bbody"><p>Colaboradores del equipo Pre Welcome Interview (PWI) de TMLF que realizan entrevistas de abuso en casos VAWA. Se asume familiaridad básica con el flujo del caso, pero no necesariamente dominio de los criterios de elegibilidad ni de las herramientas documentadas en este training.</p></div></div>
+  <div class="mod-nav"><button class="mnb mnb-p" onclick="showPanel('instrucciones')">← Instrucciones</button><button class="mnb mnb-n" onclick="showPanel('estructura')">Mapa del Training →</button></div>
+</div>
+
+<!-- PANEL ESTRUCTURA -->
+<div class="panel" id="panel-estructura">
+  <div class="page-title"><div class="pt-label">Mapa del programa</div><h2>Estructura General</h2><p class="pt-sub">5 módulos secuenciales + evaluación final + simuladores.</p></div>
+  <div class="progress-section"><h4>Tu progreso actual</h4><div class="prog-track">
+    <div class="prog-row"><span class="prog-label">Módulos teóricos</span><div class="prog-bar-outer"><div class="prog-bar-inner theory" id="prog-theory" style="width:0%"></div></div><span class="prog-pct" id="pct-theory">0%</span></div>
+    <div class="prog-row"><span class="prog-label">Simuladores</span><div class="prog-bar-outer"><div class="prog-bar-inner practice" id="prog-practice" style="width:0%"></div></div><span class="prog-pct" id="pct-practice">0%</span></div>
+    <div class="prog-row"><span class="prog-label">Evaluación Final</span><div class="prog-bar-outer"><div class="prog-bar-inner eval" id="prog-eval" style="width:0%"></div></div><span class="prog-pct" id="pct-eval">0%</span></div>
+  </div></div>
+  <div class="overview-grid">
+    <div class="ov-card" onclick="showPanel('mod1')"><div class="ov-icon">⚖️</div><strong>Módulo 1</strong><small>Fundamentos · Battery vs. Extreme Cruelty</small></div>
+    <div class="ov-card" onclick="tryMod('mod2')"><div class="ov-icon">🔴</div><strong>Módulo 2</strong><small>El Abusómetro · Niveles · Agravantes</small></div>
+    <div class="ov-card" onclick="tryMod('mod3')"><div class="ov-icon">🎙️</div><strong>Módulo 3</strong><small>Prácticas de Entrevista · 80/20</small></div>
+    <div class="ov-card" onclick="tryMod('mod4')"><div class="ov-icon">🌟</div><strong>Módulo 4</strong><small>Los 7 Oros · Inicio · Desarrollo · Cierre</small></div>
+    <div class="ov-card" onclick="tryMod('mod5')"><div class="ov-icon">📋</div><strong>Módulo 5</strong><small>Pre-Draft · BOT · Estrategia</small></div>
+    <div class="ov-card exam-card" onclick="showPanel('evaluacion')"><div class="ov-icon">✦</div><strong>Evaluación Final</strong><small>20 preguntas · 80% aprobatorio</small></div>
+    <div class="ov-card practice-card" onclick="showPanel('simuladores')"><div class="ov-icon">🔬</div><strong>Simuladores</strong><small>Casos SPOUSE · PARENT · Mixtos</small></div>
+  </div>
+  <div class="mod-nav"><button class="mnb mnb-p" onclick="showPanel('acerca')">← Acerca</button><button class="mnb mnb-n" onclick="showPanel('mod1')">Comenzar Módulo 1 →</button></div>
+</div>
+<!-- MÓDULO 1 -->
+<div class="panel" id="panel-mod1">
+  <div class="page-title"><div class="pt-label">Módulo 1 · Fundamentos</div><h2>Fundamentos del Caso VAWA</h2><p class="pt-sub">Tipos de caso · Elegibilidad · Battery vs. Extreme Cruelty</p></div>
+  <div class="mod-meta">
+    <div class="mod-meta-item"><div class="label">Tipo</div><div class="value">Conceptual</div></div>
+    <div class="mod-meta-item"><div class="label">Duración</div><div class="value">45–60 min</div></div>
+    <div class="mod-meta-item"><div class="label">Ejercicios</div><div class="value">4 preguntas</div></div>
+    <div class="mod-meta-item"><div class="label">Mínimo</div><div class="value">75% (3/4)</div></div>
+  </div>
+  <div class="block"><div class="btitle"><div class="bicon">📁</div><h3>1.1 Tipos de Caso VAWA en TMLF</h3><span class="mod-badge badge-core">Concepto</span></div>
+  <div class="bbody">
+    <p>En TMLF se trabajan dos tipos de caso VAWA. La distinción determina el script de preguntas, el tipo de relación a documentar y las particularidades del relato de abuso a recolectar.</p>
+    <div class="two-col" style="margin-top:12px">
+      <div class="mini-card" style="border:2px solid rgba(26,58,92,.2);background:rgba(26,58,92,.04)"><h4>🏠 VAWA SPOUSE</h4><p>Víctima de violencia doméstica perpetrada por su <strong>cónyuge</strong> ciudadano americano o LPR. La <strong>relación conyugal</strong> es el eje del caso.</p></div>
+      <div class="mini-card" style="border:2px solid rgba(109,40,217,.2);background:rgba(109,40,217,.04)"><h4>👨‍👩‍👧 VAWA PARENT</h4><p>Hijo/a de un ciudadano americano o LPR, víctima de violencia perpetrada por ese <strong>padre o madre</strong>. La <strong>relación filial</strong> es el eje del caso.</p></div>
+    </div>
+    <div class="alert info" style="margin-top:10px"><span class="alert-icon">💡</span><div>Tanto ciudadanos americanos como <strong>residentes permanentes (LPR)</strong> califican como abusadores bajo VAWA.</div></div>
+  </div></div>
+  <div class="block b-c"><div class="btitle"><div class="bicon">✅</div><h3>1.2 Criterio Central de Elegibilidad</h3><span class="mod-badge badge-gold">Clave legal</span></div>
+  <div class="bbody">
+    <div class="crit"><div class="crit-lbl">Criterio de elegibilidad</div><div class="crit-txt">Haber sido víctima de <em>violencia doméstica</em> a manos de un ciudadano o LPR, cónyuge o padre/madre.</div><div class="crit-sub">Este criterio debe documentarse con la <strong>narrativa del cliente</strong>, <strong>evidencias</strong> y la <strong>declaración escrita (DCL)</strong>.</div></div>
+  </div></div>
+  <div class="block"><div class="btitle"><div class="bicon">⚡</div><h3>1.3 Battery vs. Extreme Cruelty</h3><span class="mod-badge badge-warn">Distinción legal</span></div>
+  <div class="bbody">
+    <p style="margin-bottom:12px">La violencia doméstica puede manifestarse de dos formas. Ambas son válidas como base de un caso VAWA. El entrevistador debe explorar <strong>ambas dimensiones</strong> sin asumir que solo el abuso físico cuenta.</p>
+    <div class="two-col">
+      <div class="mini-card" style="border-left:4px solid #c0392b"><h4><span style="color:#c0392b">🔴 Battery</span> · Violencia Física</h4><p>Violencia física directa e intencional. Golpes, empujones, cachetadas, patadas, estrangulamiento, uso de objetos.</p><div class="chips" style="margin-top:8px"><span class="chip red">Reportes policiales</span><span class="chip red">Registros médicos</span><span class="chip red">Fotos de lesiones</span></div><p style="font-size:11px;margin-top:7px;color:var(--slate)">→ Corresponde principalmente a <strong>abusos ROJOS</strong> en el Abusómetro.</p></div>
+      <div class="mini-card" style="border-left:4px solid #d97706"><h4><span style="color:#d97706">🟠 Extreme Cruelty</span></h4><p>Violencia sin contacto físico que produce daño psicológico, emocional, sexual o legal grave y sistemático.</p><div class="chips" style="margin-top:8px"><span class="chip amber">Amenazas de muerte</span><span class="chip amber">Amenazas ICE</span><span class="chip amber">Control económico</span><span class="chip amber">Vigilancia</span></div></div>
+    </div>
+    <div class="alert gold" style="margin-top:12px"><span class="alert-icon">⚠️</span><div><strong>Distinción clave:</strong> Un caso puede tener solo Battery, solo Extreme Cruelty, o ambas. <strong>Muchos casos VAWA se ganan exclusivamente por la solidez de la narrativa de Extreme Cruelty.</strong></div></div>
+  </div></div>
+  <div class="block b-e"><div class="btitle"><div class="bicon">🚫</div><h3>1.4 La "Mera Descortesía" NO es Extreme Cruelty</h3><span class="mod-badge badge-warn">Error crítico</span></div>
+  <div class="bbody">
+    <p style="margin-bottom:10px">Incluir conductas de categoría verde en la DCL <strong>puede dañar la credibilidad del caso</strong>. El entrevistador debe distinguir entre abuso real y conflictos de pareja sin intención de daño.</p>
+    <div class="alert danger" style="margin-top:0"><span class="alert-icon">❌</span><div><strong>Estas conductas NO califican como abuso:</strong></div></div>
+    <div class="chips" style="margin-top:10px"><span class="chip green">Hacer su vida como adulto autónomo</span><span class="chip green">No compartir intereses</span><span class="chip green">No querer tener relaciones sexuales</span><span class="chip green">Berrinches sin violencia</span><span class="chip green">Consumo responsable de sustancias</span><span class="chip green">Llegar tarde sin amenazas</span></div>
+    <div class="alert warn" style="margin-top:10px"><span class="alert-icon">🎯</span><div>La distinción entre mera descortesía y crueldad extrema es una <strong>habilidad crítica del entrevistador</strong>: protege la solidez legal del caso.</div></div>
+  </div></div>
+  <!-- EJ M1 -->
+  <div class="sdiv"><div class="l"></div><div class="t">Ejercicios de Verificación — Módulo 1</div><div class="l"></div></div>
+  <div class="block b-ev"><div class="btitle"><div class="bicon">✏️</div><h3>Verifica tu comprensión</h3><span class="mod-badge badge-exam">4 preguntas · 75% mínimo</span></div>
+  <div class="bbody">
+    <div class="ck2-q" id="m1q1"><div class="ck2-qt">P1. Rosa aplica como VAWA SPOUSE. Su esposo Manuel es ciudadano americano. Llega tarde, no comparte nada con ella, y en tres ocasiones le dijo: "Si me dejas, llamo a ICE y te deportan." ¿Cuál es la descripción correcta?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q1',1)" data-val="1"><div class="ck2-radio"></div>A) Rosa no califica porque Manuel nunca la ha golpeado físicamente y VAWA requiere evidencia de Battery documentada ante autoridad competente.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q1',2)" data-val="2"><div class="ck2-radio"></div>B) Rosa califica, pero solo si puede demostrar con testigos que Manuel llegaba tarde con intención deliberada de causar angustia psicológica.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q1',3)" data-val="3"><div class="ck2-radio"></div>C) Rosa califica: las amenazas de deportación como mecanismo de control constituyen Extreme Cruelty, criterio independiente del abuso físico.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q1',4)" data-val="4"><div class="ck2-radio"></div>D) Rosa no califica porque las amenazas verbales sin violencia física no están reconocidas como base suficiente para una petición VAWA ante USCIS.</div>
+      <div class="ck-fb" id="m1q1fb"></div></div>
+
+    <div class="ck2-q" id="m1q3"><div class="ck2-qt">P3. Tu cliente Jorge dice: "Mi esposa nunca me pegó, pero me revisaba el celular, me prohibía ver a mi familia y amenazaba con quitarme a los hijos." Tu compañero comenta: "Ese caso está débil, no hay violencia física." ¿Cuál es la respuesta adecuada?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q3',1)" data-val="1"><div class="ck2-radio"></div>A) Tu compañero se equivoca: lo que Jorge describe es Extreme Cruelty —control del celular, aislamiento y amenazas de quitar los hijos— válida como base autónoma de un caso VAWA.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q3',2)" data-val="2"><div class="ck2-radio"></div>B) Tu compañero tiene razón: sin Battery documentada el caso de Jorge difícilmente puede prosperar ante el oficial de USCIS que lo revise.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q3',3)" data-val="3"><div class="ck2-radio"></div>C) Tu compañero tiene razón en parte: la Extreme Cruelty solo aplica de forma autónoma cuando va acompañada de al menos un episodio de abuso físico documentado.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q3',4)" data-val="4"><div class="ck2-radio"></div>D) Tu compañero se equivoca en la norma, pero el caso tiene debilidades reales porque Jorge no menciona evidencias concretas que respalden el patrón de control descrito.</div>
+      <div class="ck-fb" id="m1q3fb"></div></div>
+    <div class="ck2-q" id="m1q4"><div class="ck2-qt">P4. Tu clienta Marta describe: (a) el esposo sale fines de semana sin avisarle, (b) no quiere tener relaciones sexuales con ella, (c) la empujó contra la pared dos veces, (d) le grita "eres una buena para nada" frente a sus hijos casi diario. ¿Qué priorizas y qué excluyes?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q4',1)" data-val="1"><div class="ck2-radio"></div>A) Priorizar (a) y (b) únicamente; excluir (c) y (d) del relato porque son conductas subjetivas que no tienen base legal reconocida bajo VAWA.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q4',2)" data-val="2"><div class="ck2-radio"></div>B) Priorizar (c) y (d) exclusivamente, ya que (a) y (b) son conductas de adulto autónomo sin dolo que no constituyen abuso bajo los estándares de VAWA.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q4',3)" data-val="3"><div class="ck2-radio"></div>C) Priorizar únicamente (c) porque los empujones son el único evento con consecuencia física demostrable y por tanto el de mayor peso probatorio ante USCIS.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m1','q4',4)" data-val="4"><div class="ck2-radio"></div>D) Los cuatro constituyen abuso y deben desarrollarse con igual profundidad: (c) y (d) son Battery y Extreme Cruelty; (a) y (b) también califican como abuso bajo VAWA.</div>
+      <div class="ck-fb" id="m1q4fb"></div></div>
+    <div class="ck-summary" id="m1-sum"></div>
+    <div class="ck-acts"><button class="btn-v" id="m1-vbtn" onclick="mVerify('m1')">Verificar respuestas</button><button class="btn-r" id="m1-rbtn" onclick="mReset('m1')">Reintentar</button><button class="btn-nx" id="m1-nbtn" onclick="unlockNext('mod2','nav-mod2','sub-mod2')">Avanzar al Módulo 2 →</button></div>
+  </div></div>
+  <div class="mod-nav"><button class="mnb mnb-p" onclick="showPanel('estructura')">← Mapa</button><button class="mnb mnb-n" onclick="tryMod('mod2')">Módulo 2 →</button></div>
+</div>
+<!-- MÓDULO 2 -->
+<div class="panel" id="panel-mod2">
+  <div class="page-title"><div class="pt-label">Módulo 2 · Herramienta</div><h2>El Abusómetro</h2><p class="pt-sub">Clasificación de abusos · Niveles de contundencia · Agravantes</p></div>
+  <div class="mod-meta"><div class="mod-meta-item"><div class="label">Tipo</div><div class="value">Herramienta</div></div><div class="mod-meta-item"><div class="label">Duración</div><div class="value">50–70 min</div></div><div class="mod-meta-item"><div class="label">Ejercicios</div><div class="value">4 preguntas</div></div><div class="mod-meta-item"><div class="label">Mínimo</div><div class="value">75% (3/4)</div></div></div>
+  <div class="block"><div class="btitle"><div class="bicon">🎯</div><h3>2.1 ¿Qué es el Abusómetro?</h3><span class="mod-badge badge-core">Definición</span></div>
+  <div class="bbody"><p>El Abusómetro es la <strong>herramienta interna de TMLF</strong> para clasificar y priorizar los eventos de abuso en casos VAWA. Permite que psicólogos, entrevistadores, escritores y editores compartan el mismo criterio al seleccionar, desarrollar y presentar los abusos en la DCL.</p><div class="principle"><p>"El Abusómetro no es una lista de verificación: es un criterio compartido que garantiza la coherencia legal de todos los materiales del caso."</p></div></div></div>
+  <div class="block"><div class="btitle"><div class="bicon">🔴</div><h3>2.2 Los Cuatro Niveles de Contundencia</h3><span class="mod-badge badge-warn">Clasificación</span></div>
+  <div class="bbody"><div class="abuso-grid">
+    <div class="abuso-card r"><div class="abuso-hd"><div class="adot r"></div><span class="atit r">🔴 Rojo — Fuerte</span></div><div class="asub">Prioridad máxima · Máximo detalle</div><ul class="alist"><li>Violación / Abuso Sexual</li><li>Estrangulamiento</li><li>Golpes con objetos / puñetazos</li><li>Amenazas de muerte</li><li>Intentos de deportación</li><li>Privación de libertad</li><li>Disparos / apuñalamiento</li><li>Forzar embarazo / aborto</li></ul></div>
+    <div class="abuso-card o"><div class="abuso-hd"><div class="adot o"></div><span class="atit o">🟠 Naranja — Medio</span></div><div class="asub">Alta prioridad · Con agravantes → rojo</div><ul class="alist"><li>Control y privación económica</li><li>Amenazas de llevarse a los hijos</li><li>Mostrar armas como intimidación</li><li>Insultos fuertes y directos</li><li>Intimidación violenta</li><li>Monitoreo y vigilancia</li><li>Acoso psicológico/emocional</li><li>Coerción sexual</li></ul></div>
+    <div class="abuso-card y"><div class="abuso-hd"><div class="adot y"></div><span class="atit y">🟡 Amarillo — Débil</span></div><div class="asub">Contexto y refuerzo · No el central</div><ul class="alist"><li>Burlas por idioma, origen, peso</li><li>Gaslighting (narrativo)</li><li>Ciberacoso</li><li>Mensajes sexuales no deseados</li><li>Negligencia en cuidado de hijos</li><li>Ley del hielo</li><li>Azotar puertas para intimidar</li></ul></div>
+    <div class="abuso-card g"><div class="abuso-hd"><div class="adot g"></div><span class="atit g">🟢 Verde — NO es Abuso</span></div><div class="asub">Excluir de DCL · Daña credibilidad</div><ul class="alist"><li>No querer tener relaciones sexuales</li><li>Berrinches sin violencia</li><li>Salir de fiesta / ver amigos</li><li>Llegar tarde a casa</li><li>No compartir intereses</li><li>Expresar inconformidad sin violencia</li></ul></div>
+  </div></div></div>
+  <div class="block b-p"><div class="btitle"><div class="bicon">📊</div><h3>2.3 Categorías de Abuso por Tipo</h3><span class="mod-badge" style="background:rgba(109,40,217,.08);color:#5b21b6;border:1px solid rgba(109,40,217,.2)">Taxonomía</span></div>
+  <div class="bbody"><div class="three-col">
+    <div class="mini-card"><h4>🔴 Sexual (S)</h4><ul><li>Violación, abuso sexual</li><li>Coerción, voyeurismo</li><li>Acoso sexual</li><li>Mensajes sexuales no deseados</li></ul></div>
+    <div class="mini-card"><h4>💪 Físico (F)</h4><ul><li>Golpes, estrangulamiento</li><li>Mutilación</li><li>Privación de libertad</li><li>Acciones con consecuencia médica</li></ul></div>
+    <div class="mini-card"><h4>💰 Financiero (FI)</h4><ul><li>Control de recursos / robo</li><li>Daños a la propiedad</li><li>Gastos no consentidos</li></ul></div>
+    <div class="mini-card"><h4>⚖️ Legal (L)</h4><ul><li>Acusaciones falsas</li><li>Amenazas de deportación</li><li>Sustracción de menores</li></ul></div>
+    <div class="mini-card"><h4>🧠 Psicológico (P)</h4><ul><li>Amenazas, persecución</li><li>Vigilancia, manipulación</li><li>Gaslighting, intimidación</li></ul></div>
+    <div class="mini-card"><h4>💔 Emocional (E)</h4><ul><li>Humillación, culpabilización</li><li>Aislamiento social</li><li>Ley del hielo sistemática</li></ul></div>
+  </div></div></div>
+  <div class="block b-c"><div class="btitle"><div class="bicon">⬆️</div><h3>2.4 Abusos Graduables y Agravantes</h3><span class="mod-badge badge-gold">Graduación</span></div>
+  <div class="bbody">
+    <p>Los abusos marcados con <strong>(G)</strong> fueron clasificados en su grado mínimo. Los <strong>agravantes</strong> pueden subir su nivel de contundencia.</p>
+    <div class="crit"><div class="crit-lbl">Principio de los agravantes</div><div class="crit-txt">Los agravantes <em>elevan</em> la contundencia.<br>Detectarlos es responsabilidad del entrevistador.</div><div class="crit-sub">Agravantes universales: <strong>sistematización · presencia de alcohol/drogas · antecedentes de violencia · padecimientos crónicos de la víctima · aprovechamiento de traumas infantiles.</strong></div></div>
+    <div class="case-box" style="margin-top:14px"><div class="case-lbl">📌 Ejemplo de graduación</div><div class="case-txt">"Ley del hielo" es amarillo en su forma básica. Si se usa sistemáticamente para conseguir que la víctima cumpla demandas económicas, en contexto de control financiero absoluto y con amenazas previas, puede trabajarse como <strong>naranja</strong>.</div></div>
+    <div class="block" style="margin-top:12px;box-shadow:none"><div class="btitle"><div class="bicon">💬</div><h3>Frases Reales del Abusador — Referencia</h3></div><div class="bbody">
+      <details class="acc"><summary class="acc-hd"><div class="acc-l"><div class="acc-n">P</div><div><div class="acc-lbl">Psicológico/Emocional</div><div class="acc-tit">Acoso Psicológico, Emocional y Verbal</div></div></div><span class="acc-arr">›</span></summary>
+      <div class="acc-body"><ul class="ev-list"><li>"Hago todo por ti, pero tú no haces nada. Me haces sentir como basura."</li><li>"Sin mí no eres nadie; no tienes a dónde ir."</li><li>"Si me dejas, haré que todos piensen que eres una mala madre."</li><li>"Voy a vigilar todos tus movimientos. Siempre sabré dónde estás."</li><li>"Si no haces lo que digo, me voy a quitar la vida y será tu culpa."</li><li>"Eres un fracaso; nunca lograrás nada por tu cuenta."</li></ul></div></details>
+      <details class="acc"><summary class="acc-hd"><div class="acc-l"><div class="acc-n">S</div><div><div class="acc-lbl">Sexual</div><div class="acc-tit">Coerción Sexual</div></div></div><span class="acc-arr">›</span></summary>
+      <div class="acc-body"><ul class="ev-list"><li>"Si realmente me amaras, lo harías."</li><li>"Es tu obligación tener sexo conmigo porque eres mi pareja."</li><li>"¿Para qué te traje aquí si no me vas a querer cumplir como pareja?"</li><li>"Todo lo que tienes en este país lo he conseguido por ti. Si no haces lo que te digo, lo perderás todo."</li></ul></div></details>
+    </div></div>
+  </div></div>
+  <!-- EJ M2 -->
+  <div class="sdiv"><div class="l"></div><div class="t">Ejercicios de Verificación — Módulo 2</div><div class="l"></div></div>
+  <div class="block b-ev"><div class="btitle"><div class="bicon">✏️</div><h3>Verifica tu comprensión</h3><span class="mod-badge badge-exam">4 preguntas · 75% mínimo</span></div>
+  <div class="bbody">
+    <div class="ck2-q" id="m2q1"><div class="ck2-qt">P1. Tu clienta Ana describe: (a) el abusador le aventó un plato cerca de la cabeza, (b) le prohíbe ver a su familia amenazándola con golpearla, (c) le hace la ley del hielo cuando ella pide dinero para la despensa, (d) la apunta con pistola cada vez que discuten. ¿Clasificación correcta y cuál abordar primero?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q1',1)" data-val="1"><div class="ck2-radio"></div>A) (a) Rojo, (b) Amarillo, (c) Naranja, (d) Rojo — priorizar (a) y (d) por igual ya que ambos representan el nivel máximo de contundencia en el Abusómetro.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q1',2)" data-val="2"><div class="ck2-radio"></div>B) (a) Amarillo, (b) Rojo, (c) Verde, (d) Rojo — excluir (c) completamente de la DCL porque no alcanza el nivel mínimo de abuso reconocido por VAWA.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q1',3)" data-val="3"><div class="ck2-radio"></div>C) (a) Naranja, (b) Naranja, (c) Amarillo, (d) Rojo — priorizar (d) como máxima prioridad, luego (a) y (b), y usar (c) solo como contexto de patrón.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q1',4)" data-val="4"><div class="ck2-radio"></div>D) Todos son rojos porque ante USCIS cualquier conducta de violencia doméstica tiene el mismo peso legal sin importar su nivel de contundencia o frecuencia.</div>
+      <div class="ck-fb" id="m2q1fb"></div></div>
+    <div class="ck2-q" id="m2q2"><div class="ck2-qt">P2. Tu cliente Ramón menciona que su esposa "le pedía dinero constantemente" — abuso amarillo. Agrega: los montos eran cientos de dólares al mes, tenía que pedir préstamos, y ella lo amenazaba con hacer una escena si no le daba. ¿Cómo cambia la clasificación?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q2',1)" data-val="1"><div class="ck2-radio"></div>A) Sube a naranja o rojo: los agravantes concretos (monto alto, préstamos forzados, amenazas) elevan la contundencia del abuso financiero en el Abusómetro.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q2',2)" data-val="2"><div class="ck2-radio"></div>B) Se mantiene amarillo sin importar el contexto: la categoría del tipo de abuso financiero es fija y no puede modificarse por agravantes adicionales descritos por el cliente.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q2',3)" data-val="3"><div class="ck2-radio"></div>C) Sube a rojo de forma automática e inmediata porque cualquier abuso que involucra dinero y amenazas verbales siempre alcanza el nivel máximo del Abusómetro.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q2',4)" data-val="4"><div class="ck2-radio"></div>D) Baja a verde porque exigir dinero sin violencia física directa no constituye abuso relevante ni alcanza el umbral mínimo requerido por los estándares de VAWA.</div>
+      <div class="ck-fb" id="m2q2fb"></div></div>
+    <div class="ck2-q" id="m2q3"><div class="ck2-qt">P3. Patricia describe a su esposo: "Nunca me ayuda en casa", "Se va a ver fútbol los domingos", "Llegó borracho pero se quedó dormido", "Cuando peleamos me llama estúpida." ¿Qué incluyes como abuso y qué no?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q3',1)" data-val="1"><div class="ck2-radio"></div>A) Incluir todo en la DCL: cualquier conducta que haya causado malestar a la víctima es relevante y debe documentarse sin filtrar según el nivel del Abusómetro.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q3',2)" data-val="2"><div class="ck2-radio"></div>B) Incluir únicamente el episodio en que el abusador llegó borracho, ya que involucra consumo de alcohol y eso lo convierte en el evento de mayor peso probatorio.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q3',3)" data-val="3"><div class="ck2-radio"></div>C) Excluir todo el conjunto: ninguna de las conductas mencionadas alcanza el nivel rojo que VAWA exige como estándar mínimo de abuso para una petición válida.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q3',4)" data-val="4"><div class="ck2-radio"></div>D) Incluir solo los insultos graves y sistemáticos; excluir los demás porque no ayudar, salir los domingos y llegar borracho sin agresión son conductas de adulto autónomo sin dolo.</div>
+      <div class="ck-fb" id="m2q3fb"></div></div>
+    <div class="ck2-q" id="m2q4"><div class="ck2-qt">P4. El BOT identifica en el caso de Carmen: (a) el esposo la estranguló hace dos años, (b) constantemente la insulta, (c) le revisa el teléfono diariamente y le exige contraseñas, (d) una vez azotó la puerta tan fuerte que rompió el marco. ¿En qué orden los abordas?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q4',1)" data-val="1"><div class="ck2-radio"></div>A) (d), (c), (b), (a) — de lo más reciente a lo más antiguo, priorizando la cronología porque USCIS valora más la proximidad temporal del abuso al filing.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q4',2)" data-val="2"><div class="ck2-radio"></div>B) (b), (c), (d), (a) — comenzar por los eventos más fáciles de relatar emocionalmente para generar confianza antes de abordar los más difíciles.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q4',3)" data-val="3"><div class="ck2-radio"></div>C) (a), (c), (b), (d) — de lo más contundente a lo menos según el Abusómetro, sin importar la cronología: estrangulamiento → vigilancia → insultos → puerta.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m2','q4',4)" data-val="4"><div class="ck2-radio"></div>D) El orden de los eventos es indiferente para el caso, siempre y cuando todos queden cubiertos en algún momento de la entrevista o el expediente.</div>
+      <div class="ck-fb" id="m2q4fb"></div></div>
+    <div class="ck-summary" id="m2-sum"></div>
+    <div class="ck-acts"><button class="btn-v" id="m2-vbtn" onclick="mVerify('m2')">Verificar respuestas</button><button class="btn-r" id="m2-rbtn" onclick="mReset('m2')">Reintentar</button><button class="btn-nx" id="m2-nbtn" onclick="unlockNext('mod3','nav-mod3','sub-mod3')">Avanzar al Módulo 3 →</button></div>
+  </div></div>
+  <div class="mod-nav"><button class="mnb mnb-p" onclick="showPanel('mod1')">← Módulo 1</button><button class="mnb mnb-n" onclick="tryMod('mod3')">Módulo 3 →</button></div>
+</div>
+<!-- MÓDULO 3 -->
+<div class="panel" id="panel-mod3">
+  <div class="page-title"><div class="pt-label">Módulo 3 · Técnica</div><h2>Prácticas de Entrevista</h2><p class="pt-sub">Regla 80/20 · Preguntas abiertas · Prioridad de evidencias · Tono</p></div>
+  <div class="mod-meta"><div class="mod-meta-item"><div class="label">Tipo</div><div class="value">Técnico</div></div><div class="mod-meta-item"><div class="label">Duración</div><div class="value">45–60 min</div></div><div class="mod-meta-item"><div class="label">Ejercicios</div><div class="value">4 preguntas</div></div><div class="mod-meta-item"><div class="label">Mínimo</div><div class="value">75% (3/4)</div></div></div>
+  <div class="block b-c"><div class="btitle"><div class="bicon">🎙️</div><h3>3.1 La Regla 80/20</h3><span class="mod-badge badge-gold">Principio rector</span></div>
+  <div class="bbody">
+    <div class="crit"><div class="crit-lbl">Regla 80/20</div><div class="crit-txt">El cliente habla el <em>80%</em> del tiempo.<br>El agente interviene el <em>20%</em>.</div><div class="crit-sub">El rol del entrevistador es <strong>guiar, no dirigir</strong>. Tu trabajo es abrir espacios para que el cliente desarrolle su propio relato.</div></div>
+    <div class="ob-list" style="margin-top:12px">
+      <div class="ob-item"><div class="ob-num">→</div><span>Tus intervenciones deben ser <strong>preguntas abiertas</strong>, no afirmaciones ni conclusiones.</span></div>
+      <div class="ob-item"><div class="ob-num">→</div><span>Si el cliente divaga, redirige con <strong>naturalidad</strong> hacia los eventos prioritarios del Pre-Draft.</span></div>
+      <div class="ob-item"><div class="ob-num">→</div><span><strong>No interrumpas</strong> durante el desarrollo; redirige solo si la información no vincula al abuso.</span></div>
+      <div class="ob-item"><div class="ob-num">→</div><span>Retoma los faltantes <strong>posteriormente</strong>, no en el momento en que el cliente está narrando.</span></div>
+    </div>
+  </div></div>
+  <div class="block"><div class="btitle"><div class="bicon">❓</div><h3>3.2 Preguntas Abiertas vs. Cerradas</h3><span class="mod-badge badge-core">Técnica central</span></div>
+  <div class="bbody">
+    <div class="two-col">
+      <div class="mini-card" style="border-left:4px solid var(--green)"><h4 style="color:var(--green)">✅ Preguntas abiertas (usar)</h4><ul><li>"Cuénteme qué pasó esa vez que mencionó."</li><li>"¿Cómo se sentía cuando eso ocurría?"</li><li>"¿Qué hacía usted en ese momento?"</li><li>"Descríbame cómo fue desde el principio."</li></ul></div>
+      <div class="mini-card" style="border-left:4px solid var(--red)"><h4 style="color:var(--red)">❌ Preguntas cerradas (evitar)</h4><ul><li>"¿Le pegó?" → Induce la respuesta.</li><li>"¿Eso le causó miedo?" → Sugiere emoción.</li><li>"¿No es cierto que él la amenazaba?" → Dirigida.</li></ul></div>
+    </div>
+  </div></div>
+  <div class="block b-g"><div class="btitle"><div class="bicon">💬</div><h3>3.3 Tono Dinámico y Naturalidad Conversacional</h3><span class="mod-badge badge-green">Soft skill</span></div>
+  <div class="bbody"><div class="ovh">
+    <div class="ovh-card"><div class="ovh-icon" style="background:rgba(201,168,76,.12)">⚡</div><div><div class="ovh-tit">Energía y naturalidad</div><div class="ovh-desc">Tono dinámico y conversacional mantiene al cliente engaged durante toda la sesión.</div></div></div>
+    <div class="ovh-card"><div class="ovh-icon" style="background:rgba(30,102,65,.1)">🤝</div><div><div class="ovh-tit">Empatía como herramienta</div><div class="ovh-desc">El vínculo empático facilita la profundidad del relato. El cliente narra experiencias difíciles.</div></div></div>
+    <div class="ovh-card"><div class="ovh-icon" style="background:rgba(26,58,92,.1)">🗺️</div><div><div class="ovh-tit">Script como guía</div><div class="ovh-desc">El script no es una camisa de fuerza. Lo central es encontrar el abuso más contundente.</div></div></div>
+    <div class="ovh-card"><div class="ovh-icon" style="background:rgba(124,58,237,.1)">🔄</div><div><div class="ovh-tit">Retomar la estructura</div><div class="ovh-desc">Aunque la conversación sea fluida, retomar los puntos pendientes es indispensable.</div></div></div>
+  </div></div></div>
+  <div class="block b-e"><div class="btitle"><div class="bicon">📁</div><h3>3.4 Prioridad de Evidencias — Máxima Prioridad</h3><span class="mod-badge badge-warn">Regla crítica</span></div>
+  <div class="bbody">
+    <div class="crit"><div class="crit-lbl">Regla de evidencias</div><div class="crit-txt">La evidencia es <em>prioridad</em> desde el primer momento.<br>No dejes las solicitudes para el final.</div><div class="crit-sub">Solicita las evidencias <strong>durante los eventos</strong> y explica su relevancia en ese momento. Una evidencia no solicitada a tiempo puede perderse.</div></div>
+    <div class="ob-list" style="margin-top:12px">
+      <div class="ob-item"><div class="ob-num">1</div><span><strong>AGENDA:</strong> Prioriza la búsqueda desde la agenda previa a la entrevista.</span></div>
+      <div class="ob-item"><div class="ob-num">2</div><span><strong>ANTES del evento:</strong> Si ya sabes que existe la evidencia, anticípala.</span></div>
+      <div class="ob-item"><div class="ob-num">3</div><span><strong>DURANTE el evento:</strong> Solicitud inmediata cuando el cliente mencione algo evidenciable.</span></div>
+      <div class="ob-item"><div class="ob-num">4</div><span><strong>AL FINALIZAR el evento:</strong> Refuerza la relevancia y confirma el compromiso de envío.</span></div>
+      <div class="ob-item"><div class="ob-num">5</div><span><strong>SEGUIMIENTO:</strong> Para documentos que no se obtuvieron durante la sesión.</span></div>
+    </div>
+    <div class="case-box" style="margin-top:12px"><div class="case-lbl">📌 Ejemplo en práctica</div><div class="case-txt">Cliente: "Y tuve que ir al hospital..." → Tu respuesta inmediata: "¿Tiene los registros de esa visita? ¿Le tomaron fotos? ¿Hay un reporte médico?"</div></div>
+    <div class="ei" style="margin-top:12px"><div class="ei-ic">❌</div><div><div class="ei-tit">Error frecuente: dejar evidencias para el final</div><div class="ei-desc">Cuando el cliente ya terminó su relato, la solicitud de evidencia pierde contexto narrativo y urgencia. El momento de mayor efectividad es durante el evento específico que la genera.</div><div class="ei-fix">✅ Corrección: integra la solicitud de evidencia inmediatamente cuando el cliente la mencione.</div></div></div>
+  </div></div>
+  <!-- EJ M3 -->
+  <div class="sdiv"><div class="l"></div><div class="t">Ejercicios de Verificación — Módulo 3</div><div class="l"></div></div>
+  <div class="block b-ev"><div class="btitle"><div class="bicon">✏️</div><h3>Verifica tu comprensión</h3><span class="mod-badge badge-exam">4 preguntas · 75% mínimo</span></div>
+  <div class="bbody">
+    <div class="ck2-q" id="m3q1"><div class="ck2-qt">P1. Llevas 12 minutos de entrevista. Tu clienta Sofía lleva 9 minutos hablando de problemas con los vecinos y que el esposo no la ayuda a limpiar. La información no parece vinculada a un evento de abuso. ¿Cuál es la intervención más adecuada?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q1',1)" data-val="1"><div class="ck2-radio"></div>A) Esperas a que la clienta termine su relato y luego redirigues con naturalidad hacia los eventos de abuso prioritarios identificados en el Pre-Draft.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q1',2)" data-val="2"><div class="ck2-radio"></div>B) La dejas continuar sin ningún tipo de intervención, ya que la regla 80/20 establece que el 80% del tiempo de la entrevista pertenece exclusivamente al cliente.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q1',3)" data-val="3"><div class="ck2-radio"></div>C) La interrumpes de inmediato y le explicas directamente que ese tema no aporta información útil para documentar el caso ante USCIS.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q1',4)" data-val="4"><div class="ck2-radio"></div>D) Propones finalizar la llamada en ese momento y reagendarla para cuando la clienta tenga información más directamente relevante para el caso.</div>
+      <div class="ck-fb" id="m3q1fb"></div></div>
+    <div class="ck2-q" id="m3q2"><div class="ck2-qt">P2. Estás desarrollando un evento en el que el esposo amenazó a tu cliente con un cuchillo. ¿Cuál de las siguientes intervenciones es la más adecuada?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q2',1)" data-val="1"><div class="ck2-radio"></div>A) "¿Él le apuntó el cuchillo directamente a usted?" — pregunta cerrada para confirmar el hecho puntual antes de continuar con el desarrollo del evento.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q2',2)" data-val="2"><div class="ck2-radio"></div>B) "¿Eso le dio mucho miedo, verdad?" — pregunta que valida emocionalmente al cliente y establece el impacto psicológico del evento antes de desarrollarlo.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q2',3)" data-val="3"><div class="ck2-radio"></div>C) "¿No es cierto que él siempre se ponía violento cuando bebía?" — para contextualizar el patrón de conducta del abusador dentro del historial del caso.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q2',4)" data-val="4"><div class="ck2-radio"></div>D) "Cuénteme exactamente lo que pasó esa vez con el cuchillo, desde el principio." — pregunta abierta que invita al cliente a narrar el evento completo sin sugerir ni dirigir.</div>
+      <div class="ck-fb" id="m3q2fb"></div></div>
+    <div class="ck2-q" id="m3q3"><div class="ck2-qt">P3. Tu clienta Rosa está narrando un evento en que su esposo la golpeó. En ese momento menciona: "Y tuve que ir al hospital." ¿Cuál es tu respuesta inmediata?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q3',1)" data-val="1"><div class="ck2-radio"></div>A) Continúas escuchando el relato completo sin interrumpir; al concluir toda la entrevista le preguntas en bloque por los documentos médicos disponibles.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q3',2)" data-val="2"><div class="ck2-radio"></div>B) Anotas mentalmente que existe evidencia médica relevante y planificas gestionarla en una llamada de seguimiento posterior para no interrumpir el flujo del relato.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q3',3)" data-val="3"><div class="ck2-radio"></div>C) Interrumpes inmediatamente: "¿Tiene los registros de esa visita? ¿Le tomaron fotos? ¿Hay reporte?" y explicas en ese momento la relevancia probatoria de esa evidencia.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q3',4)" data-val="4"><div class="ck2-radio"></div>D) Le explicas al cliente que la evidencia médica no es prioritaria si ya dispone de fotografías de las lesiones, ya que estas últimas tienen mayor peso ante el oficial.</div>
+      <div class="ck-fb" id="m3q3fb"></div></div>
+    <div class="ck2-q" id="m3q4"><div class="ck2-qt">P4. Antes de tu entrevista con Daniel, revisas MyCase: en el Intake ya relató dos eventos (golpes en 2022 y amenaza con arma en 2023). Hay un tercer evento sin desarrollar: el esposo lo encerraba en el cuarto. ¿Cómo estructuras tu entrevista?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q4',1)" data-val="1"><div class="ck2-radio"></div>A) Confirmas brevemente los eventos del 2022 y 2023 que ya están documentados y concentras el tiempo disponible en desarrollar el encierro con los 7 Oros, que es el faltante prioritario.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q4',2)" data-val="2"><div class="ck2-radio"></div>B) Empiezas la entrevista desde cero solicitando a Daniel que relate todos los eventos otra vez para asegurarte de tener la versión más completa y actualizada posible.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q4',3)" data-val="3"><div class="ck2-radio"></div>C) Omites el encierro del relato porque fue mencionado muy brevemente en el Intake y probablemente no tiene el peso suficiente para incluirlo como evento prioritario.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m3','q4',4)" data-val="4"><div class="ck2-radio"></div>D) Le pides a Daniel que cuente absolutamente todo de nuevo desde el principio porque la versión registrada en el Intake puede contener errores o imprecisiones relevantes.</div>
+      <div class="ck-fb" id="m3q4fb"></div></div>
+    <div class="ck-summary" id="m3-sum"></div>
+    <div class="ck-acts"><button class="btn-v" id="m3-vbtn" onclick="mVerify('m3')">Verificar respuestas</button><button class="btn-r" id="m3-rbtn" onclick="mReset('m3')">Reintentar</button><button class="btn-nx" id="m3-nbtn" onclick="unlockNext('mod4','nav-mod4','sub-mod4')">Avanzar al Módulo 4 →</button></div>
+  </div></div>
+  <div class="mod-nav"><button class="mnb mnb-p" onclick="showPanel('mod2')">← Módulo 2</button><button class="mnb mnb-n" onclick="tryMod('mod4')">Módulo 4 →</button></div>
+</div>
+<!-- MÓDULO 4 -->
+<div class="panel" id="panel-mod4">
+  <div class="page-title"><div class="pt-label">Módulo 4 · Herramienta</div><h2>Los 7 Oros</h2><p class="pt-sub">Estructura de eventos de abuso · Inicio · Desarrollo · Cierre</p></div>
+  <div class="mod-meta"><div class="mod-meta-item"><div class="label">Tipo</div><div class="value">Herramienta</div></div><div class="mod-meta-item"><div class="label">Duración</div><div class="value">50–70 min</div></div><div class="mod-meta-item"><div class="label">Ejercicios</div><div class="value">4 preguntas</div></div><div class="mod-meta-item"><div class="label">Mínimo</div><div class="value">75% (3/4)</div></div></div>
+  <div class="block b-c"><div class="btitle"><div class="bicon">🌟</div><h3>4.1 ¿Qué son los 7 Oros?</h3><span class="mod-badge badge-gold">Definición</span></div>
+  <div class="bbody">
+    <p>Los 7 Oros son una herramienta adaptada de la criminología que permite <strong>estructurar el relato de eventos traumáticos</strong>. Obtiene narrativas más claras y completas, cuidando el impacto emocional en el cliente.</p>
+    <div class="crit"><div class="crit-lbl">Función central</div><div class="crit-txt">Los 7 Oros son un <em>mapa de indagación</em>,<br>no un cuestionario rígido.</div><div class="crit-sub">Aseguran que ningún aspecto esencial del evento quede sin explorar, mientras el cliente narra con sus propias palabras.</div></div>
+    <div class="alert warn" style="margin-top:10px"><span class="alert-icon">🎯</span><div><strong>Nota operativa:</strong> Los 7 Oros se aplican sobre un <strong>evento específico ya identificado y priorizado</strong>. Detectar el evento primero, aplicar los 7 Oros después.</div></div>
+  </div></div>
+  <div class="block"><div class="btitle"><div class="bicon">7️⃣</div><h3>4.2 Las 7 Preguntas</h3><span class="mod-badge badge-core">Herramienta</span></div>
+  <div class="bbody"><div class="oro-tl">
+    <div class="oro-it"><div class="oro-c">1</div><div class="oro-b f1"><div class="ol">Tiempo</div><div class="oq">¿Cuándo?</div><div class="oh">El momento en que ocurrió. Fecha exacta o periodo aproximado. Fundamental para cronología y sistematización.</div></div></div>
+    <div class="oro-it"><div class="oro-c">2</div><div class="oro-b f1"><div class="ol">Lugar</div><div class="oq">¿Dónde?</div><div class="oh">El lugar o contexto físico. Aporta verosimilitud e identifica testigos o evidencias contextuales.</div></div></div>
+    <div class="oro-it"><div class="oro-c">3</div><div class="oro-b f2"><div class="ol">Núcleo del relato</div><div class="oq">¿Qué pasó?</div><div class="oh">Descripción de los hechos antes, durante y después. El cliente narra en sus propias palabras, sin interrumpir.</div></div></div>
+    <div class="oro-it"><div class="oro-c">4</div><div class="oro-b f2"><div class="ol">Secuencia</div><div class="oq">¿Cómo pasó?</div><div class="oh">La manera en que se desarrolló. Detalles de la secuencia, movimientos, acciones del abusador y reacción de la víctima.</div></div></div>
+    <div class="oro-it"><div class="oro-c">5</div><div class="oro-b f2"><div class="ol">Medios</div><div class="oq">¿Con qué?</div><div class="oh">Los medios, objetos o recursos utilizados. Esencial para identificar evidencia física y agravar la narrativa.</div></div></div>
+    <div class="oro-it"><div class="oro-c">6</div><div class="oro-b f3"><div class="ol">Personas</div><div class="oq">¿Quiénes estaban?</div><div class="oh">Participantes o testigos. Fundamental para identificar fuentes de evidencia testimonial.</div></div></div>
+    <div class="oro-it"><div class="oro-c">7</div><div class="oro-b f3"><div class="ol">Motivación subjetiva</div><div class="oq">¿Por qué? → <span style="color:#c0392b">NUNCA directo</span></div><div class="oh">La comprensión subjetiva de la persona sobre las causas. <strong>Explorar siempre de forma indirecta.</strong></div></div></div>
+  </div>
+  <div class="alert danger" style="margin-top:14px"><span class="alert-icon">🚨</span><div><strong>ADVERTENCIA CRÍTICA — La pregunta ¿por qué?</strong><br>NUNCA se realiza directamente con víctimas de violencia: despierta defensividad y culpa.<br><strong>Explorar de forma indirecta:</strong> "¿Qué cree que estaba pasando con él/ella en ese momento?" o "¿Cómo entendió usted lo que pasó después?"</div></div>
+  </div></div>
+  <div class="block b-p"><div class="btitle"><div class="bicon">🔄</div><h3>4.3 Estructura: Inicio — Desarrollo — Cierre</h3><span class="mod-badge" style="background:rgba(109,40,217,.08);color:#5b21b6;border:1px solid rgba(109,40,217,.2)">Estructura</span></div>
+  <div class="bbody"><div class="three-col">
+    <div class="mini-card" style="border-top:3px solid var(--accent)"><h4><span class="fase-tag f1">INICIO</span></h4><ul><li>¿Cuándo ocurrió? → "Cuénteme esa vez..."</li><li>¿En dónde estaba usted?</li><li>¿Qué pasó antes de que ocurriera?</li></ul><p style="margin-top:6px;font-size:11px">Establece <strong>contexto temporal y espacial</strong> antes de profundizar.</p></div>
+    <div class="mini-card" style="border-top:3px solid var(--purple)"><h4><span class="fase-tag f2">DESARROLLO</span></h4><ul><li>¿Qué pasó? ¿Cómo pasó?</li><li>¿Con qué? (objetos, medios)</li><li>Diálogos textuales del abusador</li><li>Secuencia cronológica</li></ul><p style="margin-top:6px;font-size:11px">El <strong>núcleo del relato</strong>. Aquí se obtiene la mayor parte de la narrativa.</p></div>
+    <div class="mini-card" style="border-top:3px solid var(--green)"><h4><span class="fase-tag f3">CIERRE</span></h4><ul><li>¿Cómo terminó la situación?</li><li>Consecuencias (físicas, psicológicas)</li><li>¿Cada cuándo ocurre? → Sistematización</li><li>¿Qué sintió? ¿Qué pensó?</li></ul><p style="margin-top:6px;font-size:11px">Completa con <strong>consecuencias, sistematización y cierre emocional</strong>.</p></div>
+  </div></div></div>
+  <div class="block b-g"><div class="btitle"><div class="bicon">📖</div><h3>4.4 Aplicación Práctica — Ejemplo Completo</h3><span class="mod-badge badge-green">Caso</span></div>
+  <div class="bbody">
+    <div class="case-box"><div class="case-lbl">📌 Situación inicial</div><div class="case-txt">El cliente mencionó de pasada: "Una vez casi me mata con una cuchilla."</div></div>
+    <div class="ob-list">
+      <div class="ob-item"><div class="ob-num" style="background:var(--accent)">I</div><span><strong>INICIO —</strong> "Cuénteme sobre esa ocasión. ¿Cuándo fue aproximadamente? ¿Dónde estaban?"</span></div>
+      <div class="ob-item"><div class="ob-num" style="background:var(--accent)">I</div><span><strong>INICIO —</strong> "¿Qué estaba pasando antes de que ocurriera eso?"</span></div>
+      <div class="ob-item"><div class="ob-num" style="background:var(--purple)">D</div><span><strong>DESARROLLO —</strong> "Descríbame lo que pasó, desde el principio."</span></div>
+      <div class="ob-item"><div class="ob-num" style="background:var(--purple)">D</div><span><strong>DESARROLLO —</strong> "¿Cómo fue que él/ella tomó la cuchilla? ¿Qué hizo con ella?"</span></div>
+      <div class="ob-item"><div class="ob-num" style="background:var(--purple)">D</div><span><strong>DESARROLLO —</strong> "¿Qué le decía mientras hacía eso? ¿Había alguien más presente?"</span></div>
+      <div class="ob-item"><div class="ob-num" style="background:var(--green)">C</div><span><strong>CIERRE —</strong> "¿Cómo terminó esa situación? ¿Quedó con alguna lesión?"</span></div>
+      <div class="ob-item"><div class="ob-num" style="background:var(--green)">C</div><span><strong>CIERRE —</strong> "¿Esto había pasado antes? ¿Cada cuánto ocurría?"</span></div>
+      <div class="ob-item"><div class="ob-num" style="background:var(--green)">C</div><span><strong>CIERRE —</strong> "¿Qué sintió usted en ese momento?"</span></div>
+    </div>
+  </div></div>
+  <!-- EJ M4 -->
+  <div class="sdiv"><div class="l"></div><div class="t">Ejercicios de Verificación — Módulo 4</div><div class="l"></div></div>
+  <div class="block b-ev"><div class="btitle"><div class="bicon">✏️</div><h3>Verifica tu comprensión</h3><span class="mod-badge badge-exam">4 preguntas · 75% mínimo</span></div>
+  <div class="bbody">
+    <div class="ck2-q" id="m4q1"><div class="ck2-qt">P1. Tu clienta menciona: "Una vez él me encerró con llave en el cuarto toda la noche." Quieres comenzar con los 7 Oros. ¿Cuál es la secuencia correcta para la fase de INICIO?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q1',1)" data-val="1"><div class="ck2-radio"></div>A) "¿Eso le causó daño psicológico? ¿Cuánto tiempo duró encerrada? ¿Cómo logró salir?" — preguntas de cierre que cubren consecuencias, duración y resolución del evento.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q1',2)" data-val="2"><div class="ck2-radio"></div>B) "¿Él la encerraba seguido? ¿Tenía llave desde adentro? ¿Llamó a alguien en ese momento?" — preguntas de desarrollo sobre la mecánica y sistematización del evento.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q1',3)" data-val="3"><div class="ck2-radio"></div>C) "¿Qué sintió usted en ese momento? ¿En algún momento pensó en llamar a la policía?" — preguntas de cierre emocional que exploran el impacto y la respuesta de la víctima.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q1',4)" data-val="4"><div class="ck2-radio"></div>D) "¿Cuándo fue eso aproximadamente? ¿En dónde estaban cuando pasó? ¿Qué estaba pasando antes de que él la encerrara?" — preguntas de INICIO: contexto temporal, espacial y antecedente.</div>
+      <div class="ck-fb" id="m4q1fb"></div></div>
+    <div class="ck2-q" id="m4q2"><div class="ck2-qt">P2. Estás en la fase de cierre de un evento de golpes. Quieres entender la motivación del abusador. ¿Cuál es la intervención más adecuada?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q2',1)" data-val="1"><div class="ck2-radio"></div>A) "¿Por qué cree usted que él actuó así?" — pregunta directa y clara que obtiene la motivación del abusador de forma eficiente sin rodeos innecesarios.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q2',2)" data-val="2"><div class="ck2-radio"></div>B) "¿Usted hizo algo que lo provocó?" — para entender el contexto completo de la situación y determinar los factores desencadenantes del episodio de abuso.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q2',3)" data-val="3"><div class="ck2-radio"></div>C) "¿Qué cree que estaba pasando con él en ese momento para que reaccionara de esa forma?" — explora la motivación del abusador de forma indirecta, sin generar culpa en la víctima.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q2',4)" data-val="4"><div class="ck2-radio"></div>D) "¿Por qué no se fue de la casa en ese momento?" — para explorar la respuesta y las barreras de la víctima ante la situación de abuso que estaba viviendo.</div>
+      <div class="ck-fb" id="m4q2fb"></div></div>
+    <div class="ck2-q" id="m4q3"><div class="ck2-qt">P3. Acabas de desarrollar un evento en que el abusador golpeó a tu clienta con un cinturón. Entras a la fase de CIERRE. ¿Cuáles son las preguntas más importantes?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q3',1)" data-val="1"><div class="ck2-radio"></div>A) "¿Cómo terminó esa situación? ¿Quedó con alguna lesión? ¿Esto había pasado antes? ¿Cada cuánto ocurría? ¿Qué sintió en ese momento?" — fase de CIERRE completa.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q3',2)" data-val="2"><div class="ck2-radio"></div>B) "¿Dónde estaban exactamente? ¿Había testigos presentes? ¿Con qué objeto o de qué forma exactamente la agredió?" — preguntas de DESARROLLO del evento.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q3',3)" data-val="3"><div class="ck2-radio"></div>C) "¿Cuándo fue exactamente? ¿Qué hora era aproximadamente? ¿Dónde se encontraba el abusador justo antes?" — preguntas de INICIO del evento.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q3',4)" data-val="4"><div class="ck2-radio"></div>D) "¿Lo denunció con la policía? ¿Fue al médico después? ¿Hay fotos de las lesiones?" — y con esas tres preguntas se cierra el evento de abuso.</div>
+      <div class="ck-fb" id="m4q3fb"></div></div>
+    <div class="ck2-q" id="m4q4"><div class="ck2-qt">P4. Tu cliente menciona en un mismo párrafo: que su esposa grita mucho, que una vez le rompió el celular, que no le gusta cómo cocina, y que en otra ocasión le lanzó una silla. ¿Cuál es tu primer paso antes de aplicar los 7 Oros?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q4',1)" data-val="1"><div class="ck2-radio"></div>A) Aplicar los 7 Oros al primer evento que el cliente mencionó (los gritos) para aprovechar el flujo narrativo natural y no interrumpir la secuencia del relato.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q4',2)" data-val="2"><div class="ck2-radio"></div>B) Pedir al cliente que repita todos los eventos desde el principio con más detalle para asegurarse de no perder ninguna información relevante del caso.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q4',3)" data-val="3"><div class="ck2-radio"></div>C) Identificar cuál de los eventos es más contundente según el Abusómetro (silla lanzada o celular roto) y aplicar los 7 Oros sobre ese evento específico primero.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m4','q4',4)" data-val="4"><div class="ck2-radio"></div>D) Desarrollar todos los eventos de forma simultánea en la misma llamada para garantizar que no se pierda ninguna información antes de cerrar la entrevista.</div>
+      <div class="ck-fb" id="m4q4fb"></div></div>
+    <div class="ck-summary" id="m4-sum"></div>
+    <div class="ck-acts"><button class="btn-v" id="m4-vbtn" onclick="mVerify('m4')">Verificar respuestas</button><button class="btn-r" id="m4-rbtn" onclick="mReset('m4')">Reintentar</button><button class="btn-nx" id="m4-nbtn" onclick="unlockNext('mod5','nav-mod5','sub-mod5')">Avanzar al Módulo 5 →</button></div>
+  </div></div>
+  <div class="mod-nav"><button class="mnb mnb-p" onclick="showPanel('mod3')">← Módulo 3</button><button class="mnb mnb-n" onclick="tryMod('mod5')">Módulo 5 →</button></div>
+</div>
+<!-- MÓDULO 5 -->
+<div class="panel" id="panel-mod5">
+  <div class="page-title"><div class="pt-label">Módulo 5 · Estrategia</div><h2>Gestión de la Entrevista</h2><p class="pt-sub">Pre-Draft · BOT de IA · Estrategia basada en faltantes</p></div>
+  <div class="mod-meta"><div class="mod-meta-item"><div class="label">Tipo</div><div class="value">Operativo</div></div><div class="mod-meta-item"><div class="label">Duración</div><div class="value">40–55 min</div></div><div class="mod-meta-item"><div class="label">Ejercicios</div><div class="value">4 preguntas</div></div><div class="mod-meta-item"><div class="label">Mínimo</div><div class="value">75% (3/4)</div></div></div>
+  <div class="block b-c"><div class="btitle"><div class="bicon">📄</div><h3>5.1 ¿Qué es el Pre-Draft?</h3><span class="mod-badge badge-gold">Herramienta</span></div>
+  <div class="bbody">
+    <p>El Pre-Draft es un <strong>borrador preliminar de la DCL</strong> generado a partir de la transcripción de la llamada de Intake. Es la referencia estructural para la entrevista de PWC.</p>
+    <div class="crit"><div class="crit-lbl">Función del Pre-Draft</div><div class="crit-txt">El Pre-Draft es una herramienta de <em>diagnóstico</em>,<br>no una declaración final.</div><div class="crit-sub">Permite identificar qué información ya fue obtenida y qué temas requieren profundización. Su uso correcto <strong>evita redundancias y optimiza el tiempo de llamada</strong>.</div></div>
+  </div></div>
+  <div class="block"><div class="btitle"><div class="bicon">🎯</div><h3>5.2 Las 4 Funciones del Pre-Draft</h3><span class="mod-badge badge-core">Estrategia</span></div>
+  <div class="bbody"><div class="ob-list">
+    <div class="ob-item"><div class="ob-num">1</div><span><strong>Anticipar lo cubierto:</strong> El agente sabe qué eventos, datos y evidencias ya están documentados en el Intake. No se regresa a preguntar lo que ya está.</span></div>
+    <div class="ob-item"><div class="ob-num">2</div><span><strong>Identificar los faltantes:</strong> El Pre-Draft expone los vacíos: eventos sin desarrollar, áreas no exploradas. <strong>Estos son los focos de la entrevista.</strong></span></div>
+    <div class="ob-item"><div class="ob-num">3</div><span><strong>Reducir el tiempo de llamada:</strong> La duración máxima es de <strong>3.5 horas</strong>. El Pre-Draft es la herramienta central para mantenerse dentro de ese margen.</span></div>
+    <div class="ob-item"><div class="ob-num">4</div><span><strong>Servir como base para el Draft final:</strong> La DCL definitiva se construye a partir del Pre-Draft enriquecido con lo obtenido en la entrevista PWC.</span></div>
+  </div></div></div>
+  <div class="block b-p"><div class="btitle"><div class="bicon">🤖</div><h3>5.3 El BOT Pre-Draft</h3><span class="mod-badge" style="background:rgba(109,40,217,.08);color:#5b21b6;border:1px solid rgba(109,40,217,.2)">IA</span></div>
+  <div class="bbody">
+    <p style="margin-bottom:12px">El BOT Pre-Draft es la herramienta de IA que procesa la transcripción del Intake y emite un reporte estructurado con:</p>
+    <div class="two-col">
+      <div class="mini-card" style="border-left:4px solid var(--green)"><h4 style="color:var(--green)">✅ Temas cubiertos</h4><p>Información abordada y profundizada en el Intake. <strong>Solo confirmar brevemente</strong>, no preguntar de cero.</p></div>
+      <div class="mini-card" style="border-left:4px solid var(--red)"><h4 style="color:var(--red)">⚠️ Faltantes prioritarios</h4><p>Temas mencionados pero sin desarrollar. <strong>Focos centrales de la entrevista PWC.</strong> Aplicar 7 Oros sobre estos.</p></div>
+    </div>
+    <div class="alert danger" style="margin-top:10px"><span class="alert-icon">🚨</span><div><strong>Regla de oro:</strong> <strong>No entres a la videollamada sin haber leído el reporte del BOT.</strong> Esta etapa es vital para mantener la entrevista dentro del límite de 3.5 horas.</div></div>
+  </div></div>
+  <div class="block b-g"><div class="btitle"><div class="bicon">🔄</div><h3>5.4 Flujo: Del Intake a la Entrevista PWC</h3><span class="mod-badge badge-green">Proceso</span></div>
+  <div class="bbody" style="padding:14px">
+    <div class="flow-n info"><strong>1. Llamada de Intake (DVS)</strong><br><span style="font-size:11.5px">El cliente proporciona su historia inicial. La llamada es grabada y transcrita.</span></div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-n info"><strong>2. BOT genera el Pre-Draft</strong><br><span style="font-size:11.5px">IA procesa la transcripción: (a) borrador preliminar de DCL y (b) reporte de faltantes.</span></div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-n warn"><strong>3. Agente estudia el reporte del BOT</strong><br><span style="font-size:11.5px">Lee el reporte completo, revisa KASE, prepara su Call Strategy: qué profundizar, qué evidencias buscar.</span></div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-n warn"><strong>4. Checklist previo + SMS al cliente</strong><br><span style="font-size:11.5px">El agente llena el checklist de preparación y envía SMS solicitando documentos y evidencias.</span></div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-n ok"><strong>5. Entrevista PWC (videollamada)</strong><br><span style="font-size:11.5px">Sesión focalizada en los faltantes del BOT. Eventos ya cubiertos solo se corroboran brevemente.</span></div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-n ok"><strong>6. Draft Final de DCL</strong><br><span style="font-size:11.5px">Pre-Draft + información adicional de la entrevista PWC = DCL definitiva.</span></div>
+  </div></div>
+  <div class="block"><div class="btitle"><div class="bicon">⚡</div><h3>5.5 Tres Implicaciones Directas para la Entrevista</h3><span class="mod-badge badge-core">Aplicación</span></div>
+  <div class="bbody"><div class="ob-list">
+    <div class="ob-item"><div class="ob-num">1</div><span><strong>Corroborar, no preguntar de cero:</strong> Los datos y eventos del Intake solo se confirman brevemente. No se dedica tiempo a reconstruir lo que el BOT ya procesó.</span></div>
+    <div class="ob-item"><div class="ob-num">2</div><span><strong>Profundizar los faltantes prioritarios:</strong> Los vacíos identificados por el BOT son el centro de la sesión. Usar 7 Oros, preguntas abiertas y regla 80/20.</span></div>
+    <div class="ob-item"><div class="ob-num">3</div><span><strong>Integrar la búsqueda de evidencias:</strong> Durante el desarrollo de los faltantes, solicitar las evidencias correspondientes de manera inmediata, sin dejarlas para el final.</span></div>
+  </div></div></div>
+  <!-- EJ M5 -->
+  <div class="sdiv"><div class="l"></div><div class="t">Ejercicios de Verificación — Módulo 5</div><div class="l"></div></div>
+  <div class="block b-ev"><div class="btitle"><div class="bicon">✏️</div><h3>Verifica tu comprensión</h3><span class="mod-badge badge-exam">4 preguntas · 75% mínimo</span></div>
+  <div class="bbody">
+    <div class="ck2-q" id="m5q1"><div class="ck2-qt">P1. Antes de tu entrevista con Valentina, el Pre-Draft del BOT indica que en el Intake relató con detalle el episodio de 2021 (el esposo la golpeó), pero mencionó brevemente —sin desarrollar— que "en varias ocasiones él la encerraba". ¿Cuál es el uso correcto del Pre-Draft?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q1',1)" data-val="1"><div class="ck2-radio"></div>A) Hacer que Valentina repita el episodio del 2021 desde el principio con más detalle para obtener una versión más completa y sólida de ese evento ya documentado.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q1',2)" data-val="2"><div class="ck2-radio"></div>B) Ignorar completamente el Pre-Draft durante la entrevista y explorar libremente todos los temas con Valentina para no sesgar ni limitar su relato con categorías previas.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q1',3)" data-val="3"><div class="ck2-radio"></div>C) Enviar el Pre-Draft directamente al escritor sin realizar la entrevista PWC, dado que el Intake ya provee información suficiente para redactar la declaración.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q1',4)" data-val="4"><div class="ck2-radio"></div>D) Corroborar brevemente el episodio del 2021 y concentrar el tiempo de la entrevista en desarrollar los encierros con los 7 Oros, que es el faltante prioritario del Pre-Draft.</div>
+      <div class="ck-fb" id="m5q1fb"></div></div>
+    <div class="ck2-q" id="m5q2"><div class="ck2-qt">P2. Tu compañero Andrés entra a la entrevista de PWC sin haber leído el reporte del BOT. Pasa los primeros 40 minutos preguntando datos de background ya completos en el Intake. Cuando llega a los eventos de abuso, el cliente está cansado y la llamada se acerca a 3.5 horas. ¿Cuál es el problema principal?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q2',1)" data-val="1"><div class="ck2-radio"></div>A) Andrés debió empezar directamente con los eventos de abuso sin recolectar ningún tipo de background, ya que esa información no es necesaria para el caso VAWA.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q2',2)" data-val="2"><div class="ck2-radio"></div>B) El problema es del cliente, que debió recordar y no repetir lo que ya declaró durante el Intake, evitando así que Andrés perdiera tiempo en información duplicada.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q2',3)" data-val="3"><div class="ck2-radio"></div>C) Andrés desperdició tiempo valioso repitiendo información ya documentada; el Pre-Draft le habría mostrado exactamente qué no necesitaba preguntar y cuáles eran los faltantes reales.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q2',4)" data-val="4"><div class="ck2-radio"></div>D) No existe ningún problema real en la entrevista de Andrés: tener la misma información registrada por duplicado es una práctica que garantiza mayor consistencia del expediente.</div>
+      <div class="ck-fb" id="m5q2fb"></div></div>
+    <div class="ck2-q" id="m5q3"><div class="ck2-qt">P3. El reporte del BOT indica que tu cliente mencionó en el Intake: "En una ocasión mi esposa me apuntó con una pistola." El evento no fue desarrollado. ¿Cómo lo usas para preparar tu estrategia?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q3',1)" data-val="1"><div class="ck2-radio"></div>A) Lo marcas como faltante prioritario (abuso rojo) y preparas las preguntas de Inicio-Desarrollo-Cierre con los 7 Oros para desarrollarlo completamente en la entrevista PWC.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q3',2)" data-val="2"><div class="ck2-radio"></div>B) Lo ignoras en el Pre-Draft: si el cliente no lo desarrolló con detalle en el Intake, lo más probable es que no tenga la relevancia suficiente para el caso.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q3',3)" data-val="3"><div class="ck2-radio"></div>C) Le preguntas directamente al cliente durante la entrevista si quiere hablar de ese evento o si prefiere omitirlo del relato y del expediente final.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q3',4)" data-val="4"><div class="ck2-radio"></div>D) Lo incluyes en el Pre-Draft como si ya estuviera completamente documentado para poder avanzar el proceso sin retrasos adicionales.</div>
+      <div class="ck-fb" id="m5q3fb"></div></div>
+    <div class="ck2-q" id="m5q4"><div class="ck2-qt">P4. ¿Cuál es el orden correcto del flujo que va desde la llamada de Intake hasta la entrevista de PWC?</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q4',1)" data-val="1"><div class="ck2-radio"></div>A) Intake → Entrevista PWC directamente → BOT genera Pre-Draft con base en la entrevista → Escritor redacta la DCL final.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q4',2)" data-val="2"><div class="ck2-radio"></div>B) Intake → BOT procesa y genera Pre-Draft → Agente estudia el reporte y prepara Call Strategy → Entrevista PWC focalizada en los faltantes identificados.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q4',3)" data-val="3"><div class="ck2-radio"></div>C) BOT genera Pre-Draft antes del Intake → Agente realiza el Intake → Agente estudia el reporte → Entrevista PWC con base en los dos documentos combinados.</div>
+      <div class="ck2-opt" onclick="mSel(this,'m5','q4',4)" data-val="4"><div class="ck2-radio"></div>D) Intake → Agente redacta el Pre-Draft manualmente con base en sus notas → BOT valida el contenido → Entrevista PWC para confirmar los datos del Pre-Draft.</div>
+      <div class="ck-fb" id="m5q4fb"></div></div>
+    <div class="ck-summary" id="m5-sum"></div>
+    <div class="ck-acts"><button class="btn-v" id="m5-vbtn" onclick="mVerify('m5')">Verificar respuestas</button><button class="btn-r" id="m5-rbtn" onclick="mReset('m5')">Reintentar</button><button class="btn-nx" id="m5-nbtn" onclick="completeMods()">Ir a Evaluación Final →</button></div>
+  </div></div>
+  <div class="mod-nav"><button class="mnb mnb-p" onclick="showPanel('mod4')">← Módulo 4</button><button class="mnb mnb-n" onclick="showPanel('evaluacion')">Evaluación Final →</button></div>
+</div>
+<!-- EVALUACIÓN FINAL -->
+<div class="panel" id="panel-evaluacion">
+  <div class="page-title"><div class="pt-label">Evaluación Final</div><h2>Evaluación: Base Estructura de Entrevista VAWA</h2><p class="pt-sub">20 preguntas · 80% aprobatorio (16/20) · Cubre los 5 módulos</p></div>
+  <div class="alert gold" style="margin-bottom:14px"><span class="alert-icon">⭐</span><div><strong>Instrucciones:</strong> Selecciona la mejor respuesta para cada pregunta. Cuando termines todas, presiona "Enviar Evaluación" para ver tus resultados con retroalimentación detallada.</div></div>
+  <div class="sdiv"><div class="l"></div><div class="t">Módulo 1 — Fundamentos</div><div class="l"></div></div>
+  <div class="q-item" id="exam-q1"><div class="q-num">Pregunta 1 · Módulo 1</div><div class="q-text">La distinción entre VAWA SPOUSE y VAWA PARENT determina principalmente:</div><div class="q-opt" onclick="eSel(this,'q1')" data-val="1"><div class="q-radio"></div>A) El tipo específico de evidencia documental requerida para sustentar el caso ante el oficial de USCIS.</div><div class="q-opt" onclick="eSel(this,'q1')" data-val="2"><div class="q-radio"></div>B) El estado migratorio del abusador y si califica como USC o LPR para efectos del proceso.</div><div class="q-opt" onclick="eSel(this,'q1')" data-val="3"><div class="q-radio"></div>C) El script de preguntas, el tipo de relación a documentar y las particularidades del relato de abuso a recolectar.</div><div class="q-opt" onclick="eSel(this,'q1')" data-val="4"><div class="q-radio"></div>D) El número total de entrevistas PWC necesarias para documentar completamente el caso.</div><div class="q-fb" id="ef-q1"></div></div>
+  <div class="q-item" id="exam-q2"><div class="q-num">Pregunta 2 · Módulo 1</div><div class="q-text">Manuela es ciudadana americana. Jorge, su esposo, aplica a VAWA porque Manuela controla todo su dinero, lo monitorea 24/7 y amenaza con llamar a ICE si intenta divorciarse. Este caso es:</div><div class="q-opt" onclick="eSel(this,'q2')" data-val="1"><div class="q-radio"></div>A) Débil y difícil de ganar: sin golpes ni ningún tipo de evidencia física el caso de Jorge no tiene base suficiente ante USCIS.</div><div class="q-opt" onclick="eSel(this,'q2')" data-val="2"><div class="q-radio"></div>B) No aplica bajo ninguna categoría VAWA porque Manuela es la ciudadana americana y VAWA solo protege a ciudadanos, no a sus cónyuges extranjeros.</div><div class="q-opt" onclick="eSel(this,'q2')" data-val="3"><div class="q-radio"></div>C) Aplica únicamente si Jorge puede demostrar con evidencia médica o policial lesiones físicas documentadas en al menos una ocasión concreta.</div><div class="q-opt" onclick="eSel(this,'q2')" data-val="4"><div class="q-radio"></div>D) Válido como VAWA SPOUSE basado en Extreme Cruelty: control financiero, vigilancia permanente y amenazas de deportación son base autónoma suficiente.</div><div class="q-fb" id="ef-q2"></div></div>
+  <div class="q-item" id="exam-q3"><div class="q-num">Pregunta 3 · Módulo 1</div><div class="q-text">¿Cuál de las siguientes conductas corresponde a la categoría verde (NO es abuso)?</div><div class="q-opt" onclick="eSel(this,'q3')" data-val="1"><div class="q-radio"></div>A) El abusador revisa el teléfono de la víctima diariamente y le exige contraseñas.</div><div class="q-opt" onclick="eSel(this,'q3')" data-val="2"><div class="q-radio"></div>B) El abusador sale de fiesta los fines de semana sin avisar, sin amenazas ni intimidación.</div><div class="q-opt" onclick="eSel(this,'q3')" data-val="3"><div class="q-radio"></div>C) El abusador insulta sistemáticamente a la víctima frente a sus hijos.</div><div class="q-opt" onclick="eSel(this,'q3')" data-val="4"><div class="q-radio"></div>D) El abusador amenaza con llevarse a los hijos si la víctima lo deja.</div><div class="q-fb" id="ef-q3"></div></div>
+  <div class="q-item" id="exam-q4"><div class="q-num">Pregunta 4 · Módulo 1</div><div class="q-text">El criterio central de elegibilidad en casos VAWA es:</div><div class="q-opt" onclick="eSel(this,'q4')" data-val="1"><div class="q-radio"></div>A) Haber sido víctima de violencia doméstica a manos de un ciudadano americano o LPR, en calidad de cónyuge, hijo/a o padre/madre del abusador.</div><div class="q-opt" onclick="eSel(this,'q4')" data-val="2"><div class="q-radio"></div>B) Haber sufrido al menos un episodio de violencia física debidamente documentado con evidencia médica o policial ante la autoridad competente.</div><div class="q-opt" onclick="eSel(this,'q4')" data-val="3"><div class="q-radio"></div>C) Tener evidencia documental que respalde al menos tres eventos de abuso distintos ocurridos durante el período de convivencia con el abusador.</div><div class="q-opt" onclick="eSel(this,'q4')" data-val="4"><div class="q-radio"></div>D) Haber reportado formalmente el abuso a la policía o a una autoridad competente en al menos una ocasión concreta.</div></div>
+  <div class="sdiv"><div class="l"></div><div class="t">Módulo 2 — El Abusómetro</div><div class="l"></div><div class="q-fb" id="ef-q4"></div></div>
+  <div class="q-item" id="exam-q5"><div class="q-num">Pregunta 5 · Módulo 2</div><div class="q-text">¿Cuál de los siguientes abusos corresponde al nivel ROJO en el Abusómetro?</div><div class="q-opt" onclick="eSel(this,'q5')" data-val="1"><div class="q-radio"></div>A) El abusador azota puertas repetidamente para intimidar a la víctima y generar un ambiente de miedo.</div><div class="q-opt" onclick="eSel(this,'q5')" data-val="2"><div class="q-radio"></div>B) El abusador aplica la ley del hielo durante varios días consecutivos como mecanismo de control emocional hacia la víctima.</div><div class="q-opt" onclick="eSel(this,'q5')" data-val="3"><div class="q-radio"></div>C) El abusador estrangula a la víctima durante una discusión, poniendo en riesgo directo e inmediato su integridad física y su vida.</div><div class="q-opt" onclick="eSel(this,'q5')" data-val="4"><div class="q-radio"></div>D) El abusador insulta sistemáticamente a la víctima llamándola inútil e incapaz frente a otras personas.</div><div class="q-fb" id="ef-q5"></div></div>
+  <div class="q-item" id="exam-q6"><div class="q-num">Pregunta 6 · Módulo 2</div><div class="q-text">El control financiero sistemático (prohibir trabajar, retener dinero para comida, obligar a pedir préstamos) se clasifica como:</div><div class="q-opt" onclick="eSel(this,'q6')" data-val="1"><div class="q-radio"></div>A) Rojo — abuso fuerte.</div><div class="q-opt" onclick="eSel(this,'q6')" data-val="2"><div class="q-radio"></div>B) Naranja — abuso medio, que con agravantes puede subir a rojo.</div><div class="q-opt" onclick="eSel(this,'q6')" data-val="3"><div class="q-radio"></div>C) Amarillo — abuso débil, solo contexto.</div><div class="q-opt" onclick="eSel(this,'q6')" data-val="4"><div class="q-radio"></div>D) Verde — no es abuso porque no hay violencia física.</div><div class="q-fb" id="ef-q6"></div></div>
+  <div class="q-item" id="exam-q7"><div class="q-num">Pregunta 7 · Módulo 2</div><div class="q-text">¿Qué significa que un abuso esté marcado con (G) en el Abusómetro?</div><div class="q-opt" onclick="eSel(this,'q7')" data-val="1"><div class="q-radio"></div>A) Que se trata de un abuso que fue grabado en video y por tanto cuenta con evidencia directa y verificable disponible para el caso.</div><div class="q-opt" onclick="eSel(this,'q7')" data-val="2"><div class="q-radio"></div>B) Que se trata de un abuso gravísimo que siempre corresponde al nivel rojo sin importar el contexto o los agravantes presentes en el caso.</div><div class="q-opt" onclick="eSel(this,'q7')" data-val="3"><div class="q-radio"></div>C) Que debe excluirse de la DCL porque incluirlo puede resultar contraproducente para la credibilidad general del expediente ante USCIS.</div><div class="q-opt" onclick="eSel(this,'q7')" data-val="4"><div class="q-radio"></div>D) Que fue clasificado en su grado mínimo de gravedad y puede subir de nivel según los agravantes concretos presentes en el caso.</div><div class="q-fb" id="ef-q7"></div></div>
+  <div class="q-item" id="exam-q8"><div class="q-num">Pregunta 8 · Módulo 2</div><div class="q-text">Tu cliente menciona cuatro eventos. ¿Cuál debes priorizar primero según el Abusómetro?</div><div class="q-opt" onclick="eSel(this,'q8')" data-val="1"><div class="q-radio"></div>A) El evento más reciente, sin importar su nivel de contundencia.</div><div class="q-opt" onclick="eSel(this,'q8')" data-val="2"><div class="q-radio"></div>B) El evento más contundente según el Abusómetro, sin importar su cronología.</div><div class="q-opt" onclick="eSel(this,'q8')" data-val="3"><div class="q-radio"></div>C) El evento más fácil de relatar para generar confianza.</div><div class="q-opt" onclick="eSel(this,'q8')" data-val="4"><div class="q-radio"></div>D) El orden es indiferente si todos los eventos se cubren al final.</div><div class="q-fb" id="ef-q8"></div></div>
+  <div class="q-item" id="exam-q9"><div class="q-num">Pregunta 9 · Módulo 2</div><div class="q-text">¿Cuál es el riesgo de incluir conductas de categoría verde en la DCL?</div><div class="q-opt" onclick="eSel(this,'q9')" data-val="1"><div class="q-radio"></div>A) Que la declaración sea demasiado larga para el oficial.</div><div class="q-opt" onclick="eSel(this,'q9')" data-val="2"><div class="q-radio"></div>B) Que el caso se vea más sólido pero tarde más en procesarse.</div><div class="q-opt" onclick="eSel(this,'q9')" data-val="3"><div class="q-radio"></div>C) Que se dañe la credibilidad del caso porque el oficial puede interpretar que el estándar del cliente para "abuso" es demasiado bajo.</div><div class="q-opt" onclick="eSel(this,'q9')" data-val="4"><div class="q-radio"></div>D) Que se duplique el tiempo de entrevista en futuras sesiones.</div></div>
+  <div class="sdiv"><div class="l"></div><div class="t">Módulo 3 — Prácticas de Entrevista</div><div class="l"></div><div class="q-fb" id="ef-q9"></div></div>
+  <div class="q-item" id="exam-q10"><div class="q-num">Pregunta 10 · Módulo 3</div><div class="q-text">La regla 80/20 en la entrevista VAWA significa que:</div><div class="q-opt" onclick="eSel(this,'q10')" data-val="1"><div class="q-radio"></div>A) El 80% de la entrevista se dedica a datos de background y el 20% a eventos de abuso.</div><div class="q-opt" onclick="eSel(this,'q10')" data-val="2"><div class="q-radio"></div>B) El cliente debe hablar el 80% del tiempo y el agente interviene el 20%.</div><div class="q-opt" onclick="eSel(this,'q10')" data-val="3"><div class="q-radio"></div>C) El 80% del caso depende de la entrevista y el 20% de las evidencias.</div><div class="q-opt" onclick="eSel(this,'q10')" data-val="4"><div class="q-radio"></div>D) El agente confirma el 80% del Intake y profundiza el 20% restante.</div><div class="q-fb" id="ef-q10"></div></div>
+  <div class="q-item" id="exam-q11"><div class="q-num">Pregunta 11 · Módulo 3</div><div class="q-text">¿Cuál de las siguientes es una pregunta abierta correcta para explorar un evento de abuso?</div><div class="q-opt" onclick="eSel(this,'q11')" data-val="1"><div class="q-radio"></div>A) "¿Él la golpeó con la mano o con algún objeto?" — pregunta cerrada que dirige la respuesta hacia dos opciones específicas.</div><div class="q-opt" onclick="eSel(this,'q11')" data-val="2"><div class="q-radio"></div>B) "¿Eso le causó mucho miedo, verdad?" — pregunta que sugiere directamente la respuesta emocional esperada del cliente.</div><div class="q-opt" onclick="eSel(this,'q11')" data-val="3"><div class="q-radio"></div>C) "Descríbame lo que pasó esa vez, desde el principio." — pregunta abierta que invita al cliente a narrar sin sugerir ni dirigir la respuesta.</div><div class="q-opt" onclick="eSel(this,'q11')" data-val="4"><div class="q-radio"></div>D) "¿No es cierto que él siempre reaccionaba de esa forma cuando había consumido alcohol?" — pregunta dirigida que induce la respuesta.</div><div class="q-fb" id="ef-q11"></div></div>
+  <div class="q-item" id="exam-q12"><div class="q-num">Pregunta 12 · Módulo 3</div><div class="q-text">Durante la entrevista, tu cliente menciona: "una vez fue al médico de urgencias." ¿Cuál es la acción correcta?</div><div class="q-opt" onclick="eSel(this,'q12')" data-val="1"><div class="q-radio"></div>A) Continuar escuchando el relato completo y solicitar los documentos médicos disponibles al final de toda la entrevista.</div><div class="q-opt" onclick="eSel(this,'q12')" data-val="2"><div class="q-radio"></div>B) Anotar mentalmente que existe evidencia médica relevante y planificar su gestión en una llamada de seguimiento posterior.</div><div class="q-opt" onclick="eSel(this,'q12')" data-val="3"><div class="q-radio"></div>C) Omitir la mención de la visita médica: si ya hay otras evidencias disponibles, la médica no es prioritaria para el expediente.</div><div class="q-opt" onclick="eSel(this,'q12')" data-val="4"><div class="q-radio"></div>D) Solicitar inmediatamente los registros de la visita, preguntar si hay fotos de lesiones y explicar en ese momento la relevancia probatoria de esa evidencia.</div><div class="q-fb" id="ef-q12"></div></div>
+  <div class="q-item" id="exam-q13"><div class="q-num">Pregunta 13 · Módulo 3</div><div class="q-text">¿Por qué es un error dejar la búsqueda de evidencias para el final de la entrevista?</div><div class="q-opt" onclick="eSel(this,'q13')" data-val="1"><div class="q-radio"></div>A) Porque la solicitud de evidencias tiene más sentido narrativo y contexto cuando se hace durante el evento específico que la generó, en el momento de mayor claridad.</div><div class="q-opt" onclick="eSel(this,'q13')" data-val="2"><div class="q-radio"></div>B) Porque el cliente se cansa progresivamente durante la entrevista y al final puede negarse a proporcionar los documentos solicitados.</div><div class="q-opt" onclick="eSel(this,'q13')" data-val="3"><div class="q-radio"></div>C) Porque las evidencias deben enviarse y registrarse antes del inicio formal de la entrevista PWC para que sean válidas.</div><div class="q-opt" onclick="eSel(this,'q13')" data-val="4"><div class="q-radio"></div>D) Porque el sistema de gestión de casos solo acepta evidencias que hayan sido registradas dentro de las primeras dos horas de cada sesión.</div></div>
+  <div class="sdiv"><div class="l"></div><div class="t">Módulo 4 — Los 7 Oros</div><div class="l"></div><div class="q-fb" id="ef-q13"></div></div>
+  <div class="q-item" id="exam-q14"><div class="q-num">Pregunta 14 · Módulo 4</div><div class="q-text">¿Qué establece la fase de INICIO en la estructura de los 7 Oros?</div><div class="q-opt" onclick="eSel(this,'q14')" data-val="1"><div class="q-radio"></div>A) Las consecuencias físicas y emocionales del evento para la víctima.</div><div class="q-opt" onclick="eSel(this,'q14')" data-val="2"><div class="q-radio"></div>B) El contexto temporal (¿cuándo?), espacial (¿dónde?) y el antecedente (¿qué pasaba antes?).</div><div class="q-opt" onclick="eSel(this,'q14')" data-val="3"><div class="q-radio"></div>C) Los objetos o medios utilizados por el abusador.</div><div class="q-opt" onclick="eSel(this,'q14')" data-val="4"><div class="q-radio"></div>D) La sistematización del abuso y la frecuencia con que ocurría.</div><div class="q-fb" id="ef-q14"></div></div>
+  <div class="q-item" id="exam-q15"><div class="q-num">Pregunta 15 · Módulo 4</div><div class="q-text">¿Por qué la pregunta "¿por qué?" no debe hacerse directamente a una víctima de violencia?</div><div class="q-opt" onclick="eSel(this,'q15')" data-val="1"><div class="q-radio"></div>A) Porque despierta respuestas defensivas y sentimientos de culpa en la víctima.</div><div class="q-opt" onclick="eSel(this,'q15')" data-val="2"><div class="q-radio"></div>B) Porque es una pregunta cerrada que no invita a desarrollar el relato.</div><div class="q-opt" onclick="eSel(this,'q15')" data-val="3"><div class="q-radio"></div>C) Porque la motivación del abusador no es relevante para el caso VAWA.</div><div class="q-opt" onclick="eSel(this,'q15')" data-val="4"><div class="q-radio"></div>D) Porque el USCIS no acepta argumentos basados en motivaciones subjetivas.</div><div class="q-fb" id="ef-q15"></div></div>
+  <div class="q-item" id="exam-q16"><div class="q-num">Pregunta 16 · Módulo 4</div><div class="q-text">¿En qué momento se aplican los 7 Oros dentro de la entrevista?</div><div class="q-opt" onclick="eSel(this,'q16')" data-val="1"><div class="q-radio"></div>A) Al inicio de la entrevista como cuestionario general para mapear todos los eventos que el cliente menciona.</div><div class="q-opt" onclick="eSel(this,'q16')" data-val="2"><div class="q-radio"></div>B) En cualquier momento de la entrevista sin un orden fijo, adaptándose al flujo natural del relato del cliente.</div><div class="q-opt" onclick="eSel(this,'q16')" data-val="3"><div class="q-radio"></div>C) Solo en la fase de cierre de la entrevista, para cerrar emocionalmente cada evento antes de concluir la sesión.</div><div class="q-opt" onclick="eSel(this,'q16')" data-val="4"><div class="q-radio"></div>D) Sobre un evento específico ya identificado y priorizado según el Abusómetro, no como cuestionario general al inicio de la sesión.</div><div class="q-fb" id="ef-q16"></div></div>
+  <div class="q-item" id="exam-q17"><div class="q-num">Pregunta 17 · Módulo 4</div><div class="q-text">¿A qué fase de los 7 Oros pertenecen las preguntas: "¿Esto había pasado antes? ¿Cada cuánto ocurría? ¿Qué sintió usted en ese momento?"</div><div class="q-opt" onclick="eSel(this,'q17')" data-val="1"><div class="q-radio"></div>A) Al CIERRE: cubren la sistematización del abuso (frecuencia) y el cierre emocional del evento con la víctima.</div><div class="q-opt" onclick="eSel(this,'q17')" data-val="2"><div class="q-radio"></div>B) Al INICIO: establecen el contexto temporal antes de que el agente profundice en los hechos del evento.</div><div class="q-opt" onclick="eSel(this,'q17')" data-val="3"><div class="q-radio"></div>C) Al DESARROLLO: exploran la mecánica concreta y los detalles de cómo ocurrió el evento de abuso.</div><div class="q-opt" onclick="eSel(this,'q17')" data-val="4"><div class="q-radio"></div>D) Son preguntas de apertura general que se usan al inicio de la entrevista para establecer rapport con el cliente.</div><div class="q-fb" id="ef-q17"></div></div>
+  <div class="sdiv"><div class="l"></div><div class="t">Módulo 5 — Gestión</div><div class="l"></div></div>
+  <div class="q-item" id="exam-q18"><div class="q-num">Pregunta 18 · Módulo 5</div><div class="q-text">¿Cuál es la función principal del Pre-Draft en el proceso de entrevista VAWA?</div><div class="q-opt" onclick="eSel(this,'q18')" data-val="1"><div class="q-radio"></div>A) Es la declaración final que se envía a USCIS una vez que el agente completa la entrevista PWC con el cliente.</div><div class="q-opt" onclick="eSel(this,'q18')" data-val="2"><div class="q-radio"></div>B) Es un reemplazo de la entrevista PWC cuando el Intake contiene información suficientemente detallada del caso.</div><div class="q-opt" onclick="eSel(this,'q18')" data-val="3"><div class="q-radio"></div>C) Es una herramienta de diagnóstico que identifica qué ya está documentado y qué requiere profundización en la entrevista PWC.</div><div class="q-opt" onclick="eSel(this,'q18')" data-val="4"><div class="q-radio"></div>D) Es un formulario de validación que el BOT usa para verificar la consistencia de la información del Intake.</div><div class="q-fb" id="ef-q18"></div></div>
+  <div class="q-item" id="exam-q19"><div class="q-num">Pregunta 19 · Módulo 5</div><div class="q-text">Un evento de abuso ROJO mencionado brevemente en el Intake pero sin desarrollar debe tratarse en la entrevista PWC como:</div><div class="q-opt" onclick="eSel(this,'q19')" data-val="1"><div class="q-radio"></div>A) Un tema ya cubierto que solo necesita confirmación breve.</div><div class="q-opt" onclick="eSel(this,'q19')" data-val="2"><div class="q-radio"></div>B) El faltante prioritario número uno: se prepara la secuencia completa de 7 Oros para desarrollarlo a fondo.</div><div class="q-opt" onclick="eSel(this,'q19')" data-val="3"><div class="q-radio"></div>C) Un evento menor que el cliente puede decidir si quiere desarrollar o no.</div><div class="q-opt" onclick="eSel(this,'q19')" data-val="4"><div class="q-radio"></div>D) Información que el BOT ya procesó y que no necesita profundización adicional.</div><div class="q-fb" id="ef-q19"></div></div>
+  <div class="q-item" id="exam-q20"><div class="q-num">Pregunta 20 · Módulo 5</div><div class="q-text">¿Cuál es el riesgo principal de entrar a una entrevista PWC sin haber leído el Pre-Draft?</div><div class="q-opt" onclick="eSel(this,'q20')" data-val="1"><div class="q-radio"></div>A) Que el cliente sienta que el agente no está preparado y pierda confianza en el proceso y en la firma.</div><div class="q-opt" onclick="eSel(this,'q20')" data-val="2"><div class="q-radio"></div>B) Que el agente no pueda usar el sistema de KASE correctamente durante la llamada por falta de contexto previo.</div><div class="q-opt" onclick="eSel(this,'q20')" data-val="3"><div class="q-radio"></div>C) Que el agente no recuerde el nombre del cliente ni los datos básicos del caso al inicio de la llamada.</div><div class="q-opt" onclick="eSel(this,'q20')" data-val="4"><div class="q-radio"></div>D) Que el agente desperdicie el tiempo de la sesión en información ya documentada, comprometiendo la profundidad con que se desarrollan los eventos críticos.</div><div class="q-fb" id="ef-q20"></div></div>
+  <div class="exam-acts"><button class="btn-es" id="exam-sub" onclick="examSubmit()">Enviar Evaluación Final</button><button class="btn-er" id="exam-ret" onclick="examReset()">Reintentar Evaluación</button></div>
+  <div class="exam-result" id="exam-result"><div class="res-score" id="er-score">—</div><div id="er-label"></div><div id="er-msg"></div><div class="res-stats"><div class="rs-item"><div class="rs-val" id="er-ok">—</div><div class="rs-lbl">Correctas</div></div><div class="rs-item"><div class="rs-val" id="er-fail">—</div><div class="rs-lbl">Incorrectas</div></div><div class="rs-item"><div class="rs-val">20</div><div class="rs-lbl">Total</div></div></div></div>
+</div>
+<!-- SIMULADORES -->
+<div class="panel" id="panel-simuladores">
+  <div class="page-title"><div class="pt-label">Componente Práctico · 70%</div><h2>Simuladores de Entrevista VAWA</h2><p class="pt-sub">Casos prácticos interactivos · SPOUSE · PARENT · Battery · Extreme Cruelty · Mixtos</p></div>
+  <div class="alert info" style="margin-bottom:16px"><span class="alert-icon">🔬</span><div><strong>Objetivo:</strong> Aplicar de manera integrada todos los conocimientos del training en casos simulados. Identifica el tipo de abuso, clasifícalo según el Abusómetro, selecciona el abordaje correcto y gestiona las evidencias.</div></div>
+  <!-- CASO 1 -->
+  <div class="sim-card"><div class="sim-hdr"><div class="sim-badge">Simulador 01 · VAWA SPOUSE</div><div class="sim-title">Valentina y Eduardo</div><div class="sim-meta"><span class="sim-tag">SPOUSE</span><span class="sim-tag naranja">Extreme Cruelty</span><span class="sim-tag rojo">Battery</span></div></div>
+  <div class="sim-body">
+    <div class="case-box"><div class="case-lbl">📋 Narrativa del caso</div><div class="case-txt">Valentina lleva 7 años casada con Eduardo, ciudadano americano. En el Intake menciona brevemente: "Una vez me empujó tan fuerte que me caí por las escaleras." También menciona que Eduardo controla todo el dinero, no le da acceso a ninguna cuenta, la llama 40 veces al día para saber dónde está, y que "ha dicho varias veces que si lo dejo, llama a ICE y me quita a mis hijos." El BOT indica que el evento de las escaleras NO fue desarrollado.</div></div>
+    <div class="sim-q">P1: ¿Cuál es el evento más contundente y cuál debe abordarse primero?</div>
+    <button class="opt-btn" onclick="simAns(this,'s1q1','w')">A) El control de dinero (naranja) — es sistemático, frecuente y debe abordarse primero por la cantidad de evidencia disponible que lo respalda.</button>
+    <button class="opt-btn" onclick="simAns(this,'s1q1','w')">B) Las llamadas de control y monitoreo constante (naranja) — son el patrón más fácil de documentar y el punto de partida más sólido del caso.</button>
+    <button class="opt-btn" onclick="simAns(this,'s1q1','c')">C) El evento de las escaleras (empujón con caída) — abuso físico con posible consecuencia médica, el único faltante rojo prioritario que debe desarrollarse con los 7 Oros.</button>
+    <button class="opt-btn" onclick="simAns(this,'s1q1','w')">D) Las amenazas de deportación y quitarle los hijos — son las más intimidantes y las que mayor impacto emocional tienen para la víctima.</button>
+    <div class="sim-fb" id="s1q1-fb"></div>
+    <div class="sim-q">P2: Al desarrollar el evento de las escaleras con los 7 Oros, ¿cuál sería la primera pregunta correcta de la fase de INICIO?</div>
+    <button class="opt-btn" onclick="simAns(this,'s1q2','c')">A) "Cuénteme sobre esa ocasión en las escaleras. ¿Cuándo fue aproximadamente? ¿En qué parte de la casa estaban?" — INICIO del evento con contexto temporal y espacial.</button>
+    <button class="opt-btn" onclick="simAns(this,'s1q2','w')">B) "¿Cuántas veces la empujó Eduardo? ¿Siempre actuaba de forma tan violenta con usted?" — para establecer la sistematización del abuso físico.</button>
+    <button class="opt-btn" onclick="simAns(this,'s1q2','w')">C) "¿Eso le causó mucho daño físico? ¿Fue al médico después? ¿Tiene fotos de las lesiones que sufrió?" — para solicitar evidencias del evento.</button>
+    <button class="opt-btn" onclick="simAns(this,'s1q2','w')">D) "¿Por qué cree usted que Eduardo reaccionó de esa forma en ese momento específico?" — para entender la motivación del abusador.</button>
+    <div class="sim-fb" id="s1q2-fb"></div>
+  </div></div>
+  <!-- CASO 2 -->
+  <div class="sim-card"><div class="sim-hdr"><div class="sim-badge">Simulador 02 · VAWA PARENT</div><div class="sim-title">Marcos y su padre Roberto</div><div class="sim-meta"><span class="sim-tag">PARENT</span><span class="sim-tag rojo">Battery</span><span class="sim-tag naranja">Extreme Cruelty</span></div></div>
+  <div class="sim-body">
+    <div class="case-box"><div class="case-lbl">📋 Narrativa del caso</div><div class="case-txt">Marcos, 24 años, hijo de Roberto, ciudadano americano. En el Intake describe tres situaciones: (a) "Mi papá me golpeaba con un cinturón cuando era niño, varias veces." (b) "Me decía que era un fracaso y que nunca lograría nada." (c) "Una vez me apuntó con una escopeta y me dijo que me iba a matar si no le obedecía." El BOT marca el evento (c) como faltante crítico sin desarrollar.</div></div>
+    <div class="sim-q">P1: El BOT marca (c) como faltante crítico. ¿Cómo preparas tu estrategia?</div>
+    <button class="opt-btn" onclick="simAns(this,'s2q1','w')">A) Haces que Marcos repita los tres eventos desde el principio para obtener versiones más completas y detalladas de todos ellos sin excepción.</button>
+    <button class="opt-btn" onclick="simAns(this,'s2q1','w')">B) Omites el evento (c) de la escopeta porque Marcos ya estaba asustado al relatarlo y no quieres causarle trauma adicional durante la entrevista.</button>
+    <button class="opt-btn" onclick="simAns(this,'s2q1','w')">C) Le preguntas a Marcos si tiene alguna preferencia sobre por cuál evento quiere que empiecen la entrevista ese día.</button>
+    <button class="opt-btn" onclick="simAns(this,'s2q1','c')">D) Confirmas brevemente (a) y (b), y concentras la entrevista en desarrollar (c) —el evento de la escopeta— con la secuencia completa de 7 Oros: es el faltante rojo prioritario.</button>
+    <div class="sim-fb" id="s2q1-fb"></div>
+    <div class="sim-q">P2: Durante el desarrollo de (c), Marcos menciona: "Me acuerdo que después tuve pesadillas durante meses y empecé terapia psicológica." ¿Cuál es la acción correcta?</div>
+    <button class="opt-btn" onclick="simAns(this,'s2q2','w')">A) Continúas con el relato del evento sin interrumpir; las consecuencias psicológicas las cubres en la fase de cierre de ese evento.</button>
+    <button class="opt-btn" onclick="simAns(this,'s2q2','w')">B) Anotas el dato de la terapia para el Pre-Draft final y sigues con el evento; la gestión de esa evidencia se coordina al final de la entrevista.</button>
+    <button class="opt-btn" onclick="simAns(this,'s2q2','c')">C) Solicitas inmediatamente los registros de terapia psicológica y explicas en ese momento que son evidencia clave del impacto emocional del evento.</button>
+    <button class="opt-btn" onclick="simAns(this,'s2q2','w')">D) Le preguntas cuántas sesiones de terapia tuvo en total para determinar si el nivel de impacto psicológico fue suficientemente serio para el caso.</button>
+    <div class="sim-fb" id="s2q2-fb"></div>
+  </div></div>
+  <!-- CASO 3 -->
+  <div class="sim-card"><div class="sim-hdr"><div class="sim-badge">Simulador 03 · Clasificación y Priorización</div><div class="sim-title">Daniela — Caso Mixto Battery + Extreme Cruelty</div><div class="sim-meta"><span class="sim-tag">SPOUSE</span><span class="sim-tag rojo">Mixto</span></div></div>
+  <div class="sim-body">
+    <div class="case-box"><div class="case-lbl">📋 Narrativa del caso</div><div class="case-txt">Daniela, 5 años casada con Carlos, LPR. Menciona: (a) "Me decía groserías frente a mis hijos casi todos los días." (b) "Una vez me estranguló en la cocina; perdí el conocimiento." (c) "Salía de fiesta los fines de semana sin avisarme." (d) "Me amenazaba con llamar a ICE si le pedía dinero para la renta." (e) "Rompió mi celular cuando descubrió que llamé a mi mamá."</div></div>
+    <div class="sim-q">P1: Clasifica los cinco eventos según el Abusómetro e identifica el orden correcto de priorización.</div>
+    <button class="opt-btn" onclick="simAns(this,'s3q1','c')">A) (b) Rojo · (d) Naranja · (a) Naranja · (e) Naranja · (c) Verde. Orden de prioridad: (b) → (d) → (a) y (e) simultáneamente → excluir (c) de la DCL.</button>
+    <button class="opt-btn" onclick="simAns(this,'s3q1','w')">B) Todos los eventos descritos por Carmen son rojos y deben desarrollarse con la misma profundidad y en cualquier orden durante la entrevista.</button>
+    <button class="opt-btn" onclick="simAns(this,'s3q1','w')">C) (b) Rojo · (d) Amarillo · (a) Verde · (e) Verde · (c) Verde. Solo debe priorizarse y desarrollarse el evento (b) en la entrevista.</button>
+    <button class="opt-btn" onclick="simAns(this,'s3q1','w')">D) (a) Rojo por su carácter sistemático · (b) Naranja · (d) Amarillo · (e) Amarillo · (c) Naranja. Priorizar (a) primero.</button>
+    <div class="sim-fb" id="s3q1-fb"></div>
+  </div></div>
+  <!-- CASO 4 -->
+  <div class="sim-card"><div class="sim-hdr"><div class="sim-badge">Simulador 04 · Manejo de Evidencias</div><div class="sim-title">Sergio — Estrategia de Evidencias Durante el Evento</div><div class="sim-meta"><span class="sim-tag">SPOUSE</span><span class="sim-tag rojo">Battery</span><span class="sim-tag naranja">Extreme Cruelty</span></div></div>
+  <div class="sim-body">
+    <div class="case-box"><div class="case-lbl">📋 Narrativa del caso</div><div class="case-txt">Sergio está desarrollando un evento: el esposo encerró a su cliente dos noches seguidas sin acceso a agua ni comida, después de que ella intentó llamar a la policía. Durante el relato, la cliente menciona: "Esa vez sí llamé al 911 pero cuando contestaron me asusté y colgué." También comenta: "Creo que tengo todavía los mensajes donde él me decía que si llamaba a la policía me mataría."</div></div>
+    <div class="sim-q">P1: La cliente menciona dos posibles evidencias durante el relato. ¿Cuál es la acción correcta de Sergio?</div>
+    <button class="opt-btn" onclick="simAns(this,'s4q1','w')">A) Espera a que el cliente termine el evento completo con los 7 Oros y al final de ese bloque pregunta por ambas evidencias en conjunto.</button>
+    <button class="opt-btn" onclick="simAns(this,'s4q1','w')">B) No interrumpe el relato por la regla 80/20; la solicitud de evidencias es una actividad reservada para las llamadas de seguimiento posteriores.</button>
+    <button class="opt-btn" onclick="simAns(this,'s4q1','w')">C) Anota las evidencias mencionadas para incluirlas en la etapa de agenda al inicio de la siguiente entrevista programada.</button>
+    <button class="opt-btn" onclick="simAns(this,'s4q1','c')">D) Solicita el historial de llamadas del 911 y los screenshots de los mensajes en el momento exacto en que la cliente los menciona, explicando su relevancia legal.</button>
+    <div class="sim-fb" id="s4q1-fb"></div>
+  </div></div>
+  <div class="alert success" style="margin-top:6px"><span class="alert-icon">🏆</span><div><strong>Componente práctico completado.</strong> El dominio de estos simuladores, junto con la práctica supervisada en entrevistas reales, consolida las competencias del training. ¡Buen trabajo!</div></div>
+</div>
+</main></div>
+<script>
+var S={mod1:false,mod2:false,mod3:false,mod4:false,mod5:false,exam:false,examScore:0};
+var panels=['instrucciones','acerca','estructura','mod1','mod2','mod3','mod4','mod5','evaluacion','simuladores'];
+function showPanel(id){
+  panels.forEach(function(p){var e=document.getElementById('panel-'+p),n=document.getElementById('nav-'+p);if(e)e.classList.remove('active');if(n)n.classList.remove('active');});
+  var t=document.getElementById('panel-'+id),n=document.getElementById('nav-'+id);
+  if(t)t.classList.add('active');if(n)n.classList.add('active');
+  updateProg();window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=900){document.getElementById('sidebar').classList.remove('open');document.getElementById('sbOverlay').classList.remove('show');}
+}
+function tryMod(m){var locks={mod2:!S.mod1,mod3:!S.mod2,mod4:!S.mod3,mod5:!S.mod4};if(locks[m])lockedMsg(m);else showPanel(m);}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sbOverlay').classList.toggle('show');}
+function lockedMsg(m){var msgs={mod2:'Completa los ejercicios del Módulo 1 para desbloquear el Módulo 2.',mod3:'Completa los ejercicios del Módulo 2 para desbloquear el Módulo 3.',mod4:'Completa los ejercicios del Módulo 3 para desbloquear el Módulo 4.',mod5:'Completa los ejercicios del Módulo 4 para desbloquear el Módulo 5.'};alert('🔒 '+(msgs[m]||'Completa el módulo anterior para continuar.'));}
+function updateProg(){
+  var done=[S.mod1,S.mod2,S.mod3,S.mod4,S.mod5].filter(Boolean).length;
+  var pct=Math.round((done+(S.exam?2:0))/7*100);
+  document.getElementById('gp').style.width=pct+'%';
+  var tp=Math.round(done/5*100),ep=S.exam?100:0;
+  var tpe=document.getElementById('prog-theory'),pctT=document.getElementById('pct-theory');
+  var epe=document.getElementById('prog-eval'),pctE=document.getElementById('pct-eval');
+  if(tpe){tpe.style.width=tp+'%';pctT.textContent=tp+'%';}
+  if(epe){epe.style.width=ep+'%';pctE.textContent=ep+'%';}
+}
+/* MODULE EXERCISES */
+var mAns={m1:{},m2:{},m3:{},m4:{},m5:{}};
+var mCor={
+  m1:{q1:3,q2:4,q3:1,q4:4},
+  m2:{q1:3,q2:1,q3:4,q4:3},
+  m3:{q1:1,q2:4,q3:3,q4:1},
+  m4:{q1:4,q2:3,q3:1,q4:3},
+  m5:{q1:4,q2:3,q3:1,q4:2}
+};
+var mFB={
+  m1:{
+    q1:{ok:'✅ Correcto. Las amenazas de deportación como mecanismo de control son Extreme Cruelty. El criterio de elegibilidad no exige violencia física.',fail:'❌ Incorrecto. Las amenazas de deportación son un ejemplo clásico de Extreme Cruelty. Rosa califica plenamente como VAWA SPOUSE.'},
+    q2:{ok:'✅ Correcto. Padre/madre = PARENT. Cónyuge = SPOUSE. Tanto ciudadanos como LPR califican como abusadores bajo VAWA.',fail:'❌ Incorrecto. La clasificación depende del tipo de relación: filial = PARENT, conyugal = SPOUSE. Los LPR también califican.'},
+    q3:{ok:'✅ Correcto. La Extreme Cruelty es criterio independiente. Muchos casos VAWA se ganan exclusivamente con abuso psicológico y de control bien documentado.',fail:'❌ Incorrecto. La Extreme Cruelty no requiere violencia física. Control del celular, aislamiento y amenazas de quitar los hijos son Extreme Cruelty válida.'},
+    q4:{ok:'✅ Correcto. Empujones = Battery (rojo). Insultos sistemáticos frente a hijos = abuso emocional (naranja). Salir fines de semana y negarse a tener relaciones = categoría verde.',fail:'❌ Incorrecto. (c) y (d) son abuso. (a) y (b) son conductas de adulto autónomo sin dolo que no califican como abuso bajo VAWA.'}
+  },
+  m2:{
+    q1:{ok:'✅ Correcto. Pistola apuntada = rojo (máxima prioridad). Plato aventado = naranja. Amenazas para prohibir visitas = naranja. Ley del hielo para controlar dinero = amarillo como contexto.',fail:'❌ Incorrecto. La pistola apuntada es siempre rojo y la prioridad máxima. El plato aventado es naranja (no rojo) porque es un solo episodio sin contacto directo.'},
+    q2:{ok:'✅ Correcto. Los agravantes elevan un abuso graduable al siguiente nivel. Monto alto, préstamos y amenazas convierten un amarillo en naranja.',fail:'❌ Incorrecto. Los agravantes pueden elevar la clasificación. Este caso tiene elementos concretos que lo suben al menos a naranja.'},
+    q3:{ok:'✅ Correcto. Los insultos graves y sistemáticos son abuso verbal. No ayudar en casa, salir los domingos y llegar borracho sin agresión son categoría verde.',fail:'❌ Incorrecto. Solo los insultos fuertes y sistemáticos califican como abuso. Las otras conductas son categoría verde: adulto autónomo sin dolo.'},
+    q4:{ok:'✅ Correcto. Siempre de lo más contundente a lo menos: estrangulamiento (rojo) → vigilancia telefónica (naranja) → insultos (naranja/amarillo) → puerta (amarillo).',fail:'❌ Incorrecto. La priorización debe ir del abuso más contundente al menos contundente. El estrangulamiento es siempre la primera prioridad.'}
+  },
+  m3:{
+    q1:{ok:'✅ Correcto. La regla 80/20 no significa dejar divagar indefinidamente. El agente redirige con naturalidad cuando la información no vincula al abuso.',fail:'❌ Incorrecto. La regla 80/20 aplica dentro del tema relevante. Cuando el cliente divaga sin vinculación al abuso, el agente redirige con naturalidad hacia los eventos prioritarios.'},
+    q2:{ok:'✅ Correcto. La pregunta abierta invita a narrar sin sugerir ni dirigir. Las otras opciones son cerradas, dirigidas o sugieren emociones al cliente.',fail:'❌ Incorrecto. "Cuénteme desde el principio" es la única pregunta abierta. Las otras confirman hechos, sugieren emociones o dirigen la respuesta del cliente.'},
+    q3:{ok:'✅ Correcto. La solicitud de evidencia es inmediata cuando el cliente menciona algo evidenciable. En ese momento el evento está fresco y la solicitud tiene contexto narrativo.',fail:'❌ Incorrecto. La evidencia se solicita de inmediato cuando surge en el relato. Dejarla para el final reduce la efectividad de la solicitud.'},
+    q4:{ok:'✅ Correcto. MyCase muestra qué ya está cubierto. Los eventos del 2022 y 2023 solo se corroboran; el encierro es el faltante prioritario y merece desarrollo completo con los 7 Oros.',fail:'❌ Incorrecto. La entrevista se enfoca en los faltantes, no en repetir lo que ya tiene cobertura en el Intake.'}
+  },
+  m4:{
+    q1:{ok:'✅ Correcto. La fase de INICIO establece: ¿cuándo? (tiempo), ¿dónde? (espacio) y ¿qué pasaba antes? (antecedente). Las otras opciones mezclan preguntas de otras fases.',fail:'❌ Incorrecto. El INICIO establece contexto temporal y espacial antes de profundizar. Preguntas sobre daño, frecuencia o sentimientos corresponden a otras fases.'},
+    q2:{ok:'✅ Correcto. La pregunta "¿por qué?" directa activa culpa y defensividad. La reformulación indirecta explora motivación sin colocar la responsabilidad en la víctima.',fail:'❌ Incorrecto. La pregunta "¿por qué?" directa despierta respuestas defensivas y sentimientos de culpa. Se explora de forma indirecta.'},
+    q3:{ok:'✅ Correcto. El CIERRE cubre: cómo terminó, consecuencias físicas y emocionales, sistematización (¿cada cuándo?) y cierre emocional (¿qué sintió/pensó?).',fail:'❌ Incorrecto. Las preguntas del CIERRE cubren consecuencias, sistematización y cierre emocional. Las preguntas de dónde/cuándo son del INICIO; con qué del DESARROLLO.'},
+    q4:{ok:'✅ Correcto. Los 7 Oros se aplican sobre un evento específico ya priorizado. Primero identificar cuál es el abuso más contundente, luego desarrollarlo.',fail:'❌ Incorrecto. Los 7 Oros no son un cuestionario general. Se aplican sobre un evento específico ya identificado y priorizado según el Abusómetro.'}
+  },
+  m5:{
+    q1:{ok:'✅ Correcto. El Pre-Draft identifica qué ya está cubierto y qué requiere profundización. La entrevista se focaliza en los faltantes; lo documentado solo se confirma brevemente.',fail:'❌ Incorrecto. El Pre-Draft existe precisamente para evitar redundancias. Los faltantes son el foco central de la entrevista PWC.'},
+    q2:{ok:'✅ Correcto. El Pre-Draft existe para evitar redundancias. No leerlo desperdicia el tiempo más valioso de la sesión y compromete la profundidad con que se desarrollan los eventos.',fail:'❌ Incorrecto. El problema central es haber entrado sin leer el Pre-Draft. Esto llevó a repetir información ya documentada en lugar de profundizar los faltantes críticos.'},
+    q3:{ok:'✅ Correcto. Un evento de abuso rojo no desarrollado es el faltante más crítico. La entrevista PWC existe para completarlo. Se prepara la secuencia de 7 Oros antes de la llamada.',fail:'❌ Incorrecto. Un evento rojo sin desarrollar es siempre el faltante prioritario número uno. La entrevista PWC existe específicamente para completar estos vacíos.'},
+    q4:{ok:'✅ Correcto. Intake → BOT procesa → agente estudia y prepara Call Strategy → entrevista PWC focalizada en faltantes.',fail:'❌ Incorrecto. El flujo correcto es: Intake → BOT genera Pre-Draft → Agente estudia el reporte y prepara su estrategia → Entrevista PWC focalizada en los faltantes.'}
+  }
+};
+function mSel(el,mod,q,val){
+  var id=mod+q;document.querySelectorAll('#'+mod+'q'+q.slice(1)+' .ck2-opt').forEach(function(o){o.classList.remove('selected');});
+  el.classList.add('selected');if(!mAns[mod])mAns[mod]={};mAns[mod][q]=val;
+}
+function mVerify(mod){
+  var qs=mod==='m1'?['q1','q3','q4']:['q1','q2','q3','q4'],cor=0;
+  qs.forEach(function(q){
+    var uid=mod+'q'+q.slice(1);
+    var ua=mAns[mod]&&mAns[mod][q],ca=mCor[mod][q];
+    var fb=document.getElementById(mod+q+'fb');
+    document.querySelectorAll('#'+uid+' .ck2-opt').forEach(function(o){
+      o.classList.add('disabled');var v=parseInt(o.dataset.val);
+      if(v===ca)o.classList.add('correct');else if(v===ua&&ua!==ca)o.classList.add('incorrect');
+    });
+    if(fb){fb.className='ck-fb show '+(ua===ca?'ok':'fail');fb.textContent=ua===ca?mFB[mod][q].ok:mFB[mod][q].fail;}
+    if(ua===ca)cor++;
+  });
+  var total=qs.length,pct=Math.round(cor/total*100),sum=document.getElementById(mod+'-sum');
+  sum.style.display='block';sum.className='ck-summary '+(pct>=75?'ok':pct>=50?'warn':'fail');
+  sum.textContent=cor+'/'+total+' correctas ('+pct+'%) — '+(pct>=75?'¡Excelente! Puedes avanzar al siguiente módulo.':pct>=50?'Buen avance. Revisa los temas con errores antes de continuar.':'Repasa el contenido del módulo e inténtalo de nuevo.');
+  document.getElementById(mod+'-vbtn').style.display='none';document.getElementById(mod+'-rbtn').style.display='inline-block';
+  if(pct>=75)document.getElementById(mod+'-nbtn').style.display='inline-block';
+}
+function mReset(mod){
+  mAns[mod]={};
+  var qs=mod==='m1'?['q1','q3','q4']:['q1','q2','q3','q4'];
+  qs.forEach(function(q){
+    document.querySelectorAll('#'+mod+'q'+q.slice(1)+' .ck2-opt').forEach(function(o){o.className='ck2-opt';});
+    var fb=document.getElementById(mod+q+'fb');if(fb)fb.className='ck-fb';
+  });
+  document.getElementById(mod+'-sum').style.display='none';document.getElementById(mod+'-vbtn').style.display='inline-block';
+  document.getElementById(mod+'-rbtn').style.display='none';document.getElementById(mod+'-nbtn').style.display='none';
+}
+function unlockNext(nextMod,navId,subId){
+  S[nextMod.replace('mod','mod')]=true;
+  var prevMod=nextMod==='mod2'?'mod1':nextMod==='mod3'?'mod2':nextMod==='mod4'?'mod3':'mod4';
+  S[prevMod]=true;
+  var nav=document.getElementById(navId),sub=document.getElementById(subId);
+  if(nav){nav.classList.remove('locked');nav.onclick=function(){showPanel(nextMod);};}
+  if(sub)sub.textContent='Teoría · Ejercicios';
+  var prevNav=document.getElementById('nav-'+prevMod);if(prevNav)prevNav.classList.add('completed');
+  showPanel(nextMod);updateProg();
+}
+function completeMods(){S.mod5=true;var n=document.getElementById('nav-mod5');if(n)n.classList.add('completed');showPanel('evaluacion');updateProg();}
+/* EXAM */
+var eAns={};
+var eCor={q1:3,q2:4,q3:2,q4:1,q5:3,q6:2,q7:4,q8:2,q9:3,q10:2,q11:3,q12:4,q13:1,q14:2,q15:1,q16:4,q17:1,q18:3,q19:2,q20:4};
+var eFB={
+  q1:{ok:'✅ Correcto. La distinción SPOUSE/PARENT determina el script, la relación a documentar y las particularidades del relato.',fail:'❌ Incorrecto. La distinción SPOUSE/PARENT determina el script de preguntas, el tipo de relación a documentar y las particularidades del relato de abuso.'},
+  q2:{ok:'✅ Correcto. Control financiero, vigilancia y amenazas de deportación son Extreme Cruelty válida como base autónoma del caso VAWA.',fail:'❌ Incorrecto. Control financiero, vigilancia y amenazas de deportación son Extreme Cruelty. La Extreme Cruelty no requiere violencia física.'},
+  q3:{ok:'✅ Correcto. Salir de fiesta sin amenazas ni intimidación es una conducta de adulto autónomo — categoría verde, no abuso.',fail:'❌ Incorrecto. Salir de fiesta sin amenazas es categoría verde. La vigilancia, los insultos sistemáticos y las amenazas de llevarse a los hijos sí califican como abuso.'},
+  q4:{ok:'✅ Correcto. El criterio de elegibilidad VAWA no requiere violencia física ni denuncias policiales. Solo ser víctima de violencia doméstica a manos de ciudadano o LPR.',fail:'❌ Incorrecto. El criterio de elegibilidad VAWA no exige violencia física documentada ni denuncias. Solo requiere ser víctima de violencia doméstica a manos de ciudadano o LPR.'},
+  q5:{ok:'✅ Correcto. El estrangulamiento es un abuso ROJO: demuestra claro riesgo para la vida e integridad de la víctima.',fail:'❌ Incorrecto. Azotar puertas = amarillo. Ley del hielo = amarillo. Insultar = amarillo. El estrangulamiento = rojo porque implica riesgo directo a la vida.'},
+  q6:{ok:'✅ Correcto. El control financiero sistemático es naranja en el Abusómetro. Con agravantes adecuados puede subir a rojo.',fail:'❌ Incorrecto. El control financiero sistemático es naranja. Puede subir a rojo con agravantes, pero no es verde ni es automáticamente rojo.'},
+  q7:{ok:'✅ Correcto. (G) significa "graduable": clasificado en su grado mínimo, puede subir según los agravantes del caso concreto.',fail:'❌ Incorrecto. (G) significa "graduable": el abuso fue clasificado en su nivel mínimo y puede subir según los agravantes presentes en el caso.'},
+  q8:{ok:'✅ Correcto. La priorización va siempre del abuso más contundente al menos contundente, sin importar la cronología.',fail:'❌ Incorrecto. La priorización va del abuso más contundente al menos contundente según el Abusómetro. La cronología no determina el orden de desarrollo.'},
+  q9:{ok:'✅ Correcto. Incluir conductas de categoría verde puede dañar la credibilidad del caso porque el oficial puede interpretar que el estándar del cliente para "abuso" es demasiado bajo.',fail:'❌ Incorrecto. El riesgo principal es de credibilidad: el oficial puede interpretar que el estándar del cliente para "abuso" es demasiado bajo, debilitando el caso.'},
+  q10:{ok:'✅ Correcto. La regla 80/20: el cliente habla el 80% del tiempo, el agente interviene el 20%. El rol del entrevistador es guiar, no dirigir.',fail:'❌ Incorrecto. La regla 80/20 se refiere a la distribución del tiempo de comunicación: el cliente habla el 80%, el agente interviene el 20%.'},
+  q11:{ok:'✅ Correcto. "Descríbame lo que pasó desde el principio" es una pregunta abierta que invita al cliente a narrar sin sugerir ni dirigir.',fail:'❌ Incorrecto. Las otras opciones son preguntas cerradas o dirigidas. Solo "Descríbame lo que pasó desde el principio" es abierta: invita a narrar sin inducir respuesta.'},
+  q12:{ok:'✅ Correcto. La evidencia se solicita de inmediato cuando el cliente la menciona, explicando su relevancia. En ese momento el evento está fresco.',fail:'❌ Incorrecto. La evidencia se solicita de inmediato cuando surge en el relato. Dejarla para el final reduce significativamente la efectividad de la solicitud.'},
+  q13:{ok:'✅ Correcto. La solicitud de evidencia tiene más sentido narrativo durante el evento específico que la genera. Es el momento de mayor contexto y efectividad.',fail:'❌ Incorrecto. Dejar las evidencias para el final pierde el contexto narrativo y la urgencia. La solicitud es más efectiva durante el evento que la genera.'},
+  q14:{ok:'✅ Correcto. La fase de INICIO establece el contexto temporal (¿cuándo?), espacial (¿dónde?) y el antecedente (¿qué pasaba antes?).',fail:'❌ Incorrecto. La fase de INICIO establece el contexto temporal y espacial, y el antecedente. Las consecuencias son del CIERRE; los objetos son del DESARROLLO.'},
+  q15:{ok:'✅ Correcto. La pregunta "¿por qué?" directa despierta defensividad y sentimientos de culpa en la víctima. Se explora siempre de forma indirecta.',fail:'❌ Incorrecto. La razón principal es psicológica: la pregunta "¿por qué?" directa activa defensividad y culpa en la víctima, no que sea cerrada o irrelevante.'},
+  q16:{ok:'✅ Correcto. Los 7 Oros se aplican sobre un evento específico ya identificado y priorizado, no como cuestionario general al inicio.',fail:'❌ Incorrecto. Los 7 Oros se aplican sobre un evento específico ya priorizado, no como cuestionario general al inicio ni solo en el cierre.'},
+  q17:{ok:'✅ Correcto. "¿Esto había pasado antes? ¿Cada cuánto ocurría? ¿Qué sintió usted en ese momento?" corresponden al CIERRE: sistematización y cierre emocional.',fail:'❌ Incorrecto. Las preguntas de ¿dónde? y ¿qué hora? son del INICIO. Las de "desde el principio" son del DESARROLLO. Las de sistematización y sentimientos son del CIERRE.'},
+  q18:{ok:'✅ Correcto. El Pre-Draft es una herramienta de diagnóstico: identifica qué ya está documentado y qué requiere profundización en la entrevista PWC.',fail:'❌ Incorrecto. El Pre-Draft es una herramienta de diagnóstico, no una declaración final ni un reemplazo de la entrevista PWC.'},
+  q19:{ok:'✅ Correcto. Un evento rojo sin desarrollar es el faltante prioritario número uno. La entrevista PWC existe para completarlo con los 7 Oros.',fail:'❌ Incorrecto. Un evento rojo sin desarrollar es el faltante más crítico. No debe confirmarse brevemente ni omitirse: debe desarrollarse en su totalidad con los 7 Oros.'},
+  q20:{ok:'✅ Correcto. Sin el Pre-Draft el agente arriesga desperdiciar el tiempo limitado de la sesión en información ya documentada, comprometiendo la profundidad de los eventos críticos.',fail:'❌ Incorrecto. La razón crítica es operativa: sin Pre-Draft el agente puede desperdiciar el tiempo de la sesión en información ya documentada, comprometiendo los eventos críticos.'}
+};
+function eSel(el,qId){
+  if(el.classList.contains('disabled'))return;
+  document.querySelectorAll('#exam-'+qId+' .q-opt').forEach(function(o){o.classList.remove('selected');});
+  el.classList.add('selected');eAns[qId]=parseInt(el.dataset.val);
+}
+function examSubmit(){
+  var total=20,cor=0;
+  for(var i=1;i<=total;i++){
+    var qId='q'+i,ua=eAns[qId],ca=eCor[qId],fb=document.getElementById('ef-'+qId);
+    document.querySelectorAll('#exam-'+qId+' .q-opt').forEach(function(o){
+      o.classList.add('disabled');var v=parseInt(o.dataset.val);
+      if(v===ca)o.classList.add('correct');else if(v===ua&&ua!==ca)o.classList.add('incorrect');
+    });
+    if(fb){fb.className='q-fb show '+(ua===ca?'ok':'fail');fb.textContent=ua===ca?eFB[qId].ok:eFB[qId].fail;}
+    if(ua===ca)cor++;
+  }
+  var pct=Math.round(cor/total*100),pass=pct>=80;
+  var res=document.getElementById('exam-result');res.classList.add('show');
+  var sc=document.getElementById('er-score');sc.textContent=pct+'%';sc.className='res-score '+(pass?'pass':pct>=60?'warn':'fail');
+  document.getElementById('er-label').textContent=pass?'✅ APROBADO':'❌ NO APROBADO';
+  document.getElementById('er-msg').textContent=pass?'¡Felicidades! Has superado la evaluación final del training con '+pct+'%. Has demostrado dominio del contenido teórico del programa.':'Tu puntaje es '+pct+'%. Necesitas al menos 80% para aprobar. Te recomendamos repasar los módulos con mayor dificultad e intentarlo de nuevo.';
+  document.getElementById('er-ok').textContent=cor;document.getElementById('er-fail').textContent=total-cor;
+  document.getElementById('exam-sub').style.display='none';document.getElementById('exam-ret').style.display='inline-block';
+  S.exam=true;S.examScore=pct;
+  var navE=document.getElementById('nav-evaluacion');if(navE&&pass)navE.classList.add('completed');
+  updateProg();res.scrollIntoView({behavior:'smooth'});
+}
+function examReset(){
+  eAns={};document.getElementById('exam-result').classList.remove('show');
+  for(var i=1;i<=20;i++){
+    var qId='q'+i;document.querySelectorAll('#exam-'+qId+' .q-opt').forEach(function(o){o.className='q-opt';});
+    var fb=document.getElementById('ef-'+qId);if(fb)fb.className='q-fb';
+  }
+  document.getElementById('exam-sub').style.display='inline-block';document.getElementById('exam-ret').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+/* SIMULATORS */
+var simFB={
+  s1q1:{c:'✅ Correcto. El evento de las escaleras (empujón con caída) es Battery — abuso físico con posible consecuencia médica y el único faltante rojo no desarrollado. Es la prioridad número uno del Pre-Draft.',w:'❌ Incorrecto. Aunque el control financiero, el monitoreo y las amenazas son importantes (naranja), el evento de las escaleras es el único faltante ROJO en el Pre-Draft y debe abordarse primero.'},
+  s1q2:{c:'✅ Correcto. La fase de INICIO establece el contexto temporal (¿cuándo?) y espacial (¿dónde?) antes de profundizar en los hechos del evento.',w:'❌ Incorrecto. La fase de INICIO establece cuándo y dónde. Preguntar por daño o fotos es del CIERRE. Preguntar por qué es la pregunta prohibida que nunca se hace directamente.'},
+  s2q1:{c:'✅ Correcto. El evento (c) —escopeta apuntada— es un faltante rojo crítico. La entrevista PWC existe para desarrollarlo con los 7 Oros. Los eventos (a) y (b) solo se corroboran brevemente.',w:'❌ Incorrecto. El Pre-Draft indica que (a) y (b) ya están documentados; solo se corroboran brevemente. El faltante prioritario es (c): abuso rojo que requiere desarrollo completo con los 7 Oros.'},
+  s2q2:{c:'✅ Correcto. La solicitud de evidencia (registros de terapia) se hace de inmediato cuando el cliente la menciona. En ese momento el contexto narrativo está activo y la solicitud tiene más sentido.',w:'❌ Incorrecto. La evidencia se solicita de inmediato cuando surge en el relato. Las consecuencias psicológicas y la terapia son evidencia clave que no debe dejarse para después.'},
+  s3q1:{c:'✅ Correcto. Estrangulamiento (b) = rojo. Amenaza ICE/dinero (d) = naranja. Insultos sistemáticos (a) = naranja. Daño a propiedad (e) = naranja. Salir fines de semana (c) = verde — excluir de DCL. Orden: b → d → a y e → excluir c.',w:'❌ Incorrecto. El estrangulamiento (b) es siempre rojo y la prioridad máxima. (c) salir de fiesta sin amenazas es categoría verde y no debe incluirse en la DCL. Revisa los niveles del Abusómetro.'},
+  s4q1:{c:'✅ Correcto. La regla 80/20 aplica dentro del tema relevante, pero no impide solicitar evidencias cuando el cliente las menciona. La solicitud inmediata durante el evento es la práctica correcta.',w:'❌ Incorrecto. La evidencia se solicita de inmediato cuando el cliente la menciona durante el evento. Esperar al final o a llamadas de seguimiento reduce la efectividad y puede resultar en evidencia no obtenida.'}
+};
+function simAns(btn,simQ,ans){
+  var group=btn.parentNode;
+  group.querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('correct','wrong');b.style.pointerEvents='none';});
+  btn.classList.add(ans==='c'?'correct':'wrong');
+  var fb=document.getElementById(simQ+'-fb');
+  if(fb){fb.className='sim-fb show '+(ans==='c'?'ok':'fail');fb.textContent=simFB[simQ][ans==='c'?'c':'w'];}
+}
+updateProg();
+</script>
+</body>
+</html>
