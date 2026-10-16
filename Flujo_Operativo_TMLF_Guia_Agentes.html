@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Flujo Operativo TMLF — Guía Rápida para Agentes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#07111c; --navy2:#0c1e30; --navy3:#122540; --navy4:#1a3354;
+  --gold:#c9a84c; --gold2:#e2c06a; --gold3:#f0d58a;
+  --gold-dim:rgba(201,168,76,.12); --gold-mid:rgba(201,168,76,.3); --gold-str:rgba(201,168,76,.55);
+  --off:#f3f5f8; --white:#fff; --text:#1a2a3a; --muted:#5a6e82; --light:#8fa3b8;
+  --card-border:rgba(26,51,84,.1);
+  --shadow-sm:0 2px 12px rgba(7,17,28,.07); --shadow-md:0 8px 28px rgba(7,17,28,.12);
+  --green:#0f7a4f; --amber:#b45309; --blue:#1e5c8a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--off);color:var(--text);line-height:1.55}
+
+/* ===== HEADER ===== */
+.hero{
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 55%,var(--navy3) 100%);
+  color:#fff; padding:52px 40px 44px; position:relative; overflow:hidden;
+}
+.hero::before{
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 88% 10%, rgba(201,168,76,.16), transparent 45%),
+    radial-gradient(circle at 8% 90%, rgba(123,174,212,.10), transparent 40%);
+  pointer-events:none;
+}
+.hero-inner{max-width:1180px;margin:0 auto;position:relative}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--gold-mid); background:var(--gold-dim);
+  color:var(--gold3); font-family:'Barlow Condensed',sans-serif;
+  font-size:12.5px; letter-spacing:1.4px; text-transform:uppercase;
+  padding:6px 14px; border-radius:999px; font-weight:600;
+}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--gold2)}
+.hero h1{
+  font-family:'Cormorant Garamond',serif; font-weight:700;
+  font-size:clamp(30px,4.2vw,46px); margin-top:16px; line-height:1.08; letter-spacing:.2px;
+}
+.hero h1 span{display:block; color:var(--gold2); font-style:italic; font-weight:600}
+.hero p{max-width:680px; margin-top:14px; color:var(--light); font-size:15.5px}
+.hero-legend{display:flex; gap:22px; flex-wrap:wrap; margin-top:26px}
+.hl-item{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--light)}
+.hl-swatch{width:13px;height:13px;border-radius:4px;flex:none}
+
+/* ===== MAIN ===== */
+.wrap{max-width:1180px; margin:0 auto; padding:44px 40px 80px}
+
+.section-label{
+  display:flex; align-items:center; gap:14px; margin:0 0 26px;
+}
+.section-label .num{
+  font-family:'Cormorant Garamond',serif; font-weight:700; color:var(--gold); font-size:15px;
+  border:1px solid var(--gold-mid); border-radius:50%; width:30px; height:30px;
+  display:flex; align-items:center; justify-content:center; flex:none;
+}
+.section-label h2{font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:600; color:var(--navy)}
+.section-label .rule{flex:1; height:1px; background:linear-gradient(90deg,var(--card-border),transparent)}
+
+/* ===== FLOW GRID ===== */
+.flow{display:flex; flex-direction:column; gap:0}
+.stage{
+  display:grid; grid-template-columns:56px 1fr; gap:0;
+  position:relative;
+}
+.stage-rail{
+  display:flex; flex-direction:column; align-items:center; position:relative;
+}
+.stage-pin{
+  width:38px; height:38px; border-radius:50%;
+  background:var(--sc, var(--navy4)); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px;
+  box-shadow:0 0 0 5px var(--off), 0 3px 10px rgba(7,17,28,.25);
+  z-index:2; flex:none;
+}
+.stage-line{
+  width:2px; flex:1; background:linear-gradient(var(--card-border),var(--card-border));
+  background-image:repeating-linear-gradient(to bottom, var(--sc, var(--navy4)) 0 4px, transparent 4px 9px);
+  opacity:.55; margin-top:2px;
+}
+.stage:last-child .stage-line{display:none}
+
+.stage-card{
+  background:#fff; border:1px solid var(--card-border); border-radius:14px;
+  margin:0 0 18px 18px; padding:20px 24px; box-shadow:var(--shadow-sm);
+  position:relative;
+}
+.stage-card::before{
+  content:''; position:absolute; left:-18px; top:19px; width:18px; height:2px;
+  background:var(--card-border);
+}
+.sc-top{display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap}
+.sc-title-wrap{display:flex; align-items:center; gap:10px}
+.sc-icon{font-size:22px}
+.sc-title{font-family:'Cormorant Garamond',serif; font-weight:700; font-size:21px; color:var(--navy)}
+.sc-dept{
+  font-family:'Barlow Condensed',sans-serif; font-size:11.5px; letter-spacing:.9px;
+  text-transform:uppercase; font-weight:600; color:var(--sc, var(--navy4));
+  background:color-mix(in srgb, var(--sc, var(--navy4)) 10%, white);
+  padding:4px 10px; border-radius:999px; white-space:nowrap;
+}
+.sc-time{
+  font-size:11.5px; color:var(--muted); font-weight:600; white-space:nowrap;
+}
+.sc-func{font-size:14px; color:var(--text); margin-top:10px}
+
+.sc-flow-row{
+  display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px;
+}
+.sc-flow-box{
+  background:var(--off); border:1px solid var(--card-border); border-radius:10px;
+  padding:10px 13px;
+}
+.sc-flow-box .lbl{
+  font-family:'Barlow Condensed',sans-serif; font-size:10.5px; letter-spacing:1px;
+  text-transform:uppercase; font-weight:700; color:var(--light); display:flex; align-items:center; gap:5px;
+}
+.sc-flow-box .val{font-size:13px; color:var(--text); margin-top:3px; font-weight:500}
+
+.sc-script{
+  margin-top:14px; padding:12px 15px; border-left:3px solid var(--gold);
+  background:var(--gold-dim); border-radius:0 8px 8px 0;
+}
+.sc-script .lbl{
+  font-family:'Barlow Condensed',sans-serif; font-size:10.5px; letter-spacing:1px;
+  text-transform:uppercase; font-weight:700; color:var(--gold);
+}
+.sc-script p{font-size:13.5px; color:var(--navy); margin-top:4px; font-style:italic}
+
+/* ===== OUTCOMES ===== */
+.outcomes{
+  display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:6px;
+}
+@media(max-width:720px){.outcomes{grid-template-columns:1fr}}
+.outcome-card{
+  border-radius:14px; padding:22px 24px; border:1px solid; box-shadow:var(--shadow-sm);
+}
+.outcome-card.green{background:#f2faf6; border-color:rgba(15,122,79,.25)}
+.outcome-card.amber{background:#fdf7ee; border-color:rgba(180,83,9,.25)}
+.oc-top{display:flex; align-items:center; gap:10px}
+.oc-icon{font-size:24px}
+.oc-title{font-family:'Cormorant Garamond',serif; font-weight:700; font-size:20px}
+.outcome-card.green .oc-title{color:var(--green)}
+.outcome-card.amber .oc-title{color:var(--amber)}
+.oc-body{font-size:13.5px; color:var(--text); margin-top:10px}
+.oc-body strong{color:var(--navy)}
+.oc-script{
+  margin-top:12px; padding:10px 13px; border-radius:8px; font-size:13px; font-style:italic;
+}
+.outcome-card.green .oc-script{background:rgba(15,122,79,.08); color:#0a4c33}
+.outcome-card.amber .oc-script{background:rgba(180,83,9,.08); color:#7a3c07}
+
+/* ===== CALLBACKS BANNER ===== */
+.callbacks{
+  margin-top:28px; border-radius:14px; padding:20px 26px;
+  background:linear-gradient(135deg,var(--navy),var(--navy3));
+  color:#fff; display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  box-shadow:var(--shadow-md);
+}
+.cb-icon{font-size:28px}
+.cb-title{font-family:'Cormorant Garamond',serif; font-weight:700; font-size:19px; color:var(--gold2)}
+.cb-sub{font-size:13.5px; color:var(--light); margin-top:4px; max-width:640px}
+.cb-badge{
+  margin-left:auto; font-family:'Barlow Condensed',sans-serif; font-size:11.5px;
+  letter-spacing:1px; text-transform:uppercase; font-weight:700; color:var(--navy);
+  background:var(--gold2); padding:6px 14px; border-radius:999px; white-space:nowrap;
+}
+
+/* ===== QUICK REFERENCE TABLE ===== */
+.qref{width:100%; border-collapse:separate; border-spacing:0; font-size:13px; background:#fff; border-radius:12px; overflow:hidden; box-shadow:var(--shadow-sm); border:1px solid var(--card-border)}
+.qref th{
+  background:var(--navy); color:var(--gold2); text-align:left; padding:11px 14px;
+  font-family:'Barlow Condensed',sans-serif; letter-spacing:.6px; text-transform:uppercase; font-size:11.5px; font-weight:600;
+}
+.qref td{padding:11px 14px; border-top:1px solid var(--card-border); vertical-align:top}
+.qref tr:nth-child(even) td{background:#fafbfc}
+.qref .pillnum{
+  display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px;
+  border-radius:50%; background:var(--sc,var(--navy4)); color:#fff; font-weight:700; font-size:12px;
+}
+
+/* ===== PRINT ===== */
+@media print{
+  body{background:#fff}
+  .hero{padding:28px 24px}
+  .wrap{padding:24px}
+  .stage-card{box-shadow:none; break-inside:avoid}
+  .callbacks{break-inside:avoid}
+}
+@media(max-width:640px){
+  .hero{padding:36px 20px}
+  .wrap{padding:28px 18px 60px}
+  .sc-flow-row{grid-template-columns:1fr}
+  .stage-card{margin-left:14px; padding:16px 16px}
+}
+footer{text-align:center; padding:28px; color:var(--muted); font-size:12px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span>Guía Rápida para Agentes</div>
+    <h1>Flujo del Caso en TMLF<span>Del primer contacto a la resolución con USCIS</span></h1>
+    <p>Referencia visual para explicar al cliente, en cualquier momento de la llamada, en qué etapa se encuentra su caso, qué se hizo antes y qué sigue después.</p>
+    <div class="hero-legend">
+      <div class="hl-item"><span class="hl-swatch" style="background:#3b82f6"></span>Captación &amp; Ventas</div>
+      <div class="hl-item"><span class="hl-swatch" style="background:#b45309"></span>Extracción &amp; Legal</div>
+      <div class="hl-item"><span class="hl-swatch" style="background:#047857"></span>Redacción &amp; Calidad</div>
+      <div class="hl-item"><span class="hl-swatch" style="background:#b91c1c"></span>Ensamble &amp; Envío</div>
+      <div class="hl-item"><span class="hl-swatch" style="background:#065f46"></span>Post-envío USCIS</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="section-label"><span class="num">1</span><h2>Las 11 etapas del proceso</h2><span class="rule"></span></div>
+
+  <div class="flow">
+
+    <!-- 01 -->
+    <div class="stage" style="--sc:#3b82f6">
+      <div class="stage-rail"><div class="stage-pin">01</div><div class="stage-line"></div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">📣</span><span class="sc-title">Marketing &amp; Captación</span></div>
+          <span class="sc-dept">MGM · Equipo Marketing</span>
+        </div>
+        <div class="sc-func">Contacto activo con posibles clientes en Facebook, Instagram y TikTok. Su misión es recolectar datos de contacto verificados para iniciar el proceso.</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">Inicio del proceso (redes sociales)</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">Openers — lista de contacto verificado</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="stage" style="--sc:#1e4976">
+      <div class="stage-rail"><div class="stage-pin">02</div><div class="stage-line"></div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">📞</span><span class="sc-title">Openers</span></div>
+          <span class="sc-dept">Equipo Openers</span>
+        </div>
+        <div class="sc-func">Primera llamada de extracción. Aplica un cuestionario inicial, identifica los elementos clave del posible caso y agenda la cita con el equipo de D.V. Specialist.</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">Marketing &amp; Captación</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">D.V. Specialist — cita agendada</div></div>
+        </div>
+        <div class="sc-script"><div class="lbl">Frase para el cliente</div><p>"Ya agendamos tu cita de evaluación con nuestro especialista para revisar si calificas."</p></div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="stage" style="--sc:#1e4976">
+      <div class="stage-rail"><div class="stage-pin">03</div><div class="stage-line"></div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">🛡️</span><span class="sc-title">D.V. Specialist</span></div>
+          <span class="sc-dept">🗓 Día 0 — Cierre de venta</span>
+        </div>
+        <div class="sc-func">Aplica el cuestionario de elegibilidad y admisibilidad, define la estrategia legal, cierra el trato y selecciona el plan de pago. Aquí el "posible cliente" se convierte oficialmente en cliente.</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">Openers</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">Pre Welcome Interview (PWI)</div></div>
+        </div>
+        <div class="sc-script"><div class="lbl">Frase para el cliente</div><p>"Tu caso inició oficialmente el día de tu contrato; esa es la fecha Día 0 de tu proceso."</p></div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="stage" style="--sc:#b45309">
+      <div class="stage-rail"><div class="stage-pin">04</div><div class="stage-line"></div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">📋</span><span class="sc-title">Pre Welcome Interview (PWI)</span></div>
+          <span class="sc-dept">🗓 Día +1 · +5</span>
+        </div>
+        <div class="sc-func">Contacta al cliente para preparar la videollamada de extracción. En la entrevista aplica los I-Forms y conduce una investigación profunda del abuso: la materia prima de la futura Declaración.</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">D.V. Specialist — cliente confirmado</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">Welcome Call Attorney — nota de entrevista</div></div>
+        </div>
+        <div class="sc-script"><div class="lbl">Frase para el cliente</div><p>"Ya completamos tu entrevista de extracción; esa información es la base de tu declaración legal."</p></div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="stage" style="--sc:#0369a1">
+      <div class="stage-rail"><div class="stage-pin">05</div><div class="stage-line"></div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">👨‍⚖️</span><span class="sc-title">Welcome Call Attorney (LSU Call)</span></div>
+          <span class="sc-dept">🗓 Día +15</span>
+        </div>
+        <div class="sc-func">El abogado asignado revisa la elegibilidad, el carácter moral, antecedentes y posibles barreras del caso. Emite el primer consejo legal formal y consolida el caso.</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">Pre Welcome Interview</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">Writing &amp; Analysis Experts</div></div>
+        </div>
+        <div class="sc-script"><div class="lbl">Frase para el cliente</div><p>"Un abogado ya revisó tu caso a fondo y dio su primer consejo legal formal."</p></div>
+      </div>
+    </div>
+
+    <!-- 06 -->
+    <div class="stage" style="--sc:#047857">
+      <div class="stage-rail"><div class="stage-pin">06</div><div class="stage-line"></div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">✍️</span><span class="sc-title">Writing &amp; Analysis Experts</span></div>
+          <span class="sc-dept">Equipo de Escritores</span>
+        </div>
+        <div class="sc-func">Da estructura formal a la nota de entrevista. Redacta la Declaración (DCL), documento central del caso, y la Cover Letter que presenta el caso ante USCIS.</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">Welcome Call Attorney</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">Pre Case Review (FORMAS)</div></div>
+        </div>
+        <div class="sc-script"><div class="lbl">Frase para el cliente</div><p>"Ahora mismo nuestro equipo de escritores está redactando tu declaración legal."</p></div>
+      </div>
+    </div>
+
+    <!-- 07 -->
+    <div class="stage" style="--sc:#c9a84c">
+      <div class="stage-rail"><div class="stage-pin">07</div><div class="stage-line"></div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">🔍</span><span class="sc-title">Pre Case Review</span></div>
+          <span class="sc-dept">Equipo FORMAS</span>
+        </div>
+        <div class="sc-func">Revisa de forma integral el paquete que se enviará a USCIS: analiza cada componente y solicita al cliente cualquier documento faltante antes de la revisión con el abogado.</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">Writing &amp; Analysis Experts</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">Case Review Call</div></div>
+        </div>
+        <div class="sc-script"><div class="lbl">Frase para el cliente</div><p>"Tu paquete está en control de calidad antes de pasar a revisión con el abogado firmante."</p></div>
+      </div>
+    </div>
+
+    <!-- 08 -->
+    <div class="stage" style="--sc:#c9a84c">
+      <div class="stage-rail"><div class="stage-pin">08</div><div class="stage-line"></div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">📹</span><span class="sc-title">Case Review Call</span></div>
+          <span class="sc-dept">Abogado Firmante · Cliente</span>
+        </div>
+        <div class="sc-func">Revisión legal en videollamada con el cliente y el abogado firmante, quien valida que el paquete corresponda a lo narrado. Con VoBo, el paquete se libera para firma; si hay errores, regresa a Packets.</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">Pre Case Review</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">Packets (con o sin correcciones)</div></div>
+        </div>
+        <div class="sc-script"><div class="lbl">Frase para el cliente</div><p>"En esta llamada revisamos juntos tu paquete con el abogado firmante antes de la firma final."</p></div>
+      </div>
+    </div>
+
+    <!-- 09 -->
+    <div class="stage" style="--sc:#b91c1c">
+      <div class="stage-rail"><div class="stage-pin">09</div><div class="stage-line"></div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">🗂️</span><span class="sc-title">Packets</span></div>
+          <span class="sc-dept">Equipo Packets</span>
+        </div>
+        <div class="sc-func">Aplica las correcciones indicadas por el abogado firmante, integra la documentación recopilada y ensambla el paquete final, coherente y completo.</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">Case Review Call</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">MGM Review</div></div>
+        </div>
+        <div class="sc-script"><div class="lbl">Frase para el cliente</div><p>"Estamos aplicando los últimos ajustes a tu paquete antes de la revisión final."</p></div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="stage" style="--sc:#1a5c3a">
+      <div class="stage-rail"><div class="stage-pin">10</div><div class="stage-line"></div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">👩‍⚖️</span><span class="sc-title">MGM Review</span></div>
+          <span class="sc-dept">🗓 Día +45 — Sent to USCIS</span>
+        </div>
+        <div class="sc-func">Revisión final por la Abogada María Guadalupe Mendoza en El Paso, TX: verifica la Declaración, la documentación y los I-Forms. Si todo es correcto, autoriza el envío a USCIS; si detecta desperfectos, regresa el caso a Operaciones.</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">Packets</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">Incoming Mail (envío a USCIS)</div></div>
+        </div>
+        <div class="sc-script"><div class="lbl">Frase para el cliente</div><p>"¡Tu caso fue enviado oficialmente a USCIS! Ahora entramos a la etapa de espera de resolución."</p></div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="stage" style="--sc:#065f46">
+      <div class="stage-rail"><div class="stage-pin">11</div></div>
+      <div class="stage-card">
+        <div class="sc-top">
+          <div class="sc-title-wrap"><span class="sc-icon">📬</span><span class="sc-title">Incoming Mail</span></div>
+          <span class="sc-dept">Área Incoming Mail</span>
+        </div>
+        <div class="sc-func">Da seguimiento a toda notificación o requerimiento emitido por USCIS tras el envío. La oficina responsable depende del prefijo del número de recibo: EAC (Vermont), LIN (Nebraska) o IOE (electrónico).</div>
+        <div class="sc-flow-row">
+          <div class="sc-flow-box"><div class="lbl">← Recibe de</div><div class="val">MGM Review</div></div>
+          <div class="sc-flow-box"><div class="lbl">Entrega a →</div><div class="val">Resolución final USCIS (ver abajo)</div></div>
+        </div>
+        <div class="sc-script"><div class="lbl">Frase para el cliente</div><p>"Tu número de recibo empieza con [EAC/LIN/IOE]; así podemos rastrear en qué oficina está tu caso."</p></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== OUTCOMES ===== -->
+  <div class="section-label" style="margin-top:12px"><span class="num">2</span><h2>Resoluciones finales de USCIS</h2><span class="rule"></span></div>
+  <div class="outcomes">
+    <div class="outcome-card green">
+      <div class="oc-top"><span class="oc-icon">🏆</span><span class="oc-title">Aprobación</span></div>
+      <div class="oc-body">USCIS aprueba la petición y el cliente obtiene el beneficio migratorio solicitado. Es la conclusión exitosa del proceso.</div>
+      <div class="oc-script">"¡Felicidades! USCIS aprobó tu caso — este es el resultado que buscábamos desde el día 0."</div>
+    </div>
+    <div class="outcome-card amber">
+      <div class="oc-top"><span class="oc-icon">📋</span><span class="oc-title">RFE / NOID</span></div>
+      <div class="oc-body">
+        <strong>RFE</strong> (Request for Evidence): USCIS pide información adicional; el caso regresa a Operaciones para responder.<br>
+        <strong>NOID</strong> (Notice of Intent to Deny): USCIS notifica intención de negar; se requiere respuesta legal urgente. Una respuesta exitosa puede llevar a la Aprobación.
+      </div>
+      <div class="oc-script">"USCIS solicitó información adicional (RFE); nuestro equipo ya está preparando la respuesta dentro del plazo."</div>
+    </div>
+  </div>
+
+  <!-- ===== CALLBACKS ===== -->
+  <div class="callbacks">
+    <span class="cb-icon">🤝</span>
+    <div>
+      <div class="cb-title">Callbacks — Atención al Cliente</div>
+      <div class="cb-sub">Departamento activo en todo momento del proceso. Atiende dudas, inconformidades y consultas legales en cualquier etapa, desde la captación hasta la resolución con USCIS.</div>
+    </div>
+    <span class="cb-badge">Permanente</span>
+  </div>
+
+  <!-- ===== QUICK REFERENCE TABLE ===== -->
+  <div class="section-label" style="margin-top:44px"><span class="num">3</span><h2>Tabla de referencia rápida</h2><span class="rule"></span></div>
+  <table class="qref">
+    <thead>
+      <tr><th style="width:46px">#</th><th>Etapa</th><th>Recibe de</th><th>Entrega a</th><th>Hito de tiempo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="pillnum" style="--sc:#3b82f6">01</span></td><td>Marketing &amp; Captación</td><td>—</td><td>Openers</td><td>—</td></tr>
+      <tr><td><span class="pillnum" style="--sc:#1e4976">02</span></td><td>Openers</td><td>Marketing</td><td>D.V. Specialist</td><td>—</td></tr>
+      <tr><td><span class="pillnum" style="--sc:#1e4976">03</span></td><td>D.V. Specialist</td><td>Openers</td><td>PWI</td><td>Día 0</td></tr>
+      <tr><td><span class="pillnum" style="--sc:#b45309">04</span></td><td>Pre Welcome Interview</td><td>D.V. Specialist</td><td>Welcome Call Attorney</td><td>Día +1 / +5</td></tr>
+      <tr><td><span class="pillnum" style="--sc:#0369a1">05</span></td><td>Welcome Call Attorney</td><td>PWI</td><td>Writing &amp; Analysis</td><td>Día +15</td></tr>
+      <tr><td><span class="pillnum" style="--sc:#047857">06</span></td><td>Writing &amp; Analysis</td><td>Welcome Call Attorney</td><td>Pre Case Review</td><td>—</td></tr>
+      <tr><td><span class="pillnum" style="--sc:#c9a84c">07</span></td><td>Pre Case Review</td><td>Writing &amp; Analysis</td><td>Case Review Call</td><td>—</td></tr>
+      <tr><td><span class="pillnum" style="--sc:#c9a84c">08</span></td><td>Case Review Call</td><td>Pre Case Review</td><td>Packets</td><td>—</td></tr>
+      <tr><td><span class="pillnum" style="--sc:#b91c1c">09</span></td><td>Packets</td><td>Case Review Call</td><td>MGM Review</td><td>—</td></tr>
+      <tr><td><span class="pillnum" style="--sc:#1a5c3a">10</span></td><td>MGM Review</td><td>Packets</td><td>Incoming Mail</td><td>Día +45 (Sent to USCIS)</td></tr>
+      <tr><td><span class="pillnum" style="--sc:#065f46">11</span></td><td>Incoming Mail</td><td>MGM Review</td><td>Aprobación / RFE-NOID</td><td>Post-envío</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<footer>TMLF Legal Academy · Guía interna para agentes · Basada en el Proceso de Operaciones TMLF</footer>
+
+</body>
+</html>
