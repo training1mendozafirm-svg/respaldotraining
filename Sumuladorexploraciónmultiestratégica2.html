@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador: Evaluación de Visa T como Estrategia Alterna</title>
+    <script>
+// SCORM 1.2 API Wrapper
+var SCORM = {
+    API: null,
+    
+    findAPI: function(win) {
+        var attempts = 0;
+        var maxAttempts = 500;
+        
+        while (!win.API && win.parent && win.parent != win && attempts < maxAttempts) {
+            attempts++;
+            win = win.parent;
+        }
+        
+        if (win.API) {
+            return win.API;
+        }
+        
+        if (window.opener) {
+            return this.findAPI(window.opener);
+        }
+        
+        return null;
+    },
+    
+    init: function() {
+        this.API = this.findAPI(window);
+        
+        if (this.API) {
+            var result = this.API.LMSInitialize("");
+            if (result == "true") {
+                console.log("SCORM initialized successfully");
+                this.setValue("cmi.core.lesson_status", "incomplete");
+                this.setValue("cmi.core.score.min", "0");
+                this.setValue("cmi.core.score.max", "100");
+                return true;
+            }
+        }
+        
+        console.log("SCORM API not found - running in standalone mode");
+        return false;
+    },
+    
+    getValue: function(key) {
+        if (this.API) {
+            return this.API.LMSGetValue(key);
+        }
+        return "";
+    },
+    
+    setValue: function(key, value) {
+        if (this.API) {
+            var result = this.API.LMSSetValue(key, value);
+            if (result == "true") {
+                this.commit();
+            }
+            return result == "true";
+        }
+        return false;
+    },
+    
+    commit: function() {
+        if (this.API) {
+            return this.API.LMSCommit("") == "true";
+        }
+        return false;
+    },
+    
+    setScore: function(score) {
+        score = Math.max(0, Math.min(100, Math.round(score)));
+        this.setValue("cmi.core.score.raw", score.toString());
+        this.setValue("cmi.core.score.scaled", (score / 100).toFixed(2));
+        
+        if (score >= 80) {
+            this.setValue("cmi.core.lesson_status", "passed");
+        } else if (score >= 60) {
+            this.setValue("cmi.core.lesson_status", "completed");
+        } else {
+            this.setValue("cmi.core.lesson_status", "failed");
+        }
+        
+        return true;
+    },
+    
+    setSuspendData: function(data) {
+        if (typeof data === 'object') {
+            data = JSON.stringify(data);
+        }
+        return this.setValue("cmi.suspend_data", data);
+    },
+    
+    getSuspendData: function() {
+        var data = this.getValue("cmi.suspend_data");
+        try {
+            return JSON.parse(data);
+        } catch (e) {
+            return null;
+        }
+    },
+    
+    setLocation: function(location) {
+        return this.setValue("cmi.core.lesson_location", location.toString());
+    },
+    
+    complete: function() {
+        var status = this.getValue("cmi.core.lesson_status");
+        
+        if (status !== "passed" && status !== "failed") {
+            this.setValue("cmi.core.lesson_status", "completed");
+        }
+        
+        this.commit();
+        return true;
+    },
+    
+    terminate: function() {
+        if (this.API) {
+            this.commit();
+            var result = this.API.LMSFinish("");
+            return result == "true";
+        }
+        return false;
+    }
+};
+
+window.addEventListener('beforeunload', function() {
+    SCORM.terminate();
+});
+
+</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1a1d2e;
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Layout Principal */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Izquierdo - EXACTO al diseño */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #2d5a7b 0%, #1e3a5f 100%);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 3px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Client Card */
+        .client-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .client-avatar {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            margin: 0 auto 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .client-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .client-info-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            padding: 20px;
+        }
+
+        .progress-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Circular Progress */
+        .progress-circle-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .progress-circle {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+
+        .progress-circle svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-circle-bg {
+            fill: none;
+            stroke: rgba(212, 175, 55, 0.2);
+            stroke-width: 10;
+        }
+
+        .progress-circle-fill {
+            fill: none;
+            stroke: #d4af37;
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.6s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-percentage {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #d4af37;
+            line-height: 1;
+        }
+
+        .progress-label {
+            display: block;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Stats Grid - 2x2 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 18px 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #d4af37;
+            line-height: 1;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+
+        /* Timeline Steps */
+        .timeline-section {
+            padding: 20px;
+        }
+
+        .timeline-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .timeline-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 32px;
+            bottom: -20px;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .timeline-step:last-child::before {
+            display: none;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            margin-right: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            color: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .step-number.active {
+            background: #d4af37;
+            border-color: #d4af37;
+            color: #1a1d2e;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .step-number.completed {
+            background: #059669;
+            border-color: #059669;
+            color: white;
+        }
+
+        .step-number.failed {
+            background: #dc2626;
+            border-color: #dc2626;
+            color: white;
+        }
+
+        .step-info {
+            flex: 1;
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2px;
+        }
+
+        .step-label.active {
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .step-label.completed {
+            color: #059669;
+        }
+
+        .step-label.failed {
+            color: #dc2626;
+        }
+
+        .step-detail {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            background: #1a1d2e;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 10px rgba(212, 175, 55, 0.3));
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #d4af37;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        /* Case Container */
+        .case-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #2d3748;
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .case-title {
+            font-size: 1.8rem;
+            color: #d4af37;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        /* Client Quote */
+        .client-quote {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(30, 64, 175, 0.15));
+            border-left: 4px solid #d4af37;
+            padding: 25px;
+            border-radius: 12px;
+            font-style: italic;
+            color: #e2e8f0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .client-quote::before {
+            content: '"';
+            font-size: 4rem;
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            color: #d4af37;
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(5, 150, 105, 0.1);
+            border: 1px solid rgba(5, 150, 105, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .info-box-title {
+            color: #059669;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-list li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+
+        .info-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #059669;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Mission Box */
+        .mission-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .mission-box h3 {
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .mission-box p {
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .mission-box ul {
+            margin-left: 25px;
+            color: #94a3b8;
+        }
+
+        .mission-box li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .warning-box h3 {
+            color: #dc2626;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-box p {
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+
+        /* Conversation Thread */
+        .conversation-thread {
+            margin-bottom: 30px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .message-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .client-message {
+            background: rgba(30, 64, 175, 0.2);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .client-message .message-label {
+            color: #3b82f6;
+        }
+
+        .attorney-message {
+            background: rgba(5, 150, 105, 0.2);
+            border-left: 4px solid #059669;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .attorney-message .message-label {
+            color: #059669;
+        }
+
+        .message-text {
+            color: #e2e8f0;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* Feedback Box */
+        .feedback-box {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            border: 2px solid;
+        }
+
+        .feedback-box.positive {
+            border-color: #059669;
+        }
+
+        .feedback-box.neutral {
+            border-color: #d97706;
+        }
+
+        .feedback-box.negative {
+            border-color: #dc2626;
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .feedback-icon {
+            font-size: 1.8rem;
+        }
+
+        .feedback-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .feedback-box.positive .feedback-title {
+            color: #059669;
+        }
+
+        .feedback-box.neutral .feedback-title {
+            color: #d97706;
+        }
+
+        .feedback-box.negative .feedback-title {
+            color: #dc2626;
+        }
+
+        .feedback-content {
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .feedback-impact {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        /* Question Options */
+        .question-section {
+            margin-top: 30px;
+        }
+
+        .question-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        .option-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-card:hover {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(5px);
+        }
+
+        .option-type {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .type-validation {
+            background: rgba(5, 150, 105, 0.2);
+            color: #059669;
+        }
+
+        .type-clarification {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .type-direct {
+            background: rgba(217, 119, 6, 0.2);
+            color: #d97706;
+        }
+
+        .type-premature {
+            background: rgba(220, 38, 38, 0.2);
+            color: #dc2626;
+        }
+
+        .option-text {
+            color: #e2e8f0;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37, #f4d978);
+            color: #1a1d2e;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        /* Results */
+        .results-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .results-icon {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+        }
+
+        .results-title {
+            font-size: 2.2rem;
+            color: #d4af37;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .results-verdict {
+            font-size: 1.5rem;
+            color: #e2e8f0;
+            margin-bottom: 10px;
+        }
+
+        .results-description {
+            color: #94a3b8;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .results-score-display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #d4af37;
+            margin: 25px 0;
+        }
+
+        .results-section {
+            background: #2d3748;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #d4af37;
+        }
+
+        .results-section h3 {
+            color: #d4af37;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .results-section ul {
+            margin-left: 20px;
+            color: #cbd5e1;
+        }
+
+        .results-section li {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .timeline-section {
+                display: none;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Izquierdo -->
+        <aside class="sidebar">
+            <div class="client-card">
+                <div class="client-avatar">👩</div>
+                <div class="client-name">Sofía Martínez</div>
+                <div class="client-info-item">Edad: 34 años</div>
+                <div class="client-info-item">Tipo de Caso: VAWA + Ajuste</div>
+            </div>
+
+            <div class="progress-section">
+                <h3 class="progress-title">Progreso General</h3>
+                
+                <div class="progress-circle-wrapper">
+                    <div class="progress-circle">
+                        <svg width="140" height="140">
+                            <circle class="progress-circle-bg" cx="70" cy="70" r="60" />
+                            <circle class="progress-circle-fill" id="progress-circle" cx="70" cy="70" r="60" 
+                                    style="stroke-dasharray: 377; stroke-dashoffset: 377;" />
+                        </svg>
+                        <div class="progress-text">
+                            <span class="progress-percentage" id="progress-percentage">0%</span>
+                            <span class="progress-label">Identificación</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-value" id="stat-pregunta">0</span>
+                        <span class="stat-label">PREGUNTA</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-value" id="stat-puntos">0</span>
+                        <span class="stat-label">PUNTOS</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-value" id="stat-correctas">0</span>
+                        <span class="stat-label">CORRECTAS</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-value" id="stat-erroneas">0</span>
+                        <span class="stat-label">ERRÓNEAS</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-section">
+                <h3 class="timeline-title">Etapas</h3>
+                <div id="timeline-steps">
+                    <!-- Steps will be generated here -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <!-- Content will be loaded here -->
+        </main>
+    </div>
+
+    <script>
+        // Initialize SCORM
+        SCORM.init();
+
+        // Global State
+        const state = {
+            currentRound: 0,
+            totalRounds: 6,
+            trust: 40,
+            frustration: 60,
+            cooperation: 50,
+            score: 0,
+            correctCount: 0,
+            wrongCount: 0,
+            progress: 0,
+            decisions: [],
+            conversationHistory: [],
+            infoCollected: {
+                abuseAfter2010: false,
+                sexualCoercion: false,
+                domesticServitude: false,
+                threats: false,
+                economicControl: false,
+                childAbuse: false
+            }
+        };
+
+        // Case Data
+        const caseData = {
+            clientName: "Sofía Martínez",
+            age: "34 años",
+            caseType: "VAWA + Ajuste",
+            primaFacie: true,
+            deportationOrder: "1997 (Honduras)",
+            lastEntry: "2010",
+            relationshipYears: "18 años (2003-2021)",
+            hasChildren: true
+        };
+
+        // Rounds Configuration
+        const rounds = [
+            {
+                id: 1,
+                clientStatement: "Doctora, sé que mi caso VAWA tiene Prima Facie desde hace meses, pero sigo sin respuesta final. Estoy muy ansiosa porque tengo una orden de deportación de 1997. Mi amiga me dijo que hay otra visa que podría ayudarme, pero tengo miedo de que empeorar mi situación. ¿Es verdad eso o me va a perjudicar?",
+                options: [
+                    {
+                        text: "Sofía, entiendo perfectamente tu ansiedad. Es completamente normal sentir miedo cuando hay una orden de deportación en tu historial. Quiero que sepas que estamos explorando todas las opciones para protegerte. Antes de hablar de estrategias, cuéntame: ¿qué es lo que más te preocupa en este momento: los tiempos de VAWA o tu orden de deportación?",
+                        type: "validation",
+                        impact: { trust: +15, frustration: -20, cooperation: +10 },
+                        response: "Gracias por entenderme, doctora. Me preocupan las dos cosas. Los tiempos me tienen desesperada, pero lo que más me asusta es que después de todo este esfuerzo, me deporten por esa orden vieja. Ya llevo tantos años aquí, no quiero perder todo.",
+                        infoGained: null,
+                        feedback: {
+                            type: "positive",
+                            title: "Excelente Apertura - Validación Emocional",
+                            content: "Validaste su miedo legítimo antes de buscar información. Esto reduce su ansiedad y abre el canal de comunicación.",
+                            impact: "La cliente se siente escuchada (+15 confianza, -20 frustración). Ahora está más dispuesta a explorar opciones sin pánico."
+                        }
+                    },
+                    {
+                        text: "Tranquila, Sofía. Tu caso VAWA tiene Prima Facie, eso significa que USCIS ya confirmó que cumples los requisitos básicos. Sobre la otra visa, estamos evaluando Visa T como opción paralela. Para saber si aplicas, necesito preguntarte: ¿el maltrato que sufriste ocurrió después de 2010, cuando entraste por última vez?",
+                        type: "clarification",
+                        impact: { trust: +5, frustration: -5, cooperation: +5 },
+                        response: "Sí, doctora. El maltrato empezó desde que regresé en 2010. Vivimos juntos 18 años sin casarnos legalmente. El abuso fue constante todo ese tiempo hasta que logré salir en 2021.",
+                        infoGained: "abuseAfter2010",
+                        feedback: {
+                            type: "neutral",
+                            title: "Enfoque Funcional - Avance Moderado",
+                            content: "Tranquilizaste brevemente y obtuviste información clave. Funciona, pero podrías haber generado más conexión emocional primero.",
+                            impact: "Obtienes dato crítico sobre timeline (+5 confianza, -5 frustración). La cliente responde pero sigue guardada emocionalmente."
+                        }
+                    },
+                    {
+                        text: "Mira, tu Prima Facie es buena señal, pero los casos VAWA de 2022-2023 están muy atrasados. La Visa T podría ser mejor opción porque ofrece un perdón más amplio para tu orden de deportación. Necesito que me cuentes detalles del maltrato para ver si calificas.",
+                        type: "direct",
+                        impact: { trust: -5, frustration: +10, cooperation: -5 },
+                        response: "*Se pone tensa* ¿Perdón? ¿Ahora mi caso VAWA no es suficiente? ¿Por qué no me dijeron esto antes? Y hablar de los detalles del maltrato... doctora, eso fue muy traumático. No quiero revivir todo eso si luego resulta que no sirve de nada.",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "Enfoque Prematuro - Genera Desconfianza",
+                            content: "Minimizaste VAWA sin explicar bien, y presionaste por detalles traumáticos sin preparación emocional. Esto genera pánico y cierre.",
+                            impact: "La cliente siente que ocultaron información y ahora dudarás de tu criterio (+10 frustración, -5 confianza). Riesgo de que se cierre."
+                        }
+                    },
+                    {
+                        text: "Tu amiga tiene razón parcialmente. Hay una visa llamada Visa T que en algunos casos ofrece ventajas, pero primero necesito verificar si eres elegible. El proceso requiere reportar al FBI y una entrevista larga de 2-3 horas. ¿Estás dispuesta a hacer eso?",
+                        type: "premature",
+                        impact: { trust: -15, frustration: +20, cooperation: -15 },
+                        response: "*Se alarma* ¿¿Reportar al FBI?? ¡No, doctora! Yo solo quiero arreglar mis papeles, no meterme en problemas con el FBI. ¿Por qué tendría que reportar algo? ¿Qué es eso de entrevista de 3 horas? Esto suena peor que mi caso VAWA.",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "Error Crítico - Información Sin Contexto",
+                            content: "Mencionaste 'FBI' y 'entrevista larga' sin explicar QUÉ es Visa T ni POR QUÉ beneficiaría a la cliente. Esto genera terror y rechazo inmediato.",
+                            impact: "La cliente entra en modo pánico (-15 confianza, +20 frustración, -15 cooperación). Es probable que rechace cualquier opción que menciones ahora."
+                        }
+                    }
+                ]
+            },
+            {
+                id: 2,
+                clientStatement: null,
+                options: [
+                    {
+                        text: "Entiendo que 18 años de maltrato es un peso enorme, Sofía. No estoy pidiendo que me cuentes todo ahora mismo. Solo necesito entender algunos patrones para ver si hay opciones legales que no requieran tanta evidencia física como VAWA. ¿Puedes contarme, en términos generales, cómo era el control que él ejercía sobre ti?",
+                        type: "validation",
+                        impact: { trust: +15, frustration: -15, cooperation: +15 },
+                        response: "Gracias, doctora. Sí, puedo intentar explicar. Él controlaba todo en la casa. Me decía constantemente que yo no servía para nada, que era una inútil. Si no hacía las cosas exactamente como él quería, me gritaba horriblemente. Y... también me forzaba a tener relaciones cuando yo no quería. Decía que era mi obligación.",
+                        infoGained: "sexualCoercion",
+                        feedback: {
+                            type: "positive",
+                            title: "Reencuadre Empático Perfecto",
+                            content: "Aclaraste que NO necesita revivir todo el trauma ahora, y usaste una pregunta abierta no amenazante ('en términos generales'). Esto permite que comparta a su ritmo.",
+                            impact: "La cliente se abre significativamente (+15 confianza, +15 cooperación). Revela coerción sexual, un elemento crítico para Visa T."
+                        }
+                    },
+                    {
+                        text: "Ok, entiendo. Entonces el maltrato fue durante toda la relación desde 2010. ¿Él te obligaba a hacer trabajos domésticos sin libertad de salir o tenías que pedirle permiso para cosas básicas?",
+                        type: "clarification",
+                        impact: { trust: +5, frustration: -5, cooperation: +10 },
+                        response: "Sí, doctora. Yo hacía todo en la casa: limpieza, cocina, cuidar a los niños. No podía salir sin su permiso. Si salía, tenía que decirle exactamente a dónde iba y regresar rápido. Me revisaba el teléfono constantemente.",
+                        infoGained: "domesticServitude",
+                        feedback: {
+                            type: "neutral",
+                            title: "Pregunta Directa Funcional",
+                            content: "Pregunta útil que obtiene información sobre servidumbre doméstica, pero pudiste haber validado más la carga emocional de compartir esto.",
+                            impact: "Obtienes dato sobre control y servidumbre (+10 cooperación), pero la conexión emocional sigue moderada."
+                        }
+                    },
+                    {
+                        text: "Necesito saber exactamente qué tipo de maltrato sufriste. ¿Fue físico, sexual, psicológico? ¿Cuántas veces? ¿Tienes evidencia médica o reportes?",
+                        type: "direct",
+                        impact: { trust: -10, frustration: +15, cooperation: -10 },
+                        response: "*Se cierra* Doctora, ya le dije que no tengo reportes. El maltrato fue de todo tipo, pero no iba al doctor ni a la policía porque tenía miedo. Si me va a juzgar por eso, mejor ya no sigo.",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "Interrogatorio Insensible",
+                            content: "Exigiste detalles cuantificables de trauma sin empatía, y presionaste por evidencia que ya sabes que no tiene. Esto se siente como interrogatorio criminal.",
+                            impact: "La cliente se cierra y siente que la juzgas (-10 confianza, +15 frustración, -10 cooperación). Riesgo alto de terminar la llamada."
+                        }
+                    },
+                    {
+                        text: "Para que la Visa T funcione, necesito que seas muy específica. Describe incidentes concretos de violencia con fechas, lugares y testigos si los hay.",
+                        type: "premature",
+                        impact: { trust: -15, frustration: +20, cooperation: -15 },
+                        response: "*Molesta y asustada* ¿Cómo voy a recordar fechas exactas de hace años? ¡Fueron 18 años de abuso constante! Y no había testigos, ¿no entiende que el abuso pasa en privado? Ya me arrepiento de haber aceptado esta llamada.",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "Error Crítico - Exigencias Irrealistas",
+                            content: "Pediste nivel de detalle que las víctimas de trauma prolongado NO pueden proveer. Esto muestra desconocimiento de cómo funciona la memoria traumática.",
+                            impact: "La cliente está devastada (-15 confianza, +20 frustración, -15 cooperación). Probablemente terminará la llamada o buscará otro abogado."
+                        }
+                    }
+                ]
+            },
+            {
+                id: 3,
+                clientStatement: null,
+                options: [
+                    {
+                        text: "Sofía, lo que me estás describiendo —coerción sexual, control total sobre tu libertad, maltrato verbal constante— no es solo violencia doméstica. Legalmente, estos son elementos de lo que se llama trata de personas. Sé que suena fuerte, pero déjame explicarte por qué esto es importante para tu caso. ¿Puedo continuar?",
+                        type: "validation",
+                        impact: { trust: +20, frustration: -25, cooperation: +20 },
+                        response: "¿Trata de personas? Pero doctora, él no me vendió ni nada así. Era mi pareja. No entiendo cómo eso sería trata. Pero sí, explíqueme por favor.",
+                        infoGained: null,
+                        feedback: {
+                            type: "positive",
+                            title: "Presentación Conceptual Excelente",
+                            content: "Conectaste su narrativa con el concepto legal, anticipaste su confusión ('sé que suena fuerte'), y pediste permiso para explicar. Esto genera confianza y apertura.",
+                            impact: "La cliente está confundida pero ABIERTA a aprender (+20 confianza, -25 frustración, +20 cooperación). El terreno está preparado para educar."
+                        }
+                    },
+                    {
+                        text: "Basándome en lo que me cuentas, creo que podrías calificar para Visa T. Es una visa especial para víctimas de trata. ¿Te interesa que exploremos esa opción?",
+                        type: "clarification",
+                        impact: { trust: +5, frustration: -5, cooperation: +5 },
+                        response: "¿Trata? Yo no fui víctima de trata, doctora. Eso es para personas que las secuestran o venden. Yo viví con mi pareja. No tiene nada que ver.",
+                        infoGained: null,
+                        feedback: {
+                            type: "neutral",
+                            title: "Mención Sin Educación Previa",
+                            content: "Propusiste Visa T sin explicar QUÉ es trata en contexto doméstico. La cliente rechaza porque su imagen de 'trata' no coincide con su experiencia.",
+                            impact: "La cliente está confundida y puede rechazar la opción por malentendido (+5 confianza, pero necesita educación urgente)."
+                        }
+                    },
+                    {
+                        text: "Con base en lo que describes, tu caso VAWA es débil por falta de evidencia. Deberías considerar Visa T en su lugar. Tiene más posibilidades de aprobación y perdón automático para tu orden de deportación.",
+                        type: "direct",
+                        impact: { trust: -20, frustration: +25, cooperation: -20 },
+                        response: "*Se alarma y molesta* ¿¿Débil?? Pero usted y su equipo me dijeron hace un año que mi caso era FUERTE. ¿Ahora después de un año me dice que es débil? ¿Me mintieron todo este tiempo? ¿Y ahora quieren que abandone VAWA y empiece de cero con algo que ni siquiera entiendo?",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "Crisis de Confianza Total",
+                            content: "Destruiste la credibilidad de la firma al contradecir evaluaciones previas SIN explicación. Esto genera percepción de incompetencia o engaño.",
+                            impact: "Crisis severa (-20 confianza, +25 frustración, -20 cooperación). La cliente percibe que le ocultaron información crítica durante un año. Probable queja formal."
+                        }
+                    },
+                    {
+                        text: "Voy a preparar tu aplicación de Visa T de inmediato. Es mejor que VAWA y no necesitas abandonar tu caso actual. Te enviaré los formularios para firmar.",
+                        type: "premature",
+                        impact: { trust: -25, frustration: +20, cooperation: -25 },
+                        response: "*Confundida y enojada* ¡Espere! No entiendo NADA de lo que está diciendo. ¿Qué es Visa T? ¿Por qué me está enviando formularios sin explicarme? ¿Voy a tener que pagar más? ¿Esto va a afectar mi VAWA? No voy a firmar nada sin entender.",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "Violación de Consentimiento Informado",
+                            content: "Tomaste una decisión legal importante SIN explicar, SIN consentimiento informado, SIN abordar miedos. Esto es mala práctica y violación ética.",
+                            impact: "La cliente se siente manipulada (-25 confianza, +20 frustración, -25 cooperación). Probable rechazo total y búsqueda de segunda opinión."
+                        }
+                    }
+                ]
+            },
+            {
+                id: 4,
+                clientStatement: null,
+                options: [
+                    {
+                        text: "Sí, explico con calma. 'Trata de personas' no es solo secuestro o venta. La ley incluye cuando alguien te OBLIGA a realizar servicios —incluyendo sexuales o domésticos— usando fuerza, amenazas o control. Lo que describes: obligarte a tener relaciones, controlarte completamente, quitarte libertad, eso legalmente califica. La Visa T te protege específicamente en estos casos y ofrece un perdón más amplio que VAWA para tu orden de deportación. No abandonas VAWA, trabajamos en paralelo. ¿Tiene más sentido ahora?",
+                        type: "validation",
+                        impact: { trust: +25, frustration: -30, cooperation: +25 },
+                        response: "Ah... ahora entiendo mejor, doctora. Nunca lo vi así. Siempre pensé que la trata era otra cosa. Entonces... ¿esta Visa T me ayudaría con mi orden de deportación vieja? ¿Y puedo mantener mi caso VAWA al mismo tiempo?",
+                        infoGained: null,
+                        feedback: {
+                            type: "positive",
+                            title: "Educación Legal Empática Perfecta",
+                            content: "Explicaste con lenguaje accesible, conectaste directamente con SU experiencia, clarificaste que NO abandona VAWA, y verificaste comprensión. Esto es excelencia en comunicación legal.",
+                            impact: "La cliente entiende completamente y se siente incluida en la decisión (+25 confianza, -30 frustración, +25 cooperación). Lista para siguiente paso."
+                        }
+                    },
+                    {
+                        text: "La 'trata' no es solo lo que ves en las noticias. También incluye cuando te obligan a trabajar o tener relaciones sin libertad. En tu caso aplica por la coerción sexual y el control doméstico.",
+                        type: "clarification",
+                        impact: { trust: +10, frustration: -10, cooperation: +10 },
+                        response: "Ok, creo que entiendo un poco mejor. Pero sigo sin estar segura de cómo esto me ayuda más que mi caso VAWA. ¿Qué pasa con mi Prima Facie?",
+                        infoGained: null,
+                        feedback: {
+                            type: "neutral",
+                            title: "Explicación Básica Insuficiente",
+                            content: "Explicaste QUÉ es trata, pero no conectaste con sus miedos principales: orden de deportación, perder VAWA, costo, tiempo.",
+                            impact: "La cliente entiende parcialmente pero sigue con dudas críticas (+10 confianza, necesita más información sobre ventajas concretas)."
+                        }
+                    },
+                    {
+                        text: "Trata de personas es cuando alguien te explota laboralmente o sexualmente. Tú fuiste explotada, así que calificas. La Visa T es más rápida que VAWA y te perdona la orden de deportación automáticamente.",
+                        type: "direct",
+                        impact: { trust: -5, frustration: +10, cooperation: -5 },
+                        response: "¿Perdón automático? ¿Eso es garantizado? ¿Y qué pasa si me la niegan? ¿Pierdo mi caso VAWA? Necesito respuestas claras, doctora, no promesas vagas.",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "Promesas Implícitas Peligrosas",
+                            content: "Tu lenguaje ('perdona automáticamente', 'más rápida') suena a garantía. Las clientes ansiosas interpretan esto literalmente y luego se sienten engañadas si no ocurre.",
+                            impact: "La cliente desconfía de promesas que suenan 'demasiado buenas' (+10 frustración, -5 confianza). Pregunta directa sobre garantías."
+                        }
+                    },
+                    {
+                        text: "Es complicado de explicar. Lo importante es que la Visa T te conviene más. Yo me encargo de todo el proceso, solo necesito que confíes en mí.",
+                        type: "premature",
+                        impact: { trust: -20, frustration: +20, cooperation: -20 },
+                        response: "No, doctora. Este es MI caso, MI vida. Si no puede explicarme en términos que yo entienda, entonces no lo voy a hacer. No soy tonta, puedo entender si me explica bien.",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "Paternalismo Rechazado",
+                            content: "Trataste a la cliente como incapaz de entender su propio caso. Esto es condescendiente y genera rechazo total.",
+                            impact: "La cliente se niega a avanzar hasta tener claridad (-20 confianza, +20 frustración, -20 cooperación). Sentimiento de ser tratada como 'menos que'."
+                        }
+                    }
+                ]
+            },
+            {
+                id: 5,
+                clientStatement: null,
+                options: [
+                    {
+                        text: "Exacto, Sofía. Mantienes tu caso VAWA activo y su Prima Facie intacto. La Visa T es una SEGUNDA opción que preparamos en paralelo. La ventaja principal: tiene un perdón más amplio, lo que significa que tu orden de deportación de 1997 tiene menos peso. Sobre costos: no te voy a cobrar nada adicional por preparar la Visa T, es parte de asegurar tu mejor camino a la residencia. ¿Esto te da más tranquilidad?",
+                        type: "validation",
+                        impact: { trust: +30, frustration: -35, cooperation: +30 },
+                        response: "*Se relaja visiblemente* Ay doctora, eso me alivia muchísimo. Entonces no pierdo nada y tengo dos opciones en lugar de una. Y que no me vaya a cobrar más... eso me preocupaba mucho. Ok, doctora, ¿qué necesita de mí? ¿Qué sigue?",
+                        infoGained: null,
+                        feedback: {
+                            type: "positive",
+                            title: "Respuestas Completas a Miedos Clave",
+                            content: "Abordaste sus cuatro miedos principales: (1) perder VAWA, (2) perder Prima Facie, (3) orden de deportación, (4) costo adicional. Esto genera confianza total.",
+                            impact: "La cliente está completamente abierta y comprometida (+30 confianza, -35 frustración, +30 cooperación). Lista para siguientes pasos concretos."
+                        }
+                    },
+                    {
+                        text: "Correcto, VAWA sigue y Prima Facie también. La Visa T se trabaja aparte. Sobre la orden de deportación, la Visa T la puede perdonar. Necesitaremos agendar una entrevista más profunda.",
+                        type: "clarification",
+                        impact: { trust: +15, frustration: -15, cooperation: +15 },
+                        response: "Ok, eso suena mejor que lo que pensaba. ¿Cuánto tiempo toma la entrevista y cuándo la podemos hacer?",
+                        infoGained: null,
+                        feedback: {
+                            type: "neutral",
+                            title: "Respuesta Funcional Pero Incompleta",
+                            content: "Respondiste sobre VAWA y perdón, pero no anticipaste la preocupación sobre costo ni diste detalles sobre la entrevista.",
+                            impact: "La cliente tiene menos ansiedad pero aún tiene dudas prácticas (+15 confianza, necesita más detalles operativos)."
+                        }
+                    },
+                    {
+                        text: "Tu Prima Facie no se ve afectado. Para la Visa T necesitamos documentar mejor tu caso. ¿Tu hijo que también fue maltratado puede hacer una declaración?",
+                        type: "direct",
+                        impact: { trust: -5, frustration: +10, cooperation: -10 },
+                        response: "*Se tensa* Mi hijo tiene trauma por todo lo que vivió. No quiero involucrarlo más de lo necesario. ¿Es obligatorio que declare? Porque si es así, prefiero no meterme con la Visa T.",
+                        infoGained: "childAbuse",
+                        feedback: {
+                            type: "negative",
+                            title: "Pregunta Sensible Sin Preparación",
+                            content: "Mencionaste involucrar al hijo sin preparar emocionalmente a la madre. Para una madre protectora, esto puede ser un dealbreaker inmediato.",
+                            impact: "Obtienes información sobre maltrato al hijo, pero generas nuevo miedo (+10 frustración, -5 confianza, -10 cooperación). Riesgo de rechazo."
+                        }
+                    },
+                    {
+                        text: "Sí, todo sigue igual. Ahora necesito que traigas: pasaporte, IDs, cualquier papel de VAWA, fotos de cuando estabas con él, y si tienes testigos, sus nombres y números.",
+                        type: "premature",
+                        impact: { trust: -10, frustration: +15, cooperation: -10 },
+                        response: "Espere... ¿fotos? Doctora, acaba de decirme que la Visa T no requiere tanta evidencia como VAWA. ¿Por qué ahora me pide fotos y testigos? Me está confundiendo.",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "Contradicción Confusa",
+                            content: "Después de tranquilizarla sobre pruebas, ahora pides evidencia que probablemente no tiene. Esto suena a contradicción y genera desconfianza.",
+                            impact: "La cliente siente que le dijiste lo que quería oír, no la verdad (+15 frustración, -10 confianza, -10 cooperación). Percepción de manipulación."
+                        }
+                    }
+                ]
+            },
+            {
+                id: 6,
+                clientStatement: null,
+                options: [
+                    {
+                        text: "Perfecto, Sofía. Los siguientes pasos son: primero, voy a preparar una declaración detallada contigo sobre tu historia. Esto lo hacemos en una entrevista de aproximadamente 2-3 horas, pero la dividimos en sesiones si lo necesitas. Segundo, evaluaremos hacer un reporte al FBI —esto NO es denuncia criminal, es requisito administrativo para Visa T. Y tercero, en 2-3 semanas tenemos otra reunión para revisar todo el plan. Mientras tanto, tu VAWA sigue su curso normal. ¿Te parece bien este plan?",
+                        type: "validation",
+                        impact: { trust: +30, frustration: -35, cooperation: +30 },
+                        response: "Sí, doctora. Me parece perfecto. Gracias por explicarme todo con calma y paciencia. Ahora sí me siento con esperanza y entiendo qué vamos a hacer. Avíseme cuándo agendamos la entrevista.",
+                        infoGained: null,
+                        feedback: {
+                            type: "positive",
+                            title: "Plan de Acción Concreto y Empoderador",
+                            content: "Diste pasos específicos, timeline claro, aclaraste lo del FBI (miedo común), dividiste la entrevista larga en sesiones, y pediste su aprobación. Excelencia en cierre.",
+                            impact: "La cliente termina empoderada y con confianza total (+30 confianza, -35 frustración, +30 cooperación). Éxito completo de la llamada."
+                        }
+                    },
+                    {
+                        text: "Ok, te voy a enviar un formulario para llenar. Una vez que lo reciba, agendamos la entrevista larga para la declaración. Estamos en contacto.",
+                        type: "clarification",
+                        impact: { trust: +10, frustration: -10, cooperation: +10 },
+                        response: "Está bien, doctora. Voy a estar pendiente del formulario.",
+                        infoGained: null,
+                        feedback: {
+                            type: "neutral",
+                            title: "Siguiente Paso Funcional Pero Frío",
+                            content: "Diste un siguiente paso claro pero muy administrativo. No capitalizaste el momento de conexión emocional ni aclaraste qué pasa con el FBI.",
+                            impact: "La cliente acepta pero sin entusiasmo (+10 confianza). Transacción completada pero sin inspiración ni claridad total."
+                        }
+                    },
+                    {
+                        text: "Bien, voy a trabajar en tu caso de Visa T y te aviso cómo va.",
+                        type: "direct",
+                        impact: { trust: -15, frustration: +20, cooperation: -15 },
+                        response: "¿Eso es todo? ¿Otra vez voy a quedar esperando sin saber nada? Doctora, por eso estoy frustrada con mi caso VAWA, porque no sé qué está pasando. ¿Me va a pasar lo mismo con esto?",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "Repetición del Problema Original",
+                            content: "Tu respuesta replica exactamente lo que frustró a la cliente con VAWA: falta de comunicación y pasos poco claros.",
+                            impact: "La cliente vuelve al estado de ansiedad inicial (+20 frustración, -15 confianza, -15 cooperación). Perdiste TODO el progreso logrado."
+                        }
+                    },
+                    {
+                        text: "Necesito que consigas toda la documentación posible: reportes médicos si los hay, mensajes de texto, emails, fotos, declaraciones de testigos. Mientras más evidencia, mejor.",
+                        type: "premature",
+                        impact: { trust: -15, frustration: +25, cooperation: -15 },
+                        response: "*Frustrada* ¡Doctora! Ya le dije VARIAS VECES que NO tengo reportes, ni mensajes guardados, ni fotos. ¿Por qué me sigue pidiendo cosas que no tengo? Me hace sentir que mi caso no tiene oportunidad.",
+                        infoGained: null,
+                        feedback: {
+                            type: "negative",
+                            title: "No Escuchar Activamente",
+                            content: "Pediste evidencia que ella ya te dijo MÚLTIPLES VECES que no tiene. Esto muestra que no estás escuchando activamente.",
+                            impact: "La cliente se siente invalidada y no escuchada (+25 frustración, -15 confianza, -15 cooperación). Percepción de que 'no le pones atención'."
+                        }
+                    }
+                ]
+            }
+        ];
+
+        // Initialize
+        function init() {
+            generateTimeline();
+            loadWelcome();
+            updateStats();
+        }
+
+        // Generate Timeline
+        function generateTimeline() {
+            const timeline = document.getElementById('timeline-steps');
+            let html = '';
+            
+            for (let i = 1; i <= state.totalRounds; i++) {
+                html += `
+                    <div class="timeline-step">
+                        <div class="step-number ${i === 1 ? 'active' : ''}" id="step-${i}">${i}</div>
+                        <div class="step-info">
+                            <div class="step-label ${i === 1 ? 'active' : ''}" id="step-label-${i}">Pregunta ${i}</div>
+                            <div class="step-detail" id="step-detail-${i}">Pendiente</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            timeline.innerHTML = html;
+        }
+
+        // Load Welcome
+        function loadWelcome() {
+            const content = `
+                <div class="header">
+                    <div class="header-icon">⚖️</div>
+                    <h1 class="header-title">Exploración Multi-estratégica</h1>
+                    <p class="header-subtitle">Simulador Paso a Paso de Identificación de Visas Alternativas</p>
+                </div>
+
+                <div class="case-container">
+                    <h2 class="case-title">Caso: ${caseData.clientName}</h2>
+                    
+                    <div class="client-quote">
+                        "Doctora, sé que mi caso VAWA tiene Prima Facie desde hace meses, pero sigo sin respuesta final. Estoy muy ansiosa porque tengo una orden de deportación de 1997. Mi amiga me dijo que hay otra visa que podría ayudarme, pero tengo miedo de empeorar mi situación. ¿Es verdad eso o me va a perjudicar?"
+                    </div>
+
+                    <div class="info-box">
+                        <h3 class="info-box-title">📋 Información del Expediente:</h3>
+                        <ul class="info-list">
+                            <li>Caso VAWA con Prima Facie emitido (2022-2023)</li>
+                            <li>Orden de deportación en frontera (1997, Honduras)</li>
+                            <li>Última entrada a EE.UU.: 2010</li>
+                            <li>Relación no casada legalmente: 18 años (2003-2021)</li>
+                            <li>Tiene hijos (uno también sufrió maltrato)</li>
+                            <li>Sin reportes policiales previos</li>
+                        </ul>
+                    </div>
+
+                    <div class="mission-box">
+                        <h3>🎯 Tu Misión:</h3>
+                        <p>Determinar, mediante preguntas estratégicas, si la cliente puede aplicar a <strong>Visa T</strong> como vía alterna a la residencia, <strong>SIN abandonar</strong> su caso VAWA.</p>
+                        <p><strong>La llamada es exitosa si logras:</strong></p>
+                        <ul>
+                            <li>Identificar indicios de elegibilidad para Visa T</li>
+                            <li>Generar suficiente confianza para continuar con entrevista profunda</li>
+                            <li>Acordar siguientes pasos claros (entrevista 2-3 horas, reporte FBI)</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h3>⚠️ Riesgo:</h3>
+                        <p>Si no haces las preguntas correctas o avanzas muy rápido:
+                        <br>• La cliente puede cerrarse emocionalmente
+                        <br>• Puede no compartir información crítica sobre coerción sexual o servidumbre
+                        <br>• Puede rechazar explorar Visa T por miedo al FBI o a perder VAWA</p>
+                    </div>
+
+                    <div class="btn-container">
+                        <button class="btn btn-primary" onclick="startSimulation()">
+                            Iniciar Llamada →
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('main-content').innerHTML = content;
+        }
+
+        // Start Simulation
+        function startSimulation() {
+            state.currentRound = 1;
+            loadRound();
+        }
+
+        // Load Round
+        function loadRound() {
+            if (state.currentRound > state.totalRounds) {
+                showResults();
+                return;
+            }
+
+            const round = rounds[state.currentRound - 1];
+            
+            const conversationHTML = state.conversationHistory.length > 0 ? generateConversationHTML() : '';
+
+            const content = `
+                <div style="display: grid; grid-template-columns: 1fr 280px; gap: 25px;">
+                    <div class="case-container">
+                        ${conversationHTML}
+                        
+                        ${round.clientStatement ? `
+                            <div class="message">
+                                <div class="message-label" style="color: #3b82f6;">CLIENTE - ${caseData.clientName}</div>
+                                <div class="client-message">
+                                    <p class="message-text">${round.clientStatement}</p>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <div class="question-section">
+                            <h3 class="question-title">¿Cómo respondes?</h3>
+                            ${round.options.map((opt, index) => `
+                                <div class="option-card" onclick="selectOption(${index})">
+                                    <p class="option-text">${opt.text}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    ${generateClientStatePanel()}
+                </div>
+            `;
+
+            document.getElementById('main-content').innerHTML = content;
+            updateStats();
+        }
+
+        // Select Option
+        function selectOption(optionIndex) {
+            const round = rounds[state.currentRound - 1];
+            const option = round.options[optionIndex];
+
+            // Update state
+            state.trust = Math.max(0, Math.min(100, state.trust + option.impact.trust));
+            state.frustration = Math.max(0, Math.min(100, state.frustration + option.impact.frustration));
+            state.cooperation = Math.max(0, Math.min(100, state.cooperation + option.impact.cooperation));
+
+            // Update score based on strategy
+            if (option.type === 'validation') {
+                state.score += 25;
+                state.correctCount++;
+            } else if (option.type === 'clarification') {
+                state.score += 15;
+            } else if (option.type === 'direct') {
+                state.score += 5;
+            } else if (option.type === 'premature') {
+                state.score -= 10;
+                state.wrongCount++;
+            }
+
+            state.score = Math.max(0, state.score);
+
+            // Collect info
+            if (option.infoGained) {
+                state.infoCollected[option.infoGained] = true;
+            }
+
+            // Calculate progress
+            const infoCount = Object.values(state.infoCollected).filter(v => v).length;
+            state.progress = Math.min(100, (infoCount / 6) * 100);
+
+            // Record decision
+            state.decisions.push({
+                round: state.currentRound,
+                type: option.type,
+                text: option.text,
+                impact: option.impact
+            });
+
+            // Add to conversation
+            state.conversationHistory.push({
+                type: 'attorney',
+                text: option.text
+            });
+            state.conversationHistory.push({
+                type: 'client',
+                text: option.response
+            });
+
+            // Update timeline
+            updateTimelineStep(state.currentRound, option.type);
+
+            // Track SCORM
+            const finalScore = calculateFinalScore();
+            SCORM.setScore(finalScore);
+            SCORM.setSuspendData(JSON.stringify(state));
+
+            // Show feedback
+            showFeedback(option);
+        }
+
+        // Update Timeline Step
+        function updateTimelineStep(stepNum, type) {
+            const stepEl = document.getElementById(`step-${stepNum}`);
+            const labelEl = document.getElementById(`step-label-${stepNum}`);
+            const detailEl = document.getElementById(`step-detail-${stepNum}`);
+
+            stepEl.classList.remove('active');
+            labelEl.classList.remove('active');
+
+            if (type === 'validation') {
+                stepEl.classList.add('completed');
+                labelEl.classList.add('completed');
+                detailEl.textContent = 'Validación ✓';
+            } else if (type === 'clarification') {
+                stepEl.classList.add('completed');
+                detailEl.textContent = 'Clarificación';
+            } else if (type === 'premature' || type === 'direct') {
+                stepEl.classList.add('failed');
+                labelEl.classList.add('failed');
+                detailEl.textContent = type === 'premature' ? 'Prematura ✗' : 'Directa';
+            }
+
+            // Activate next step
+            if (stepNum < state.totalRounds) {
+                const nextStep = document.getElementById(`step-${stepNum + 1}`);
+                const nextLabel = document.getElementById(`step-label-${stepNum + 1}`);
+                if (nextStep) {
+                    nextStep.classList.add('active');
+                    nextLabel.classList.add('active');
+                }
+            }
+        }
+
+        // Show Feedback
+        function showFeedback(option) {
+            const conversationHTML = generateConversationHTML();
+
+            const content = `
+                <div style="display: grid; grid-template-columns: 1fr 280px; gap: 25px;">
+                    <div class="case-container">
+                        ${conversationHTML}
+
+                        <div class="feedback-box ${option.feedback.type}">
+                            <div class="feedback-header">
+                                <span class="feedback-icon">${option.feedback.type === 'positive' ? '✅' : option.feedback.type === 'negative' ? '❌' : '⚠️'}</span>
+                                <h4 class="feedback-title">${option.feedback.title}</h4>
+                            </div>
+                            <div style="display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; background: ${option.type === 'validation' ? 'rgba(5, 150, 105, 0.2)' : option.type === 'clarification' ? 'rgba(59, 130, 246, 0.2)' : option.type === 'direct' ? 'rgba(217, 119, 6, 0.2)' : 'rgba(220, 38, 38, 0.2)'}; color: ${option.type === 'validation' ? '#059669' : option.type === 'clarification' ? '#3b82f6' : option.type === 'direct' ? '#d97706' : '#dc2626'};">
+                                ${getTypeLabel(option.type)}
+                            </div>
+                            <div class="feedback-content">
+                                <p><strong>Análisis:</strong> ${option.feedback.content}</p>
+                            </div>
+                            <div class="feedback-impact">
+                                <strong>Impacto:</strong> ${option.feedback.impact}
+                            </div>
+                        </div>
+
+                        <div class="btn-container">
+                            <button class="btn btn-primary" onclick="nextRound()">
+                                Continuar →
+                            </button>
+                        </div>
+                    </div>
+
+                    ${generateClientStatePanel()}
+                </div>
+            `;
+
+            document.getElementById('main-content').innerHTML = content;
+            updateStats();
+        }
+
+        // Next Round
+        function nextRound() {
+            state.currentRound++;
+            loadRound();
+        }
+
+        // Generate Client State Panel
+        function generateClientStatePanel() {
+            const infoItems = Object.entries(state.infoCollected)
+                .filter(([key, value]) => value)
+                .map(([key, value]) => {
+                    const labels = {
+                        abuseAfter2010: 'Maltrato post-2010',
+                        sexualCoercion: 'Coerción sexual',
+                        domesticServitude: 'Servidumbre doméstica',
+                        threats: 'Amenazas',
+                        economicControl: 'Control económico',
+                        childAbuse: 'Maltrato al hijo'
+                    };
+                    return `<div style="background: rgba(5, 150, 105, 0.1); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 8px; border-left: 3px solid #059669;">✓ ${labels[key]}</div>`;
+                }).join('');
+
+            const validationCount = state.decisions.filter(d => d.type === 'validation').length;
+            const clarificationCount = state.decisions.filter(d => d.type === 'clarification').length;
+            const directCount = state.decisions.filter(d => d.type === 'direct').length;
+            const prematureCount = state.decisions.filter(d => d.type === 'premature').length;
+
+            return `
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <!-- Estado Emocional del Cliente -->
+                    <div style="background: #2d3748; border-radius: 15px; padding: 20px; border: 1px solid rgba(212, 175, 55, 0.2);">
+                        <h3 style="color: #e2e8f0; font-size: 1rem; margin-bottom: 18px; display: flex; align-items: center; gap: 8px;">
+                            📊 Estado Emocional del Cliente
+                        </h3>
+                        
+                        <!-- Confianza -->
+                        <div style="margin-bottom: 18px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 0.85rem; color: #94a3b8;">Confianza</span>
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #059669;">${state.trust}%</span>
+                            </div>
+                            <div style="height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background: linear-gradient(90deg, #059669, #10b981); width: ${state.trust}%; transition: width 0.6s ease; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Frustración -->
+                        <div style="margin-bottom: 18px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 0.85rem; color: #94a3b8;">Frustración</span>
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #dc2626;">${state.frustration}%</span>
+                            </div>
+                            <div style="height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background: linear-gradient(90deg, #dc2626, #ef4444); width: ${state.frustration}%; transition: width 0.6s ease; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Cooperación -->
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 0.85rem; color: #94a3b8;">Cooperación</span>
+                                <span style="font-size: 1.1rem; font-weight: 700; color: #3b82f6;">${state.cooperation}%</span>
+                            </div>
+                            <div style="height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); width: ${state.cooperation}%; transition: width 0.6s ease; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información Recopilada -->
+                    <div style="background: #2d3748; border-radius: 15px; padding: 20px; border: 1px solid rgba(212, 175, 55, 0.2);">
+                        <h3 style="color: #e2e8f0; font-size: 1rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                            ✅ Información Recopilada
+                        </h3>
+                        ${infoItems || '<p style="color: #64748b; font-size: 0.85rem;">No se ha identificado información clave aún.</p>'}
+                    </div>
+
+                    <!-- Tu Estrategia -->
+                    <div style="background: #2d3748; border-radius: 15px; padding: 20px; border: 1px solid rgba(212, 175, 55, 0.2);">
+                        <h3 style="color: #e2e8f0; font-size: 1rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                            📈 Tu Estrategia
+                        </h3>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                            <span style="font-size: 0.85rem; color: #94a3b8;">Validación Emocional</span>
+                            <span style="font-weight: 700; color: #059669;">${validationCount}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                            <span style="font-size: 0.85rem; color: #94a3b8;">Clarificación</span>
+                            <span style="font-weight: 700; color: #3b82f6;">${clarificationCount}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                            <span style="font-size: 0.85rem; color: #94a3b8;">Enfoque Directo</span>
+                            <span style="font-weight: 700; color: #d97706;">${directCount}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                            <span style="font-size: 0.85rem; color: #94a3b8;">Prematura</span>
+                            <span style="font-weight: 700; color: #dc2626;">${prematureCount}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Generate Conversation HTML
+        function generateConversationHTML() {
+            return state.conversationHistory.map(msg => {
+                if (msg.type === 'attorney') {
+                    return `
+                        <div class="message">
+                            <div class="message-label" style="color: #059669;">ABOGADO - TÚ</div>
+                            <div class="attorney-message">
+                                <p class="message-text">${msg.text}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="message">
+                            <div class="message-label" style="color: #3b82f6;">CLIENTE - ${caseData.clientName}</div>
+                            <div class="client-message">
+                                <p class="message-text">${msg.text}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        // Get Type Label
+        function getTypeLabel(type) {
+            const labels = {
+                validation: 'Validación Emocional',
+                clarification: 'Clarificación Cuidadosa',
+                direct: 'Enfoque Directo',
+                premature: 'Profundización Prematura'
+            };
+            return labels[type] || type;
+        }
+
+        // Calculate Final Score
+        function calculateFinalScore() {
+            const trustScore = state.trust;
+            const frustrationPenalty = state.frustration;
+            const cooperationScore = state.cooperation;
+            const infoScore = Object.values(state.infoCollected).filter(v => v).length * 10;
+            
+            const totalScore = (trustScore + cooperationScore + infoScore + state.score - frustrationPenalty) / 3;
+            return Math.max(0, Math.min(100, Math.round(totalScore)));
+        }
+
+        // Update Stats
+        function updateStats() {
+            document.getElementById('stat-pregunta').textContent = `${state.currentRound}/${state.totalRounds}`;
+            document.getElementById('stat-puntos').textContent = state.score;
+            document.getElementById('stat-correctas').textContent = state.correctCount;
+            document.getElementById('stat-erroneas').textContent = state.wrongCount;
+
+            // Update progress circle
+            const percentage = Math.round(state.progress);
+            document.getElementById('progress-percentage').textContent = percentage + '%';
+            
+            const circumference = 377;
+            const offset = circumference - (percentage / 100) * circumference;
+            document.getElementById('progress-circle').style.strokeDashoffset = offset;
+        }
+
+        // Show Results
+        function showResults() {
+            const finalScore = calculateFinalScore();
+            const visaTIdentified = Object.values(state.infoCollected).filter(v => v).length >= 3;
+            
+            let verdict, verdictIcon, description;
+
+            if (finalScore >= 80 && visaTIdentified && state.trust >= 70) {
+                verdict = 'Desempeño Sólido';
+                verdictIcon = '🏆';
+                description = 'Excelente manejo de la entrevista. Generaste confianza, identificaste elementos clave de Visa T, y acordaste siguientes pasos claros.';
+            } else if (finalScore >= 60 && visaTIdentified) {
+                verdict = 'Desempeño Adecuado';
+                verdictIcon = '✅';
+                description = 'Lograste identificar oportunidad de Visa T, pero hubo momentos de fricción emocional que podrían haberse manejado mejor.';
+            } else if (finalScore >= 40) {
+                verdict = 'En Riesgo';
+                verdictIcon = '⚠️';
+                description = 'Obtuviste alguna información pero la relación con el cliente quedó frágil. Riesgo de que no continúe con el proceso.';
+            } else {
+                verdict = 'Requiere Desarrollo';
+                verdictIcon = '❌';
+                description = 'La cliente terminó más frustrada que al inicio. Es probable que busque otra firma o abandone el caso.';
+            }
+
+            const infoItems = Object.entries(state.infoCollected)
+                .filter(([key, value]) => value)
+                .map(([key, value]) => {
+                    const labels = {
+                        abuseAfter2010: 'Maltrato posterior a entrada 2010',
+                        sexualCoercion: 'Coerción sexual documentada',
+                        domesticServitude: 'Servidumbre doméstica y control',
+                        threats: 'Amenazas y control psicológico',
+                        economicControl: 'Control económico total',
+                        childAbuse: 'Maltrato también hacia hijo menor'
+                    };
+                    return `<li>${labels[key]}</li>`;
+                }).join('');
+
+            const content = `
+                <div class="results-container">
+                    <div class="results-header">
+                        <div class="results-icon">${verdictIcon}</div>
+                        <h2 class="results-title">Simulación Completada</h2>
+                        <h3 class="results-verdict">${verdict}</h3>
+                        <p class="results-description">${description}</p>
+                        <div class="results-score-display">${finalScore}/100</div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>📊 Estado Final del Cliente</h3>
+                        <ul>
+                            <li><strong>Confianza:</strong> ${state.trust}% ${state.trust >= 70 ? '✅ Alta' : state.trust >= 40 ? '⚠️ Media' : '❌ Baja'}</li>
+                            <li><strong>Frustración:</strong> ${state.frustration}% ${state.frustration <= 30 ? '✅ Baja' : state.frustration <= 60 ? '⚠️ Media' : '❌ Alta'}</li>
+                            <li><strong>Cooperación:</strong> ${state.cooperation}% ${state.cooperation >= 70 ? '✅ Alta' : state.cooperation >= 40 ? '⚠️ Media' : '❌ Baja'}</li>
+                        </ul>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>✅ Elementos de Visa T Identificados</h3>
+                        ${infoItems ? `<ul>${infoItems}</ul>` : '<p>No se identificaron elementos suficientes de Visa T.</p>'}
+                    </div>
+
+                    <div class="results-section">
+                        <h3>🎯 ¿Visa T Identificada como Viable?</h3>
+                        <p><strong>${visaTIdentified ? 'SÍ ✓' : 'NO ✗'}</strong></p>
+                        <p>${visaTIdentified ? 
+                            'Con base en la información recopilada, la cliente es candidata potencial para Visa T. Los elementos identificados (coerción sexual, servidumbre doméstica, control) cumplen con indicadores de trata de personas.' : 
+                            'No se recopiló suficiente información para determinar elegibilidad de Visa T. Se necesitaban al menos 3 indicadores de trata.'
+                        }</p>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>📈 Tu Estrategia de Comunicación</h3>
+                        <ul>
+                            <li><strong>Validación Emocional:</strong> ${state.decisions.filter(d => d.type === 'validation').length} veces - ${state.decisions.filter(d => d.type === 'validation').length >= 4 ? 'Excelente ✅' : state.decisions.filter(d => d.type === 'validation').length >= 2 ? 'Adecuado ⚠️' : 'Insuficiente ❌'}</li>
+                            <li><strong>Clarificación Cuidadosa:</strong> ${state.decisions.filter(d => d.type === 'clarification').length} veces</li>
+                            <li><strong>Enfoque Directo:</strong> ${state.decisions.filter(d => d.type === 'direct').length} veces ${state.decisions.filter(d => d.type === 'direct').length >= 3 ? '⚠️ Alto riesgo' : ''}</li>
+                            <li><strong>Profundización Prematura:</strong> ${state.decisions.filter(d => d.type === 'premature').length} veces ${state.decisions.filter(d => d.type === 'premature').length >= 2 ? '❌ Crítico' : ''}</li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-container" style="margin-top: 40px;">
+                        <button class="btn btn-primary" onclick="init()">
+                            Intentar Nuevamente
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('main-content').innerHTML = content;
+
+            // Complete SCORM
+            SCORM.setScore(finalScore);
+            SCORM.complete();
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
