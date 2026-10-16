@@ -1,0 +1,2454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habeas Corpus en Materia Migratoria</title>
+    <style>
+/* 
+ * Litigation Training SCORM - Styles
+ * Mendoza Law Firm LLC
+ * Color Palette: #DAD7CD, #A3B18A, #588157, #3A5A40, #344E41
+ */
+
+:root {
+    --color-lightest: #DAD7CD;
+    --color-light: #A3B18A;
+    --color-medium: #588157;
+    --color-dark: #3A5A40;
+    --color-darkest: #344E41;
+    --shadow: 0 4px 6px rgba(52, 78, 65, 0.1);
+    --shadow-lg: 0 10px 25px rgba(52, 78, 65, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--color-lightest) 0%, var(--color-light) 100%);
+    color: var(--color-darkest);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, var(--color-darkest) 0%, var(--color-dark) 100%);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 30px;
+    border-radius: 12px;
+}
+
+.header h1 {
+    font-size: 2.2em;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.header p {
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+/* Progress Bar */
+.progress-container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 30px;
+    background-color: var(--color-lightest);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-medium) 0%, var(--color-dark) 100%);
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9em;
+    min-width: 40px;
+}
+
+.progress-text {
+    margin-top: 10px;
+    text-align: center;
+    color: var(--color-dark);
+    font-weight: 600;
+}
+
+/* Content Sections */
+.module-section {
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.module-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.module-section h2 {
+    color: var(--color-darkest);
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--color-medium);
+    padding-bottom: 10px;
+}
+
+.module-section h3 {
+    color: var(--color-dark);
+    font-size: 1.4em;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.module-section p, .module-section ul, .module-section ol {
+    margin-bottom: 15px;
+    font-size: 1.05em;
+    color: #333;
+}
+
+.module-section ul, .module-section ol {
+    padding-left: 30px;
+}
+
+.module-section li {
+    margin-bottom: 10px;
+}
+
+/* Highlight Boxes */
+.highlight-box {
+    background: linear-gradient(135deg, var(--color-light) 0%, var(--color-lightest) 100%);
+    border-left: 5px solid var(--color-medium);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.highlight-box h4 {
+    color: var(--color-darkest);
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+/* Statistics Box */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.stat-card {
+    background: var(--color-lightest);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid var(--color-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--color-dark);
+    display: block;
+}
+
+.stat-label {
+    font-size: 1em;
+    color: var(--color-darkest);
+    margin-top: 10px;
+}
+
+/* Quiz Styles */
+.quiz-intro {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.quiz-intro h3 {
+    color: var(--color-darkest);
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.quiz-intro ul {
+    text-align: left;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.start-quiz-btn {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-darkest) 100%);
+    color: white;
+    padding: 20px 50px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    margin-top: 30px;
+    transition: all 0.3s ease;
+}
+
+.start-quiz-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Question Cards */
+.question-card {
+    background: white;
+    border: 2px solid var(--color-light);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+}
+
+.question-card.answered {
+    opacity: 0.7;
+}
+
+.question-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.question-number {
+    background: var(--color-dark);
+    color: white;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.question-text {
+    font-size: 1.15em;
+    color: var(--color-darkest);
+    font-weight: 600;
+    flex: 1;
+}
+
+.options {
+    margin-top: 15px;
+}
+
+.option {
+    background: var(--color-lightest);
+    border: 2px solid var(--color-light);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.option:hover:not(.disabled) {
+    background: var(--color-light);
+    transform: translateX(5px);
+}
+
+.option input[type="radio"] {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.option.selected {
+    background: var(--color-medium);
+    color: white;
+    border-color: var(--color-dark);
+}
+
+.option.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.option.correct-answer {
+    background: var(--color-medium);
+    color: white;
+    border-color: var(--color-dark);
+    font-weight: bold;
+}
+
+.option.incorrect-answer {
+    background: #fdd;
+    border-color: #c55;
+}
+
+/* Feedback */
+.feedback {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.feedback.show {
+    display: block;
+}
+
+.feedback.correct {
+    background: linear-gradient(135deg, rgba(88, 129, 87, 0.15) 0%, rgba(163, 177, 138, 0.15) 100%);
+    border-left: 5px solid var(--color-medium);
+}
+
+.feedback.incorrect {
+    background: rgba(204, 85, 85, 0.1);
+    border-left: 5px solid #c55;
+}
+
+.feedback-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.feedback-icon {
+    margin-right: 10px;
+    font-size: 1.3em;
+}
+
+.feedback-text {
+    line-height: 1.7;
+}
+
+/* Navigation Buttons */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.btn {
+    padding: 15px 35px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-darkest) 100%);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: var(--color-light);
+    color: var(--color-darkest);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--color-medium);
+    color: white;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Results */
+.results-container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.score-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, var(--color-medium) 0%, var(--color-dark) 100%);
+    box-shadow: var(--shadow-lg);
+}
+
+.score-percentage {
+    font-size: 1em;
+}
+
+.score-label {
+    font-size: 0.3em;
+    margin-top: 5px;
+    opacity: 0.9;
+}
+
+.results-details {
+    max-width: 600px;
+    margin: 30px auto;
+    text-align: left;
+}
+
+.result-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: var(--color-lightest);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-label {
+    font-weight: 600;
+    color: var(--color-darkest);
+}
+
+.result-value {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--color-dark);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.status-badge.passed {
+    background: var(--color-medium);
+    color: white;
+}
+
+.status-badge.failed {
+    background: #c55;
+    color: white;
+}
+
+.recommendation-box {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.recommendation-box.passed {
+    background: rgba(88, 129, 87, 0.1);
+    border-left: 5px solid var(--color-medium);
+}
+
+.recommendation-box.failed {
+    background: rgba(204, 85, 85, 0.1);
+    border-left: 5px solid #c55;
+}
+
+/* Loading Animation */
+.loading {
+    display: none;
+    text-align: center;
+    padding: 40px;
+}
+
+.loading.show {
+    display: block;
+}
+
+.spinner {
+    border: 5px solid var(--color-lightest);
+    border-top: 5px solid var(--color-dark);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.6em;
+    }
+    
+    .module-section {
+        padding: 20px;
+    }
+    
+    .module-section h2 {
+        font-size: 1.4em;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .navigation {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .score-circle {
+        width: 150px;
+        height: 150px;
+        font-size: 2.5em;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navigation, .btn {
+        display: none;
+    }
+    
+    .module-section {
+        display: block !important;
+        page-break-after: always;
+    }
+}
+
+/* Hidden class */
+.hidden {
+    display: none !important;
+}
+
+</style>
+    <script>
+/**
+ * SCORM 1.2 API - Versión Robusta para Moodle
+ * Mendoza Law Firm LLC - Training Department
+ */
+var SCORM = (function() {
+    var api = null;
+    var initialized = false;
+    var debugMode = false; // Cambiar a true para ver logs detallados
+    
+    function log(msg) {
+        if (debugMode) {
+            console.log('[SCORM] ' + msg);
+        }
+    }
+    
+    function scanForAPI(win) {
+        var attempts = 0;
+        while (win && attempts < 500) {
+            attempts++;
+            if (win.API) {
+                log('API encontrada en intento ' + attempts);
+                return win.API;
+            }
+            if (win === win.parent) {
+                break;
+            }
+            win = win.parent;
+        }
+        return null;
+    }
+    
+    function findAPI() {
+        log('Buscando API SCORM...');
+        
+        // Buscar en window actual
+        var theAPI = scanForAPI(window);
+        if (theAPI) {
+            log('API encontrada en window');
+            return theAPI;
+        }
+        
+        // Buscar en opener
+        if (window.opener) {
+            try { 
+                theAPI = scanForAPI(window.opener);
+                if (theAPI) {
+                    log('API encontrada en opener');
+                    return theAPI;
+                }
+            } catch(e) {
+                log('Error buscando en opener: ' + e);
+            }
+        }
+        
+        // Buscar en top
+        if (window.top && window.top !== window) {
+            try { 
+                theAPI = scanForAPI(window.top);
+                if (theAPI) {
+                    log('API encontrada en top');
+                    return theAPI;
+                }
+            } catch(e) {
+                log('Error buscando en top: ' + e);
+            }
+        }
+        
+        // Buscar en parent directo
+        if (window.parent && window.parent !== window) {
+            if (window.parent.API) {
+                log('API encontrada en parent');
+                return window.parent.API;
+            }
+        }
+        
+        log('API no encontrada - Modo standalone');
+        return null;
+    }
+    
+    return {
+        init: function() {
+            if (initialized) {
+                log('Ya inicializado');
+                return true;
+            }
+            
+            api = findAPI();
+            
+            if (!api) {
+                log('Modo standalone (sin LMS)');
+                initialized = true;
+                return true;
+            }
+            
+            var result = api.LMSInitialize('');
+            log('LMSInitialize result: ' + result);
+            
+            if (result === 'true' || result === true) {
+                initialized = true;
+                
+                // Obtener estado actual
+                var status = this.get('cmi.core.lesson_status');
+                log('Estado actual: ' + status);
+                
+                // Si no ha sido intentado, marcarlo como incompleto
+                if (status === 'not attempted' || status === '' || status === 'unknown') {
+                    this.set('cmi.core.lesson_status', 'incomplete');
+                    this.commit();
+                    log('Estado cambiado a incomplete');
+                }
+                
+                return true;
+            }
+            
+            log('Error en LMSInitialize');
+            return false;
+        },
+        
+        get: function(key) {
+            if (!api) return '';
+            var value = api.LMSGetValue(key);
+            log('GET ' + key + ' = ' + value);
+            return value;
+        },
+        
+        set: function(key, value) {
+            if (!api) return true;
+            log('SET ' + key + ' = ' + value);
+            var result = api.LMSSetValue(key, String(value));
+            return (result === 'true' || result === true);
+        },
+        
+        commit: function() {
+            if (!api) return true;
+            var result = api.LMSCommit('');
+            log('COMMIT result: ' + result);
+            return (result === 'true' || result === true);
+        },
+        
+        finish: function() {
+            if (!api || !initialized) return true;
+            log('Finalizando sesión SCORM...');
+            this.commit();
+            var result = api.LMSFinish('');
+            log('FINISH result: ' + result);
+            initialized = false;
+            return (result === 'true' || result === true);
+        },
+        
+        /**
+         * FUNCIÓN PRINCIPAL: Enviar calificación a Moodle
+         * @param {number} scoreRaw - Puntuación de 0 a 100
+         */
+        setScore: function(scoreRaw) {
+            log('=== ENVIANDO CALIFICACIÓN ===');
+            log('Score: ' + scoreRaw);
+            
+            // Asegurar que el score esté en el rango correcto
+            scoreRaw = Math.max(0, Math.min(100, scoreRaw));
+            
+            // Establecer score
+            this.set('cmi.core.score.raw', scoreRaw);
+            this.set('cmi.core.score.min', '0');
+            this.set('cmi.core.score.max', '100');
+            
+            // Establecer estado según si aprobó o no (70% es el mínimo)
+            var passed = scoreRaw >= 70;
+            var status = passed ? 'passed' : 'failed';
+            this.set('cmi.core.lesson_status', status);
+            
+            log('Estado final: ' + status);
+            
+            // CRÍTICO: Commit inmediatamente
+            var commitResult = this.commit();
+            log('Commit después de score: ' + commitResult);
+            
+            return commitResult;
+        },
+        
+        /**
+         * Guardar progreso del usuario
+         */
+        saveProgress: function(data) {
+            if (!api) return true;
+            this.set('cmi.suspend_data', JSON.stringify(data));
+            return this.commit();
+        },
+        
+        /**
+         * Recuperar progreso del usuario
+         */
+        getProgress: function() {
+            if (!api) return null;
+            var data = this.get('cmi.suspend_data');
+            if (data) {
+                try {
+                    return JSON.parse(data);
+                } catch(e) {
+                    log('Error parseando suspend_data: ' + e);
+                    return null;
+                }
+            }
+            return null;
+        },
+        
+        /**
+         * Establecer ubicación actual
+         */
+        setLocation: function(location) {
+            if (!api) return true;
+            this.set('cmi.core.lesson_location', location);
+            return this.commit();
+        },
+        
+        /**
+         * Obtener ubicación actual
+         */
+        getLocation: function() {
+            if (!api) return '';
+            return this.get('cmi.core.lesson_location');
+        },
+        
+        /**
+         * Verificar si el API está disponible
+         */
+        isAvailable: function() {
+            return api !== null;
+        }
+    };
+})();
+
+// Inicializar cuando la página carga
+window.addEventListener('load', function() {
+    SCORM.init();
+});
+
+// Finalizar cuando la página se cierra
+window.addEventListener('beforeunload', function() {
+    SCORM.commit();
+    SCORM.finish();
+});
+
+// Finalizar también cuando se navega fuera
+window.addEventListener('unload', function() {
+    SCORM.commit();
+    SCORM.finish();
+});
+
+</script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚖️ Habeas Corpus en Materia Migratoria</h1>
+            <p>"El Gran Recurso" - Garantía Procesal contra Detenciones Arbitrarias</p>
+            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">Mendoza Law Firm LLC - Training Department</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">10%</div>
+            </div>
+            <div class="progress-text" id="progressText">Sección 0 de 10</div>
+        </div>
+
+        <!-- SECCIÓN 0: ÍNDICE DEL CURSO -->
+        <section class="module-section active" id="section0">
+            <h2>📋 Índice del Curso</h2>
+            
+            <div class="highlight-box">
+                <h4>Bienvenido al Curso de Habeas Corpus en Materia Migratoria</h4>
+                <p>Este curso comprehensivo te guiará a través de todos los aspectos esenciales del habeas corpus como herramienta fundamental en litigación migratoria.</p>
+                
+                <p style="margin-top: 15px;"><strong>Duración estimada:</strong> 2.5 - 3 horas</p>
+                <p><strong>Calificación mínima aprobatoria:</strong> 85% (17 de 20 preguntas correctas)</p>
+                <p><strong>Modalidad:</strong> Auto-dirigido con evaluación final</p>
+            </div>
+
+            <h3 style="margin-top: 30px;">📚 Contenido del Curso</h3>
+
+            <div style="background: var(--color-lightest); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                
+                <div style="margin-bottom: 25px; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid var(--color-medium);">
+                    <h4 style="margin: 0 0 10px 0; color: var(--color-dark);">📖 Módulo I: Introducción y Contexto Histórico</h4>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                        <li>"El Gran Recurso" - Significado y origen</li>
+                        <li>Evolución en el contexto migratorio estadounidense</li>
+                        <li>Doctrina de "Plenos Poderes" (Plenary Power)</li>
+                        <li>Cambios significativos post-11 de septiembre de 2001</li>
+                        <li>Precedentes históricos: Ex parte Merryman (1861)</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 25px; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid var(--color-medium);">
+                    <h4 style="margin: 0 0 10px 0; color: var(--color-dark);">📖 Módulo II: Fundamento Legal - Bases Constitucionales</h4>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                        <li>Cláusula de Suspensión (Artículo I, Sección 9, Cláusula 2)</li>
+                        <li>Quinta Enmienda: Garantía del Debido Proceso</li>
+                        <li>Aplicación a extranjeros en territorio estadounidense</li>
+                        <li>Factores que determinan extensión de protecciones</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 25px; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid var(--color-medium);">
+                    <h4 style="margin: 0 0 10px 0; color: var(--color-dark);">📖 Módulo III: Marco Statutario Federal</h4>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                        <li>28 U.S.C. § 2241 - Estatuto General de Habeas Corpus</li>
+                        <li>Ley de Inmigración y Nacionalidad (INA)</li>
+                        <li>AEDPA e IIRIRA de 1996 - Restricciones legislativas</li>
+                        <li>REAL ID Act de 2005 - Marco dual actual</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 25px; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid var(--color-medium);">
+                    <h4 style="margin: 0 0 10px 0; color: var(--color-dark);">📖 Módulo IV: Requisitos Procesales - Parte 1</h4>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                        <li>Custodia: Física, Constructiva y Parole</li>
+                        <li>Jurisdicción Personal y Territorial</li>
+                        <li>Agotamiento de Recursos Administrativos</li>
+                        <li>Excepciones al agotamiento: Futility, daño irreparable</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 25px; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid var(--color-medium);">
+                    <h4 style="margin: 0 0 10px 0; color: var(--color-dark);">📖 Módulo V: Requisitos Procesales - Parte 2 y Barreras</h4>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                        <li>Cuestiones revisables vs. no revisables</li>
+                        <li>Doctrina de Plenos Poderes como barrera</li>
+                        <li>Procedimientos de Remoción Acelerada (Expedited Removal)</li>
+                        <li>Detención Obligatoria bajo INA §236(c)</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 25px; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid var(--color-medium);">
+                    <h4 style="margin: 0 0 10px 0; color: var(--color-dark);">📖 Módulo VI: Jurisdicción, Competencia y Proceso</h4>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                        <li>Tribunales de Distrito Federal (Primera Instancia)</li>
+                        <li>Cortes de Apelaciones de Circuito</li>
+                        <li>Corte Suprema de los Estados Unidos</li>
+                        <li>Etapas del procedimiento y tiempos de resolución</li>
+                        <li>Factores que afectan la duración del proceso</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 25px; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid var(--color-medium);">
+                    <h4 style="margin: 0 0 10px 0; color: var(--color-dark);">📖 Módulo VII: Precedentes Jurisprudenciales Fundamentales</h4>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                        <li><strong>INS v. St. Cyr (2001)</strong> - Punto de inflexión post-1996</li>
+                        <li><strong>Zadvydas v. Davis (2001)</strong> - Límite de 6 meses</li>
+                        <li><strong>Clark v. Martinez (2005)</strong> - Extensión a inadmisibles</li>
+                        <li>Impacto y aplicación de estos casos fundamentales</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 25px; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid var(--color-medium);">
+                    <h4 style="margin: 0 0 10px 0; color: var(--color-dark);">📖 Módulo VIII: Precedentes Recientes y Aplicación Práctica</h4>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                        <li><strong>Jennings v. Rodriguez (2018)</strong> - Audiencias periódicas</li>
+                        <li><strong>Nielsen v. Preap (2019)</strong> - Detención obligatoria ampliada</li>
+                        <li>Circuit Splits: 9°, 3° y 2° Circuitos</li>
+                        <li>Estadísticas y tasas de éxito (30-40% detención prolongada)</li>
+                        <li>Estrategias de litigio efectivas para practicantes</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 0; padding: 15px; background: #fff3cd; border-radius: 5px; border-left: 4px solid #ffc107;">
+                    <h4 style="margin: 0 0 10px 0; color: #856404;">📝 Módulo IX: Evaluación Final</h4>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                        <li><strong>20 preguntas</strong> de opción múltiple</li>
+                        <li><strong>Calificación mínima aprobatoria: 85%</strong> (17 correctas)</li>
+                        <li>Feedback detallado para cada respuesta</li>
+                        <li>Tiempo estimado: 40-50 minutos</li>
+                        <li>Registro automático de calificación en Moodle</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="highlight-box" style="margin-top: 30px; background: rgba(88, 129, 87, 0.1); border-left: 4px solid var(--color-medium);">
+                <h4>🎯 Objetivos de Aprendizaje</h4>
+                <p>Al completar este curso, serás capaz de:</p>
+                <ul>
+                    <li>✅ Comprender el fundamento constitucional y estatutario del habeas corpus</li>
+                    <li>✅ Identificar cuándo aplicar habeas corpus vs. otros recursos legales</li>
+                    <li>✅ Navegar los requisitos procesales y evitar errores comunes</li>
+                    <li>✅ Aplicar precedentes jurisprudenciales clave en casos actuales</li>
+                    <li>✅ Distinguir entre diferentes tipos de custodia y detención</li>
+                    <li>✅ Desarrollar estrategias efectivas de litigio en habeas corpus migratorio</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box" style="margin-top: 20px;">
+                <h4>💡 Recomendaciones para el Estudio</h4>
+                <ul>
+                    <li>📚 Dedica 2.5-3 horas sin interrupciones para completar el curso</li>
+                    <li>📝 Toma notas de los casos clave y sus holdings</li>
+                    <li>⚖️ Presta especial atención a las diferencias entre circuitos</li>
+                    <li>🔍 Enfócate en entender el "por qué" de cada precedente</li>
+                    <li>💼 Relaciona el contenido con casos reales de tu práctica</li>
+                </ul>
+            </div>
+
+            <div class="navigation" style="margin-top: 40px;">
+                <button class="btn btn-primary" style="font-size: 1.1em; padding: 15px 30px;" onclick="nextSection()">Comenzar Curso →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 1: Introducción y Contexto Histórico -->
+        <section class="module-section" id="section1">
+            <h2>I. Introducción y Contexto Histórico</h2>
+            
+            <div class="highlight-box">
+                <h4>📜 "El Gran Recurso"</h4>
+                <p>El recurso de <strong>habeas corpus</strong>, conocido como "el gran recurso" en la tradición jurídica anglosajona, constituye la principal garantía procesal contra detenciones arbitrarias.</p>
+            </div>
+
+            <h3>Evolución en el Contexto Migratorio Estadounidense</h3>
+
+            <p>En el contexto migratorio estadounidense, este remedio constitucional ha experimentado una evolución significativa, marcada por <strong>tensiones entre el poder ejecutivo, el legislativo y el judicial</strong>, especialmente en las últimas décadas.</p>
+
+            <h3>Precedentes Históricos Importantes</h3>
+
+            <div class="highlight-box">
+                <h4>⚔️ Guerra Civil y Ex parte Merryman (1861)</h4>
+                <p>La suspensión del habeas corpus durante la Guerra Civil bajo la presidencia de Lincoln estableció precedentes sobre los límites del poder ejecutivo.</p>
+                
+                <p><strong>Doctrina de "Plenos Poderes" (Plenary Power Doctrine):</strong></p>
+                <ul>
+                    <li>Históricamente limitó la revisión judicial de decisiones migratorias</li>
+                    <li>Otorgaba amplia discreción al poder ejecutivo en materia de inmigración</li>
+                    <li>Esta doctrina ha sido gradualmente erosionada</li>
+                </ul>
+            </div>
+
+            <h3>Cambios Significativos Post-9/11</h3>
+
+            <p>La situación comenzó a cambiar significativamente a finales del siglo XX y principios del XXI, particularmente:</p>
+
+            <ul>
+                <li><strong>Después del 11 de septiembre de 2001:</strong> Nuevas políticas de seguridad nacional</li>
+                <li><strong>Incremento en detenciones migratorias:</strong> Mayor uso de la detención como herramienta de control</li>
+                <li><strong>Restricciones legislativas:</strong> AEDPA (1996), IIRIRA (1996), REAL ID Act (2005)</li>
+                <li><strong>Respuesta judicial:</strong> Protección renovada del habeas corpus como control constitucional</li>
+            </ul>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">1861</span>
+                    <span class="stat-label">Ex parte Merryman</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2001</span>
+                    <span class="stat-label">Punto de Inflexión</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">28 U.S.C. § 2241</span>
+                    <span class="stat-label">Estatuto Principal</span>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: Fundamento Legal - Bases Constitucionales -->
+        <section class="module-section" id="section2">
+            <h2>II. Fundamento Legal - Bases Constitucionales</h2>
+            
+            <h3>A. Cláusula de Suspensión (Artículo I, Sección 9, Cláusula 2)</h3>
+
+            <div class="highlight-box">
+                <h4>📜 Texto Constitucional</h4>
+                <blockquote style="background: rgba(218, 215, 205, 0.3); padding: 15px; border-left: 4px solid var(--color-dark); margin: 15px 0; font-style: italic;">
+                    "El privilegio del recurso de habeas corpus no podrá ser suspendido, salvo cuando la seguridad pública lo exija en casos de rebelión o invasión"
+                </blockquote>
+            </div>
+
+            <p><strong>Aspectos Clave de la Cláusula:</strong></p>
+
+            <ul>
+                <li><strong>Ubicación Intencional:</strong> Esta cláusula está ubicada intencionalmente en el artículo del poder legislativo</li>
+                <li><strong>Autoridad para Suspender:</strong> Corresponde al Congreso, NO al Ejecutivo, autorizar cualquier suspensión</li>
+                <li><strong>Interpretaciones Modernas:</strong> Esta protección se extiende a todas las personas bajo jurisdicción estadounidense, independientemente de su estatus migratorio</li>
+            </ul>
+
+            <h3>B. Quinta Enmienda (Debido Proceso)</h3>
+
+            <div class="highlight-box">
+                <h4>⚖️ Garantía del Debido Proceso</h4>
+                <p><strong>Texto:</strong> Ninguna persona será "privada de la vida, la libertad o la propiedad sin el debido proceso legal"</p>
+
+                <p><strong>Aplicación en Materia Migratoria:</strong></p>
+                <ul>
+                    <li>La Corte Suprema ha reconocido que los extranjeros presentes en territorio estadounidense tienen ciertas protecciones del debido proceso</li>
+                    <li>La extensión de estas protecciones depende de varios factores</li>
+                </ul>
+            </div>
+
+            <h3>Factores que Determinan la Extensión de Protecciones</h3>
+
+            <table style="width: 100%; margin: 20px 0; border-collapse: collapse;">
+                <thead style="background: var(--color-light);">
+                    <tr>
+                        <th style="padding: 10px; text-align: left; border: 1px solid var(--color-medium);">Factor</th>
+                        <th style="padding: 10px; text-align: left; border: 1px solid var(--color-medium);">Impacto en Protecciones</th>
+                    </tr>
+                </thead>
+                <tbody style="background: var(--color-lightest);">
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Duración de la estadía</strong></td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">Mayor tiempo = mayores protecciones</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Lazos con la comunidad</strong></td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">Familia, empleo, propiedad aumentan protecciones</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Estatus migratorio</strong></td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">Residentes legales tienen más protecciones que indocumentados</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Ubicación</strong></td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">Dentro de EE.UU. vs. en la frontera</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: Marco Statutario Federal -->
+        <section class="module-section" id="section3">
+            <h2>III. Marco Statutario Federal</h2>
+            
+            <h3>A. 28 U.S.C. § 2241 - Estatuto General de Habeas Corpus</h3>
+
+            <div class="highlight-box">
+                <h4>📋 Disposición Principal</h4>
+                <p><strong>Establece que:</strong> "Los tribunales de justicia podrán conceder una orden de habeas corpus a petición de una persona que se encuentre bajo custodia en violación de la Constitución, leyes o tratados de los Estados Unidos"</p>
+            </div>
+
+            <p><strong>Elementos Clave del Estatuto:</strong></p>
+
+            <ul>
+                <li><strong>Jurisdicción Territorial:</strong> La petición debe presentarse en el distrito donde está detenido el custodio</li>
+                <li><strong>Alcance de Revisión:</strong> Permite a los tribunales "examinar los hechos" de la detención, no solo cuestiones de forma</li>
+                <li><strong>Amplitud:</strong> Cubre violaciones de Constitución, leyes federales y tratados</li>
+            </ul>
+
+            <h3>B. Ley de Inmigración y Nacionalidad (INA)</h3>
+
+            <div class="highlight-box">
+                <h4>⚠️ Restricciones a la Revisión Judicial</h4>
+                
+                <p><strong>Secciones 242(a)(2)(B) y 242(a)(2)(C):</strong></p>
+                <ul>
+                    <li>Limitan la revisión judicial de decisiones discrecionales</li>
+                    <li>Ejemplo: Denegación de libertad condicional, waivers discrecionales</li>
+                </ul>
+
+                <p><strong>Sección 242(g):</strong></p>
+                <ul>
+                    <li>Interpretada restrictivamente en <em>Reno v. American-Arab Anti-Discrimination Committee</em> (1999)</li>
+                    <li>Importante: No elimina jurisdicción de habeas corpus</li>
+                </ul>
+
+                <p><strong>Procesos de Deportación Acelerada (Expedited Removal):</strong></p>
+                <ul>
+                    <li>Limitaciones específicas bajo INA §235(b)</li>
+                    <li>Revisión muy limitada, pero habeas corpus permanece disponible</li>
+                </ul>
+            </div>
+
+            <h3>C. Legislación Restrictiva de 1996</h3>
+
+            <p><strong>Antiterrorism and Effective Death Penalty Act (AEDPA) de 1996:</strong></p>
+            <ul>
+                <li>Restringió significativamente la revisión judicial en materia migratoria</li>
+                <li>Estableció disposiciones para deportación de delincuentes extranjeros</li>
+                <li>Limitó el habeas corpus en contextos criminales</li>
+            </ul>
+
+            <p><strong>Illegal Immigration Reform and Immigrant Responsibility Act (IIRIRA) de 1996:</strong></p>
+            <ul>
+                <li>Creó el proceso de "remoción" unificado</li>
+                <li>Reemplazó procedimientos separados de deportación y exclusión</li>
+                <li>Amplió categorías de detención obligatoria</li>
+            </ul>
+
+            <h3>D. REAL ID Act de 2005 - Marco Dual Actual</h3>
+
+            <div class="highlight-box">
+                <h4>🔄 Sistema de Doble Vía</h4>
+                
+                <p><strong>Sección 106(a):</strong></p>
+                <ul>
+                    <li>Enmendó INA §242</li>
+                    <li>Canalizó revisiones de "órdenes de remoción" exclusivamente a cortes de apelaciones</li>
+                    <li>Eliminó jurisdicción de tribunales de distrito para revisiones directas</li>
+                </ul>
+
+                <p><strong>Sección 106(b) - CRÍTICA:</strong></p>
+                <ul>
+                    <li>Preservó explícitamente el habeas corpus bajo 28 U.S.C. §2241</li>
+                    <li>Para cuestiones constitucionales o de interpretación estatutaria</li>
+                    <li>Creó el actual marco dual de revisión</li>
+                </ul>
+            </div>
+
+            <p><strong>Marco Dual Resultante:</strong></p>
+            <ul>
+                <li><strong>Revisiones Directas:</strong> Van a cortes de apelaciones (órdenes de remoción finales)</li>
+                <li><strong>Habeas Corpus:</strong> Permanece en tribunales de distrito para ciertas cuestiones (detención, cuestiones constitucionales)</li>
+            </ul>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">28 U.S.C.</span>
+                    <span class="stat-label">§ 2241</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">1996</span>
+                    <span class="stat-label">AEDPA/IIRIRA</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2005</span>
+                    <span class="stat-label">REAL ID Act</span>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: Requisitos Procesales - Parte 1 -->
+        <section class="module-section" id="section4">
+            <h2>IV. Requisitos Procesales (Parte 1)</h2>
+            
+            <h3>A. Elementos Esenciales para una Petición Exitosa</h3>
+
+            <h3>1. Custodia (Custody)</h3>
+
+            <div class="highlight-box">
+                <h4>🔒 Tipos de Custodia Reconocidos</h4>
+                
+                <p><strong>Custodia Física Tradicional:</strong></p>
+                <ul>
+                    <li>Detención en centro de ICE</li>
+                    <li>Estación migratoria</li>
+                    <li>Cárcel estatal o federal</li>
+                </ul>
+
+                <p><strong>Restricciones Significativas a la Libertad (Custodia Constructiva):</strong></p>
+                <ul>
+                    <li>Programas de monitoreo alternativo con GPS</li>
+                    <li>Controles de presentación periódica que equivalen a custodia constructiva</li>
+                    <li>Restricciones de movimiento severas</li>
+                </ul>
+
+                <p><strong>Libertad Condicional (Parole):</strong></p>
+                <ul>
+                    <li>Algunos circuitos reconocen que ciertas condiciones restrictivas pueden constituir custodia</li>
+                    <li>Depende de la severidad de las condiciones</li>
+                </ul>
+
+                <p><strong>❌ Exclusiones (NO constituyen custodia):</strong></p>
+                <ul>
+                    <li>Procesos de verificación de empleo</li>
+                    <li>Notificaciones de cambio de dirección</li>
+                    <li>Check-ins rutinarios sin restricciones significativas</li>
+                </ul>
+            </div>
+
+            <h3>2. Jurisdicción Personal y Territorial</h3>
+
+            <p><strong>Regla General:</strong> Petición debe presentarse en el distrito donde está detenido el custodio</p>
+
+            <div class="highlight-box">
+                <h4>⚖️ Excepciones y Situaciones Especiales</h4>
+                <ul>
+                    <li><strong>Custodia "Nominal":</strong> Detenidos en custodia "nominal" de ICE pero físicamente en cárceles estatales</li>
+                    <li><strong>Transferencias Estratégicas:</strong> "Forum shopping" por el gobierno - limitadas por doctrina de "jurisdicción inmediata" en algunos circuitos</li>
+                    <li><strong>Múltiples Custodios:</strong> Determinación de quién tiene custodia real vs. nominal</li>
+                </ul>
+            </div>
+
+            <h3>3. Agotamiento de Recursos Administrativos</h3>
+
+            <p><strong>Requerimiento Variable entre Circuitos:</strong> No hay estándar uniforme nacional</p>
+
+            <div class="highlight-box">
+                <h4>✅ Excepciones Reconocidas al Agotamiento</h4>
+                
+                <p><strong>1. Inutilidad (Futility Exception):</strong></p>
+                <ul>
+                    <li>Los recursos administrativos serían inútiles</li>
+                    <li>La agencia ya adoptó posición contraria</li>
+                    <li>No hay remedio administrativo adecuado disponible</li>
+                </ul>
+
+                <p><strong>2. Violación Abierta de Reglamentos:</strong></p>
+                <ul>
+                    <li>La agencia actuó en abierta violación de sus propios reglamentos</li>
+                    <li>Acción ultra vires (fuera de autoridad legal)</li>
+                </ul>
+
+                <p><strong>3. Daño Irreparable:</strong></p>
+                <ul>
+                    <li>La demora administrativa causaría daño irreparable</li>
+                    <li>Ejemplo: Detención prolongada durante proceso administrativo</li>
+                </ul>
+
+                <p><strong>4. Cuestiones Puramente Constitucionales:</strong></p>
+                <ul>
+                    <li>Cuestiones que la agencia no puede resolver</li>
+                    <li>Desafíos a la constitucionalidad de estatutos</li>
+                </ul>
+            </div>
+
+            <p><strong>Casos de Deportación Acelerada:</strong> Generalmente se requiere agotar revisión con oficial de asilo antes de habeas corpus</p>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: Requisitos Procesales - Parte 2 y Barreras -->
+        <section class="module-section" id="section5">
+            <h2>V. Requisitos Procesales (Parte 2) y Barreras</h2>
+            
+            <h3>4. Planteamiento de Cuestiones Revisables</h3>
+
+            <div class="highlight-box">
+                <h4>✅ Cuestiones que SÍ son Revisables vía Habeas Corpus</h4>
+                
+                <p><strong>Cuestiones Constitucionales:</strong></p>
+                <ul>
+                    <li><strong>Debido Proceso:</strong> Falta de audiencia, procedimientos inadecuados</li>
+                    <li><strong>Igual Protección:</strong> Discriminación en detención o proceso</li>
+                    <li><strong>Condiciones de Detención:</strong> Violaciones graves de derechos humanos</li>
+                    <li><strong>Detención Prolongada:</strong> Detención sin revisión por tiempo irrazonable</li>
+                </ul>
+
+                <p><strong>Errores de Derecho Puro:</strong></p>
+                <ul>
+                    <li>Interpretación estatutaria (ej.: elegibilidad para alivio migratorio)</li>
+                    <li>Aplicación incorrecta de la ley</li>
+                    <li>Determinaciones de estatus legal</li>
+                </ul>
+
+                <p><strong>Cuestiones de Jurisdicción:</strong></p>
+                <ul>
+                    <li>Si el Departamento de Seguridad Nacional actuó fuera de su autoridad estatutaria</li>
+                    <li>Jurisdicción del juez de inmigración</li>
+                    <li>Autoridad de ICE para detener</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h4>❌ Limitaciones - Generalmente NO Revisables</h4>
+                <p>Decisiones discrecionales (ej.: denegación de libertad condicional) a menos que sean:</p>
+                <ul>
+                    <li>Arbitrarias o caprichosas</li>
+                    <li>Contrarias a la ley</li>
+                    <li>Abuso de discreción evidente</li>
+                </ul>
+            </div>
+
+            <h3>B. Barreras y Defensas Comunes del Gobierno</h3>
+
+            <h3>1. Doctrina de "Plenos Poderes" en Inmigración</h3>
+
+            <div class="highlight-box">
+                <h4>⚠️ Deferencia Judicial Histórica</h4>
+                <ul>
+                    <li>Reconocimiento judicial deferencial a decisiones del poder ejecutivo y legislativo en materia migratoria</li>
+                    <li>Fundamento: Control de fronteras es atribución inherente de soberanía nacional</li>
+                    <li><strong>Estado Actual:</strong> Ha sido erosionada pero sigue siendo relevante en ciertos contextos</li>
+                    <li>Menos aplicable cuando se involucran protecciones constitucionales claras</li>
+                </ul>
+            </div>
+
+            <h3>2. Procedimientos de Remoción Acelerada (Expedited Removal)</h3>
+
+            <p><strong>Bajo INA §235(b)(1):</strong></p>
+            <ul>
+                <li>Ciertos extranjeros pueden ser deportados sin audiencia ante juez de inmigración</li>
+                <li>Aplica principalmente en la frontera o dentro de 100 millas de la frontera</li>
+                <li>Para personas sin documentos válidos</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h4>🔍 Revisión Limitada pero Existente</h4>
+                <ul>
+                    <li><strong>Determinación de "Miedo Creíble":</strong> Revisión por oficial de asilo (no juez de inmigración)</li>
+                    <li><strong>Habeas Corpus Permanece Disponible:</strong> Para cuestiones constitucionales incluso en este contexto</li>
+                    <li><strong>Desafíos Típicos:</strong> Nacionalidad, estatus de residente legal previo, procedimiento inadecuado</li>
+                </ul>
+            </div>
+
+            <h3>3. Detención Obligatoria (Mandatory Detention)</h3>
+
+            <p><strong>INA §236(c) - Detención Sin Fianza:</strong></p>
+            <ul>
+                <li>Requiere detención de ciertos extranjeros con antecedentes penales</li>
+                <li>Categorías incluyen: Ciertos delitos agravados, delitos de sustancias controladas, delitos de armas de fuego</li>
+                <li>No hay derecho estatutario a audiencia de fianza</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h4>⚖️ Uso de Habeas Corpus en Detención Obligatoria</h4>
+                <p>Habeas corpus se utiliza para determinar:</p>
+                <ul>
+                    <li><strong>(a) Si el individuo cae bajo §236(c):</strong> ¿Es la persona realmente sujeta a detención obligatoria? ¿Se aplica la categoría criminal?</li>
+                    <li><strong>(b) Si la detención se ha prolongado inconstitucionalmente:</strong> Siguiendo Zadvydas, ¿ha excedido el tiempo razonable?</li>
+                </ul>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">§236(c)</span>
+                    <span class="stat-label">Detención Obligatoria</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">§235(b)</span>
+                    <span class="stat-label">Remoción Acelerada</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Zadvydas</span>
+                    <span class="stat-label">Límite 6 Meses</span>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: Jurisdicción y Proceso -->
+        <section class="module-section" id="section6">
+            <h2>VI. Jurisdicción, Competencia y Proceso</h2>
+            
+            <h3>A. Tribunal de Distrito Federal (Primera Instancia)</h3>
+
+            <ul>
+                <li><strong>Competencia Primaria:</strong> Bajo 28 U.S.C. §2241</li>
+                <li><strong>Limitaciones Post-REAL ID Act:</strong> Solo para cuestiones no cubiertas por revisiones directas bajo INA §242</li>
+                <li><strong>Procedimiento:</strong> Petición → Orden de mostrar causa (order to show cause) → Audiencia → Decisión</li>
+                <li><strong>Remedios Disponibles:</strong> Liberación, audiencia de fianza, orden para proceder con proceso pendiente</li>
+            </ul>
+
+            <h3>B. Cortes de Apelaciones de Circuito</h3>
+
+            <ul>
+                <li><strong>Revisión Directa:</strong> De órdenes de remoción bajo INA §242</li>
+                <li><strong>Peticiones de Revisión:</strong> De habeas corpus de decisiones de tribunales de distrito</li>
+                <li><strong>Variaciones Significativas:</strong> Entre circuitos en estándares de revisión y procedimientos</li>
+            </ul>
+
+            <h3>C. Corte Suprema de los Estados Unidos</h3>
+
+            <ul>
+                <li><strong>Revisión Discrecional:</strong> Por writ of certiorari</li>
+                <li><strong>Importantes Decisiones Recientes:</strong> Han moldeado el ámbito del habeas corpus migratorio</li>
+                <li><strong>Rol:</strong> Uniformizar interpretaciones entre circuitos contradictorios</li>
+            </ul>
+
+            <h3>D. Proceso y Cronología Temporal</h3>
+
+            <div class="highlight-box">
+                <h4>📋 Etapas del Procedimiento</h4>
+                
+                <ol>
+                    <li><strong>Presentación de la Petición:</strong> Generalmente formulario estándar con hechos específicos</li>
+                    <li><strong>Revisión Preliminar del Juez:</strong> Determinación si la petición establece prima facie caso</li>
+                    <li><strong>Orden de Mostrar Causa (Order to Show Cause):</strong> Si pasa revisión preliminar, gobierno debe responder</li>
+                    <li><strong>Respuesta del Gobierno:</strong> Generalmente en 30-60 días</li>
+                    <li><strong>Réplica del Peticionario:</strong> Opcional, 14-30 días después de respuesta</li>
+                    <li><strong>Audiencia Oral:</strong> No siempre requerida, depende del juez</li>
+                    <li><strong>Decisión del Tribunal:</strong> Resolución sobre el mérito</li>
+                    <li><strong>Apelación:</strong> Si corresponde, a la corte de apelaciones del circuito</li>
+                </ol>
+            </div>
+
+            <h3>Tiempos Promedio de Resolución</h3>
+
+            <table style="width: 100%; margin: 20px 0; border-collapse: collapse;">
+                <thead style="background: var(--color-light);">
+                    <tr>
+                        <th style="padding: 10px; text-align: left; border: 1px solid var(--color-medium);">Tipo de Caso</th>
+                        <th style="padding: 10px; text-align: left; border: 1px solid var(--color-medium);">Tiempo de Resolución</th>
+                    </tr>
+                </thead>
+                <tbody style="background: var(--color-lightest);">
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Detención breve (< 90 días)</strong></td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">2-4 meses para resolución completa</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Detención prolongada</strong></td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">6-18 meses, especialmente si involucran cuestiones complejas</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Con TRO (medidas cautelares)</strong></td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">Días o semanas</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>Variaciones regionales</strong></td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">Sur de California, Sur de Texas: demoras mayores</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Factores que Afectan la Duración</h3>
+
+            <ul>
+                <li><strong>Complejidad Legal:</strong> Cuestiones constitucionales vs. aplicación estatutaria</li>
+                <li><strong>Hechos Controvertidos:</strong> Necesidad de desarrollo de registro fáctico</li>
+                <li><strong>Recursos del Peticionario:</strong> Representación legal acelera proceso significativamente</li>
+                <li><strong>Actitud del Tribunal:</strong> Algunos jueces priorizan casos de detención migratoria</li>
+                <li><strong>Políticas de la Fiscalía:</strong> Estrategias de litigio del Departamento de Justicia</li>
+            </ul>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: Precedentes Jurisprudenciales Parte 1 -->
+        <section class="module-section" id="section7">
+            <h2>VII. Precedentes Jurisprudenciales Fundamentales (Parte 1)</h2>
+            
+            <h3>A. Decisiones Fundacionales de la Corte Suprema</h3>
+
+            <h3>1. INS v. St. Cyr (2001) - Punto de Inflexión</h3>
+
+            <div class="highlight-box">
+                <h4>📋 Hechos del Caso</h4>
+                <p>Ciudadano haitiano con condena penal, elegible bajo ley anterior para alivio discrecional (waiver bajo §212(c)). IIRIRA eliminó este alivio retroactivamente.</p>
+            </div>
+
+            <p><strong>Holdings (Decisiones del Tribunal):</strong></p>
+
+            <ol>
+                <li><strong>AEDPA/IIRIRA NO revocaron expresamente jurisdicción de habeas corpus</strong>
+                    <ul>
+                        <li>La eliminación de habeas corpus requiere declaración expresa y clara del Congreso</li>
+                        <li>Silencio legislativo no es suficiente</li>
+                    </ul>
+                </li>
+                <li><strong>Presunción contra revocación de habeas corpus</strong>
+                    <ul>
+                        <li>Dado su significado constitucional histórico</li>
+                        <li>Presunción muy fuerte a favor de preservar habeas</li>
+                    </ul>
+                </li>
+                <li><strong>Cuestiones de interpretación estatutaria sobre elegibilidad para alivio son revisables vía habeas corpus</strong>
+                    <ul>
+                        <li>No son decisiones "discrecionales" sino de derecho</li>
+                        <li>Determinar elegibilidad es cuestión de aplicación legal</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="highlight-box">
+                <h4>💡 Impacto del Caso</h4>
+                <ul>
+                    <li>Reafirmó rol crucial de habeas corpus como control sobre poder ejecutivo en inmigración</li>
+                    <li>Estableció que las restricciones de 1996 no eliminaron habeas corpus</li>
+                    <li>Fundamento para cientos de casos posteriores</li>
+                    <li>Principio: Congreso debe ser explícito para eliminar habeas</li>
+                </ul>
+            </div>
+
+            <h3>2. Zadvydas v. Davis (2001) - Límites a la Detención Prolongada</h3>
+
+            <div class="highlight-box">
+                <h4>📋 Hechos del Caso</h4>
+                <p>Dos extranjeros con órdenes de deportación no ejecutables (sin país que los acepte). Llevaban años en detención post-orden sin perspectiva de remoción.</p>
+            </div>
+
+            <p><strong>Holding Principal:</strong></p>
+            <p>Detención post-orden de deportación limitada a periodo razonablemente necesario para lograr la remoción</p>
+
+            <div class="highlight-box">
+                <h4>⏱️ Presunción de 6 Meses</h4>
+                <p><strong>Regla Establecida:</strong></p>
+                <ul>
+                    <li>Presunción de 6 meses tras orden de deportación</li>
+                    <li>Tras 6 meses, gobierno debe demostrar "remoción significativamente alcanzable"</li>
+                    <li>Si no puede demostrarlo, debe liberar (con supervisión)</li>
+                </ul>
+            </div>
+
+            <p><strong>Estándar de Evaluación Caso por Caso:</strong></p>
+            <ul>
+                <li><strong>Esfuerzos del gobierno:</strong> ¿Está realmente intentando remover?</li>
+                <li><strong>Probabilidad de remoción:</strong> ¿Es realista que ocurra?</li>
+                <li><strong>Condiciones de detención:</strong> ¿Son apropiadas?</li>
+                <li><strong>Tiempo ya detenido:</strong> ¿Cuánto tiempo ha pasado?</li>
+            </ul>
+
+            <p><strong>Excepción Importante:</strong> Delincuentes especialmente peligrosos o riesgos de seguridad nacional pueden ser detenidos por más tiempo</p>
+
+            <h3>3. Clark v. Martinez (2005) - Extensión de Zadvydas</h3>
+
+            <div class="highlight-box">
+                <h4>📋 Holding</h4>
+                <p>El límite de Zadvydas aplica también a extranjeros "inadmisibles" (no solo deportables)</p>
+
+                <p><strong>Principio Establecido:</strong></p>
+                <ul>
+                    <li>Interpretación estatutaria debe ser consistente entre categorías similares</li>
+                    <li>No se puede interpretar un estatuto de dos formas contradictorias</li>
+                    <li>El debido proceso no permite trato diferenciado arbitrario</li>
+                </ul>
+            </div>
+
+            <p><strong>Impacto:</strong> Amplió protección a más categorías de detenidos migratorios, incluyendo aquellos que nunca fueron "admitidos" legalmente</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">2001</span>
+                    <span class="stat-label">St. Cyr & Zadvydas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">6 Meses</span>
+                    <span class="stat-label">Presunción Zadvydas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2005</span>
+                    <span class="stat-label">Clark v. Martinez</span>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Siguiente →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 8: Precedentes Parte 2 y Aplicación Práctica -->
+        <section class="module-section" id="section8">
+            <h2>VIII. Precedentes Recientes y Aplicación Práctica</h2>
+            
+            <h3>B. Decisiones Recientes de la Corte Suprema</h3>
+
+            <h3>1. Jennings v. Rodriguez (2018) - Contratendencias</h3>
+
+            <div class="highlight-box">
+                <h4>📋 Hechos del Caso</h4>
+                <p>Clase de extranjeros detenidos prolongadamente sin audiencias de fianza periódicas. Buscaban audiencias cada 6 meses con cambio de carga de prueba al gobierno.</p>
+            </div>
+
+            <p><strong>Holdings:</strong></p>
+
+            <ol>
+                <li><strong>INA no requiere audiencias periódicas de fianza</strong>
+                    <ul>
+                        <li>Para detenidos bajo §236(c) (detención obligatoria)</li>
+                        <li>Interpretación estatutaria no permite leer este requerimiento</li>
+                    </ul>
+                </li>
+                <li><strong>Cortes de apelaciones no pueden ordenar audiencias</strong>
+                    <ul>
+                        <li>Basadas solo en interpretación estatutaria</li>
+                        <li>No pueden "crear" derechos que la ley no otorga</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="highlight-box">
+                <h4>🔓 Apertura Crítica para Habeas Corpus</h4>
+                <p><strong>La Corte remitió cuestiones constitucionales a tribunales inferiores</strong></p>
+                <ul>
+                    <li>No decidió si el debido proceso requiere audiencias periódicas</li>
+                    <li>Dejó abierta la vía del habeas corpus para desafíos constitucionales</li>
+                    <li>Distinguió entre interpretación estatutaria y cuestiones constitucionales</li>
+                    <li><strong>Resultado:</strong> Habeas corpus permanece viable para detenciones prolongadas</li>
+                </ul>
+            </div>
+
+            <h3>2. Nielsen v. Preap (2019) - Detención Obligatoria</h3>
+
+            <div class="highlight-box">
+                <h4>📋 Holding</h4>
+                <p>Detención obligatoria bajo INA §236(c) aplica incluso si ICE no detiene inmediatamente después de liberación de custodia penal</p>
+
+                <p><strong>Interpretación "When Released":</strong></p>
+                <ul>
+                    <li>"When released" no significa "inmediatamente after release"</li>
+                    <li>ICE puede detener bajo §236(c) días, semanas o incluso meses después</li>
+                    <li>No hay límite temporal claro establecido</li>
+                </ul>
+            </div>
+
+            <p><strong>Impacto:</strong></p>
+            <ul>
+                <li>Amplió alcance de detención obligatoria</li>
+                <li>Aumentó número de personas sujetas a §236(c)</li>
+                <li>Aumentó importancia de habeas corpus para desafíos constitucionales</li>
+                <li>Desafíos típicos ahora: ¿Aplica realmente §236(c)? ¿Detención demasiado prolongada?</li>
+            </ul>
+
+            <h3>C. Circuit Splits y Jurisprudencia de Circuitos</h3>
+
+            <h3>1. Detención Prolongada y Debido Proceso</h3>
+
+            <table style="width: 100%; margin: 20px 0; border-collapse: collapse;">
+                <thead style="background: var(--color-light);">
+                    <tr>
+                        <th style="padding: 10px; text-align: left; border: 1px solid var(--color-medium);">Circuito</th>
+                        <th style="padding: 10px; text-align: left; border: 1px solid var(--color-medium);">Estándar</th>
+                    </tr>
+                </thead>
+                <tbody style="background: var(--color-lightest);">
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>9° Circuito</strong><br>(Rodriguez v. Robbins)</td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">Requiere audiencias cada 6 meses con cambio de carga al gobierno</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>3° Circuito</strong><br>(Diop v. ICE)</td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">Enfoque multifactorial flexible sin plazos rígidos</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);"><strong>2° Circuito</strong><br>(Lora v. Shanahan)</td>
+                        <td style="padding: 10px; border: 1px solid var(--color-light);">Límite de 6 meses para detención pre-remoción bajo §236(c)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>2. Custodia Constructiva - Variaciones entre Circuitos</h3>
+
+            <ul>
+                <li><strong>4° Circuito (Bray v. Alexandria Women's Health Clinic):</strong> Reconocimiento amplio de condiciones restrictivas como custodia</li>
+                <li><strong>5° Circuito (Obando v. INS):</strong> Interpretación más restrictiva, generalmente requiere custodia física</li>
+            </ul>
+
+            <h3>D. Aplicación Práctica y Contexto Actual</h3>
+
+            <h3>Estadísticas y Datos Empíricos</h3>
+
+            <div class="highlight-box">
+                <h4>📊 Volumen de Casos</h4>
+                <ul>
+                    <li>Aproximadamente 2,000-3,000 peticiones de habeas corpus migratorio anuales en tribunales federales</li>
+                    <li>Concentración geográfica: Distritos fronterizos (Texas, Arizona, California) y con grandes centros de detención</li>
+                </ul>
+
+                <h4>📈 Tasas de Éxito</h4>
+                <ul>
+                    <li><strong>Casos de detención prolongada:</strong> 30-40% de liberación ordenada</li>
+                    <li><strong>Casos de condiciones de detención:</strong> 20-30% de medidas de alivio</li>
+                    <li><strong>Casos de estatus legal puro:</strong> Menos del 15% de éxito</li>
+                    <li>Variación significativa por distrito y tipo de caso</li>
+                </ul>
+            </div>
+
+            <h3>Consideraciones para Abogados Practicantes</h3>
+
+            <div class="highlight-box">
+                <h4>💼 Estrategias de Litigio Efectivas</h4>
+                <ul>
+                    <li><strong>Enfoque en cuestiones constitucionales sobre discrecionales:</strong> Mayor probabilidad de éxito</li>
+                    <li><strong>Desarrollo cuidadoso del registro fáctico:</strong> Documentar detalle de la detención, esfuerzos de remoción, lazos con comunidad</li>
+                    <li><strong>Consideración de acciones de clase:</strong> Para patrones sistemáticos de violaciones</li>
+                    <li><strong>Medidas cautelares tempranas:</strong> TRO cuando hay riesgo inminente</li>
+                </ul>
+
+                <h4>📚 Recursos y Asistencia</h4>
+                <ul>
+                    <li><strong>Clínicas legales universitarias:</strong> Muchas ofrecen representación en casos de habeas corpus migratorio</li>
+                    <li><strong>Organizaciones sin fines de lucro:</strong> ACLU, National Immigration Project, AILA</li>
+                    <li><strong>Manuales de práctica:</strong> Immigration Law and Procedure (Matthew Bender), AILA Litigation Toolbox</li>
+                </ul>
+            </div>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevSection()">← Anterior</button>
+                <button class="btn btn-primary" onclick="nextSection()">Ir a Evaluación →</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 9: Evaluación -->
+        <section class="module-section" id="section9">
+            <h2>Evaluación Final</h2>
+            
+            <div id="quizIntro" class="quiz-intro">
+                <h3>📝 Evaluación de Conocimientos</h3>
+                
+                <div class="highlight-box">
+                    <h4>Instrucciones</h4>
+                    <ul>
+                        <li><strong>Total de preguntas:</strong> 20</li>
+                        <li><strong>Calificación mínima para aprobar:</strong> 85% (17 respuestas correctas)</li>
+                        <li><strong>Tiempo recomendado:</strong> 40-50 minutos</li>
+                        <li><strong>Intentos:</strong> Un intento (respuestas no pueden modificarse una vez enviadas)</li>
+                        <li><strong>Feedback:</strong> Recibirás retroalimentación detallada para cada pregunta</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 20px; background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107;">
+                    <h4>⚠️ Importante - Calificación Aprobatoria: 85%</h4>
+                    <p style="margin: 0;">Este curso requiere un nivel alto de dominio del material. Debes responder correctamente <strong>al menos 17 de las 20 preguntas (85%)</strong> para aprobar. Asegúrate de haber comprendido bien todos los módulos antes de comenzar la evaluación.</p>
+                </div>
+
+                <p style="margin-top: 30px; font-size: 1.1em;">
+                    Esta evaluación mide tu comprensión comprehensiva del habeas corpus en materia migratoria, incluyendo fundamentos legales, requisitos procesales, precedentes fundamentales y aplicación práctica.
+                </p>
+
+                <button class="start-quiz-btn" onclick="startQuiz()">Comenzar Evaluación</button>
+            </div>
+
+            <div id="quizContainer" class="hidden"></div>
+
+            <div id="quizNav" class="navigation hidden">
+                <button class="btn btn-secondary" onclick="prevSection()">← Regresar al Curso</button>
+                <button class="btn btn-primary" id="submitQuizBtn" onclick="submitQuiz()">Enviar Evaluación</button>
+            </div>
+
+            <div id="resultsContainer" class="hidden"></div>
+        </section>
+    </div>
+
+    <script>
+    // ==================== VARIABLES GLOBALES ====================
+    var currentSection = 0;
+    var totalSections = 10;
+    var quizStarted = false;
+    var quizCompleted = false;
+    var userAnswers = [];
+    var startTime = null;
+    var endTime = null;
+
+    // ==================== PREGUNTAS DE EVALUACIÓN ====================
+    var questions = [
+        {
+            id: 1,
+            question: "¿Qué significa habeas corpus literalmente y por qué se le llama 'el gran recurso'?",
+            options: [
+                "Tener el cuerpo; es el recurso más antiguo",
+                "Que tengas el cuerpo; es la principal garantía procesal contra detenciones arbitrarias",
+                "Libertad bajo fianza; es el más usado",
+                "Debido proceso; es el más constitucional"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! Habeas corpus significa literalmente 'que tengas el cuerpo' y se le llama 'el gran recurso' porque constituye la principal garantía procesal contra detenciones arbitrarias en la tradición jurídica anglosajona. Requiere que las autoridades presenten físicamente al detenido y justifiquen legalmente su detención.",
+                incorrect: "Incorrecto. Habeas corpus significa 'que tengas el cuerpo' (en latín). Se le llama 'el gran recurso' porque es la garantía procesal fundamental contra detenciones arbitrarias - requiere que el gobierno presente al detenido ante un tribunal y justifique legalmente por qué está bajo custodia."
+            }
+        },
+        {
+            id: 2,
+            question: "¿Dónde está protegido constitucionalmente el habeas corpus y qué establece?",
+            options: [
+                "Primera Enmienda - Libertad de expresión",
+                "Artículo I, Sección 9, Cláusula 2 - No puede suspenderse salvo en casos de rebelión o invasión",
+                "Quinta Enmienda - Debido proceso",
+                "Artículo III - Poder judicial"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! La Cláusula de Suspensión está en el Artículo I, Sección 9, Cláusula 2 de la Constitución. Establece que 'el privilegio del recurso de habeas corpus no podrá ser suspendido, salvo cuando la seguridad pública lo exija en casos de rebelión o invasión'. IMPORTANTE: Está en el artículo del poder legislativo, indicando que corresponde al Congreso (no al Ejecutivo) autorizar suspensión.",
+                incorrect: "Incorrecto. El habeas corpus está protegido en el Artículo I, Sección 9, Cláusula 2 - la Cláusula de Suspensión. Aunque la Quinta Enmienda protege el debido proceso (relacionado), la protección específica del habeas está en el Artículo I, estableciendo que solo puede suspenderse en casos de rebelión o invasión, y esta autoridad corresponde al Congreso."
+            }
+        },
+        {
+            id: 3,
+            question: "¿Cuál es el estatuto federal principal que otorga jurisdicción para habeas corpus?",
+            options: [
+                "INA §242",
+                "28 U.S.C. § 1361 (Mandamus)",
+                "28 U.S.C. § 2241",
+                "5 U.S.C. § 706 (APA)"
+            ],
+            correct: 2,
+            feedback: {
+                correct: "¡Correcto! 28 U.S.C. § 2241 es el estatuto federal clave que otorga a los tribunales de distrito jurisdicción para emitir escritos de habeas corpus. Establece que 'los tribunales de justicia podrán conceder una orden de habeas corpus a petición de una persona que se encuentre bajo custodia en violación de la Constitución, leyes o tratados de los Estados Unidos'.",
+                incorrect: "Incorrecto. El estatuto es 28 U.S.C. § 2241. Los otros estatutos mencionados tienen propósitos diferentes: § 1361 es para mandamus, INA §242 regula revisión de órdenes de remoción, y 5 U.S.C. § 706 es parte del APA. Es fundamental distinguir entre estos estatutos para saber qué recurso usar en cada situación."
+            }
+        },
+        {
+            id: 4,
+            question: "¿Qué estableció el caso INS v. St. Cyr (2001)?",
+            options: [
+                "Que AEDPA/IIRIRA eliminaron el habeas corpus",
+                "Que se requiere presunción contra revocación de habeas corpus y que cuestiones de elegibilidad para alivio son revisables",
+                "Que la detención no puede exceder 6 meses",
+                "Que solo ciudadanos tienen derecho a habeas corpus"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Perfecto! INS v. St. Cyr (2001) fue el punto de inflexión. Estableció: (1) AEDPA/IIRIRA NO revocaron expresamente jurisdicción de habeas corpus, (2) Hay presunción fuerte contra revocación de habeas corpus que requiere declaración expresa del Congreso, y (3) Cuestiones de interpretación estatutaria sobre elegibilidad para alivio son revisables vía habeas corpus. Reafirmó el habeas como control sobre poder ejecutivo.",
+                incorrect: "Incorrecto. St. Cyr estableció lo contrario: que AEDPA/IIRIRA NO eliminaron habeas corpus. El caso creó presunción fuerte contra revocación de habeas (requiere declaración expresa del Congreso) y estableció que determinar elegibilidad para alivio es cuestión legal revisable, no discrecional. Fue fundamental para preservar habeas corpus post-1996."
+            }
+        },
+        {
+            id: 5,
+            question: "¿Qué estableció Zadvydas v. Davis (2001) sobre detención post-orden de deportación?",
+            options: [
+                "Puede ser indefinida si la persona es peligrosa",
+                "Limitada a periodo razonablemente necesario; presunción de 6 meses",
+                "Requiere audiencias mensuales",
+                "No tiene límite temporal"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! Zadvydas v. Davis (2001) estableció que la detención post-orden de deportación está limitada a periodo razonablemente necesario para lograr remoción. Creó presunción de 6 meses tras la cual el gobierno debe demostrar que la 'remoción es significativamente alcanzable'. Si no puede, debe liberar (con supervisión). Evaluación caso por caso considera: esfuerzos del gobierno, probabilidad de remoción, tiempo detenido.",
+                incorrect: "Incorrecto. Zadvydas estableció un límite temporal: detención post-orden solo puede durar el tiempo razonablemente necesario para remoción. Tras ~6 meses, gobierno debe justificar que la remoción es alcanzable o liberar al individuo. Excepción: delincuentes especialmente peligrosos o riesgos de seguridad nacional. Este caso es fundamental para proteger contra detención indefinida."
+            }
+        },
+        {
+            id: 6,
+            question: "¿Qué agregó Clark v. Martinez (2005) a la doctrina de Zadvydas?",
+            options: [
+                "Eliminó el límite de 6 meses",
+                "Extendió el límite de Zadvydas también a extranjeros 'inadmisibles' (no solo deportables)",
+                "Prohibió toda detención migratoria",
+                "Estableció que los residentes legales tienen más protecciones"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! Clark v. Martinez (2005) extendió el límite temporal de Zadvydas también a extranjeros 'inadmisibles' (aquellos que nunca fueron admitidos legalmente), no solo a 'deportables'. Estableció el principio de que la interpretación estatutaria debe ser consistente entre categorías similares - no se puede interpretar un estatuto de dos formas contradictorias. Amplió protección a más detenidos.",
+                incorrect: "Incorrecto. Clark v. Martinez extendió las protecciones de Zadvydas a extranjeros 'inadmisibles', no solo 'deportables'. El principio fue que la interpretación legal debe ser consistente - el mismo estatuto no puede significar cosas diferentes para grupos similares. Esto amplió significativamente las protecciones contra detención prolongada a más categorías de detenidos migratorios."
+            }
+        },
+        {
+            id: 7,
+            question: "¿Qué decidió Jennings v. Rodriguez (2018) sobre audiencias de fianza periódicas?",
+            options: [
+                "Que INA requiere audiencias cada 6 meses",
+                "Que INA no requiere audiencias periódicas, pero remitió cuestiones constitucionales a tribunales inferiores",
+                "Que todas las detenciones requieren audiencias inmediatas",
+                "Que el habeas corpus ya no aplica"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Perfecto! Jennings v. Rodriguez (2018) sostuvo que: (1) INA no requiere audiencias periódicas de fianza para detenidos bajo §236(c), (2) Cortes de apelaciones no pueden ordenar audiencias basadas solo en interpretación estatutaria. PERO - y esto es crucial - remitió cuestiones constitucionales a tribunales inferiores, manteniendo viva la vía del habeas corpus para desafíos basados en debido proceso.",
+                incorrect: "Incorrecto. Jennings sostuvo que la ley (INA) NO requiere audiencias periódicas para detención bajo §236(c), pero la decisión crítica fue remitir las cuestiones constitucionales (si el debido proceso las requiere) a tribunales inferiores. Esto mantiene el habeas corpus viable para desafíos cuando la detención es prolongada. Distinguió entre interpretación estatutaria y protecciones constitucionales."
+            }
+        },
+        {
+            id: 8,
+            question: "¿Qué estableció Nielsen v. Preap (2019)?",
+            options: [
+                "Que ICE debe detener inmediatamente al salir de custodia penal",
+                "Que detención obligatoria bajo §236(c) aplica incluso si ICE no detiene inmediatamente después de custodia penal",
+                "Que §236(c) es inconstitucional",
+                "Que todos tienen derecho a audiencia de fianza"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! Nielsen v. Preap (2019) amplió el alcance de §236(c). Sostuvo que la detención obligatoria bajo §236(c) aplica incluso si ICE no detiene inmediatamente después de la liberación de custodia penal - puede detener días, semanas o meses después. 'When released' no significa 'inmediatamente after release'. Esto amplió significativamente el número de personas sujetas a detención obligatoria.",
+                incorrect: "Incorrecto. Nielsen v. Preap estableció que ICE NO necesita detener inmediatamente - puede hacerlo días, semanas o incluso meses después de la liberación de custodia penal y aún aplicar §236(c) (detención obligatoria sin fianza). Esto amplió el alcance de detención obligatoria e incrementó la importancia del habeas corpus para desafíos constitucionales."
+            }
+        },
+        {
+            id: 9,
+            question: "¿Qué es la 'custodia constructiva' en el contexto de habeas corpus?",
+            options: [
+                "Custodia en centro de detención de ICE",
+                "Restricciones significativas a la libertad como GPS o check-ins periódicos que equivalen a custodia",
+                "Custodia en cárcel estatal",
+                "No existe este concepto"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! 'Custodia constructiva' se refiere a restricciones significativas a la libertad que, aunque no son custodia física tradicional, equivalen legalmente a custodia. Ejemplos: programas de monitoreo con GPS, controles de presentación periódica muy frecuentes, restricciones de movimiento severas. Algunos circuitos (como el 4°) reconocen ampliamente este concepto; otros (como el 5°) son más restrictivos.",
+                incorrect: "Incorrecto. La custodia constructiva SÍ existe y es importante. Se refiere a restricciones significativas a la libertad (como GPS, check-ins frecuentes, restricciones de movimiento) que equivalen a custodia aunque no sea física. El reconocimiento de custodia constructiva varía entre circuitos, pero es crucial porque expande quién puede presentar habeas corpus."
+            }
+        },
+        {
+            id: 10,
+            question: "¿Cuál es la regla general sobre jurisdicción territorial para presentar habeas corpus?",
+            options: [
+                "En cualquier tribunal federal del país",
+                "En el distrito donde está detenido el custodio",
+                "Solo en tribunales del Circuito DC",
+                "En el estado de residencia del detenido"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! La regla general es que la petición de habeas corpus debe presentarse en el distrito federal donde está detenido el custodio. Por ejemplo, si alguien está detenido en un centro de ICE en Arizona, la petición debe presentarse en el Distrito de Arizona. Hay excepciones para casos de custodia 'nominal' vs. física, pero esta es la regla básica.",
+                incorrect: "Incorrecto. No se puede presentar en cualquier tribunal - hay reglas de jurisdicción territorial. La petición debe presentarse en el distrito federal donde está detenido el custodio (la persona que tiene custodia física del detenido). Ejemplo: detenido en Texas → presentar en Distrito de Texas. Esto evita forum shopping pero puede complicar el acceso a justicia."
+            }
+        },
+        {
+            id: 11,
+            question: "¿Cuáles son tipos de cuestiones típicamente revisables vía habeas corpus?",
+            options: [
+                "Solo decisiones discrecionales",
+                "Cuestiones constitucionales, errores de derecho puro, y cuestiones de jurisdicción",
+                "Únicamente condiciones de detención",
+                "Solo elegibilidad para beneficios"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Perfecto! Las cuestiones revisables típicamente incluyen: (1) Cuestiones constitucionales (debido proceso, igual protección, detención prolongada, condiciones), (2) Errores de derecho puro (interpretación estatutaria, elegibilidad para alivio), y (3) Cuestiones de jurisdicción (si DHS actuó fuera de autoridad). Lo que generalmente NO se revisa: decisiones puramente discrecionales (a menos que sean arbitrarias o caprichosas).",
+                incorrect: "Incorrecto. El habeas corpus NO revisa decisiones discrecionales (como denegación de parole) a menos que sean arbitrarias. Sí revisa: cuestiones constitucionales (debido proceso, detención prolongada), errores de derecho puro (interpretación de elegibilidad), y cuestiones de jurisdicción (si el gobierno actuó fuera de su autoridad legal). La distinción entre discrecional vs. legal es crucial."
+            }
+        },
+        {
+            id: 12,
+            question: "¿Qué es la 'doctrina de plenos poderes' (plenary power doctrine)?",
+            options: [
+                "Poder ilimitado de los tribunales",
+                "Reconocimiento judicial deferencial a decisiones del ejecutivo/legislativo en materia migratoria",
+                "Poder del Congreso para aprobar leyes",
+                "Autoridad de ICE para detener"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! La 'plenary power doctrine' es el reconocimiento judicial históricamente deferencial a decisiones del poder ejecutivo y legislativo en materia migratoria. Fundamento: control de fronteras es atribución inherente de soberanía. Estado actual: ha sido erosionada pero sigue siendo relevante. Es menos aplicable cuando se involucran protecciones constitucionales claras o cuando afecta a personas con lazos significativos en EE.UU.",
+                incorrect: "Incorrecto. La plenary power doctrine es específicamente sobre la deferencia judicial al ejecutivo/legislativo en inmigración - no sobre poder judicial. Históricamente limitó la revisión judicial de decisiones migratorias basándose en que el control de fronteras es atribución inherente de soberanía. Aunque erosionada, aún es relevante y es barrera común en litigios migratorios."
+            }
+        },
+        {
+            id: 13,
+            question: "¿Qué es el 'expedited removal' (remoción acelerada) y cómo afecta al habeas corpus?",
+            options: [
+                "Un proceso que elimina completamente el habeas corpus",
+                "Bajo INA §235(b), ciertos extranjeros pueden ser deportados sin audiencia; habeas permanece para cuestiones constitucionales",
+                "Solo aplica a residentes legales",
+                "Requiere audiencias inmediatas ante juez"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! Bajo INA §235(b)(1), ciertos extranjeros (principalmente en frontera o dentro de 100 millas, sin documentos válidos) pueden ser deportados sin audiencia ante juez de inmigración. La revisión es muy limitada (solo determinación de 'miedo creíble' por oficial de asilo). PERO - y esto es crítico - habeas corpus permanece disponible para cuestiones constitucionales (nacionalidad, estatus previo, procedimiento inadecuado).",
+                incorrect: "Incorrecto. El expedited removal NO elimina habeas corpus. Aunque permite deportación rápida sin audiencia ante juez (para ciertos extranjeros en/cerca de frontera sin documentos válidos), el habeas corpus permanece disponible para desafíos constitucionales. Desafíos típicos: reclamación de ciudadanía, estatus de residente previo, violaciones procesales graves."
+            }
+        },
+        {
+            id: 14,
+            question: "¿Qué es INA §236(c) y cómo se relaciona con habeas corpus?",
+            options: [
+                "Otorga derecho automático a audiencia de fianza",
+                "Requiere detención obligatoria de ciertos extranjeros con antecedentes penales; habeas se usa para desafiar su aplicación",
+                "Elimina el habeas corpus",
+                "Permite libertad condicional en todos los casos"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! INA §236(c) requiere detención obligatoria (sin derecho estatutario a fianza) de ciertos extranjeros con antecedentes penales graves (delitos agravados, sustancias controladas, armas). Habeas corpus se usa para: (a) Determinar si el individuo realmente cae bajo §236(c) (¿aplica la categoría criminal?), y (b) Determinar si la detención se ha prolongado inconstitucionalmente (aplicando Zadvydas/Jennings).",
+                incorrect: "Incorrecto. §236(c) es lo contrario: REQUIERE detención sin derecho a fianza para ciertas personas con antecedentes criminales graves. NO elimina habeas corpus - el habeas es la herramienta principal para desafiar: (1) si §236(c) realmente aplica al individuo, y (2) si la detención ha sido tan prolongada que viola el debido proceso. Nielsen v. Preap amplió su alcance."
+            }
+        },
+        {
+            id: 15,
+            question: "¿Cuáles fueron las dos leyes restrictivas principales de 1996 que afectaron habeas corpus migratorio?",
+            options: [
+                "DACA y DAPA",
+                "AEDPA (Antiterrorism and Effective Death Penalty Act) e IIRIRA (Illegal Immigration Reform and Immigrant Responsibility Act)",
+                "REAL ID Act y Patriot Act",
+                "Clean Air Act y Clean Water Act"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Perfecto! AEDPA (Antiterrorism and Effective Death Penalty Act) e IIRIRA (Illegal Immigration Reform and Immigrant Responsibility Act), ambas de 1996, restringieron significativamente la revisión judicial. AEDPA estableció disposiciones para deportación de delincuentes extranjeros. IIRIRA creó el proceso de 'remoción' unificado y amplió detención obligatoria. INS v. St. Cyr (2001) posteriormente aclaró que no eliminaron habeas corpus.",
+                incorrect: "Incorrecto. Las leyes de 1996 fueron AEDPA (Antiterrorism and Effective Death Penalty Act) e IIRIRA (Illegal Immigration Reform and Immigrant Responsibility Act). Estas restringieron dramáticamente la revisión judicial, crearon detención obligatoria expandida, y el proceso de 'remoción' unificado. El REAL ID Act vino después (2005) y creó el marco dual actual. Es fundamental conocer esta cronología."
+            }
+        },
+        {
+            id: 16,
+            question: "¿Qué estableció el REAL ID Act de 2005 sobre habeas corpus?",
+            options: [
+                "Lo eliminó completamente",
+                "Canalizó revisiones de órdenes de remoción a cortes de apelaciones, pero preservó explícitamente habeas bajo §2241 para cuestiones constitucionales",
+                "Otorgó jurisdicción exclusiva a tribunales de distrito",
+                "No afectó el habeas corpus"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! El REAL ID Act (2005) creó el marco dual actual: Sección 106(a) canalizó revisiones de 'órdenes de remoción' exclusivamente a cortes de apelaciones (eliminando jurisdicción de tribunales de distrito para revisiones directas). PERO Sección 106(b) preservó explícitamente habeas corpus bajo 28 U.S.C. §2241 para cuestiones constitucionales o de interpretación estatutaria. Resultado: dos vías separadas de revisión.",
+                incorrect: "Incorrecto. El REAL ID Act NO eliminó habeas corpus. Creó un sistema dual: revisiones directas de órdenes de remoción van a cortes de apelaciones (Sección 106(a)), pero habeas corpus permanece en tribunales de distrito para cuestiones constitucionales/interpretación estatutaria (Sección 106(b)). Esta preservación explícita fue intencional y es fundamental para el sistema actual."
+            }
+        },
+        {
+            id: 17,
+            question: "¿Cuáles son excepciones comunes al requerimiento de agotar recursos administrativos antes de habeas corpus?",
+            options: [
+                "No existen excepciones",
+                "Inutilidad (futility), violación abierta de reglamentos, daño irreparable, cuestiones puramente constitucionales",
+                "Solo para ciudadanos",
+                "Únicamente en casos de seguridad nacional"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Perfecto! Las excepciones reconocidas incluyen: (1) Inutilidad (futility) - recursos administrativos serían inútiles, agencia ya adoptó posición contraria; (2) Violación abierta - agencia actuó fuera de sus propios reglamentos o autoridad legal; (3) Daño irreparable - demora causaría daño irreparable (ej: detención prolongada); (4) Cuestiones constitucionales - que la agencia no puede resolver. El requerimiento varía entre circuitos.",
+                incorrect: "Incorrecto. SÍ existen excepciones importantes al agotamiento: (1) Futility (recursos serían inútiles), (2) Violación flagrante de reglamentos, (3) Daño irreparable por demora, (4) Cuestiones constitucionales puras. Estas excepciones son cruciales porque el proceso administrativo puede tomar años. El estándar varía entre circuitos, lo que añade complejidad estratégica."
+            }
+        },
+        {
+            id: 18,
+            question: "¿Cuántas peticiones de habeas corpus migratorio se presentan aproximadamente cada año en tribunales federales?",
+            options: [
+                "100-500",
+                "2,000-3,000",
+                "10,000-15,000",
+                "50,000+"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! Aproximadamente 2,000-3,000 peticiones de habeas corpus migratorio se presentan anualmente en tribunales federales. Hay concentración geográfica en distritos fronterizos (Texas, Arizona, California) y con grandes centros de detención. Las tasas de éxito varían: 30-40% para detención prolongada, 20-30% para condiciones de detención, menos del 15% para estatus legal puro.",
+                incorrect: "Incorrecto. El volumen es de aproximadamente 2,000-3,000 peticiones anuales. No es tan alto como 10,000+ pero tampoco tan bajo como 100-500. Este volumen está concentrado en distritos fronterizos y con grandes centros de detención. Entender este volumen ayuda a contextualizar recursos disponibles y tiempos de procesamiento."
+            }
+        },
+        {
+            id: 19,
+            question: "¿Cuál es la tasa de éxito aproximada para casos de habeas corpus por detención prolongada?",
+            options: [
+                "5-10%",
+                "30-40%",
+                "60-70%",
+                "90%+"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Correcto! Los casos de detención prolongada tienen aproximadamente 30-40% de tasa de liberación ordenada - la más alta entre tipos de habeas corpus migratorio. Casos de condiciones de detención: 20-30%. Casos de estatus legal puro: menos del 15%. La variación es significativa por distrito y circuito. Esto refleja que los tribunales son más receptivos cuando hay cuestiones constitucionales claras de debido proceso.",
+                incorrect: "Incorrecto. La tasa de éxito para detención prolongada es 30-40% - bastante sustancial comparada con otros tipos de casos. Condiciones de detención: 20-30%. Estatus legal: <15%. Esta diferencia refleja que los tribunales son más receptivos a desafíos constitucionales (detención prolongada) que a cuestiones discrecionales o de interpretación de elegibilidad."
+            }
+        },
+        {
+            id: 20,
+            question: "¿Cuáles son estrategias de litigio efectivas recomendadas para abogados que presentan habeas corpus migratorio?",
+            options: [
+                "Enfocarse solo en cuestiones discrecionales",
+                "Enfoque en cuestiones constitucionales, desarrollo cuidadoso del registro fáctico, considerar acciones de clase",
+                "Nunca solicitar medidas cautelares",
+                "Evitar organizaciones sin fines de lucro"
+            ],
+            correct: 1,
+            feedback: {
+                correct: "¡Excelente! Las estrategias efectivas incluyen: (1) Enfoque en cuestiones constitucionales sobre discrecionales (mayor probabilidad de éxito), (2) Desarrollo cuidadoso del registro fáctico (documentar detalle de detención, esfuerzos de remoción, lazos con comunidad), (3) Considerar acciones de clase para patrones sistemáticos, (4) Medidas cautelares tempranas (TRO) cuando hay riesgo inminente. Recursos útiles: clínicas universitarias, ACLU, National Immigration Project, AILA.",
+                incorrect: "Incorrecto. Las mejores estrategias son: (1) Enfocarse en cuestiones CONSTITUCIONALES (no discrecionales) porque tienen mayor éxito, (2) Desarrollar registro fáctico detallado, (3) Considerar class actions para patrones sistemáticos, (4) Usar medidas cautelares cuando apropiado. Colaboración con organizaciones sin fines de lucro (ACLU, National Immigration Project) es muy recomendable para recursos y expertise."
+            }
+        }
+    ];
+
+    // ==================== FUNCIONES DE NAVEGACIÓN ====================
+    function goToSection(sectionNum) {
+        var sections = document.querySelectorAll('.module-section');
+        sections.forEach(function(section) {
+            section.classList.remove('active');
+        });
+        
+        var targetSection = document.getElementById('section' + sectionNum);
+        if (targetSection) {
+            targetSection.classList.add('active');
+            currentSection = sectionNum;
+            updateProgressBar();
+            SCORM.setLocation('section_' + sectionNum);
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function nextSection() {
+        if (currentSection < totalSections) {
+            goToSection(currentSection + 1);
+        }
+    }
+
+    function prevSection() {
+        if (currentSection > 1) {
+            goToSection(currentSection - 1);
+        }
+    }
+
+    function updateProgressBar() {
+        var progress = (currentSection / totalSections) * 100;
+        var progressFill = document.getElementById('progressFill');
+        var progressText = document.getElementById('progressText');
+        
+        if (progressFill) {
+            progressFill.style.width = progress + '%';
+            progressFill.textContent = Math.round(progress) + '%';
+        }
+        
+        if (progressText) {
+            progressText.textContent = 'Sección ' + currentSection + ' de ' + totalSections;
+        }
+    }
+
+    // ==================== FUNCIONES DEL QUIZ ====================
+    function startQuiz() {
+        quizStarted = true;
+        startTime = new Date();
+        
+        document.getElementById('quizIntro').classList.add('hidden');
+        var quizContainer = document.getElementById('quizContainer');
+        quizContainer.classList.remove('hidden');
+        document.getElementById('quizNav').classList.remove('hidden');
+        
+        renderQuiz();
+        userAnswers = new Array(questions.length).fill(-1);
+        window.scrollTo(0, 0);
+    }
+
+    function renderQuiz() {
+        var container = document.getElementById('quizContainer');
+        container.innerHTML = '';
+        
+        questions.forEach(function(q, index) {
+            var card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = 'question-' + q.id;
+            
+            var header = document.createElement('div');
+            header.className = 'question-header';
+            
+            var number = document.createElement('div');
+            number.className = 'question-number';
+            number.textContent = (index + 1);
+            
+            var text = document.createElement('div');
+            text.className = 'question-text';
+            text.textContent = q.question;
+            
+            header.appendChild(number);
+            header.appendChild(text);
+            card.appendChild(header);
+            
+            var optionsContainer = document.createElement('div');
+            optionsContainer.className = 'options';
+            
+            q.options.forEach(function(option, optIndex) {
+                var optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.setAttribute('data-question', q.id);
+                optionDiv.setAttribute('data-option', optIndex);
+                
+                var radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'question-' + q.id;
+                radio.value = optIndex;
+                radio.id = 'q' + q.id + '-opt' + optIndex;
+                
+                radio.addEventListener('change', function() {
+                    selectAnswer(q.id, optIndex);
+                });
+                
+                var label = document.createElement('label');
+                label.htmlFor = radio.id;
+                label.textContent = option;
+                label.style.cursor = 'pointer';
+                label.style.flex = '1';
+                label.style.marginLeft = '0';
+                
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            card.appendChild(optionsContainer);
+            
+            var feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback';
+            feedbackDiv.id = 'feedback-' + q.id;
+            card.appendChild(feedbackDiv);
+            
+            container.appendChild(card);
+        });
+    }
+
+    function selectAnswer(questionId, optionIndex) {
+        var qIndex = questions.findIndex(function(q) { return q.id === questionId; });
+        if (qIndex !== -1) {
+            userAnswers[qIndex] = optionIndex;
+        }
+        
+        var allOptions = document.querySelectorAll('[data-question="' + questionId + '"]');
+        allOptions.forEach(function(opt) {
+            opt.classList.remove('selected');
+        });
+        
+        var selectedOption = document.querySelector('[data-question="' + questionId + '"][data-option="' + optionIndex + '"]');
+        if (selectedOption) {
+            selectedOption.classList.add('selected');
+        }
+    }
+
+    function submitQuiz() {
+        var unanswered = userAnswers.filter(function(a) { return a === -1; }).length;
+        
+        if (unanswered > 0) {
+            alert('Por favor responde todas las preguntas. Faltan ' + unanswered + ' pregunta(s).');
+            return;
+        }
+        
+        if (!confirm('¿Estás seguro de que deseas enviar la evaluación? No podrás cambiar tus respuestas después.')) {
+            return;
+        }
+        
+        quizCompleted = true;
+        endTime = new Date();
+        
+        var correct = 0;
+        questions.forEach(function(q, index) {
+            if (userAnswers[index] === q.correct) {
+                correct++;
+            }
+        });
+        
+        var scoreRaw = Math.round((correct / questions.length) * 100);
+        
+        console.log('Enviando calificación a Moodle: ' + scoreRaw);
+        SCORM.setScore(scoreRaw);
+        
+        showFeedback();
+        
+        var submitBtn = document.getElementById('submitQuizBtn');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Evaluación Enviada';
+        }
+        
+        setTimeout(function() {
+            showResults(scoreRaw, correct);
+        }, 1000);
+    }
+
+    function showFeedback() {
+        questions.forEach(function(q, index) {
+            var card = document.getElementById('question-' + q.id);
+            var feedbackDiv = document.getElementById('feedback-' + q.id);
+            var options = card.querySelectorAll('.option');
+            
+            var userAnswer = userAnswers[index];
+            var isCorrect = userAnswer === q.correct;
+            
+            options.forEach(function(opt) {
+                opt.classList.add('disabled');
+                var radio = opt.querySelector('input[type="radio"]');
+                if (radio) radio.disabled = true;
+            });
+            
+            var correctOption = card.querySelector('[data-option="' + q.correct + '"]');
+            if (correctOption) {
+                correctOption.classList.add('correct-answer');
+            }
+            
+            if (!isCorrect) {
+                var incorrectOption = card.querySelector('[data-option="' + userAnswer + '"]');
+                if (incorrectOption) {
+                    incorrectOption.classList.add('incorrect-answer');
+                }
+            }
+            
+            feedbackDiv.classList.add('show');
+            feedbackDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            var feedbackTitle = document.createElement('div');
+            feedbackTitle.className = 'feedback-title';
+            feedbackTitle.innerHTML = '<span class="feedback-icon">' + (isCorrect ? '✓' : '✗') + '</span>' +
+                                      (isCorrect ? 'Respuesta Correcta' : 'Respuesta Incorrecta');
+            
+            var feedbackText = document.createElement('div');
+            feedbackText.className = 'feedback-text';
+            feedbackText.textContent = isCorrect ? q.feedback.correct : q.feedback.incorrect;
+            
+            feedbackDiv.appendChild(feedbackTitle);
+            feedbackDiv.appendChild(feedbackText);
+        });
+    }
+
+    function showResults(scoreRaw, correct) {
+        var resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.classList.remove('hidden');
+        
+        var incorrect = questions.length - correct;
+        var duration = Math.round((endTime - startTime) / 1000 / 60);
+        var passed = scoreRaw >= 85;
+        
+        var html = '<div class="results-container">';
+        html += '<h2>Resultados de la Evaluación</h2>';
+        
+        html += '<div class="score-circle">';
+        html += '<div class="score-percentage">' + scoreRaw + '%</div>';
+        html += '<div class="score-label">CALIFICACIÓN</div>';
+        html += '</div>';
+        
+        html += '<div class="status-badge ' + (passed ? 'passed' : 'failed') + '">';
+        html += (passed ? '✓ ¡APROBADO!' : '✗ NO APROBADO');
+        html += '</div>';
+        
+        html += '<div class="results-details">';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Respuestas Correctas:</span>';
+        html += '<span class="result-value" style="color: var(--color-medium);">' + correct + ' / ' + questions.length + '</span>';
+        html += '</div>';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Respuestas Incorrectas:</span>';
+        html += '<span class="result-value" style="color: #c55;">' + incorrect + ' / ' + questions.length + '</span>';
+        html += '</div>';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Tiempo Empleado:</span>';
+        html += '<span class="result-value">' + duration + ' minutos</span>';
+        html += '</div>';
+        
+        html += '<div class="result-item">';
+        html += '<span class="result-label">Calificación Mínima:</span>';
+        html += '<span class="result-value">85%</span>';
+        html += '</div>';
+        
+        html += '</div>';
+        
+        if (passed) {
+            html += '<div class="recommendation-box passed">';
+            html += '<p style="margin: 0; color: var(--color-darkest);">';
+            html += '<strong>¡Felicitaciones!</strong> Has demostrado un excelente dominio del habeas corpus en materia migratoria. ';
+            html += 'Comprendes los fundamentos constitucionales, estatutarios, requisitos procesales, precedentes fundamentales y aplicación práctica. ';
+            html += 'Tu calificación ha sido registrada en el sistema.';
+            html += '</p></div>';
+        } else {
+            html += '<div class="recommendation-box failed">';
+            html += '<p style="margin: 0; color: var(--color-darkest);">';
+            html += '<strong>Recomendación:</strong> Revisa especialmente: (1) Casos fundacionales (St. Cyr, Zadvydas, Jennings), ';
+            html += '(2) Diferencias entre detención obligatoria y discrecional, (3) Marco dual del REAL ID Act, ';
+            html += 'y (4) Requisitos procesales y excepciones al agotamiento.';
+            html += '</p></div>';
+        }
+        
+        html += '<div class="navigation" style="justify-content: center; margin-top: 30px;">';
+        html += '<button class="btn btn-primary" onclick="window.print()">Imprimir Resultados</button>';
+        html += '</div>';
+        
+        html += '</div>';
+        
+        resultsContainer.innerHTML = html;
+        resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ==================== INICIALIZACIÓN ====================
+    window.addEventListener('load', function() {
+        updateProgressBar();
+        
+        var savedLocation = SCORM.getLocation();
+        if (savedLocation && savedLocation.startsWith('section_')) {
+            var sectionNum = parseInt(savedLocation.replace('section_', ''));
+            if (sectionNum >= 1 && sectionNum <= totalSections) {
+                goToSection(sectionNum);
+            }
+        }
+    });
+    </script>
+</body>
+</html>
