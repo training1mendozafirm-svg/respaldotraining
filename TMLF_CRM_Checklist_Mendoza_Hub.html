@@ -1,0 +1,1977 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>CRM, Checklist y Formas (Mendoza Hub) | TMLF Learning Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1923;--slate:#5a6a7a;--steel:#6b8fa8;--ice:#8db8d8;
+  --gold:#c9a84c;--gold-bg:rgba(201,168,76,.09);
+  --white:#fff;--bg:#eef1f5;--shadow:0 8px 28px rgba(15,25,35,.11);--radius:16px;
+  --nav-h:56px;--sidebar-w:272px;
+  --green:#1e6641;--green2:#2d9d62;--green-bg:rgba(30,102,65,.08);
+  --sage:#6b8fa8;--sage-light:#8db8d8;--pale-green:#dce8f2;
+  --red:#8b2c2c;--red-bg:rgba(180,50,50,.08);
+  --amber:#7a5200;--amber-bg:rgba(180,130,0,.09);
+  --accent:#1a3a5c;--accent2:#2e5c8a;
+  --sidebar-bg:#0d1e2e;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+
+/* ══ TOP NAV ══ */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav-h);background:rgba(10,18,28,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);display:flex;align-items:center;padding:0 18px;gap:10px}
+.topnav .brand{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;white-space:nowrap;letter-spacing:.3px;display:flex;align-items:center;gap:10px}
+.topnav .brand .seal{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.08));border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--gold)}
+.topnav .brand span{color:var(--gold)}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topnav-pill{padding:5px 14px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.28);color:rgba(201,168,76,.9)}
+.sidebar-toggle{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px}
+@media(max-width:900px){.sidebar-toggle{display:block}}
+
+/* ══ SHELL ══ */
+.app-shell{display:flex;min-height:100vh;padding-top:var(--nav-h)}
+
+/* ══ SIDEBAR ══ */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);position:fixed;top:var(--nav-h);bottom:0;left:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;border-right:1px solid rgba(201,168,76,.07);z-index:200;transition:transform .3s ease}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:3px}
+.sidebar-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sidebar-header .sh-label{font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px}
+.sidebar-header .sh-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.88);font-weight:600;line-height:1.3}
+.sb-group{padding:8px 0}
+.sb-group-label{padding:6px 16px 3px;font-size:8.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.sb-divider{margin:4px 14px 6px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.18),transparent)}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:all .18s;position:relative;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.045)}
+.sb-item.active{background:rgba(107,143,168,.09)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.sb-num{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);transition:all .18s}
+.sb-item.active .sb-num{background:var(--gold);color:#0d1e2e}
+.sb-item:hover:not(.locked) .sb-num{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+.sb-item.completed .sb-num{background:var(--green2)!important;color:#fff!important}
+.sb-text{flex:1;min-width:0}
+.sb-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);line-height:1.3;transition:color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item.active .sb-name{color:rgba(255,255,255,.92)}
+.sb-item:hover:not(.locked) .sb-name{color:rgba(255,255,255,.82)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.sb-item.exam .sb-num{background:rgba(201,168,76,.14);color:var(--gold)}
+.sb-item.exam.active .sb-num{background:var(--gold);color:#0d1e2e}
+.sb-item.exam .sb-name{color:rgba(220,190,120,.55)}
+.sb-item.exam.active .sb-name{color:rgba(220,190,120,.92)}
+.sb-item.practice .sb-num{background:rgba(30,102,65,.14);color:#8db8d8}
+.sb-item.practice.active .sb-num{background:var(--green2);color:#fff}
+.sb-item.practice .sb-name{color:rgba(141,184,216,.55)}
+.sb-item.practice.active .sb-name{color:rgba(141,184,216,.92)}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.45)}
+  .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+  .sb-overlay.show{display:block}
+}
+
+/* ══ PROGRESS BAR ══ */
+.progress-bar-wrap{position:fixed;top:var(--nav-h);left:0;right:0;z-index:299;height:3px;background:rgba(255,255,255,.06)}
+.progress-bar-fill{height:3px;background:linear-gradient(90deg,var(--green2),var(--gold));transition:width .5s ease;width:0%}
+
+/* ══ MAIN ══ */
+.main{margin-left:var(--sidebar-w);flex:1;padding:26px 26px 60px;max-width:100%}
+@media(max-width:900px){.main{margin-left:0;padding:18px 14px 50px}}
+
+/* ══ HEADER ══ */
+.header{background:linear-gradient(135deg,#0b1f35 0%,#0e2540 45%,#1a3a5c 100%);color:#fff;border-radius:20px;padding:42px 38px 36px;box-shadow:0 16px 40px rgba(10,20,35,.22);position:relative;overflow:hidden;margin-bottom:22px}
+.header::before{content:'';position:absolute;top:-60px;right:-40px;width:270px;height:270px;border:1.5px solid rgba(201,168,76,.1);border-radius:50%;animation:pulse 5s ease-in-out infinite}
+.header::after{content:'';position:absolute;bottom:-70px;right:90px;width:180px;height:180px;border:1.5px solid rgba(107,143,168,.1);border-radius:50%;animation:pulse 6s ease-in-out infinite .8s}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:.85}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.header-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:12px}
+.header-badge .dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+h1{font-family:'Cormorant Garamond',serif;font-size:36px;letter-spacing:.4px;position:relative;z-index:1;font-weight:700;line-height:1.15}
+.subtitle{font-size:14px;opacity:.76;max-width:52ch;position:relative;z-index:1;margin-top:6px}
+.header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.header-meta-item{display:flex;align-items:center;gap:6px;padding:5px 13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:11.5px}
+.header-meta-item span:first-child{opacity:.58}
+.header-meta-item strong{font-weight:700}
+
+/* ══ PANELS ══ */
+.panel{display:none;animation:fadeUp .28s ease both}
+.panel.active{display:block}
+
+/* ══ BLOCKS ══ */
+.block{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(107,143,168,.15);overflow:hidden;margin-bottom:14px}
+.block:last-child{margin-bottom:0}
+.block .btitle{display:flex;align-items:center;gap:10px;padding:15px 18px;background:linear-gradient(180deg,rgba(141,184,216,.16),rgba(141,184,216,.02));border-bottom:1px solid rgba(107,143,168,.13)}
+.block .btitle .bicon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;color:#fff}
+.block .btitle h3{font-size:15.5px;color:var(--ink);font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.2px;flex:1}
+.block .btitle .mod-badge{margin-left:auto;padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;flex-shrink:0}
+.badge-core{background:rgba(30,102,65,.09);color:#1e6641;border:1px solid rgba(30,102,65,.17)}
+.badge-warn{background:rgba(139,44,44,.08);color:#8b2c2c;border:1px solid rgba(139,44,44,.17)}
+.badge-green{background:rgba(45,157,98,.08);color:#1e6641;border:1px solid rgba(45,157,98,.17)}
+.badge-gold{background:rgba(201,168,76,.09);color:#7a5200;border:1px solid rgba(201,168,76,.2)}
+.badge-exam{background:linear-gradient(135deg,rgba(201,168,76,.16),rgba(201,168,76,.05));color:#7a5200;border:1px solid rgba(201,168,76,.28)}
+.badge-practice{background:rgba(45,157,98,.08);color:#1e6641;border:1px solid rgba(45,157,98,.17)}
+.block .bbody{padding:18px}
+.block .bbody p{margin:0 0 10px;font-size:13.5px}
+.block .bbody p:last-child{margin-bottom:0}
+
+/* ══ DIVIDERS ══ */
+.sdiv{display:flex;align-items:center;gap:11px;margin:20px 0 13px}
+.sdiv .l{flex:1;height:1px;background:linear-gradient(90deg,rgba(107,143,168,.28),transparent)}
+.sdiv .l:last-child{background:linear-gradient(270deg,rgba(107,143,168,.28),transparent)}
+.sdiv .t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--slate);white-space:nowrap}
+
+/* ══ ALERTS ══ */
+.alert{margin-top:10px;padding:12px 14px;border-radius:10px;font-size:13px;display:flex;align-items:flex-start;gap:10px;line-height:1.55}
+.alert.warn{background:#FFF8E8;border:1px solid rgba(180,130,0,.22);color:#7a5200}
+.alert.danger{background:#FFF0F0;border:1px solid rgba(180,50,50,.2);color:var(--red)}
+.alert.success{background:#EAF1F8;border:1px solid rgba(45,157,98,.2);color:var(--green)}
+.alert.info{background:rgba(141,184,216,.12);border:1px solid rgba(107,143,168,.18);color:var(--ink)}
+.alert.sage{background:#EEF3F8;border:1px solid rgba(107,143,168,.22);color:#1e6641}
+.alert-icon{flex-shrink:0;margin-top:1px;font-size:16px}
+.alert strong{font-weight:700;display:block;margin-bottom:2px}
+
+/* ══ CALLOUT / PRINCIPLE ══ */
+.principle{margin-top:13px;padding:14px 17px;border-radius:11px;background:linear-gradient(135deg,rgba(30,102,65,.04),rgba(107,143,168,.08));border:1px solid rgba(107,143,168,.18);border-left:3px solid var(--accent2)}
+.principle p{margin:0;font-size:14px;font-weight:600;font-style:italic;font-family:'Cormorant Garamond',serif;line-height:1.55;color:var(--ink)}
+.principle .principle-sub{font-weight:500;color:var(--slate);margin-top:4px;font-style:normal;font-family:'DM Sans',sans-serif;font-size:12px}
+
+/* ══ INFO TABLE ══ */
+.info-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.5px;border-radius:11px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.info-table th{background:var(--accent);color:#fff;padding:11px 14px;text-align:left;font-weight:700;font-size:11.5px}
+.info-table td{padding:10px 14px;border-bottom:1px solid rgba(107,143,168,.12);vertical-align:top}
+.info-table tr:nth-child(even) td{background:rgba(141,184,216,.06)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:hover td{background:rgba(141,184,216,.1)}
+.info-table td code{background:rgba(107,143,168,.12);padding:2px 6px;border-radius:5px;font-size:11.5px;font-family:'Courier New',monospace;color:var(--ink)}
+
+/* ══ STAT CARDS ══ */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px;margin-bottom:18px}
+.stat-card{background:var(--white);border-radius:13px;padding:15px;border:1px solid rgba(107,143,168,.16);text-align:center}
+.stat-card .stat-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--accent);line-height:1}
+.stat-card .stat-label{font-size:11px;color:var(--slate);margin-top:4px;font-weight:600}
+
+/* ══ TWO / THREE COL ══ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:700px){.three-col,.two-col{grid-template-columns:1fr}}
+.mini-card{padding:14px;border-radius:11px;border:1px solid rgba(107,143,168,.15);background:rgba(141,184,216,.06)}
+.mini-card h4{font-size:13px;margin-bottom:7px;display:flex;align-items:center;gap:7px;color:var(--ink);font-weight:700}
+.mini-card p,.mini-card li{font-size:12.5px;color:var(--slate);line-height:1.6}
+.mini-card ul{padding-left:16px}
+
+/* ══ CHIPS ══ */
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chip{padding:4px 11px;border-radius:7px;font-size:11px;font-weight:600;background:rgba(141,184,216,.15);border:1px solid rgba(107,143,168,.17);color:var(--ink)}
+.chip.green{background:var(--green-bg);border-color:rgba(30,102,65,.18);color:var(--green)}
+.chip.amber{background:var(--amber-bg);border-color:rgba(180,130,0,.19);color:var(--amber)}
+.chip.red{background:var(--red-bg);border-color:rgba(180,50,50,.18);color:var(--red)}
+.chip.gold{background:var(--gold-bg);border-color:rgba(201,168,76,.22);color:#7a5200}
+.chip.sage{background:rgba(107,143,168,.1);border-color:rgba(107,143,168,.22);color:#1e6641}
+
+/* ══ PAGE TITLE ══ */
+.page-title{margin-bottom:16px}
+.page-title .pt-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate);margin-bottom:4px}
+.page-title h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.page-title .pt-sub{font-size:13px;color:var(--slate);margin-top:3px}
+
+/* ══ MOD META ══ */
+.mod-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:6px;margin-bottom:13px}
+.mod-meta-item{padding:8px 12px;border-radius:9px;background:rgba(107,143,168,.06);border:1px solid rgba(107,143,168,.14)}
+.mod-meta-item .label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);margin-bottom:2px}
+.mod-meta-item .value{font-size:12.5px;font-weight:700;color:var(--ink)}
+
+/* ══ ROADMAP / TIMELINE ══ */
+.roadmap{display:flex;flex-direction:column;gap:0;margin-top:11px;position:relative}
+.roadmap::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2),var(--sage-light));border-radius:2px}
+.rm-item{display:flex;gap:15px;padding:0 0 16px;position:relative}
+.rm-dot{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;box-shadow:0 3px 9px rgba(30,102,65,.25)}
+.rm-content{padding:10px 13px;background:var(--white);border-radius:10px;border:1px solid rgba(107,143,168,.15);flex:1;transition:all .2s}
+.rm-content:hover{border-color:var(--sage-light);transform:translateX(3px)}
+.rm-content h4{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.rm-content p{font-size:12.5px;color:var(--slate);line-height:1.55;margin:0}
+
+/* ══ ACCORDIONS ══ */
+details.block-accordion{border:none;background:none;padding:0;margin:8px 0 0}
+details.block-accordion+details.block-accordion{margin-top:7px}
+.block-accordion-header{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-radius:11px;background:linear-gradient(135deg,rgba(15,25,35,.04),rgba(107,143,168,.08));border:1px solid rgba(107,143,168,.15);transition:all .2s;user-select:none}
+.block-accordion-header::-webkit-details-marker{display:none}
+details.block-accordion[open] .block-accordion-header{border-radius:11px 11px 0 0;border-bottom-color:transparent;background:linear-gradient(135deg,rgba(15,25,35,.06),rgba(107,143,168,.13))}
+.bac-left{display:flex;align-items:center;gap:11px}
+.bac-num{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bac-title{font-size:13.5px;font-weight:700;color:var(--ink)}
+.bac-arrow{font-size:11px;color:var(--slate);transition:transform .2s;flex-shrink:0}
+details.block-accordion[open] .bac-arrow{transform:rotate(90deg)}
+.bac-body{padding:14px 16px 16px;border:1px solid rgba(107,143,168,.15);border-top:none;border-radius:0 0 11px 11px;background:rgba(240,235,227,.35)}
+.bac-body ul{padding-left:16px;font-size:13px;line-height:1.75}
+.bac-body li{margin-bottom:4px}
+
+/* ══ QUIZ QUESTIONS ══ */
+.q-item{background:rgba(240,235,227,.6);border:1px solid rgba(107,143,168,.16);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.q-stem{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.5}
+.q-opts{display:flex;flex-direction:column;gap:7px}
+.q-opt{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:8px;border:1.5px solid rgba(107,143,168,.18);background:var(--white);cursor:pointer;font-size:13px;transition:all .18s}
+.q-opt:hover{border-color:var(--accent2);background:rgba(30,102,65,.04)}
+.q-opt.selected{border-color:var(--accent2);background:rgba(30,102,65,.06)}
+.q-opt.correct{border-color:#1e6641;background:#E4ECF5;pointer-events:none}
+.q-opt.incorrect{border-color:#8b2c2c;background:#fee2e2;pointer-events:none}
+.q-opt.disabled{pointer-events:none;opacity:.7}
+.q-letter{width:22px;height:22px;border-radius:5px;background:rgba(107,143,168,.15);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;flex-shrink:0;color:var(--accent)}
+.q-feedback{display:none;margin-top:10px;padding:9px 12px;border-radius:8px;font-size:12.5px;line-height:1.5}
+.q-feedback.ok{background:#E4ECF5;border:1px solid rgba(30,102,65,.2);color:var(--green)}
+.q-feedback.fail{background:var(--red-bg);border:1px solid rgba(139,44,44,.17);color:var(--red)}
+.q-feedback.show{display:block}
+
+/* ══ EVAL FOOTER / BUTTONS ══ */
+.eval-footer{padding:14px 16px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid rgba(107,143,168,.12)}
+.btn-retry,.btn-submit{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.btn-retry{background:rgba(107,143,168,.12);color:var(--slate);display:none}
+.btn-retry:hover{background:rgba(107,143,168,.22)}
+.btn-submit{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.btn-submit:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(30,102,65,.35)}
+.btn-submit:disabled{opacity:.45;cursor:not-allowed}
+.result-card{display:none;margin:0 16px 16px;padding:22px;border-radius:13px;background:linear-gradient(135deg,rgba(30,102,65,.04),rgba(141,184,216,.07));border:1px solid rgba(107,143,168,.18);text-align:center}
+.result-card.show{display:block;animation:fadeUp .3s ease}
+.result-score{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1}
+.result-score.pass{color:var(--green)}.result-score.warn{color:var(--amber)}.result-score.fail{color:var(--red)}
+.result-label{font-size:14px;font-weight:700;color:var(--ink);margin:6px 0 8px}
+.result-msg{font-size:12.5px;color:var(--slate);line-height:1.6;max-width:50ch;margin:0 auto 14px}
+.result-breakdown{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.rb-item{padding:10px 18px;border-radius:10px;text-align:center;min-width:80px}
+.rb-ok{background:#E4ECF5;border:1px solid rgba(30,102,65,.18)}
+.rb-bad{background:var(--red-bg);border:1px solid rgba(139,44,44,.17)}
+.rb-mod{background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.17)}
+.rb-n{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1}
+.rb-ok .rb-n{color:var(--green)}.rb-bad .rb-n{color:var(--red)}.rb-mod .rb-n{color:var(--slate)}
+.rb-l{font-size:10px;font-weight:700;color:var(--slate);margin-top:2px}
+
+/* ══ NAV BUTTONS ══ */
+.nav-buttons{display:flex;gap:10px;justify-content:space-between;margin-top:20px;flex-wrap:wrap}
+.nb-btn{padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;display:flex;align-items:center;gap:7px}
+.nb-btn.prev{background:rgba(107,143,168,.12);color:var(--slate)}
+.nb-btn.prev:hover{background:rgba(107,143,168,.22)}
+.nb-btn.next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.nb-btn.next:hover{box-shadow:0 4px 14px rgba(30,102,65,.35);transform:translateY(-1px)}
+
+/* ══ OVERVIEW CARDS ══ */
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:9px;margin-top:12px}
+.ov-card{padding:14px;border-radius:12px;background:var(--white);border:1px solid rgba(107,143,168,.14);cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.ov-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.ov-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(30,102,65,.13);border-color:var(--sage)}
+.ov-card .ov-num{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--sage);line-height:1;margin-bottom:5px}
+.ov-card h4{font-size:12px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:4px}
+.ov-card .ov-type{font-size:10px;color:var(--slate);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+/* ══ DISTRIBUCIÓN 20/70/10 ══ */
+.dist-bar{display:flex;border-radius:10px;overflow:hidden;height:36px;margin:14px 0}
+.dist-seg{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.dist-seg.theory{background:linear-gradient(135deg,#1A3A10,#1e6641);color:#fff;flex:20}
+.dist-seg.practice{background:linear-gradient(135deg,#1e6641,#2d9d62);color:#fff;flex:70}
+.dist-seg.eval{background:linear-gradient(135deg,var(--gold),#8B6A40);color:#fff;flex:10}
+
+/* ══ IMAGE MOCKUPS ══ */
+.doc-mockup{border-radius:12px;overflow:hidden;border:1px solid rgba(107,143,168,.22);box-shadow:0 4px 16px rgba(15,25,35,.1);margin:14px 0;background:#fff;font-family:Arial,sans-serif}
+.doc-mockup .doc-titlebar{background:#2c2c2c;padding:8px 14px;display:flex;align-items:center;gap:6px}
+.doc-mockup .doc-titlebar .dot{width:10px;height:10px;border-radius:50%}
+.doc-mockup .doc-titlebar .dot:nth-child(1){background:#ff5f57}
+.doc-mockup .doc-titlebar .dot:nth-child(2){background:#ffbd2e}
+.doc-mockup .doc-titlebar .dot:nth-child(3){background:#28ca41}
+.doc-mockup .doc-titlebar span{color:rgba(255,255,255,.6);font-size:11px;margin-left:8px}
+.doc-mockup .doc-body{padding:20px 24px;background:#fff}
+.doc-mockup .doc-title{font-size:20px;font-weight:700;text-align:center;margin-bottom:14px;color:#1a1a1a}
+.doc-mockup .doc-logo{text-align:center;margin-bottom:10px;font-size:12px;font-weight:700;color:#2c2c2c;letter-spacing:2px;border-bottom:1px solid #ccc;padding-bottom:8px}
+.doc-table{width:100%;border-collapse:collapse;font-size:11.5px;margin-bottom:14px}
+.doc-table td,.doc-table th{border:1px solid #999;padding:5px 8px}
+.doc-table th{background:#f0f0f0;font-weight:700}
+.doc-section-title{font-size:14px;font-weight:700;margin:12px 0 6px;color:#1a1a1a}
+.doc-check-item{display:flex;align-items:flex-start;gap:7px;padding:3px 0;font-size:11.5px;color:#333;line-height:1.45}
+.doc-check-box{width:13px;height:13px;border:1.5px solid #666;border-radius:2px;flex-shrink:0;margin-top:2px}
+.doc-optional{display:inline-block;background:#ffff00;color:#1a1a1a;font-weight:700;font-size:12px;padding:2px 8px;border-radius:3px}
+.doc-img-caption{font-size:11px;color:var(--slate);font-style:italic;text-align:center;margin-top:6px;padding:0 10px}
+
+/* CRM mockup */
+.db-mockup{border-radius:12px;overflow:hidden;border:1px solid rgba(107,143,168,.22);box-shadow:0 4px 16px rgba(15,25,35,.1);margin:14px 0;background:#fff}
+.db-header{background:var(--ink);padding:14px 18px;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.db-body{display:grid;grid-template-columns:200px 1fr;min-height:180px}
+.db-sidebar-db{background:#f7f7f7;border-right:1px solid #e0e0e0;padding:10px}
+.db-sidebar-db .db-label{font-size:9px;font-weight:700;text-transform:uppercase;color:#888;margin:8px 0 4px 4px}
+.db-sidebar-db .db-folder{font-size:11.5px;color:#333;padding:4px 6px;border-radius:4px;cursor:default;display:flex;align-items:center;gap:5px}
+.db-sidebar-db .db-folder.active{background:var(--green-bg);color:var(--green);font-weight:700}
+.db-content{padding:12px 16px}
+.db-content .db-path{font-size:11px;color:#888;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.db-row{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:4px;font-size:12px;color:#333;margin-bottom:2px}
+.db-row:hover{background:#f5f5f5}
+.db-row .db-icon{font-size:14px;flex-shrink:0}
+.db-row.folder .db-icon{color:var(--green)}
+.db-row.file .db-icon{color:#e74c3c}
+.db-row span{font-size:11.5px}
+
+/* Nomenclatura mockup */
+.nom-mockup{border-radius:12px;border:1px solid rgba(107,143,168,.22);box-shadow:0 4px 16px rgba(15,25,35,.08);margin:14px 0;background:#fff;padding:16px 20px;display:grid;grid-template-columns:1fr 2fr 1fr;gap:12px;align-items:start;font-family:Arial,sans-serif}
+@media(max-width:650px){.nom-mockup{grid-template-columns:1fr}}
+.nom-left{font-size:12px;color:#2c3e50;line-height:1.7;font-weight:600;background:#f8f9fa;padding:10px;border-radius:6px}
+.nom-center{border:1px solid #ccc;border-radius:6px;padding:10px}
+.nom-center .nom-row{display:flex;align-items:center;gap:7px;padding:3px 0;font-size:11.5px;color:#333}
+.nom-center .nom-row .nom-icon{width:16px;height:16px;background:#e74c3c;border-radius:2px;flex-shrink:0}
+.nom-center .nom-row span{font-weight:600}
+.nom-right{background:#FFF9E6;border:1px solid #e0c87a;border-radius:6px;padding:10px;font-size:11.5px;color:#5a4000;line-height:1.6}
+.nom-right strong{display:block;margin-bottom:4px;font-size:12px}
+
+/* Activity card */
+.act-card{background:linear-gradient(135deg,rgba(30,102,65,.04),rgba(30,102,65,.01));border:1.5px dashed rgba(45,157,98,.28);border-radius:14px;padding:22px;margin-bottom:12px}
+.act-card .act-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.act-card .act-num{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.act-card h4{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--ink);line-height:1.2}
+.act-card .act-sub{font-size:12px;color:var(--slate);margin-top:2px}
+.act-card p{font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:10px}
+.act-case{background:var(--white);border-radius:10px;padding:12px 14px;border:1px solid rgba(107,143,168,.15);margin-bottom:8px}
+.act-case h5{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.act-case p{font-size:12.5px;color:var(--slate);margin:0}
+.act-link{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;background:rgba(30,102,65,.08);border:1px solid rgba(45,157,98,.22);color:var(--green);text-decoration:none;transition:all .2s;margin-top:6px;cursor:default}
+.act-link:hover{background:rgba(30,102,65,.14)}
+
+/* Resources table */
+.res-table{width:100%;border-collapse:collapse;font-size:13px}
+.res-table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--slate);padding:8px 12px;border-bottom:2px solid rgba(107,143,168,.2);text-align:left}
+.res-table td{padding:10px 12px;border-bottom:1px solid rgba(107,143,168,.1);vertical-align:middle}
+.res-table tr:last-child td{border-bottom:none}
+.res-table tr:hover td{background:rgba(141,184,216,.06)}
+.res-link{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;font-size:11.5px;font-weight:700;background:rgba(30,102,65,.08);border:1px solid rgba(45,157,98,.2);color:var(--green);text-decoration:none;cursor:default;transition:all .2s}
+.res-link:hover{background:rgba(30,102,65,.14)}
+.res-tag{display:inline-block;padding:2px 8px;border-radius:5px;font-size:9.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+.res-tag.video{background:#FFF0E8;color:#C05A1A;border:1px solid rgba(192,90,26,.2)}
+.res-tag.doc{background:#E8F0FF;color:#1A4CA0;border:1px solid rgba(26,76,160,.2)}
+.res-tag.audio{background:#E8EEF7;color:#6B1AC0;border:1px solid rgba(107,26,192,.2)}
+.res-tag.folder{background:#E4ECF5;color:#1e6641;border:1px solid rgba(30,102,65,.2)}
+
+/* Critical rule highlight */
+.rule-card{border-radius:12px;padding:16px 18px;margin:10px 0;border-left:4px solid}
+.rule-card.danger{background:#FFF5F5;border-color:#C0392B;border:1px solid rgba(192,57,43,.2);border-left:4px solid #C0392B}
+.rule-card.info{background:#EAF1F8;border-color:var(--green2);border:1px solid rgba(45,157,98,.2);border-left:4px solid var(--green2)}
+.rule-card.warn{background:#FFFBF0;border-color:#D4A000;border:1px solid rgba(212,160,0,.2);border-left:4px solid #D4A000}
+.rule-card h4{font-size:13.5px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.rule-card p,.rule-card li{font-size:13px;color:var(--slate);line-height:1.6}
+.rule-card ul{padding-left:16px;margin-top:5px}
+
+/* Step badge */
+.step-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:13px;flex-shrink:0}
+
+/* Ob list */
+.ob-list{display:grid;grid-template-columns:1fr;gap:6px;margin-top:9px}
+@media(min-width:600px){.ob-list{grid-template-columns:1fr 1fr}}
+.ob-item{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:10px;background:rgba(141,184,216,.1);border:1px solid rgba(107,143,168,.16);transition:all .2s}
+.ob-item:hover{transform:translateX(3px)}
+.ob-num{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px}
+.ob-item span{font-size:12.5px;font-weight:600;line-height:1.4}
+
+/* Video ref */
+.video-ref{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;background:rgba(107,143,168,.08);border:1px solid rgba(107,143,168,.15);margin:8px 0;font-size:12.5px;color:var(--slate);cursor:default}
+.video-ref .vr-icon{width:32px;height:32px;border-radius:7px;background:linear-gradient(135deg,#C0392B,#E74C3C);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex-shrink:0}
+.video-ref strong{display:block;color:var(--ink);font-size:13px;margin-bottom:1px}
+
+/* Comparison table */
+.cmp-table{width:100%;border-collapse:collapse;font-size:12.5px;border-radius:11px;overflow:hidden;margin:12px 0}
+.cmp-table th{padding:11px 14px;text-align:left;font-weight:700;font-size:12px}
+.cmp-table th:first-child{background:#1e6641;color:#fff;width:40%}
+.cmp-table th:last-child{background:#6b8fa8;color:#fff}
+.cmp-table td{padding:10px 14px;border-bottom:1px solid rgba(107,143,168,.12);vertical-align:top}
+.cmp-table td:first-child{background:rgba(30,102,65,.05);font-weight:600;color:var(--ink)}
+.cmp-table td:last-child{background:#fff}
+.cmp-table tr:last-child td{border-bottom:none}
+
+/* ob-optional */
+.optional-tag{display:inline-block;background:#ffff00;color:#1a1a1a;font-weight:700;font-size:10px;padding:1px 7px;border-radius:3px;margin-right:4px;border:1px solid rgba(0,0,0,.1)}
+.delay-tag{display:inline;font-weight:700;color:#C05A1A;font-style:italic;font-size:12px}
+
+/* Sem timeline */
+.times-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media(max-width:600px){.times-grid{grid-template-columns:1fr}}
+.time-card{padding:14px;border-radius:11px;background:var(--white);border:1px solid rgba(107,143,168,.15);position:relative;overflow:hidden}
+.time-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.time-card .tc-num{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--sage);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;padding-left:10px}
+.time-card h4{font-size:13.5px;font-weight:700;color:var(--ink);padding-left:10px;margin-bottom:6px}
+.time-card p{font-size:12.5px;color:var(--slate);line-height:1.55;padding-left:10px;margin:0}
+
+/* ══ VIDEO MODAL ══ */
+.vmodal-overlay{display:none;position:fixed;inset:0;background:rgba(10,18,10,.82);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.vmodal-overlay.open{display:flex}
+.vmodal-box{background:#1A2A14;border-radius:16px;overflow:hidden;width:90%;max-width:820px;box-shadow:0 24px 60px rgba(0,0,0,.55);position:relative;border:1px solid rgba(201,168,76,.18)}
+.vmodal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:rgba(0,0,0,.3);border-bottom:1px solid rgba(255,255,255,.07)}
+.vmodal-header .vm-title{font-family:'Cormorant Garamond',serif;font-size:16px;color:#fff;font-weight:600;display:flex;align-items:center;gap:9px}
+.vmodal-header .vm-title .vm-icon{width:30px;height:30px;border-radius:7px;background:linear-gradient(135deg,#C0392B,#E74C3C);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.vmodal-close{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.vmodal-close:hover{background:rgba(255,255,255,.2)}
+.vmodal-iframe-wrap{position:relative;padding-bottom:56.25%;height:0;background:#000}
+.vmodal-iframe-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.video-ref.clickable{cursor:pointer;transition:all .2s}
+.video-ref.clickable:hover{background:rgba(107,143,168,.18);border-color:rgba(107,143,168,.3);transform:translateX(2px)}
+.video-ref .vr-play-hint{font-size:10.5px;color:var(--green2);font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+</style>
+</head>
+<body>
+
+<!-- VIDEO MODAL -->
+<div class="vmodal-overlay" id="vmodal" onclick="closeVideoModal(event)">
+  <div class="vmodal-box" onclick="event.stopPropagation()">
+    <div class="vmodal-header">
+      <div class="vm-title"><div class="vm-icon">▶</div><span id="vmodal-title">Video de Referencia</span></div>
+      <button class="vmodal-close" onclick="closeVideoModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M18 6 6 18"/><path d="M6 6l12 12"/></svg></button>
+    </div>
+    <div class="vmodal-iframe-wrap">
+      <iframe id="vmodal-iframe" src="" allowfullscreen allow="autoplay"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <button class="sidebar-toggle" onclick="toggleSidebar()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+  <div class="brand">
+    <div class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg></div>
+    <span>TMLF</span> Learning Center
+  </div>
+  <div class="topnav-right">
+    <div class="topnav-pill">Training Operativo · PWI</div>
+  </div>
+</nav>
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+<div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-shell">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sh-label">TMLF Learning Center</div>
+    <div class="sh-title">CRM, Checklist y<br>Formas (Mendoza Hub)</div>
+  </div>
+  <div class="sb-group">
+    <div class="sb-group-label">Inicio</div>
+    <div class="sb-item overview active" id="nav-overview" onclick="showPanel('overview')">
+      <div class="sb-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
+      <div class="sb-text"><div class="sb-name">Vista General</div><div class="sb-sub">Overview del training</div></div>
+    </div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-group">
+    <div class="sb-group-label">Pilar 1 — CRM</div>
+    <div class="sb-item" id="nav-mod7" onclick="showPanel('mod7')">
+      <div class="sb-num">0</div>
+      <div class="sb-text"><div class="sb-name">CRM — Organización</div><div class="sb-sub">Funcionamiento y nomenclatura</div></div>
+    </div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-group">
+    <div class="sb-group-label">Pilar 2 — Checklist</div>
+    <div class="sb-item" id="nav-mod0" onclick="showPanel('mod0')">
+      <div class="sb-num">1</div>
+      <div class="sb-text"><div class="sb-name">¿Qué es la Checklist?</div><div class="sb-sub">Definición y propósito</div></div>
+    </div>
+    <div class="sb-item" id="nav-mod1" onclick="showPanel('mod1')">
+      <div class="sb-num">2</div>
+      <div class="sb-text"><div class="sb-name">Estructura y Componentes</div><div class="sb-sub">Secciones de la checklist</div></div>
+    </div>
+    <div class="sb-item" id="nav-mod2" onclick="showPanel('mod2')">
+      <div class="sb-num">3</div>
+      <div class="sb-text"><div class="sb-name">Paso a Paso: Crear la Checklist</div><div class="sb-sub">Cómo copiar y preparar el documento</div></div>
+    </div>
+    <div class="sb-item" id="nav-mod3" onclick="showPanel('mod3')">
+      <div class="sb-num">4</div>
+      <div class="sb-text"><div class="sb-name">Entrega y Vinculación</div><div class="sb-sub">Registro en checklist</div></div>
+    </div>
+    <div class="sb-item" id="nav-mod4" onclick="showPanel('mod4')">
+      <div class="sb-num">5</div>
+      <div class="sb-text"><div class="sb-name">Opcionales vs. Críticos</div><div class="sb-sub">Tipos de documentos</div></div>
+    </div>
+    <div class="sb-item" id="nav-mod5" onclick="showPanel('mod5')">
+      <div class="sb-num">6</div>
+      <div class="sb-text"><div class="sb-name">Criminal History</div><div class="sb-sub">Indicaciones especiales</div></div>
+    </div>
+    <div class="sb-item" id="nav-mod6" onclick="showPanel('mod6')">
+      <div class="sb-num">7</div>
+      <div class="sb-text"><div class="sb-name">Required Forms</div><div class="sb-sub">Rol del equipo PWI</div></div>
+    </div>
+    <div class="sb-item" id="nav-mod8" onclick="showPanel('mod8')">
+      <div class="sb-num">8</div>
+      <div class="sb-text"><div class="sb-name">Tiempos de Llenado</div><div class="sb-sub">2 momentos clave</div></div>
+    </div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-group">
+    <div class="sb-group-label">Pilar 3 — Formas (Mendoza Hub)</div>
+    <div class="sb-item" id="nav-modmh" onclick="showPanel('modmh')">
+      <div class="sb-num">9</div>
+      <div class="sb-text"><div class="sb-name">Mendoza Hub</div><div class="sb-sub">Guía de preguntas</div></div>
+    </div>
+    <div class="sb-item" id="nav-modformas" onclick="showPanel('modformas')">
+      <div class="sb-num">10</div>
+      <div class="sb-text"><div class="sb-name">Llenado de Formas con IA</div><div class="sb-sub">Paso a paso en CRM</div></div>
+    </div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-group">
+    <div class="sb-group-label">Práctica y Evaluación</div>
+
+    <div class="sb-item exam" id="nav-eval" onclick="showPanel('eval')">
+      <div class="sb-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div class="sb-text"><div class="sb-name">Evaluación Final</div><div class="sb-sub">17 preguntas · Mín. 80% para aprobar</div></div>
+    </div>
+
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ══════════════ OVERVIEW ══════════════ -->
+<div class="panel active" id="panel-overview">
+  <div class="header">
+    <div class="header-badge"><div class="dot"></div>TMLF LEARNING CENTER · Training Operativo</div>
+    <h1>CRM, Checklist y<br>Formas (Mendoza Hub)</h1>
+    <p class="subtitle">Domina el flujo completo del área Pre Welcome Interview: cómo funciona y se organiza CRM, cómo crear y vincular la Checklist, y cómo se procesan las Formas migratorias con IA usando Mendoza Hub.</p>
+    <div class="header-meta">
+      <div class="header-meta-item"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg></span><strong>Enero 2026</strong></div>
+      <div class="header-meta-item"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg></span><strong>Área: PWI</strong></div>
+      <div class="header-meta-item"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></span><strong>VAWA · Visa T · Visa U · K1 · Consular</strong></div>
+      <div class="header-meta-item"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span><strong>11 módulos</strong></div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-val">11</div><div class="stat-label">Módulos</div></div>
+    <div class="stat-card"><div class="stat-val">2</div><div class="stat-label">Momentos de llenado</div></div>
+    <div class="stat-card"><div class="stat-val">3</div><div class="stat-label">Actividades prácticas</div></div>
+    <div class="stat-card"><div class="stat-val">4</div><div class="stat-label">Preguntas de refuerzo</div></div>
+    <div class="stat-card"><div class="stat-val">2</div><div class="stat-label">Casos reales</div></div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg></div><h3>Objetivo del Training</h3></div>
+    <div class="bbody">
+      <p>Al finalizar este training, el colaborador del área de Pre Welcome Interview podrá usar correctamente la Checklist: conocerá su estructura, sabrá cómo llenarla progresivamente, cómo vincularla con CRM, cómo identificar documentos críticos versus opcionales, y cómo aplicar las indicaciones especiales de las secciones Criminal History y Required Forms.</p>
+      <div class="dist-bar">
+        <div class="dist-seg theory">20% Teoría</div>
+        <div class="dist-seg practice">70% Práctica</div>
+        <div class="dist-seg eval">10% Eval</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg></div><h3>Módulos del Training</h3><span class="mod-badge badge-core">Navegación</span></div>
+    <div class="bbody">
+      <div class="ov-grid">
+        <div class="ov-card" onclick="showPanel('mod7')"><div class="ov-num">00</div><h4>CRM — Organización</h4><div class="ov-type">Pilar 1 · Funcionamiento</div></div>
+        <div class="ov-card" onclick="showPanel('mod0')"><div class="ov-num">01</div><h4>¿Qué es la Checklist?</h4><div class="ov-type">Pilar 2 · Conceptual</div></div>
+        <div class="ov-card" onclick="showPanel('mod1')"><div class="ov-num">02</div><h4>Estructura y Componentes</h4><div class="ov-type">Pilar 2 · Referencia visual</div></div>
+        <div class="ov-card" onclick="showPanel('mod2')"><div class="ov-num">03</div><h4>Paso a Paso: Crear la Checklist</h4><div class="ov-type">Pilar 2 · Procedimiento</div></div>
+        <div class="ov-card" onclick="showPanel('mod3')"><div class="ov-num">04</div><h4>Entrega y Vinculación</h4><div class="ov-type">Pilar 2 · Estándar operativo</div></div>
+        <div class="ov-card" onclick="showPanel('mod4')"><div class="ov-num">05</div><h4>Opcionales vs. Críticos</h4><div class="ov-type">Pilar 2 · Criterios</div></div>
+        <div class="ov-card" onclick="showPanel('mod5')"><div class="ov-num">06</div><h4>Criminal History</h4><div class="ov-type">Pilar 2 · Regla crítica</div></div>
+        <div class="ov-card" onclick="showPanel('mod6')"><div class="ov-num">07</div><h4>Required Forms</h4><div class="ov-type">Pilar 2 · Límite de rol</div></div>
+        <div class="ov-card" onclick="showPanel('mod8')"><div class="ov-num">08</div><h4>Tiempos de Llenado</h4><div class="ov-type">Pilar 2 · Proceso</div></div>
+        <div class="ov-card" onclick="showPanel('modmh')"><div class="ov-num">09</div><h4>Mendoza Hub</h4><div class="ov-type">Pilar 3 · Guía de preguntas</div></div>
+        <div class="ov-card" onclick="showPanel('modformas')"><div class="ov-num">10</div><h4>Llenado de Formas con IA</h4><div class="ov-type">Pilar 3 · Procedimiento</div></div>
+        <div class="ov-card" onclick="showPanel('mod9')" style="border-color:rgba(45,157,98,.22)"><div class="ov-num" style="color:var(--green2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></div><h4>Actividades Prácticas</h4><div class="ov-type">Ejercicio</div></div>
+        <div class="ov-card" onclick="showPanel('eval')" style="border-color:rgba(201,168,76,.22)"><div class="ov-num" style="color:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M20 6 9 17l-5-5"/></svg></div><h4>Preguntas de Refuerzo</h4><div class="ov-type">Evaluación</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <div></div>
+    <button class="nb-btn next" onclick="showPanel('mod7')">Comenzar Training →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO 0 ══════════════ -->
+<div class="panel" id="panel-mod0">
+  <div class="page-title">
+    <div class="pt-label">Módulo 1</div>
+    <h2>¿Qué es la Checklist y para qué sirve?</h2>
+    <div class="pt-sub">Definición, función y ubicación del documento base del área PWI</div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg></div><h3>Definición</h3><span class="mod-badge badge-core">Conceptual</span></div>
+    <div class="bbody">
+      <p>La checklist es el <strong>documento base</strong> que se emplea para conocer la recolección de documentos y evidencias en los procesos de los clientes. Es uno de los entregables del área de Pre Welcome Interview.</p>
+      <div class="two-col" style="margin-top:14px">
+        <div class="mini-card">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Función 1 — Visibilidad de localización</h4>
+          <p>Da visibilidad a la <strong>localización de cada documento en CRM</strong>: a través de los enlaces directos registrados en el documento, cualquier integrante del equipo puede saber exactamente dónde se encuentra cada archivo del expediente.</p>
+        </div>
+        <div class="mini-card">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg> Función 2 — Documentación de ausencias</h4>
+          <p>Documenta los <strong>motivos por los que no se pudo conseguir</strong> alguna evidencia o documento, así como las <strong>estrategias empleadas</strong> para intentar obtenerla. Garantiza trazabilidad del proceso.</p>
+        </div>
+      </div>
+      <div class="principle" style="margin-top:14px">
+        <p>"La checklist es el documento que va a concentrar todos los enlaces o justificaciones vinculadas con la solicitud de documentos y evidencias en el caso del cliente."</p>
+        <div class="principle-sub">Definición operativa oficial — TMLF Learning Center, Enero 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></div><h3>¿Dónde se encuentran las Checklists?</h3></div>
+    <div class="bbody">
+      <p>Las checklists se encuentran en <strong>dos documentos distintos</strong> según el tipo de proceso:</p>
+      <table class="info-table">
+        <thead><tr><th>Documento</th><th>Contiene</th><th>Aplica para</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="https://docs.google.com/document/d/1IC9bknJavZ0Ui-PMh5IXY3pCyVcn-HbaGgx21ckH0W0/edit?usp=sharing" target="_blank" style="font-weight:700;color:var(--green);text-decoration:none;display:inline-flex;align-items:center;gap:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg> Checklists — todos los procesos ↗</a></td>
+            <td>Todos los procesos del área de PWI</td>
+            <td>VAWA, Visa T, Visa U, Visa K1, Consular Process y otros</td>
+          </tr>
+          <tr>
+            <td><a href="https://docs.google.com/document/d/1sMh6001BzdYVEb7dl98D7uArcZo1YaqA5InTA7uy9EI/edit?usp=sharing" target="_blank" style="font-weight:700;color:var(--green);text-decoration:none;display:inline-flex;align-items:center;gap:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg> Checklist Derivados VAWA, Visa T y Visa U ↗</a></td>
+            <td>Exclusivamente los procesos de derivados</td>
+            <td>VAWA derivados, Visa T derivados, Visa U derivados</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="alert info"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.5.5.9 1.2 1 2.05V17h6v-.25c.1-.85.5-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg></div><div><strong>Tip operativo:</strong> Antes de comenzar a trabajar un caso, identifica si se trata de un proceso principal o de un derivado para abrir el documento correcto.</div></div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('mod7')">← Módulo 0</button>
+    <button class="nb-btn next" onclick="showPanel('mod1')">Módulo 2: Estructura →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO 1 ══════════════ -->
+<div class="panel" id="panel-mod1">
+  <div class="page-title">
+    <div class="pt-label">Módulo 2</div>
+    <h2>Estructura y Componentes de la Checklist</h2>
+    <div class="pt-sub">Secciones que conforman la checklist y su función dentro del expediente</div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg></div><h3>Componentes de la Checklist</h3><span class="mod-badge badge-core">Estructura</span></div>
+    <div class="bbody">
+      <p>La checklist se compone de los siguientes elementos, en este orden:</p>
+      <div class="ob-list">
+        <div class="ob-item"><div class="ob-num">1</div><span><strong>Título:</strong> identifica el proceso en el que se encuentra el cliente (ej. VISAT Checklist PreCR).</span></div>
+        <div class="ob-item"><div class="ob-num">2</div><span><strong>Tabla de identificación del caso:</strong> localizada debajo del título. Contiene: ID, CL, Age CL, Date Open Case, Case Type, Abuser, Age AB y Name of AB.</span></div>
+        <div class="ob-item"><div class="ob-num">3</div><span><strong>Sección de Documentos Personales del cliente:</strong> actas de nacimiento, pasaporte, ID válido, certificados de matrimonio y divorcio, actas de hijos, documentos médicos, etc.</span></div>
+        <div class="ob-item"><div class="ob-num">4</div><span><strong>Sección de Evidencias:</strong> Evidencias de tráfico (Visa T) o Evidencias de abuso (VAWA), según el proceso del cliente.</span></div>
+        <div class="ob-item"><div class="ob-num">5</div><span><strong>Criminal History Documentation:</strong> apartado para documentación de historial criminal. Tiene indicaciones de uso específicas para el equipo de PWI.</span></div>
+        <div class="ob-item"><div class="ob-num">6</div><span><strong>Required Forms for Applicant:</strong> lista de formas migratorias del proceso. Este apartado <span style="color:var(--red);font-weight:700">NO</span> lo modifica el equipo de PWI; es para el área de Packets.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><h3>Ejemplo: VISAT Checklist PreCR</h3><span class="mod-badge badge-core">Referencia visual</span></div>
+    <div class="bbody">
+      <p>La siguiente imagen muestra la estructura completa de una checklist, con su tabla de identificación, sección de documentos personales y sección de evidencias:</p>
+      <!-- Mockup VISAT Checklist -->
+      <div class="doc-mockup">
+        <div class="doc-titlebar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span>VISAT Checklist PreCR — Google Docs</span>
+        </div>
+        <div class="doc-body">
+          <div class="doc-logo">⬛ THE MENDOZA LAW FIRM ⬛</div>
+          <div class="doc-title">VISAT Checklist PreCR</div>
+          <table class="doc-table">
+            <tr><td><strong>ID</strong></td><td colspan="3"><strong>CL</strong></td></tr>
+            <tr><td><strong>AGE CL</strong></td><td></td><td><strong>DATE OPEN CASE</strong></td><td></td></tr>
+            <tr><td><strong>CASE TYPE</strong></td><td>VISA T ▾</td><td><strong>ABUSER</strong></td><td>COYOTE ▾&nbsp;&nbsp;<strong>AGE AB</strong></td></tr>
+            <tr><td colspan="4"><strong>NAME OF AB</strong></td></tr>
+          </table>
+          <div class="doc-section-title">Personal Documents of Client</div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> Birth certificate of applicant</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> Applicant's Passport <strong>(valid, full color, all pages if possible)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> Applicant's Valid ID <strong>(any: DL, State ID, Consular ID)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> Marriage certificate <strong>(if applicable)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> Divorce certificate <strong>(if applicable)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> Applicant's children's birth certificates <strong>(if applicable)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> Applicant's medical condition proof <strong>(if applicable — doctor's letter)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> List of medications for family member <strong>(if applicable)</strong></span></div>
+          <div class="doc-section-title">Evidence of Trafficking</div>
+          <div style="font-size:12px;font-weight:700;margin:6px 0 4px">Evidence of Trafficking if based on domestic violence (documentation such as):</div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Abusive text messages and voice recordings</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Photos of property damage caused by the abuse (broken phones, walls, furniture, damage to vehicles, etc.)</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Photos of physical injuries caused by the abuse (bruises, scars)</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Medical reports and records (injuries, miscarriages, STIs, prescriptions for depression/anxiety)</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Evidence of surveillance/control (GPS tracking, cameras)</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Security cameras in home that captured the abuse</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Documentation of financial abuse</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Therapy/counseling records or letters</span></div>
+        </div>
+      </div>
+      <div class="doc-img-caption">Ejemplo: VISAT Checklist PreCR — estructura completa con tabla de identificación, documentos personales y evidencias de tráfico</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><circle cx="12" cy="12" r="9"/></svg></div><h3>Sección OPTIONAL — Good Moral Character</h3><span class="mod-badge badge-gold">Opcional</span></div>
+    <div class="bbody">
+      <p>Algunas secciones están marcadas como <strong>OPTIONAL</strong> o con la leyenda <em>"If the client is unable to obtain them, it will not be a reason to delay the case"</em>. Estas evidencias siempre deben solicitarse, pero su ausencia no detiene el cierre del caso en el área de PWI:</p>
+      <!-- OPTIONAL GMC Mockup -->
+      <div class="doc-mockup">
+        <div class="doc-titlebar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span>Sección OPTIONAL — Good Moral Character</span>
+        </div>
+        <div class="doc-body">
+          <div style="text-align:center;margin-bottom:12px">
+            <span style="display:inline-block;background:#ffff00;color:#1a1a1a;font-weight:700;font-size:18px;padding:3px 12px;border-radius:4px">(OPTIONAL)</span>
+            <span style="font-size:20px;font-weight:700;margin-left:8px">GOOD MORAL CHARACTER (4)</span>
+          </div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Religious Certificates <strong>(Baptism, wedding, church involvement)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Church or Priest Letter for GMC</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Donations Evidence</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Paid Traffic Tickets</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Rehab Courses Certificate <strong>(if applies)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>5 Reference Letters</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Volunteer Certificate, NPO Letters, Community Volunteer Evidence, Photos</span></div>
+        </div>
+      </div>
+      <div class="doc-img-caption">Sección OPTIONAL — Good Moral Character (4): evidencias de buen carácter moral marcadas como opcionales</div>
+      <div class="alert warn" style="margin-top:12px"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div><div><strong>Importante:</strong> Que sean opcionales NO significa que no se soliciten. Siempre deben pedirse. La diferencia es que su ausencia no detiene el cierre del caso, pero sí debe documentarse.</div></div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('mod0')">← Módulo 1</button>
+    <button class="nb-btn next" onclick="showPanel('mod2')">Módulo 3: Paso a Paso →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO 2 ══════════════ -->
+<div class="panel" id="panel-mod2">
+  <div class="page-title">
+    <div class="pt-label">Módulo 3</div>
+    <h2>Paso a Paso: Crear la Checklist del Cliente</h2>
+    <div class="pt-sub">Proceso completo para copiar, crear y preparar la checklist de un caso nuevo</div>
+  </div>
+
+  <div class="alert info" style="margin-bottom:14px"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div>Ambos documentos de checklist concentran varios procesos dentro del mismo archivo. Sigue estos pasos cada vez que vayas a trabajar un caso nuevo. Documento maestro: <a href="https://docs.google.com/document/d/1C0wcrtEXFR02-uVhEi1BSxqIUoTuU9cO8LVAAY9TznQ/edit?tab=t.os7hs8ner7uy#heading=h.7zqx29uhvux1" target="_blank" style="color:var(--green);font-weight:700">abrir Checklists</a>.</div></div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg></div><h3>Los 5 Pasos del Proceso</h3><span class="mod-badge badge-core">Procedimiento</span></div>
+    <div class="bbody">
+      <div class="roadmap">
+        <div class="rm-item">
+          <div class="rm-dot">1</div>
+          <div class="rm-content">
+            <h4>Identificar el proceso del cliente en las pestañas</h4>
+            <p>Abre el documento de Checklists y localiza en las <strong>pestañas (tabs)</strong> el proceso en el que se encuentra el cliente. <em>Ejemplo:</em> si estuvieras trabajando con un caso de Visa T, debes seleccionar la pestaña correspondiente a ese proceso.</p>
+            <div class="video-ref clickable" onclick="openVideoModal('VIDEO DE REFERENCIA — Paso 1.mov','https://drive.google.com/file/d/18qpt91HYSOup6540QKnefJ4l4A1Mwl1G/preview')">
+              <div class="vr-icon">▶</div>
+              <div><strong>VIDEO DE REFERENCIA — Paso 1.mov</strong><div style="font-size:12px;color:var(--slate);margin-top:1px">Video de referencia: identificar el proceso en las pestañas</div><div class="vr-play-hint">▶ Clic para ver el video</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">2</div>
+          <div class="rm-content">
+            <h4>Seleccionar y copiar el checklist del proceso</h4>
+            <p>Dentro del documento, selecciona <strong>desde el título hasta el final</strong> del apartado que corresponde al checklist del proceso del cliente.</p>
+            <div class="chips" style="margin-top:8px">
+              <div class="chip green">Menú Editar › Copiar</div>
+              <div class="chip green">Ctrl + C</div>
+              <div class="chip green">Clic derecho › Copiar</div>
+            </div>
+            <div class="video-ref clickable" onclick="openVideoModal('VIDEO DE REFERENCIA — Paso 2.mov','https://drive.google.com/file/d/16tgU9DgbOkHJD5T9UlyvVit66CoEezpk/preview')" style="margin-top:8px">
+              <div class="vr-icon">▶</div>
+              <div><strong>VIDEO DE REFERENCIA — Paso 2.mov</strong><div style="font-size:12px;color:var(--slate);margin-top:1px">Video de referencia: seleccionar y copiar el checklist</div><div class="vr-play-hint">▶ Clic para ver el video</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">3</div>
+          <div class="rm-content">
+            <h4>Crear el documento nuevo</h4>
+            <p>Crea un nuevo documento dentro del <strong>Drive de tu cuenta de Gmail institucional</strong> de The Mendoza Law Firm. Si ya estás dentro del doc. de las checklists, puedes crear uno nuevo con: <strong>Archivo › Nuevo › Documento</strong>.</p>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">4</div>
+          <div class="rm-content">
+            <h4>Pegar el contenido de la checklist</h4>
+            <p>Dentro del nuevo archivo, <strong>pega el contenido</strong> de la checklist que copiaste del proceso del cliente.</p>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">5</div>
+          <div class="rm-content">
+            <h4>Renombrar el documento</h4>
+            <p>Cambia el título del documento a: <strong>"Checklist Nombre del Cliente"</strong></p>
+            <div class="alert success" style="margin-top:8px">
+              <div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></div>
+              <div>
+                <strong>Ejemplos correctos:</strong>
+                <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px">
+                  <a href="https://docs.google.com/document/d/1uUAoI5kaxXamQ5Ud5AOFLHvBEmByRWKmHx5jyjSqdYA/edit?tab=t.0" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:8px;background:rgba(30,102,65,.1);border:1px solid rgba(45,157,98,.25);color:var(--green);text-decoration:none;font-size:12.5px;font-weight:700;transition:all .2s">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg> Checklist Jorge Alberto Silva Javier
+                  </a>
+                  <a href="https://docs.google.com/document/d/1a_tanQWeILbuBY0Is25tBmf4cB5pkOYB8dhxGQFGFcQ/edit?tab=t.0#heading=h.pjpnhcmoxjou" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:8px;background:rgba(30,102,65,.1);border:1px solid rgba(45,157,98,.25);color:var(--green);text-decoration:none;font-size:12.5px;font-weight:700;transition:all .2s">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg> Checklist María Luisa García Heredía
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="video-ref clickable" onclick="openVideoModal('VIDEO DE REFERENCIA — Pasos 3, 4 y 5.mov','https://drive.google.com/file/d/1ydtHK5vtTF-Gc8tPSuLttqkhm71Iyaer/preview')" style="margin-top:8px">
+              <div class="vr-icon">▶</div>
+              <div><strong>VIDEO DE REFERENCIA — Pasos 3, 4 y 5.mov</strong><div style="font-size:12px;color:var(--slate);margin-top:1px">Video de referencia: crear, pegar y renombrar el documento</div><div class="vr-play-hint">▶ Clic para ver el video</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert success" style="margin-top:8px"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></div><div><strong>¡Listo!</strong> Una vez completados los pasos 1 a 5, ya cuentas con tu copia de la checklist lista para trabajar el caso del cliente. A partir de este punto puedes comenzar el llenado conforme avanza el proceso, durante la Videollamada de PWI / Interview y en cada seguimiento.</div></div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('mod1')">← Módulo 2</button>
+    <button class="nb-btn next" onclick="showPanel('mod3')">Módulo 4: Entrega →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO 3 ══════════════ -->
+<div class="panel" id="panel-mod3">
+  <div class="page-title">
+    <div class="pt-label">Módulo 4</div>
+    <h2>Cómo se Entrega y Vincula la Checklist</h2>
+    <div class="pt-sub">Estándares de registro para documentos obtenidos, no obtenidos y opcionales</div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><h3>Estándar de Registro</h3><span class="mod-badge badge-core">Estándar obligatorio</span></div>
+    <div class="bbody">
+      <p>La forma en que se registra cada documento dentro de la checklist tiene un estándar específico que debe respetarse. Existen tres situaciones:</p>
+      <table class="info-table">
+        <thead><tr><th>Situación</th><th>Qué se registra al lado del nombre del documento</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg> El cliente <strong>entregó</strong> el documento</td>
+            <td>Se adjunta el <strong>enlace URL del documento subido a CRM</strong> en la carpeta <code>Supporting Documents</code>, vinculándolo directamente al nombre del documento en la checklist.</td>
+          </tr>
+          <tr>
+            <td><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg> El cliente <strong>no puede o no tiene</strong> el documento</td>
+            <td>Se escribe al lado del nombre del documento el <strong>motivo</strong> por el que no se cuenta con él. Puede ser <em>'NA'</em> (no aplica) o una descripción específica del motivo (en trámite, no disponible, cliente no tiene acceso, etc.).</td>
+          </tr>
+          <tr>
+            <td><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><circle cx="12" cy="12" r="9"/></svg> Documentos <strong>opcionales no obtenidos</strong></td>
+            <td>Se debe registrar el motivo al lado del nombre <strong>y además</strong> desarrollar en el apartado final de estrategia las alternativas o apoyos que se brindaron al cliente para intentar conseguirlo y el resultado obtenido.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><h3>Video de Referencia</h3></div>
+    <div class="bbody">
+      <p>El siguiente video muestra cómo se ve una checklist completamente llena con sus enlaces a los documentos dentro de la carpeta "Supporting Documents" en la pestaña de documentos de la plataforma CRM, y cómo queda organizada la entrega del documento:</p>
+      <div class="video-ref clickable" onclick="openVideoModal('VIDEO DE EJEMPLO — Checklist de Visa T en CRM','https://drive.google.com/file/d/1aMapUjE6gRT8IMAfQPqNK2u9epcBrfJI/preview')">
+        <div class="vr-icon" style="width:40px;height:40px;font-size:18px">▶</div>
+        <div><strong>VIDEO DE EJEMPLO — Checklist de Visa T en CRM</strong><div style="font-size:12px;color:var(--slate);margin-top:2px">Checklist completamente llena con enlaces a CRM y organización del entregable</div><div class="vr-play-hint">▶ Clic para ver el video</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.5.5.9 1.2 1 2.05V17h6v-.25c.1-.85.5-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg></div><h3>Buenas Prácticas y Errores Frecuentes</h3></div>
+    <div class="bbody">
+      <div class="two-col">
+        <div class="mini-card" style="border-color:rgba(30,102,65,.2);background:#EAF1F8">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg> Buenas Prácticas</h4>
+          <ul>
+            <li>Siempre vincula el URL exacto de CRM</li>
+            <li>Escribe motivos claros y específicos cuando el cliente no tiene el documento</li>
+            <li>Documenta las estrategias empleadas para opcionales</li>
+            <li>Mantén la checklist actualizada en cada contacto con el cliente</li>
+            <li>Usa lenguaje claro y conciso en las justificaciones</li>
+          </ul>
+        </div>
+        <div class="mini-card" style="border-color:rgba(180,50,50,.2);background:#FFF5F5">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg> Errores Frecuentes</h4>
+          <ul>
+            <li>Dejar casillas en blanco sin registro</li>
+            <li>Escribir "no tiene" sin explicar el motivo</li>
+            <li>No registrar la estrategia empleada para documentos opcionales</li>
+            <li>Vincular URL de la carpeta en vez del archivo específico</li>
+            <li>Registrar el URL antes de subir el archivo a CRM</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('mod2')">← Módulo 3</button>
+    <button class="nb-btn next" onclick="showPanel('mod4')">Módulo 5: Opcionales vs. Críticos →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO 4 ══════════════ -->
+<div class="panel" id="panel-mod4">
+  <div class="page-title">
+    <div class="pt-label">Módulo 5</div>
+    <h2>Documentos Opcionales vs. Documentos Críticos</h2>
+    <div class="pt-sub">Cómo identificar el nivel de obligatoriedad de cada documento en la checklist</div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M8 3h8"/><path d="M5 7l-3 6a4 4 0 0 0 8 0z"/><path d="M19 7l-3 6a4 4 0 0 0 8 0z"/></svg></div><h3>Niveles de Obligatoriedad</h3><span class="mod-badge badge-core">Criterios clave</span></div>
+    <div class="bbody">
+      <p>No todos los documentos de la checklist tienen el mismo nivel de obligatoriedad. El colaborador debe saber identificar cuáles son críticos para cerrar el caso y cuáles pueden gestionarse sin detener el proceso.</p>
+      <table class="cmp-table">
+        <thead>
+          <tr><th>Leyenda en la Checklist</th><th>Significado operativo</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="optional-tag">(OPTIONAL)</span></td>
+            <td>El documento es deseable pero su ausencia <strong>no impide cerrar el caso</strong>. Siempre debe solicitarse e intentarse conseguir.</td>
+          </tr>
+          <tr>
+            <td><span class="delay-tag">If the client is unable to obtain them, it will not be a reason to delay the case</span></td>
+            <td>Si el cliente no puede obtenerlo, <strong>no es motivo para retrasar o detener el caso</strong>. Sin embargo, siempre debe solicitarse e intentarse conseguir.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg></div><h3>Obligaciones Aunque el Documento Sea Opcional</h3><span class="mod-badge badge-warn">Siempre obligatorio</span></div>
+    <div class="bbody">
+      <div class="alert danger"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86L7.86 2z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></div><div><strong>En ambos casos, aunque la ausencia no detenga el caso, es obligatorio:</strong></div></div>
+      <div class="ob-list" style="margin-top:12px">
+        <div class="ob-item"><div class="ob-num">A</div><span>Registrar <strong>al lado del concepto</strong> el motivo por el que el cliente no proporcionó el documento.</span></div>
+        <div class="ob-item"><div class="ob-num">B</div><span>Desarrollar en el <strong>apartado final de estrategia</strong> las alternativas o apoyos que se brindaron al cliente para intentar conseguirlo y el resultado.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><h3>Referencias Visuales</h3><span class="mod-badge badge-gold">Módulo 4</span></div>
+    <div class="bbody">
+      <p><strong>Sección (OPTIONAL) Good Moral Character:</strong> ejemplo de documentos marcados como opcionales.</p>
+      <!-- OPTIONAL GMC Mockup duplicado para Módulo 4 -->
+      <div class="doc-mockup">
+        <div class="doc-titlebar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span>Checklist — Sección OPTIONAL</span>
+        </div>
+        <div class="doc-body">
+          <div style="text-align:center;margin-bottom:14px">
+            <span style="display:inline-block;background:#ffff00;color:#1a1a1a;font-weight:700;font-size:18px;padding:3px 12px;border-radius:4px">(OPTIONAL)</span>
+            <span style="font-size:20px;font-weight:700;margin-left:8px">GOOD MORAL CHARACTER (4)</span>
+          </div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Religious Certificates <strong>(Baptism, wedding, church involvement)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Church or Priest Letter for GMC</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Donations Evidence</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Paid Traffic Tickets</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Rehab Courses Certificate <strong>(if applies)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>5 Reference Letters</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Volunteer Certificate, NPO Letters, Community Volunteer Evidence, Photos</span></div>
+        </div>
+      </div>
+      <div class="doc-img-caption">Sección (OPTIONAL) Good Moral Character: ejemplo de documentos marcados como opcionales</div>
+
+      <div class="sdiv"><div class="l"></div><div class="t">Petitioner & Sponsor</div><div class="l"></div></div>
+      <p><strong>Secciones Petitioner Additional Documents y Sponsor:</strong> ejemplo de secciones con la leyenda <em>'If the client is unable to obtain them, it will not be a reason to delay the case'</em>.</p>
+      <!-- Petitioner / Sponsor Mockup -->
+      <div class="doc-mockup">
+        <div class="doc-titlebar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span>Checklist — Secciones Petitioner y Sponsor</span>
+        </div>
+        <div class="doc-body">
+          <div class="doc-logo">⬛ THE MENDOZA LAW FIRM ⬛</div>
+          <div class="doc-section-title" style="font-size:16px;text-transform:uppercase;font-weight:800">Petitioner Additional Documents</div>
+          <div style="color:#C05A1A;font-weight:700;font-size:12px;text-decoration:underline;margin:4px 0 8px">If the client is unable to obtain them, it will not be a reason to delay the case</div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>(1) Petitioner's spouse's proof of legal status <strong>(if applies)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>(1) Petitioner's spouse's BC <strong>(if applies)</strong></span></div>
+          <div class="doc-section-title" style="font-size:15px;text-transform:uppercase;font-weight:800;margin-top:12px">Sponsor Documents (If Applicable)</div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>(1) Sponsor's 1040 Taxes – 2023, 2024, 2025 <strong>last 3 years</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>(1) Sponsor's W2 or 1099 – 2023, 2024, 2025 <strong>last 3 years</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>(1) Sponsor's Proof of Legal Status</span></div>
+          <div class="doc-section-title" style="font-size:15px;text-transform:uppercase;font-weight:800;margin-top:12px">Sponsor Additional Documents (If Applicable)</div>
+          <div style="color:#C05A1A;font-weight:700;font-size:12px;text-decoration:underline;margin:4px 0 8px">If the client is unable to obtain them, it will not be a reason to delay the case</div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>(1) Sponsor's Birth Certificate</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>(1) Sponsor's Marriage Certificate <strong>(if applies)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>(1) Sponsor's spouse proof of legal status</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>(1) Sponsor's spouse BC <strong>(if applies)</strong></span></div>
+          <div style="font-size:11px;color:#888;font-style:italic;margin-top:8px">Secciones con leyenda 'If the client is unable to obtain them, it will not be a reason to delay the case'</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('mod3')">← Módulo 4</button>
+    <button class="nb-btn next" onclick="showPanel('mod5')">Módulo 6: Criminal History →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO 5 ══════════════ -->
+<div class="panel" id="panel-mod5">
+  <div class="page-title">
+    <div class="pt-label">Módulo 6</div>
+    <h2>Indicaciones: Criminal History Documentation</h2>
+    <div class="pt-sub">Reglas críticas y límite del rol PWI respecto al historial criminal</div>
+  </div>
+
+  <div class="rule-card danger">
+    <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86L7.86 2z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg> REGLA CRÍTICA — Límite del Rol PWI en Historial Criminal</h4>
+    <p>El equipo de PWI <strong>NO solicita al cliente que vaya a ninguna corte o estación de policía</strong> a pedir documentos criminales. Hacerlo podría <strong>poner al cliente en riesgo</strong>.</p>
+    <p style="margin-top:6px">La función del equipo de PWI se limita únicamente a:</p>
+    <ul>
+      <li>Preguntar si el cliente ha tenido antecedentes criminales o infracciones (tickets o multas)</li>
+      <li>Si el cliente confirma que sí: <strong>solo</strong> se le piden los documentos que ya tenga guardados o en casa</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg></div><h3>Sección Criminal History en la Checklist</h3><span class="mod-badge badge-warn">Indicaciones especiales</span></div>
+    <div class="bbody">
+      <!-- Criminal History Mockup -->
+      <div class="doc-mockup">
+        <div class="doc-titlebar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span>Checklist — Criminal History Documentation</span>
+        </div>
+        <div class="doc-body">
+          <div class="doc-section-title" style="font-size:16px">Criminal History Documentation</div>
+          <div style="font-size:12px;color:#555;margin:4px 0 10px">Criminal dispositions for all crimes, including traffic tickets:</div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> FBI rap sheets</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> Arrest report, disposition of crime, proof of completion of probation <strong>(if applicable)</strong></span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span><strong>(1)</strong> Police clearance letter <strong>(preference will be for FBI rap sheets) (if applicable)</strong></span></div>
+        </div>
+      </div>
+      <div class="doc-img-caption">Criminal History Documentation: FBI rap sheets, arrest report y police clearance letter</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg></div><h3>Paso a Paso para Este Apartado</h3></div>
+    <div class="bbody">
+      <div class="roadmap">
+        <div class="rm-item">
+          <div class="rm-dot">1</div>
+          <div class="rm-content"><h4>Pregunta al cliente</h4><p>¿Ha tenido antecedentes criminales, records o infracciones de cualquier tipo, incluyendo tickets o multas?</p></div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">2</div>
+          <div class="rm-content"><h4>Si el cliente dice que SÍ</h4><p>Solicita <strong>únicamente los documentos que ya tenga disponibles</strong> (guardados en casa o en su celular). <span style="color:var(--red);font-weight:700">NO pidas que vaya a solicitar nada a la corte ni a la policía.</span></p></div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">3</div>
+          <div class="rm-content"><h4>Registra en la checklist</h4><p>Documenta lo que el cliente reportó y lo que pudo o no pudo aportar.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div><h3>Sobre el FBI Rapsheet</h3><span class="mod-badge badge-core">Información</span></div>
+    <div class="bbody">
+      <div class="alert info"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 21h18"/><path d="M5 21V9M19 21V9M9 21V9M15 21V9"/><path d="M2 9l10-6 10 6"/></svg></div><div><strong>El FBI Rapsheet lo gestiona un área especializada:</strong><br>Los clientes realizan el proceso de FBI Rapsheet como parte de su expediente con la firma, pero hay un <strong>área especializada</strong> que los apoya con ese trámite. El equipo de PWI <strong>no tiene que gestionar ni solicitar ese documento directamente</strong>.</div></div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('mod4')">← Módulo 5</button>
+    <button class="nb-btn next" onclick="showPanel('mod6')">Módulo 7: Required Forms →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO 6 ══════════════ -->
+<div class="panel" id="panel-mod6">
+  <div class="page-title">
+    <div class="pt-label">Módulo 7</div>
+    <h2>Indicaciones: Required Forms for Applicant</h2>
+    <div class="pt-sub">Rol del equipo PWI respecto a las formas migratorias en la checklist</div>
+  </div>
+
+  <div class="rule-card warn">
+    <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> El equipo de PWI NO modifica este apartado</h4>
+    <p>El apartado de <strong>Required Forms for Applicant NO es modificado</strong> por los agentes de PWI. Es un apartado que sirve al área de <strong>Packets</strong>, quienes se encargan del llenado de las formas migratorias con la información que los agentes de PWI recaban en los formularios de Mendoza Hub.</p>
+    <p style="margin-top:6px">El agente de PWI <strong>solo consulta</strong> este apartado para saber qué formas corresponden al proceso, <strong>pero no lo edita</strong>.</p>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div><h3>Ejemplo: Required Forms for Applicant — Checklist Visa T</h3></div>
+    <div class="bbody">
+      <!-- Required Forms Mockup -->
+      <div class="doc-mockup">
+        <div class="doc-titlebar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span>Checklist — Required Forms for Applicant</span>
+        </div>
+        <div class="doc-body">
+          <div class="doc-title">REQUIRED FORMS FOR APPLICANT</div>
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:8px">Missing Applicant Forms (T Visa Packet):</div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Form I-914</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Form I-914 Supplement A (derivatives)</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Form G-28</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Form I-192</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Form I-912 (fee waiver)</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Form I-765</span></div>
+          <div class="doc-check-item"><div class="doc-check-box"></div><span>Passport-style photos (2)</span></div>
+          <div style="font-size:11px;color:#888;font-style:italic;margin-top:8px">Ejemplo de apartado Required Forms for Applicant — Checklist Visa T</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M8 3h8"/><path d="M5 7l-3 6a4 4 0 0 0 8 0z"/><path d="M19 7l-3 6a4 4 0 0 0 8 0z"/></svg></div><h3>Resumen del Rol PWI en este Apartado</h3></div>
+    <div class="bbody">
+      <div class="two-col">
+        <div class="mini-card" style="border-color:rgba(30,102,65,.2);background:#EAF1F8">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg> SÍ puede hacer el equipo PWI</h4>
+          <ul>
+            <li>Consultar qué formas corresponden al proceso del cliente</li>
+            <li>Informarse sobre los documentos que el área de Packets necesitará</li>
+            <li>Verificar que el proceso del cliente esté correctamente identificado</li>
+          </ul>
+        </div>
+        <div class="mini-card" style="border-color:rgba(180,50,50,.2);background:#FFF5F5">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg> NO puede hacer el equipo PWI</h4>
+          <ul>
+            <li>Modificar o editar el apartado de Required Forms</li>
+            <li>Marcar formas como completadas o pendientes</li>
+            <li>Agregar o eliminar formas del listado</li>
+            <li>Llenar información en las formas migratorias</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('mod5')">← Módulo 6</button>
+    <button class="nb-btn next" onclick="showPanel('mod8')">Módulo 8: Tiempos de Llenado →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO 7 ══════════════ -->
+<div class="panel" id="panel-mod7">
+  <div class="page-title">
+    <div class="pt-label">Módulo 0</div>
+    <h2>CRM — Organización y Funcionamiento</h2>
+    <div class="pt-sub">Cómo se estructura CRM y cómo utiliza la información cargada para procesar los casos</div>
+  </div>
+
+  <div class="alert info" style="margin-bottom:14px"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><div><strong>Acceso directo:</strong> <a href="https://crm.kase.cloud/auth/login" target="_blank" style="color:var(--green);font-weight:700">crm.kase.cloud</a></div></div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M9.5 2A3.5 3.5 0 0 0 6 5.5v.35A3.5 3.5 0 0 0 4 9v1a3.5 3.5 0 0 0 0 6.5V17a3.5 3.5 0 0 0 2.5 3.35V21a1 1 0 0 0 1 1H10a1 1 0 0 0 1-1V5.5A3.5 3.5 0 0 0 9.5 2z"/><path d="M14.5 2A3.5 3.5 0 0 1 18 5.5v.35A3.5 3.5 0 0 1 20 9v1a3.5 3.5 0 0 1 0 6.5V17a3.5 3.5 0 0 1-2.5 3.35V21a1 1 0 0 1-1 1H14a1 1 0 0 1-1-1V5.5A3.5 3.5 0 0 1 14.5 2z"/></svg></div><h3>Cómo Utiliza CRM la Información Cargada</h3><span class="mod-badge badge-core">Funcionamiento</span></div>
+    <div class="bbody">
+      <p>La IA de CRM utiliza <strong>todo lo que esté cargado en el perfil del cliente</strong> —documentos, checklist, grabaciones y transcripciones— para asistir en el llenado de las formas migratorias. Es importante conocer sus alcances y límites:</p>
+      <div class="alert info"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div><strong>El video (MP4) todavía no es leído por la IA.</strong> Por eso siempre debe cargarse también el audio o la transcripción de la llamada, ya que estos sí son analizados para el llenado de las formas.</div></div>
+      <div class="alert warn"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div><strong>Los mensajes de texto no se toman como fuente.</strong> Si el cliente corrige o añade un dato por mensaje de texto (ej. una dirección), ese dato no será considerado por la IA para el llenado; debe confirmarse por llamada y quedar respaldado en la transcripción.</div></div>
+    </div>
+  </div>
+
+  <div class="rule-card danger" style="margin-bottom:14px">
+    <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86L7.86 2z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg> Responsabilidad Crítica</h4>
+    <p>Subir los documentos a CRM con el orden de carpetas y la nomenclatura correcta es una responsabilidad crítica del equipo de PWI. Un archivo <strong>mal ubicado o mal nombrado</strong> puede hacer que la <strong>IA de ensamblado no lo reconozca</strong> y afectar el avance del caso.</p>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></div><h3>Orden de Carpetas — Casos VAWA</h3><span class="mod-badge badge-core">VAWA</span></div>
+    <div class="bbody">
+      <p>En casos VAWA las carpetas que emplea el equipo de PWI son:</p>
+      <div class="three-col">
+        <div class="mini-card" style="border-color:rgba(0,97,254,.25);background:#F0F5FF">
+          <h4 style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Supporting Documents</h4>
+          <p>Todos los documentos del cliente, la <strong>Checklist</strong>, el <strong>PDF del formulario</strong> y las <strong>evidencias de abuso y de GMC</strong> (Good Moral Character).</p>
+        </div>
+        <div class="mini-card" style="border-color:rgba(0,97,254,.25);background:#F0F5FF">
+          <h4 style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Recordings</h4>
+          <p><strong>Videollamada de PWI</strong>.</p>
+        </div>
+        <div class="mini-card" style="border-color:rgba(0,97,254,.25);background:#F0F5FF">
+          <h4 style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Submissions Materials</h4>
+          <p>Transcript completo de la <strong>FIRST (VAWA or VISA T) INTERVIEW</strong>: la transcripción completa de la videollamada de entrevista.</p>
+        </div>
+      </div>
+      <!-- VAWA CRM structure mockup -->
+      <div class="db-mockup" style="margin-top:14px">
+        <div class="db-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> CRM — Estructura VAWA</div>
+        <div class="db-body">
+          <div class="db-sidebar-db">
+            <div class="db-label">Carpetas usadas por PWI</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Sign Up Documents</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Bills And Receipts</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Clients Communication</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Forms</div>
+            <div class="db-folder active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Supporting Documents ›</div>
+            <div class="db-folder active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Submissions Materials ›</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Submissions</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> USCIS Receipts Notices</div>
+            <div class="db-folder active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Recordings › PWI</div>
+          </div>
+          <div class="db-content">
+            <div class="db-path"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> VAWA › <strong>Carpetas activas del equipo PWI</strong></div>
+            <div class="db-row folder"><div class="db-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></div><span><strong>Supporting Documents</strong> — Documentos, Checklist, PDF Formulario, Evidencias de abuso y GMC</span></div>
+            <div class="db-row folder"><div class="db-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></div><span><strong>Submissions Materials</strong> — Transcript completo de la FIRST INTERVIEW</span></div>
+            <div class="db-row folder"><div class="db-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></div><span><strong>Recordings</strong> — Videollamada de PWI</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="doc-img-caption">Orden de carpetas en casos VAWA — estructura de CRM</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></div><h3>Orden de Carpetas — Casos Visa T</h3><span class="mod-badge badge-core">Visa T</span></div>
+    <div class="bbody">
+      <p>En casos Visa T las carpetas que emplea el equipo de PWI son:</p>
+      <div class="three-col">
+        <div class="mini-card" style="border-color:rgba(0,97,254,.25);background:#F0F5FF">
+          <h4 style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Supporting Documents</h4>
+          <p>Todos los documentos, <strong>evidencias de la trata</strong>, evidencias de GMC, <strong>Checklist</strong> y <strong>PDF formulario</strong>.</p>
+        </div>
+        <div class="mini-card" style="border-color:rgba(0,97,254,.25);background:#F0F5FF">
+          <h4 style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Recordings</h4>
+          <p><strong>Videollamada de PWI</strong>.</p>
+        </div>
+        <div class="mini-card" style="border-color:rgba(0,97,254,.25);background:#F0F5FF">
+          <h4 style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Submissions Materials</h4>
+          <p>Transcript completo de la <strong>FIRST (VAWA or VISA T) INTERVIEW</strong>: la transcripción completa de la videollamada de entrevista.</p>
+        </div>
+      </div>
+      <!-- Visa T CRM -->
+      <div class="db-mockup" style="margin-top:14px">
+        <div class="db-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> CRM — Estructura VISA T</div>
+        <div class="db-body">
+          <div class="db-sidebar-db">
+            <div class="db-label">Carpetas usadas por PWI</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Sign Up Documents</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Bills And Receipts</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Clients Communication</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Forms</div>
+            <div class="db-folder active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Supporting Documents ›</div>
+            <div class="db-folder active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Submissions Materials ›</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Submissions</div>
+            <div class="db-folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> USCIS Receipts Notices</div>
+            <div class="db-folder active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Recordings › PWI</div>
+          </div>
+          <div class="db-content">
+            <div class="db-path"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> VISA T › <strong>Carpetas activas del equipo PWI</strong></div>
+            <div class="db-row folder"><div class="db-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></div><span><strong>Supporting Documents</strong> — Docs, Evidencias de la trata, GMC, Checklist, PDF Formulario</span></div>
+            <div class="db-row folder"><div class="db-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></div><span><strong>Submissions Materials</strong> — Transcript completo de la FIRST INTERVIEW</span></div>
+            <div class="db-row folder"><div class="db-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></div><span><strong>Recordings</strong> — Videollamada de PWI</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="doc-img-caption">Orden de carpetas en casos Visa T — estructura de CRM</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2.83 12.83a2 2 0 0 1 0-2.83l7.17-7.17A2 2 0 0 1 11.41 2H18a2 2 0 0 1 2 2v6.59a2 2 0 0 1-.59 1.41z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor"/></svg></div><h3>Nomenclatura de los Documentos en CRM</h3><span class="mod-badge badge-warn">Obligatorio</span></div>
+    <div class="bbody">
+      <p>La nomenclatura de archivos es <strong>obligatoria y debe respetarse exactamente</strong>. La IA de ensamblado no reconocerá el caso como 'fully' si los archivos no se encuentran en la carpeta correcta con el nombre correcto.</p>
+      <div class="alert danger"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86L7.86 2z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></div><div><strong>Nunca se debe nombrar un documento si no corresponde al contenido del mismo.</strong> Es importante notificar cualquier documento que no se identifique cómo puede ser nombrado.</div></div>
+      <!-- Tabla de nomenclatura -->
+      <table class="info-table" style="margin-top:14px">
+        <thead><tr><th>Documento</th><th>Nomenclatura</th><th>Carpeta</th></tr></thead>
+        <tbody>
+          <tr><td>Acta de Nacimiento</td><td><code>BC_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>Pasaporte / ID</td><td><code>ID_PASSPORT_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>Seguro Social</td><td><code>SSN_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>Acta de Matrimonio</td><td><code>MC_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>Acta de Divorcio</td><td><code>DC_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>BC Cónyuge</td><td><code>BC_SPOUSE_NOMBRE DEL CÓNYUGE</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>ID Cónyuge</td><td><code>ID_PASSPORT_SPOUSE_NOMBRE DEL CÓNYUGE</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>BC Abusador (VAWA)</td><td><code>BC_ABUSER_NOMBRE DEL ABUSADOR</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>ID Abusador (VAWA)</td><td><code>ID_ABUSER_NOMBRE DEL ABUSADOR</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>Acta de Nacimiento (hijo)</td><td><code>KID_BC_NOMBRE DEL HIJO_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>Resultados FBI</td><td><code>FBI_RESULTS_RESULTADO_NOMBRE DEL CLIENTE</code></td><td>10. FBI Results</td></tr>
+          <tr><td>Facturas / Taxes</td><td><code>BONAFIDES_BILLS_NOMBRE DEL CLIENTE</code></td><td>2. Bills and Receipts</td></tr>
+          <tr><td>Cartas y IDs</td><td><code>BONAFIDES_LETTERS_NOMBRE DEL CLIENTE</code></td><td>2. Bills and Receipts</td></tr>
+          <tr><td>Fotos Familiares</td><td><code>BONAFIDES_PHOTOS_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents › Additional Evidence</td></tr>
+          <tr><td>Donaciones / GMC</td><td><code>BONAFIDES_DONATIONS_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents › Additional Evidence</td></tr>
+          <tr><td>Récord Escolar</td><td><code>BONAFIDES_SCHOOL_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents › Additional Evidence</td></tr>
+          <tr><td>Récord Religioso</td><td><code>BONAFIDES_CHURCH_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents › Additional Evidence</td></tr>
+          <tr><td>Récord Médico</td><td><code>BONAFIDES_MEDICAL_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents › Additional Evidence</td></tr>
+          <tr><td>Condiciones País</td><td><code>COUNTRY_CONDITIONS_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents › Additional Evidence</td></tr>
+          <tr><td>Nota Final</td><td><code>FINAL_NOTE_NOMBRE DEL CLIENTE_v1</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>PreDRAFT</td><td><code>PREDRAFT_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>Guía de Entrevista</td><td><code>INTERVIEW_GUIDE_NOMBRE DEL CLIENTE</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>PreDCL</td><td><code>PRE_DCL_NOMBRE DEL CLIENTE_v1</code></td><td>5. Supporting Documents</td></tr>
+          <tr><td>Videollamadas</td><td><code>SCHEDULE_PWCI_NOMBRE DEL CLIENTE</code></td><td>10. Recordings</td></tr>
+          <tr><td>DCL</td><td><code>DCL_1st_Draft_VISA_NOMBRE DEL CLIENTE</code></td><td>6. Submission Materials</td></tr>
+          <tr><td>CVL</td><td><code>CVL_1st_Draft_VISA_NOMBRE DEL CLIENTE</code></td><td>6. Submission Materials</td></tr>
+          <tr><td>Complementos</td><td><code>COMPLEMENTS_NOMBRE DEL CLIENTE</code></td><td>6. Submission Materials</td></tr>
+        </tbody>
+      </table>
+      <div class="doc-img-caption">Nomenclatura oficial de documentos en CRM por tipo de documento y carpeta de destino</div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('overview')">← Vista General</button>
+    <button class="nb-btn next" onclick="showPanel('mod0')">Módulo 1: ¿Qué es la Checklist? →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO 8 ══════════════ -->
+<div class="panel" id="panel-mod8">
+  <div class="page-title">
+    <div class="pt-label">Módulo 8</div>
+    <h2>Tiempos de Llenado de la Checklist</h2>
+    <div class="pt-sub">Los 2 momentos clave en que el colaborador trabaja activamente la checklist</div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 1h6"/></svg></div><h3>Llenado Progresivo</h3><span class="mod-badge badge-core">Proceso</span></div>
+    <div class="bbody">
+      <div class="alert info"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div>La checklist <strong>no se llena en un solo momento</strong>: se construye progresivamente a lo largo del proceso con el cliente. Existen dos momentos clave en los que el colaborador debe trabajar activamente sobre ella.</div></div>
+    </div>
+  </div>
+
+  <div class="times-grid" style="margin-bottom:14px">
+    <div class="time-card">
+      <div class="tc-num">Momento 1</div>
+      <h4>En la videollamada de PWI / Interview</h4>
+      <p>Se da <strong>seguimiento a las solicitudes previas</strong>: se reciben documentos o evidencias y se sincera la información relativa a lo pendiente.</p>
+    </div>
+    <div class="time-card">
+      <div class="tc-num">Momento 2</div>
+      <h4>En el seguimiento</h4>
+      <p>En las llamadas de seguimiento se acompaña al cliente en la obtención de documentos y evidencias pendientes. La <strong>edición de la checklist es activa</strong> en cada seguimiento.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div><h3>Resumen de los 2 Momentos</h3></div>
+    <div class="bbody">
+      <table class="info-table">
+        <thead><tr><th>Momento</th><th>Qué se hace en la checklist</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1. Videollamada de PWI / Interview</strong></td><td>Seguimiento de solicitudes previas: recepción de documentos pendientes y actualización de información.</td></tr>
+          <tr><td><strong>2. En el seguimiento</strong></td><td>Acompañamiento activo al cliente. Edición continua de la checklist en cada contacto hasta completar el expediente.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('mod6')">← Módulo 7</button>
+    <button class="nb-btn next" onclick="showPanel('modmh')">Módulo 9: Mendoza Hub →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO MENDOZA HUB ══════════════ -->
+<div class="panel" id="panel-modmh">
+  <div class="page-title">
+    <div class="pt-label">Módulo 9</div>
+    <h2>Mendoza Hub — Guía de Preguntas</h2>
+    <div class="pt-sub">Qué es, cómo se usa y su rol dentro del llenado de Formas</div>
+  </div>
+
+  <div class="alert info" style="margin-bottom:14px"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><div><strong>Acceso directo:</strong> <a href="https://mendoza-hub.vercel.app/login" target="_blank" style="color:var(--green);font-weight:700">mendoza-hub.vercel.app</a></div></div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg></div><h3>Definición</h3><span class="mod-badge badge-core">Conceptual</span></div>
+    <div class="bbody">
+      <p><strong>Mendoza Hub</strong> es una plataforma en la que se tiene acceso a las preguntas necesarias para obtener la información con la que se llenan los formularios migratorios a los que aplica el cliente, según su proceso (VAWA, Visa T, Visa U, K1, entre otros).</p>
+    </div>
+  </div>
+
+  <div class="rule-card danger" style="margin-bottom:14px">
+    <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Indicación Importante</h4>
+    <p>Mendoza Hub se usa <strong>únicamente como guía de preguntas</strong>. Verifica siempre que esté cargado el <em>question and answer</em> como respaldo en Supporting Documents; la indicación vigente es hacer las preguntas y dejarlas registradas en la entrevista.</p>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><rect x="9" y="1" width="6" height="12" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v4M8 23h8"/></svg></div><h3>Cómo se Usan las Preguntas</h3><span class="mod-badge badge-warn">Guía verbal + respaldo</span></div>
+    <div class="bbody">
+      <p>Las preguntas de Mendoza Hub se realizan de manera <strong>verbal durante la entrevista</strong> con el cliente. Esto permite deletrear o confirmar en el momento datos que pueden generar error (nombres de ciudades, calles, etc.), reduciendo el margen de error frente a un llenado únicamente por texto.</p>
+      <p>El cuestionario (question and answer) se puede exportar en PDF y cargarse como respaldo en <strong>Supporting Documents</strong>, igual que se hacía antes en Dropbox. Sea que se llene o solo se use como guía, lo esencial es que las respuestas queden registradas en la <strong>transcripción</strong> de la videollamada de PWI, ya que es esa transcripción (o el audio) lo que la IA de CRM utiliza como fuente para el llenado de las formas.</p>
+      <div class="alert warn"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div><div>El PDF del cuestionario puede salir <strong>recortado</strong> (como capturas de pantalla) si hay respuestas largas. Por eso la transcripción completa es la fuente más confiable para que la IA no pierda información.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div><h3>Paso a Paso — Acceder a las Preguntas de un Proceso</h3><span class="mod-badge badge-core">Procedimiento</span></div>
+    <div class="bbody">
+      <div class="roadmap">
+        <div class="rm-item">
+          <div class="rm-dot">1</div>
+          <div class="rm-content">
+            <h4>Ingresar a Mendoza Hub</h4>
+            <p>Accede a la plataforma con tu cuenta institucional de TMLF.</p>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">2</div>
+          <div class="rm-content">
+            <h4>Seleccionar el apartado "Pre-Welcome"</h4>
+            <p>Dentro del menú de categorías, elige <strong>Pre-Welcome</strong> — formularios de intake para nuevos clientes.</p>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">3</div>
+          <div class="rm-content">
+            <h4>Elegir el proceso del cliente</h4>
+            <p>Selecciona la categoría y el proceso que corresponda al caso: por ejemplo <strong>VAWA (I-360)</strong> o <strong>Visa T (I-914)</strong> dentro de Protección, o <strong>Visa K-1</strong> dentro de Familia.</p>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">4</div>
+          <div class="rm-content">
+            <h4>Abrir el formulario del proceso</h4>
+            <p>Visualiza el cuestionario con las preguntas necesarias para ese proceso migratorio.</p>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">5</div>
+          <div class="rm-content">
+            <h4>Usar las preguntas durante la Videollamada de PWI / Interview</h4>
+            <p>Realiza las preguntas durante la entrevista para que queden registradas en la transcripción, que es lo que después procesa CRM.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('mod8')">← Módulo 8</button>
+    <button class="nb-btn next" onclick="showPanel('modformas')">Módulo 10: Llenado de Formas con IA →</button>
+  </div>
+</div>
+
+<!-- ══════════════ MÓDULO FORMAS ══════════════ -->
+<div class="panel" id="panel-modformas">
+  <div class="page-title">
+    <div class="pt-label">Módulo 10</div>
+    <h2>Paso a Paso: Llenado de Formas con IA</h2>
+    <div class="pt-sub">Del predraft y cuestionario en CRM hasta la revisión final del formulario</div>
+  </div>
+
+  <div class="alert info" style="margin-bottom:14px"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div>Antes de procesar la IA de Formas, debes tener cargada <strong>toda la información del cliente</strong> en su perfil de CRM: documentos, checklist, grabación y transcripción. La IA usa como fuente el perfil completo del cliente en CRM más los archivos cargados.</div></div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div><h3>Proceso de Llenado con IA</h3><span class="mod-badge badge-core">Procedimiento completo</span></div>
+    <div class="bbody">
+      <div class="roadmap">
+        <div class="rm-item">
+          <div class="rm-dot">1</div>
+          <div class="rm-content">
+            <h4>Generar predraft y cuestionario</h4>
+            <p>En la pestaña de IA (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>) de CRM, selecciona la <strong>fuente correcta</strong> (ej. el intake o la transcripción) en el apartado de fuentes, y genera el <strong>predraft</strong> junto con la <strong>guía de preguntas</strong> para la entrevista.</p>
+            <div class="alert warn" style="margin-top:8px"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div><div>Si no seleccionas la fuente correcta, la IA tomará únicamente la información del perfil del cliente y no considerará el documento fuente (ej. el intake).</div></div>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">2</div>
+          <div class="rm-content">
+            <h4>Extraer con IA en la pestaña Formularios</h4>
+            <p>Ve a la pestaña <strong>Formularios</strong> y da clic en <strong>"Extraer con IA"</strong>. Selecciona al cliente (y al derivado, si lo hay) y da clic en <strong>"Confirmar fuentes"</strong> para iniciar el procesamiento.</p>
+            <div class="chips" style="margin-top:8px">
+              <div class="chip green">Seleccionar cliente</div>
+              <div class="chip green">Seleccionar derivado (si aplica)</div>
+              <div class="chip green">Confirmar fuentes</div>
+            </div>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">3</div>
+          <div class="rm-content">
+            <h4>Esperar el procesamiento</h4>
+            <p>El llenado de las formas tarda aproximadamente <strong>10 a 20 minutos</strong>, dependiendo de la cantidad de información cargada.</p>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">4</div>
+          <div class="rm-content">
+            <h4>Revisar y editar manualmente</h4>
+            <p>Una vez llenas las formas, da un <strong>último vistazo</strong> para confirmar que la información sea correcta. Un error común: el número de la calle se coloca junto con el nombre en el campo "Street" en vez de en el campo "Number" — corta y pega el número en el campo correcto.</p>
+            <div class="alert success" style="margin-top:8px"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></div><div>Si editaste algo, da clic en <strong>"Guardar"</strong>. Si no hiciste cambios, el formulario ya queda listo tal cual. <strong>No se descarga el paquete</strong>: todo permanece dentro de CRM.</div></div>
+          </div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot">5</div>
+          <div class="rm-content">
+            <h4>Generar DCL / Declaración (si aplica)</h4>
+            <p>Con el predraft y el cuestionario ya generados, puedes volver a la pestaña de IA (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>) y generar la <strong>Declaración (DCL)</strong> del cliente desde esa misma sección.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('modmh')">← Módulo 9</button>
+    <button class="nb-btn next" onclick="showPanel('eval')">Evaluación Final →</button>
+  </div>
+</div>
+
+<!-- ══════════════ EVALUACIÓN FINAL ══════════════ -->
+<div class="panel" id="panel-eval">
+  <div class="page-title">
+    <div class="pt-label">Evaluación Final</div>
+    <h2>Evaluación Final</h2>
+    <div class="pt-sub">17 preguntas que cubren todos los módulos del training · Mínimo 80% para aprobar</div>
+  </div>
+
+  <div class="stat-row" style="margin-bottom:14px">
+    <div class="stat-card"><div class="stat-val">17</div><div class="stat-label">Preguntas</div></div>
+    <div class="stat-card"><div class="stat-val">80%</div><div class="stat-label">Mín. para aprobar</div></div>
+    <div class="stat-card"><div class="stat-val">3</div><div class="stat-label">Tipos de pregunta</div></div>
+    <div class="stat-card"><div class="stat-val">11</div><div class="stat-label">Módulos evaluados</div></div>
+  </div>
+
+  <div class="alert info" style="margin-bottom:16px"><div class="alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div>Lee cada pregunta con atención. Algunas son de opción múltiple (4 opciones), otras de Verdadero / Falso y otras presentan un escenario práctico. Responde todas antes de enviar.</div></div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div><h3>Sección I — Conceptos Generales</h3><span class="mod-badge badge-core">Módulos 1 y 2</span></div>
+    <div class="bbody" style="padding-bottom:4px">
+
+      <!-- Q1 MC -->
+      <div class="q-item" id="exam-q1">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sage);display:block;margin-bottom:4px">Opción múltiple · Módulo 1</span>1. ¿Cuál es la función principal de la checklist dentro del área de Pre Welcome Interview?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q1',1)" data-val="1"><div class="q-letter">A</div>Es una lista de tareas que el colaborador debe completar antes de cada videollamada con el cliente.</div>
+          <div class="q-opt" onclick="examSel(this,'q1',2)" data-val="2"><div class="q-letter">B</div>Es un entregable que concentra los enlaces a los documentos en CRM y los motivos por los que no se pudo obtener algún documento o evidencia, dando visibilidad al estado del expediente.</div>
+          <div class="q-opt" onclick="examSel(this,'q1',3)" data-val="3"><div class="q-letter">C</div>Es el formulario de Mendoza Hub utilizado para el llenado de formas migratorias por el área de Packets.</div>
+          <div class="q-opt" onclick="examSel(this,'q1',4)" data-val="4"><div class="q-letter">D</div>Es el registro de notas internas de CRM vinculado al expediente del cliente.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q1"></div>
+      </div>
+
+      <!-- Q2 MC -->
+      <div class="q-item" id="exam-q2">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sage);display:block;margin-bottom:4px">Opción múltiple · Módulo 1</span>2. ¿En qué documento se encuentran las checklists exclusivamente para procesos de derivados de VAWA, Visa T y Visa U?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q2',1)" data-val="1"><div class="q-letter">A</div>En el mismo documento "Checklists — todos los procesos", dentro de una pestaña específica para derivados.</div>
+          <div class="q-opt" onclick="examSel(this,'q2',2)" data-val="2"><div class="q-letter">B</div>En CRM, bajo el expediente del cliente en la sección de documentos pendientes.</div>
+          <div class="q-opt" onclick="examSel(this,'q2',3)" data-val="3"><div class="q-letter">C</div>En el documento "Checklist Derivados VAWA, Visa T y Visa U", que es un archivo independiente.</div>
+          <div class="q-opt" onclick="examSel(this,'q2',4)" data-val="4"><div class="q-letter">D</div>En la carpeta Forms de CRM, junto con las formas migratorias del proceso.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q2"></div>
+      </div>
+
+      <!-- Q3 MC -->
+      <div class="q-item" id="exam-q3">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sage);display:block;margin-bottom:4px">Opción múltiple · Módulo 2</span>3. ¿Qué datos contiene la tabla de identificación del caso ubicada al inicio de la checklist?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q3',1)" data-val="1"><div class="q-letter">A</div>Nombre del colaborador, fecha de asignación, tipo de proceso y nombre del abogado a cargo.</div>
+          <div class="q-opt" onclick="examSel(this,'q3',2)" data-val="2"><div class="q-letter">B</div>ID, CL, Age CL, Date Open Case, Case Type, Abuser, Age AB y Name of AB.</div>
+          <div class="q-opt" onclick="examSel(this,'q3',3)" data-val="3"><div class="q-letter">C</div>Número de caso, fecha de la entrevista, estatus migratorio y número de control de Mendoza Hub.</div>
+          <div class="q-opt" onclick="examSel(this,'q3',4)" data-val="4"><div class="q-letter">D</div>Nombre del cliente, fecha de nacimiento, número de pasaporte y país de origen del solicitante.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q3"></div>
+      </div>
+
+      <!-- Q4 V/F -->
+      <div class="q-item" id="exam-q4">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);display:block;margin-bottom:4px">Verdadero / Falso · Módulo 2</span>4. "La sección <em>Required Forms for Applicant</em> debe ser completada por el equipo de PWI con base en la información recabada durante la entrevista del cliente."</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q4',1)" data-val="1"><div class="q-letter" style="background:rgba(30,102,65,.15);color:var(--green)">V</div>Verdadero — el equipo de PWI completa esta sección antes de cerrar el expediente.</div>
+          <div class="q-opt" onclick="examSel(this,'q4',2)" data-val="2"><div class="q-letter" style="background:rgba(180,50,50,.12);color:var(--red)">F</div>Falso — esta sección no la modifica el equipo de PWI; es responsabilidad del área de Packets.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q4"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div><h3>Sección II — Proceso de Llenado y Registro</h3><span class="mod-badge badge-core">Módulos 3 y 4</span></div>
+    <div class="bbody" style="padding-bottom:4px">
+
+      <!-- Q5 MC -->
+      <div class="q-item" id="exam-q5">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sage);display:block;margin-bottom:4px">Opción múltiple · Módulo 3</span>5. Al crear el documento de checklist para un cliente llamado Jorge Alberto Silva Javier, ¿cuál es el título correcto que debe dársele al documento?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q5',1)" data-val="1"><div class="q-letter">A</div>VISAT Checklist PreCR — Jorge Silva</div>
+          <div class="q-opt" onclick="examSel(this,'q5',2)" data-val="2"><div class="q-letter">B</div>Checklist PWI — Silva Javier, Jorge Alberto</div>
+          <div class="q-opt" onclick="examSel(this,'q5',3)" data-val="3"><div class="q-letter">C</div>Checklist Jorge Alberto Silva Javier</div>
+          <div class="q-opt" onclick="examSel(this,'q5',4)" data-val="4"><div class="q-letter">D</div>Jorge Alberto Silva Javier — Checklist PreCR Visa T</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q5"></div>
+      </div>
+
+      <!-- Q6 MC orden de pasos -->
+      <div class="q-item" id="exam-q6">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sage);display:block;margin-bottom:4px">Opción múltiple · Módulo 3</span>6. ¿Cuál es el orden correcto de los pasos para crear y preparar la checklist de un cliente?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q6',1)" data-val="1"><div class="q-letter">A</div>Copiar → Abrir documento → Identificar proceso → Pegar → Renombrar</div>
+          <div class="q-opt" onclick="examSel(this,'q6',2)" data-val="2"><div class="q-letter">B</div>Identificar proceso en las pestañas → Seleccionar y copiar → Crear documento nuevo → Pegar → Renombrar</div>
+          <div class="q-opt" onclick="examSel(this,'q6',3)" data-val="3"><div class="q-letter">C</div>Crear documento → Identificar proceso → Copiar → Renombrar → Pegar</div>
+          <div class="q-opt" onclick="examSel(this,'q6',4)" data-val="4"><div class="q-letter">D</div>Identificar proceso → Crear documento → Copiar → Pegar → Renombrar</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q6"></div>
+      </div>
+
+      <!-- Q7 MC -->
+      <div class="q-item" id="exam-q7">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sage);display:block;margin-bottom:4px">Opción múltiple · Módulo 4</span>7. Un cliente entregó su acta de nacimiento y ya fue subida a CRM. ¿Qué se debe registrar en la checklist al lado de ese documento?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q7',1)" data-val="1"><div class="q-letter">A</div>Se escribe "Entregado" y la fecha en que el cliente lo proporcionó.</div>
+          <div class="q-opt" onclick="examSel(this,'q7',2)" data-val="2"><div class="q-letter">B</div>Se marca el checkbox y se deja sin más información adicional.</div>
+          <div class="q-opt" onclick="examSel(this,'q7',3)" data-val="3"><div class="q-letter">C</div>Se adjunta el enlace URL del documento subido a la carpeta Supporting Documents de CRM.</div>
+          <div class="q-opt" onclick="examSel(this,'q7',4)" data-val="4"><div class="q-letter">D</div>Se anota el nombre del archivo tal como aparece en CRM para facilitar su búsqueda.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q7"></div>
+      </div>
+
+      <!-- Q8 V/F -->
+      <div class="q-item" id="exam-q8">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);display:block;margin-bottom:4px">Verdadero / Falso · Módulo 4</span>8. "Si un cliente no puede obtener un documento que no está marcado como crítico, el colaborador puede dejar esa casilla en blanco sin registrar ningún motivo, ya que el documento no es indispensable."</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q8',1)" data-val="1"><div class="q-letter" style="background:rgba(30,102,65,.15);color:var(--green)">V</div>Verdadero — si no es un documento crítico, no es necesario registrar nada.</div>
+          <div class="q-opt" onclick="examSel(this,'q8',2)" data-val="2"><div class="q-letter" style="background:rgba(180,50,50,.12);color:var(--red)">F</div>Falso — siempre debe registrarse el motivo y, si es opcional, también las estrategias empleadas para conseguirlo.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q8"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div><h3>Sección III — Documentos, Criminal History y Required Forms</h3><span class="mod-badge badge-warn">Módulos 5, 6 y 7</span></div>
+    <div class="bbody" style="padding-bottom:4px">
+
+      <!-- Q9 Scenario -->
+      <div class="q-item" id="exam-q9" style="border-left:3px solid var(--gold)">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);display:block;margin-bottom:4px">Caso práctico · Módulo 5</span>9. La checklist de María tiene marcada la sección Good Moral Character como <strong>(OPTIONAL)</strong>. El cliente no pudo conseguir ninguna de las 7 evidencias de esa sección. ¿Cuál es la acción correcta?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q9',1)" data-val="1"><div class="q-letter">A</div>Detener el cierre del caso hasta conseguir al menos 3 de las 7 evidencias de Good Moral Character.</div>
+          <div class="q-opt" onclick="examSel(this,'q9',2)" data-val="2"><div class="q-letter">B</div>No registrar nada porque son opcionales y eso no genera impacto en el expediente.</div>
+          <div class="q-opt" onclick="examSel(this,'q9',3)" data-val="3"><div class="q-letter">C</div>Registrar al lado de cada evidencia el motivo por el que no se obtuvo, y documentar en el apartado de estrategia las alternativas exploradas y el resultado. El caso puede avanzar sin ellas.</div>
+          <div class="q-opt" onclick="examSel(this,'q9',4)" data-val="4"><div class="q-letter">D</div>Escalar al Team Leader para que autorice el avance del caso sin las evidencias de Good Moral Character.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q9"></div>
+      </div>
+
+      <!-- Q10 MC -->
+      <div class="q-item" id="exam-q10">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sage);display:block;margin-bottom:4px">Opción múltiple · Módulo 5</span>10. ¿Cuáles son las dos leyendas que identifican documentos no críticos dentro de la checklist?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q10',1)" data-val="1"><div class="q-letter">A</div>"OPTIONAL" y "Not required for submission"</div>
+          <div class="q-opt" onclick="examSel(this,'q10',2)" data-val="2"><div class="q-letter">B</div>"(OPTIONAL)" y "If the client is unable to obtain them, it will not be a reason to delay the case"</div>
+          <div class="q-opt" onclick="examSel(this,'q10',3)" data-val="3"><div class="q-letter">C</div>"if applicable" y "(OPTIONAL)"</div>
+          <div class="q-opt" onclick="examSel(this,'q10',4)" data-val="4"><div class="q-letter">D</div>"Not mandatory" y "If applicable — doctor's letter"</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q10"></div>
+      </div>
+
+      <!-- Q11 Scenario -->
+      <div class="q-item" id="exam-q11" style="border-left:3px solid var(--gold)">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);display:block;margin-bottom:4px">Caso práctico · Módulo 6</span>11. Durante la Videollamada de PWI / Interview con un cliente de Visa T, el cliente menciona que en 2020 fue arrestado y procesado. ¿Cuál es la acción correcta del equipo de PWI?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q11',1)" data-val="1"><div class="q-letter">A</div>Pedirle que solicite su expediente completo en la corte donde fue procesado para incluirlo en el caso.</div>
+          <div class="q-opt" onclick="examSel(this,'q11',2)" data-val="2"><div class="q-letter">B</div>Preguntarle si tiene disponibles los documentos de ese arresto guardados en casa o en su celular, registrar lo que pueda aportar y no pedirle que acuda a ninguna corte o policía.</div>
+          <div class="q-opt" onclick="examSel(this,'q11',3)" data-val="3"><div class="q-letter">C</div>Indicarle que el FBI Rapsheet que tramitará con la firma resolverá esa situación y continuar con la siguiente sección.</div>
+          <div class="q-opt" onclick="examSel(this,'q11',4)" data-val="4"><div class="q-letter">D</div>Escalar al abogado antes de continuar porque cualquier antecedente criminal requiere evaluación legal previa.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q11"></div>
+      </div>
+
+      <!-- Q12 V/F -->
+      <div class="q-item" id="exam-q12">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);display:block;margin-bottom:4px">Verdadero / Falso · Módulo 6</span>12. "El equipo de PWI es responsable de gestionar y solicitar el FBI Rapsheet del cliente directamente, como parte de sus funciones en el área de Pre Welcome Interview."</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q12',1)" data-val="1"><div class="q-letter" style="background:rgba(30,102,65,.15);color:var(--green)">V</div>Verdadero — el equipo de PWI gestiona el FBI Rapsheet como parte del expediente del cliente.</div>
+          <div class="q-opt" onclick="examSel(this,'q12',2)" data-val="2"><div class="q-letter" style="background:rgba(180,50,50,.12);color:var(--red)">F</div>Falso — el FBI Rapsheet lo gestiona un área especializada; el equipo de PWI no solicita ni tramita ese documento.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q12"></div>
+      </div>
+
+      <!-- Q13 MC -->
+      <div class="q-item" id="exam-q13">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sage);display:block;margin-bottom:4px">Opción múltiple · Módulo 7</span>13. ¿Cuál es el rol correcto del equipo de PWI respecto al apartado <em>Required Forms for Applicant</em>?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q13',1)" data-val="1"><div class="q-letter">A</div>Llenar las formas con la información recabada durante la videollamada de PWI y marcarlas como completadas.</div>
+          <div class="q-opt" onclick="examSel(this,'q13',2)" data-val="2"><div class="q-letter">B</div>Agregar o eliminar formas del listado según el proceso identificado para cada cliente.</div>
+          <div class="q-opt" onclick="examSel(this,'q13',3)" data-val="3"><div class="q-letter">C</div>Solo consultarlo para saber qué formas corresponden al proceso del cliente, sin editar ningún campo.</div>
+          <div class="q-opt" onclick="examSel(this,'q13',4)" data-val="4"><div class="q-letter">D</div>Verificar con el cliente que tenga disponibles todas las formas migratorias y registrar cuáles faltan.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q13"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div><h3>Sección IV — CRM y Tiempos de Llenado</h3><span class="mod-badge badge-core">Módulos 0 y 8</span></div>
+    <div class="bbody" style="padding-bottom:4px">
+
+      <!-- Q14 MC -->
+      <div class="q-item" id="exam-q14">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sage);display:block;margin-bottom:4px">Opción múltiple · Módulo 0</span>14. En un caso VAWA, ¿en qué carpeta de CRM se colocan las evidencias de abuso y las evidencias de Good Moral Character?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q14',1)" data-val="1"><div class="q-letter">A</div>Supporting Documents — junto con todos los documentos personales del cliente.</div>
+          <div class="q-opt" onclick="examSel(this,'q14',2)" data-val="2"><div class="q-letter">B</div>Recordings — junto con las grabaciones de la videollamada de PWI.</div>
+          <div class="q-opt" onclick="examSel(this,'q14',3)" data-val="3"><div class="q-letter">C</div>Forms — junto con las formas migratorias del proceso.</div>
+          <div class="q-opt" onclick="examSel(this,'q14',4)" data-val="4"><div class="q-letter">D</div>Submissions Materials — junto con el transcript de la entrevista.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q14"></div>
+      </div>
+
+      <!-- Q15 Scenario -->
+      <div class="q-item" id="exam-q15" style="border-left:3px solid var(--gold)">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);display:block;margin-bottom:4px">Caso práctico · Módulos 0 y 8</span>15. Una colaboradora sube el acta de nacimiento del cliente a CRM pero le pone el nombre "documento1.pdf" porque no recordaba la nomenclatura correcta. Además, llena la checklist completa de una sola vez al terminar el proceso, sin haberla trabajado en ningún momento anterior. ¿Qué errores cometió?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q15',1)" data-val="1"><div class="q-letter">A</div>Solo cometió un error: el nombre del archivo. El llenado de la checklist al final del proceso es una práctica aceptada.</div>
+          <div class="q-opt" onclick="examSel(this,'q15',2)" data-val="2"><div class="q-letter">B</div>Solo cometió un error: debió llenar la checklist progresivamente. El nombre del archivo no afecta el ensamblado.</div>
+          <div class="q-opt" onclick="examSel(this,'q15',3)" data-val="3"><div class="q-letter">C</div>Cometió dos errores: el archivo debe nombrarse "BC_NOMBRE DEL CLIENTE" según la nomenclatura oficial (no "documento1.pdf"), y la checklist debe llenarse progresivamente en los 2 momentos clave del proceso, no al final.</div>
+          <div class="q-opt" onclick="examSel(this,'q15',4)" data-val="4"><div class="q-letter">D</div>No cometió errores. La nomenclatura es flexible y el llenado final es válido si el expediente está completo.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q15"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="btitle"><div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div><h3>Sección V — Mendoza Hub y Formas con IA</h3><span class="mod-badge badge-core">Módulos 9 y 10</span></div>
+    <div class="bbody" style="padding-bottom:4px">
+
+      <!-- Q16 MC -->
+      <div class="q-item" id="exam-q16">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--sage);display:block;margin-bottom:4px">Opción múltiple · Módulo 9</span>16. ¿Cuál es la forma correcta de usar las preguntas de Mendoza Hub durante un caso?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q16',1)" data-val="1"><div class="q-letter">A</div>Contestarlas por escrito dentro de Mendoza Hub y guardar el avance en la plataforma antes de la entrevista.</div>
+          <div class="q-opt" onclick="examSel(this,'q16',2)" data-val="2"><div class="q-letter">B</div>Realizarlas de manera verbal durante la Videollamada de PWI / Interview para que queden registradas en la transcripción; el PDF del cuestionario es opcional como respaldo en Supporting Documents.</div>
+          <div class="q-opt" onclick="examSel(this,'q16',3)" data-val="3"><div class="q-letter">C</div>Es obligatorio descargar y guardar el PDF de Mendoza Hub como único respaldo del caso, sin necesidad de grabar la llamada.</div>
+          <div class="q-opt" onclick="examSel(this,'q16',4)" data-val="4"><div class="q-letter">D</div>Mendoza Hub se usa únicamente para clientes de VAWA; en Visa T y Visa U las preguntas se improvisan.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q16"></div>
+      </div>
+
+      <!-- Q17 Scenario -->
+      <div class="q-item" id="exam-q17" style="border-left:3px solid var(--gold)">
+        <div class="q-stem"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);display:block;margin-bottom:4px">Caso práctico · Módulo 10</span>17. Un colaborador va a dar clic en "Extraer con IA" en la pestaña Formularios de CRM para un cliente. ¿Qué debe verificar antes de iniciar el proceso?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="examSel(this,'q17',1)" data-val="1"><div class="q-letter">A</div>Que el perfil del cliente en CRM tenga cargados los documentos, la checklist, la grabación o transcripción, y que haya seleccionado y confirmado las fuentes correctas.</div>
+          <div class="q-opt" onclick="examSel(this,'q17',2)" data-val="2"><div class="q-letter">B</div>Que el video de la llamada esté cargado, ya que es la única fuente que la IA de CRM utiliza para llenar las formas.</div>
+          <div class="q-opt" onclick="examSel(this,'q17',3)" data-val="3"><div class="q-letter">C</div>Nada en particular; el proceso puede iniciarse en cualquier momento y CRM avisará si falta información.</div>
+          <div class="q-opt" onclick="examSel(this,'q17',4)" data-val="4"><div class="q-letter">D</div>Que el cliente haya llenado y guardado sus respuestas dentro de Mendoza Hub, ya que es la fuente que usa la IA.</div>
+        </div>
+        <div class="q-feedback" id="exam-fb-q17"></div>
+      </div>
+    </div>
+  </div>
+
+    <div class="result-card" id="exam-result">
+      <div class="result-score" id="exam-score-val"></div>
+      <div class="result-label" id="exam-result-label"></div>
+      <div class="result-msg" id="exam-result-msg"></div>
+      <div class="result-breakdown">
+        <div class="rb-item rb-ok"><div class="rb-n" id="exam-correct">-</div><div class="rb-l">Correctas</div></div>
+        <div class="rb-item rb-bad"><div class="rb-n" id="exam-incorrect">-</div><div class="rb-l">Incorrectas</div></div>
+        <div class="rb-item rb-mod"><div class="rb-n">17</div><div class="rb-l">Total</div></div>
+      </div>
+    </div>
+    <div class="eval-footer">
+      <button class="btn-retry" id="exam-retry" onclick="examReset()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Intentar de nuevo</button>
+      <button class="btn-submit" id="exam-submit" onclick="examSubmit()">Enviar Evaluación →</button>
+    </div>
+
+  <div class="nav-buttons">
+    <button class="nb-btn prev" onclick="showPanel('modformas')">← Módulo 10</button>
+    <button class="nb-btn next" onclick="showPanel('overview')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex-shrink:0"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg> Vista General</button>
+  </div>
+</div>
+
+
+</main>
+</div>
+
+<script>
+/* ══ PANEL NAVIGATION ══ */
+var panelMap={
+  'overview':'nav-overview','mod0':'nav-mod0','mod1':'nav-mod1','mod2':'nav-mod2',
+  'mod3':'nav-mod3','mod4':'nav-mod4','mod5':'nav-mod5','mod6':'nav-mod6',
+  'mod7':'nav-mod7','mod8':'nav-mod8','modmh':'nav-modmh','modformas':'nav-modformas',
+  'eval':'nav-eval'
+};
+var completedPanels=[];
+
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});
+  var el=document.getElementById('panel-'+id);
+  if(el){el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+  document.querySelectorAll('.sb-item').forEach(function(s){s.classList.remove('active')});
+  var navEl=document.getElementById(panelMap[id]);
+  if(navEl)navEl.classList.add('active');
+  if(completedPanels.indexOf(id)===-1){completedPanels.push(id);}
+  updateProgress();
+  if(window.innerWidth<=900){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sbOverlay').classList.remove('show');
+  }
+}
+
+function updateProgress(){
+  var total=Object.keys(panelMap).length;
+  var pct=Math.round(completedPanels.length/total*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+}
+
+function toggleSidebar(){
+  var sb=document.getElementById('sidebar');
+  var ov=document.getElementById('sbOverlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+}
+
+/* ══ EVALUACIÓN FINAL — 15 PREGUNTAS ══ */
+var examCorrect={q1:2,q2:3,q3:2,q4:2,q5:3,q6:2,q7:3,q8:2,q9:3,q10:2,q11:2,q12:2,q13:3,q14:1,q15:3,q16:2,q17:1};
+var examFB={
+  q1:{
+    ok:'✅ ¡Correcto! La checklist es un entregable clave del área de PWI: concentra los enlaces a CRM y documenta los motivos por los que no se pudo obtener cada evidencia, dando visibilidad total al estado del expediente.',
+    fail:'❌ Incorrecto. La checklist no es una lista de tareas ni un formulario de Mendoza Hub. Es el entregable del área de PWI que concentra los enlaces a CRM y las justificaciones de documentos no obtenidos. → Módulo 1'
+  },
+  q2:{
+    ok:'✅ ¡Correcto! Las checklists para procesos de derivados están en un documento independiente: "Checklist Derivados VAWA, Visa T y Visa U". Es importante identificarlo antes de iniciar el trabajo con ese tipo de casos.',
+    fail:'❌ Incorrecto. Las checklists de derivados no están en el documento general ni en CRM. Existe un archivo específico: "Checklist Derivados VAWA, Visa T y Visa U". → Módulo 1'
+  },
+  q3:{
+    ok:'✅ ¡Correcto! La tabla de identificación del caso contiene: ID, CL, Age CL, Date Open Case, Case Type, Abuser, Age AB y Name of AB. Estos datos permiten identificar el expediente correctamente.',
+    fail:'❌ Incorrecto. La tabla de identificación contiene campos específicos: ID, CL, Age CL, Date Open Case, Case Type, Abuser, Age AB y Name of AB. No incluye datos del colaborador ni del abogado. → Módulo 2'
+  },
+  q4:{
+    ok:'✅ ¡Correcto! Es FALSO. La sección Required Forms for Applicant NO es completada por el equipo de PWI. Es responsabilidad del área de Packets, quien llena las formas migratorias con la información recabada por PWI en los formularios de Mendoza Hub.',
+    fail:'❌ Incorrecto. La afirmación es FALSA. El equipo de PWI solo consulta ese apartado para conocer las formas del proceso, pero nunca lo edita. Quien lo completa es el área de Packets. → Módulo 2'
+  },
+  q5:{
+    ok:'✅ ¡Correcto! El estándar de nomenclatura para el documento de checklist es: "Checklist + Nombre completo del cliente". Ejemplo: Checklist Jorge Alberto Silva Javier.',
+    fail:'❌ Incorrecto. El título correcto es "Checklist Jorge Alberto Silva Javier". No se antepone el tipo de visa ni el proceso; solo la palabra Checklist seguida del nombre completo del cliente. → Módulo 3'
+  },
+  q6:{
+    ok:'✅ ¡Correcto! El orden correcto es: 1) Identificar el proceso en las pestañas, 2) Seleccionar y copiar, 3) Crear un documento nuevo, 4) Pegar el contenido, 5) Renombrar el documento.',
+    fail:'❌ Incorrecto. El orden correcto de los pasos es: Identificar proceso → Seleccionar y copiar → Crear documento nuevo → Pegar → Renombrar. Crear el documento antes de copiar genera errores en el proceso. → Módulo 3'
+  },
+  q7:{
+    ok:'✅ ¡Correcto! Cuando el cliente entrega un documento y este es subido a CRM, se registra el enlace URL directo a ese archivo en la carpeta Supporting Documents, vinculándolo al nombre del documento en la checklist.',
+    fail:'❌ Incorrecto. El estándar es adjuntar el enlace URL del documento en CRM (carpeta Supporting Documents). Escribir "Entregado" o dejar solo el checkbox no cumple con el estándar operativo. → Módulo 4'
+  },
+  q8:{
+    ok:'✅ ¡Correcto! Es FALSO. Siempre debe registrarse el motivo por el que el cliente no pudo obtener el documento. Si además es opcional, se debe documentar también en el apartado de estrategia las alternativas exploradas y el resultado.',
+    fail:'❌ Incorrecto. La afirmación es FALSA. Aunque el documento no sea crítico, dejar la casilla en blanco no cumple el estándar operativo. Siempre debe registrarse el motivo y, si es opcional, las estrategias empleadas. → Módulo 4'
+  },
+  q9:{
+    ok:'✅ ¡Correcto! Los documentos marcados como OPTIONAL no detienen el caso, pero siempre se debe registrar el motivo de su ausencia y documentar en el apartado de estrategia las alternativas exploradas y su resultado.',
+    fail:'❌ Incorrecto. Los documentos OPTIONAL no se ignoran. Aunque su ausencia no detenga el cierre, es obligatorio registrar el motivo al lado de cada concepto y desarrollar las estrategias empleadas en el apartado final. → Módulo 5'
+  },
+  q10:{
+    ok:'✅ ¡Correcto! Las dos leyendas que identifican documentos no críticos son: "(OPTIONAL)" y "If the client is unable to obtain them, it will not be a reason to delay the case". Ambas indican que la ausencia no detiene el caso, pero siempre deben solicitarse.',
+    fail:'❌ Incorrecto. Las dos leyendas específicas son "(OPTIONAL)" y "If the client is unable to obtain them, it will not be a reason to delay the case". "if applicable" es una aclaración de uso, no una leyenda de clasificación de criticidad. → Módulo 5'
+  },
+  q11:{
+    ok:'✅ ¡Correcto! El equipo de PWI solo pregunta si el cliente tiene documentos disponibles en casa o en su celular. Nunca se le pide que acuda a una corte o estación de policía, ya que hacerlo podría poner al cliente en riesgo.',
+    fail:'❌ Incorrecto. El equipo de PWI no puede pedir al cliente que acuda a ninguna corte o policía. Solo se solicitan los documentos que ya tenga guardados. Acudir a una instancia oficial podría poner al cliente en riesgo. → Módulo 6'
+  },
+  q12:{
+    ok:'✅ ¡Correcto! Es FALSO. El FBI Rapsheet lo gestiona un área especializada de la firma. El equipo de PWI no tiene que tramitar ni solicitar ese documento directamente.',
+    fail:'❌ Incorrecto. La afirmación es FALSA. El FBI Rapsheet es gestionado por un área especializada, no por el equipo de PWI. El rol de PWI en Criminal History se limita a preguntar sobre antecedentes y solicitar solo los documentos que el cliente ya tenga disponibles. → Módulo 6'
+  },
+  q13:{
+    ok:'✅ ¡Correcto! El equipo de PWI solo consulta el apartado Required Forms for Applicant para saber qué formas corresponden al proceso del cliente. No lo edita, no agrega formas, ni lo marca como completado.',
+    fail:'❌ Incorrecto. El equipo de PWI no edita la sección Required Forms. Su único rol es consultarla para conocer las formas del proceso. El llenado de formas lo realiza el área de Packets. → Módulo 7'
+  },
+  q14:{
+    ok:'✅ ¡Correcto! En casos VAWA, las evidencias de abuso y de Good Moral Character se colocan en la carpeta Supporting Documents, junto con los documentos personales, la checklist y el PDF del formulario.',
+    fail:'❌ Incorrecto. Las evidencias de abuso y GMC van en la carpeta Supporting Documents, junto con los documentos personales, la checklist y el PDF formulario. La carpeta Recordings es para grabaciones. → Módulo 0'
+  },
+  q15:{
+    ok:'✅ ¡Correcto! Cometió dos errores: 1) El acta de nacimiento debe nombrarse "BC_NOMBRE DEL CLIENTE" según la nomenclatura oficial — un nombre incorrecto puede hacer que la IA de ensamblado no reconozca el archivo. 2) La checklist debe llenarse progresivamente en los 2 momentos clave del proceso, no de una sola vez al final.',
+    fail:'❌ Incorrecto. Cometió DOS errores: el nombre "documento1.pdf" no respeta la nomenclatura oficial (debe ser "BC_NOMBRE DEL CLIENTE"), lo que puede hacer que la IA de ensamblado no reconozca el caso. Y la checklist debe trabajarse progresivamente en los 2 momentos del proceso, no al final. → Módulos 0 y 8'
+  },
+  q16:{
+    ok:'✅ ¡Correcto! Las preguntas de Mendoza Hub se realizan de manera verbal durante la entrevista para que queden registradas en la transcripción, que es lo que procesa la IA de CRM. El PDF del cuestionario es opcional, solo como respaldo.',
+    fail:'❌ Incorrecto. No es necesario llenar ni guardar el cuestionario dentro de Mendoza Hub. Las preguntas se hacen de forma verbal durante la Videollamada de PWI / Interview y quedan registradas en la transcripción; el PDF es un respaldo opcional. → Módulo 9'
+  },
+  q17:{
+    ok:'✅ ¡Correcto! Antes de extraer con IA, el perfil del cliente en CRM debe tener toda la información cargada (documentos, checklist, grabación/transcripción) y deben confirmarse las fuentes correctas para que el llenado sea preciso.',
+    fail:'❌ Incorrecto. La IA usa el perfil completo del cliente en CRM (documentos, checklist, transcripción/audio) — el video aún no se lee. Mendoza Hub tampoco es una fuente para la IA: es solo una guía verbal. → Módulo 10'
+  }
+};
+var examAnswers={};
+var allQids=['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17'];
+
+function examSel(el,qId,val){
+  if(el.classList.contains('disabled'))return;
+  document.querySelectorAll('#exam-'+qId+' .q-opt').forEach(function(o){o.classList.remove('selected')});
+  el.classList.add('selected');
+  examAnswers[qId]=val;
+}
+
+function examSubmit(){
+  var total=allQids.length,correct=0;
+  allQids.forEach(function(qId){
+    var ua=examAnswers[qId],ca=examCorrect[qId];
+    var fb=document.getElementById('exam-fb-'+qId);
+    document.querySelectorAll('#exam-'+qId+' .q-opt').forEach(function(o){
+      o.classList.add('disabled');
+      var v=parseInt(o.dataset.val);
+      if(v===ca)o.classList.add('correct');
+      else if(v===ua&&ua!==ca)o.classList.add('incorrect');
+    });
+    if(fb){
+      fb.className='q-feedback show '+(ua===ca?'ok':'fail');
+      fb.textContent=ua===ca?examFB[qId].ok:examFB[qId].fail;
+    }
+    if(ua===ca)correct++;
+  });
+  var pct=Math.round(correct/total*100);
+  var pass=pct>=80;
+  var rc=document.getElementById('exam-result');
+  rc.classList.add('show');
+  var sc=document.getElementById('exam-score-val');
+  sc.textContent=pct+'%';
+  sc.className='result-score '+(pass?'pass':pct>=60?'warn':'fail');
+  document.getElementById('exam-result-label').textContent=pass?'✅ EVALUACIÓN APROBADA':'❌ EVALUACIÓN NO APROBADA';
+  document.getElementById('exam-result-msg').textContent=pass?
+    'Obtuviste '+correct+' de '+total+' respuestas correctas ('+pct+'%). Has demostrado dominio del training CRM, Checklist y Formas. ¡Excelente trabajo!':
+    'Obtuviste '+correct+' de '+total+' respuestas correctas ('+pct+'%). Necesitas al menos 80% (14/17) para aprobar. Revisa los módulos indicados en las retroalimentaciones y vuelve a intentarlo.';
+  document.getElementById('exam-correct').textContent=correct;
+  document.getElementById('exam-incorrect').textContent=total-correct;
+  document.getElementById('exam-submit').style.display='none';
+  document.getElementById('exam-retry').style.display='inline-block';
+  rc.scrollIntoView({behavior:'smooth'});
+}
+
+function examReset(){
+  examAnswers={};
+  document.getElementById('exam-result').classList.remove('show');
+  allQids.forEach(function(qId){
+    document.querySelectorAll('#exam-'+qId+' .q-opt').forEach(function(o){o.className='q-opt'});
+    var fb=document.getElementById('exam-fb-'+qId);
+    if(fb)fb.className='q-feedback';
+  });
+  document.getElementById('exam-submit').style.display='inline-block';
+  document.getElementById('exam-retry').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══ VIDEO MODAL ══ */
+function openVideoModal(title, src){
+  document.getElementById('vmodal-title').textContent=title;
+  document.getElementById('vmodal-iframe').src=src;
+  document.getElementById('vmodal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeVideoModal(e){
+  if(e && e.currentTarget===document.getElementById('vmodal') && e.target!==document.getElementById('vmodal')) return;
+  document.getElementById('vmodal').classList.remove('open');
+  document.getElementById('vmodal-iframe').src='';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeVideoModal();});
+
+updateProgress();
+
+
+</script>
+</body>
+</html>
